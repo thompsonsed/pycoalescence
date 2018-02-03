@@ -1,0 +1,211 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Program Listing for File main.cpp &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Map.cpp" href="file_Map.cpp.html" />
+    <link rel="prev" title="File main.cpp" href="file_main.cpp.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Map.cpp.html" title="File Map.cpp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_main.cpp.html" title="File main.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_main.cpp.html" accesskey="U">File main.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-main-cpp">
+<span id="program-listing-file-main-cpp"></span><h1>Program Listing for File main.cpp<a class="headerlink" href="#program-listing-for-file-main-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_main.cpp.html#file-main-cpp"><span class="std std-ref">File main.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//Copyright: 2015, Samuel Thompson, thompsonsed@gmail.com</span>
+<span class="c1">// License: BSD-3</span>
+<span class="c1">//All rights reserved.</span>
+<span class="c1">//</span>
+<span class="c1">//Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">//</span>
+<span class="c1">//1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</span>
+<span class="c1">//</span>
+<span class="c1">//2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</span>
+<span class="c1">//</span>
+<span class="c1">//3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</span>
+
+<span class="c1">//THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+
+<span class="c1">//</span>
+<span class="cp">#ifdef DEBUG</span>
+<span class="cp">#ifndef verbose</span>
+<span class="cp">#define verbose</span>
+<span class="cp">#endif</span>
+<span class="cp">#endif</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Setup.h&quot;</span><span class="cp"></span>
+
+<span class="c1">// #define pristine_mode // not required unless you experience problems.</span>
+<span class="c1">// This performs a more thorough check after each move operation.</span>
+<span class="c1">// Currently, it will also check that the pristine state value is greater than the returned value within every map cell.</span>
+<span class="c1">// Note that this may cause problems if the pristine state is not the state with the highest number of individuals.</span>
+
+
+
+<span class="cm">/************************************************************</span>
+<span class="cm">        MAIN ROUTINE AND COMMAND LINE ARG ROUTINES</span>
+
+<span class="cm"> ************************************************************/</span>
+
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="cm">/*</span>
+<span class="cm">    // COMMAND LINE ARGUMENTS</span>
+<span class="cm">    // The argument argc is the number of arguments supplied to the program (automatically generated by c++)</span>
+<span class="cm">    // The arguments 1 to N are as follows</span>
+<span class="cm">    // 1: the task_iter used for setting the seed.</span>
+<span class="cm">    // 2: the sample grid x dimension</span>
+<span class="cm">    // 3: the sample grid y dimension</span>
+<span class="cm">    // 4: the fine map file relative path.</span>
+<span class="cm">    // 5: the fine map x dimension</span>
+<span class="cm">    // 6: the fine map y dimension</span>
+<span class="cm">    // 7: the fine map x offset</span>
+<span class="cm">    // 8 the fine map y offset</span>
+<span class="cm">    // 9: the coarse map file relative path.</span>
+<span class="cm">    // 10: the coarse map x dimension</span>
+<span class="cm">    // 11: the coarse map y dimension</span>
+<span class="cm">    // 12: the coarse map x offset</span>
+<span class="cm">    // 13: the coarse map y offset</span>
+<span class="cm">    // 14: the scale of the coarse map compared to the fine (10 means resolution of coarse map = 10 x resolution of fine map)</span>
+<span class="cm">    // 15: the output directory</span>
+<span class="cm">    // 16: the speciation rate.</span>
+<span class="cm">    // 17: the dispersal distance (sigma).</span>
+<span class="cm">    // 18: the deme size</span>
+<span class="cm">    // 19: the deme sample size (as a proportion of deme size)</span>
+<span class="cm">    // 20: the time to run the simulation (in seconds).</span>
+<span class="cm">    // 21: dispersal_relative_cost - the relative cost of moving through non-forest</span>
+<span class="cm">    // 22: the_task - for referencing the specific task later on.</span>
+<span class="cm">    // 23: the minimum number of species the system is known to contain.</span>
+<span class="cm">    // 24: the pristine fine map file to use</span>
+<span class="cm">    // 25: the pristine coarse map file to use</span>
+<span class="cm">    // 26: the rate of forest change from pristine</span>
+<span class="cm">    // 27: the time (in generations) since the pristine forest was seen.</span>
+<span class="cm">    // 28: the dispersal L value (the width of the kernel.</span>
+<span class="cm">    // 29: the sample mask, with binary 1:0 values for areas that we want to sample from. If this is not provided then this will default to mapping the whole area.</span>
+<span class="cm">    // 30:  the link to the file containing every generation that the list should be expanded. This should be in the format of a list.</span>
+<span class="cm">    // 31- onwards: speciation rates to apply after the simulation is complete.</span>
+<span class="cm">      */</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">comargs</span><span class="p">;</span>
+    <span class="n">importArgs</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="n">argv</span><span class="p">,</span><span class="n">comargs</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">runMain</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">comargs</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_main.cpp.html"
+                        title="previous chapter">File main.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_Map.cpp.html"
+                        title="next chapter">File Map.cpp</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/program_listing_file_main.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Map.cpp.html" title="File Map.cpp"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_main.cpp.html" title="File main.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_main.cpp.html" >File main.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

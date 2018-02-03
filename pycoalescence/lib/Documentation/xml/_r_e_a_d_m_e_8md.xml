@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="_r_e_a_d_m_e_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>NECSim<sp/>#</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Version:<sp/>3.6</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>project<sp/>is<sp/>released<sp/>under<sp/>BSD-3<sp/></highlight></codeline>
+<codeline><highlight class="normal">See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>go<sp/>to<sp/>[here](https://opensource.org/licenses/BSD-3-Clause)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>CONTENTS<sp/>##</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**INTRODUCTION**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**INSTRUCTIONS**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**REQUIREMENTS**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**DEGUGGING**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**CLASS<sp/>DESCRIPTIONS**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**KNOWN<sp/>BUGS**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**FAQS**</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**CONTACTS**</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>INTRODUCTION<sp/>##</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">NECSim<sp/>is<sp/>a<sp/>generic<sp/>spatial<sp/>coalescence<sp/>simulator<sp/>for<sp/>neutral<sp/>systems.<sp/>It<sp/>applies<sp/>the<sp/>model<sp/>to<sp/>map<sp/>objects,<sp/>which<sp/>can<sp/>change<sp/>over<sp/>time,<sp/>for<sp/>a<sp/>specific<sp/>set<sp/>of<sp/>supplied<sp/>parameters,<sp/>and<sp/>outputs<sp/>information<sp/>for<sp/>each<sp/>individual<sp/>to<sp/>a<sp/>SQL<sp/>database.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SpeciationCounter<sp/>is<sp/>a<sp/>program<sp/>for<sp/>applying<sp/>varying<sp/>speciation<sp/>rates<sp/>to<sp/>outputs<sp/>of<sp/>NECSim<sp/>for<sp/>analysis<sp/>after<sp/>simulations<sp/>are<sp/>complete.<sp/>This<sp/>enables<sp/>the<sp/>main<sp/>simulation<sp/>to<sp/>be<sp/>run<sp/>with<sp/>the<sp/>*minimum*<sp/>speciation<sp/>rate<sp/>required<sp/>and<sp/>afterwards<sp/>analysis<sp/>can<sp/>be<sp/>completed<sp/>using<sp/>different<sp/>speciation<sp/>rates.<sp/>As<sp/>of<sp/>version<sp/>3.4,<sp/>different<sp/>speciation<sp/>rates<sp/>can<sp/>be<sp/>applied<sp/>directly<sp/>within<sp/>NECSim<sp/>at<sp/>run<sp/>time.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">You<sp/>are<sp/>free<sp/>to<sp/>modify<sp/>and<sp/>distribute<sp/>the<sp/>code<sp/>as<sp/>per<sp/>the<sp/>license<sp/>specified<sp/>in<sp/>**LICENCE.txt**<sp/>to<sp/>suit<sp/>any<sp/>additional<sp/>neutral<sp/>simulation<sp/>requirements<sp/>(or<sp/>any<sp/>other<sp/>purpose).</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>INSTRUCTIONS<sp/>##</highlight></codeline>
+<codeline><highlight class="normal">###Compiling<sp/>the<sp/>program###</highlight></codeline>
+<codeline><highlight class="normal">See<sp/>the<sp/>Requirements<sp/>section<sp/>for<sp/>a<sp/>full<sp/>list<sp/>of<sp/>the<sp/>necessary<sp/>prerequisites.<sp/>Once<sp/>these<sp/>are<sp/>installed,<sp/>compiling<sp/>the<sp/>program<sp/>should<sp/>be<sp/>relatively<sp/>easy.<sp/>NECSim<sp/>requires<sp/>a<sp/>linker<sp/>to<sp/>the<sp/>boost<sp/>libraries,<sp/>as<sp/>well<sp/>as<sp/>the<sp/>sqlite3<sp/>library.<sp/>It<sp/>is<sp/>recommended<sp/>to<sp/>run<sp/>with<sp/>the<sp/>maximum<sp/>optimisation<sp/>possible.<sp/>Under<sp/>`g++`<sp/>it<sp/>will<sp/>look<sp/>something<sp/>like</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">g++<sp/>main_ST.cpp<sp/>-std=c++11<sp/>-o3<sp/>-Wall<sp/>-o<sp/>./Coal_sim<sp/>-g<sp/><sp/>-lsqlite3<sp/>-lboost_filesystem<sp/>-lboost_system</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>will<sp/>create<sp/>an<sp/>executable<sp/>called<sp/>Coal_sim<sp/>under<sp/>the<sp/>same<sp/>directory<sp/>as<sp/>the<sp/>source<sp/>files.<sp/>Additionally,<sp/>if<sp/>support<sp/>is<sp/>required<sp/>for<sp/>tif<sp/>files<sp/>(an<sp/>alternative<sp/>to<sp/>importing<sp/>csv<sp/>files),<sp/>the<sp/>[gdal<sp/>library](http://www.gdal.org/)<sp/>is<sp/>required.<sp/>See<sp/>the<sp/>online<sp/>documentation<sp/>for<sp/>help<sp/>compiling<sp/>gdal<sp/>for<sp/>your<sp/>operating<sp/>system.<sp/>When<sp/>compiling<sp/>using<sp/>gdal,<sp/>use<sp/>the<sp/>```-D<sp/>with_gdal```<sp/>compilation<sp/>flag.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">For<sp/>compilation<sp/>on<sp/>High<sp/>Performance<sp/>Computing<sp/>(HPC)<sp/>systems,<sp/>they<sp/>will<sp/>likely<sp/>use<sp/>intel<sp/>compilers.<sp/>The<sp/>header<sp/>files<sp/>for<sp/>the<sp/>sqlite<sp/>and<sp/>boost<sp/>packages<sp/>may<sp/>need<sp/>to<sp/>be<sp/>copied<sp/>in<sp/>to<sp/>the<sp/>working<sp/>directory<sp/>to<sp/>avoid<sp/>problems<sp/>with<sp/>linking<sp/>to<sp/>libraries.<sp/>Check<sp/>the<sp/>service<sp/>providers&apos;<sp/>documentation<sp/>for<sp/>whether<sp/>these<sp/>libraries<sp/>are<sp/>already<sp/>installed<sp/>on<sp/>the<sp/>HPC.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Depending<sp/>on<sp/>the<sp/>set<sp/>up<sp/>of<sp/>the<sp/>HPC,<sp/>the<sp/>compilation<sp/>itself<sp/>will<sp/>be<sp/>something<sp/>like<sp/></highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">icc<sp/>-O3<sp/>-xSSE4.2<sp/>-axAVX,CORE-AVX-I,CORE-AVX2<sp/>-lsqlite3<sp/>-lpthread<sp/>-lboost_filesystem<sp/>-lboost_system<sp/>-std=c++11<sp/>-o<sp/>./Coal_sim<sp/>main_ST.cpp<sp/></highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">or<sp/></highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">icc<sp/>-O3<sp/>-lsqlite3<sp/>-lpthread<sp/>-lboost_filesystem<sp/>-lboost_system<sp/>-std=c++11<sp/>-o<sp/>./Coal_v1<sp/>main_ST.cpp</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">for<sp/>the<sp/>simulation<sp/>program<sp/>and<sp/></highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">icc<sp/>-O3<sp/>-xSSE4.2<sp/>-axAVX,CORE-AVX-I,CORE-AVX2<sp/>-lsqlite3<sp/>-lpthread<sp/>-std=c++11<sp/>-o<sp/>./SpeciationCounter<sp/>Speciation_Counter.cpp</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">or</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">icc<sp/>-O3<sp/>-lpthread<sp/>-std=c++11<sp/>-lsqlite3<sp/>-lboost_filesystem<sp/>-lboost_system<sp/>-lsqlite3<sp/>-o<sp/>./SpeciationCounter<sp/>Speciation_Counter.cpp</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">for<sp/>the<sp/>application<sp/>of<sp/>different<sp/>speciation<sp/>rates.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###Running<sp/>simulations###</highlight></codeline>
+<codeline><highlight class="normal">As<sp/>of<sp/>version<sp/>3.1<sp/>of<sp/>the<sp/>main<sp/>simulation<sp/>code,<sp/>the<sp/>routine<sp/>relies<sp/>on<sp/>supplying<sp/>command<sp/>line<sp/>arguments<sp/>(see<sp/>below)<sp/>for<sp/>all<sp/>the<sp/>major<sp/>simulation<sp/>variables.<sp/>Alternatively,<sp/>supplying<sp/>a<sp/>config<sp/>.txt<sp/>file<sp/>and<sp/>using<sp/>the<sp/>command<sp/>line<sp/>arguments<sp/>`./Coal_sim<sp/>-c<sp/>/path/to/config.txt`<sp/>can<sp/>be<sp/>used<sp/>for<sp/>parsing<sp/>command<sp/>line<sp/>arguments<sp/>from<sp/>the<sp/>text<sp/>file.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####Command<sp/>Line<sp/>Arguments<sp/>####</highlight></codeline>
+<codeline><highlight class="normal">The<sp/>following<sp/>command<sp/>line<sp/>arguments<sp/>are<sp/>required.<sp/>This<sp/>list<sp/>can<sp/>be<sp/>accessed<sp/>by<sp/>running<sp/>`“./Coal_sim<sp/>-h”`<sp/>or<sp/>`./Coal_sim<sp/>-help`</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">As<sp/>of<sp/>version<sp/>3.6,<sp/>the<sp/>command<sp/>line<sp/>options<sp/>to<sp/>be<sp/>specified<sp/>are:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1.<sp/>the<sp/>seed<sp/>for<sp/>the<sp/>simulation.</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>the<sp/>simulation<sp/>task<sp/>(for<sp/>file<sp/>reference).</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>the<sp/>map<sp/>config<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>the<sp/>output<sp/>directory.</highlight></codeline>
+<codeline><highlight class="normal">5.<sp/>the<sp/>minimum<sp/>speciation<sp/>rate.</highlight></codeline>
+<codeline><highlight class="normal">6.<sp/>the<sp/>dispersal<sp/>z_fat<sp/>value.</highlight></codeline>
+<codeline><highlight class="normal">7.<sp/>the<sp/>dispersal<sp/>L<sp/>value.</highlight></codeline>
+<codeline><highlight class="normal">8.<sp/>the<sp/>deme<sp/>size.</highlight></codeline>
+<codeline><highlight class="normal">9.<sp/>the<sp/>deme<sp/>sample<sp/>size.</highlight></codeline>
+<codeline><highlight class="normal">10.<sp/>the<sp/>maximum<sp/>simulation<sp/>time<sp/>(in<sp/>seconds).</highlight></codeline>
+<codeline><highlight class="normal">11.<sp/>the<sp/>lambda<sp/>value<sp/>for<sp/>moving<sp/>through<sp/>non-habitat.</highlight></codeline>
+<codeline><highlight class="normal">12.<sp/>the<sp/>temporal<sp/>sampling<sp/>file<sp/>containing<sp/>tab-separated<sp/>generation<sp/>values<sp/>for<sp/>sampling<sp/>points<sp/>in<sp/>time<sp/>(null<sp/>for<sp/>only<sp/>sampling<sp/>the<sp/>present)</highlight></codeline>
+<codeline><highlight class="normal">13.<sp/>the<sp/>minimum<sp/>number<sp/>of<sp/>species<sp/>known<sp/>to<sp/>exist.<sp/>(Currently<sp/>has<sp/>no<sp/>effect).</highlight></codeline>
+<codeline><highlight class="normal">14.<sp/>(and<sp/>onwards)<sp/>speciation<sp/>rates<sp/>to<sp/>apply<sp/>after<sp/>simulation.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">In<sp/>this<sp/>set<sp/>up,<sp/>the<sp/>map<sp/>config<sp/>file<sp/>contains<sp/>a<sp/>file<sp/>on<sp/>each<sp/>line,<sp/>with<sp/>tab<sp/>separation<sp/>between<sp/>the<sp/>different<sp/>variables.<sp/>The<sp/>&quot;ref&quot;<sp/>flag<sp/>contains<sp/>the<sp/>object<sp/>type,<sp/>followed<sp/>by<sp/>all<sp/>other<sp/>parameters.<sp/>An<sp/>example<sp/>is<sp/>given<sp/>below.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">ref=sample_grid<sp/>path=/path/to/file<sp/><sp/>x=100<sp/><sp/><sp/>y=200<sp/><sp/><sp/>mask=/path/to/mask</highlight></codeline>
+<codeline><highlight class="normal">ref=fine_map<sp/><sp/><sp/><sp/>path=/path/to/file<sp/><sp/>x=100<sp/><sp/><sp/>y=200<sp/><sp/><sp/>x_off=10<sp/><sp/><sp/><sp/>y_off=20</highlight></codeline>
+<codeline><highlight class="normal">ref=pristine_fine<sp/><sp/><sp/>path=/path/to/file<sp/><sp/>number=n<sp/><sp/><sp/><sp/>rate=r<sp/><sp/>time=g</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Alternatively,<sp/>by<sp/>specifying<sp/>the<sp/>-f<sp/>flag,<sp/>(full<sp/>mode)<sp/>as<sp/>the<sp/>first<sp/>argument,<sp/>the<sp/>program<sp/>can<sp/>read<sp/>in<sp/>pre-3.6<sp/>command<sp/>line<sp/>arguments,<sp/>which<sp/>are<sp/>as<sp/>followed.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1.<sp/>the<sp/>task_iter<sp/>used<sp/>for<sp/>setting<sp/>the<sp/>seed.</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>the<sp/>sample<sp/>grid<sp/>x<sp/>dimension</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>the<sp/>sample<sp/>grid<sp/>y<sp/>dimension</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>the<sp/>fine<sp/>map<sp/>file<sp/>relative<sp/>path.</highlight></codeline>
+<codeline><highlight class="normal">5.<sp/>the<sp/>fine<sp/>map<sp/>x<sp/>dimension</highlight></codeline>
+<codeline><highlight class="normal">6.<sp/>the<sp/>fine<sp/>map<sp/>y<sp/>dimension</highlight></codeline>
+<codeline><highlight class="normal">7.<sp/>the<sp/>fine<sp/>map<sp/>x<sp/>offset</highlight></codeline>
+<codeline><highlight class="normal">8.<sp/>the<sp/>fine<sp/>map<sp/>y<sp/>offset</highlight></codeline>
+<codeline><highlight class="normal">9.<sp/>the<sp/>coarse<sp/>map<sp/>file<sp/>relative<sp/>path.</highlight></codeline>
+<codeline><highlight class="normal">10.<sp/>the<sp/>coarse<sp/>map<sp/>x<sp/>dimension</highlight></codeline>
+<codeline><highlight class="normal">11.<sp/>the<sp/>coarse<sp/>map<sp/>y<sp/>dimension</highlight></codeline>
+<codeline><highlight class="normal">12.<sp/>the<sp/>coarse<sp/>map<sp/>x<sp/>offset</highlight></codeline>
+<codeline><highlight class="normal">13.<sp/>the<sp/>coarse<sp/>map<sp/>y<sp/>offset</highlight></codeline>
+<codeline><highlight class="normal">14.<sp/>the<sp/>scale<sp/>of<sp/>the<sp/>coarse<sp/>map<sp/>compared<sp/>to<sp/>the<sp/>fine<sp/>(10<sp/>means<sp/>resolution<sp/>of<sp/>coarse<sp/>map<sp/>=<sp/>10<sp/>x<sp/>resolution<sp/>of<sp/>fine<sp/>map)</highlight></codeline>
+<codeline><highlight class="normal">15.<sp/>the<sp/>output<sp/>directory</highlight></codeline>
+<codeline><highlight class="normal">16.<sp/>the<sp/>speciation<sp/>rate.</highlight></codeline>
+<codeline><highlight class="normal">17.<sp/>the<sp/>dispersal<sp/>distance<sp/>(zfat).</highlight></codeline>
+<codeline><highlight class="normal">18.<sp/>the<sp/>deme<sp/>size</highlight></codeline>
+<codeline><highlight class="normal">19.<sp/>the<sp/>deme<sp/>sample<sp/>size<sp/>(as<sp/>a<sp/>proportion<sp/>of<sp/>deme<sp/>size)</highlight></codeline>
+<codeline><highlight class="normal">20.<sp/>the<sp/>time<sp/>to<sp/>run<sp/>the<sp/>simulation<sp/>(in<sp/>seconds).</highlight></codeline>
+<codeline><highlight class="normal">21.<sp/>lambda<sp/>-<sp/>the<sp/>relative<sp/>cost<sp/>of<sp/>moving<sp/>through<sp/>non-forest</highlight></codeline>
+<codeline><highlight class="normal">22.<sp/>the_task<sp/>-<sp/>for<sp/>referencing<sp/>the<sp/>specific<sp/>task<sp/>later<sp/>on.</highlight></codeline>
+<codeline><highlight class="normal">23.<sp/>the<sp/>minimum<sp/>number<sp/>of<sp/>species<sp/>the<sp/>system<sp/>is<sp/>known<sp/>to<sp/>contain.</highlight></codeline>
+<codeline><highlight class="normal">24.<sp/>the<sp/>pristine<sp/>fine<sp/>map<sp/>file<sp/>to<sp/>use</highlight></codeline>
+<codeline><highlight class="normal">25.<sp/>the<sp/>pristine<sp/>coarse<sp/>map<sp/>file<sp/>to<sp/>use</highlight></codeline>
+<codeline><highlight class="normal">26.<sp/>the<sp/>rate<sp/>of<sp/>forest<sp/>change<sp/>from<sp/>pristine</highlight></codeline>
+<codeline><highlight class="normal">27.<sp/>the<sp/>time<sp/>(in<sp/>generations)<sp/>since<sp/>the<sp/>pristine<sp/>forest<sp/>was<sp/>seen.</highlight></codeline>
+<codeline><highlight class="normal">28.<sp/>the<sp/>dispersal<sp/>L<sp/>value<sp/>(the<sp/>width<sp/>of<sp/>the<sp/>kernel.</highlight></codeline>
+<codeline><highlight class="normal">29.<sp/>the<sp/>sample<sp/>mask,<sp/>with<sp/>binary<sp/>1:0<sp/>values<sp/>for<sp/>areas<sp/>that<sp/>we<sp/>want<sp/>to<sp/>sample<sp/>from.<sp/>If<sp/>this<sp/>is<sp/>not<sp/>provided<sp/>then<sp/>this<sp/>will<sp/>default<sp/>to<sp/>mapping<sp/>the<sp/>whole<sp/>area.</highlight></codeline>
+<codeline><highlight class="normal">30.<sp/><sp/>the<sp/>link<sp/>to<sp/>the<sp/>file<sp/>containing<sp/>every<sp/>generation<sp/>that<sp/>the<sp/>list<sp/>should<sp/>be<sp/>expanded.<sp/>This<sp/>should<sp/>be<sp/>in<sp/>the<sp/>format<sp/>of<sp/>a<sp/>list.</highlight></codeline>
+<codeline><highlight class="normal">31.<sp/>(and<sp/>onwards)<sp/>-<sp/>speciation<sp/>rates<sp/>to<sp/>apply<sp/>after<sp/>the<sp/>simulation<sp/>is<sp/>complete.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####Config<sp/>Files<sp/>####</highlight></codeline>
+<codeline><highlight class="normal">The<sp/>program<sp/>also<sp/>accepts<sp/>a<sp/>config<sp/>file,<sp/>specified<sp/>by<sp/>running<sp/>`./Coal_sim<sp/>-c<sp/>/path/to/config.txt`.<sp/>The<sp/>format<sp/>of<sp/>the<sp/>config<sp/>file<sp/>is</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">rand_seed<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">sample_x_dim<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">sample_y_dim<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">fine_source<sp/>=<sp/>/path/to/fine.csv</highlight></codeline>
+<codeline><highlight class="normal">fine_x_dim<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">fine_y_dim<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">fine_x_offset<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">fine_y_offset<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">coarse_source<sp/>=<sp/>/path/to/coarse.csv</highlight></codeline>
+<codeline><highlight class="normal">coarse_x_dim<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">coarse_y_dim<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">coarse_x_offset<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">coarse_y_offset<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">coarse_scale<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">output_dir<sp/>=<sp/>/path/to/outdir</highlight></codeline>
+<codeline><highlight class="normal">spec_rate<sp/>=<sp/>d</highlight></codeline>
+<codeline><highlight class="normal">zfat<sp/>=<sp/>f</highlight></codeline>
+<codeline><highlight class="normal">deme_size<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">deme_sample<sp/>=<sp/>d</highlight></codeline>
+<codeline><highlight class="normal">wall_time<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">lambda<sp/>=<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">job_num<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">est_spec<sp/>=<sp/>i</highlight></codeline>
+<codeline><highlight class="normal">pristine_fine_source<sp/>=<sp/>/path/to/pristine/fine.csv</highlight></codeline>
+<codeline><highlight class="normal">pristine_coarse_source<sp/>=<sp/>/path/to/pristine/coarse.csv</highlight></codeline>
+<codeline><highlight class="normal">forest_change<sp/>=<sp/>d</highlight></codeline>
+<codeline><highlight class="normal">time_since<sp/>=<sp/>f</highlight></codeline>
+<codeline><highlight class="normal">dispersal<sp/>=<sp/>f</highlight></codeline>
+<codeline><highlight class="normal">sampledatamask<sp/>=<sp/>/path/to/sample/mask.csv</highlight></codeline>
+<codeline><highlight class="normal">time_config_file<sp/>=<sp/>/path/to/time/file.txt</highlight></codeline>
+<codeline><highlight class="normal">speciationrate1<sp/>=<sp/>d</highlight></codeline>
+<codeline><highlight class="normal">speciationrate2<sp/>=<sp/>d</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">where<sp/>`i`<sp/>represents<sp/>a<sp/>positive<sp/>integer,<sp/>`d`<sp/>is<sp/>a<sp/>decimal<sp/>value<sp/>between<sp/>0<sp/>and<sp/>1,<sp/>and<sp/>`f`<sp/>is<sp/>any<sp/>positive<sp/>number<sp/>(float).<sp/>Whilst<sp/>this<sp/>does<sp/>help<sp/>with<sp/>readability<sp/>of<sp/>the<sp/>code,<sp/>the<sp/>order<sp/>of<sp/>the<sp/>arguments<sp/>is<sp/>essential<sp/>at<sp/>this<sp/>stage<sp/>(i.e.<sp/>don&apos;t<sp/>switch<sp/>the<sp/>order<sp/>of<sp/>the<sp/>lines).<sp/>Future<sp/>versions<sp/>may<sp/>alter<sp/>the<sp/>system<sp/>of<sp/>reading<sp/>such<sp/>that<sp/>the<sp/>parameters<sp/>are<sp/>set<sp/>according<sp/>to<sp/>their<sp/>key.<sp/>Any<sp/>number<sp/>of<sp/>speciation<sp/>rates<sp/>(or<sp/>0)<sp/>can<sp/>be<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>file.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####Default<sp/>parameters####</highlight></codeline>
+<codeline><highlight class="normal">To<sp/>run<sp/>the<sp/>program<sp/>with<sp/>the<sp/>default<sp/>parameters<sp/>for<sp/>testing<sp/>purposes,<sp/>run<sp/>with<sp/>the<sp/>command<sp/>line<sp/>arguments<sp/>-d<sp/>or<sp/>-dl<sp/>(for<sp/>the<sp/>larger<sp/>default<sp/>run).<sp/>Note<sp/>that<sp/>this<sp/>will<sp/>require<sp/>access<sp/>to<sp/>the<sp/>following<sp/>folders<sp/>relative<sp/>to<sp/>the<sp/>path<sp/>of<sp/>the<sp/>program<sp/>for<sp/>storing<sp/>the<sp/>outputs<sp/>to<sp/>the<sp/>default<sp/>runs:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**../../Data/Coal_sim/Test_output/**</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**../../Data/Coal_sim/Test_output/SQL_data/**</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####Outputs####</highlight></codeline>
+<codeline><highlight class="normal">Upon<sp/>successful<sp/>completion<sp/>of<sp/>a<sp/>simulation,<sp/>the<sp/>Coal\_v1<sp/>program<sp/>will<sp/>produce<sp/>an<sp/>SQLite<sp/>database<sp/>file<sp/>in<sp/>the<sp/>output<sp/>directory<sp/>in<sp/>an<sp/>SQL\_data<sp/>folder.<sp/>This<sp/>database<sp/>contains<sp/>several<sp/>tables,<sp/>which<sp/>can<sp/>be<sp/>accessed<sp/>using<sp/>a<sp/>program<sp/>like<sp/>[DB<sp/>Browser<sp/>for<sp/>SQLite](http://sqlitebrowser.org/)<sp/>or<sp/>Microsoft<sp/>Access.<sp/>Alternatively,<sp/>most<sp/>programming<sp/>languages<sp/>have<sp/>an<sp/>SQLite<sp/>interface<sp/>([RSQlite](https://cran.r-project.org/web/packages/RSQLite/index.html),<sp/>[python<sp/>sqlite3](https://docs.python.org/2/library/sqlite3.html))</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>main<sp/>table<sp/>within<sp/>the<sp/>database<sp/>is<sp/>the<sp/>SPECIES\_LIST<sp/>table,<sp/>which<sp/>is<sp/>the<sp/>location<sp/>and<sp/>inheritence<sp/>of<sp/>every<sp/>lineage<sp/>recorded.<sp/>Several<sp/>other<sp/>important<sp/>data<sp/>structures<sp/>(such<sp/>as<sp/>whether<sp/>it<sp/>is<sp/>a<sp/>&quot;tip&quot;<sp/>of<sp/>the<sp/>phylogenetic<sp/>tree<sp/>of<sp/>not)<sp/>which<sp/>are<sp/>used<sp/>by<sp/>Speciation_Counter<sp/>when<sp/>re-constructing<sp/>the<sp/>species<sp/>identity.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>A<sp/>secondary<sp/>output<sp/>from<sp/>Coal\_v1<sp/>is<sp/>a<sp/>SIMULATION\_PARAMETERS<sp/>table<sp/>for<sp/>identifying<sp/>the<sp/>exact<sp/>parameters<sp/>with<sp/>which<sp/>the<sp/>model<sp/>is<sp/>run.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>SpeciationCounter<sp/>also<sp/>produces<sp/>a<sp/>SPECIES_ABUNDANCES<sp/>table<sp/>containing<sp/>species<sp/>abundances<sp/>across<sp/>the<sp/>whole<sp/>sample<sp/>map,<sp/>plus<sp/>(optionally)<sp/>a<sp/>table<sp/>of<sp/>SPECIES\_LOCATIONS<sp/>(containing<sp/>the<sp/>x,y<sp/>location<sp/>of<sp/>every<sp/>individual)<sp/>and<sp/>FRAGMENT\_ABUNDANCES<sp/>(species<sp/>abundances<sp/>for<sp/>each<sp/>habitat<sp/>fragment<sp/>separately).</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>REQUIREMENTS<sp/>##</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>SQLite<sp/>library<sp/>available<sp/>[here](https://www.sqlite.org/download.html).</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>Boost<sp/>library<sp/>available<sp/>[here](http://www.boost.org).</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>fast-cpp-csv-parser<sp/>by<sp/>Ben<sp/>Strasser,<sp/>available<sp/>[here](https://github.com/ben-strasser/fast-cpp-csv-parser).</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>C++<sp/>compiler<sp/>(such<sp/>as<sp/>GNU<sp/>g++)<sp/>with<sp/>C++11<sp/>support.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>Access<sp/>to<sp/>the<sp/>relevant<sp/>folders<sp/>for<sp/>Default<sp/>simulations<sp/>(see<sp/>FAQS).</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>DEBUGGING<sp/>##</highlight></codeline>
+<codeline><highlight class="normal">Most<sp/>errors<sp/>will<sp/>return<sp/>an<sp/>error<sp/>code<sp/>in<sp/>the<sp/>form<sp/>“ERROR\_NAME\_XXX:<sp/>Description”<sp/>a<sp/>list<sp/>of<sp/>which<sp/>can<sp/>be<sp/>found<sp/>in<sp/>ERROR_REF.txt.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>CLASS<sp/>DESCRIPTIONS<sp/>##</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A<sp/>brief<sp/>description<sp/>of<sp/>the<sp/>important<sp/>classes<sp/>is<sp/>given<sp/>below.<sp/>Some<sp/>classes<sp/>also<sp/>contain<sp/>customised<sp/>exceptions<sp/>for<sp/>better<sp/>tracing<sp/>of<sp/>error<sp/>handling.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`CoalescenceTree`<sp/>class.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>The<sp/>most<sp/>important<sp/>class!</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>the<sp/>main<sp/>setup,<sp/>run<sp/>and<sp/>data<sp/>output<sp/>routines.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Setup<sp/>imports<sp/>the<sp/>data<sp/>files<sp/>from<sp/>csv<sp/>(if<sp/>necessary)<sp/>and<sp/>creates<sp/>the<sp/>in-memory<sp/>objects<sp/>for<sp/>the<sp/>storing<sp/>of<sp/>the<sp/>coalescence<sp/>tree<sp/>and<sp/>the<sp/>spatial<sp/>grid<sp/>of<sp/>active<sp/>lineages.<sp/>Setup<sp/>time<sp/>mostly<sp/>depends<sp/>on<sp/>the<sp/>size<sp/>of<sp/>the<sp/>csv<sp/>file<sp/>being<sp/>imported.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Run<sp/>continually<sp/>loops<sp/>over<sp/>sucessive<sp/>coalesence,<sp/>move<sp/>or<sp/>speciation<sp/>events<sp/>until<sp/>all<sp/>individuals<sp/>have<sp/>speciated<sp/>or<sp/>coalesced.<sp/>This<sp/>is<sp/>where<sp/>the<sp/>majority<sp/>of<sp/>the<sp/>simulation<sp/>time<sp/>will<sp/>be,<sp/>and<sp/>is<sp/>mostly<sp/>dependent<sp/>on<sp/>the<sp/>number<sp/>of<sp/>individuals,<sp/>speciation<sp/>rate<sp/>and<sp/>size<sp/>of<sp/>the<sp/>spatial<sp/>grid.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>At<sp/>the<sp/>end<sp/>of<sp/>the<sp/>simulation,<sp/>the<sp/>sqlCreate()<sp/>routine<sp/>will<sp/>generate<sp/>the<sp/>in-memory<sp/>SQLite<sp/>database<sp/>for<sp/>storing<sp/>the<sp/>coalescent<sp/>tree.<sp/>It<sp/>can<sp/>run<sp/>multiple<sp/>times<sp/>if<sp/>multiple<sp/>speciation<sp/>rates<sp/>are<sp/>required.<sp/>outputData()<sp/>will<sp/>then<sp/>be<sp/>called<sp/>to<sp/>create<sp/>a<sp/>small<sp/>csv<sp/>file<sp/>containing<sp/>important<sp/>information,<sp/>and<sp/>output<sp/>the<sp/>SQLite<sp/>database<sp/>to<sp/>file<sp/>if<sp/>required.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`Treenode`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>a<sp/>single<sp/>record<sp/>of<sp/>a<sp/>node<sp/>on<sp/>the<sp/>phylogenetic<sp/>tree,<sp/>to<sp/>be<sp/>used<sp/>in<sp/>reassembling<sp/>the<sp/>tree<sp/>structure<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>simulation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Operations<sp/>are<sp/>mostly<sp/>basic<sp/>getters<sp/>and<sp/>setters,<sp/>with<sp/>functionality<sp/>called<sp/>from<sp/>higher-level<sp/>functions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>An<sp/>array<sp/>of<sp/>treenodes<sp/>makes<sp/>up<sp/>the<sp/>`data`<sp/>object<sp/>in<sp/>`tree`.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`Datapoint`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>a<sp/>single<sp/>record<sp/>of<sp/>the<sp/>location<sp/>of<sp/>a<sp/>lineage.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>An<sp/>array<sp/>of<sp/>datapoints<sp/>makes<sp/>up<sp/>the<sp/>`active`<sp/>object<sp/>in<sp/>`tree`.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>`endactive`<sp/>refers<sp/>to<sp/>the<sp/>number<sp/>of<sp/>lineages<sp/>currently<sp/>being<sp/>simulated.<sp/>After<sp/>each<sp/>coalescence<sp/>or<sp/>speciation<sp/>event<sp/>this<sp/>will<sp/>decrease.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`NRrand`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>the<sp/>random<sp/>number<sp/>generator,<sp/>as<sp/>written<sp/>by<sp/>James<sp/>Rosindell<sp/>(j.rosindell@imperial.ac.uk).</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`Map`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>the<sp/>routines<sp/>for<sp/>importing<sp/>and<sp/>calling<sp/>values<sp/>from<sp/>the<sp/>map<sp/>objects.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>The<sp/>`GetVal()`<sp/>and<sp/>`runDispersal()`<sp/>functions<sp/>can<sp/>be<sp/>modified<sp/>to<sp/>produce<sp/>altered<sp/>dispersal<sp/>behaviour,<sp/>or<sp/>alterations<sp/>to<sp/>the<sp/>structure<sp/>of<sp/>the<sp/>map.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`Matrix`<sp/>and<sp/>`Row`<sp/>classes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Based<sp/>on<sp/>code<sp/>written<sp/>by<sp/>James<sp/>Rosindell<sp/>(j.rosindell@imperial.ac.uk).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Handles<sp/>indexing<sp/>of<sp/>the<sp/>2D<sp/>object<sp/>plus<sp/>importing<sp/>values<sp/>from<sp/>a<sp/>csv<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`SpeciesList`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>the<sp/>list<sp/>of<sp/>individuals,<sp/>for<sp/>application<sp/>in<sp/>a<sp/>matrix,<sp/>to<sp/>essentially<sp/>create<sp/>a<sp/>3D<sp/>array.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Handles<sp/>the<sp/>positioning<sp/>of<sp/>individuals<sp/>in<sp/>space<sp/>within<sp/>a<sp/>grid<sp/>cell.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`ConfigOption`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>basic<sp/>functions<sp/>for<sp/>importing<sp/>command<sp/>line<sp/>arguments<sp/>from<sp/>a<sp/>config<sp/>file,<sp/>providing<sp/>an<sp/>alternative<sp/>way<sp/>of<sp/>setting<sp/>up<sp/>simulations.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`Treelist`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>-<sp/>Contained<sp/>in<sp/>SpeciationCounter.h.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>-<sp/>Provides<sp/>the<sp/>routines<sp/>for<sp/>applying<sp/>different<sp/>speciation<sp/>rates<sp/>to<sp/>a<sp/>phylogenetic<sp/>tree,<sp/>to<sp/>be<sp/>used<sp/>either<sp/>immediately<sp/>after<sp/>simulation<sp/>within<sp/>NECSim,<sp/>or<sp/>at<sp/>a<sp/>later<sp/>time<sp/>using<sp/>SpeciationCounter.cpp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">##<sp/>KNOWN<sp/>BUGS<sp/>##</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>Simulation<sp/>pause<sp/>and<sp/>resume<sp/>functions<sp/>do<sp/>not<sp/>work<sp/>properly<sp/>at<sp/>this<sp/>time<sp/>(should<sp/>be<sp/>fixed<sp/>in<sp/>a<sp/>later<sp/>update).</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>Simulations<sp/>run<sp/>until<sp/>completion,<sp/>rather<sp/>than<sp/>aiming<sp/>for<sp/>a<sp/>desired<sp/>number<sp/>of<sp/>species.<sp/>This<sp/>is<sp/>an<sp/>intentional<sp/>change.<sp/>Functions<sp/>related<sp/>to<sp/>this<sp/>functionality<sp/>remain<sp/>but<sp/>are<sp/>deprecated.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>In<sp/>SpeciationCounter,<sp/>only<sp/>continuous<sp/>rectangular<sp/>fragments<sp/>are<sp/>properly<sp/>calculated.<sp/>Other<sp/>shapes<sp/>must<sp/>be<sp/>calculated<sp/>by<sp/>post-processing.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>In<sp/>SpeciationCounter,<sp/>3<sp/>fragments<sp/>instead<sp/>of<sp/>2<sp/>will<sp/>be<sp/>calculated<sp/>for<sp/>certain<sp/>adjacent<sp/>rectangular<sp/>patches.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>FAQS<sp/>(WIP)<sp/>##</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**Why<sp/>doesn’t<sp/>the<sp/>default<sp/>simulation<sp/>output<sp/>anything?**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Check<sp/>that<sp/>the<sp/>program<sp/>has<sp/>access<sp/>to<sp/>the<sp/>folders<sp/>relative<sp/>to<sp/>the<sp/>program<sp/>at:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>../../Data/Coal_sim/Test_output/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>../../Data/Coal_sim/Test_output/SQL_data/</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">*<sp/>**Why<sp/>can’t<sp/>I<sp/>compile<sp/>the<sp/>program?**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>This<sp/>could<sp/>be<sp/>due<sp/>to<sp/>a<sp/>number<sp/>of<sp/>reasons,<sp/>most<sp/>likely<sp/>that<sp/>you<sp/>haven’t<sp/>compiled<sp/>with<sp/>access<sp/>to<sp/>the<sp/>lsqlite3<sp/>or<sp/>boost<sp/>packages.<sp/>Installation<sp/>and<sp/>compilation<sp/>differs<sp/>across<sp/>different<sp/>systems;<sp/>for<sp/>most<sp/>UNIX<sp/>systems,<sp/>compiling<sp/>with<sp/>the<sp/>linker<sp/>arguments<sp/>-lsqlite3<sp/>-lboost_filesystem<sp/>and<sp/>-lboost_system<sp/>will<sp/>solve<sp/>problems<sp/>with<sp/>the<sp/>compiler<sp/>not<sp/>finding<sp/>the<sp/>sqlite<sp/>or<sp/>boost<sp/>header<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Another<sp/>option<sp/>could<sp/>be<sp/>the<sp/>potential<sp/>lack<sp/>of<sp/>access<sp/>to<sp/>the<sp/>fast-cpp-csv-parser<sp/>by<sp/>Ben<sp/>Strasser,<sp/>available<sp/>[here](https://github.com/ben-strasser/fast-cpp-csv-parser).<sp/>If<sp/>use\_csv<sp/>has<sp/>been<sp/>defined<sp/>at<sp/>the<sp/>head<sp/>of<sp/>the<sp/>file,<sp/>try<sp/>without<sp/>use_csv<sp/>or<sp/>download<sp/>the<sp/>csv<sp/>parser<sp/>and<sp/>locate<sp/>the<sp/>folder<sp/>within<sp/>your<sp/>working<sp/>directory<sp/>at<sp/>compilation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">*<sp/>**Every<sp/>time<sp/>the<sp/>program<sp/>runs<sp/>I<sp/>get<sp/>error<sp/>code<sp/>XXX.**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Check<sp/>the<sp/>ERROR_REF.txt<sp/>file<sp/>for<sp/>descriptions<sp/>of<sp/>the<sp/>files.<sp/>Try<sp/>running<sp/>in<sp/>debug<sp/>mode<sp/>(uncomment<sp/>```#define<sp/>debug_mode```)<sp/>to<sp/>gain<sp/>more<sp/>information<sp/>on<sp/>the<sp/>problem.<sp/>It<sp/>is<sp/>most<sp/>likely<sp/>a<sp/>problem<sp/>with<sp/>the<sp/>set<sp/>up<sp/>of<sp/>the<sp/>map<sp/>data<sp/>(error<sp/>checking<sp/>is<sp/>not<sp/>yet<sp/>properly<sp/>implemented<sp/>here).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">##<sp/>CONTACTS##</highlight></codeline>
+<codeline><highlight class="normal">Author:<sp/>**Samuel<sp/>Thompson**</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Contact:<sp/>samuelthompson14@imperial.ac.uk<sp/>-<sp/>thompsonsed@gmail.com</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Institution:<sp/>Imperial<sp/>College<sp/>London<sp/>and<sp/>National<sp/>University<sp/>of<sp/>Singapore</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Based<sp/>heavily<sp/>on<sp/>code<sp/>by<sp/>**James<sp/>Rosindell**</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Contact:<sp/>j.rosindell@imperial.ac.uk</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Institution:<sp/>Imperial<sp/>College<sp/>London</highlight></codeline>
+    </programlisting>
+    <location file="README.md"/>
+  </compounddef>
+</doxygen>

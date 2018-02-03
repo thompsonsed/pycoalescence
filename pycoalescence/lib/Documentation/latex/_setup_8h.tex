@@ -1,0 +1,189 @@
+\hypertarget{_setup_8h}{}\section{Setup.\+h File Reference}
+\label{_setup_8h}\index{Setup.\+h@{Setup.\+h}}
+
+
+Contains declarations for the command line parsing and setup options for N\+E\+C\+Sim.  
+
+
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$ctime$>$}\\*
+{\ttfamily \#include $<$boost/filesystem.\+hpp$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$iomanip$>$}\\*
+{\ttfamily \#include \char`\"{}CoalescenceTree.\+h\char`\"{}}\\*
+Include dependency graph for Setup.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_setup_8h_a25e6e7ae1e07841be7b7872521e8ad8b}{open\+Log\+File} (bool append)
+\begin{DoxyCompactList}\small\item\em Opens the log file for redirecting stdout. \end{DoxyCompactList}\item 
+void \hyperlink{_setup_8h_ae5f0fe9d930f0bf31869e95f1d284e73}{run\+As\+Default} (vector$<$ string $>$ \&comargs)
+\begin{DoxyCompactList}\small\item\em Sets up the command-\/line arguments for default parameters. \end{DoxyCompactList}\item 
+void \hyperlink{_setup_8h_ae630bc537fa43724bcb8e13905640d4f}{run\+Large} (vector$<$ string $>$ \&comargs)
+\begin{DoxyCompactList}\small\item\em Sets up the command-\/line arguments for larger-\/scale default parameters. \end{DoxyCompactList}\item 
+void \hyperlink{_setup_8h_ac712ff5a067a5d07f3b4c3dc6e5bfad1}{run\+XL} (vector$<$ string $>$ \&comargs)
+\begin{DoxyCompactList}\small\item\em Sets up the command-\/line arguments for default very large scale parameters. \end{DoxyCompactList}\item 
+void \hyperlink{_setup_8h_a297d1a4ce3dd8aa2c7c06c578bd5d80a}{remove\+Com\+Option} (unsigned long \&argc, vector$<$ string $>$ \&comargs)\hypertarget{_setup_8h_a297d1a4ce3dd8aa2c7c06c578bd5d80a}{}\label{_setup_8h_a297d1a4ce3dd8aa2c7c06c578bd5d80a}
+
+\begin{DoxyCompactList}\small\item\em Removes the command line options supplied, leaving just a clean vector with the correct data in. \end{DoxyCompactList}\item 
+bool \hyperlink{_setup_8h_af836e59d723600545dfdfe76b0c14b94}{does\+Exist} (string testfile)
+\begin{DoxyCompactList}\small\item\em Checks the existance of a file on the hard drive. \end{DoxyCompactList}\item 
+bool \hyperlink{_setup_8h_a0b70d536db024e2f65c377c02fa596ba}{does\+Exist\+Null} (string testfile)
+\begin{DoxyCompactList}\small\item\em Checks for the existance of a file, but returns true if the file name is \textquotesingle{}null\textquotesingle{}. Note\+: this function just calls \hyperlink{_setup_8h_af836e59d723600545dfdfe76b0c14b94}{does\+Exist()}. \end{DoxyCompactList}\item 
+int \hyperlink{_setup_8h_af60f51c97037bdbe5e9ac92db838ebfd}{run\+Main} (int argc, vector$<$ string $>$ \&argv)
+\begin{DoxyCompactList}\small\item\em Runs the main simulation, including all parsing of command line arguments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+string {\bfseries log\+\_\+name}\hypertarget{_setup_8h_a2b3e7c0f4a5a17a01a5157ab01e59a60}{}\label{_setup_8h_a2b3e7c0f4a5a17a01a5157ab01e59a60}
+
+\item 
+int {\bfseries saved\+\_\+stdout}\hypertarget{_setup_8h_abc860612bcc3ce0f446f60f8314195d0}{}\label{_setup_8h_abc860612bcc3ce0f446f60f8314195d0}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains declarations for the command line parsing and setup options for N\+E\+C\+Sim. 
+
+\begin{DoxyAuthor}{Author}
+Sam Thompson
+\end{DoxyAuthor}
+Contact\+: \href{mailto:samuel.thompson14@imperial.ac.uk}{\tt samuel.\+thompson14@imperial.\+ac.\+uk} or \href{mailto:thompsonsed@gmail.com}{\tt thompsonsed@gmail.\+com} \begin{DoxyCopyright}{Copyright}
+\href{https://opensource.org/licenses/BSD-3-Clause}{\tt B\+S\+D-\/3 Licence.} 
+\end{DoxyCopyright}
+
+
+\subsection{Function Documentation}
+\index{Setup.\+h@{Setup.\+h}!does\+Exist@{does\+Exist}}
+\index{does\+Exist@{does\+Exist}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{does\+Exist(string testfile)}{doesExist(string testfile)}}]{\setlength{\rightskip}{0pt plus 5cm}bool does\+Exist (
+\begin{DoxyParamCaption}
+\item[{string}]{testfile}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_af836e59d723600545dfdfe76b0c14b94}{}\label{_setup_8h_af836e59d723600545dfdfe76b0c14b94}
+
+
+Checks the existance of a file on the hard drive. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em testfile} & the file to examine \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+if true, file exists 
+\end{DoxyReturn}
+\index{Setup.\+h@{Setup.\+h}!does\+Exist\+Null@{does\+Exist\+Null}}
+\index{does\+Exist\+Null@{does\+Exist\+Null}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{does\+Exist\+Null(string testfile)}{doesExistNull(string testfile)}}]{\setlength{\rightskip}{0pt plus 5cm}bool does\+Exist\+Null (
+\begin{DoxyParamCaption}
+\item[{string}]{testfile}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_a0b70d536db024e2f65c377c02fa596ba}{}\label{_setup_8h_a0b70d536db024e2f65c377c02fa596ba}
+
+
+Checks for the existance of a file, but returns true if the file name is \textquotesingle{}null\textquotesingle{}. Note\+: this function just calls \hyperlink{_setup_8h_af836e59d723600545dfdfe76b0c14b94}{does\+Exist()}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em testfile} & the file to examine \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+if true, file exists (or is null). 
+\end{DoxyReturn}
+\index{Setup.\+h@{Setup.\+h}!open\+Log\+File@{open\+Log\+File}}
+\index{open\+Log\+File@{open\+Log\+File}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{open\+Log\+File(bool append)}{openLogFile(bool append)}}]{\setlength{\rightskip}{0pt plus 5cm}void open\+Log\+File (
+\begin{DoxyParamCaption}
+\item[{bool}]{append}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_a25e6e7ae1e07841be7b7872521e8ad8b}{}\label{_setup_8h_a25e6e7ae1e07841be7b7872521e8ad8b}
+
+
+Opens the log file for redirecting stdout. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em append} & if true, appends to the existing log file. \\
+\hline
+\end{DoxyParams}
+\index{Setup.\+h@{Setup.\+h}!run\+As\+Default@{run\+As\+Default}}
+\index{run\+As\+Default@{run\+As\+Default}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{run\+As\+Default(vector$<$ string $>$ \&comargs)}{runAsDefault(vector< string > &comargs)}}]{\setlength{\rightskip}{0pt plus 5cm}void run\+As\+Default (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{comargs}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_ae5f0fe9d930f0bf31869e95f1d284e73}{}\label{_setup_8h_ae5f0fe9d930f0bf31869e95f1d284e73}
+
+
+Sets up the command-\/line arguments for default parameters. 
+
+This is intended for testing purposes only. 
+\begin{DoxyParams}{Parameters}
+{\em comargs} & a vector of command-\/line arguments for putting the parameters into. \\
+\hline
+\end{DoxyParams}
+\index{Setup.\+h@{Setup.\+h}!run\+Large@{run\+Large}}
+\index{run\+Large@{run\+Large}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{run\+Large(vector$<$ string $>$ \&comargs)}{runLarge(vector< string > &comargs)}}]{\setlength{\rightskip}{0pt plus 5cm}void run\+Large (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{comargs}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_ae630bc537fa43724bcb8e13905640d4f}{}\label{_setup_8h_ae630bc537fa43724bcb8e13905640d4f}
+
+
+Sets up the command-\/line arguments for larger-\/scale default parameters. 
+
+This is intended for testing purposes only. 
+\begin{DoxyParams}{Parameters}
+{\em comargs} & a vector of command-\/line arguments for putting the parameters into. \\
+\hline
+\end{DoxyParams}
+\index{Setup.\+h@{Setup.\+h}!run\+Main@{run\+Main}}
+\index{run\+Main@{run\+Main}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{run\+Main(int argc, vector$<$ string $>$ \&argv)}{runMain(int argc, vector< string > &argv)}}]{\setlength{\rightskip}{0pt plus 5cm}int run\+Main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{vector$<$ string $>$ \&}]{argv}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_af60f51c97037bdbe5e9ac92db838ebfd}{}\label{_setup_8h_af60f51c97037bdbe5e9ac92db838ebfd}
+
+
+Runs the main simulation, including all parsing of command line arguments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & the number of arguments (size of argv) \\
+\hline
+{\em argv} & the arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 if successful 
+\end{DoxyReturn}
+\index{Setup.\+h@{Setup.\+h}!run\+XL@{run\+XL}}
+\index{run\+XL@{run\+XL}!Setup.\+h@{Setup.\+h}}
+\subsubsection[{\texorpdfstring{run\+X\+L(vector$<$ string $>$ \&comargs)}{runXL(vector< string > &comargs)}}]{\setlength{\rightskip}{0pt plus 5cm}void run\+XL (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{comargs}
+\end{DoxyParamCaption}
+)}\hypertarget{_setup_8h_ac712ff5a067a5d07f3b4c3dc6e5bfad1}{}\label{_setup_8h_ac712ff5a067a5d07f3b4c3dc6e5bfad1}
+
+
+Sets up the command-\/line arguments for default very large scale parameters. 
+
+This is intended for testing purposes only. 
+\begin{DoxyParams}{Parameters}
+{\em comargs} & a vector of command-\/line arguments for putting the parameters into. \\
+\hline
+\end{DoxyParams}

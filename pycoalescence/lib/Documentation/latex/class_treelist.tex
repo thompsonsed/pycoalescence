@@ -1,0 +1,488 @@
+\hypertarget{class_treelist}{}\section{Treelist Class Reference}
+\label{class_treelist}\index{Treelist@{Treelist}}
+
+
+A class to contain the tree object lineages and reconstructing the coalescence tree. Contains functions for calculating the number of species for a given speciation rate, outputting spatial data and generating species abundance distributions. Requires a link to the S\+Q\+Lite database from simulation output, and produces results within the same database file.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_treelist_a2fa11958071a9887c0fec031d7f2b3e7}{Treelist} (\hyperlink{class_row}{Row}$<$ \hyperlink{class_treenode}{Treenode} $>$ $\ast$r)
+\begin{DoxyCompactList}\small\item\em Contructor for treelist linking to \hyperlink{class_treenode}{Treenode} list. \end{DoxyCompactList}\item 
+\hyperlink{class_treelist_a7aa5acf72fa6310b63bcdc1ae8a279b5}{Treelist} ()\hypertarget{class_treelist_a7aa5acf72fa6310b63bcdc1ae8a279b5}{}\label{class_treelist_a7aa5acf72fa6310b63bcdc1ae8a279b5}
+
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_treelist_ab1c100e36696c2d0c8e77f8f3eed2db8}{$\sim$\+Treelist} ()\hypertarget{class_treelist_ab1c100e36696c2d0c8e77f8f3eed2db8}{}\label{class_treelist_ab1c100e36696c2d0c8e77f8f3eed2db8}
+
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a209bded4d1a38b52de02bd375dc8f214}{set\+List} (\hyperlink{class_row}{Row}$<$ \hyperlink{class_treenode}{Treenode} $>$ $\ast$l)
+\begin{DoxyCompactList}\small\item\em Set the nodes object to the input \hyperlink{class_row}{Row} of \hyperlink{class_treenode}{Treenode} objects. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a0991cf24ea19b2d99c5bc70f47b45518}{set\+Database} (sqlite3 $\ast$dbin)
+\begin{DoxyCompactList}\small\item\em Sets the database object for the sqlite functions. \end{DoxyCompactList}\item 
+bool \hyperlink{class_treelist_ae4f75c202f4813f388660577bdbb1b9d}{has\+Imported\+Data} ()
+\begin{DoxyCompactList}\small\item\em Get the boolean of whether the data has been imported yet. \end{DoxyCompactList}\item 
+double \hyperlink{class_treelist_ad6177750efa83354a844bb7072551227}{get\+Minimum\+Speciation} ()
+\begin{DoxyCompactList}\small\item\em Get the minimum speciation rate the simulation was originally run with. This value is read in from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the database file. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a40a8108fe416b9431b232b0e49280e52}{import\+Samplemask} (string s\+Samplemask)
+\begin{DoxyCompactList}\small\item\em Imports the samplemask if it hasn\textquotesingle{}t already been imported. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_treelist_af8888281f584bb1cc6a1543f70b747e9}{count\+Species} ()
+\begin{DoxyCompactList}\small\item\em Counts the number of species that have speciated currently on the tree. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_treelist_a251b84151f3ba70e34bca3824b165093}{calc\+Species} (double s)
+\begin{DoxyCompactList}\small\item\em Calculate the number of species in the list given a specific speciation rate. This is the main function which reconstructs the coalescence tree. Each \hyperlink{class_treenode}{Treenode} object will end having its existance value set correctly after a call to this function. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a7d077eac323c32bfdce6bca808f357ae}{calc\+Species\+Abundance} ()\hypertarget{class_treelist_a7d077eac323c32bfdce6bca808f357ae}{}\label{class_treelist_a7d077eac323c32bfdce6bca808f357ae}
+
+\begin{DoxyCompactList}\small\item\em Calculates the species abundance of the dataset. The species abundances will be with r\+Out after a call do this function. If a samplemask has been applied, only lineages which originally existed in the samplemask will be counted. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_ad089f6a63b1904d0b50299adfae52f5b}{reset\+CoalescenceTree} ()\hypertarget{class_treelist_ad089f6a63b1904d0b50299adfae52f5b}{}\label{class_treelist_ad089f6a63b1904d0b50299adfae52f5b}
+
+\begin{DoxyCompactList}\small\item\em Resets the entire tree. Sets existance to false, speciation to false and removes any species ID. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_acaa619f2d186f60c9c9fa5d90db0da68}{detect\+Dimensions} (string db)
+\begin{DoxyCompactList}\small\item\em This function detects the maximum x and y values of the sql database. This allows for the dimensions before opening the map file. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_aa0a68f38a0cfcfe69d53dd8387174688}{open\+Sql\+Connection} (string inputfile)
+\begin{DoxyCompactList}\small\item\em Opens the connection to the sql database file Note that this imports the database to memory, so functionality should be changed for extremely large database files. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a98bd7ebad85966794a3871969b0f04f8}{internal\+Option} ()\hypertarget{class_treelist_a98bd7ebad85966794a3871969b0f04f8}{}\label{class_treelist_a98bd7ebad85966794a3871969b0f04f8}
+
+\begin{DoxyCompactList}\small\item\em Internally sets the file referencing, data import and sql connection flags to true, for allowing checks to pass from internal object creation (so no external files are needed) \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a8042f6a3ab6eb1e7dc75baba20240118}{import\+Data} (string inputfile)
+\begin{DoxyCompactList}\small\item\em Imports the data from the desired S\+QL database object into the array. Note this function opens the sql connection if it has not already been opened. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_ac2e1f6e132233499568af35fa57e60b5}{import\+Sim\+Parameters} (string file)
+\begin{DoxyCompactList}\small\item\em Imports the simulation parameters by reading the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the provided file. This imports the grid\+\_\+x\+\_\+size, grid\+\_\+y\+\_\+size (which should also be the sample map dimensions) and the minimum speciation rate. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a8062e61c6ae961447cb71654006a1e71}{set\+Protracted\+Parameters} (double max\+\_\+speciation\+\_\+gen\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the protracted parameters for application of protracted speciation. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a5a0b1ddf62000375a53df9c16c548b35}{set\+Protracted\+Parameters} (double min\+\_\+speciation\+\_\+gen\+\_\+in, double max\+\_\+speciation\+\_\+gen\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the protracted parameters for application of protracted speciation. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a11b7efee52f995ea524ebc35ebe76cfc}{set\+Protracted} (bool protracted\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the protracted boolean to the input. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a3bdea04b963ec5a92711d5f389a534c2}{set\+Generation} (long double generationin)
+\begin{DoxyCompactList}\small\item\em Set the time of interest where all analysis will be performed. It is assumed that this was one of the temporal points defined at simulation time. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a3416c2a81ee64b98b3d7956f58a8132d}{create\+Database} (double s)
+\begin{DoxyCompactList}\small\item\em Creates a new table in the database file and outputs the database object to the same file as the input file. The new S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table contains the species abundance distribution for the whole samplemask. A similar tabe F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES is generated by \hyperlink{class_treelist_aba14303915c31c334e1d63ae61c3812c}{create\+Fragment\+Database()} if specified via the command line parameters. \end{DoxyCompactList}\item 
+bool \hyperlink{class_treelist_a729efcf34c00e6dfbf45a6fb17cab0ca}{check\+Repeat\+Speciation} (double s, double generation, bool fragment)
+\begin{DoxyCompactList}\small\item\em Checks to see if any of the speciation rates have already been applied and exist within the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. \end{DoxyCompactList}\item 
+bool \hyperlink{class_treelist_af8bf1c31280aac49f5863b22373d17ca}{check\+Repeat\+Speciation} (double s, double generation)
+\begin{DoxyCompactList}\small\item\em Checks to see if any of the speciation rates have already been applied and exist within the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. Overloaded version for assuming there are no differing fragments. \end{DoxyCompactList}\item 
+bool \hyperlink{class_treelist_a08e810576f6294def9e958a20352ad94}{check\+Repeat\+Speciation} (double s)
+\begin{DoxyCompactList}\small\item\em Checks to see if any of the speciation rates have already been applied and exist within the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. Overloaded version for assuming there are no differing times. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_aba14303915c31c334e1d63ae61c3812c}{create\+Fragment\+Database} (const \hyperlink{struct_fragment}{Fragment} \&f)
+\begin{DoxyCompactList}\small\item\em Creates a new table in the database file and outputs the database object to the same file as the input file. Essentially creates a species abundance distribution (as in \hyperlink{class_treelist_a3416c2a81ee64b98b3d7956f58a8132d}{create\+Database()}), but for the specified fragment within the samplemask. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a3f7f7eb4526ee91180742010394e0f65}{export\+Database} (string outputfile)
+\begin{DoxyCompactList}\small\item\em Output the database from memory to the database file. Most of the time, it is desirable for the outputfile to be the same path as the input file and will write to the same object. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a3bba0e4657b3c98025331ae6c76d2a14}{record\+Spatial} ()\hypertarget{class_treelist_a3bba0e4657b3c98025331ae6c76d2a14}{}\label{class_treelist_a3bba0e4657b3c98025331ae6c76d2a14}
+
+\begin{DoxyCompactList}\small\item\em Record the full spatial data. Creates a new table, S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS containing every species and their parameters. This allows for more in-\/depth analysis to be performed if necessary. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_ac0569d1ff2167b24751e490d7d76ac9f}{calc\+Fragments} (string fragment\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Calculates the limits of each fragment in the sample map and adds it to the vector of fragments. If the fragment\+\_\+file is null, then the program will attempt to calculate fragments from the map. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a40ce2abdada3090379f75ac0532e9ea0}{apply\+Fragments} ()\hypertarget{class_treelist_a40ce2abdada3090379f75ac0532e9ea0}{}\label{class_treelist_a40ce2abdada3090379f75ac0532e9ea0}
+
+\begin{DoxyCompactList}\small\item\em Calculate species abundances for each fragment, and call \hyperlink{class_treelist_aba14303915c31c334e1d63ae61c3812c}{create\+Fragment\+Database()} for each \hyperlink{struct_fragment}{Fragment}. \end{DoxyCompactList}\item 
+void \hyperlink{class_treelist_a79db972fe848fac179c29f38bedadab7}{get\+Previous\+Calcs} ()\hypertarget{class_treelist_a79db972fe848fac179c29f38bedadab7}{}\label{class_treelist_a79db972fe848fac179c29f38bedadab7}
+
+\begin{DoxyCompactList}\small\item\em Gets the previous calculations that have already been performed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class to contain the tree object lineages and reconstructing the coalescence tree. Contains functions for calculating the number of species for a given speciation rate, outputting spatial data and generating species abundance distributions. Requires a link to the S\+Q\+Lite database from simulation output, and produces results within the same database file. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Treelist@{Treelist}!Treelist@{Treelist}}
+\index{Treelist@{Treelist}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{Treelist(\+Row$<$ Treenode $>$ $\ast$r)}{Treelist(Row< Treenode > *r)}}]{\setlength{\rightskip}{0pt plus 5cm}Treelist\+::\+Treelist (
+\begin{DoxyParamCaption}
+\item[{{\bf Row}$<$ {\bf Treenode} $>$ $\ast$}]{r}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_treelist_a2fa11958071a9887c0fec031d7f2b3e7}{}\label{class_treelist_a2fa11958071a9887c0fec031d7f2b3e7}
+
+
+Contructor for treelist linking to \hyperlink{class_treenode}{Treenode} list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & \hyperlink{class_row}{Row} of \hyperlink{class_treenode}{Treenode} objects to link to. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Treelist@{Treelist}!calc\+Fragments@{calc\+Fragments}}
+\index{calc\+Fragments@{calc\+Fragments}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{calc\+Fragments(string fragment\+\_\+file)}{calcFragments(string fragment_file)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::calc\+Fragments (
+\begin{DoxyParamCaption}
+\item[{string}]{fragment\+\_\+file}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_ac0569d1ff2167b24751e490d7d76ac9f}{}\label{class_treelist_ac0569d1ff2167b24751e490d7d76ac9f}
+
+
+Calculates the limits of each fragment in the sample map and adds it to the vector of fragments. If the fragment\+\_\+file is null, then the program will attempt to calculate fragments from the map. 
+
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000003}{Bug}]Only rectangular fragments will be detected. Problems will also be encountered for adjacent fragments. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em fragment\+\_\+file} & the fragment file to read from. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!calc\+Species@{calc\+Species}}
+\index{calc\+Species@{calc\+Species}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{calc\+Species(double s)}{calcSpecies(double s)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Treelist\+::calc\+Species (
+\begin{DoxyParamCaption}
+\item[{double}]{s}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a251b84151f3ba70e34bca3824b165093}{}\label{class_treelist_a251b84151f3ba70e34bca3824b165093}
+
+
+Calculate the number of species in the list given a specific speciation rate. This is the main function which reconstructs the coalescence tree. Each \hyperlink{class_treenode}{Treenode} object will end having its existance value set correctly after a call to this function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the speciation rate to apply. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of species present. 
+\end{DoxyReturn}
+\index{Treelist@{Treelist}!check\+Repeat\+Speciation@{check\+Repeat\+Speciation}}
+\index{check\+Repeat\+Speciation@{check\+Repeat\+Speciation}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{check\+Repeat\+Speciation(double s, double generation, bool fragment)}{checkRepeatSpeciation(double s, double generation, bool fragment)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Treelist\+::check\+Repeat\+Speciation (
+\begin{DoxyParamCaption}
+\item[{double}]{s, }
+\item[{double}]{generation, }
+\item[{bool}]{fragment}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a729efcf34c00e6dfbf45a6fb17cab0ca}{}\label{class_treelist_a729efcf34c00e6dfbf45a6fb17cab0ca}
+
+
+Checks to see if any of the speciation rates have already been applied and exist within the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the speciation rate to apply. \\
+\hline
+{\em generation} & the time to apply the speciation rate at \\
+\hline
+{\em fragment} & boolean of whether to check for fragments or not \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!check\+Repeat\+Speciation@{check\+Repeat\+Speciation}}
+\index{check\+Repeat\+Speciation@{check\+Repeat\+Speciation}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{check\+Repeat\+Speciation(double s, double generation)}{checkRepeatSpeciation(double s, double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Treelist\+::check\+Repeat\+Speciation (
+\begin{DoxyParamCaption}
+\item[{double}]{s, }
+\item[{double}]{generation}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_af8bf1c31280aac49f5863b22373d17ca}{}\label{class_treelist_af8bf1c31280aac49f5863b22373d17ca}
+
+
+Checks to see if any of the speciation rates have already been applied and exist within the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. Overloaded version for assuming there are no differing fragments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the speciation rate to apply. \\
+\hline
+{\em generation} & the time to apply the speciation rate at \\
+\hline
+{\em fragment} & boolean of whether to check for fragments or not \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!check\+Repeat\+Speciation@{check\+Repeat\+Speciation}}
+\index{check\+Repeat\+Speciation@{check\+Repeat\+Speciation}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{check\+Repeat\+Speciation(double s)}{checkRepeatSpeciation(double s)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Treelist\+::check\+Repeat\+Speciation (
+\begin{DoxyParamCaption}
+\item[{double}]{s}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a08e810576f6294def9e958a20352ad94}{}\label{class_treelist_a08e810576f6294def9e958a20352ad94}
+
+
+Checks to see if any of the speciation rates have already been applied and exist within the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. Overloaded version for assuming there are no differing times. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the speciation rate to apply. \\
+\hline
+{\em generation} & the time to apply the speciation rate at \\
+\hline
+{\em fragment} & boolean of whether to check for fragments or not \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!count\+Species@{count\+Species}}
+\index{count\+Species@{count\+Species}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{count\+Species()}{countSpecies()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Treelist\+::count\+Species (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_af8888281f584bb1cc6a1543f70b747e9}{}\label{class_treelist_af8888281f584bb1cc6a1543f70b747e9}
+
+
+Counts the number of species that have speciated currently on the tree. 
+
+\begin{DoxyReturn}{Returns}
+the number of species 
+\end{DoxyReturn}
+\index{Treelist@{Treelist}!create\+Database@{create\+Database}}
+\index{create\+Database@{create\+Database}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{create\+Database(double s)}{createDatabase(double s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::create\+Database (
+\begin{DoxyParamCaption}
+\item[{double}]{s}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a3416c2a81ee64b98b3d7956f58a8132d}{}\label{class_treelist_a3416c2a81ee64b98b3d7956f58a8132d}
+
+
+Creates a new table in the database file and outputs the database object to the same file as the input file. The new S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table contains the species abundance distribution for the whole samplemask. A similar tabe F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES is generated by \hyperlink{class_treelist_aba14303915c31c334e1d63ae61c3812c}{create\+Fragment\+Database()} if specified via the command line parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the speciation rate to apply. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!create\+Fragment\+Database@{create\+Fragment\+Database}}
+\index{create\+Fragment\+Database@{create\+Fragment\+Database}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{create\+Fragment\+Database(const Fragment \&f)}{createFragmentDatabase(const Fragment &f)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::create\+Fragment\+Database (
+\begin{DoxyParamCaption}
+\item[{const {\bf Fragment} \&}]{f}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_aba14303915c31c334e1d63ae61c3812c}{}\label{class_treelist_aba14303915c31c334e1d63ae61c3812c}
+
+
+Creates a new table in the database file and outputs the database object to the same file as the input file. Essentially creates a species abundance distribution (as in \hyperlink{class_treelist_a3416c2a81ee64b98b3d7956f58a8132d}{create\+Database()}), but for the specified fragment within the samplemask. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & the \hyperlink{struct_fragment}{Fragment} to sample from. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!detect\+Dimensions@{detect\+Dimensions}}
+\index{detect\+Dimensions@{detect\+Dimensions}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{detect\+Dimensions(string db)}{detectDimensions(string db)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::detect\+Dimensions (
+\begin{DoxyParamCaption}
+\item[{string}]{db}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_acaa619f2d186f60c9c9fa5d90db0da68}{}\label{class_treelist_acaa619f2d186f60c9c9fa5d90db0da68}
+
+
+This function detects the maximum x and y values of the sql database. This allows for the dimensions before opening the map file. 
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000007}{Deprecated}]This function is deprecated as of 08/2016 due to simulation parameters being stored in the S\+QL database. \end{DoxyRefDesc}
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000002}{Bug}]If species do not exist across the whole range of the samplemask, samplemask size will not be set correctly and samplemask referencing may be incorrect. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em db} & the path to the input database to read from. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!export\+Database@{export\+Database}}
+\index{export\+Database@{export\+Database}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{export\+Database(string outputfile)}{exportDatabase(string outputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::export\+Database (
+\begin{DoxyParamCaption}
+\item[{string}]{outputfile}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a3f7f7eb4526ee91180742010394e0f65}{}\label{class_treelist_a3f7f7eb4526ee91180742010394e0f65}
+
+
+Output the database from memory to the database file. Most of the time, it is desirable for the outputfile to be the same path as the input file and will write to the same object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em outputfile} & the path to the output file. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!get\+Minimum\+Speciation@{get\+Minimum\+Speciation}}
+\index{get\+Minimum\+Speciation@{get\+Minimum\+Speciation}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{get\+Minimum\+Speciation()}{getMinimumSpeciation()}}]{\setlength{\rightskip}{0pt plus 5cm}double Treelist\+::get\+Minimum\+Speciation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_ad6177750efa83354a844bb7072551227}{}\label{class_treelist_ad6177750efa83354a844bb7072551227}
+
+
+Get the minimum speciation rate the simulation was originally run with. This value is read in from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the database file. 
+
+\begin{DoxyReturn}{Returns}
+the minimum speciation rate. 
+\end{DoxyReturn}
+\index{Treelist@{Treelist}!has\+Imported\+Data@{has\+Imported\+Data}}
+\index{has\+Imported\+Data@{has\+Imported\+Data}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{has\+Imported\+Data()}{hasImportedData()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Treelist\+::has\+Imported\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_ae4f75c202f4813f388660577bdbb1b9d}{}\label{class_treelist_ae4f75c202f4813f388660577bdbb1b9d}
+
+
+Get the boolean of whether the data has been imported yet. 
+
+\begin{DoxyReturn}{Returns}
+true if database has been imported. 
+\end{DoxyReturn}
+\index{Treelist@{Treelist}!import\+Data@{import\+Data}}
+\index{import\+Data@{import\+Data}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{import\+Data(string inputfile)}{importData(string inputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::import\+Data (
+\begin{DoxyParamCaption}
+\item[{string}]{inputfile}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a8042f6a3ab6eb1e7dc75baba20240118}{}\label{class_treelist_a8042f6a3ab6eb1e7dc75baba20240118}
+
+
+Imports the data from the desired S\+QL database object into the array. Note this function opens the sql connection if it has not already been opened. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inputfile} & the path to the input S\+Q\+Lite database. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!import\+Samplemask@{import\+Samplemask}}
+\index{import\+Samplemask@{import\+Samplemask}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{import\+Samplemask(string s\+Samplemask)}{importSamplemask(string sSamplemask)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::import\+Samplemask (
+\begin{DoxyParamCaption}
+\item[{string}]{s\+Samplemask}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a40a8108fe416b9431b232b0e49280e52}{}\label{class_treelist_a40a8108fe416b9431b232b0e49280e52}
+
+
+Imports the samplemask if it hasn\textquotesingle{}t already been imported. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s\+Samplemask} & the path to the samplemask file. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!import\+Sim\+Parameters@{import\+Sim\+Parameters}}
+\index{import\+Sim\+Parameters@{import\+Sim\+Parameters}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{import\+Sim\+Parameters(string file)}{importSimParameters(string file)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::import\+Sim\+Parameters (
+\begin{DoxyParamCaption}
+\item[{string}]{file}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_ac2e1f6e132233499568af35fa57e60b5}{}\label{class_treelist_ac2e1f6e132233499568af35fa57e60b5}
+
+
+Imports the simulation parameters by reading the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the provided file. This imports the grid\+\_\+x\+\_\+size, grid\+\_\+y\+\_\+size (which should also be the sample map dimensions) and the minimum speciation rate. 
+
+Note this function opens the sql connection if it has not already been opened.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & the sqlite database simulation output which will be used for coalescence tree generation. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!open\+Sql\+Connection@{open\+Sql\+Connection}}
+\index{open\+Sql\+Connection@{open\+Sql\+Connection}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{open\+Sql\+Connection(string inputfile)}{openSqlConnection(string inputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::open\+Sql\+Connection (
+\begin{DoxyParamCaption}
+\item[{string}]{inputfile}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_aa0a68f38a0cfcfe69d53dd8387174688}{}\label{class_treelist_aa0a68f38a0cfcfe69d53dd8387174688}
+
+
+Opens the connection to the sql database file Note that this imports the database to memory, so functionality should be changed for extremely large database files. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inputfile} & the sql database output from a N\+E\+C\+Sim simulation. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!set\+Database@{set\+Database}}
+\index{set\+Database@{set\+Database}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{set\+Database(sqlite3 $\ast$dbin)}{setDatabase(sqlite3 *dbin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::set\+Database (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{dbin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a0991cf24ea19b2d99c5bc70f47b45518}{}\label{class_treelist_a0991cf24ea19b2d99c5bc70f47b45518}
+
+
+Sets the database object for the sqlite functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dbin} & the sqlite3 input database. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!set\+Generation@{set\+Generation}}
+\index{set\+Generation@{set\+Generation}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{set\+Generation(long double generationin)}{setGeneration(long double generationin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::set\+Generation (
+\begin{DoxyParamCaption}
+\item[{long double}]{generationin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a3bdea04b963ec5a92711d5f389a534c2}{}\label{class_treelist_a3bdea04b963ec5a92711d5f389a534c2}
+
+
+Set the time of interest where all analysis will be performed. It is assumed that this was one of the temporal points defined at simulation time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em generationin} & the target generation. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!set\+List@{set\+List}}
+\index{set\+List@{set\+List}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{set\+List(\+Row$<$ Treenode $>$ $\ast$l)}{setList(Row< Treenode > *l)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::set\+List (
+\begin{DoxyParamCaption}
+\item[{{\bf Row}$<$ {\bf Treenode} $>$ $\ast$}]{l}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a209bded4d1a38b52de02bd375dc8f214}{}\label{class_treelist_a209bded4d1a38b52de02bd375dc8f214}
+
+
+Set the nodes object to the input \hyperlink{class_row}{Row} of \hyperlink{class_treenode}{Treenode} objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & the \hyperlink{class_row}{Row} of \hyperlink{class_treenode}{Treenode} objects to link to. \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!set\+Protracted@{set\+Protracted}}
+\index{set\+Protracted@{set\+Protracted}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{set\+Protracted(bool protracted\+\_\+in)}{setProtracted(bool protracted_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::set\+Protracted (
+\begin{DoxyParamCaption}
+\item[{bool}]{protracted\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a11b7efee52f995ea524ebc35ebe76cfc}{}\label{class_treelist_a11b7efee52f995ea524ebc35ebe76cfc}
+
+
+Sets the protracted boolean to the input. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em protracted\+\_\+in} & the protracted boolean to set \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!set\+Protracted\+Parameters@{set\+Protracted\+Parameters}}
+\index{set\+Protracted\+Parameters@{set\+Protracted\+Parameters}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{set\+Protracted\+Parameters(double max\+\_\+speciation\+\_\+gen\+\_\+in)}{setProtractedParameters(double max_speciation_gen_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::set\+Protracted\+Parameters (
+\begin{DoxyParamCaption}
+\item[{double}]{max\+\_\+speciation\+\_\+gen\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a8062e61c6ae961447cb71654006a1e71}{}\label{class_treelist_a8062e61c6ae961447cb71654006a1e71}
+
+
+Sets the protracted parameters for application of protracted speciation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+speciation\+\_\+gen} & the maximum number of generations a lineage can exist for before speciating \\
+\hline
+\end{DoxyParams}
+\index{Treelist@{Treelist}!set\+Protracted\+Parameters@{set\+Protracted\+Parameters}}
+\index{set\+Protracted\+Parameters@{set\+Protracted\+Parameters}!Treelist@{Treelist}}
+\subsubsection[{\texorpdfstring{set\+Protracted\+Parameters(double min\+\_\+speciation\+\_\+gen\+\_\+in, double max\+\_\+speciation\+\_\+gen\+\_\+in)}{setProtractedParameters(double min_speciation_gen_in, double max_speciation_gen_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Treelist\+::set\+Protracted\+Parameters (
+\begin{DoxyParamCaption}
+\item[{double}]{min\+\_\+speciation\+\_\+gen\+\_\+in, }
+\item[{double}]{max\+\_\+speciation\+\_\+gen\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_treelist_a5a0b1ddf62000375a53df9c16c548b35}{}\label{class_treelist_a5a0b1ddf62000375a53df9c16c548b35}
+
+
+Sets the protracted parameters for application of protracted speciation. 
+
+This overloaded version is for setting protracted parameters before a full simulation has been outputted (i.\+e. immediately after completion of the simulation).
+
+
+\begin{DoxyParams}{Parameters}
+{\em min\+\_\+speciation\+\_\+gen\+\_\+in} & the minimum number of generations a lineage must exist before speciating. \\
+\hline
+{\em max\+\_\+speciation\+\_\+gen\+\_\+in} & the maximum number of generations a lineage can exist for before speciating \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_treelist_8h}{Treelist.\+h}\item 
+\hyperlink{_treelist_8cpp}{Treelist.\+cpp}\end{DoxyCompactItemize}

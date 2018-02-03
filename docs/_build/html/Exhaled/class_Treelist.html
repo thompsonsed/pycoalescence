@@ -1,0 +1,519 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Class Treelist &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Treenode" href="class_Treenode.html" />
+    <link rel="prev" title="Class Tree" href="class_Tree.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_Treenode.html" title="Class Treenode"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="class_Tree.html" title="Class Tree"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" accesskey="U">NECSim</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="class-treelist">
+<span id="id1"></span><h1>Class Treelist<a class="headerlink" href="#class-treelist" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_Treelist.h.html#file-treelist-h"><span class="std std-ref">File Treelist.h</span></a></li>
+</ul>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv28Treelist">
+<span id="Treelist"></span><span class="target" id="class_treelist"></span><em class="property">class </em><code class="descclassname"></code><code class="descname">Treelist</code><a class="headerlink" href="#_CPPv28Treelist" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A class to contain the tree object lineages and reconstructing the coalescence tree. Contains functions for calculating the number of species for a given speciation rate, outputting spatial data and generating species abundance distributions. Requires a link to the SQLite database from simulation output, and produces results within the same database file. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv2N8Treelist8TreelistEP3RowI8TreenodeE">
+<span id="Treelist::Treelist__Row:Treenode:P"></span><span class="target" id="class_treelist_1a2fa11958071a9887c0fec031d7f2b3e7"></span><code class="descname">Treelist</code><span class="sig-paren">(</span><a class="reference internal" href="class_Row.html#_CPPv23Row" title="Row">Row</a>&lt;<a class="reference internal" href="class_Treenode.html#_CPPv28Treenode" title="Treenode">Treenode</a>&gt; *<em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist8TreelistEP3RowI8TreenodeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Contructor for treelist linking to Treenode list. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">r</span></code>: <a class="reference internal" href="class_Row.html#class_row"><span class="std std-ref">Row</span></a> of Treenode objects to link to. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist8TreelistEv">
+<span id="Treelist::Treelist"></span><span class="target" id="class_treelist_1a7aa5acf72fa6310b63bcdc1ae8a279b5"></span><code class="descname">Treelist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist8TreelistEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8TreelistD0Ev">
+<span id="Treelist::~Treelist"></span><span class="target" id="class_treelist_1ab1c100e36696c2d0c8e77f8f3eed2db8"></span><code class="descname">~Treelist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8TreelistD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default destructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist7setListEP3RowI8TreenodeE">
+<span id="Treelist::setList__Row:Treenode:P"></span><span class="target" id="class_treelist_1a209bded4d1a38b52de02bd375dc8f214"></span>void <code class="descname">setList</code><span class="sig-paren">(</span><a class="reference internal" href="class_Row.html#_CPPv23Row" title="Row">Row</a>&lt;<a class="reference internal" href="class_Treenode.html#_CPPv28Treenode" title="Treenode">Treenode</a>&gt; *<em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist7setListEP3RowI8TreenodeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the nodes object to the input <a class="reference internal" href="class_Row.html#class_row"><span class="std std-ref">Row</span></a> of Treenode objects. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">l</span></code>: the <a class="reference internal" href="class_Row.html#class_row"><span class="std std-ref">Row</span></a> of Treenode objects to link to. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist11setDatabaseEP7sqlite3">
+<span id="Treelist::setDatabase__sqlite3P"></span><span class="target" id="class_treelist_1a0991cf24ea19b2d99c5bc70f47b45518"></span>void <code class="descname">setDatabase</code><span class="sig-paren">(</span>sqlite3 *<em>dbin</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist11setDatabaseEP7sqlite3" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the database object for the sqlite functions. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dbin</span></code>: the sqlite3 input database. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist15hasImportedDataEv">
+<span id="Treelist::hasImportedData"></span><span class="target" id="class_treelist_1ae4f75c202f4813f388660577bdbb1b9d"></span>bool <code class="descname">hasImportedData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist15hasImportedDataEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the boolean of whether the data has been imported yet. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if database has been imported. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist20getMinimumSpeciationEv">
+<span id="Treelist::getMinimumSpeciation"></span><span class="target" id="class_treelist_1ad6177750efa83354a844bb7072551227"></span>double <code class="descname">getMinimumSpeciation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist20getMinimumSpeciationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the minimum speciation rate the simulation was originally run with. This value is read in from the SIMULATION_PARAMETERS table in the database file. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the minimum speciation rate. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist16importSamplemaskE6string">
+<span id="Treelist::importSamplemask__string"></span><span class="target" id="class_treelist_1a40a8108fe416b9431b232b0e49280e52"></span>void <code class="descname">importSamplemask</code><span class="sig-paren">(</span>string <em>sSamplemask</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist16importSamplemaskE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the samplemask if it hasn’t already been imported. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">sSamplemask</span></code>: the path to the samplemask file. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist12countSpeciesEv">
+<span id="Treelist::countSpecies"></span><span class="target" id="class_treelist_1af8888281f584bb1cc6a1543f70b747e9"></span>unsigned long <code class="descname">countSpecies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist12countSpeciesEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Counts the number of species that have speciated currently on the tree. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of species </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist11calcSpeciesEd">
+<span id="Treelist::calcSpecies__double"></span><span class="target" id="class_treelist_1a251b84151f3ba70e34bca3824b165093"></span>unsigned long <code class="descname">calcSpecies</code><span class="sig-paren">(</span>double <em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist11calcSpeciesEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate the number of species in the list given a specific speciation rate. This is the main function which reconstructs the coalescence tree. Each Treenode object will end having its existance value set correctly after a call to this function. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of species present. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">s</span></code>: the speciation rate to apply. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist20calcSpeciesAbundanceEv">
+<span id="Treelist::calcSpeciesAbundance"></span><span class="target" id="class_treelist_1a7d077eac323c32bfdce6bca808f357ae"></span>void <code class="descname">calcSpeciesAbundance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist20calcSpeciesAbundanceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculates the species abundance of the dataset. The species abundances will be with rOut after a call do this function. If a samplemask has been applied, only lineages which originally existed in the samplemask will be counted. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist9resetTreeEv">
+<span id="Treelist::resetTree"></span><span class="target" id="class_treelist_1ad089f6a63b1904d0b50299adfae52f5b"></span>void <code class="descname">resetTree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist9resetTreeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resets the entire tree. Sets existance to false, speciation to false and removes any species ID. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist16detectDimensionsE6string">
+<span id="Treelist::detectDimensions__string"></span><span class="target" id="class_treelist_1acaa619f2d186f60c9c9fa5d90db0da68"></span>void <code class="descname">detectDimensions</code><span class="sig-paren">(</span>string <em>db</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist16detectDimensionsE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This function detects the maximum x and y values of the sql database. This allows for the dimensions before opening the map file. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">db</span></code>: the path to the input database to read from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist17openSqlConnectionE6string">
+<span id="Treelist::openSqlConnection__string"></span><span class="target" id="class_treelist_1aa0a68f38a0cfcfe69d53dd8387174688"></span>void <code class="descname">openSqlConnection</code><span class="sig-paren">(</span>string <em>inputfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist17openSqlConnectionE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Opens the connection to the sql database file Note that this imports the database to memory, so functionality should be changed for extremely large database files. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">inputfile</span></code>: the sql database output from a NECSim simulation. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist14internalOptionEv">
+<span id="Treelist::internalOption"></span><span class="target" id="class_treelist_1a98bd7ebad85966794a3871969b0f04f8"></span>void <code class="descname">internalOption</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist14internalOptionEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Internally sets the file referencing, data import and sql connection flags to true, for allowing checks to pass from internal object creation (so no external files are needed) </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist10importDataE6string">
+<span id="Treelist::importData__string"></span><span class="target" id="class_treelist_1a8042f6a3ab6eb1e7dc75baba20240118"></span>void <code class="descname">importData</code><span class="sig-paren">(</span>string <em>inputfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist10importDataE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the data from the desired SQL database object into the array. Note this function opens the sql connection if it has not already been opened. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">inputfile</span></code>: the path to the input SQLite database. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist19importSimParametersE6string">
+<span id="Treelist::importSimParameters__string"></span><span class="target" id="class_treelist_1ac2e1f6e132233499568af35fa57e60b5"></span>void <code class="descname">importSimParameters</code><span class="sig-paren">(</span>string <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist19importSimParametersE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the simulation parameters by reading the SIMULATION_PARAMETERS table in the provided file. This imports the grid_x_size, grid_y_size (which should also be the sample map dimensions) and the minimum speciation rate. </p>
+<p>Note this function opens the sql connection if it has not already been opened.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">file</span></code>: the sqlite database simulation output which will be used for coalescence tree generation. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist23setProtractedParametersEd">
+<span id="Treelist::setProtractedParameters__double"></span><span class="target" id="class_treelist_1a8062e61c6ae961447cb71654006a1e71"></span>void <code class="descname">setProtractedParameters</code><span class="sig-paren">(</span>double <em>max_speciation_gen_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist23setProtractedParametersEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the protracted parameters for application of protracted speciation. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">max_speciation_gen</span></code>: the maximum number of generations a lineage can exist for before speciating </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist23setProtractedParametersEdd">
+<span id="Treelist::setProtractedParameters__double.double"></span><span class="target" id="class_treelist_1a5a0b1ddf62000375a53df9c16c548b35"></span>void <code class="descname">setProtractedParameters</code><span class="sig-paren">(</span>double <em>min_speciation_gen_in</em>, double <em>max_speciation_gen_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist23setProtractedParametersEdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the protracted parameters for application of protracted speciation. </p>
+<p>This overloaded version is for setting protracted parameters before a full simulation has been outputted (i.e. immediately after completion of the simulation).</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">min_speciation_gen_in</span></code>: the minimum number of generations a lineage must exist before speciating. </li>
+<li><code class="docutils literal"><span class="pre">max_speciation_gen_in</span></code>: the maximum number of generations a lineage can exist for before speciating </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist13setProtractedEb">
+<span id="Treelist::setProtracted__b"></span><span class="target" id="class_treelist_1a11b7efee52f995ea524ebc35ebe76cfc"></span>void <code class="descname">setProtracted</code><span class="sig-paren">(</span>bool <em>protracted_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist13setProtractedEb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the protracted boolean to the input. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">protracted_in</span></code>: the protracted boolean to set </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist13setGenerationEe">
+<span id="Treelist::setGeneration__l-double"></span><span class="target" id="class_treelist_1a3bdea04b963ec5a92711d5f389a534c2"></span>void <code class="descname">setGeneration</code><span class="sig-paren">(</span>long double <em>generationin</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist13setGenerationEe" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the time of interest where all analysis will be performed. It is assumed that this was one of the temporal points defined at simulation time. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">generationin</span></code>: the target generation. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist14createDatabaseEd">
+<span id="Treelist::createDatabase__double"></span><span class="target" id="class_treelist_1a3416c2a81ee64b98b3d7956f58a8132d"></span>void <code class="descname">createDatabase</code><span class="sig-paren">(</span>double <em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist14createDatabaseEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Creates a new table in the database file and outputs the database object to the same file as the input file. The new SPECIES_ABUNDANCES table contains the species abundance distribution for the whole samplemask. A similar tabe FRAGMENT_ABUNDANCES is generated by <a class="reference internal" href="#class_treelist_1aba14303915c31c334e1d63ae61c3812c"><span class="std std-ref">createFragmentDatabase()</span></a> if specified via the command line parameters. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">s</span></code>: the speciation rate to apply. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist21checkRepeatSpeciationEddb">
+<span id="Treelist::checkRepeatSpeciation__double.double.b"></span><span class="target" id="class_treelist_1a729efcf34c00e6dfbf45a6fb17cab0ca"></span>bool <code class="descname">checkRepeatSpeciation</code><span class="sig-paren">(</span>double <em>s</em>, double <em>generation</em>, bool <em>fragment</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist21checkRepeatSpeciationEddb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks to see if any of the speciation rates have already been applied and exist within the SPECIES_ABUNDANCES table. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">s</span></code>: the speciation rate to apply. </li>
+<li><code class="docutils literal"><span class="pre">generation</span></code>: the time to apply the speciation rate at </li>
+<li><code class="docutils literal"><span class="pre">fragment</span></code>: boolean of whether to check for fragments or not </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist21checkRepeatSpeciationEdd">
+<span id="Treelist::checkRepeatSpeciation__double.double"></span><span class="target" id="class_treelist_1af8bf1c31280aac49f5863b22373d17ca"></span>bool <code class="descname">checkRepeatSpeciation</code><span class="sig-paren">(</span>double <em>s</em>, double <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist21checkRepeatSpeciationEdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks to see if any of the speciation rates have already been applied and exist within the SPECIES_ABUNDANCES table. Overloaded version for assuming there are no differing fragments. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">s</span></code>: the speciation rate to apply. </li>
+<li><code class="docutils literal"><span class="pre">generation</span></code>: the time to apply the speciation rate at </li>
+<li><code class="docutils literal"><span class="pre">fragment</span></code>: boolean of whether to check for fragments or not </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist21checkRepeatSpeciationEd">
+<span id="Treelist::checkRepeatSpeciation__double"></span><span class="target" id="class_treelist_1a08e810576f6294def9e958a20352ad94"></span>bool <code class="descname">checkRepeatSpeciation</code><span class="sig-paren">(</span>double <em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist21checkRepeatSpeciationEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks to see if any of the speciation rates have already been applied and exist within the SPECIES_ABUNDANCES table. Overloaded version for assuming there are no differing times. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">s</span></code>: the speciation rate to apply. </li>
+<li><code class="docutils literal"><span class="pre">generation</span></code>: the time to apply the speciation rate at </li>
+<li><code class="docutils literal"><span class="pre">fragment</span></code>: boolean of whether to check for fragments or not </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist22createFragmentDatabaseERK8Fragment">
+<span id="Treelist::createFragmentDatabase__FragmentCR"></span><span class="target" id="class_treelist_1aba14303915c31c334e1d63ae61c3812c"></span>void <code class="descname">createFragmentDatabase</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="struct_Fragment.html#_CPPv28Fragment" title="Fragment">Fragment</a> &amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist22createFragmentDatabaseERK8Fragment" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Creates a new table in the database file and outputs the database object to the same file as the input file. Essentially creates a species abundance distribution (as in <a class="reference internal" href="#class_treelist_1a3416c2a81ee64b98b3d7956f58a8132d"><span class="std std-ref">createDatabase()</span></a>), but for the specified fragment within the samplemask. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">f</span></code>: the Fragment to sample from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist14exportDatabaseE6string">
+<span id="Treelist::exportDatabase__string"></span><span class="target" id="class_treelist_1a3f7f7eb4526ee91180742010394e0f65"></span>void <code class="descname">exportDatabase</code><span class="sig-paren">(</span>string <em>outputfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist14exportDatabaseE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output the database from memory to the database file. Most of the time, it is desirable for the outputfile to be the same path as the input file and will write to the same object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">outputfile</span></code>: the path to the output file. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist13recordSpatialEv">
+<span id="Treelist::recordSpatial"></span><span class="target" id="class_treelist_1a3bba0e4657b3c98025331ae6c76d2a14"></span>void <code class="descname">recordSpatial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist13recordSpatialEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Record the full spatial data. Creates a new table, SPECIES_LOCATIONS containing every species and their parameters. This allows for more in-depth analysis to be performed if necessary. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist13calcFragmentsE6string">
+<span id="Treelist::calcFragments__string"></span><span class="target" id="class_treelist_1ac0569d1ff2167b24751e490d7d76ac9f"></span>void <code class="descname">calcFragments</code><span class="sig-paren">(</span>string <em>fragment_file</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist13calcFragmentsE6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculates the limits of each fragment in the sample map and adds it to the vector of fragments. If the fragment_file is null, then the program will attempt to calculate fragments from the map. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">fragment_file</span></code>: the fragment file to read from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist14applyFragmentsEv">
+<span id="Treelist::applyFragments"></span><span class="target" id="class_treelist_1a40ce2abdada3090379f75ac0532e9ea0"></span>void <code class="descname">applyFragments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist14applyFragmentsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate species abundances for each fragment, and call <a class="reference internal" href="#class_treelist_1aba14303915c31c334e1d63ae61c3812c"><span class="std std-ref">createFragmentDatabase()</span></a> for each Fragment. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8Treelist16getPreviousCalcsEv">
+<span id="Treelist::getPreviousCalcs"></span><span class="target" id="class_treelist_1a79db972fe848fac179c29f38bedadab7"></span>void <code class="descname">getPreviousCalcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8Treelist16getPreviousCalcsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the previous calculations that have already been performed. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class Treelist</a><ul>
+<li><a class="reference internal" href="#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="class_Tree.html"
+                        title="previous chapter">Class Tree</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="class_Treenode.html"
+                        title="next chapter">Class Treenode</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/class_Treelist.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_Treenode.html" title="Class Treenode"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="class_Tree.html" title="Class Tree"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

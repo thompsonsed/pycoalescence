@@ -1,0 +1,1263 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Program Listing for File Matrix.h &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File necsimmodule.cpp" href="file_necsimmodule.cpp.html" />
+    <link rel="prev" title="File Matrix.h" href="file_Matrix.h.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsimmodule.cpp.html" title="File necsimmodule.cpp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_Matrix.h.html" title="File Matrix.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Matrix.h.html" accesskey="U">File Matrix.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-matrix-h">
+<span id="program-listing-file-matrix-h"></span><h1>Program Listing for File Matrix.h<a class="headerlink" href="#program-listing-for-file-matrix-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_Matrix.h.html#file-matrix-h"><span class="std std-ref">File Matrix.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<span class="c1">// Matrix.cpp version 1.12</span>
+<span class="c1">// Author - James Rosindell Leeds University, modified to include additional functionality by Samuel Thompson, Imperial College London</span>
+<span class="c1">// but with large usage of reference http://www.devarticles.com/c/a/Cplusplus/Operator-Overloading-in-C-plus/1</span>
+<span class="c1">//</span>
+<span class="cp"># define version1_11</span>
+<span class="c1">// # define version1_1</span>
+
+<span class="cp">#ifndef MATRIX</span>
+<span class="cp"># define MATRIX</span>
+<span class="cp"># define null 0</span>
+<span class="c1">//# include &quot;stdiostream.h&quot;</span>
+<span class="cp"># include &lt;stdio.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="c1">//#define NDEBUG // uncomment this to disable all asserts.</span>
+<span class="cp">#include</span> <span class="cpf">&lt;assert.h&gt;</span><span class="cp"></span>
+<span class="cp">#ifdef use_csv</span>
+<span class="cp">#include</span><span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;fast-cpp-csv-parser/csv.h&quot;</span><span class="cp"></span>
+<span class="cp">#endif</span>
+<span class="cp">#ifdef with_gdal</span>
+<span class="cp">#include</span> <span class="cpf">&lt;gdal_priv.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cpl_conv.h&gt; // for CPLMalloc()</span><span class="cp"></span>
+<span class="cp">#endif</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="c1">// Array of data sizes for importing tif files.</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">gdal_data_sizes</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">64</span><span class="p">};</span>
+
+<span class="c1">// Template class Row</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Row</span>
+<span class="p">{</span>
+    <span class="c1">// private variables</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numCols</span><span class="p">;</span> <span class="c1">// stores the number of columns in the row</span>
+    <span class="n">T</span><span class="o">*</span> <span class="n">row</span><span class="p">;</span> <span class="c1">// an array to store the row</span>
+
+    <span class="c1">// public variables</span>
+<span class="k">public</span><span class="o">:</span>
+
+    <span class="n">Row</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">:</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SetRowSize</span><span class="p">(</span><span class="n">cols</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">Row</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">row</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Row</span><span class="p">(</span><span class="k">const</span> <span class="n">Row</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span><span class="o">:</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SetRowSize</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">numCols</span><span class="p">);</span>
+        <span class="c1">// Change to standard copy</span>
+        <span class="n">copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="n">numCols</span><span class="p">],</span> <span class="n">row</span><span class="p">);</span>
+<span class="c1">//      for(unsigned long i=0; i&lt;numCols; i++)</span>
+<span class="c1">//      {</span>
+<span class="c1">//          row[i]=r.row[i];</span>
+<span class="c1">//      }</span>
+    <span class="p">}</span>
+
+    <span class="c1">// setter for row size</span>
+
+    <span class="kt">void</span> <span class="n">SetRowSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span><span class="p">[]</span> <span class="n">row</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">row</span><span class="o">=</span><span class="k">new</span> <span class="n">T</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+            <span class="c1">// FIX THIS LATER!!!!!  memset(row,0,sizeof(T)*n/sizeof(char));</span>
+            <span class="c1">// The call to memset() just zeroes out the array after figuring out how many bytes the row uses and</span>
+            <span class="c1">// dividing this by the size of character, because memset() works in terms of chars.</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">numCols</span><span class="o">=</span><span class="n">n</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">changeSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">try</span>
+        <span class="p">{</span>
+            <span class="n">T</span><span class="o">*</span> <span class="n">tmprow</span> <span class="o">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="k">delete</span><span class="p">[]</span> <span class="n">row</span><span class="p">;</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">tmprow</span><span class="p">;</span>
+            <span class="c1">//      tmprow = NULL;</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="n">bad_alloc</span> <span class="o">&amp;</span> <span class="n">ba</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ba</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;numCols: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">numCols</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;n: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">n</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">numCols</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">numCols</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">column</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// assert(column&lt;numCols);</span>
+        <span class="c1">// check we are within bounds</span>
+
+<span class="cp"># ifdef version1_1</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">column</span> <span class="o">&gt;=</span> <span class="n">numCols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">numCols</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">column</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cp"># endif</span>
+<span class="cp"># ifdef version1_11</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">column</span> <span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">column</span> <span class="o">&gt;=</span> <span class="n">numCols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;ERROR_MAIN_013b: Tried to call an indices that was out of range of the row. Check row size definition. numCols: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">numCols</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; index: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">column</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="nf">out_of_range</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="c1">//      if (column &lt; 0)</span>
+<span class="c1">//        {</span>
+<span class="c1">//          column = -1 * column;</span>
+<span class="c1">//          column = column % numCols;</span>
+<span class="c1">//          column = numCols - column;</span>
+<span class="c1">//        }</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">column</span> <span class="o">%</span> <span class="n">numCols</span><span class="p">;</span>
+<span class="cp"># endif</span>
+
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="n">column</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Overloading = operator</span>
+    <span class="n">Row</span><span class="o">&amp;</span>  <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Row</span><span class="o">&amp;</span> <span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SetRowSize</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">numCols</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="c1">//we return a reference, but this time it&#39;s a reference to itself.</span>
+        <span class="c1">//First we set the size of the current row equal to that of the source row, then we copy its values.</span>
+        <span class="c1">//There is an important note here. Notice that I&#39;m using [] on the primitive T array itself</span>
+        <span class="c1">//--NOT the overloaded []s of Row. Remember that Row&#39;s [] returns a reference, thus if we had written row[i]=r[i],</span>
+        <span class="c1">//we would get a row that references the exact same data in memory, so that when we changed one the other would change</span>
+        <span class="c1">//--this isn&#39;t what we want at all, so we need to access the raw data in the Row class.</span>
+
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span><span class="k">const</span> <span class="n">Row</span><span class="o">&amp;</span> <span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//os &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">numCols</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">r</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">istream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span> <span class="n">Row</span><span class="o">&amp;</span> <span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//os &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
+        <span class="kt">char</span> <span class="n">delim</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">r</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+            <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="c1">// Template class Matrix as an array of rows</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Matrix</span>
+<span class="p">{</span>
+
+<span class="k">protected</span><span class="o">:</span>
+
+    <span class="c1">// number of rows and columns</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numCols</span><span class="p">,</span> <span class="n">numRows</span><span class="p">;</span>
+    <span class="c1">// a matrix is an array of rows</span>
+    <span class="n">Row</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;*</span> <span class="n">matrix</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+
+    <span class="n">Matrix</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">rows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">cols</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">:</span> <span class="n">matrix</span><span class="p">(</span><span class="n">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SetSize</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Matrix</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span><span class="o">:</span> <span class="n">matrix</span><span class="p">(</span><span class="n">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SetSize</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">,</span><span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">);</span>
+        <span class="n">copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">numRows</span><span class="p">][</span><span class="n">numCols</span><span class="p">],</span> <span class="n">matrix</span><span class="p">);</span>
+<span class="c1">//      for(unsigned long r=0; r&lt;numRows; r++)</span>
+<span class="c1">//          matrix[r]=Row&lt;T&gt;(m.matrix[r]);//assign to primitive array, NOT overloaded []--to get a copy</span>
+    <span class="p">}</span>
+
+    <span class="c1">// HAD TO FIX NASTY MEMEORY LEAK HERE SINCE DOWLOADING!!</span>
+    <span class="o">~</span><span class="n">Matrix</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">matrix</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">SetSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">cols</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span><span class="p">[]</span><span class="n">matrix</span><span class="p">;</span>
+            <span class="c1">//if (rows) delete[]matrix; - was in original code - seems silly so changed to the above</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cols</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">rows</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">matrix</span><span class="o">=</span><span class="k">new</span> <span class="n">Row</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">[</span><span class="n">rows</span><span class="p">];</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">cols</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">rows</span><span class="o">=</span><span class="n">null</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">numCols</span><span class="o">=</span><span class="n">cols</span><span class="p">;</span>
+        <span class="n">numRows</span><span class="o">=</span><span class="n">rows</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">GetCols</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">numCols</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">GetRows</span><span class="p">()</span>  <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">numRows</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// This whole piece so far follows similarly to that of the Row Class</span>
+    <span class="c1">// now we go on to overload all the operators</span>
+
+    <span class="n">Row</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">)</span>
+    <span class="p">{</span>
+
+        <span class="c1">//assert(index&lt;numRows);</span>
+<span class="cp"># ifdef version1_1</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">numRows</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cp"># endif</span>
+<span class="cp"># ifdef version1_11</span>
+<span class="c1">//      if (index &lt; 0)</span>
+<span class="c1">//      {</span>
+<span class="c1">//              index = -1 * index;</span>
+<span class="c1">//              index = index % numRows;</span>
+<span class="c1">//              index = numRows - index;</span>
+<span class="c1">//      }</span>
+<span class="c1">//      These asserts were lazy - changed to exceptions and proper error reporting now.</span>
+<span class="c1">//      assert(index&lt;numRows &amp;&amp; &quot;out of range - index greater than the number of rows&quot;);</span>
+<span class="c1">//      assert(index&gt;=0 &amp;&amp; &quot;out of range - index less than 0&quot;);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;ERROR_MAIN_013: Tried to call an indices that was out of range of the matrix. Check matrix size definition. numRows: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">numRows</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; index: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">index</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="nf">out_of_range</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="n">numRows</span><span class="p">;</span>
+<span class="cp"># endif</span>
+
+        <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="n">Matrix</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SetSize</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">,</span><span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">=</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">]);</span>
+            <span class="c1">//assign to primitive array, NOT overloaded []--to get a copy</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="k">const</span> <span class="n">Matrix</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//Since addition creates a new matrix, we don&#39;t want to return a reference, but an actual matrix object.</span>
+
+        <span class="c1">//assert(numCols==m.numCols &amp;&amp; numRows==m.numRows);</span>
+        <span class="kt">int</span> <span class="n">newnumcols</span> <span class="p">,</span> <span class="n">newnumrows</span> <span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numCols</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numRows</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Matrix</span> <span class="n">result</span><span class="p">(</span><span class="n">newnumrows</span><span class="p">,</span><span class="n">newnumcols</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">newnumrows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">newnumcols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">=</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">+</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">Matrix</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+
+        <span class="c1">//assert(numCols==m.numCols &amp;&amp; numRows==m.numRows);</span>
+        <span class="kt">int</span> <span class="n">newnumcols</span> <span class="p">,</span> <span class="n">newnumrows</span> <span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numCols</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numRows</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Matrix</span> <span class="n">result</span><span class="p">(</span><span class="n">newnumrows</span><span class="p">,</span><span class="n">newnumcols</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">newnumrows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">newnumcols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">=</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">-</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Matrix</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">+=</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// don&#39;t want to create a new object</span>
+        <span class="c1">// just add whatever is currently in it to the other matrix, and return a reference to itself:</span>
+
+        <span class="c1">//assert(numCols==m.numCols &amp;&amp; numRows==m.numRows);</span>
+        <span class="kt">int</span> <span class="n">newnumcols</span> <span class="p">,</span> <span class="n">newnumrows</span> <span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numCols</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numRows</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">newnumrows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">newnumcols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">+=</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="n">Matrix</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">-=</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// don&#39;t want to create a new object</span>
+        <span class="c1">// just subtractthe other matrix from whatever is currently in it, and return a reference to itself:</span>
+
+        <span class="c1">//assert(numCols==m.numCols &amp;&amp; numRows==m.numRows);</span>
+        <span class="kt">int</span> <span class="n">newnumcols</span> <span class="p">,</span> <span class="n">newnumrows</span> <span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numCols</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numRows</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumrows</span> <span class="o">=</span> <span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">newnumrows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">newnumcols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">-=</span><span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">Matrix</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Matrix</span> <span class="n">result</span><span class="p">(</span><span class="n">numRows</span><span class="p">,</span><span class="n">numCols</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">=</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">*</span><span class="n">s</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="k">const</span> <span class="n">Matrix</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//assert(numCols==m.numRows);</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newnumcols</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">numCols</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">newnumcols</span> <span class="o">=</span> <span class="n">numCols</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Matrix</span> <span class="n">result</span><span class="p">(</span><span class="n">numRows</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">newnumcols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">+=</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">// The streaming operators &lt;&lt; and &gt;&gt; allow your object to be saved and restored from any</span>
+    <span class="c1">// stream, be it console, network, or file.</span>
+    <span class="c1">// There is a slight additional challenge with these operators because we must allow the stream access to our object&#39;s private data.</span>
+    <span class="c1">// Therefore, these functions must be declared as friends inside the Matrix class.</span>
+
+    <span class="k">friend</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//os &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">istream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//is &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
+        <span class="kt">char</span> <span class="n">delim</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+<span class="c1">//          string line;</span>
+<span class="c1">//          getline(is, line);</span>
+<span class="c1">//          if ( !is.good() )</span>
+<span class="c1">//          {</span>
+<span class="c1">//              break;</span>
+<span class="c1">//          }</span>
+<span class="c1">//          stringstream iss(line);</span>
+<span class="c1">//</span>
+<span class="c1">//          for (int c = 0; c &lt; m.numRows; c++)</span>
+<span class="c1">//          {</span>
+<span class="c1">//              std::string val;</span>
+<span class="c1">//              std::getline(iss, val, &#39;,&#39;);</span>
+<span class="c1">//              if ( !iss.good() )</span>
+<span class="c1">//                  break;</span>
+<span class="c1">//</span>
+<span class="c1">//              std::stringstream convertor(val);</span>
+<span class="c1">//              convertor &gt;&gt; m.matrix[r][c];</span>
+<span class="c1">//          }</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">m</span><span class="p">.</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
+                <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">symmetric</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">numCols</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">r</span><span class="o">&lt;</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">!=</span> <span class="n">matrix</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">r</span><span class="p">])</span>
+                <span class="p">{</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int8_t</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span><span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kt">bool</span><span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">short</span> <span class="o">&amp;</span><span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">import</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">filename</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">importCsv</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">filename</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;.tif&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+        <span class="p">{</span>
+<span class="cp">#ifdef with_gdal</span>
+            <span class="n">importTif</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+<span class="cp">#endif</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Tif file specified, but program not compiled with gdal libraries. Please recompile  with  -D with_gdal or edit your code to include #define with_gdal.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;Type detection failed for &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;. Check filename is correct.&quot;</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">runtime_error</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="cp">#ifdef with_gdal</span>
+    <span class="kt">void</span> <span class="n">importTif</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="n">GDALDataset</span>  <span class="o">*</span><span class="n">poDataset</span><span class="p">;</span>
+        <span class="n">GDALAllRegister</span><span class="p">();</span>
+        <span class="n">poDataset</span> <span class="o">=</span> <span class="p">(</span><span class="n">GDALDataset</span> <span class="o">*</span><span class="p">)</span> <span class="n">GDALOpen</span><span class="p">(</span><span class="n">filename</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">GA_ReadOnly</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">poDataset</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;File &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">&quot; not found.&quot;</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">runtime_error</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">GDALRasterBand</span>  <span class="o">*</span><span class="n">poBand</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="n">nBlockYSize</span><span class="p">;</span>
+        <span class="c1">// Import the raster band 1</span>
+        <span class="n">poBand</span> <span class="o">=</span> <span class="n">poDataset</span><span class="o">-&gt;</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">nBlockXSize</span> <span class="o">=</span> <span class="n">poDataset</span><span class="o">-&gt;</span><span class="n">GetRasterXSize</span><span class="p">();</span>
+        <span class="n">nBlockYSize</span> <span class="o">=</span> <span class="n">poDataset</span><span class="o">-&gt;</span><span class="n">GetRasterYSize</span><span class="p">();</span>
+        <span class="c1">// Check sizes</span>
+        <span class="c1">//cerr &lt;&lt; &quot;X dimension: &quot; &lt;&lt; nBlockXSize &lt;&lt; endl;</span>
+        <span class="c1">//cerr &lt;&lt; &quot;Y dimension: &quot; &lt;&lt; nBlockYSize &lt;&lt; endl;</span>
+        <span class="k">if</span><span class="p">((</span><span class="n">numCols</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">nBlockXSize</span> <span class="o">||</span> <span class="n">numRows</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">nBlockYSize</span><span class="p">)</span> <span class="o">||</span> <span class="n">numCols</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">numRows</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Raster data size does not match inputted dimensions for &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;. Using raster sizes.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Old dimensions: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">numCols</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">numRows</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;New dimensions: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">nBlockXSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">nBlockYSize</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">SetSize</span><span class="p">(</span><span class="n">nBlockYSize</span><span class="p">,</span><span class="n">nBlockXSize</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// Check sizes match</span>
+        <span class="n">GDALDataType</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetRasterDataType</span><span class="p">();</span>
+        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// Note that if data sizes do not match, row objects will be temporarily created, so RAM usage will increase</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span> <span class="o">!=</span> <span class="n">gdal_data_sizes</span><span class="p">[</span><span class="n">dt</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="c1">// only produce the extra info if debugging is enabled.</span>
+            <span class="cp">#ifdef DEBUG</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Object data size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Tif data size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gdal_data_sizes</span><span class="p">[</span><span class="n">dt</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Tif data type does not match object data size in &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="cp">#endif</span>
+            <span class="c1">// Should this be a warning? I think this should be a warning...</span>
+            <span class="c1">// Now figure out a way of dealing with types of different size.</span>
+            <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">dt_name</span> <span class="o">=</span> <span class="n">GDALGetDataTypeName</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
+            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">datasize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+            <span class="kt">bool</span> <span class="n">fail</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">datasize</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">bool</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">fail</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="c1">// then the data type is likely boolean.</span>
+                <span class="c1">// check that the raster type is integer</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Int16&quot;</span> <span class="o">||</span> <span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;UInt16&quot;</span> <span class="o">||</span> <span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;UInt32&quot;</span>
+                    <span class="o">||</span> <span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Int32&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// create an empty row of type int</span>
+                    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">tmprow</span><span class="p">;</span>
+                    <span class="n">tmprow</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">numCols</span><span class="p">);</span>
+                    <span class="c1">// import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmprow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting int to bool.</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Float32&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// create an empty row of type float for 32 bit, double for 64 bit.</span>
+                    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">tmprow</span><span class="p">;</span>
+<span class="c1">//                  float * tmprow;</span>
+<span class="c1">//                  tmprow = (float *) CPLMalloc(sizeof(float)*numCols);</span>
+                    <span class="n">tmprow</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">numCols</span><span class="p">);</span>
+<span class="c1">//                   import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmprow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting int to bool.</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">if</span><span class="p">(</span><span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="k">else</span>
+                            <span class="p">{</span>
+                                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+<span class="c1">//                  CPLFree(tmprow);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Float64&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">tmprow</span><span class="p">;</span>
+                    <span class="n">tmprow</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">numCols</span><span class="p">);</span>
+                    <span class="c1">// import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmprow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting int to bool.</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">if</span><span class="p">(</span><span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="k">else</span>
+                            <span class="p">{</span>
+                                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Byte&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">tmprow</span><span class="p">;</span>
+                    <span class="n">tmprow</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">numCols</span><span class="p">);</span>
+                    <span class="c1">// import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmprow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting int to bool.</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">if</span><span class="p">(</span><span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="k">else</span>
+                            <span class="p">{</span>
+                                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">fail</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">datasize</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="o">||</span> <span class="n">datasize</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">||</span>
+                    <span class="n">datasize</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">short</span><span class="p">)</span> <span class="o">||</span> <span class="n">datasize</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">signed</span> <span class="kt">short</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">fail</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="c1">// Then the likely conversion problem is float -&gt; integer. A warning has already been given,</span>
+                <span class="c1">// so let&#39;s proceed.</span>
+                <span class="c1">// Check that the raster type is float</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Float32&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// create an empty row of type float</span>
+                    <span class="kt">float</span> <span class="o">*</span> <span class="n">tmprow</span><span class="p">;</span>
+<span class="c1">//                  Row&lt;float&gt; tmprow;</span>
+<span class="c1">//                  tmprow.SetRowSize(numCols);</span>
+                    <span class="n">tmprow</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span> <span class="o">*</span> <span class="p">)</span><span class="n">CPLMalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="o">*</span><span class="n">numCols</span><span class="p">);</span>
+                    <span class="c1">// import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tmprow</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting float to int. Round or floor...? hmm, floor?</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="n">CPLFree</span><span class="p">(</span><span class="n">tmprow</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Float64&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// create an empty row of type float</span>
+                    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">tmprow</span><span class="p">;</span>
+                    <span class="n">tmprow</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">numCols</span><span class="p">);</span>
+                    <span class="c1">// import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmprow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting float to int. Round or floor...? hmm, floor?</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Byte&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// create an empty row of type float</span>
+                    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">tmprow</span><span class="p">;</span>
+                    <span class="n">tmprow</span><span class="p">.</span><span class="n">SetRowSize</span><span class="p">(</span><span class="n">numCols</span><span class="p">);</span>
+                    <span class="c1">// import the data a row at a time, using our template row.</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                            <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                            <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                                <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                            <span class="p">}</span>
+                            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                            <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="p">}</span>
+
+                        <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmprow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="c1">// now copy the data to our matrix, converting float to int. Round or floor...? hmm, floor?</span>
+                        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmprow</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">fail</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">fail</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// then throw a proper error.</span>
+                <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Could not match data type in file to data type in memory. Raster type: &quot;</span> <span class="o">+</span>
+                                    <span class="n">string</span><span class="p">(</span><span class="n">dt_name</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="c1">// There is no type issue to try and solve.</span>
+            <span class="c1">// Iterate over rows, reading each data segment into the matrix row.</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">numRows</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                    <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                    <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                    <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                        <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                    <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                <span class="p">}</span>
+
+                <span class="n">CPLErr</span> <span class="n">r</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">RasterIO</span><span class="p">(</span><span class="n">GF_Read</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">nBlockXSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">CE_Failure</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;CPL error during tif import: CE_Failure.&quot;</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">GDALClose</span><span class="p">(</span><span class="n">poDataset</span><span class="p">);</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="s">&quot;done!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#ifdef use_csv</span>
+    <span class="kt">void</span> <span class="n">importCsv</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="c1">// LineReader option</span>
+        <span class="n">io</span><span class="o">::</span><span class="n">LineReader</span> <span class="n">in</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+        <span class="c1">// Keep track of whether we&#39;ve printed to terminal or not.</span>
+        <span class="kt">bool</span> <span class="n">bPrint</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="c1">// Initialies empty variable so that the setValue operator overloading works properly.</span>
+        <span class="n">T</span> <span class="n">type_reference</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">numRows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">char</span><span class="o">*</span> <span class="n">line</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">next_line</span><span class="p">();</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">line</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bPrint</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Input dimensions incorrect - read past end of file.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">bPrint</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="kt">char</span> <span class="o">*</span><span class="n">dToken</span><span class="p">;</span>
+                <span class="n">dToken</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="s">&quot;,&quot;</span><span class="p">);</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">numCols</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">dToken</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bPrint</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Input dimensions incorrect - read past end of file.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                            <span class="n">bPrint</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                        <span class="p">}</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="c1">// This function is overloaded to correctly determine the type of the template</span>
+                        <span class="n">setValue</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">dToken</span><span class="p">,</span><span class="n">type_reference</span><span class="p">);</span>
+                        <span class="n">dToken</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="s">&quot;,&quot;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="c1">// output the percentage complete</span>
+                <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">i</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span> <span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+                    <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+                    <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                    <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                        <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                    <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                <span class="p">}</span>
+
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="s">&quot;done!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef use_csv</span>
+    <span class="c1">// OLD VERSION - currently unused)</span>
+    <span class="kt">void</span> <span class="n">importCsv</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;Importing&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+        <span class="n">ifstream</span> <span class="n">inputstream</span><span class="p">;</span>
+        <span class="n">inputstream</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">number_printed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">j</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">numRows</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">line</span><span class="p">;</span>
+            <span class="n">getline</span><span class="p">(</span><span class="n">inputstream</span><span class="p">,</span><span class="n">line</span><span class="p">);</span>
+<span class="c1">//          os &lt;&lt; &quot;got line&quot; &lt;&lt; endl;</span>
+<span class="c1">//          os &lt;&lt; line &lt;&lt; endl;</span>
+            <span class="n">istringstream</span> <span class="nf">iss</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+<span class="c1">//          os &lt;&lt; numCols &lt;&lt; endl;</span>
+<span class="c1">//          string sam;</span>
+<span class="c1">//          cin &gt;&gt; sam;</span>
+
+<span class="c1">//          getline(inputstream,line);</span>
+<span class="c1">//          os &lt;&lt; line &lt;&lt; endl;</span>
+<span class="c1">//          cin &gt;&gt; sam;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">numCols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">char</span> <span class="n">delim</span><span class="p">;</span>
+                <span class="n">T</span> <span class="n">val</span><span class="p">;</span>
+                <span class="n">iss</span> <span class="o">&gt;&gt;</span> <span class="n">val</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span><span class="n">val</span><span class="p">;</span>
+<span class="c1">//              os &lt;&lt; i  &lt;&lt; &quot;-&quot;&lt;&lt; matrix[j][i] &lt;&lt; endl;</span>
+            <span class="p">}</span>
+            <span class="kt">double</span> <span class="n">dComplete</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">j</span><span class="o">/</span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">numRows</span><span class="p">)</span><span class="o">*</span><span class="mi">5</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">os</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                <span class="k">while</span><span class="p">(</span><span class="n">number_printed</span> <span class="o">&lt;</span> <span class="n">dComplete</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+                    <span class="n">number_printed</span> <span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">stringstream</span> <span class="n">os2</span><span class="p">;</span>
+        <span class="n">os2</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Importing&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;...&quot;</span>  <span class="o">&lt;&lt;</span> <span class="s">&quot;done!&quot;</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;                          &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">inputstream</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="n">os2</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="p">};</span>
+
+<span class="cp">#endif</span>
+
+<span class="c1">// THE END OF THE CODE</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_Matrix.h.html"
+                        title="previous chapter">File Matrix.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsimmodule.cpp.html"
+                        title="next chapter">File necsimmodule.cpp</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/program_listing_file_Matrix.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsimmodule.cpp.html" title="File necsimmodule.cpp"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_Matrix.h.html" title="File Matrix.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Matrix.h.html" >File Matrix.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

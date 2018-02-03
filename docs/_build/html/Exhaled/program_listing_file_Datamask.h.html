@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Program Listing for File Datamask.h &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Datapoint.h" href="file_Datapoint.h.html" />
+    <link rel="prev" title="File Datamask.h" href="file_Datamask.h.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Datapoint.h.html" title="File Datapoint.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_Datamask.h.html" title="File Datamask.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Datamask.h.html" accesskey="U">File Datamask.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-datamask-h">
+<span id="program-listing-file-datamask-h"></span><h1>Program Listing for File Datamask.h<a class="headerlink" href="#program-listing-for-file-datamask-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_Datamask.h.html#file-datamask-h"><span class="std std-ref">File Datamask.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//</span>
+<span class="c1">// Created by Sam Thompson on 10/09/2017.</span>
+<span class="c1">//</span>
+
+<span class="cp">#ifndef SPECIATIONCOUNTER_DATAMASK_H</span>
+<span class="cp">#define SPECIATIONCOUNTER_DATAMASK_H</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SimParameters.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+
+<span class="c1">// Class which contains the Datamask object, telling us where to sample from within the habitat map.</span>
+<span class="k">class</span> <span class="nc">Datamask</span>
+<span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// the file to read in from</span>
+    <span class="n">string</span> <span class="n">inputfile</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bDefault</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">;</span>
+    <span class="c1">// Stores the size of the grid which is stored as a ful species list</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="p">;</span>
+    <span class="c1">// Stores the size of the samplemask from which spatially sampling is read</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask_x_dim</span><span class="p">,</span> <span class="n">mask_y_dim</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">sample_mask</span><span class="p">;</span>
+    <span class="n">Datamask</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">x_dim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">y_dim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">mask_x_dim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">mask_y_dim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">getDefault</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">bDefault</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">importDatamask</span><span class="p">(</span><span class="n">SimParameters</span><span class="o">&amp;</span> <span class="n">mapvarin</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">inputfile</span> <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">samplemaskfile</span><span class="p">;</span>
+<span class="c1">//      os &lt;&lt; &quot;inputfile: &quot; &lt;&lt; inputfile;</span>
+        <span class="n">x_dim</span> <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">vargridxsize</span><span class="p">;</span>
+        <span class="n">y_dim</span> <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">vargridysize</span><span class="p">;</span>
+        <span class="n">mask_x_dim</span> <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">varsamplexsize</span><span class="p">;</span>
+        <span class="n">mask_y_dim</span>  <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">varsampleysize</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">inputfile</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span> <span class="o">||</span> <span class="n">inputfile</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">x_offset</span> <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">varsamplexoffset</span><span class="p">;</span>
+            <span class="n">y_offset</span> <span class="o">=</span> <span class="n">mapvarin</span><span class="p">.</span><span class="n">varsampleyoffset</span><span class="p">;</span>
+            <span class="n">sample_mask</span><span class="p">.</span><span class="n">SetSize</span><span class="p">(</span><span class="n">mask_y_dim</span><span class="p">,</span> <span class="n">mask_x_dim</span><span class="p">);</span>
+            <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">sample_mask</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">inputfile</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">importDatamask</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xdim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ydim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask_xdim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask_ydim</span><span class="p">,</span>
+                        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xoffset</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">yoffset</span><span class="p">,</span> <span class="n">string</span> <span class="n">inputfile</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">x_dim</span> <span class="o">=</span> <span class="n">xdim</span><span class="p">;</span>
+        <span class="n">y_dim</span> <span class="o">=</span> <span class="n">ydim</span><span class="p">;</span>
+        <span class="n">mask_x_dim</span> <span class="o">=</span> <span class="n">mask_xdim</span><span class="p">;</span>
+        <span class="n">mask_y_dim</span> <span class="o">=</span> <span class="n">mask_ydim</span><span class="p">;</span>
+        <span class="n">x_offset</span> <span class="o">=</span> <span class="n">xoffset</span><span class="p">;</span>
+        <span class="n">y_offset</span> <span class="o">=</span> <span class="n">yoffset</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">inputfile</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span> <span class="o">||</span> <span class="n">inputfile</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">sample_mask</span><span class="p">.</span><span class="n">SetSize</span><span class="p">(</span><span class="n">mask_ydim</span><span class="p">,</span> <span class="n">mask_xdim</span><span class="p">);</span>
+            <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">sample_mask</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">inputfile</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">getVal</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="n">ywrap</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">long</span> <span class="n">xval</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">;</span>
+        <span class="kt">long</span> <span class="n">yval</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">;</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xval</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">xval</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="n">mask_x_dim</span> <span class="o">||</span> <span class="n">yval</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span>
+           <span class="n">yval</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="n">mask_y_dim</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Get value on samplemask requested for non index.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x, y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x, y wrap: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">xwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ywrap</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;xval, yval: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">xval</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">yval</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">out_of_range</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+<span class="cp">#endif</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">bDefault</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">sample_mask</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">recalculate_coordinates</span><span class="p">(</span><span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_wrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_wrap</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bDefault</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">x_wrap</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)((</span><span class="n">floor</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">x_offset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">x_dim</span><span class="p">)));</span>
+            <span class="n">y_wrap</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)((</span><span class="n">floor</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">y_offset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">y_dim</span><span class="p">)));</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span><span class="n">x_offset</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_wrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">);</span>
+            <span class="n">y</span> <span class="o">+=</span> <span class="o">-</span><span class="n">y_offset</span> <span class="o">-</span> <span class="p">(</span><span class="n">y_wrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="cp">#endif </span><span class="c1">//SPECIATIONCOUNTER_DATAMASK_H</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_Datamask.h.html"
+                        title="previous chapter">File Datamask.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_Datapoint.h.html"
+                        title="next chapter">File Datapoint.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/program_listing_file_Datamask.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Datapoint.h.html" title="File Datapoint.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_Datamask.h.html" title="File Datamask.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Datamask.h.html" >File Datamask.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

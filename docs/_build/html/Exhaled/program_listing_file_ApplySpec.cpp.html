@@ -1,0 +1,547 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Program Listing for File ApplySpec.cpp &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File ApplySpec.h" href="file_ApplySpec.h.html" />
+    <link rel="prev" title="File ApplySpec.cpp" href="file_ApplySpec.cpp.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_ApplySpec.h.html" title="File ApplySpec.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_ApplySpec.cpp.html" title="File ApplySpec.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_ApplySpec.cpp.html" accesskey="U">File ApplySpec.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-applyspec-cpp">
+<span id="program-listing-file-applyspec-cpp"></span><h1>Program Listing for File ApplySpec.cpp<a class="headerlink" href="#program-listing-for-file-applyspec-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_ApplySpec.cpp.html#file-applyspec-cpp"><span class="std std-ref">File ApplySpec.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;ApplySpec.h&quot;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">setArgs</span><span class="p">(</span><span class="n">string</span> <span class="n">database</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">is_spatial</span><span class="p">,</span> <span class="n">string</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">string</span> <span class="n">time_config</span><span class="p">,</span> <span class="n">string</span> <span class="n">is_fragments</span><span class="p">,</span>
+                         <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">speciation_rates</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">sp</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">database</span><span class="p">;</span>
+    <span class="n">sp</span><span class="p">.</span><span class="n">RecordSpatial</span> <span class="o">=</span> <span class="n">is_spatial</span><span class="p">;</span>
+    <span class="n">sp</span><span class="p">.</span><span class="n">samplemask</span> <span class="o">=</span> <span class="n">sample_file</span><span class="p">;</span>
+    <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_file</span> <span class="o">=</span> <span class="n">time_config</span><span class="p">;</span>
+    <span class="n">importTimeConfig</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">is_fragments</span> <span class="o">==</span> <span class="s">&quot;F&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="n">is_fragments</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">speciation_rates</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="n">iMultiNumber</span> <span class="o">=</span> <span class="n">speciation_rates</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">parseArgs</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bAskHelp</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="cp">#ifndef verbose</span>
+    <span class="n">dup2</span><span class="p">(</span><span class="n">saved_stdout</span><span class="p">,</span> <span class="n">fileno</span><span class="p">(</span><span class="n">stdout</span><span class="p">));</span>
+<span class="c1">// close(saved_stdout);</span>
+<span class="cp">#endif</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">((</span><span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="s">&quot;-d&quot;</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-h&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-help&quot;</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="n">bAskHelp</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">bInvalidArguments</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">write_cout</span><span class="p">(</span><span class="s">&quot;Incorrect number of arguments.&quot;</span><span class="p">);</span>
+            <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">comargs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;-e&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;-e&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">samplemask</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_file</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">stof</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">7</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bInvalidArguments</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bAskHelp</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">stod</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">6</span><span class="p">]));</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bInvalidArguments</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bAskHelp</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bRunDefault</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;true&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;True&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;T&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span> <span class="o">||</span>
+           <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;t&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">RecordSpatial</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">RecordSpatial</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;false&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;False&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;F&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;FALSE&quot;</span> <span class="o">||</span>
+           <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;f&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;true&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;True&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;T&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span> <span class="o">||</span>
+               <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;t&quot;</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">bInvalidArguments</span> <span class="o">||</span> <span class="n">bAskHelp</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;At least six command-line arguments are expected.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;1 - Path to SQL database file.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;2 - T/F of whether to record full spatial data.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;3 - the sample mask to use (use null if no mask is to be used)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;4 - the file containing tempororal points of interest. If null, the present is used for all &quot;</span>
+              <span class="s">&quot;calculations.&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;5 - T/F of whether to calculate abundances for each rectangular fragment. Alternatively, provide a &quot;</span>
+              <span class="s">&quot;csv file with fragment data to be read.&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;6 - Speciation rate.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;7 - onwards - Further speciation rates. [OPTIONAL]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Would you like to run with the default paramenters?&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;       (This requires a SQL database file at ../../Data/Coal_sim/Test_output/SQL_data/data_0_1.db)&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter Y/N: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="n">string</span> <span class="n">sDef</span><span class="p">;</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">sDef</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">sDef</span> <span class="o">==</span> <span class="s">&quot;Y&quot;</span> <span class="o">||</span> <span class="n">sDef</span> <span class="o">==</span> <span class="s">&quot;y&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-d&quot;</span> <span class="o">||</span> <span class="n">bRunDefault</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;../../Data/Coal_sim/Test_output/SQL_data/data_0_1.db&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.001</span><span class="p">);</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">samplemask</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">RecordSpatial</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">importTimeConfig</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">Config_Exception</span><span class="o">&amp;</span> <span class="n">ce</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ce</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="nf">Config_Exception</span><span class="p">(</span><span class="s">&quot;Could not import from &quot;</span> <span class="o">+</span> <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_file</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#ifndef verbose</span>
+    <span class="n">openLogFile</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">writeSpeciationRates</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;***************************&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;STARTING CALCULATIONS&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Input file is &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sp</span><span class="p">.</span><span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Speciation rate is &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Speciation rates are: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iMultiNumber</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">iMultiNumber</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">importTimeConfig</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bAuto</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bAuto</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">tmpimport</span><span class="p">;</span>
+        <span class="n">ConfigOption</span> <span class="n">tmpconfig</span><span class="p">;</span>
+        <span class="n">tmpconfig</span><span class="p">.</span><span class="n">setConfig</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_file</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+        <span class="n">tmpconfig</span><span class="p">.</span><span class="n">importConfig</span><span class="p">(</span><span class="n">tmpimport</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tmpimport</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">stod</span><span class="p">(</span><span class="n">tmpimport</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+            <span class="c1">//                  os &lt;&lt; &quot;t_i: &quot; &lt;&lt; sp.autocorrel_times[i] &lt;&lt; endl;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">importData</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="c1">//      nodes.detectDimensions(sp.filename);</span>
+        <span class="c1">// First import the parameters so that the samplemask file will be the correct size.</span>
+        <span class="n">nodes</span><span class="p">.</span><span class="n">importSimParameters</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">filename</span><span class="p">);</span>
+        <span class="n">nodes</span><span class="p">.</span><span class="n">importSamplemask</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">samplemask</span><span class="p">);</span>
+        <span class="n">nodes</span><span class="p">.</span><span class="n">importData</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">filename</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">nodes</span><span class="p">.</span><span class="n">calcFragments</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">se</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">string</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Could not import data: &quot;</span><span class="p">;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="n">se</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+        <span class="k">throw</span> <span class="nf">Fatal_Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">checkUniqueSpec</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">dUniqueSpec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dUniqueSpec</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">applyMultiTimes</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">dUniqueSpec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_times</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Calculating generation &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_times</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="n">nodes</span><span class="p">.</span><span class="n">setGeneration</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_times</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span>
+        <span class="n">nodes</span><span class="p">.</span><span class="n">resetTree</span><span class="p">();</span>
+        <span class="k">try</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">checkRepeatSpeciation</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_times</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+            <span class="p">{</span>
+                <span class="n">nodes</span><span class="p">.</span><span class="n">createDatabase</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">RecordSpatial</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">nodes</span><span class="p">.</span><span class="n">recordSpatial</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">checkRepeatSpeciation</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sp</span><span class="p">.</span><span class="n">autocorrel_times</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">true</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">nodes</span><span class="p">.</span><span class="n">applyFragments</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="n">SpeciesException</span><span class="o">&amp;</span> <span class="n">se</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">se</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">applySingleTime</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">dUniqueSpec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">nodes</span><span class="p">.</span><span class="n">resetTree</span><span class="p">();</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">checkRepeatSpeciation</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="p">{</span>
+            <span class="n">nodes</span><span class="p">.</span><span class="n">createDatabase</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">RecordSpatial</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nodes</span><span class="p">.</span><span class="n">recordSpatial</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">nodes</span><span class="p">.</span><span class="n">checkRepeatSpeciation</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">vSpecRates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nb">false</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">RecordFragments</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nodes</span><span class="p">.</span><span class="n">applyFragments</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">SpeciesException</span><span class="o">&amp;</span> <span class="n">se</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">se</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">calculateTree</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">nodes</span><span class="p">.</span><span class="n">resetTree</span><span class="p">();</span>
+    <span class="n">nodes</span><span class="p">.</span><span class="n">setGeneration</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="c1">// Calculate the new tree structure.</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iMultiNumber</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">checkUniqueSpec</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">bAuto</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">applyMultiTimes</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">applySingleTime</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">write_cout</span><span class="p">(</span><span class="s">&quot;Repeat speciation rate... ignoring&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">bAuto</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">applyMultiTimes</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">applySingleTime</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">nodes</span><span class="p">.</span><span class="n">exportDatabase</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">filename</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">applyFromComargs</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc_in</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">argc</span> <span class="o">=</span> <span class="n">argc_in</span><span class="p">;</span>
+    <span class="n">iMultiNumber</span> <span class="o">=</span> <span class="n">argc</span> <span class="o">-</span> <span class="mi">6</span><span class="p">;</span>
+<span class="cp">#ifndef verbose</span>
+    <span class="n">openLogFile</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="cp">#endif</span>
+    <span class="n">importArgs</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">comargs</span><span class="p">);</span>
+    <span class="n">parseArgs</span><span class="p">();</span>
+    <span class="n">apply</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ApplySpec</span><span class="o">::</span><span class="n">apply</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Start the clock</span>
+    <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tStart</span><span class="p">);</span>
+    <span class="c1">// First print the variables</span>
+    <span class="n">writeSpeciationRates</span><span class="p">();</span>
+
+    <span class="c1">// Set up the objects</span>
+
+    <span class="n">nodes</span><span class="p">.</span><span class="n">setList</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
+    <span class="c1">//  unsigned long iCount;</span>
+    <span class="c1">// Import the data from the file into the Row&lt;Treenode&gt; object.</span>
+    <span class="n">importData</span><span class="p">();</span>
+    <span class="c1">// Get rid of any previous speciation calculations</span>
+    <span class="n">calculateTree</span><span class="p">();</span>
+    <span class="c1">//  os &lt;&lt; &quot;speciation rate of 0.0001: &quot; &lt;&lt; list.calcSpecies(0.0001);</span>
+    <span class="c1">//  list.resetTree();</span>
+    <span class="c1">//  os &lt;&lt; &quot;speciation rate of 0.001: &quot; &lt;&lt; list.calcSpecies(0.001);</span>
+    <span class="c1">//  list.resetTree();</span>
+    <span class="c1">//  os &lt;&lt; &quot;speciation rate of 0.01: &quot; &lt;&lt; list.calcSpecies(0.01);</span>
+    <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tEnd</span><span class="p">);</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Calculations complete.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Time taken was &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">floor</span><span class="p">((</span><span class="n">tEnd</span> <span class="o">-</span> <span class="n">tStart</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; hours &quot;</span>
+       <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">floor</span><span class="p">((</span><span class="n">tEnd</span> <span class="o">-</span> <span class="n">tStart</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span> <span class="o">-</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">floor</span><span class="p">((</span><span class="n">tEnd</span> <span class="o">-</span> <span class="n">tStart</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; minutes &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">tEnd</span> <span class="o">-</span> <span class="n">tStart</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span>
+       <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">write_cout</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_ApplySpec.cpp.html"
+                        title="previous chapter">File ApplySpec.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_ApplySpec.h.html"
+                        title="next chapter">File ApplySpec.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/program_listing_file_ApplySpec.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_ApplySpec.h.html" title="File ApplySpec.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_ApplySpec.cpp.html" title="File ApplySpec.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_ApplySpec.cpp.html" >File ApplySpec.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

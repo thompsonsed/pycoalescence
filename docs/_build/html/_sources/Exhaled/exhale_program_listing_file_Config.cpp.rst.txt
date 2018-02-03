@@ -1,0 +1,27 @@
+.. _program_listing_file_Config.cpp:
+
+Program Listing for File Config.cpp
+========================================================================================
+
+- Return to documentation for :ref:`file_Config.cpp`
+
+.. code-block:: cpp
+
+   //This file is part of NECSim project which is released under BSD-3 license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // 
+   #include "Config.h"
+   void importArgs(const unsigned int& argc, char* argv [], vector<string>& comargs)
+   {
+       for(unsigned int i = 0; i < argc; i++)
+       {
+           comargs.push_back(string(argv[i]));
+       }
+       // check size is correct
+       if(comargs.size() != argc)
+       {
+           cerr << "ERROR_MAIN_010: Incorrect command line parsing." << endl;
+       }
+   }
+
+

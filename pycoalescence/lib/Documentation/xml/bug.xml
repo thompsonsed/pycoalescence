@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="bug" kind="page">
+    <compoundname>bug</compoundname>
+    <title>Bug List</title>
+    <detaileddescription>
+<para><variablelist>
+<varlistentry><term><anchor id="bug_1_bug000001"/>Member <ref refid="class_tree_1aec10ea2b720edc13a38310afdfe2b6e4" kindref="member">CoalescenceTree::setup</ref>  ()</term></varlistentry>
+<listitem><para>For values of dispersal, forest transform rate and time since pristine (and any other double values), they will not be correctly outputted to the SIMULATION_PARAMETERS table if the value is smaller than 10e-6. The solution is to implement string output mechanisms using boost::lexical_cast(), but this has so far only been deemed necessary for the speciation rate (which is intrinsically very small). </para></listitem>
+<varlistentry><term><anchor id="bug_1_bug000003"/>Member <ref refid="class_treelist_1ac0569d1ff2167b24751e490d7d76ac9f" kindref="member">Treelist::calcFragments</ref>  (string fragment_file)</term></varlistentry>
+<listitem><para>Only rectangular fragments will be detected. Problems will also be encountered for adjacent fragments.  </para></listitem>
+<varlistentry><term><anchor id="bug_1_bug000002"/>Member <ref refid="class_treelist_1acaa619f2d186f60c9c9fa5d90db0da68" kindref="member">Treelist::detectDimensions</ref>  (string db)</term></varlistentry>
+<listitem><para>If species do not exist across the whole range of the samplemask, samplemask size will not be set correctly and samplemask referencing may be incorrect. </para></listitem>
+</variablelist>
+</para>    </detaileddescription>
+  </compounddef>
+</doxygen>

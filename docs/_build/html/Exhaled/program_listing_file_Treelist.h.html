@@ -1,0 +1,411 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Program Listing for File Treelist.h &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Treenode.h" href="file_Treenode.h.html" />
+    <link rel="prev" title="File Treelist.h" href="file_Treelist.h.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Treenode.h.html" title="File Treenode.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_Treelist.h.html" title="File Treelist.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Treelist.h.html" accesskey="U">File Treelist.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-treelist-h">
+<span id="program-listing-file-treelist-h"></span><h1>Program Listing for File Treelist.h<a class="headerlink" href="#program-listing-for-file-treelist-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_Treelist.h.html#file-treelist-h"><span class="std std-ref">File Treelist.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<span class="c1">// This code is a used to analyse a list of Treenode objects to generate species abundances for a given speciation rate.</span>
+<span class="c1">// For use within Coal_sim v3.1+</span>
+<span class="c1">// Author: Samuel Thompson</span>
+<span class="c1">// Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com</span>
+<span class="c1">// Version 1.1</span>
+<span class="c1">//#include &quot;Treenode.h&quot;</span>
+<span class="cp">#ifndef TREELIST</span>
+<span class="cp">#define TREELIST</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp"># include &lt;boost/filesystem.hpp&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/lexical_cast.hpp&gt;</span><span class="cp"></span>
+ <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Treenode.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Datamask.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">;</span>
+
+<span class="kt">bool</span> <span class="nf">checkSpeciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span> <span class="n">no_generations</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="nf">doubleCompare</span><span class="p">(</span><span class="kt">double</span> <span class="n">d1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">d2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">epsilon</span><span class="p">);</span>
+<span class="k">struct</span> <span class="n">PreviousCalcPair</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">time</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">fragment</span><span class="p">;</span>
+
+    <span class="n">PreviousCalcPair</span><span class="p">(</span><span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">fragment_in</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">time_in</span><span class="p">;</span>
+        <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
+        <span class="n">fragment</span> <span class="o">=</span> <span class="n">fragment_in</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">CalcPairArray</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">PreviousCalcPair</span><span class="o">&gt;</span> <span class="n">calc_array</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">push_back</span><span class="p">(</span><span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">PreviousCalcPair</span> <span class="n">tmp_pair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">);</span>
+        <span class="n">calc_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_pair</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="nf">hasPair</span><span class="p">(</span><span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">calc_array</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="n">calc_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="o">*</span><span class="mf">0.00001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+               <span class="n">doubleCompare</span><span class="p">(</span><span class="n">calc_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="o">*</span><span class="mf">0.00001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+               <span class="n">calc_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="nf">hasPair</span><span class="p">(</span><span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// A class containing the fragment limits as x,y coordinates.</span>
+<span class="k">struct</span> <span class="n">Fragment</span>
+<span class="p">{</span>
+    <span class="c1">// the name for the fragment (for reference purposes)</span>
+    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+    <span class="c1">// coordinates for the extremes of the site</span>
+    <span class="kt">long</span> <span class="n">x_east</span><span class="p">,</span> <span class="n">x_west</span><span class="p">,</span> <span class="n">y_north</span><span class="p">,</span> <span class="n">y_south</span><span class="p">;</span>
+    <span class="c1">// the number of lineages in the fragment.</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">area</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Class for creating the sample matrix object for easy referencing</span>
+
+<span class="k">class</span> <span class="nc">Samplematrix</span> <span class="o">:</span>  <span class="k">public</span> <span class="n">Datamask</span>
+<span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">bool</span> <span class="n">bIsNull</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bIsFragment</span><span class="p">;</span>
+    <span class="n">Fragment</span> <span class="n">fragment</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Samplematrix</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">bIsFragment</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bIsNull</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setIsNull</span><span class="p">(</span><span class="kt">bool</span> <span class="n">b</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">bIsNull</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">getIsNull</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">bIsNull</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">getTestVal</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xval</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">yval</span><span class="p">,</span> <span class="kt">long</span> <span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="n">ywrap</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">getVal</span><span class="p">(</span><span class="n">xval</span><span class="p">,</span> <span class="n">yval</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">getMaskVal</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y1</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x_wrap</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y_wrap</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">bIsFragment</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_wrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">;</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_wrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">fragment</span><span class="p">.</span><span class="n">x_west</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">fragment</span><span class="p">.</span><span class="n">x_east</span> <span class="o">&amp;&amp;</span> <span class="n">fragment</span><span class="p">.</span><span class="n">y_north</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span>
+                    <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">fragment</span><span class="p">.</span><span class="n">y_south</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">bIsNull</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">getVal</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x_wrap</span><span class="p">,</span> <span class="n">y_wrap</span><span class="p">);</span>
+    <span class="p">}</span>
+
+     <span class="kt">void</span> <span class="n">setFragment</span><span class="p">(</span><span class="n">Fragment</span> <span class="o">&amp;</span> <span class="n">fragment_in</span><span class="p">)</span>
+     <span class="p">{</span>
+            <span class="n">fragment</span> <span class="o">=</span> <span class="n">fragment_in</span><span class="p">;</span>
+<span class="c1">//          os &lt;&lt; &quot;W,E,N,S: &quot; &lt;&lt; fragment.x_west &lt;&lt; &quot;, &quot; &lt;&lt; fragment.x_east &lt;&lt; &quot;, &quot; &lt;&lt; fragment.y_north &lt;&lt; &quot;, &quot; &lt;&lt; fragment.y_south &lt;&lt; endl;</span>
+            <span class="n">bIsFragment</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kt">void</span> <span class="n">removeFragment</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="n">bIsFragment</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+     <span class="p">}</span>
+<span class="p">};</span>
+
+
+
+
+
+<span class="k">class</span> <span class="nc">Treelist</span>
+<span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">bool</span> <span class="n">bMem</span><span class="p">;</span> <span class="c1">// boolean for whether the database is in memory or not.</span>
+    <span class="kt">bool</span> <span class="n">bFileSet</span><span class="p">;</span> <span class="c1">// boolean for whether the database has been set already.</span>
+    <span class="n">sqlite3</span> <span class="o">*</span> <span class="n">database</span><span class="p">;</span> <span class="c1">// stores the in-memory database connection.</span>
+    <span class="n">sqlite3</span> <span class="o">*</span> <span class="n">outdatabase</span><span class="p">;</span> <span class="c1">// stores the file database connection</span>
+    <span class="kt">bool</span> <span class="n">bSqlConnection</span><span class="p">;</span> <span class="c1">// true if the data connection has been established.</span>
+    <span class="n">Row</span><span class="o">&lt;</span><span class="n">Treenode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">nodes</span><span class="p">;</span> <span class="c1">// in older versions this was called list. Changed to avoid confusion with the built-in class.</span>
+    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">rOut</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">dSpecRate</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">iSpecies</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">;</span> <span class="c1">// the time of interest for the simulation</span>
+    <span class="kt">bool</span> <span class="n">bSample</span><span class="p">;</span> <span class="c1">// checks whether the samplemask has already been imported.</span>
+    <span class="kt">bool</span> <span class="n">bDataImport</span><span class="p">;</span> <span class="c1">// checks whether the main sim data has been imported.</span>
+    <span class="n">string</span> <span class="n">samplemaskfile</span><span class="p">;</span> <span class="c1">// stores the name of the file object for referencing.</span>
+    <span class="n">Samplematrix</span> <span class="n">samplemask</span><span class="p">;</span> <span class="c1">// the samplemask object for defining the areas we want to sample from.</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Fragment</span><span class="o">&gt;</span> <span class="n">fragments</span><span class="p">;</span> <span class="c1">// a vector of fragments for storing each fragment&#39;s coordinates.</span>
+    <span class="c1">// the minimum speciation rate the original simulation was run with (this is read from the database SIMULATION_PARAMETERS table)</span>
+    <span class="kt">double</span> <span class="n">min_spec_rate</span><span class="p">;</span>
+    <span class="c1">// The dimensions of the sample grid size.</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">;</span>
+    <span class="c1">// The dimensions of the original sample map file</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">samplemask_x_size</span><span class="p">,</span> <span class="n">samplemask_y_size</span><span class="p">,</span> <span class="n">samplemask_x_offset</span><span class="p">,</span> <span class="n">samplemask_y_offset</span><span class="p">;</span>
+    <span class="c1">// Vector containing past speciation rates</span>
+    <span class="n">CalcPairArray</span> <span class="n">past_speciation_rates</span><span class="p">;</span>
+    <span class="c1">// Protracted speciation parameters</span>
+    <span class="kt">bool</span> <span class="n">protracted</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">,</span> <span class="n">applied_max_speciation_gen</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+
+
+    <span class="n">Treelist</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">Treenode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">r</span><span class="p">)</span><span class="o">:</span><span class="n">nodes</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">bMem</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">dSpecRate</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">iSpecies</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">bSample</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bFileSet</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bDataImport</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">applied_max_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">protracted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Treelist</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">bMem</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">dSpecRate</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">iSpecies</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">bSample</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bFileSet</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bDataImport</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">applied_max_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">protracted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">Treelist</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">setList</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">Treenode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">l</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setDatabase</span><span class="p">(</span><span class="n">sqlite3</span> <span class="o">*</span> <span class="n">dbin</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">hasImportedData</span><span class="p">();</span>
+
+    <span class="kt">double</span> <span class="nf">getMinimumSpeciation</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">importSamplemask</span><span class="p">(</span><span class="n">string</span> <span class="n">sSamplemask</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">countSpecies</span><span class="p">();</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">calcSpecies</span><span class="p">(</span><span class="kt">double</span> <span class="n">s</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">calcSpeciesAbundance</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">resetTree</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">detectDimensions</span><span class="p">(</span><span class="n">string</span> <span class="n">db</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">openSqlConnection</span><span class="p">(</span><span class="n">string</span> <span class="n">inputfile</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">internalOption</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">importData</span><span class="p">(</span><span class="n">string</span> <span class="n">inputfile</span><span class="p">);</span>
+
+
+    <span class="kt">void</span> <span class="nf">importSimParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">file</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setProtractedParameters</span><span class="p">(</span><span class="kt">double</span> <span class="n">max_speciation_gen_in</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setProtractedParameters</span><span class="p">(</span><span class="kt">double</span> <span class="n">min_speciation_gen_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">max_speciation_gen_in</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setProtracted</span><span class="p">(</span><span class="kt">bool</span> <span class="n">protracted_in</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setGeneration</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">);</span>
+    <span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">createDatabase</span><span class="p">(</span><span class="kt">double</span> <span class="n">s</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">checkRepeatSpeciation</span><span class="p">(</span><span class="kt">double</span> <span class="n">s</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">checkRepeatSpeciation</span><span class="p">(</span><span class="kt">double</span> <span class="n">s</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">checkRepeatSpeciation</span><span class="p">(</span><span class="kt">double</span> <span class="n">s</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">createFragmentDatabase</span><span class="p">(</span><span class="k">const</span> <span class="n">Fragment</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">exportDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">outputfile</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">recordSpatial</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calcFragments</span><span class="p">(</span><span class="n">string</span> <span class="n">fragment_file</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">applyFragments</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">getPreviousCalcs</span><span class="p">();</span>
+<span class="p">};</span>
+
+
+
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_Treelist.h.html"
+                        title="previous chapter">File Treelist.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_Treenode.h.html"
+                        title="next chapter">File Treenode.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/program_listing_file_Treelist.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Treenode.h.html" title="File Treenode.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_Treelist.h.html" title="File Treelist.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Treelist.h.html" >File Treelist.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

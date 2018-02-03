@@ -1,0 +1,534 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Program Listing for File Tree.h &#8212; PyCoalescence 1.2.5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Treelist.cpp" href="file_Treelist.cpp.html" />
+    <link rel="prev" title="File Tree.h" href="file_Tree.h.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Treelist.cpp.html" title="File Treelist.cpp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_Tree.h.html" title="File Tree.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Tree.h.html" accesskey="U">File Tree.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-tree-h">
+<span id="program-listing-file-tree-h"></span><h1>Program Listing for File Tree.h<a class="headerlink" href="#program-listing-for-file-tree-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_Tree.h.html#file-tree-h"><span class="std std-ref">File Tree.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<span class="c1">//</span>
+<span class="cp">#ifndef TREE</span>
+<span class="cp">#define TREE</span>
+
+<span class="cm">/************************************************************</span>
+<span class="cm">                                                INCLUDES</span>
+<span class="cm"> ************************************************************/</span>
+<span class="c1">// standard includes</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iomanip&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="c1">//# include &lt;sqlite.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+
+<span class="c1">//#define with_gdal</span>
+<span class="c1">// extra boost include - this requires the installation of boost on the system</span>
+<span class="c1">// note that this requires compilation with the -lboost_filesystem and -lboost_system linkers.</span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/filesystem.hpp&gt;</span><span class="cp"></span>
+
+<span class="c1">// include fast-csv-parser by Ben Strasser (available from https://github.com/ben-strasser/fast-cpp-csv-parser)</span>
+<span class="c1">// for fast file reading</span>
+<span class="cp">#ifdef use_csv</span>
+<span class="cp">#include</span> <span class="cpf">&quot;fast-cpp-csv-parser/csv.h&quot;</span><span class="cp"></span>
+<span class="cp">#endif</span>
+
+<span class="c1">//#define use_csv // for integration with the matrix header file</span>
+<span class="c1">//#include &quot;fast-cpp-csv-parser/csv.h&quot;</span>
+<span class="c1">//#define record_space // tells the compiler whether to include the routines for outputting full spatial data of</span>
+<span class="c1">//lineages. Usually this will not be required.</span>
+
+<span class="c1">// this uses the RAM for the storage of the active SQL database.</span>
+<span class="c1">// If the RAM requirements get too huge, comment this out to instead write directly to disc.</span>
+<span class="c1">// For HPC systems, it is recommended to use this option as write speeds are generally fast and large simulations don&#39;t</span>
+<span class="c1">// have a linear increase in the SQL database size (at least in RAM).</span>
+<span class="cp">#define sql_ram</span>
+
+<span class="c1">// other includes for required files</span>
+<span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Fattaildeviate.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Datapoint.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Treenode.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SpeciesList.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Map.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Treelist.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ConfigFileParser.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Setup.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;DispersalCoordinator.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Step.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ReproductionMap.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="cm">/************************************************************</span>
+<span class="cm">                                                MAIN TREE OBJECT</span>
+<span class="cm"> ************************************************************/</span>
+
+<span class="k">class</span> <span class="nc">Tree</span>
+<span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">count_dispersal_fails</span><span class="p">,</span> <span class="n">count_density_fails</span><span class="p">;</span>
+<span class="cp">#endif</span>
+    <span class="c1">// declare protected variables</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// storing the coalescence tree itself</span>
+    <span class="n">Row</span><span class="o">&lt;</span><span class="n">Treenode</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">ofstream</span> <span class="n">logfile</span><span class="p">;</span>
+<span class="cp">#endif</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">enddata</span><span class="p">;</span>
+    <span class="c1">// for storing the command line parameters and parsing the required information.</span>
+    <span class="n">SimParameters</span> <span class="n">sim_parameters</span><span class="p">;</span>
+    <span class="c1">// random number generator</span>
+    <span class="n">NRrand</span> <span class="n">NR</span><span class="p">;</span>
+    <span class="c1">// Our dispersal coordinator for getting dispersal distances and managing calls from the forestmap</span>
+    <span class="n">DispersalCoordinator</span> <span class="n">dispersal_coordinator</span><span class="p">;</span>
+    <span class="c1">// The reproduction map object</span>
+    <span class="n">ReproductionMap</span> <span class="n">rep_map</span><span class="p">;</span>
+    <span class="c1">// Storing the speciation rates for later reference.</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">speciation_rates</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">seeded</span><span class="p">;</span>
+    <span class="c1">// random seed</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">the_seed</span><span class="p">;</span>
+
+    <span class="c1">// for general debugging use</span>
+    <span class="c1">//  bool debug;</span>
+
+    <span class="c1">// for enabling the logging mode</span>
+    <span class="kt">bool</span> <span class="n">log_all</span><span class="p">;</span>
+    <span class="c1">// note: in earlier versions I had the minspecsetup variable here</span>
+    <span class="c1">// I&#39;ve removed it because this version implements speciation as it goes rather than on the tree later</span>
+    <span class="c1">// I&#39;ve also removed sim_counter which recorded the number of repeat simulations</span>
+    <span class="c1">// because each job will be 1 simulation in this implementation</span>
+
+    <span class="c1">// for file naming - good to know which task in a series is being executed here</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">the_task</span><span class="p">;</span>
+
+    <span class="c1">// The map file containing the times that we want to expand the model and record all lineages again.</span>
+    <span class="c1">// If this is null, bAutocorrel will be false and the vector will be empty.</span>
+    <span class="n">string</span> <span class="n">autocorrel_file</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">autocorrel_times</span><span class="p">;</span>
+    <span class="c1">// Set to true if we are recording at times other than the present day.</span>
+    <span class="kt">bool</span> <span class="n">bAutocorrel</span><span class="p">;</span>
+    <span class="c1">// tmp debugging</span>
+    <span class="c1">// A list of new variables which will contain the relevant information for maps and grids.</span>
+    <span class="c1">//  strings containing the file names to be imported.</span>
+    <span class="n">string</span> <span class="n">finemapinput</span><span class="p">,</span> <span class="n">coarsemapinput</span><span class="p">,</span> <span class="n">outdirectory</span><span class="p">;</span>
+    <span class="c1">// variable for storing the paused sim location if files have been moved during paused/resumed simulations!</span>
+    <span class="n">string</span> <span class="n">pause_sim_directory</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">pristinefinemapinput</span><span class="p">,</span> <span class="n">pristinecoarsemapinput</span><span class="p">;</span>
+    <span class="c1">// the time since pristine forest and the rate of change of the rainforest.</span>
+    <span class="kt">double</span> <span class="n">dPristine</span><span class="p">,</span> <span class="n">dForestTransform</span><span class="p">;</span>
+    <span class="c1">// the variables for the grid containing the initial individuals.</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">gridxsize</span><span class="p">,</span> <span class="n">gridysize</span><span class="p">;</span>
+    <span class="c1">// The fine map variables at the same resolution as the grid.</span>
+    <span class="c1">// the coarse map variables at a scaled resolution of the fine map.</span>
+    <span class="kt">long</span> <span class="n">finemapxsize</span><span class="p">,</span> <span class="n">finemapysize</span><span class="p">,</span> <span class="n">finemapxoffset</span><span class="p">,</span> <span class="n">finemapyoffset</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">coarsemapxsize</span><span class="p">,</span> <span class="n">coarsemapysize</span><span class="p">,</span> <span class="n">coarsemapxoffset</span><span class="p">,</span> <span class="n">coarsemapyoffset</span><span class="p">,</span> <span class="n">coarsemapscale</span><span class="p">;</span>
+    <span class="c1">// Used to check whether the map variables have already been imported.</span>
+    <span class="kt">bool</span> <span class="n">varimport</span><span class="p">;</span>
+    <span class="c1">// New private vectors</span>
+    <span class="c1">// The time variables (for timing the simulation in real time)</span>
+    <span class="kt">time_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">sim_start</span><span class="p">,</span> <span class="n">sim_end</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span> <span class="n">sim_finish</span><span class="p">,</span> <span class="n">out_finish</span><span class="p">;</span>
+    <span class="kt">time_t</span> <span class="n">time_taken</span><span class="p">;</span>
+    <span class="c1">// Map object containing both the coarse and fine maps for checking whether or not there is forest at a particular</span>
+    <span class="c1">// location.</span>
+    <span class="n">Map</span> <span class="n">forestmap</span><span class="p">;</span>
+    <span class="c1">// An indexing spread for the lineages</span>
+    <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">SpeciesList</span><span class="o">&gt;</span> <span class="n">grid</span><span class="p">;</span>
+    <span class="c1">// Active lineages stored as a row of datapoints</span>
+    <span class="n">Row</span><span class="o">&lt;</span><span class="n">Datapoint</span><span class="o">&gt;</span> <span class="n">active</span><span class="p">;</span>
+    <span class="c1">// Stores the point of the end of the active vector. 0 is reserved as null</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">endactive</span><span class="p">;</span>
+    <span class="c1">// the maximum size of endactive</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">startendactive</span><span class="p">;</span>
+    <span class="c1">// the maximum simulated number of individuals in the present day.</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">maxsimsize</span><span class="p">;</span>
+    <span class="c1">// This might need to be updated for simulations that have large changes in maximum population size over time.</span>
+    <span class="c1">// number of simulation steps</span>
+    <span class="kt">long</span> <span class="n">steps</span><span class="p">;</span>
+    <span class="c1">// Maximum time to run for (in seconds)</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">maxtime</span><span class="p">;</span>
+    <span class="c1">// number of generations passed, dispersal and sigma references</span>
+    <span class="kt">double</span> <span class="n">generation</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">deme_sample</span><span class="p">;</span>
+    <span class="c1">// the speciation rate</span>
+    <span class="kt">long</span> <span class="kt">double</span> <span class="n">spec</span><span class="p">;</span>
+    <span class="c1">// the cost for moving through non-forest. 1.0 means there is no cost. 10 means that movement is 10x</span>
+    <span class="c1">// slower through forest.</span>
+    <span class="kt">double</span> <span class="n">dispersal_relative_cost</span><span class="p">;</span>
+    <span class="c1">// The number of individuals per cell</span>
+    <span class="kt">long</span> <span class="n">deme</span><span class="p">;</span>
+    <span class="c1">// the desired number of species we are aiming for. If it is 0, we will carry on forever.</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">desired_specnum</span><span class="p">;</span>
+    <span class="c1">// sqlite3 object that stores all the data</span>
+    <span class="n">sqlite3</span> <span class="o">*</span><span class="n">database</span><span class="p">;</span>
+<span class="c1">// If sql database is written first to memory, then need another object to contain the in-memory database.</span>
+<span class="cp">#ifdef sql_ram</span>
+    <span class="n">sqlite3</span> <span class="o">*</span><span class="n">outdatabase</span><span class="p">;</span>
+<span class="cp">#endif</span>
+    <span class="n">string</span> <span class="n">sqloutname</span><span class="p">;</span>
+    <span class="c1">// for create the link to the speciationcounter object which handles everything.</span>
+    <span class="n">Treelist</span> <span class="n">tl</span><span class="p">;</span>
+    <span class="c1">// contains the Datamask for where we should start lineages from.</span>
+    <span class="n">Datamask</span> <span class="n">samplegrid</span><span class="p">;</span>
+     <span class="c1">// only set to true if the simulation has finished, otherwise will be false.</span>
+    <span class="kt">bool</span> <span class="n">sim_complete</span><span class="p">;</span>
+
+    <span class="c1">// THESE VARIABLES DON&#39;T NEED TO BE SAVED ON PAUSE/RESUME</span>
+    <span class="c1">// Create the step object that will be retained for the whole simulation.</span>
+    <span class="n">Step</span> <span class="n">this_step</span><span class="p">;</span>
+    <span class="c1">// If true, means the command-line imports were under the (deprecated) fullmode.</span>
+    <span class="kt">bool</span> <span class="n">bFullmode</span><span class="p">;</span>
+    <span class="c1">// If true, the simulation is to be resumed.</span>
+    <span class="kt">bool</span> <span class="n">bResume</span><span class="p">;</span>
+    <span class="c1">// If true, a config file contains the simulation variables.</span>
+    <span class="kt">bool</span> <span class="n">bConfig</span><span class="p">;</span>
+    <span class="c1">// If true, simulation can be resumed.</span>
+    <span class="kt">bool</span> <span class="n">bPaused</span><span class="p">,</span> <span class="n">bPausedImport</span><span class="p">;</span>
+
+    <span class="c1">// Should always be false in the base class</span>
+    <span class="kt">bool</span> <span class="n">bIsProtracted</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// constructor</span>
+    <span class="n">Tree</span><span class="p">()</span> <span class="o">:</span> <span class="n">tl</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">enddata</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">seeded</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">the_seed</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">;</span>
+        <span class="n">log_all</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">// set this equal to true if you want to log every 5 seconds to a logfile.</span>
+        <span class="n">the_task</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">varimport</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">sqloutname</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sim_complete</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">time_taken</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// the time taken starts at 0, unless imported from file.</span>
+        <span class="n">maxtime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="c1">// Set the databases to NULL pointers.</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">outdatabase</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">bFullmode</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bResume</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bConfig</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bPaused</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bPausedImport</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bIsProtracted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">Tree</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">sqlite3_close_v2</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
+        <span class="n">sqlite3_close_v2</span><span class="p">(</span><span class="n">outdatabase</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">importSimulationVariables</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">comargs</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">importSimulationVariables</span><span class="p">(</span><span class="n">string</span> <span class="n">config_file</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">parseArgs</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">comargs</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">checkFolders</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">checkSims</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">checkSims</span><span class="p">(</span><span class="n">string</span> <span class="n">output_dir</span><span class="p">,</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">,</span> <span class="kt">long</span> <span class="n">task</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setParameters</span><span class="p">();</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">getTemporalSampling</span><span class="p">();</span>
+
+    <span class="c1">// Imports the maps using the variables stored in the class. This function must be run after the set_mapvars() in</span>
+    <span class="c1">// order to function correctly.</span>
+    <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">();</span>
+
+    <span class="kt">long</span> <span class="kt">long</span> <span class="nf">getSeed</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setSeed</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span> <span class="n">theseedin</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">getbPaused</span><span class="p">();</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span> <span class="n">randomList</span><span class="p">(</span><span class="kt">long</span> <span class="n">maxnum</span><span class="p">,</span> <span class="kt">long</span> <span class="n">numnum</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">setObjectSizes</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setupDispersalCoordinator</span><span class="p">();</span>
+
+
+    <span class="kt">void</span> <span class="nf">setup</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">removeOldPos</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">calcMove</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">);</span>
+
+
+    <span class="c1">//</span>
+    <span class="c1">//</span>
+    <span class="kt">long</span> <span class="kt">double</span> <span class="nf">calcMinMax</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">coalescenceEvent</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">coalchosen</span><span class="p">);</span>
+
+    <span class="c1">//</span>
+    <span class="c1">//</span>
+    <span class="kt">void</span> <span class="nf">calcNewPos</span><span class="p">(</span><span class="kt">bool</span> <span class="o">&amp;</span><span class="n">coal</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span>
+                    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">coalchosen</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">switchPositions</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">chosen</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">speciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">calcSpeciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span> <span class="n">no_generations</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">estSpecnum</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">runChecks</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">coalchosen</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">validationCheck</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span> <span class="kt">int</span> <span class="n">o</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">coal</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">checkSimSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_active</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">writeSimStartToConsole</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setSimStartVariables</span><span class="p">();</span>
+
+<span class="cp">#ifdef verbose</span>
+
+    <span class="kt">void</span> <span class="nf">writeStepToConsole</span><span class="p">();</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#ifdef pristine_mode</span>
+
+    <span class="kt">void</span> <span class="nf">pristineStepChecks</span><span class="p">();</span>
+<span class="cp">#endif</span>
+
+    <span class="kt">void</span> <span class="nf">checkMapUpdate</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">chooseRandomLineage</span><span class="p">();</span>
+
+<span class="cp">#ifdef DEBUG</span>
+
+    <span class="kt">void</span> <span class="nf">debugCoalescence</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">debugDispersal</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">debugEndStep</span><span class="p">();</span>
+<span class="cp">#endif</span>
+
+    <span class="kt">bool</span> <span class="nf">runSimulation</span><span class="p">();</span>
+
+
+    <span class="kt">bool</span> <span class="nf">stopSimulation</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">expandMap</span><span class="p">(</span><span class="kt">double</span> <span class="n">generationin</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">sortData</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">outputData</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">outputData</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">species_richness</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">writeTimes</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">setProtractedVariables</span><span class="p">(</span><span class="kt">double</span> <span class="n">speciation_gen_min</span><span class="p">,</span> <span class="kt">double</span> <span class="n">speciation_gen_max</span><span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="n">string</span> <span class="nf">getProtractedVariables</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">double</span> <span class="nf">getProtractedGenerationMin</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">double</span> <span class="nf">getProtractedGenerationMax</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">simPause</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setResumeParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">pausedir</span><span class="p">,</span> <span class="n">string</span> <span class="n">outdir</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">task</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_max_time</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setResumeParameters</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">loadMainSave</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">loadDataSave</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">loadActiveSave</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">loadGridSave</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">loadMapSave</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">simResume</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">sqlCreate</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="n">string</span> <span class="nf">protractedVarsToString</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">sqlOutput</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">applySpecRate</span><span class="p">(</span><span class="kt">double</span> <span class="n">sr</span><span class="p">,</span> <span class="kt">double</span> <span class="n">t</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">applySpecRate</span><span class="p">(</span><span class="kt">double</span> <span class="n">sr</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">applyMultipleRates</span><span class="p">();</span>
+
+
+    <span class="kt">void</span> <span class="nf">determineSpeciationRates</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">verifyReproductionMap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">addWrappedLineage</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numstart</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">convertTip</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">countCellExpansion</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
+                                     <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generationin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">make_tips</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">expandCell</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="n">ywrap</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">add</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">makeTip</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">tmp_active</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generationin</span><span class="p">);</span>
+
+
+    <span class="kt">void</span> <span class="nf">validateLineages</span><span class="p">();</span>
+
+<span class="cp">#ifdef DEBUG</span>
+
+    <span class="kt">void</span> <span class="nf">debugAddingLineage</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numstart</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="p">};</span>
+
+<span class="cp">#endif  </span><span class="c1">// TREE</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_Tree.h.html"
+                        title="previous chapter">File Tree.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_Treelist.cpp.html"
+                        title="next chapter">File Treelist.cpp</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exhaled/program_listing_file_Tree.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_Treelist.cpp.html" title="File Treelist.cpp"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_Tree.h.html" title="File Tree.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">PyCoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="exhaled_library.html" >NECSim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_Tree.h.html" >File Tree.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

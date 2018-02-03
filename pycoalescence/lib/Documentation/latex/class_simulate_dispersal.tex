@@ -1,0 +1,378 @@
+\hypertarget{class_simulate_dispersal}{}\section{Simulate\+Dispersal Class Reference}
+\label{class_simulate_dispersal}\index{Simulate\+Dispersal@{Simulate\+Dispersal}}
+
+
+Contains routines for importing a density map file, running a dispersal kernel n times on a landscape and record the dispersal distances.  
+
+
+
+
+{\ttfamily \#include $<$Simulate\+Dispersal.\+h$>$}
+
+
+
+Collaboration diagram for Simulate\+Dispersal\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_simulate_dispersal_a3da09319132db8c7ad035290be6590ef}{set\+Sequential} (bool b\+Sequential)
+\begin{DoxyCompactList}\small\item\em Sets the is\+\_\+sequential flag. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_ade30de5c9c7daebb6ccc4168fec3e813}{set\+Sizes} (unsigned long x, unsigned long y)
+\begin{DoxyCompactList}\small\item\em Sets the sizes of the density map. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a8c7c65b4788010f02213fba5c985f49a}{import\+Maps} (string map\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Import the map from the prescribed file. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a46f2cd557ac9b21c107eac75e7c916af}{set\+Seed} (unsigned long s)
+\begin{DoxyCompactList}\small\item\em Sets the seed for the random number generator. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a93b3d450679b00c015f5e18d91f3a426}{set\+Dispersal\+Parameters} (string dispersal\+\_\+method\+\_\+in, double sigma\+\_\+in, double tau\+\_\+in, double m\+\_\+prob\+\_\+in, double cutoff\+\_\+in, string landscape\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Sets the dispersal parameters. \end{DoxyCompactList}\item 
+void {\bfseries set\+Landscape\+Type} (string landscape\+\_\+type)\hypertarget{class_simulate_dispersal_a627bcb0be7e7d6b0ef1dbd44b32a1909}{}\label{class_simulate_dispersal_a627bcb0be7e7d6b0ef1dbd44b32a1909}
+
+\item 
+void \hyperlink{class_simulate_dispersal_acae5067045d5989df6d7dce80bcfe276}{set\+Output\+Database} (string out\+\_\+database)
+\begin{DoxyCompactList}\small\item\em Sets the output database for writing results to. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a29c7cf41d8b5610109d61f302fb32e73}{set\+Number\+Repeats} (unsigned long n)
+\begin{DoxyCompactList}\small\item\em Sets the number of repeats to run the dispersal kernel for. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a85d8ee68e5f4962429571c835aa028b4}{store\+Cell\+List} ()\hypertarget{class_simulate_dispersal_a85d8ee68e5f4962429571c835aa028b4}{}\label{class_simulate_dispersal_a85d8ee68e5f4962429571c835aa028b4}
+
+\begin{DoxyCompactList}\small\item\em Calculates the list of cells to choose randomly from. \end{DoxyCompactList}\item 
+const \hyperlink{struct_cell}{Cell} \& \hyperlink{class_simulate_dispersal_a7d0a2b28dd8d45f1b8a74dbcd82290e7}{get\+Random\+Cell} ()
+\begin{DoxyCompactList}\small\item\em Gets a random cell from the list of cells. \end{DoxyCompactList}\item 
+bool \hyperlink{class_simulate_dispersal_a4bfedd82e07504c831d98c1024da5830}{get\+End\+Point\+Infinite} (double dist, double angle, \hyperlink{struct_cell}{Cell} \&this\+\_\+cell)
+\begin{DoxyCompactList}\small\item\em Checks the density is greater than 0 a given distance from the start point on an infinite null landscape. \end{DoxyCompactList}\item 
+bool \hyperlink{class_simulate_dispersal_ab82cd31c46619084c381ab2904e8b7f3}{get\+End\+Point\+Tiled} (double dist, double angle, \hyperlink{struct_cell}{Cell} \&this\+\_\+cell)
+\begin{DoxyCompactList}\small\item\em Checks the density is greater than 0 a given distance from the start point on an infinite tiled landscape. \end{DoxyCompactList}\item 
+bool \hyperlink{class_simulate_dispersal_aa37e909fe4b80b40adc859ef4d7e4eac}{get\+End\+Point\+Closed} (double dist, double angle, \hyperlink{struct_cell}{Cell} \&this\+\_\+cell)
+\begin{DoxyCompactList}\small\item\em Checks the density a given distance from the start point on an closed landscape. \end{DoxyCompactList}\item 
+bool \hyperlink{class_simulate_dispersal_a2199ae28beb4cb7c705fe5fe02de385f}{get\+End\+Point} (double dist, double angle, \hyperlink{struct_cell}{Cell} \&this\+\_\+cell)
+\begin{DoxyCompactList}\small\item\em Checks the density a given distance from the start point, calling the relevant landscape function. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_ac537bace4adfe905ee5f0435cd18d51e}{run\+Dispersal} ()\hypertarget{class_simulate_dispersal_ac537bace4adfe905ee5f0435cd18d51e}{}\label{class_simulate_dispersal_ac537bace4adfe905ee5f0435cd18d51e}
+
+\begin{DoxyCompactList}\small\item\em Runs the dispersal loop the given number of times for the set parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a09f105b0f785aa9f371dd02134b86381}{write\+Database} ()\hypertarget{class_simulate_dispersal_a09f105b0f785aa9f371dd02134b86381}{}\label{class_simulate_dispersal_a09f105b0f785aa9f371dd02134b86381}
+
+\begin{DoxyCompactList}\small\item\em Writes out the distances to the S\+QL database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef bool(Simulate\+Dispersal\+::$\ast$ {\bfseries landscape\+\_\+fptr}) (double dist, double angle, \hyperlink{struct_cell}{Cell} \&this\+\_\+cell)\hypertarget{class_simulate_dispersal_a0dc8b1420597298bafffac2beac3a14c}{}\label{class_simulate_dispersal_a0dc8b1420597298bafffac2beac3a14c}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_matrix}{Matrix}$<$ unsigned long $>$ {\bfseries density\+\_\+map}\hypertarget{class_simulate_dispersal_adc8906f6baa62b92b037c9e275356ca7}{}\label{class_simulate_dispersal_adc8906f6baa62b92b037c9e275356ca7}
+
+\item 
+bool {\bfseries has\+\_\+set\+\_\+size}\hypertarget{class_simulate_dispersal_aff72c923e8454470b2d4c8935061fb21}{}\label{class_simulate_dispersal_aff72c923e8454470b2d4c8935061fb21}
+
+\item 
+\hyperlink{class_n_rrand}{N\+Rrand} {\bfseries random}\hypertarget{class_simulate_dispersal_a5f6389fc4116b52622a900c55532f86b}{}\label{class_simulate_dispersal_a5f6389fc4116b52622a900c55532f86b}
+
+\item 
+string {\bfseries map\+\_\+name}\hypertarget{class_simulate_dispersal_af1dc4cf60a69aafc2be4c80b0e9228c2}{}\label{class_simulate_dispersal_af1dc4cf60a69aafc2be4c80b0e9228c2}
+
+\item 
+unsigned long {\bfseries seed}\hypertarget{class_simulate_dispersal_af9ab2fa8b2c3e1bb1ba49b31679ae0d7}{}\label{class_simulate_dispersal_af9ab2fa8b2c3e1bb1ba49b31679ae0d7}
+
+\item 
+string {\bfseries dispersal\+\_\+method}\hypertarget{class_simulate_dispersal_aedabf3440f475bc15d4b95f9e8500d94}{}\label{class_simulate_dispersal_aedabf3440f475bc15d4b95f9e8500d94}
+
+\item 
+double {\bfseries sigma}\hypertarget{class_simulate_dispersal_ad6d6ae35911ed2bd045bf8e5bb30b628}{}\label{class_simulate_dispersal_ad6d6ae35911ed2bd045bf8e5bb30b628}
+
+\item 
+double {\bfseries tau}\hypertarget{class_simulate_dispersal_aa195b7e1b697c93e85a923eea5fabccc}{}\label{class_simulate_dispersal_aa195b7e1b697c93e85a923eea5fabccc}
+
+\item 
+double {\bfseries m\+\_\+prob}\hypertarget{class_simulate_dispersal_ae4b679b39467170abf45845d4591e6db}{}\label{class_simulate_dispersal_ae4b679b39467170abf45845d4591e6db}
+
+\item 
+double {\bfseries cutoff}\hypertarget{class_simulate_dispersal_a532f1c5ba22d681c5761dcce4fc8555d}{}\label{class_simulate_dispersal_a532f1c5ba22d681c5761dcce4fc8555d}
+
+\item 
+sqlite3 $\ast$ {\bfseries database}\hypertarget{class_simulate_dispersal_afd3f96f169715aacbcc2939614a6a910}{}\label{class_simulate_dispersal_afd3f96f169715aacbcc2939614a6a910}
+
+\item 
+vector$<$ double $>$ {\bfseries distances}\hypertarget{class_simulate_dispersal_a616354e9527a71396a428bb63f444a15}{}\label{class_simulate_dispersal_a616354e9527a71396a428bb63f444a15}
+
+\item 
+vector$<$ \hyperlink{struct_cell}{Cell} $>$ {\bfseries cells}\hypertarget{class_simulate_dispersal_abcb3ce61b835cbd007d09726302d692a}{}\label{class_simulate_dispersal_abcb3ce61b835cbd007d09726302d692a}
+
+\item 
+unsigned long {\bfseries num\+\_\+repeats}\hypertarget{class_simulate_dispersal_a36ca3df92a79e284cdeb84ea0dfb3c9a}{}\label{class_simulate_dispersal_a36ca3df92a79e284cdeb84ea0dfb3c9a}
+
+\item 
+unsigned short {\bfseries max\+\_\+density}\hypertarget{class_simulate_dispersal_a24589094c95d4f594c1c58f3eb9bfdb7}{}\label{class_simulate_dispersal_a24589094c95d4f594c1c58f3eb9bfdb7}
+
+\item 
+bool {\bfseries is\+\_\+sequential}\hypertarget{class_simulate_dispersal_a72f4b5ec8d52f080f2c9df991fb546ef}{}\label{class_simulate_dispersal_a72f4b5ec8d52f080f2c9df991fb546ef}
+
+\item 
+landscape\+\_\+fptr {\bfseries get\+Val\+Fptr}\hypertarget{class_simulate_dispersal_ae1f3a40b1805f024e41ec8df9c38c01e}{}\label{class_simulate_dispersal_ae1f3a40b1805f024e41ec8df9c38c01e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains routines for importing a density map file, running a dispersal kernel n times on a landscape and record the dispersal distances. 
+
+\subsection{Member Function Documentation}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+End\+Point@{get\+End\+Point}}
+\index{get\+End\+Point@{get\+End\+Point}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{get\+End\+Point(double dist, double angle, Cell \&this\+\_\+cell)}{getEndPoint(double dist, double angle, Cell &this_cell)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Simulate\+Dispersal\+::get\+End\+Point (
+\begin{DoxyParamCaption}
+\item[{double}]{dist, }
+\item[{double}]{angle, }
+\item[{{\bf Cell} \&}]{this\+\_\+cell}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a2199ae28beb4cb7c705fe5fe02de385f}{}\label{class_simulate_dispersal_a2199ae28beb4cb7c705fe5fe02de385f}
+
+
+Checks the density a given distance from the start point, calling the relevant landscape function. 
+
+This also takes into account the rejection sampling of density based on the maximal density value from the map.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the distance of dispersal \\
+\hline
+{\em angle} & the angle of dispersal \\
+\hline
+{\em this\+\_\+cell} & \hyperlink{struct_cell}{Cell} containing the x and y coordinates of the starting position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point has a density $>$ 0, otherwise generates a random number between 0 and the max size and if it is $>$ the density, return true, false otherwise. 
+\end{DoxyReturn}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+End\+Point\+Closed@{get\+End\+Point\+Closed}}
+\index{get\+End\+Point\+Closed@{get\+End\+Point\+Closed}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{get\+End\+Point\+Closed(double dist, double angle, Cell \&this\+\_\+cell)}{getEndPointClosed(double dist, double angle, Cell &this_cell)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Simulate\+Dispersal\+::get\+End\+Point\+Closed (
+\begin{DoxyParamCaption}
+\item[{double}]{dist, }
+\item[{double}]{angle, }
+\item[{{\bf Cell} \&}]{this\+\_\+cell}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_aa37e909fe4b80b40adc859ef4d7e4eac}{}\label{class_simulate_dispersal_aa37e909fe4b80b40adc859ef4d7e4eac}
+
+
+Checks the density a given distance from the start point on an closed landscape. 
+
+This also takes into account the rejection sampling of density based on the maximal density value from the map.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the distance of dispersal \\
+\hline
+{\em angle} & the angle of dispersal \\
+\hline
+{\em this\+\_\+cell} & \hyperlink{struct_cell}{Cell} containing the x and y coordinates of the starting position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point has a density $>$ 0, otherwise generates a random number between 0 and the max size and if it is $>$ the density, return true, false otherwise. 
+\end{DoxyReturn}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+End\+Point\+Infinite@{get\+End\+Point\+Infinite}}
+\index{get\+End\+Point\+Infinite@{get\+End\+Point\+Infinite}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{get\+End\+Point\+Infinite(double dist, double angle, Cell \&this\+\_\+cell)}{getEndPointInfinite(double dist, double angle, Cell &this_cell)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Simulate\+Dispersal\+::get\+End\+Point\+Infinite (
+\begin{DoxyParamCaption}
+\item[{double}]{dist, }
+\item[{double}]{angle, }
+\item[{{\bf Cell} \&}]{this\+\_\+cell}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a4bfedd82e07504c831d98c1024da5830}{}\label{class_simulate_dispersal_a4bfedd82e07504c831d98c1024da5830}
+
+
+Checks the density is greater than 0 a given distance from the start point on an infinite null landscape. 
+
+This also takes into account the rejection sampling of density based on the maximal density value from the map.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the distance of dispersal \\
+\hline
+{\em angle} & the angle of dispersal \\
+\hline
+{\em this\+\_\+cell} & \hyperlink{struct_cell}{Cell} containing the x and y coordinates of the starting position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point has a density $>$ 0, otherwise generates a random number between 0 and the max size and if it is $>$ the density, return true, false otherwise. 
+\end{DoxyReturn}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+End\+Point\+Tiled@{get\+End\+Point\+Tiled}}
+\index{get\+End\+Point\+Tiled@{get\+End\+Point\+Tiled}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{get\+End\+Point\+Tiled(double dist, double angle, Cell \&this\+\_\+cell)}{getEndPointTiled(double dist, double angle, Cell &this_cell)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Simulate\+Dispersal\+::get\+End\+Point\+Tiled (
+\begin{DoxyParamCaption}
+\item[{double}]{dist, }
+\item[{double}]{angle, }
+\item[{{\bf Cell} \&}]{this\+\_\+cell}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_ab82cd31c46619084c381ab2904e8b7f3}{}\label{class_simulate_dispersal_ab82cd31c46619084c381ab2904e8b7f3}
+
+
+Checks the density is greater than 0 a given distance from the start point on an infinite tiled landscape. 
+
+This also takes into account the rejection sampling of density based on the maximal density value from the map.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the distance of dispersal \\
+\hline
+{\em angle} & the angle of dispersal \\
+\hline
+{\em this\+\_\+cell} & \hyperlink{struct_cell}{Cell} containing the x and y coordinates of the starting position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point has a density $>$ 0, otherwise generates a random number between 0 and the max size and if it is $>$ the density, return true, false otherwise. 
+\end{DoxyReturn}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+Random\+Cell@{get\+Random\+Cell}}
+\index{get\+Random\+Cell@{get\+Random\+Cell}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{get\+Random\+Cell()}{getRandomCell()}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Cell} \& Simulate\+Dispersal\+::get\+Random\+Cell (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a7d0a2b28dd8d45f1b8a74dbcd82290e7}{}\label{class_simulate_dispersal_a7d0a2b28dd8d45f1b8a74dbcd82290e7}
+
+
+Gets a random cell from the list of cells. 
+
+\begin{DoxyReturn}{Returns}
+a \hyperlink{struct_cell}{Cell} object reference containing the x and y positions to choose from 
+\end{DoxyReturn}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!import\+Maps@{import\+Maps}}
+\index{import\+Maps@{import\+Maps}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{import\+Maps(string map\+\_\+file)}{importMaps(string map_file)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::import\+Maps (
+\begin{DoxyParamCaption}
+\item[{string}]{map\+\_\+file}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a8c7c65b4788010f02213fba5c985f49a}{}\label{class_simulate_dispersal_a8c7c65b4788010f02213fba5c985f49a}
+
+
+Import the map from the prescribed file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+file} & the map file to import from \\
+\hline
+\end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Dispersal\+Parameters@{set\+Dispersal\+Parameters}}
+\index{set\+Dispersal\+Parameters@{set\+Dispersal\+Parameters}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{set\+Dispersal\+Parameters(string dispersal\+\_\+method\+\_\+in, double sigma\+\_\+in, double tau\+\_\+in, double m\+\_\+prob\+\_\+in, double cutoff\+\_\+in, string landscape\+\_\+type)}{setDispersalParameters(string dispersal_method_in, double sigma_in, double tau_in, double m_prob_in, double cutoff_in, string landscape_type)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Dispersal\+Parameters (
+\begin{DoxyParamCaption}
+\item[{string}]{dispersal\+\_\+method\+\_\+in, }
+\item[{double}]{sigma\+\_\+in, }
+\item[{double}]{tau\+\_\+in, }
+\item[{double}]{m\+\_\+prob\+\_\+in, }
+\item[{double}]{cutoff\+\_\+in, }
+\item[{string}]{landscape\+\_\+type}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a93b3d450679b00c015f5e18d91f3a426}{}\label{class_simulate_dispersal_a93b3d450679b00c015f5e18d91f3a426}
+
+
+Sets the dispersal parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dispersal\+\_\+method\+\_\+in} & the dispersal method (e.\+g. \char`\"{}normal\char`\"{}) \\
+\hline
+{\em sigma\+\_\+in} & the sigma value for normal and fat-\/tailed dispersals \\
+\hline
+{\em tau\+\_\+in} & the nu value for fat-\/tailed dispersals \\
+\hline
+{\em m\+\_\+prob\+\_\+in} & the m\+\_\+prob for norm-\/uniform dispersals \\
+\hline
+{\em cutoff\+\_\+in} & the maximum dispersal distance for norm-\/uniform dispersal \\
+\hline
+{\em landscape\+\_\+type} & string containing the landscape type (one of \char`\"{}closed\char`\"{}, \char`\"{}tiled\char`\"{} or \char`\"{}infinite\char`\"{}). \\
+\hline
+\end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Number\+Repeats@{set\+Number\+Repeats}}
+\index{set\+Number\+Repeats@{set\+Number\+Repeats}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{set\+Number\+Repeats(unsigned long n)}{setNumberRepeats(unsigned long n)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Number\+Repeats (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a29c7cf41d8b5610109d61f302fb32e73}{}\label{class_simulate_dispersal_a29c7cf41d8b5610109d61f302fb32e73}
+
+
+Sets the number of repeats to run the dispersal kernel for. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & the number of repeats \\
+\hline
+\end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Output\+Database@{set\+Output\+Database}}
+\index{set\+Output\+Database@{set\+Output\+Database}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{set\+Output\+Database(string out\+\_\+database)}{setOutputDatabase(string out_database)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Output\+Database (
+\begin{DoxyParamCaption}
+\item[{string}]{out\+\_\+database}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_acae5067045d5989df6d7dce80bcfe276}{}\label{class_simulate_dispersal_acae5067045d5989df6d7dce80bcfe276}
+
+
+Sets the output database for writing results to. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em out\+\_\+database} & path to the output database \\
+\hline
+\end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Seed@{set\+Seed}}
+\index{set\+Seed@{set\+Seed}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{set\+Seed(unsigned long s)}{setSeed(unsigned long s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Seed (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_simulate_dispersal_a46f2cd557ac9b21c107eac75e7c916af}{}\label{class_simulate_dispersal_a46f2cd557ac9b21c107eac75e7c916af}
+
+
+Sets the seed for the random number generator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the seed \\
+\hline
+\end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Sequential@{set\+Sequential}}
+\index{set\+Sequential@{set\+Sequential}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{set\+Sequential(bool b\+Sequential)}{setSequential(bool bSequential)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Sequential (
+\begin{DoxyParamCaption}
+\item[{bool}]{b\+Sequential}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a3da09319132db8c7ad035290be6590ef}{}\label{class_simulate_dispersal_a3da09319132db8c7ad035290be6590ef}
+
+
+Sets the is\+\_\+sequential flag. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b\+Sequential} & if true, dispersal events are selected using the end point of the last dispersal distance for the start of the next move event \\
+\hline
+\end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Sizes@{set\+Sizes}}
+\index{set\+Sizes@{set\+Sizes}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{set\+Sizes(unsigned long x, unsigned long y)}{setSizes(unsigned long x, unsigned long y)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Sizes (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{x, }
+\item[{unsigned long}]{y}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_ade30de5c9c7daebb6ccc4168fec3e813}{}\label{class_simulate_dispersal_ade30de5c9c7daebb6ccc4168fec3e813}
+
+
+Sets the sizes of the density map. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x dimension (number of columns) in the density map \\
+\hline
+{\em y} & the y dimension (number of rows) in the density map \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_simulate_dispersal_8h}{Simulate\+Dispersal.\+h}\item 
+\hyperlink{_simulate_dispersal_8cpp}{Simulate\+Dispersal.\+cpp}\end{DoxyCompactItemize}
