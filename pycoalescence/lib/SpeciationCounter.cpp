@@ -13,7 +13,7 @@
  * Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
  */
 
-#include "SpeciationCommands.h"
+#include "necsim/SpeciationCommands.h"
 
 using namespace std;
 // INPUTS

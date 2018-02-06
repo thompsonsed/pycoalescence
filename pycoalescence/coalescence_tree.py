@@ -1,5 +1,5 @@
 """
-Contains the operations for performing basic analysis on the output of a PyCoalescence simulation.
+Contains basic analyses for the output of a pycoalescence simulation.
 """
 from __future__ import absolute_import
 import os

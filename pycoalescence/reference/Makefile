@@ -114,7 +114,7 @@ obj/necsimmodule.o: necsim/DispersalCoordinator.h necsim/ReproductionMap.h
 obj/necsimmodule.o: necsim/ProtractedTree.h necsim/SpatialTree.h
 obj/necsimmodule.o: necsim/SimulationTemplates.h
 obj/necsimmodule.o: necsim/ProtractedSpatialTree.h necsim/ProtractedTree.h
-obj/necsim/Community.o: necsim/Community.h
+obj/necsim/Community.o: necsim/Community.h necsim/Filesystem.h
 obj/necsim/ConfigFileParser.o: necsim/ConfigFileParser.h
 obj/necsim/ConfigFileParser.o: necsim/CustomExceptions.h necsim/Logging.h
 obj/necsim/ConfigFileParser.o: necsim/LogFile.h

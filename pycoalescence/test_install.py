@@ -1566,7 +1566,7 @@ class TestCoalSampleRun2(unittest.TestCase):
 	"""
 	@classmethod
 	def setUpClass(cls):
-		cls.coal = Simulation(logging_level=logging.CRITICAL) # TODO change this back
+		cls.coal = Simulation(logging_level=logging.CRITICAL)
 		cls.coal.set_simulation_params(seed=7, job_type=8, output_directory="output", min_speciation_rate=0.5,
 									   sigma=4, deme=10, sample_size=1, max_time=2, uses_spatial_sampling=True)
 		cls.coal.set_map_files(sample_file="sample/null_sample.tif", fine_file="sample/null.tif")

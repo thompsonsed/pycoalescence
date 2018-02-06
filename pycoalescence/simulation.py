@@ -1,5 +1,5 @@
 """
-Contains the Coalescence class as part of the PyCoalescence Project.
+Contains the Simulation class as part of the pycoalescence package.
 
 Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.
 """
@@ -659,6 +659,7 @@ class Simulation:
 				raise ValueError("Dimensions of the reproduction map do not match the fine map. This is currently "
 								 "unsupported.")
 		self.check_maps()
+
 	def set_map(self, map_file, x_size=None, y_size=None):
 		"""
 		Quick function for setting a single map file for both the sample map and fine map, of dimensions x and y.
