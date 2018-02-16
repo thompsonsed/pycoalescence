@@ -566,8 +566,8 @@ full_input = "{base}\n{internal}\n\n".format(
 
 with open("README_necsim.rst", mode="r") as readme:
 	data = readme.read()
-	if sys.version_info[0] != 3:
-		data= data.decode('utf-8', 'ignore')
+if sys.version_info[0] != 3:
+	data= data.decode('utf-8', 'ignore')
 exhale_args = {
 	"containmentFolder": "./api",
 	"rootFileName": "api_library.rst",
