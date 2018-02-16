@@ -27,7 +27,7 @@ from recommonmark.parser import CommonMarkParser
 
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
-use_exhale = os.environ.get("use_exhale", True)
+use_exhale = True # Change this if you don't want to run with exhale
 
 if read_the_docs_build:
 	try:
@@ -40,11 +40,13 @@ if read_the_docs_build:
 		@classmethod
 		def __getattr__(cls, name):
 			return MagicMock()
-	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker",
-					'exhale', 'configs']
+	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
+	if not use_exhale:
+		MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 if use_exhale:
 	from exhale import configs
+
 
 
 sys.path.insert(0, os.path.abspath('.'))
