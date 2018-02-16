@@ -40,7 +40,7 @@ if read_the_docs_build:
 		@classmethod
 		def __getattr__(cls, name):
 			return MagicMock()
-	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
+	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker", "scipy"]
 	if not use_exhale:
 		MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
