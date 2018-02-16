@@ -37,7 +37,7 @@ if read_the_docs_build:
 		def __getattr__(cls, name):
 				return MagicMock()
 
-	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule"]
+	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 sys.path.insert(0, os.path.abspath('.'))
@@ -548,7 +548,7 @@ highlight_language = 'py'
 # `breathe_projects[breathe_default_project]` in `conf.py`
 
 # The configurations you specified
-stripPath = "../../../Code/"
+stripPath = ".."
 
 internal_configs = textwrap.dedent('''
     # Tell doxygen to output wherever breathe is expecting things
