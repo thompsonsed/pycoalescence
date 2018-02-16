@@ -1,0 +1,650 @@
+\hypertarget{class_spatial_tree}{}\section{Spatial\+Tree Class Reference}
+\label{class_spatial_tree}\index{Spatial\+Tree@{Spatial\+Tree}}
+
+
+Represents the output phylogenetic tree, when run on a spatially-\/explicit landscape.  
+
+
+
+
+{\ttfamily \#include $<$Spatial\+Tree.\+h$>$}
+
+
+
+Inheritance diagram for Spatial\+Tree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{class_spatial_tree__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Spatial\+Tree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_spatial_tree__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_spatial_tree_a051cc56f4f1284c419616ca6b582d52f}{Spatial\+Tree} ()
+\begin{DoxyCompactList}\small\item\em The constructor for the tree object. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}{import\+Simulation\+Variables} (const string \&configfile) override
+\begin{DoxyCompactList}\small\item\em Imports the simulation variables from the config file. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ad6a5412bccbccc92a302b2fb05bbced2}{parse\+Args} (vector$<$ string $>$ \&comargs)
+\begin{DoxyCompactList}\small\item\em Parses the command line arguments and saves the flags in \hyperlink{class_tree}{Tree} for fullmode, resuming and other important variables. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_aef0097abc7c616ed656e26b4055834c3}{check\+Folders} ()\hypertarget{class_spatial_tree_aef0097abc7c616ed656e26b4055834c3}{}\label{class_spatial_tree_aef0097abc7c616ed656e26b4055834c3}
+
+\begin{DoxyCompactList}\small\item\em Checks that the folders exist and the files required for the simulation also exist. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a0c83bcd9a84f4fa98c78b75a78a9a012}{set\+Parameters} () override
+\begin{DoxyCompactList}\small\item\em Sets the map object with the correct variables, taking the \hyperlink{struct_sim_parameters}{Sim\+Parameters} structure defined elsewhere for the parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ab9603c25cd1c8466d1e4bfa3f73f191f}{import\+Maps} ()
+\begin{DoxyCompactList}\small\item\em Imports the maps into the forestmap object. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a5d9f29a12f8b66798139c89f153130db}{import\+Reproduction\+Map} ()\hypertarget{class_spatial_tree_a5d9f29a12f8b66798139c89f153130db}{}\label{class_spatial_tree_a5d9f29a12f8b66798139c89f153130db}
+
+\begin{DoxyCompactList}\small\item\em Imports the reproduction map from file. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_spatial_tree_a05ac9205ab49dbe6056522722372063b}{get\+Initial\+Count} () override
+\begin{DoxyCompactList}\small\item\em Counts the number of individuals that exist on the spatial grid. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a3ce93c4d62367f17dd523cab4cc35ae8}{setup\+Dispersal\+Coordinator} ()\hypertarget{class_spatial_tree_a3ce93c4d62367f17dd523cab4cc35ae8}{}\label{class_spatial_tree_a3ce93c4d62367f17dd523cab4cc35ae8}
+
+\begin{DoxyCompactList}\small\item\em Sets up the dispersal coordinator by linking to the correct functions and choosing the appropriate dispersal method. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ae97336318c81e182e9f445f7efdbff8d}{setup} () override
+\begin{DoxyCompactList}\small\item\em Contains the setup routines for a spatial landscape. It also checks for paused simulations and imports data if necessary from paused files. \hyperlink{class_spatial_tree_ab9603c25cd1c8466d1e4bfa3f73f191f}{import\+Maps()} is called for importing the map files. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_spatial_tree_a030ece1d0756057e56f4272510d3e567}{fill\+Objects} (const unsigned long \&initial\+\_\+count) override
+\begin{DoxyCompactList}\small\item\em Fill the active, data and grid objects with the starting lineages. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_spatial_tree_a46d31dc58b01f2666e90078e95b2a25d}{get\+Individuals\+Sampled} (const long \&x, const long \&y, const long \&x\+\_\+wrap, const long \&y\+\_\+wrap, const double \&current\+\_\+gen)
+\begin{DoxyCompactList}\small\item\em Gets the number of individuals to be sampled at the particular point and time. Round the number down to the nearest whole number for numbers of individuals. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ae694bde4ab31b51c13c4a96f9a86a8ba}{remove\+Old\+Position} (const unsigned long \&chosen) override
+\begin{DoxyCompactList}\small\item\em Removes the old position within active by checking any wrapping and removing connections. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ac7202eff84dfe8931374cc236efb9133}{calc\+Move} ()
+\begin{DoxyCompactList}\small\item\em Calculate the move, given a start x,y coordinates and wrapping. \end{DoxyCompactList}\item 
+long double \hyperlink{class_spatial_tree_ae6b453b80ea8ffedbbba799ac6142352}{calc\+Min\+Max} (const unsigned long \&current)
+\begin{DoxyCompactList}\small\item\em Calculates the minmax for a given branch. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ac2b2ab269b36896cb41c47f750b8c032}{calc\+New\+Pos} (bool \&coal, const unsigned long \&chosen, unsigned long \&coalchosen, const long \&oldx, const long \&oldy, const long \&oldxwrap, const long \&oldywrap)
+\begin{DoxyCompactList}\small\item\em Calculates the new position, checking whether coalescence has occured and with which lineage. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a71c99204503ec59815a5338ab934331d}{switch\+Positions} (const unsigned long \&chosen) override
+\begin{DoxyCompactList}\small\item\em Switches the chosen position with the endactive position. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a577196761885888dcb9366ab377f98cb}{calc\+Next\+Step} () override\hypertarget{class_spatial_tree_a577196761885888dcb9366ab377f98cb}{}\label{class_spatial_tree_a577196761885888dcb9366ab377f98cb}
+
+\begin{DoxyCompactList}\small\item\em Calculates the next step for the simulation. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_spatial_tree_a96919ff86b2a4d1de5ba14c2598a9346}{est\+Specnum} ()
+\begin{DoxyCompactList}\small\item\em Estimates the species number from the second largest minimum speciation rate remaining in active. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_aa5db72e986bed4b0aa81217f5be30cf4}{increment\+Generation} () override\hypertarget{class_spatial_tree_aa5db72e986bed4b0aa81217f5be30cf4}{}\label{class_spatial_tree_aa5db72e986bed4b0aa81217f5be30cf4}
+
+\begin{DoxyCompactList}\small\item\em Increments the generation counter and step references, then updates the map for any changes to habitat cover. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ad14491fc87b0a9b28f5b8b316ee8a89d}{update\+Step\+Coalescence\+Variables} () override\hypertarget{class_spatial_tree_ad14491fc87b0a9b28f5b8b316ee8a89d}{}\label{class_spatial_tree_ad14491fc87b0a9b28f5b8b316ee8a89d}
+
+\begin{DoxyCompactList}\small\item\em Updates the coalescence variables in the step object. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a6e802a5034648cc26b24923f27f85727}{add\+Lineages} (double generation\+\_\+in) override
+\begin{DoxyCompactList}\small\item\em Expands the map, generating the new lineages where necessary. \end{DoxyCompactList}\item 
+string \hyperlink{class_spatial_tree_acc54786661c182b6df23e57a61716e0f}{simulation\+Parameters\+Sql\+Insertion} () override
+\begin{DoxyCompactList}\small\item\em Creates a string containing the S\+QL insertion statement for the simulation parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_af89289a1dc549102c0137763a7d26065}{sim\+Pause} () override\hypertarget{class_spatial_tree_af89289a1dc549102c0137763a7d26065}{}\label{class_spatial_tree_af89289a1dc549102c0137763a7d26065}
+
+\begin{DoxyCompactList}\small\item\em Pause the simulation and dump data from memory. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a51b4c8703d179cc4a4c861f8b36b4a9b}{dump\+Map} (string pause\+\_\+folder)
+\begin{DoxyCompactList}\small\item\em Saves the map object to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ad578ceeaf0ab3f4a2e39eb907881c11f}{sim\+Resume} () override
+\begin{DoxyCompactList}\small\item\em Resumes the simulation from a previous state. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}{load\+Grid\+Save} ()\hypertarget{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}{}\label{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}
+
+\begin{DoxyCompactList}\small\item\em Loads the grid from the save file into memory. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}{load\+Map\+Save} ()\hypertarget{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}{}\label{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}
+
+\begin{DoxyCompactList}\small\item\em Loads the map from the save file into memory. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a0eb6f50f218289c79770b203d3eeaada}{verify\+Reproduction\+Map} ()\hypertarget{class_spatial_tree_a0eb6f50f218289c79770b203d3eeaada}{}\label{class_spatial_tree_a0eb6f50f218289c79770b203d3eeaada}
+
+\begin{DoxyCompactList}\small\item\em Checks that the reproduction map makes sense with the fine density map. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a5b26973b7f2dd3ca842a2eb8d2957896}{add\+Wrapped\+Lineage} (unsigned long numstart, long x, long y)
+\begin{DoxyCompactList}\small\item\em Adds the lineage to the correct point in the linked list of active lineages. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_spatial_tree_a706ec7831f8c68e9245c00ebab76414f}{count\+Cell\+Expansion} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap, const double \&generationin, const bool \&make\+\_\+tips)
+\begin{DoxyCompactList}\small\item\em Counts the number of lineages at a particular location that need to be added, after making the correct number of those that already exist into tips. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_ac986898035a4c5c159cc6db19092c159}{expand\+Cell} (long x, long y, long x\+\_\+wrap, long y\+\_\+wrap, double generation\+\_\+in, unsigned long add)
+\begin{DoxyCompactList}\small\item\em Expands the cell at the desired location by adding the supplied number of lineages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_dispersal_coordinator}{Dispersal\+Coordinator} {\bfseries dispersal\+\_\+coordinator}\hypertarget{class_spatial_tree_ad238e987bbf1cf2110bd6c3b980de3e4}{}\label{class_spatial_tree_ad238e987bbf1cf2110bd6c3b980de3e4}
+
+\item 
+\hyperlink{class_reproduction_map}{Reproduction\+Map} {\bfseries rep\+\_\+map}\hypertarget{class_spatial_tree_aee26e469bc42c208feb98f6320bd9d0c}{}\label{class_spatial_tree_aee26e469bc42c208feb98f6320bd9d0c}
+
+\item 
+string {\bfseries fine\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a44fdea35be7d4496248ee27c1457ad6a}{}\label{class_spatial_tree_a44fdea35be7d4496248ee27c1457ad6a}
+
+\item 
+string {\bfseries coarse\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a464b674dbf6f2968497f698ad9a16433}{}\label{class_spatial_tree_a464b674dbf6f2968497f698ad9a16433}
+
+\item 
+string {\bfseries pristine\+\_\+fine\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a0b6a624a8d0a434131f3ec5e2581d8b6}{}\label{class_spatial_tree_a0b6a624a8d0a434131f3ec5e2581d8b6}
+
+\item 
+string {\bfseries pristine\+\_\+coarse\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_abf4a4019079d23e4489420fc14f0e461}{}\label{class_spatial_tree_abf4a4019079d23e4489420fc14f0e461}
+
+\item 
+double {\bfseries gen\+\_\+since\+\_\+pristine}\hypertarget{class_spatial_tree_a0ddea193979944b5df0e317cf1fe5be3}{}\label{class_spatial_tree_a0ddea193979944b5df0e317cf1fe5be3}
+
+\item 
+double {\bfseries habitat\+\_\+change\+\_\+rate}\hypertarget{class_spatial_tree_abdb9b4692e583b7db0e292cd0e26da56}{}\label{class_spatial_tree_abdb9b4692e583b7db0e292cd0e26da56}
+
+\item 
+unsigned long {\bfseries grid\+\_\+x\+\_\+size}\hypertarget{class_spatial_tree_aa4c60d73794de44877b9ed66b73b4ed8}{}\label{class_spatial_tree_aa4c60d73794de44877b9ed66b73b4ed8}
+
+\item 
+unsigned long {\bfseries grid\+\_\+y\+\_\+size}\hypertarget{class_spatial_tree_a03c67ea3848796e91a3b45afc9e99365}{}\label{class_spatial_tree_a03c67ea3848796e91a3b45afc9e99365}
+
+\item 
+long {\bfseries fine\+\_\+map\+\_\+x\+\_\+size}\hypertarget{class_spatial_tree_aa43ad30213722e213a5e727fa4df7d26}{}\label{class_spatial_tree_aa43ad30213722e213a5e727fa4df7d26}
+
+\item 
+long {\bfseries fine\+\_\+map\+\_\+y\+\_\+size}\hypertarget{class_spatial_tree_ac0ed1ed58adc2099735bbee0a1ef47d9}{}\label{class_spatial_tree_ac0ed1ed58adc2099735bbee0a1ef47d9}
+
+\item 
+long {\bfseries fine\+\_\+map\+\_\+x\+\_\+offset}\hypertarget{class_spatial_tree_ac049de6119b9a9666f3328da1c28e285}{}\label{class_spatial_tree_ac049de6119b9a9666f3328da1c28e285}
+
+\item 
+long {\bfseries fine\+\_\+map\+\_\+y\+\_\+offset}\hypertarget{class_spatial_tree_ad0074b25db2a7de1bbe3a62b0e5e4e1e}{}\label{class_spatial_tree_ad0074b25db2a7de1bbe3a62b0e5e4e1e}
+
+\item 
+long {\bfseries coarse\+\_\+map\+\_\+x\+\_\+size}\hypertarget{class_spatial_tree_a8fa4275acbf42f0fd95d8edd4ae425a9}{}\label{class_spatial_tree_a8fa4275acbf42f0fd95d8edd4ae425a9}
+
+\item 
+long {\bfseries coarse\+\_\+map\+\_\+y\+\_\+size}\hypertarget{class_spatial_tree_a402d3c750b01e5fd4661d1adc4cd8659}{}\label{class_spatial_tree_a402d3c750b01e5fd4661d1adc4cd8659}
+
+\item 
+long {\bfseries coarse\+\_\+map\+\_\+x\+\_\+offset}\hypertarget{class_spatial_tree_a37e3608962bb1af677f9cf53b5d5a4c1}{}\label{class_spatial_tree_a37e3608962bb1af677f9cf53b5d5a4c1}
+
+\item 
+long {\bfseries coarse\+\_\+map\+\_\+y\+\_\+offset}\hypertarget{class_spatial_tree_a37988dc296cb7e58de13630a58685b0d}{}\label{class_spatial_tree_a37988dc296cb7e58de13630a58685b0d}
+
+\item 
+long {\bfseries coarse\+\_\+map\+\_\+scale}\hypertarget{class_spatial_tree_ae4659e7c636e1796e1f3acef1724a38c}{}\label{class_spatial_tree_ae4659e7c636e1796e1f3acef1724a38c}
+
+\item 
+\hyperlink{class_map}{Map} {\bfseries habitat\+\_\+map}\hypertarget{class_spatial_tree_a3849ee88827d7278afe73cce56408d83}{}\label{class_spatial_tree_a3849ee88827d7278afe73cce56408d83}
+
+\item 
+\hyperlink{class_matrix}{Matrix}$<$ \hyperlink{class_species_list}{Species\+List} $>$ {\bfseries grid}\hypertarget{class_spatial_tree_a199167b149b25c506fdaeb660d595658}{}\label{class_spatial_tree_a199167b149b25c506fdaeb660d595658}
+
+\item 
+double {\bfseries sigma}\hypertarget{class_spatial_tree_a26bf90b6b6e5f18d53b4d96f11dcce36}{}\label{class_spatial_tree_a26bf90b6b6e5f18d53b4d96f11dcce36}
+
+\item 
+double {\bfseries tau}\hypertarget{class_spatial_tree_acf53651097bb38ef7aae42445e73ccb4}{}\label{class_spatial_tree_acf53651097bb38ef7aae42445e73ccb4}
+
+\item 
+double {\bfseries dispersal\+\_\+relative\+\_\+cost}\hypertarget{class_spatial_tree_a92a159ead42d431773a52989254a1379}{}\label{class_spatial_tree_a92a159ead42d431773a52989254a1379}
+
+\item 
+unsigned long {\bfseries desired\+\_\+specnum}\hypertarget{class_spatial_tree_a694c7eb6c70687ea87e49066a8957877}{}\label{class_spatial_tree_a694c7eb6c70687ea87e49066a8957877}
+
+\item 
+\hyperlink{class_data_mask}{Data\+Mask} {\bfseries samplegrid}\hypertarget{class_spatial_tree_ad902e850c9573b5c26ef6d77a203f72d}{}\label{class_spatial_tree_ad902e850c9573b5c26ef6d77a203f72d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents the output phylogenetic tree, when run on a spatially-\/explicit landscape. 
+
+Contains all functions for running simulations, outputting data and calculating coalescence tree structure. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Spatial\+Tree@{Spatial\+Tree}!Spatial\+Tree@{Spatial\+Tree}}
+\index{Spatial\+Tree@{Spatial\+Tree}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{Spatial\+Tree()}{SpatialTree()}}]{\setlength{\rightskip}{0pt plus 5cm}Spatial\+Tree\+::\+Spatial\+Tree (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_spatial_tree_a051cc56f4f1284c419616ca6b582d52f}{}\label{class_spatial_tree_a051cc56f4f1284c419616ca6b582d52f}
+
+
+The constructor for the tree object. 
+
+Sets all uninitiated variables to false, except log\+\_\+all. log\+\_\+all should be changed to false if minimal text output during simulations is desired. 
+
+\subsection{Member Function Documentation}
+\index{Spatial\+Tree@{Spatial\+Tree}!add\+Lineages@{add\+Lineages}}
+\index{add\+Lineages@{add\+Lineages}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{add\+Lineages(double generation\+\_\+in) override}{addLineages(double generation_in) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::add\+Lineages (
+\begin{DoxyParamCaption}
+\item[{double}]{generation\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_a6e802a5034648cc26b24923f27f85727}{}\label{class_spatial_tree_a6e802a5034648cc26b24923f27f85727}
+
+
+Expands the map, generating the new lineages where necessary. 
+
+The samplemask provided is used for expansion. Any empty spaces are filled with a new lineage. Lineages which have not moved are changed to tips, with a new data entry so that original and new generations are recorded.
+
+
+\begin{DoxyParams}{Parameters}
+{\em generation\+\_\+in} & the generation that the expansion is occuring at. This is used in recording the new tips \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_tree_a8bfa9a86f122b21900ec33ab4b1e323f}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!add\+Wrapped\+Lineage@{add\+Wrapped\+Lineage}}
+\index{add\+Wrapped\+Lineage@{add\+Wrapped\+Lineage}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{add\+Wrapped\+Lineage(unsigned long numstart, long x, long y)}{addWrappedLineage(unsigned long numstart, long x, long y)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::add\+Wrapped\+Lineage (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{numstart, }
+\item[{long}]{x, }
+\item[{long}]{y}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a5b26973b7f2dd3ca842a2eb8d2957896}{}\label{class_spatial_tree_a5b26973b7f2dd3ca842a2eb8d2957896}
+
+
+Adds the lineage to the correct point in the linked list of active lineages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em numstart} & the active position to add \\
+\hline
+{\em x} & the x position of the lineage \\
+\hline
+{\em y} & the y position of the lineage \\
+\hline
+\end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!calc\+Min\+Max@{calc\+Min\+Max}}
+\index{calc\+Min\+Max@{calc\+Min\+Max}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{calc\+Min\+Max(const unsigned long \&current)}{calcMinMax(const unsigned long &current)}}]{\setlength{\rightskip}{0pt plus 5cm}long double Spatial\+Tree\+::calc\+Min\+Max (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{current}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_ae6b453b80ea8ffedbbba799ac6142352}{}\label{class_spatial_tree_ae6b453b80ea8ffedbbba799ac6142352}
+
+
+Calculates the minmax for a given branch. 
+
+Calculates the speciation rate required for speciation to have occured on this branch.
+
+
+\begin{DoxyParams}{Parameters}
+{\em current} & the current active reference to perform calculations over. \\
+\hline
+\end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!calc\+Move@{calc\+Move}}
+\index{calc\+Move@{calc\+Move}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{calc\+Move()}{calcMove()}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::calc\+Move (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_ac7202eff84dfe8931374cc236efb9133}{}\label{class_spatial_tree_ac7202eff84dfe8931374cc236efb9133}
+
+
+Calculate the move, given a start x,y coordinates and wrapping. 
+
+The provided parameters will be altered to contain the new values so no record of the old variables remains after function running. Current dispersal methods use a fattailed dispersal. \index{Spatial\+Tree@{Spatial\+Tree}!calc\+New\+Pos@{calc\+New\+Pos}}
+\index{calc\+New\+Pos@{calc\+New\+Pos}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{calc\+New\+Pos(bool \&coal, const unsigned long \&chosen, unsigned long \&coalchosen, const long \&oldx, const long \&oldy, const long \&oldxwrap, const long \&oldywrap)}{calcNewPos(bool &coal, const unsigned long &chosen, unsigned long &coalchosen, const long &oldx, const long &oldy, const long &oldxwrap, const long &oldywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::calc\+New\+Pos (
+\begin{DoxyParamCaption}
+\item[{bool \&}]{coal, }
+\item[{const unsigned long \&}]{chosen, }
+\item[{unsigned long \&}]{coalchosen, }
+\item[{const long \&}]{oldx, }
+\item[{const long \&}]{oldy, }
+\item[{const long \&}]{oldxwrap, }
+\item[{const long \&}]{oldywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_ac2b2ab269b36896cb41c47f750b8c032}{}\label{class_spatial_tree_ac2b2ab269b36896cb41c47f750b8c032}
+
+
+Calculates the new position, checking whether coalescence has occured and with which lineage. 
+
+This involves correct handling of checking wrapped lineages (outside the original grid). The probability of coalescence is also calculated.
+
+
+\begin{DoxyParams}{Parameters}
+{\em coal} & boolean for whether coalescence occured or not \\
+\hline
+{\em chosen} & the chosen lineage \\
+\hline
+{\em coalchosen} & the lineaged that is coalescing (if required) \\
+\hline
+{\em oldx} & the old x position \\
+\hline
+{\em oldy} & the old y position \\
+\hline
+{\em oldxwrap} & the old x wrapping \\
+\hline
+{\em oldywrap} & the old y wrapping \\
+\hline
+\end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!count\+Cell\+Expansion@{count\+Cell\+Expansion}}
+\index{count\+Cell\+Expansion@{count\+Cell\+Expansion}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{count\+Cell\+Expansion(const long \&x, const long \&y, const long \&xwrap, const long \&ywrap, const double \&generationin, const bool \&make\+\_\+tips)}{countCellExpansion(const long &x, const long &y, const long &xwrap, const long &ywrap, const double &generationin, const bool &make_tips)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Spatial\+Tree\+::count\+Cell\+Expansion (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap, }
+\item[{const double \&}]{generationin, }
+\item[{const bool \&}]{make\+\_\+tips}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a706ec7831f8c68e9245c00ebab76414f}{}\label{class_spatial_tree_a706ec7831f8c68e9245c00ebab76414f}
+
+
+Counts the number of lineages at a particular location that need to be added, after making the correct number of those that already exist into tips. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x coordinate of the location of interest \\
+\hline
+{\em y} & the y coordinate of the location of interest \\
+\hline
+{\em xwrap} & the x wrapping of the location \\
+\hline
+{\em ywrap} & the y wrapping of the location \\
+\hline
+{\em generationin} & the generation to assign to new tips \\
+\hline
+{\em make\+\_\+tips} & if true, stores the tips as well as counting them \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of new lineages that need to be added. 
+\end{DoxyReturn}
+\index{Spatial\+Tree@{Spatial\+Tree}!dump\+Map@{dump\+Map}}
+\index{dump\+Map@{dump\+Map}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{dump\+Map(string pause\+\_\+folder)}{dumpMap(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::dump\+Map (
+\begin{DoxyParamCaption}
+\item[{string}]{pause\+\_\+folder}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a51b4c8703d179cc4a4c861f8b36b4a9b}{}\label{class_spatial_tree_a51b4c8703d179cc4a4c861f8b36b4a9b}
+
+
+Saves the map object to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pause\+\_\+folder} & the folder to save files into \\
+\hline
+\end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!est\+Specnum@{est\+Specnum}}
+\index{est\+Specnum@{est\+Specnum}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{est\+Specnum()}{estSpecnum()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Spatial\+Tree\+::est\+Specnum (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a96919ff86b2a4d1de5ba14c2598a9346}{}\label{class_spatial_tree_a96919ff86b2a4d1de5ba14c2598a9346}
+
+
+Estimates the species number from the second largest minimum speciation rate remaining in active. 
+
+This allows for halting of the simulation once this threshold has been reached. However, the function is not currently in use as calculating the coalescence tree is very computionally intensive. \begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000008}{Deprecated}]this function is currently obselete and not implemented, but was still functional as of version 3.\+2\end{DoxyRefDesc}
+\index{Spatial\+Tree@{Spatial\+Tree}!expand\+Cell@{expand\+Cell}}
+\index{expand\+Cell@{expand\+Cell}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{expand\+Cell(long x, long y, long x\+\_\+wrap, long y\+\_\+wrap, double generation\+\_\+in, unsigned long add)}{expandCell(long x, long y, long x_wrap, long y_wrap, double generation_in, unsigned long add)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::expand\+Cell (
+\begin{DoxyParamCaption}
+\item[{long}]{x, }
+\item[{long}]{y, }
+\item[{long}]{x\+\_\+wrap, }
+\item[{long}]{y\+\_\+wrap, }
+\item[{double}]{generation\+\_\+in, }
+\item[{unsigned long}]{add}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_ac986898035a4c5c159cc6db19092c159}{}\label{class_spatial_tree_ac986898035a4c5c159cc6db19092c159}
+
+
+Expands the cell at the desired location by adding the supplied number of lineages. 
+
+This takes into account wrapping to correctly add the right number
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x coordinate to add at \\
+\hline
+{\em y} & the y coordinate to add at \\
+\hline
+{\em x\+\_\+wrap} & the x wrapping to add at \\
+\hline
+{\em y\+\_\+wrap} & the y wrapping to add at \\
+\hline
+{\em generation\+\_\+in} & the generation to set the new lineages to \\
+\hline
+{\em add} & the total number of lineages to add at this location \\
+\hline
+\end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!fill\+Objects@{fill\+Objects}}
+\index{fill\+Objects@{fill\+Objects}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{fill\+Objects(const unsigned long \&initial\+\_\+count) override}{fillObjects(const unsigned long &initial_count) override}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Spatial\+Tree\+::fill\+Objects (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{initial\+\_\+count}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_a030ece1d0756057e56f4272510d3e567}{}\label{class_spatial_tree_a030ece1d0756057e56f4272510d3e567}
+
+
+Fill the active, data and grid objects with the starting lineages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+\_\+count} & the number of individuals expected to exist \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of lineages added (for validation purposes) 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_a4af845777294c9116c60115e651620b4}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!get\+Individuals\+Sampled@{get\+Individuals\+Sampled}}
+\index{get\+Individuals\+Sampled@{get\+Individuals\+Sampled}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{get\+Individuals\+Sampled(const long \&x, const long \&y, const long \&x\+\_\+wrap, const long \&y\+\_\+wrap, const double \&current\+\_\+gen)}{getIndividualsSampled(const long &x, const long &y, const long &x_wrap, const long &y_wrap, const double &current_gen)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Spatial\+Tree\+::get\+Individuals\+Sampled (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{x\+\_\+wrap, }
+\item[{const long \&}]{y\+\_\+wrap, }
+\item[{const double \&}]{current\+\_\+gen}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a46d31dc58b01f2666e90078e95b2a25d}{}\label{class_spatial_tree_a46d31dc58b01f2666e90078e95b2a25d}
+
+
+Gets the number of individuals to be sampled at the particular point and time. Round the number down to the nearest whole number for numbers of individuals. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x location for individuals to be sampled \\
+\hline
+{\em y} & the y location for individuals to be sampled \\
+\hline
+{\em x\+\_\+wrap} & the number of x wraps for the cell \\
+\hline
+{\em y\+\_\+wrap} & the number of y wraps for the cell \\
+\hline
+{\em current\+\_\+gen} & the current generation timer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of individuals to sample at this location. 
+\end{DoxyReturn}
+\index{Spatial\+Tree@{Spatial\+Tree}!get\+Initial\+Count@{get\+Initial\+Count}}
+\index{get\+Initial\+Count@{get\+Initial\+Count}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{get\+Initial\+Count() override}{getInitialCount() override}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Spatial\+Tree\+::get\+Initial\+Count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_a05ac9205ab49dbe6056522722372063b}{}\label{class_spatial_tree_a05ac9205ab49dbe6056522722372063b}
+
+
+Counts the number of individuals that exist on the spatial grid. 
+
+\begin{DoxyReturn}{Returns}
+the number of individuals that will be initially simulated 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_a1e0685310a5a9bca4d6069e8d4ce1f1b}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!import\+Maps@{import\+Maps}}
+\index{import\+Maps@{import\+Maps}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{import\+Maps()}{importMaps()}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::import\+Maps (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_ab9603c25cd1c8466d1e4bfa3f73f191f}{}\label{class_spatial_tree_ab9603c25cd1c8466d1e4bfa3f73f191f}
+
+
+Imports the maps into the forestmap object. 
+
+The simulation variables should have already been imported by \hyperlink{class_spatial_tree_a0c83bcd9a84f4fa98c78b75a78a9a012}{set\+Parameters()}, otherwise a Fatal\+\_\+\+Exception will be thrown. \index{Spatial\+Tree@{Spatial\+Tree}!import\+Simulation\+Variables@{import\+Simulation\+Variables}}
+\index{import\+Simulation\+Variables@{import\+Simulation\+Variables}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{import\+Simulation\+Variables(const string \&configfile) override}{importSimulationVariables(const string &configfile) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::import\+Simulation\+Variables (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{configfile}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}{}\label{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}
+
+
+Imports the simulation variables from the config file. 
+
+Also checks for paused simulations and file existence. 
+\begin{DoxyParams}{Parameters}
+{\em configfile} & a vector containing the configfile to import from \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_tree_a455d87022772b309a5974ea5f0295139}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!parse\+Args@{parse\+Args}}
+\index{parse\+Args@{parse\+Args}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{parse\+Args(vector$<$ string $>$ \&comargs)}{parseArgs(vector< string > &comargs)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::parse\+Args (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{comargs}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_ad6a5412bccbccc92a302b2fb05bbced2}{}\label{class_spatial_tree_ad6a5412bccbccc92a302b2fb05bbced2}
+
+
+Parses the command line arguments and saves the flags in \hyperlink{class_tree}{Tree} for fullmode, resuming and other important variables. 
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000007}{Deprecated}]command line arguments are no longer supported. Function will be removed at next major update. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em comargs} & \\
+\hline
+\end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!remove\+Old\+Position@{remove\+Old\+Position}}
+\index{remove\+Old\+Position@{remove\+Old\+Position}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{remove\+Old\+Position(const unsigned long \&chosen) override}{removeOldPosition(const unsigned long &chosen) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::remove\+Old\+Position (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{chosen}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_ae694bde4ab31b51c13c4a96f9a86a8ba}{}\label{class_spatial_tree_ae694bde4ab31b51c13c4a96f9a86a8ba}
+
+
+Removes the old position within active by checking any wrapping and removing connections. 
+
+The function also corrects the linked list to identify the correct nwrap for every wrapped lineage in that space.
+
+
+\begin{DoxyParams}{Parameters}
+{\em chosen} & the desired active reference to remove from the grid. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_tree_ad74c05729c9e5235ab0fa6e34260093a}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!set\+Parameters@{set\+Parameters}}
+\index{set\+Parameters@{set\+Parameters}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{set\+Parameters() override}{setParameters() override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::set\+Parameters (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_a0c83bcd9a84f4fa98c78b75a78a9a012}{}\label{class_spatial_tree_a0c83bcd9a84f4fa98c78b75a78a9a012}
+
+
+Sets the map object with the correct variables, taking the \hyperlink{struct_sim_parameters}{Sim\+Parameters} structure defined elsewhere for the parameters. 
+
+Requires that parameters have already been imported into the \hyperlink{struct_sim_parameters}{Sim\+Parameters}
+
+This function can only be run once, otherwise a Main\+\_\+\+Exception will be thrown 
+
+Reimplemented from \hyperlink{class_tree_ac374d237b7e2e7e11f6a0ff395003635}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!setup@{setup}}
+\index{setup@{setup}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{setup() override}{setup() override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::setup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_ae97336318c81e182e9f445f7efdbff8d}{}\label{class_spatial_tree_ae97336318c81e182e9f445f7efdbff8d}
+
+
+Contains the setup routines for a spatial landscape. It also checks for paused simulations and imports data if necessary from paused files. \hyperlink{class_spatial_tree_ab9603c25cd1c8466d1e4bfa3f73f191f}{import\+Maps()} is called for importing the map files. 
+
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000003}{Bug}]For values of dispersal, forest transform rate and time since pristine (and any other double values), they will not be correctly outputted to the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table if the value is smaller than 10e-\/6. The solution is to implement string output mechanisms using boost\+::lexical\+\_\+cast(), but this has so far only been deemed necessary for the speciation rate (which is intrinsically very small).\end{DoxyRefDesc}
+
+
+Reimplemented from \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!sim\+Resume@{sim\+Resume}}
+\index{sim\+Resume@{sim\+Resume}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{sim\+Resume() override}{simResume() override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::sim\+Resume (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_ad578ceeaf0ab3f4a2e39eb907881c11f}{}\label{class_spatial_tree_ad578ceeaf0ab3f4a2e39eb907881c11f}
+
+
+Resumes the simulation from a previous state. 
+
+Reads in the parameters and objects from file and re-\/starts the simulation. 
+
+Reimplemented from \hyperlink{class_tree_a3d614f3848dc7acab168642efe345569}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!simulation\+Parameters\+Sql\+Insertion@{simulation\+Parameters\+Sql\+Insertion}}
+\index{simulation\+Parameters\+Sql\+Insertion@{simulation\+Parameters\+Sql\+Insertion}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{simulation\+Parameters\+Sql\+Insertion() override}{simulationParametersSqlInsertion() override}}]{\setlength{\rightskip}{0pt plus 5cm}string Spatial\+Tree\+::simulation\+Parameters\+Sql\+Insertion (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_acc54786661c182b6df23e57a61716e0f}{}\label{class_spatial_tree_acc54786661c182b6df23e57a61716e0f}
+
+
+Creates a string containing the S\+QL insertion statement for the simulation parameters. 
+
+\begin{DoxyReturn}{Returns}
+string containing the S\+QL insertion statement 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_aed6504b4f759fb31fdeb61cd03b2b3f9}{Tree}.
+
+\index{Spatial\+Tree@{Spatial\+Tree}!switch\+Positions@{switch\+Positions}}
+\index{switch\+Positions@{switch\+Positions}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{switch\+Positions(const unsigned long \&chosen) override}{switchPositions(const unsigned long &chosen) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::switch\+Positions (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{chosen}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_spatial_tree_a71c99204503ec59815a5338ab934331d}{}\label{class_spatial_tree_a71c99204503ec59815a5338ab934331d}
+
+
+Switches the chosen position with the endactive position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chosen} & the chosen lineage to switch with endactive. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_tree_ab1be13d2e99a4445a7cc84f907e0c90e}{Tree}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_spatial_tree_8h}{Spatial\+Tree.\+h}\item 
+necsim/\hyperlink{_spatial_tree_8cpp}{Spatial\+Tree.\+cpp}\end{DoxyCompactItemize}

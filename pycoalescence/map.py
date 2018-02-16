@@ -72,6 +72,7 @@ class Map(object):
 	The internal array of the tif file is stored in self.data, and band 1 of the file can be opened by using
 	open()
 
+	:ivar data: if the map file has been opened, contains the full tif data as a numpy array.
 	"""
 
 	def __init__(self, file=None, is_sample=None, logging_level=logging.WARNING, dispersal_db=None):
@@ -518,6 +519,8 @@ class Map(object):
 		:return:
 		"""
 		self._setup_dispersal(map_file=map_file)
+		if output_database == "output.db" and self.file_name is not None:
+			output_database = self.file_name
 		# Delete the file if it exists, and recursively create the folder if it doesn't
 		check_parent(output_database)
 		if necsim_import_success:
@@ -553,6 +556,8 @@ class Map(object):
 		a new random cell is chosen
 		"""
 		self._setup_dispersal(map_file=map_file)
+		if output_database == "output.db" and self.file_name is not None:
+			output_database = self.file_name
 		# Delete the file if it exists, and recursively create the folder if it doesn't
 		check_parent(output_database)
 		if necsim_import_success:

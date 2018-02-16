@@ -1,7 +1,6 @@
 """
-PyCoalescence Package provides the facilities for running spatially-explicit neutral coalescence ecological simulations
-and performing basic analysis of the simulation outputs. The program requires the NECSim program to function properly,
-which will be included in the package at a later date.
+pycoalescence provides the facilities for running spatially-explicit neutral coalescence ecological simulations
+and performing basic analysis of the simulation outputs. The program requires necsim to function properly.
 
 """
 __version__ = '1.2.5'
@@ -20,7 +19,7 @@ except ImportError as ie:
 
 
 __author__ = "Samuel Thompson"
-__copyright__ = "Copyright 2016, The pycoalescence Project"
+__copyright__ = "Copyright 2016, pycoalescence"
 __credits__ = ["Samuel Thompson"]
 __license__ = "BSD-3"
 __maintainer__ = "Samuel Thompson"

@@ -1,0 +1,433 @@
+\hypertarget{class_dispersal_coordinator}{}\section{Dispersal\+Coordinator Class Reference}
+\label{class_dispersal_coordinator}\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+
+
+Class for generating dispersal distances and provide routines for reading dispersal distance maps as a unwound map-\/of-\/maps. This class also handles reading density maps for rejection sampling.  
+
+
+
+
+{\ttfamily \#include $<$Dispersal\+Coordinator.\+h$>$}
+
+
+
+Collaboration diagram for Dispersal\+Coordinator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_dispersal_coordinator__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_dispersal_coordinator_a3cfdb18edbf4dd1c45d0cf6af47f91fe}{set\+Random\+Number} (\hyperlink{class_n_rrand}{N\+Rrand} $\ast$N\+R\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em Sets the random number pointer to an \hyperlink{class_n_rrand}{N\+Rrand} instance. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a03bc78c6b218366d6165ca49b7e9b35c}{set\+Habitat\+Map} (\hyperlink{class_map}{Map} $\ast$map\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em Sets the pointer to the \hyperlink{class_map}{Map} object. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_aad9a57afe4629674c958e4d0de4d2451}{set\+Generation\+Ptr} (double $\ast$generation\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em Sets the generation pointer to the provided double. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_ab0face98d80793e7f4a8ad1bf4dfe3f1}{set\+Dispersal} (const string \&dispersal\+\_\+method, const string \&dispersal\+\_\+file, const unsigned long dispersal\+\_\+x, const unsigned long dispersal\+\_\+y, const double \&m\+\_\+probin, const double \&cutoffin, const double \&sigmain, const double \&tauin, const bool \&restrict\+\_\+self)
+\begin{DoxyCompactList}\small\item\em Sets the dispersal method and parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a4bac3aeedb3ceb40601c3db951032d0e}{disperse\+Null\+Dispersal\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
+\begin{DoxyCompactList}\small\item\em Picks a random cell from the whole map and stores the value in the step object. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a6605069356e02d1c130b6d68e5d08483}{disperse\+Dispersal\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
+\begin{DoxyCompactList}\small\item\em Picks a random dispersal distance from the dispersal map. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_af2a3792c5e0bea86fa044c4cd3e5146c}{calculate\+Cell\+Coordinates} (\hyperlink{struct_step}{Step} \&this\+\_\+step, const unsigned long \&col\+\_\+ref)
+\begin{DoxyCompactList}\small\item\em Calculates the new coordinates for a column reference. This includes converting between the fine map and sample map. New coordinates are saved in this\+\_\+step. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_dispersal_coordinator_a737c7f1a06650b467d06a91c0474fb79}{calculate\+Cell\+Reference} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
+\begin{DoxyCompactList}\small\item\em Calculates the cell reference for a particular coordinate. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a79b6018cda012a59f7b80de40b394a6a}{disperse\+Density\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
+\begin{DoxyCompactList}\small\item\em Calls the dispersal kernel from the supplied dispersal distribution. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_ae72980ec66825c641545675037885248}{set\+End\+Point\+Fptr} (const bool \&restrict\+\_\+self)
+\begin{DoxyCompactList}\small\item\em Sets the end point function pointer correctly, based on whether it is restricted or not. \end{DoxyCompactList}\item 
+bool \hyperlink{class_dispersal_coordinator_a46fe28ad569bda217e168b33216a888b}{check\+End\+Point} (const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)
+\begin{DoxyCompactList}\small\item\em Check the end point for the given coordinates and density. \end{DoxyCompactList}\item 
+bool \hyperlink{class_dispersal_coordinator_a72d8a718590c6dde6f0e8d1ac991d99d}{check\+End\+Point\+Density} (const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)
+\begin{DoxyCompactList}\small\item\em Check the end point for the given coordinates and density. \end{DoxyCompactList}\item 
+bool \hyperlink{class_dispersal_coordinator_a055c62c70087ab163bede5c4c4a8be33}{check\+End\+Point\+Restricted} (const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)
+\begin{DoxyCompactList}\small\item\em Check the end point for the given coordinates and density. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a08e7c2e1882bd2f83ffd33eed2491fa0}{disperse} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
+\begin{DoxyCompactList}\small\item\em Performs the dispersal routine using the \hyperlink{struct_step}{Step} object to read starting positions and record the end positions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef void(Dispersal\+Coordinator\+::$\ast$ {\bfseries dispersal\+\_\+fptr}) (\hyperlink{struct_step}{Step} \&this\+\_\+step)\hypertarget{class_dispersal_coordinator_a95a865c016904f23990926af1e7534da}{}\label{class_dispersal_coordinator_a95a865c016904f23990926af1e7534da}
+
+\item 
+typedef bool(Dispersal\+Coordinator\+::$\ast$ {\bfseries end\+\_\+fptr}) (const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)\hypertarget{class_dispersal_coordinator_a6f3d41e77253cb394c63253431decd36}{}\label{class_dispersal_coordinator_a6f3d41e77253cb394c63253431decd36}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_matrix}{Matrix}$<$ double $>$ {\bfseries dispersal\+\_\+prob\+\_\+map}\hypertarget{class_dispersal_coordinator_a3d780624030ef3d6b3e2b5ae642854fe}{}\label{class_dispersal_coordinator_a3d780624030ef3d6b3e2b5ae642854fe}
+
+\item 
+\hyperlink{class_n_rrand}{N\+Rrand} $\ast$ {\bfseries NR}\hypertarget{class_dispersal_coordinator_ac4c17447257ed00e1b5610e0e35a5443}{}\label{class_dispersal_coordinator_ac4c17447257ed00e1b5610e0e35a5443}
+
+\item 
+\hyperlink{class_map}{Map} $\ast$ {\bfseries habitat\+\_\+map}\hypertarget{class_dispersal_coordinator_abcd97d006f49882c6f5c4c24df6cb52a}{}\label{class_dispersal_coordinator_abcd97d006f49882c6f5c4c24df6cb52a}
+
+\item 
+double $\ast$ {\bfseries generation}\hypertarget{class_dispersal_coordinator_ae3f83d100dad7c60137edf42b3c199c1}{}\label{class_dispersal_coordinator_ae3f83d100dad7c60137edf42b3c199c1}
+
+\item 
+dispersal\+\_\+fptr {\bfseries do\+Dispersal}\hypertarget{class_dispersal_coordinator_a93262d2bb612108bfcdc56c1ba11bad1}{}\label{class_dispersal_coordinator_a93262d2bb612108bfcdc56c1ba11bad1}
+
+\item 
+end\+\_\+fptr {\bfseries check\+End\+Point\+Fptr}\hypertarget{class_dispersal_coordinator_a1612005c176cd769797a4d4e459e2dec}{}\label{class_dispersal_coordinator_a1612005c176cd769797a4d4e459e2dec}
+
+\item 
+unsigned long {\bfseries xdim}\hypertarget{class_dispersal_coordinator_a66668e6ceec55afa61c1e99719bc6146}{}\label{class_dispersal_coordinator_a66668e6ceec55afa61c1e99719bc6146}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for generating dispersal distances and provide routines for reading dispersal distance maps as a unwound map-\/of-\/maps. This class also handles reading density maps for rejection sampling. 
+
+It requires linking to a density map, random number generator and a generation counter from the \hyperlink{class_tree}{Tree} class.
+
+Note that no element of this object is recorded during a paused simulation, as all objects pointed to are stored elsewhere and behaviours are recalculated upon simulation resume. 
+
+\subsection{Member Function Documentation}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!calculate\+Cell\+Coordinates@{calculate\+Cell\+Coordinates}}
+\index{calculate\+Cell\+Coordinates@{calculate\+Cell\+Coordinates}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{calculate\+Cell\+Coordinates(\+Step \&this\+\_\+step, const unsigned long \&col\+\_\+ref)}{calculateCellCoordinates(Step &this_step, const unsigned long &col_ref)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::calculate\+Cell\+Coordinates (
+\begin{DoxyParamCaption}
+\item[{{\bf Step} \&}]{this\+\_\+step, }
+\item[{const unsigned long \&}]{col\+\_\+ref}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_af2a3792c5e0bea86fa044c4cd3e5146c}{}\label{class_dispersal_coordinator_af2a3792c5e0bea86fa044c4cd3e5146c}
+
+
+Calculates the new coordinates for a column reference. This includes converting between the fine map and sample map. New coordinates are saved in this\+\_\+step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em this\+\_\+step} & the step to save new coordinates in. \\
+\hline
+{\em col\+\_\+ref} & the column reference for \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!calculate\+Cell\+Reference@{calculate\+Cell\+Reference}}
+\index{calculate\+Cell\+Reference@{calculate\+Cell\+Reference}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{calculate\+Cell\+Reference(\+Step \&this\+\_\+step)}{calculateCellReference(Step &this_step)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Dispersal\+Coordinator\+::calculate\+Cell\+Reference (
+\begin{DoxyParamCaption}
+\item[{{\bf Step} \&}]{this\+\_\+step}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a737c7f1a06650b467d06a91c0474fb79}{}\label{class_dispersal_coordinator_a737c7f1a06650b467d06a91c0474fb79}
+
+
+Calculates the cell reference for a particular coordinate. 
+
+The formula for this calculation is x + (y $\ast$ xdim) where xdim is the dimensions of the fine map, and x and y are the coordinates for the fine map
+
+
+\begin{DoxyParams}{Parameters}
+{\em this\+\_\+step} & the step object containing the x, y location, and x,y wrapping \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the cell reference from the dispersal\+\_\+prob\+\_\+map which corresponds to the required cell 
+\end{DoxyReturn}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!check\+End\+Point@{check\+End\+Point}}
+\index{check\+End\+Point@{check\+End\+Point}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{check\+End\+Point(const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)}{checkEndPoint(const unsigned long &density, long &oldx, long &oldy, long &oldxwrap, long &oldywrap, const long &startx, const long &starty, const long &startxwrap, const long &startywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Dispersal\+Coordinator\+::check\+End\+Point (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{density, }
+\item[{long \&}]{oldx, }
+\item[{long \&}]{oldy, }
+\item[{long \&}]{oldxwrap, }
+\item[{long \&}]{oldywrap, }
+\item[{const long \&}]{startx, }
+\item[{const long \&}]{starty, }
+\item[{const long \&}]{startxwrap, }
+\item[{const long \&}]{startywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a46fe28ad569bda217e168b33216a888b}{}\label{class_dispersal_coordinator_a46fe28ad569bda217e168b33216a888b}
+
+
+Check the end point for the given coordinates and density. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em density} & the density at the end point -\/ avoids an extra call to \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{Map\+::get\+Val()} \\
+\hline
+{\em oldx} & the old x position \\
+\hline
+{\em oldy} & the old y position \\
+\hline
+{\em oldxwrap} & the old x wrap \\
+\hline
+{\em oldywrap} & the old y wrap \\
+\hline
+{\em startx} & the starting x position \\
+\hline
+{\em starty} & the starting y position \\
+\hline
+{\em startxwrap} & the starting x wrap \\
+\hline
+{\em startywrap} & the ending y wrap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the end point passes the density and restricted checks 
+\end{DoxyReturn}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!check\+End\+Point\+Density@{check\+End\+Point\+Density}}
+\index{check\+End\+Point\+Density@{check\+End\+Point\+Density}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{check\+End\+Point\+Density(const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)}{checkEndPointDensity(const unsigned long &density, long &oldx, long &oldy, long &oldxwrap, long &oldywrap, const long &startx, const long &starty, const long &startxwrap, const long &startywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Dispersal\+Coordinator\+::check\+End\+Point\+Density (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{density, }
+\item[{long \&}]{oldx, }
+\item[{long \&}]{oldy, }
+\item[{long \&}]{oldxwrap, }
+\item[{long \&}]{oldywrap, }
+\item[{const long \&}]{startx, }
+\item[{const long \&}]{starty, }
+\item[{const long \&}]{startxwrap, }
+\item[{const long \&}]{startywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a72d8a718590c6dde6f0e8d1ac991d99d}{}\label{class_dispersal_coordinator_a72d8a718590c6dde6f0e8d1ac991d99d}
+
+
+Check the end point for the given coordinates and density. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em density} & the density at the end point -\/ avoids an extra call to \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{Map\+::get\+Val()} \\
+\hline
+{\em oldx} & the old x position \\
+\hline
+{\em oldy} & the old y position \\
+\hline
+{\em oldxwrap} & the old x wrap \\
+\hline
+{\em oldywrap} & the old y wrap \\
+\hline
+{\em startx} & the starting x position \\
+\hline
+{\em starty} & the starting y position \\
+\hline
+{\em startxwrap} & the starting x wrap \\
+\hline
+{\em startywrap} & the ending y wrap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the end point passes the density and restricted checks 
+\end{DoxyReturn}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!check\+End\+Point\+Restricted@{check\+End\+Point\+Restricted}}
+\index{check\+End\+Point\+Restricted@{check\+End\+Point\+Restricted}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{check\+End\+Point\+Restricted(const unsigned long \&density, long \&oldx, long \&oldy, long \&oldxwrap, long \&oldywrap, const long \&startx, const long \&starty, const long \&startxwrap, const long \&startywrap)}{checkEndPointRestricted(const unsigned long &density, long &oldx, long &oldy, long &oldxwrap, long &oldywrap, const long &startx, const long &starty, const long &startxwrap, const long &startywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Dispersal\+Coordinator\+::check\+End\+Point\+Restricted (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{density, }
+\item[{long \&}]{oldx, }
+\item[{long \&}]{oldy, }
+\item[{long \&}]{oldxwrap, }
+\item[{long \&}]{oldywrap, }
+\item[{const long \&}]{startx, }
+\item[{const long \&}]{starty, }
+\item[{const long \&}]{startxwrap, }
+\item[{const long \&}]{startywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a055c62c70087ab163bede5c4c4a8be33}{}\label{class_dispersal_coordinator_a055c62c70087ab163bede5c4c4a8be33}
+
+
+Check the end point for the given coordinates and density. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em density} & the density at the end point -\/ avoids an extra call to \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{Map\+::get\+Val()} \\
+\hline
+{\em oldx} & the old x position \\
+\hline
+{\em oldy} & the old y position \\
+\hline
+{\em oldxwrap} & the old x wrap \\
+\hline
+{\em oldywrap} & the old y wrap \\
+\hline
+{\em startx} & the starting x position \\
+\hline
+{\em starty} & the starting y position \\
+\hline
+{\em startxwrap} & the starting x wrap \\
+\hline
+{\em startywrap} & the ending y wrap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the end point passes the density and restricted checks 
+\end{DoxyReturn}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!disperse@{disperse}}
+\index{disperse@{disperse}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{disperse(\+Step \&this\+\_\+step)}{disperse(Step &this_step)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::disperse (
+\begin{DoxyParamCaption}
+\item[{{\bf Step} \&}]{this\+\_\+step}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a08e7c2e1882bd2f83ffd33eed2491fa0}{}\label{class_dispersal_coordinator_a08e7c2e1882bd2f83ffd33eed2491fa0}
+
+
+Performs the dispersal routine using the \hyperlink{struct_step}{Step} object to read starting positions and record the end positions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em this\+\_\+step} & the \hyperlink{struct_step}{Step} object for reading starting position and storing output distances and angles \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!disperse\+Density\+Map@{disperse\+Density\+Map}}
+\index{disperse\+Density\+Map@{disperse\+Density\+Map}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{disperse\+Density\+Map(\+Step \&this\+\_\+step)}{disperseDensityMap(Step &this_step)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::disperse\+Density\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Step} \&}]{this\+\_\+step}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a79b6018cda012a59f7b80de40b394a6a}{}\label{class_dispersal_coordinator_a79b6018cda012a59f7b80de40b394a6a}
+
+
+Calls the dispersal kernel from the supplied dispersal distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em this\+\_\+step} & the step object to store end points in \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!disperse\+Dispersal\+Map@{disperse\+Dispersal\+Map}}
+\index{disperse\+Dispersal\+Map@{disperse\+Dispersal\+Map}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{disperse\+Dispersal\+Map(\+Step \&this\+\_\+step)}{disperseDispersalMap(Step &this_step)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::disperse\+Dispersal\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Step} \&}]{this\+\_\+step}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a6605069356e02d1c130b6d68e5d08483}{}\label{class_dispersal_coordinator_a6605069356e02d1c130b6d68e5d08483}
+
+
+Picks a random dispersal distance from the dispersal map. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em this\+\_\+step} & the step object to store end points in \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!disperse\+Null\+Dispersal\+Map@{disperse\+Null\+Dispersal\+Map}}
+\index{disperse\+Null\+Dispersal\+Map@{disperse\+Null\+Dispersal\+Map}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{disperse\+Null\+Dispersal\+Map(\+Step \&this\+\_\+step)}{disperseNullDispersalMap(Step &this_step)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::disperse\+Null\+Dispersal\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Step} \&}]{this\+\_\+step}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a4bac3aeedb3ceb40601c3db951032d0e}{}\label{class_dispersal_coordinator_a4bac3aeedb3ceb40601c3db951032d0e}
+
+
+Picks a random cell from the whole map and stores the value in the step object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em this\+\_\+step} & the step object to store end points in \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Dispersal@{set\+Dispersal}}
+\index{set\+Dispersal@{set\+Dispersal}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{set\+Dispersal(const string \&dispersal\+\_\+method, const string \&dispersal\+\_\+file, const unsigned long dispersal\+\_\+x, const unsigned long dispersal\+\_\+y, const double \&m\+\_\+probin, const double \&cutoffin, const double \&sigmain, const double \&tauin, const bool \&restrict\+\_\+self)}{setDispersal(const string &dispersal_method, const string &dispersal_file, const unsigned long dispersal_x, const unsigned long dispersal_y, const double &m_probin, const double &cutoffin, const double &sigmain, const double &tauin, const bool &restrict_self)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Dispersal (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{dispersal\+\_\+method, }
+\item[{const string \&}]{dispersal\+\_\+file, }
+\item[{const unsigned long}]{dispersal\+\_\+x, }
+\item[{const unsigned long}]{dispersal\+\_\+y, }
+\item[{const double \&}]{m\+\_\+probin, }
+\item[{const double \&}]{cutoffin, }
+\item[{const double \&}]{sigmain, }
+\item[{const double \&}]{tauin, }
+\item[{const bool \&}]{restrict\+\_\+self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_ab0face98d80793e7f4a8ad1bf4dfe3f1}{}\label{class_dispersal_coordinator_ab0face98d80793e7f4a8ad1bf4dfe3f1}
+
+
+Sets the dispersal method and parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dispersal\+\_\+method} & string containing the dispersal type. Can be one of \mbox{[}normal, fat-\/tail, norm-\/uniform\mbox{]} \\
+\hline
+{\em dispersal\+\_\+file} & string containing the dispersal file, or \char`\"{}none\char`\"{} if using dispersal kernel \\
+\hline
+{\em m\+\_\+probin} & the probability of drawing from the uniform distribution. Only relevant for uniform dispersals \\
+\hline
+{\em cutoffin} & the maximum value to be drawn from the uniform dispersal. Only relevant for uniform dispersals \\
+\hline
+{\em sigmain} & the fatness of the fat-\/tailed dispersal kernel \\
+\hline
+{\em tauin} & the width of the fat-\/tailed dispersal kernel \\
+\hline
+{\em restrict\+\_\+self} & if true, denies possibility that dispersal comes from the same cell as the parent \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+End\+Point\+Fptr@{set\+End\+Point\+Fptr}}
+\index{set\+End\+Point\+Fptr@{set\+End\+Point\+Fptr}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{set\+End\+Point\+Fptr(const bool \&restrict\+\_\+self)}{setEndPointFptr(const bool &restrict_self)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+End\+Point\+Fptr (
+\begin{DoxyParamCaption}
+\item[{const bool \&}]{restrict\+\_\+self}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_ae72980ec66825c641545675037885248}{}\label{class_dispersal_coordinator_ae72980ec66825c641545675037885248}
+
+
+Sets the end point function pointer correctly, based on whether it is restricted or not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em restrict\+\_\+self} & if true, denies possibility that dispersal comes from the same cell as the parent \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Generation\+Ptr@{set\+Generation\+Ptr}}
+\index{set\+Generation\+Ptr@{set\+Generation\+Ptr}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{set\+Generation\+Ptr(double $\ast$generation\+\_\+ptr)}{setGenerationPtr(double *generation_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Generation\+Ptr (
+\begin{DoxyParamCaption}
+\item[{double $\ast$}]{generation\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_aad9a57afe4629674c958e4d0de4d2451}{}\label{class_dispersal_coordinator_aad9a57afe4629674c958e4d0de4d2451}
+
+
+Sets the generation pointer to the provided double. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em generation\+\_\+ptr} & pointer to the generation double \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Habitat\+Map@{set\+Habitat\+Map}}
+\index{set\+Habitat\+Map@{set\+Habitat\+Map}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{set\+Habitat\+Map(\+Map $\ast$map\+\_\+ptr)}{setHabitatMap(Map *map_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Habitat\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Map} $\ast$}]{map\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a03bc78c6b218366d6165ca49b7e9b35c}{}\label{class_dispersal_coordinator_a03bc78c6b218366d6165ca49b7e9b35c}
+
+
+Sets the pointer to the \hyperlink{class_map}{Map} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+ptr} & pointer to a \hyperlink{class_map}{Map} object \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Random\+Number@{set\+Random\+Number}}
+\index{set\+Random\+Number@{set\+Random\+Number}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{set\+Random\+Number(\+N\+Rrand $\ast$\+N\+R\+\_\+ptr)}{setRandomNumber(NRrand *NR_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Random\+Number (
+\begin{DoxyParamCaption}
+\item[{{\bf N\+Rrand} $\ast$}]{N\+R\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a3cfdb18edbf4dd1c45d0cf6af47f91fe}{}\label{class_dispersal_coordinator_a3cfdb18edbf4dd1c45d0cf6af47f91fe}
+
+
+Sets the random number pointer to an \hyperlink{class_n_rrand}{N\+Rrand} instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em N\+R\+\_\+ptr} & the random number object to set to \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_dispersal_coordinator_8h}{Dispersal\+Coordinator.\+h}\item 
+necsim/\hyperlink{_dispersal_coordinator_8cpp}{Dispersal\+Coordinator.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,82 @@
+
+.. _program_listing_file_necsim_DataMask.h:
+
+Program Listing for File DataMask.h
+===================================
+
+- Return to documentation for :ref:`file_necsim_DataMask.h`
+
+.. code-block:: cpp
+
+   // This file is part of NECSim project which is released under BSD-3 license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   
+   
+   #ifndef SPECIATIONCOUNTER_DataMask_H
+   #define SPECIATIONCOUNTER_DataMask_H
+   
+   // Forward declaration of map
+   class Map;
+   
+   #include <string>
+   
+   #include "Matrix.h"
+   #include "SimParameters.h"
+   
+   
+   // Class which contains the DataMask object, telling us where to sample from within the habitat map.
+   class DataMask
+   {
+   protected:
+       // the file to read in from
+       string inputfile;
+       bool bDefault;
+       unsigned long x_offset, y_offset;
+       // Stores the size of the grid which is stored as a full species list
+       unsigned long x_dim, y_dim;
+       // Stores the size of the samplemask from which spatially sampling is read
+       unsigned long mask_x_dim, mask_y_dim;
+       // Function pointer for obtaining the proportional sampling from the sample mask.
+       typedef double (DataMask::*fptr)(const long &x, const long &y, const long &xwrap, const long &ywrap);
+       fptr getProportionfptr;
+   public:
+       Matrix<bool> sample_mask; 
+       // Stores the exact values from the input tif file.
+       Matrix<double> sample_mask_exact; 
+       DataMask();
+   
+       ~DataMask() = default;
+   
+       bool getDefault();
+   
+       bool setup(const string &sample_mask_file, const unsigned long &x_in, const unsigned long &y_in,
+                  const unsigned long &mask_x_in, const unsigned long &mask_y_in,
+                  const unsigned long &x_offset_in, const unsigned long &y_offset_in);
+   
+       void importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim,
+                              unsigned long xoffset, unsigned long yoffset, string inputfile);
+   
+       void doImport();
+   
+       void importSampleMask(SimParameters &mapvarin);
+   
+   
+       bool getVal(const long &x, const long &y, const long &xwrap, const long &ywrap);
+   
+       double getNullProportion(const long &x, const long &y, const long &xwrap, const long &ywrap);
+   
+       double getBoolProportion(const long &x, const long &y, const long &xwrap, const long &ywrap);
+   
+       double getSampleProportion(const long &x, const long &y, const long &xwrap, const long &ywrap);
+   
+       double getExactValue(const long &x, const long &y, const long &xwrap, const long &ywrap);
+   
+       void convertBoolean(Map &map1, const double &deme_sampling, const double &generation);
+   
+       void clearSpatialMask();
+   
+       void recalculate_coordinates(long &x, long &y, long &x_wrap, long &y_wrap);
+   };
+   
+   
+   #endif //SPECIATIONCOUNTER_DataMask_H

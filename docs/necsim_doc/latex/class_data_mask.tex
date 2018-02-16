@@ -1,0 +1,432 @@
+\hypertarget{class_data_mask}{}\section{Data\+Mask Class Reference}
+\label{class_data_mask}\index{Data\+Mask@{Data\+Mask}}
+
+
+Contains the \hyperlink{class_data_mask}{Data\+Mask} object, a \hyperlink{class_matrix}{Matrix} of booleans describing the spatial sampling pattern.  
+
+
+
+
+{\ttfamily \#include $<$Data\+Mask.\+h$>$}
+
+
+
+Inheritance diagram for Data\+Mask\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=157pt]{class_data_mask__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Data\+Mask\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_data_mask__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_data_mask_ae89a953b8200f027d44dc74fa748852b}{Data\+Mask} ()
+\begin{DoxyCompactList}\small\item\em The \hyperlink{class_data_mask}{Data\+Mask} constructor. \end{DoxyCompactList}\item 
+bool \hyperlink{class_data_mask_a093364b6da9442f7c4945b5a06cfe3af}{get\+Default} ()
+\begin{DoxyCompactList}\small\item\em Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory. \end{DoxyCompactList}\item 
+bool \hyperlink{class_data_mask_a73922a90e7f491ec3dcf90fdd400fdf8}{setup} (const string \&sample\+\_\+mask\+\_\+file, const unsigned long \&x\+\_\+in, const unsigned long \&y\+\_\+in, const unsigned long \&mask\+\_\+x\+\_\+in, const unsigned long \&mask\+\_\+y\+\_\+in, const unsigned long \&x\+\_\+offset\+\_\+in, const unsigned long \&y\+\_\+offset\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_mask_a819eacf6968b0384a0221599dac09122}{import\+Boolean\+Mask} (unsigned long xdim, unsigned long ydim, unsigned long mask\+\_\+xdim, unsigned long mask\+\_\+ydim, unsigned long xoffset, unsigned long yoffset, string inputfile)
+\begin{DoxyCompactList}\small\item\em Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_mask_a85f7b85bb4ac54aa884a8a06f1d35d1b}{do\+Import} ()\hypertarget{class_data_mask_a85f7b85bb4ac54aa884a8a06f1d35d1b}{}\label{class_data_mask_a85f7b85bb4ac54aa884a8a06f1d35d1b}
+
+\begin{DoxyCompactList}\small\item\em Imports the boolean map object. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_mask_ac756e21b1c8d9412d565fb020eec9a06}{import\+Sample\+Mask} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} \&mapvarin)
+\begin{DoxyCompactList}\small\item\em Imports the specified file for the sampling percentage within each cell. \end{DoxyCompactList}\item 
+bool \hyperlink{class_data_mask_ace6578db5b096b0c24112cc438cfa90d}{get\+Val} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Calculates the matrix value at the provided x, y location. If everywhere is sampled, simply returns true, as no sample\+\_\+mask will be stored in memory. This is to save R\+AM where possible. \end{DoxyCompactList}\item 
+double \hyperlink{class_data_mask_af7a7cb35d309d37f42c7a3720a02b400}{get\+Null\+Proportion} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Separate return function for always returning 1.\+0 as density value. \end{DoxyCompactList}\item 
+double \hyperlink{class_data_mask_a31cb42c363219967a7867340a7110e9f}{get\+Bool\+Proportion} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Returns the exact value from the spatial sampling map, for calculating the proportion of individuals to be sampled in each cell. \end{DoxyCompactList}\item 
+double \hyperlink{class_data_mask_a682324892b67910b1dd2fa86a98c0873}{get\+Sample\+Proportion} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Returns the exact value from the spatial sampling map, for calculating the proportion of individuals to be sampled in each cell. \end{DoxyCompactList}\item 
+double \hyperlink{class_data_mask_a2738d996bf7ee99d44a2833b2bed15ef}{get\+Exact\+Value} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Returns the exact value from the spatial sampling map, as returned by the pointer function. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_mask_a9de1eec774b8307f63357d2eff514b93}{convert\+Boolean} (\hyperlink{class_map}{Map} \&map1, const double \&deme\+\_\+sampling, const double \&generation)
+\begin{DoxyCompactList}\small\item\em Converts the spatial map into the boolean grid required for continued simulation. This is done so that the faster boolean accesses are possible. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_mask_a2d152bcb13820a9061ea85c984e042a7}{clear\+Spatial\+Mask} ()\hypertarget{class_data_mask_a2d152bcb13820a9061ea85c984e042a7}{}\label{class_data_mask_a2d152bcb13820a9061ea85c984e042a7}
+
+\begin{DoxyCompactList}\small\item\em Removes the spatial mask from memory. This should be performed if no more map expansions are required. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_mask_ab96af629241f61a4d7122c6b7a91a3ef}{recalculate\+\_\+coordinates} (long \&x, long \&y, long \&x\+\_\+wrap, long \&y\+\_\+wrap)
+\begin{DoxyCompactList}\small\item\em Converts the coordinates back into the grid format. Changes the values in the provided variables to be correct. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_matrix}{Matrix}$<$ bool $>$ {\bfseries sample\+\_\+mask}\hypertarget{class_data_mask_ac4852ba45532f4ec91751df868b11303}{}\label{class_data_mask_ac4852ba45532f4ec91751df868b11303}
+
+\item 
+\hyperlink{class_matrix}{Matrix}$<$ double $>$ \hyperlink{class_data_mask_a28b2136c9666ec5188dd3301e1db602a}{sample\+\_\+mask\+\_\+exact}
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef double(Data\+Mask\+::$\ast$ {\bfseries fptr}) (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)\hypertarget{class_data_mask_a0ed51de5661fc3046d085e044a7efd4a}{}\label{class_data_mask_a0ed51de5661fc3046d085e044a7efd4a}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string {\bfseries inputfile}\hypertarget{class_data_mask_acde16cc845a6102a8b2ee0aa9b8917cb}{}\label{class_data_mask_acde16cc845a6102a8b2ee0aa9b8917cb}
+
+\item 
+bool {\bfseries b\+Default}\hypertarget{class_data_mask_af5d895b50f04eceac1e473dee6f36703}{}\label{class_data_mask_af5d895b50f04eceac1e473dee6f36703}
+
+\item 
+unsigned long {\bfseries x\+\_\+offset}\hypertarget{class_data_mask_a70178c907b2dc072b62f4bfb8f690823}{}\label{class_data_mask_a70178c907b2dc072b62f4bfb8f690823}
+
+\item 
+unsigned long {\bfseries y\+\_\+offset}\hypertarget{class_data_mask_ab4508058d8563d90bfc606a648cedb2f}{}\label{class_data_mask_ab4508058d8563d90bfc606a648cedb2f}
+
+\item 
+unsigned long {\bfseries x\+\_\+dim}\hypertarget{class_data_mask_aba77e907211dea06a4a52ad3036716b0}{}\label{class_data_mask_aba77e907211dea06a4a52ad3036716b0}
+
+\item 
+unsigned long {\bfseries y\+\_\+dim}\hypertarget{class_data_mask_aa2c689edd7b8bd84bb60e836aac4e378}{}\label{class_data_mask_aa2c689edd7b8bd84bb60e836aac4e378}
+
+\item 
+unsigned long {\bfseries mask\+\_\+x\+\_\+dim}\hypertarget{class_data_mask_ab971fd5a14a17e850cd92c79c3a1543e}{}\label{class_data_mask_ab971fd5a14a17e850cd92c79c3a1543e}
+
+\item 
+unsigned long {\bfseries mask\+\_\+y\+\_\+dim}\hypertarget{class_data_mask_a5ab1bf33e9b9fac964c8c2576fc5edca}{}\label{class_data_mask_a5ab1bf33e9b9fac964c8c2576fc5edca}
+
+\item 
+fptr {\bfseries get\+Proportionfptr}\hypertarget{class_data_mask_a67c92c63f3397de5312c573281515c1c}{}\label{class_data_mask_a67c92c63f3397de5312c573281515c1c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains the \hyperlink{class_data_mask}{Data\+Mask} object, a \hyperlink{class_matrix}{Matrix} of booleans describing the spatial sampling pattern. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Data\+Mask@{Data\+Mask}!Data\+Mask@{Data\+Mask}}
+\index{Data\+Mask@{Data\+Mask}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{Data\+Mask()}{DataMask()}}]{\setlength{\rightskip}{0pt plus 5cm}Data\+Mask\+::\+Data\+Mask (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_ae89a953b8200f027d44dc74fa748852b}{}\label{class_data_mask_ae89a953b8200f027d44dc74fa748852b}
+
+
+The \hyperlink{class_data_mask}{Data\+Mask} constructor. 
+
+Exact grid for determining sampling proportion. 
+
+\subsection{Member Function Documentation}
+\index{Data\+Mask@{Data\+Mask}!convert\+Boolean@{convert\+Boolean}}
+\index{convert\+Boolean@{convert\+Boolean}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{convert\+Boolean(\+Map \&map1, const double \&deme\+\_\+sampling, const double \&generation)}{convertBoolean(Map &map1, const double &deme_sampling, const double &generation)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::convert\+Boolean (
+\begin{DoxyParamCaption}
+\item[{{\bf Map} \&}]{map1, }
+\item[{const double \&}]{deme\+\_\+sampling, }
+\item[{const double \&}]{generation}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a9de1eec774b8307f63357d2eff514b93}{}\label{class_data_mask_a9de1eec774b8307f63357d2eff514b93}
+
+
+Converts the spatial map into the boolean grid required for continued simulation. This is done so that the faster boolean accesses are possible. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map1} & the map object to obtain density values from \\
+\hline
+{\em deme\+\_\+sampling} & the proportion of individuals to sample \\
+\hline
+{\em generation} & the generation individuals are added at \\
+\hline
+\end{DoxyParams}
+\index{Data\+Mask@{Data\+Mask}!get\+Bool\+Proportion@{get\+Bool\+Proportion}}
+\index{get\+Bool\+Proportion@{get\+Bool\+Proportion}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{get\+Bool\+Proportion(const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)}{getBoolProportion(const long &x, const long &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}double Data\+Mask\+::get\+Bool\+Proportion (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a31cb42c363219967a7867340a7110e9f}{}\label{class_data_mask_a31cb42c363219967a7867340a7110e9f}
+
+
+Returns the exact value from the spatial sampling map, for calculating the proportion of individuals to be sampled in each cell. 
+
+\begin{DoxyNote}{Note}
+this function assumes that the file is not \char`\"{}null\char`\"{} and the exact sampling mask has been imported. No error checks on these conditions are performed except in debugging mode. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid \\
+\hline
+{\em y} & the y position on the grid \\
+\hline
+{\em xwrap} & the number of x wraps around the map \\
+\hline
+{\em ywrap} & the number of y wraps around the map \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the sample\+\_\+mask\+\_\+exact value at (x, y) 
+\end{DoxyReturn}
+\index{Data\+Mask@{Data\+Mask}!get\+Default@{get\+Default}}
+\index{get\+Default@{get\+Default}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{get\+Default()}{getDefault()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+Mask\+::get\+Default (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a093364b6da9442f7c4945b5a06cfe3af}{}\label{class_data_mask_a093364b6da9442f7c4945b5a06cfe3af}
+
+
+Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory. 
+
+\begin{DoxyReturn}{Returns}
+true if using a null samplemask 
+\end{DoxyReturn}
+\index{Data\+Mask@{Data\+Mask}!get\+Exact\+Value@{get\+Exact\+Value}}
+\index{get\+Exact\+Value@{get\+Exact\+Value}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{get\+Exact\+Value(const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)}{getExactValue(const long &x, const long &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}double Data\+Mask\+::get\+Exact\+Value (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a2738d996bf7ee99d44a2833b2bed15ef}{}\label{class_data_mask_a2738d996bf7ee99d44a2833b2bed15ef}
+
+
+Returns the exact value from the spatial sampling map, as returned by the pointer function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid \\
+\hline
+{\em y} & the y position on the grid \\
+\hline
+{\em xwrap} & the number of x wraps around the map \\
+\hline
+{\em ywrap} & the number of y wraps around the map \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the sample\+\_\+mask\+\_\+exact value at (x, y) 
+\end{DoxyReturn}
+\index{Data\+Mask@{Data\+Mask}!get\+Null\+Proportion@{get\+Null\+Proportion}}
+\index{get\+Null\+Proportion@{get\+Null\+Proportion}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{get\+Null\+Proportion(const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)}{getNullProportion(const long &x, const long &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}double Data\+Mask\+::get\+Null\+Proportion (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_af7a7cb35d309d37f42c7a3720a02b400}{}\label{class_data_mask_af7a7cb35d309d37f42c7a3720a02b400}
+
+
+Separate return function for always returning 1.\+0 as density value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid \\
+\hline
+{\em y} & the y position on the grid \\
+\hline
+{\em xwrap} & the number of x wraps around the map \\
+\hline
+{\em ywrap} & the number of y wraps around the map \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the sample\+\_\+mask\+\_\+exact value at (x, y) 
+\end{DoxyReturn}
+\index{Data\+Mask@{Data\+Mask}!get\+Sample\+Proportion@{get\+Sample\+Proportion}}
+\index{get\+Sample\+Proportion@{get\+Sample\+Proportion}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{get\+Sample\+Proportion(const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)}{getSampleProportion(const long &x, const long &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}double Data\+Mask\+::get\+Sample\+Proportion (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a682324892b67910b1dd2fa86a98c0873}{}\label{class_data_mask_a682324892b67910b1dd2fa86a98c0873}
+
+
+Returns the exact value from the spatial sampling map, for calculating the proportion of individuals to be sampled in each cell. 
+
+\begin{DoxyNote}{Note}
+this function assumes that the file is not \char`\"{}null\char`\"{} and the exact sampling mask has been imported. No error checks on these conditions are performed except in debugging mode. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid \\
+\hline
+{\em y} & the y position on the grid \\
+\hline
+{\em xwrap} & the number of x wraps around the map \\
+\hline
+{\em ywrap} & the number of y wraps around the map \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the sample\+\_\+mask\+\_\+exact value at (x, y) 
+\end{DoxyReturn}
+\index{Data\+Mask@{Data\+Mask}!get\+Val@{get\+Val}}
+\index{get\+Val@{get\+Val}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{get\+Val(const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)}{getVal(const long &x, const long &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+Mask\+::get\+Val (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{x, }
+\item[{const long \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_ace6578db5b096b0c24112cc438cfa90d}{}\label{class_data_mask_ace6578db5b096b0c24112cc438cfa90d}
+
+
+Calculates the matrix value at the provided x, y location. If everywhere is sampled, simply returns true, as no sample\+\_\+mask will be stored in memory. This is to save R\+AM where possible. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid \\
+\hline
+{\em y} & the y position on the grid \\
+\hline
+{\em xval} & the number of x wraps \\
+\hline
+{\em yval} & the number of y wraps \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the sample\+\_\+mask value at x,y (or true if the file was \char`\"{}null\char`\"{}) 
+\end{DoxyReturn}
+\index{Data\+Mask@{Data\+Mask}!import\+Boolean\+Mask@{import\+Boolean\+Mask}}
+\index{import\+Boolean\+Mask@{import\+Boolean\+Mask}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{import\+Boolean\+Mask(unsigned long xdim, unsigned long ydim, unsigned long mask\+\_\+xdim, unsigned long mask\+\_\+ydim, unsigned long xoffset, unsigned long yoffset, string inputfile)}{importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim, unsigned long xoffset, unsigned long yoffset, string inputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::import\+Boolean\+Mask (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{xdim, }
+\item[{unsigned long}]{ydim, }
+\item[{unsigned long}]{mask\+\_\+xdim, }
+\item[{unsigned long}]{mask\+\_\+ydim, }
+\item[{unsigned long}]{xoffset, }
+\item[{unsigned long}]{yoffset, }
+\item[{string}]{inputfile}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a819eacf6968b0384a0221599dac09122}{}\label{class_data_mask_a819eacf6968b0384a0221599dac09122}
+
+
+Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xdim} & the x dimension of the grid area \\
+\hline
+{\em ydim} & the y dimension of the grid area \\
+\hline
+{\em mask\+\_\+xdim} & the x dimension of the sample map file \\
+\hline
+{\em mask\+\_\+ydim} & the y dimension of the sample map file \\
+\hline
+{\em xoffset} & the x offset of the grid area from the sample map file \\
+\hline
+{\em yoffset} & the y offset of the grid area from the sample map file \\
+\hline
+{\em inputfile} & the path to the sample map file \\
+\hline
+\end{DoxyParams}
+\index{Data\+Mask@{Data\+Mask}!import\+Sample\+Mask@{import\+Sample\+Mask}}
+\index{import\+Sample\+Mask@{import\+Sample\+Mask}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{import\+Sample\+Mask(\+Sim\+Parameters \&mapvarin)}{importSampleMask(SimParameters &mapvarin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::import\+Sample\+Mask (
+\begin{DoxyParamCaption}
+\item[{{\bf Sim\+Parameters} \&}]{mapvarin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_ac756e21b1c8d9412d565fb020eec9a06}{}\label{class_data_mask_ac756e21b1c8d9412d565fb020eec9a06}
+
+
+Imports the specified file for the sampling percentage within each cell. 
+
+The map should consist of floating points representing the relative sampling rates in each cell. Note that the actual sampling proportion is equal to the cell value multiplied by global deme sampling proportion. 
+\begin{DoxyParams}{Parameters}
+{\em mapvarin} & the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object containing the samplemask file location and dimensions \\
+\hline
+\end{DoxyParams}
+\index{Data\+Mask@{Data\+Mask}!recalculate\+\_\+coordinates@{recalculate\+\_\+coordinates}}
+\index{recalculate\+\_\+coordinates@{recalculate\+\_\+coordinates}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{recalculate\+\_\+coordinates(long \&x, long \&y, long \&x\+\_\+wrap, long \&y\+\_\+wrap)}{recalculate_coordinates(long &x, long &y, long &x_wrap, long &y_wrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::recalculate\+\_\+coordinates (
+\begin{DoxyParamCaption}
+\item[{long \&}]{x, }
+\item[{long \&}]{y, }
+\item[{long \&}]{x\+\_\+wrap, }
+\item[{long \&}]{y\+\_\+wrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_ab96af629241f61a4d7122c6b7a91a3ef}{}\label{class_data_mask_ab96af629241f61a4d7122c6b7a91a3ef}
+
+
+Converts the coordinates back into the grid format. Changes the values in the provided variables to be correct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x value to convert \\
+\hline
+{\em y} & the y value to convert \\
+\hline
+{\em x\+\_\+wrap} & the xwrap variable to place the value into \\
+\hline
+{\em y\+\_\+wrap} & the ywrap variable to place the value into \\
+\hline
+\end{DoxyParams}
+\index{Data\+Mask@{Data\+Mask}!setup@{setup}}
+\index{setup@{setup}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{setup(const string \&sample\+\_\+mask\+\_\+file, const unsigned long \&x\+\_\+in, const unsigned long \&y\+\_\+in, const unsigned long \&mask\+\_\+x\+\_\+in, const unsigned long \&mask\+\_\+y\+\_\+in, const unsigned long \&x\+\_\+offset\+\_\+in, const unsigned long \&y\+\_\+offset\+\_\+in)}{setup(const string &sample_mask_file, const unsigned long &x_in, const unsigned long &y_in, const unsigned long &mask_x_in, const unsigned long &mask_y_in, const unsigned long &x_offset_in, const unsigned long &y_offset_in)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+Mask\+::setup (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sample\+\_\+mask\+\_\+file, }
+\item[{const unsigned long \&}]{x\+\_\+in, }
+\item[{const unsigned long \&}]{y\+\_\+in, }
+\item[{const unsigned long \&}]{mask\+\_\+x\+\_\+in, }
+\item[{const unsigned long \&}]{mask\+\_\+y\+\_\+in, }
+\item[{const unsigned long \&}]{x\+\_\+offset\+\_\+in, }
+\item[{const unsigned long \&}]{y\+\_\+offset\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_mask_a73922a90e7f491ec3dcf90fdd400fdf8}{}\label{class_data_mask_a73922a90e7f491ec3dcf90fdd400fdf8}
+
+
+Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sample\+\_\+mask\+\_\+file} & the file to import the samplemask from (or \char`\"{}null\char`\"{}) \\
+\hline
+{\em x\+\_\+in} & x dimension of the grid \\
+\hline
+{\em y\+\_\+in} & y dimension of the grid \\
+\hline
+{\em mask\+\_\+x\+\_\+in} & x dimension of the sample mask \\
+\hline
+{\em mask\+\_\+y\+\_\+in} & y dimension of the sample mask \\
+\hline
+{\em x\+\_\+offset\+\_\+in} & x offset of the sample mask from the grid \\
+\hline
+{\em y\+\_\+offset\+\_\+in} & y offset of the sample mask from the grid \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if using a \char`\"{}null\char`\"{} samplemask 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\index{Data\+Mask@{Data\+Mask}!sample\+\_\+mask\+\_\+exact@{sample\+\_\+mask\+\_\+exact}}
+\index{sample\+\_\+mask\+\_\+exact@{sample\+\_\+mask\+\_\+exact}!Data\+Mask@{Data\+Mask}}
+\subsubsection[{\texorpdfstring{sample\+\_\+mask\+\_\+exact}{sample_mask_exact}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Matrix}$<$double$>$ Data\+Mask\+::sample\+\_\+mask\+\_\+exact}\hypertarget{class_data_mask_a28b2136c9666ec5188dd3301e1db602a}{}\label{class_data_mask_a28b2136c9666ec5188dd3301e1db602a}
+A binary grid telling whether or not the cell should be sampled. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_data_mask_8h}{Data\+Mask.\+h}\item 
+necsim/\hyperlink{_data_mask_8cpp}{Data\+Mask.\+cpp}\end{DoxyCompactItemize}

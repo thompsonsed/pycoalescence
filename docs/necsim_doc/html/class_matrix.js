@@ -1,0 +1,25 @@
+var class_matrix =
+[
+    [ "Matrix", "class_matrix.html#a53f60218c002f2bb454695a1fc35c5d3", null ],
+    [ "Matrix", "class_matrix.html#a3796b4f32dc8e11f908a90fd3dd39c45", null ],
+    [ "~Matrix", "class_matrix.html#a91aa704de674203e96aece9e1955ccd3", null ],
+    [ "GetCols", "class_matrix.html#a0467ce3fc5d310bd78e2c48ae4e80b45", null ],
+    [ "GetRows", "class_matrix.html#a7c3e1fb8bf860913a03d874c02655ac2", null ],
+    [ "import", "class_matrix.html#aeff54b3b98211bde4c0cae25af7aaa0c", null ],
+    [ "importCsv", "class_matrix.html#aab2f77cfbdbeffcfe67d63d876581b2e", null ],
+    [ "operator*", "class_matrix.html#ac4e94b307c56a15fb47a9255855f94a9", null ],
+    [ "operator*", "class_matrix.html#ac396cdd2d98e1b4d99f7e17c1c26b1ec", null ],
+    [ "operator+", "class_matrix.html#a311f3649e41cb4a3155f3f71a65829cb", null ],
+    [ "operator+=", "class_matrix.html#a480a72298ae1fc8443b0edfaa66d7c46", null ],
+    [ "operator-", "class_matrix.html#a08e75978ea8288083ef36f53b4ac115d", null ],
+    [ "operator-=", "class_matrix.html#a0e459fd035b2435ea016dc93c55ccac0", null ],
+    [ "operator=", "class_matrix.html#a94508f84ba0d62e81aa8d508aa43f1ec", null ],
+    [ "operator[]", "class_matrix.html#ae7e14b4bd8bb570260a4e578e4a601b7", null ],
+    [ "SetSize", "class_matrix.html#afec0d39d2d97ec573024552983694a66", null ],
+    [ "setValue", "class_matrix.html#ae511e2f5874e7602fc968541efeefca1", null ],
+    [ "operator<<", "class_matrix.html#a5ed9a90fd6f010e7e9840a17d92d5361", null ],
+    [ "operator>>", "class_matrix.html#afcea9fa7d9a5052070fe1fda963ef237", null ],
+    [ "matrix", "class_matrix.html#a7a143ae112112155c9622ba17dc434c7", null ],
+    [ "numCols", "class_matrix.html#a341aaedcfaac978957087bd0467dc527", null ],
+    [ "numRows", "class_matrix.html#ac1e96667d48c7845708f978ddd17475d", null ]
+];

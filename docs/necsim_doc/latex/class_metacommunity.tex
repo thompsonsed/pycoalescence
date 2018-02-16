@@ -1,0 +1,180 @@
+\hypertarget{class_metacommunity}{}\section{Metacommunity Class Reference}
+\label{class_metacommunity}\index{Metacommunity@{Metacommunity}}
+
+
+Generates a metacommunity using spatially-\/implicit neutral simulations, which is used to draw individuals from a community.  
+
+
+
+
+{\ttfamily \#include $<$Metacommunity.\+h$>$}
+
+
+
+Inheritance diagram for Metacommunity\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{class_metacommunity__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Metacommunity\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_metacommunity__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_metacommunity_af9407da2a2e99848ac11ce3a426d4c8a}{set\+Community\+Parameters} (unsigned long community\+\_\+size\+\_\+in, long double speciation\+\_\+rate\+\_\+in, string database\+\_\+name\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the parameters for the metacommunity. \end{DoxyCompactList}\item 
+void \hyperlink{class_metacommunity_ad3775b6cecab860b008d15cc9c7650ea}{check\+Simulation\+Parameters} ()
+\begin{DoxyCompactList}\small\item\em Gets the seed and the task from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS database and stores them in the relevant variables. \end{DoxyCompactList}\item 
+void \hyperlink{class_metacommunity_a8cad1a5648ff5b6b51f2441898fdad48}{add\+Species} (unsigned long \&species\+\_\+count, \hyperlink{class_tree_node}{Tree\+Node} $\ast$tree\+\_\+node, set$<$ unsigned long $>$ \&species\+\_\+list) override
+\begin{DoxyCompactList}\small\item\em Speciates \hyperlink{class_tree_node}{Tree\+Node} and updates the species count, including adding to the set of species ids, if a new species has been selected from the metacommunity. \end{DoxyCompactList}\item 
+void \hyperlink{class_metacommunity_a2557f1dc48f4a7aba97431ac8a8c7dbd}{create\+Metacommunity\+N\+S\+E\+Neutral\+Model} ()\hypertarget{class_metacommunity_a2557f1dc48f4a7aba97431ac8a8c7dbd}{}\label{class_metacommunity_a2557f1dc48f4a7aba97431ac8a8c7dbd}
+
+\begin{DoxyCompactList}\small\item\em Creates the metacommunity in memory using a non-\/spatially\+\_\+explicit neutral model, which is run using the \hyperlink{class_tree}{Tree} class. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_metacommunity_ac1884bfd79b272d8dcb470f34f579cf1}{select\+Lineage\+From\+Metacommunity} ()
+\begin{DoxyCompactList}\small\item\em Selects a random lineage from the metacommunity (r\+Out), which should be a cumulative sum of species abundances. Performs a binary search on r\+Out. \end{DoxyCompactList}\item 
+void \hyperlink{class_metacommunity_adf30667aa617bc969706eab2facd5482}{apply} (\hyperlink{struct_spec_sim_parameters}{Spec\+Sim\+Parameters} $\ast$sp) override
+\begin{DoxyCompactList}\small\item\em Applies the speciation parameters to the completed simulation, including running the spatially-\/implicit for the metacommunity structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long {\bfseries community\+\_\+size}\hypertarget{class_metacommunity_a3b392090e764ffb2ada3881e4eddd0b1}{}\label{class_metacommunity_a3b392090e764ffb2ada3881e4eddd0b1}
+
+\item 
+long double {\bfseries speciation\+\_\+rate}\hypertarget{class_metacommunity_aad4378b40264345fc6f5116aedc58c26}{}\label{class_metacommunity_aad4378b40264345fc6f5116aedc58c26}
+
+\item 
+unsigned long {\bfseries seed}\hypertarget{class_metacommunity_afd81750697ac8540b71de001ee53fc61}{}\label{class_metacommunity_afd81750697ac8540b71de001ee53fc61}
+
+\item 
+unsigned long {\bfseries task}\hypertarget{class_metacommunity_a094dfd2d0bb737a1f5bd06ceb3c6da1f}{}\label{class_metacommunity_a094dfd2d0bb737a1f5bd06ceb3c6da1f}
+
+\item 
+bool {\bfseries parameters\+\_\+checked}\hypertarget{class_metacommunity_a8b0ca689c1c638e49424d59fadb2e28d}{}\label{class_metacommunity_a8b0ca689c1c638e49424d59fadb2e28d}
+
+\item 
+\hyperlink{class_row}{Row}$<$ unsigned long $>$ $\ast$ {\bfseries metacommunity\+\_\+cumulative\+\_\+abundances}\hypertarget{class_metacommunity_ae9ef6b36732d3269baef697b5341c0b9}{}\label{class_metacommunity_ae9ef6b36732d3269baef697b5341c0b9}
+
+\item 
+\hyperlink{class_n_rrand}{N\+Rrand} {\bfseries random}\hypertarget{class_metacommunity_aa47b2ff3f6944143f8e734d0988d2ff3}{}\label{class_metacommunity_aa47b2ff3f6944143f8e734d0988d2ff3}
+
+\item 
+\hyperlink{class_tree}{Tree} {\bfseries metacommunity\+\_\+tree}\hypertarget{class_metacommunity_a85e91103025feb641bf0df9d02152b99}{}\label{class_metacommunity_a85e91103025feb641bf0df9d02152b99}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generates a metacommunity using spatially-\/implicit neutral simulations, which is used to draw individuals from a community. 
+
+\subsection{Member Function Documentation}
+\index{Metacommunity@{Metacommunity}!add\+Species@{add\+Species}}
+\index{add\+Species@{add\+Species}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{add\+Species(unsigned long \&species\+\_\+count, Tree\+Node $\ast$tree\+\_\+node, set$<$ unsigned long $>$ \&species\+\_\+list) override}{addSpecies(unsigned long &species_count, TreeNode *tree_node, set< unsigned long > &species_list) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::add\+Species (
+\begin{DoxyParamCaption}
+\item[{unsigned long \&}]{species\+\_\+count, }
+\item[{{\bf Tree\+Node} $\ast$}]{tree\+\_\+node, }
+\item[{set$<$ unsigned long $>$ \&}]{species\+\_\+list}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_metacommunity_a8cad1a5648ff5b6b51f2441898fdad48}{}\label{class_metacommunity_a8cad1a5648ff5b6b51f2441898fdad48}
+
+
+Speciates \hyperlink{class_tree_node}{Tree\+Node} and updates the species count, including adding to the set of species ids, if a new species has been selected from the metacommunity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em species\+\_\+count} & the total number of species currently in the community \\
+\hline
+{\em tree\+\_\+node} & pointer to the \hyperlink{class_tree_node}{Tree\+Node} object for this lineage \\
+\hline
+{\em species\+\_\+list} & the set of all species ids. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_community_a7a51d163ec40883125fde38e6e85e52e}{Community}.
+
+\index{Metacommunity@{Metacommunity}!apply@{apply}}
+\index{apply@{apply}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{apply(\+Spec\+Sim\+Parameters $\ast$sp) override}{apply(SpecSimParameters *sp) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::apply (
+\begin{DoxyParamCaption}
+\item[{{\bf Spec\+Sim\+Parameters} $\ast$}]{sp}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_metacommunity_adf30667aa617bc969706eab2facd5482}{}\label{class_metacommunity_adf30667aa617bc969706eab2facd5482}
+
+
+Applies the speciation parameters to the completed simulation, including running the spatially-\/implicit for the metacommunity structure. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sp} & the speciation parameters to apply \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_community_ac1dee14af27a0add712e257e316cadbf}{Community}.
+
+\index{Metacommunity@{Metacommunity}!check\+Simulation\+Parameters@{check\+Simulation\+Parameters}}
+\index{check\+Simulation\+Parameters@{check\+Simulation\+Parameters}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{check\+Simulation\+Parameters()}{checkSimulationParameters()}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::check\+Simulation\+Parameters (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_metacommunity_ad3775b6cecab860b008d15cc9c7650ea}{}\label{class_metacommunity_ad3775b6cecab860b008d15cc9c7650ea}
+
+
+Gets the seed and the task from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS database and stores them in the relevant variables. 
+
+\begin{DoxyNote}{Note}
+Should only be called once, and will have no effect if called multiple times. 
+\end{DoxyNote}
+\index{Metacommunity@{Metacommunity}!select\+Lineage\+From\+Metacommunity@{select\+Lineage\+From\+Metacommunity}}
+\index{select\+Lineage\+From\+Metacommunity@{select\+Lineage\+From\+Metacommunity}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{select\+Lineage\+From\+Metacommunity()}{selectLineageFromMetacommunity()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunity\+::select\+Lineage\+From\+Metacommunity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_metacommunity_ac1884bfd79b272d8dcb470f34f579cf1}{}\label{class_metacommunity_ac1884bfd79b272d8dcb470f34f579cf1}
+
+
+Selects a random lineage from the metacommunity (r\+Out), which should be a cumulative sum of species abundances. Performs a binary search on r\+Out. 
+
+\begin{DoxyReturn}{Returns}
+the species id for the lineage 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!set\+Community\+Parameters@{set\+Community\+Parameters}}
+\index{set\+Community\+Parameters@{set\+Community\+Parameters}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{set\+Community\+Parameters(unsigned long community\+\_\+size\+\_\+in, long double speciation\+\_\+rate\+\_\+in, string database\+\_\+name\+\_\+in)}{setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in, string database_name_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::set\+Community\+Parameters (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{community\+\_\+size\+\_\+in, }
+\item[{long double}]{speciation\+\_\+rate\+\_\+in, }
+\item[{string}]{database\+\_\+name\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_metacommunity_af9407da2a2e99848ac11ce3a426d4c8a}{}\label{class_metacommunity_af9407da2a2e99848ac11ce3a426d4c8a}
+
+
+Sets the parameters for the metacommunity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em community\+\_\+size\+\_\+in} & the number of individuals in the metacommunity \\
+\hline
+{\em speciation\+\_\+rate\+\_\+in} & the speciation rate to use for metacommunity creation \\
+\hline
+{\em database\+\_\+name\+\_\+in} & the path to the database to store the metacommunity in \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_metacommunity_8h}{Metacommunity.\+h}\item 
+necsim/\hyperlink{_metacommunity_8cpp}{Metacommunity.\+cpp}\end{DoxyCompactItemize}

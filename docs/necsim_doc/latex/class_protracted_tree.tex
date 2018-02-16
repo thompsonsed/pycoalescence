@@ -1,0 +1,248 @@
+\hypertarget{class_protracted_tree}{}\section{Protracted\+Tree Class Reference}
+\label{class_protracted_tree}\index{Protracted\+Tree@{Protracted\+Tree}}
+
+
+{\ttfamily \#include $<$Protracted\+Spatial\+Tree.\+h$>$}
+
+
+
+Inheritance diagram for Protracted\+Tree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{class_protracted_tree__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Protracted\+Tree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_protracted_tree__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_protracted_tree_af9690f122e77c0a60d363af3e818c9a2}{calc\+Speciation} (const long double \&random\+\_\+number, const long double \&speciation\+\_\+rate, const unsigned long \&no\+\_\+generations) override
+\begin{DoxyCompactList}\small\item\em Calculates the speciation probability from the random number, speciation rate and number of generations a lineage has existed for. \end{DoxyCompactList}\item 
+void \hyperlink{class_protracted_tree_aaa2f1db86b0fd49a69d0809bd1c1fb81}{speciate\+Lineage} (const unsigned long \&data\+\_\+position) override
+\begin{DoxyCompactList}\small\item\em Performs the actual speciation. Includes handling of speciated lineages under protracted conditions. \end{DoxyCompactList}\item 
+bool \hyperlink{class_protracted_tree_ab0bb05fbdeb2aa75a3d3128ded3d655b}{get\+Protracted} () override
+\begin{DoxyCompactList}\small\item\em Gets the protractedness of the simulation. Overridden by protracted child classes. \end{DoxyCompactList}\item 
+void \hyperlink{class_protracted_tree_a6e04aa92dd30e889a468d9b9fc6fd58d}{set\+Protracted\+Variables} (double speciation\+\_\+gen\+\_\+min, double speciation\+\_\+gen\+\_\+max) override
+\begin{DoxyCompactList}\small\item\em Sets the protracted variables. \end{DoxyCompactList}\item 
+string \hyperlink{class_protracted_tree_af0eca5eb2a790fcee9a0854e30088753}{get\+Protracted\+Variables} () override
+\begin{DoxyCompactList}\small\item\em Gets the protracted variables and returns them as a single, newline separated string. \end{DoxyCompactList}\item 
+double \hyperlink{class_protracted_tree_a331561815abc7d595e88d98e9268e7a1}{get\+Protracted\+Generation\+Min} () override
+\begin{DoxyCompactList}\small\item\em Gets the minimum number of generations a lineage must exist. \end{DoxyCompactList}\item 
+double \hyperlink{class_protracted_tree_a2093dd13cdbfc66e6c1de1406023bad6}{get\+Protracted\+Generation\+Max} () override
+\begin{DoxyCompactList}\small\item\em Gets the maximum number of generations a lineage can exist. \end{DoxyCompactList}\item 
+string \hyperlink{class_protracted_tree_a505a464578e6a7028e66f26b3e6b4a92}{protracted\+Vars\+To\+String} () override
+\begin{DoxyCompactList}\small\item\em Outputs the protracted variables to a string. \end{DoxyCompactList}\item 
+void \hyperlink{class_protracted_tree_a56a3631e65bb91d04ba4626c4c1ea79a}{apply\+Spec\+Rate} (double sr, double t)
+\begin{DoxyCompactList}\small\item\em Applies the given speciation rate to the tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Sam Thompson 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+10/07/2017 
+\end{DoxyDate}
+
+
+\subsection{Member Function Documentation}
+\index{Protracted\+Tree@{Protracted\+Tree}!apply\+Spec\+Rate@{apply\+Spec\+Rate}}
+\index{apply\+Spec\+Rate@{apply\+Spec\+Rate}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{apply\+Spec\+Rate(double sr, double t)}{applySpecRate(double sr, double t)}}]{\setlength{\rightskip}{0pt plus 5cm}void Protracted\+Tree\+::apply\+Spec\+Rate (
+\begin{DoxyParamCaption}
+\item[{double}]{sr, }
+\item[{double}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{class_protracted_tree_a56a3631e65bb91d04ba4626c4c1ea79a}{}\label{class_protracted_tree_a56a3631e65bb91d04ba4626c4c1ea79a}
+
+
+Applies the given speciation rate to the tree. 
+
+\begin{DoxyNote}{Note}
+Currently this just copies code from the version in tree, which is not ideal, but this avoids creating an extra function.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em sr} & the required speciation rate \\
+\hline
+\end{DoxyParams}
+\index{Protracted\+Tree@{Protracted\+Tree}!calc\+Speciation@{calc\+Speciation}}
+\index{calc\+Speciation@{calc\+Speciation}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{calc\+Speciation(const long double \&random\+\_\+number, const long double \&speciation\+\_\+rate, const unsigned long \&no\+\_\+generations) override}{calcSpeciation(const long double &random_number, const long double &speciation_rate, const unsigned long &no_generations) override}}]{\setlength{\rightskip}{0pt plus 5cm}bool Protracted\+Tree\+::calc\+Speciation (
+\begin{DoxyParamCaption}
+\item[{const long double \&}]{random\+\_\+number, }
+\item[{const long double \&}]{speciation\+\_\+rate, }
+\item[{const unsigned long \&}]{no\+\_\+generations}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_af9690f122e77c0a60d363af3e818c9a2}{}\label{class_protracted_tree_af9690f122e77c0a60d363af3e818c9a2}
+
+
+Calculates the speciation probability from the random number, speciation rate and number of generations a lineage has existed for. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em random\+\_\+number} & the generated random number from 0-\/1 \\
+\hline
+{\em speciation\+\_\+rate} & the speciation rate to be applied \\
+\hline
+{\em no\+\_\+generations} & the number of generations a lineage has existed for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+if true, speciation has occured 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_abc9389511e1aecf5e573315fc8f4d77c}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!get\+Protracted@{get\+Protracted}}
+\index{get\+Protracted@{get\+Protracted}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted() override}{getProtracted() override}}]{\setlength{\rightskip}{0pt plus 5cm}bool Protracted\+Tree\+::get\+Protracted (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_ab0bb05fbdeb2aa75a3d3128ded3d655b}{}\label{class_protracted_tree_ab0bb05fbdeb2aa75a3d3128ded3d655b}
+
+
+Gets the protractedness of the simulation. Overridden by protracted child classes. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_aa23a57f7863d58384f61d464d998ab3c}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!get\+Protracted\+Generation\+Max@{get\+Protracted\+Generation\+Max}}
+\index{get\+Protracted\+Generation\+Max@{get\+Protracted\+Generation\+Max}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted\+Generation\+Max() override}{getProtractedGenerationMax() override}}]{\setlength{\rightskip}{0pt plus 5cm}double Protracted\+Tree\+::get\+Protracted\+Generation\+Max (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_a2093dd13cdbfc66e6c1de1406023bad6}{}\label{class_protracted_tree_a2093dd13cdbfc66e6c1de1406023bad6}
+
+
+Gets the maximum number of generations a lineage can exist. 
+
+\begin{DoxyReturn}{Returns}
+double the number of generations a lineage must exist 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_a0c5e746982a87f24c083f4534bf92b45}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!get\+Protracted\+Generation\+Min@{get\+Protracted\+Generation\+Min}}
+\index{get\+Protracted\+Generation\+Min@{get\+Protracted\+Generation\+Min}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted\+Generation\+Min() override}{getProtractedGenerationMin() override}}]{\setlength{\rightskip}{0pt plus 5cm}double Protracted\+Tree\+::get\+Protracted\+Generation\+Min (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_a331561815abc7d595e88d98e9268e7a1}{}\label{class_protracted_tree_a331561815abc7d595e88d98e9268e7a1}
+
+
+Gets the minimum number of generations a lineage must exist. 
+
+\begin{DoxyReturn}{Returns}
+double the number of generations a lineage must exist 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_a6ffc42e941f352cd74f01f6f7011f00b}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!get\+Protracted\+Variables@{get\+Protracted\+Variables}}
+\index{get\+Protracted\+Variables@{get\+Protracted\+Variables}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted\+Variables() override}{getProtractedVariables() override}}]{\setlength{\rightskip}{0pt plus 5cm}string Protracted\+Tree\+::get\+Protracted\+Variables (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_af0eca5eb2a790fcee9a0854e30088753}{}\label{class_protracted_tree_af0eca5eb2a790fcee9a0854e30088753}
+
+
+Gets the protracted variables and returns them as a single, newline separated string. 
+
+\begin{DoxyReturn}{Returns}
+string containing the protracted variables, separated by newlines. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_a34c0808026bf00546c8f9786376be730}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!protracted\+Vars\+To\+String@{protracted\+Vars\+To\+String}}
+\index{protracted\+Vars\+To\+String@{protracted\+Vars\+To\+String}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{protracted\+Vars\+To\+String() override}{protractedVarsToString() override}}]{\setlength{\rightskip}{0pt plus 5cm}string Protracted\+Tree\+::protracted\+Vars\+To\+String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_a505a464578e6a7028e66f26b3e6b4a92}{}\label{class_protracted_tree_a505a464578e6a7028e66f26b3e6b4a92}
+
+
+Outputs the protracted variables to a string. 
+
+This function is intended to be overridden by derived classes. It is intended the output is used for writing to S\+QL databases.
+
+\begin{DoxyReturn}{Returns}
+string containing a list of the protracted speciation variables. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_tree_aa8bb5d93c7992404ede0a49bb69ccd1f}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!set\+Protracted\+Variables@{set\+Protracted\+Variables}}
+\index{set\+Protracted\+Variables@{set\+Protracted\+Variables}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{set\+Protracted\+Variables(double speciation\+\_\+gen\+\_\+min, double speciation\+\_\+gen\+\_\+max) override}{setProtractedVariables(double speciation_gen_min, double speciation_gen_max) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Protracted\+Tree\+::set\+Protracted\+Variables (
+\begin{DoxyParamCaption}
+\item[{double}]{speciation\+\_\+gen\+\_\+min, }
+\item[{double}]{speciation\+\_\+gen\+\_\+max}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_a6e04aa92dd30e889a468d9b9fc6fd58d}{}\label{class_protracted_tree_a6e04aa92dd30e889a468d9b9fc6fd58d}
+
+
+Sets the protracted variables. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speciation\+\_\+gen\+\_\+min} & the minimum number of generations to have passed before speciation is allowed \\
+\hline
+{\em speciation\+\_\+gen\+\_\+max} & the maximum number of generations a lineage can exist for before it is speciated. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_tree_a891764ffc1e29d3edbe0fd08e67a184b}{Tree}.
+
+\index{Protracted\+Tree@{Protracted\+Tree}!speciate\+Lineage@{speciate\+Lineage}}
+\index{speciate\+Lineage@{speciate\+Lineage}!Protracted\+Tree@{Protracted\+Tree}}
+\subsubsection[{\texorpdfstring{speciate\+Lineage(const unsigned long \&data\+\_\+position) override}{speciateLineage(const unsigned long &data_position) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Protracted\+Tree\+::speciate\+Lineage (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{data\+\_\+position}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_protracted_tree_aaa2f1db86b0fd49a69d0809bd1c1fb81}{}\label{class_protracted_tree_aaa2f1db86b0fd49a69d0809bd1c1fb81}
+
+
+Performs the actual speciation. Includes handling of speciated lineages under protracted conditions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+position} & the position in the array of Tree\+Nodes for this lineage \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_tree_a32e12cc62ce2d9ae893214b1f4cfad1f}{Tree}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_protracted_tree_8h}{Protracted\+Tree.\+h}\item 
+necsim/\hyperlink{_protracted_tree_8cpp}{Protracted\+Tree.\+cpp}\end{DoxyCompactItemize}

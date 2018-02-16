@@ -30,7 +30,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
 from pycoalescence.simulation import Simulation, Map, NECSimError
-from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description, fetch_table_from_sql, check_sql_table_exist, ApplySpecError
+from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description, fetch_table_from_sql,\
+	check_sql_table_exist, ApplySpecError
 from pycoalescence.setup import *
 from pycoalescence.system_operations import *
 from pycoalescence.fragments import FragmentedLandscape
@@ -1732,8 +1733,6 @@ class TestCoalPause(unittest.TestCase):
 		self.assertEqual(self.coal.get_richness(), self.coal2.get_richness())
 		single_run_species_list = list(self.tree1.get_species_list())
 		pause_sim_species_list = list(self.tree2.get_species_list())
-		# print(pause_sim_species_list)
-		# print(single_run_species_list)
 		self.assertAlmostEqual(single_run_species_list[0][9], pause_sim_species_list[0][9], 16)
 		self.assertListEqual([x for x in pause_sim_species_list],
 							 [x for x in single_run_species_list])

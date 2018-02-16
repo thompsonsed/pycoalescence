@@ -1,0 +1,26 @@
+var class_data_point =
+[
+    [ "DataPoint", "class_data_point.html#a1e1b3678b2d1522b7956148a57e1602f", null ],
+    [ "~DataPoint", "class_data_point.html#aecfe4a3c98e1f29f9e7f8267a26eadd9", null ],
+    [ "decreaseNwrap", "class_data_point.html#a2d939bcbc5abae0d80fdd42a1b26725f", null ],
+    [ "getListpos", "class_data_point.html#a8c60a34fba35ffb915a57f0968043798", null ],
+    [ "getMinmax", "class_data_point.html#a190823c53c821336c7a40d1aee6a5995", null ],
+    [ "getNext", "class_data_point.html#a77bfe024c349550b8f0812cca41c8649", null ],
+    [ "getNwrap", "class_data_point.html#a874d55e25ca0809ba5b8d5d5256731e5", null ],
+    [ "getReference", "class_data_point.html#aa8b811037d67e2c74c16e9d85939969e", null ],
+    [ "getXpos", "class_data_point.html#a4b97b62d0d3438e0317e39084c9b95cb", null ],
+    [ "getXwrap", "class_data_point.html#a94c95a87b33ce5d986ff74f6a5c96fcd", null ],
+    [ "getYpos", "class_data_point.html#a185dbf2dc87c0cb9aaaa75e7ec65e79a", null ],
+    [ "getYwrap", "class_data_point.html#ab9d7976595edc06922c997767afc9424", null ],
+    [ "setEndpoint", "class_data_point.html#a1d80702ad55b2c64f386b71052adc4d8", null ],
+    [ "setListPosition", "class_data_point.html#a8cbeb60a0cb7e46a2bf37973dc72c3b2", null ],
+    [ "setMinmax", "class_data_point.html#a45a301225a2d39b98d19ed88264b5d31", null ],
+    [ "setNext", "class_data_point.html#aa8279493a06f7c9f810e27673d38f5d4", null ],
+    [ "setNwrap", "class_data_point.html#ae73f807fa45356311a58953fb39b4e46", null ],
+    [ "setReference", "class_data_point.html#a2433657bfd215678d40904310b926033", null ],
+    [ "setup", "class_data_point.html#a426e22fa33be467e3cddf71990d3ca8a", null ],
+    [ "setup", "class_data_point.html#abddc939aebb23f387a23ca5f9ce0eda0", null ],
+    [ "setup", "class_data_point.html#a1e8c41e56eb1d69a52f5246d9f7ee3f1", null ],
+    [ "operator<<", "class_data_point.html#adfa94e754617c0b58a39bf86925beeac", null ],
+    [ "operator>>", "class_data_point.html#a5ea22488fc99136335b4c8474623ccc3", null ]
+];

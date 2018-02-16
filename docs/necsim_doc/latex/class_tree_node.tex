@@ -1,0 +1,558 @@
+\hypertarget{class_tree_node}{}\section{Tree\+Node Class Reference}
+\label{class_tree_node}\index{Tree\+Node@{Tree\+Node}}
+
+
+The \hyperlink{class_tree_node}{Tree\+Node} class that acts as a data storage object for the phylogenetic tree.  
+
+
+
+
+{\ttfamily \#include $<$Tree\+Node.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_tree_node_a984a98d5ccf7ef1f5a18094c6821f35d}{Tree\+Node} ()\hypertarget{class_tree_node_a984a98d5ccf7ef1f5a18094c6821f35d}{}\label{class_tree_node_a984a98d5ccf7ef1f5a18094c6821f35d}
+
+\begin{DoxyCompactList}\small\item\em The default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_tree_node_a89eb1eb0e25fccaa83c780b85f95b570}{$\sim$\+Tree\+Node} ()=default\hypertarget{class_tree_node_a89eb1eb0e25fccaa83c780b85f95b570}{}\label{class_tree_node_a89eb1eb0e25fccaa83c780b85f95b570}
+
+\begin{DoxyCompactList}\small\item\em The default destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_aac058ef4e26cc498e54ac5d0208e96e1}{setup} (bool z, unsigned long xp, unsigned long yp, long xi, long yi)
+\begin{DoxyCompactList}\small\item\em Sets up variables with initial conditions. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_ab8300978f2020de993f8ead2e08b8377}{setup} (bool z)
+\begin{DoxyCompactList}\small\item\em Sets up variables with initial conditions. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a5d27405bfc2cf6be90895de24b40e076}{setup} (const bool \&is\+\_\+tip, const long \&xp, const long \&yp, const long \&xi, const long \&yi, const long double \&generation)
+\begin{DoxyCompactList}\small\item\em Overloaded \hyperlink{class_tree_node_aac058ef4e26cc498e54ac5d0208e96e1}{setup()} function, additionally taking a generation time point. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_ad9f8d4d7d790cd0cd89a950cc0909519}{set\+Existence} (bool b)
+\begin{DoxyCompactList}\small\item\em Setter for the existence of the lineage. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_abd2840804b1d9b8caed25de5ae9b3ee6}{set\+Parent} (unsigned long x)
+\begin{DoxyCompactList}\small\item\em Setter for the parent reference. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a78b82146ccdd88a405c701c1389c67e2}{q\+Reset} ()\hypertarget{class_tree_node_a78b82146ccdd88a405c701c1389c67e2}{}\label{class_tree_node_a78b82146ccdd88a405c701c1389c67e2}
+
+\begin{DoxyCompactList}\small\item\em Resets the lineage. Remove any species ID, existence and speciation record. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a123ebe5ac7a4aa9c911aed404b22f166}{set\+Position} (long x, long y, long xw, long yw)
+\begin{DoxyCompactList}\small\item\em Set a new position for the lineage. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_ac5b41ed58cd5270504d4891af28a3a52}{set\+Spec} (long double d)
+\begin{DoxyCompactList}\small\item\em Setter for the randomly generated number (from N\+Rrand.\+d0()) for the speciation probability for this lineage. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a114820b41e7d84a5761573784acc1d5e}{set\+Generation\+Rate} (unsigned long g)
+\begin{DoxyCompactList}\small\item\em Setter for the number of generations this lineage has existed for. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_ab51e108eac10b3f9e3fdd1e42882a94c}{set\+Generation} (long double d)
+\begin{DoxyCompactList}\small\item\em Setter for the birth generation timer for the lineage. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a7b0ead212f130b9754be7f1cb6eda13e}{set\+Speciation} (bool s)
+\begin{DoxyCompactList}\small\item\em Setter for the speciation boolean. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a99516661c1321a1b4948be29ed247936}{burn\+Species} (unsigned long idin)
+\begin{DoxyCompactList}\small\item\em Setter for the species ID. Once set to something other than 0, this cannot be changed with a call to \hyperlink{class_tree_node_a78b82146ccdd88a405c701c1389c67e2}{q\+Reset()} or \hyperlink{class_tree_node_a715869c786bb0442d56994de11571605}{reset\+Species()}. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_acb1926edf4d646f81a60e3b76a6475e0}{set\+Tip} (bool b)
+\begin{DoxyCompactList}\small\item\em Setter for the tip boolean. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a715869c786bb0442d56994de11571605}{reset\+Species} ()\hypertarget{class_tree_node_a715869c786bb0442d56994de11571605}{}\label{class_tree_node_a715869c786bb0442d56994de11571605}
+
+\begin{DoxyCompactList}\small\item\em Reset the species ID to 0. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a9601d828d9ff808dd3081410a105a069}{increase\+Gen} ()\hypertarget{class_tree_node_a9601d828d9ff808dd3081410a105a069}{}\label{class_tree_node_a9601d828d9ff808dd3081410a105a069}
+
+\begin{DoxyCompactList}\small\item\em Increases the generation counter by one. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_node_a9d9336ac6e4157c8618c40eb43ddb948}{get\+Existence} ()
+\begin{DoxyCompactList}\small\item\em Getter for the existence boolean. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_node_a469a21919177bd1161f9bfa3c13bd148}{is\+Tip} ()
+\begin{DoxyCompactList}\small\item\em Getter for the tip boolean. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_node_a8115342188f03eeaace4573531fdbfc2}{get\+Parent} ()
+\begin{DoxyCompactList}\small\item\em Getter for the parent location. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_node_a64333707f61650c168e4fb56bde1f95c}{get\+Xpos} ()
+\begin{DoxyCompactList}\small\item\em Getter for the x position. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_node_a37a2d729519175d8a509e616256d8d1a}{get\+Ypos} ()
+\begin{DoxyCompactList}\small\item\em Getter for the y position. \end{DoxyCompactList}\item 
+long \hyperlink{class_tree_node_a97967c939c284e38c2471a16063d6f58}{get\+Xwrap} ()
+\begin{DoxyCompactList}\small\item\em Getter for the number of times the lineage is wrapped in the x dimension. \end{DoxyCompactList}\item 
+long \hyperlink{class_tree_node_a9111da13a5d750d2a38c0e3f4a7d7a5a}{get\+Ywrap} ()
+\begin{DoxyCompactList}\small\item\em Getter for the number of times the lineage is wrapped in the y dimension. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_node_a1c6376914155dee34c708a9daa664f81}{has\+Speciated} ()
+\begin{DoxyCompactList}\small\item\em Getter for the speciation boolean. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_node_a923a5ffbd66e3823a816fb9d76555eaf}{get\+Species\+ID} ()
+\begin{DoxyCompactList}\small\item\em Getter for the species ID. \end{DoxyCompactList}\item 
+long double \hyperlink{class_tree_node_af43059aa1fd45e75c9e48ef8f67fa3b1}{get\+Spec\+Rate} ()
+\begin{DoxyCompactList}\small\item\em Getter for the randomly generated speciation probability. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_node_ac4e7efffacf32905d73c83b9092232b0}{get\+Gen\+Rate} ()
+\begin{DoxyCompactList}\small\item\em Getter for the number of generations the lineage has existed. \end{DoxyCompactList}\item 
+long double \hyperlink{class_tree_node_a55ff42f83d75a9a1fae09605b3e2027f}{get\+Generation} ()
+\begin{DoxyCompactList}\small\item\em Getter for the generation the lineage was created. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_node_a65a021122e06071f6f127be3a0171518}{speciate} ()\hypertarget{class_tree_node_a65a021122e06071f6f127be3a0171518}{}\label{class_tree_node_a65a021122e06071f6f127be3a0171518}
+
+\begin{DoxyCompactList}\small\item\em Sets the speciation boolean to true. \end{DoxyCompactList}\item 
+\hyperlink{class_tree_node}{Tree\+Node} \& \hyperlink{class_tree_node_af362bf557fa6af455f6bac31c4f0356a}{operator=} (const \hyperlink{class_tree_node}{Tree\+Node} \&t)
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{class_tree_node_a2d73715892a5f20100609978a53dea81}{operator$<$$<$} (ostream \&os, const \hyperlink{class_tree_node}{Tree\+Node} \&t)
+\begin{DoxyCompactList}\small\item\em Overloading the $<$$<$ operator for outputting a Treenode object to an output stream. \end{DoxyCompactList}\item 
+istream \& \hyperlink{class_tree_node_afc6e1f55282105fd812724a8bb09a918}{operator$>$$>$} (istream \&is, \hyperlink{class_tree_node}{Tree\+Node} \&t)
+\begin{DoxyCompactList}\small\item\em Overloading the $>$$>$ operator for inputting the Treenode object from an input stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{class_tree_node}{Tree\+Node} class that acts as a data storage object for the phylogenetic tree. 
+
+Also contains all the necessary routines for changes to a lineage\textquotesingle{}s attributes, called by Tree\+List objects when generating new coalescence trees. 
+
+\subsection{Member Function Documentation}
+\index{Tree\+Node@{Tree\+Node}!burn\+Species@{burn\+Species}}
+\index{burn\+Species@{burn\+Species}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{burn\+Species(unsigned long idin)}{burnSpecies(unsigned long idin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::burn\+Species (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{idin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a99516661c1321a1b4948be29ed247936}{}\label{class_tree_node_a99516661c1321a1b4948be29ed247936}
+
+
+Setter for the species ID. Once set to something other than 0, this cannot be changed with a call to \hyperlink{class_tree_node_a78b82146ccdd88a405c701c1389c67e2}{q\+Reset()} or \hyperlink{class_tree_node_a715869c786bb0442d56994de11571605}{reset\+Species()}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em idin} & the species ID. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!get\+Existence@{get\+Existence}}
+\index{get\+Existence@{get\+Existence}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Existence()}{getExistence()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+Node\+::get\+Existence (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a9d9336ac6e4157c8618c40eb43ddb948}{}\label{class_tree_node_a9d9336ac6e4157c8618c40eb43ddb948}
+
+
+Getter for the existence boolean. 
+
+\begin{DoxyReturn}{Returns}
+the existence boolean. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Generation@{get\+Generation}}
+\index{get\+Generation@{get\+Generation}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Generation()}{getGeneration()}}]{\setlength{\rightskip}{0pt plus 5cm}long double Tree\+Node\+::get\+Generation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a55ff42f83d75a9a1fae09605b3e2027f}{}\label{class_tree_node_a55ff42f83d75a9a1fae09605b3e2027f}
+
+
+Getter for the generation the lineage was created. 
+
+\begin{DoxyReturn}{Returns}
+the generation counter the lineage was created. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Gen\+Rate@{get\+Gen\+Rate}}
+\index{get\+Gen\+Rate@{get\+Gen\+Rate}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Gen\+Rate()}{getGenRate()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+Node\+::get\+Gen\+Rate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_ac4e7efffacf32905d73c83b9092232b0}{}\label{class_tree_node_ac4e7efffacf32905d73c83b9092232b0}
+
+
+Getter for the number of generations the lineage has existed. 
+
+\begin{DoxyReturn}{Returns}
+the number of generations of existence. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Parent@{get\+Parent}}
+\index{get\+Parent@{get\+Parent}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Parent()}{getParent()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+Node\+::get\+Parent (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a8115342188f03eeaace4573531fdbfc2}{}\label{class_tree_node_a8115342188f03eeaace4573531fdbfc2}
+
+
+Getter for the parent location. 
+
+\begin{DoxyReturn}{Returns}
+the parent reference. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Species\+ID@{get\+Species\+ID}}
+\index{get\+Species\+ID@{get\+Species\+ID}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Species\+I\+D()}{getSpeciesID()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+Node\+::get\+Species\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a923a5ffbd66e3823a816fb9d76555eaf}{}\label{class_tree_node_a923a5ffbd66e3823a816fb9d76555eaf}
+
+
+Getter for the species ID. 
+
+\begin{DoxyReturn}{Returns}
+the species ID. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Spec\+Rate@{get\+Spec\+Rate}}
+\index{get\+Spec\+Rate@{get\+Spec\+Rate}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Spec\+Rate()}{getSpecRate()}}]{\setlength{\rightskip}{0pt plus 5cm}long double Tree\+Node\+::get\+Spec\+Rate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_af43059aa1fd45e75c9e48ef8f67fa3b1}{}\label{class_tree_node_af43059aa1fd45e75c9e48ef8f67fa3b1}
+
+
+Getter for the randomly generated speciation probability. 
+
+\begin{DoxyReturn}{Returns}
+the speciation probability. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Xpos@{get\+Xpos}}
+\index{get\+Xpos@{get\+Xpos}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Xpos()}{getXpos()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+Node\+::get\+Xpos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a64333707f61650c168e4fb56bde1f95c}{}\label{class_tree_node_a64333707f61650c168e4fb56bde1f95c}
+
+
+Getter for the x position. 
+
+\begin{DoxyReturn}{Returns}
+the x position. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Xwrap@{get\+Xwrap}}
+\index{get\+Xwrap@{get\+Xwrap}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Xwrap()}{getXwrap()}}]{\setlength{\rightskip}{0pt plus 5cm}long Tree\+Node\+::get\+Xwrap (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a97967c939c284e38c2471a16063d6f58}{}\label{class_tree_node_a97967c939c284e38c2471a16063d6f58}
+
+
+Getter for the number of times the lineage is wrapped in the x dimension. 
+
+\begin{DoxyReturn}{Returns}
+the number of times the lineage is wrapped in the x dimension. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Ypos@{get\+Ypos}}
+\index{get\+Ypos@{get\+Ypos}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Ypos()}{getYpos()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+Node\+::get\+Ypos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a37a2d729519175d8a509e616256d8d1a}{}\label{class_tree_node_a37a2d729519175d8a509e616256d8d1a}
+
+
+Getter for the y position. 
+
+\begin{DoxyReturn}{Returns}
+the y position. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!get\+Ywrap@{get\+Ywrap}}
+\index{get\+Ywrap@{get\+Ywrap}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{get\+Ywrap()}{getYwrap()}}]{\setlength{\rightskip}{0pt plus 5cm}long Tree\+Node\+::get\+Ywrap (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a9111da13a5d750d2a38c0e3f4a7d7a5a}{}\label{class_tree_node_a9111da13a5d750d2a38c0e3f4a7d7a5a}
+
+
+Getter for the number of times the lineage is wrapped in the y dimension. 
+
+\begin{DoxyReturn}{Returns}
+the number of times the lineage is wrapped in the y dimension. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!has\+Speciated@{has\+Speciated}}
+\index{has\+Speciated@{has\+Speciated}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{has\+Speciated()}{hasSpeciated()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+Node\+::has\+Speciated (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a1c6376914155dee34c708a9daa664f81}{}\label{class_tree_node_a1c6376914155dee34c708a9daa664f81}
+
+
+Getter for the speciation boolean. 
+
+\begin{DoxyReturn}{Returns}
+the speciation boolean. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!is\+Tip@{is\+Tip}}
+\index{is\+Tip@{is\+Tip}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{is\+Tip()}{isTip()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+Node\+::is\+Tip (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a469a21919177bd1161f9bfa3c13bd148}{}\label{class_tree_node_a469a21919177bd1161f9bfa3c13bd148}
+
+
+Getter for the tip boolean. 
+
+\begin{DoxyReturn}{Returns}
+the tip boolean. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!operator=@{operator=}}
+\index{operator=@{operator=}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{operator=(const Tree\+Node \&t)}{operator=(const TreeNode &t)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Tree\+Node} \& Tree\+Node\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Tree\+Node} \&}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_af362bf557fa6af455f6bac31c4f0356a}{}\label{class_tree_node_af362bf557fa6af455f6bac31c4f0356a}
+Overloading the equality operator for Tree\+Nodes 
+\begin{DoxyParams}{Parameters}
+{\em t} & the input \hyperlink{class_tree_node}{Tree\+Node} \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Existence@{set\+Existence}}
+\index{set\+Existence@{set\+Existence}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Existence(bool b)}{setExistence(bool b)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Existence (
+\begin{DoxyParamCaption}
+\item[{bool}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_ad9f8d4d7d790cd0cd89a950cc0909519}{}\label{class_tree_node_ad9f8d4d7d790cd0cd89a950cc0909519}
+
+
+Setter for the existence of the lineage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & existence boolean. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Generation@{set\+Generation}}
+\index{set\+Generation@{set\+Generation}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Generation(long double d)}{setGeneration(long double d)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Generation (
+\begin{DoxyParamCaption}
+\item[{long double}]{d}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_ab51e108eac10b3f9e3fdd1e42882a94c}{}\label{class_tree_node_ab51e108eac10b3f9e3fdd1e42882a94c}
+
+
+Setter for the birth generation timer for the lineage. 
+
+Note that moves that don\textquotesingle{}t involve coalescence do not create a new Treenode object, and therefore the generation\+\_\+added does not get updated. However, coalescence events will cause a new Treenode object creation. The lineage birth generation is generally only important for calculating the age of tips. 
+\begin{DoxyParams}{Parameters}
+{\em d} & \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Generation\+Rate@{set\+Generation\+Rate}}
+\index{set\+Generation\+Rate@{set\+Generation\+Rate}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Generation\+Rate(unsigned long g)}{setGenerationRate(unsigned long g)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Generation\+Rate (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{g}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a114820b41e7d84a5761573784acc1d5e}{}\label{class_tree_node_a114820b41e7d84a5761573784acc1d5e}
+
+
+Setter for the number of generations this lineage has existed for. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & the number of generations that the lineage has existed. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Parent@{set\+Parent}}
+\index{set\+Parent@{set\+Parent}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Parent(unsigned long x)}{setParent(unsigned long x)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Parent (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{x}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_abd2840804b1d9b8caed25de5ae9b3ee6}{}\label{class_tree_node_abd2840804b1d9b8caed25de5ae9b3ee6}
+
+
+Setter for the parent reference. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & a reference for the parent location. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Position@{set\+Position}}
+\index{set\+Position@{set\+Position}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Position(long x, long y, long xw, long yw)}{setPosition(long x, long y, long xw, long yw)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Position (
+\begin{DoxyParamCaption}
+\item[{long}]{x, }
+\item[{long}]{y, }
+\item[{long}]{xw, }
+\item[{long}]{yw}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a123ebe5ac7a4aa9c911aed404b22f166}{}\label{class_tree_node_a123ebe5ac7a4aa9c911aed404b22f166}
+
+
+Set a new position for the lineage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid. \\
+\hline
+{\em y} & the y position on the grid. \\
+\hline
+{\em xw} & the number of wraps in the x dimension. \\
+\hline
+{\em yw} & the number of wraps in the y dimension. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Spec@{set\+Spec}}
+\index{set\+Spec@{set\+Spec}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Spec(long double d)}{setSpec(long double d)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Spec (
+\begin{DoxyParamCaption}
+\item[{long double}]{d}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_ac5b41ed58cd5270504d4891af28a3a52}{}\label{class_tree_node_ac5b41ed58cd5270504d4891af28a3a52}
+
+
+Setter for the randomly generated number (from N\+Rrand.\+d0()) for the speciation probability for this lineage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & the speciation probability. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Speciation@{set\+Speciation}}
+\index{set\+Speciation@{set\+Speciation}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Speciation(bool s)}{setSpeciation(bool s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Speciation (
+\begin{DoxyParamCaption}
+\item[{bool}]{s}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a7b0ead212f130b9754be7f1cb6eda13e}{}\label{class_tree_node_a7b0ead212f130b9754be7f1cb6eda13e}
+
+
+Setter for the speciation boolean. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the speciation boolean. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!set\+Tip@{set\+Tip}}
+\index{set\+Tip@{set\+Tip}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{set\+Tip(bool b)}{setTip(bool b)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::set\+Tip (
+\begin{DoxyParamCaption}
+\item[{bool}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_acb1926edf4d646f81a60e3b76a6475e0}{}\label{class_tree_node_acb1926edf4d646f81a60e3b76a6475e0}
+
+
+Setter for the tip boolean. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & the tip boolean. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!setup@{setup}}
+\index{setup@{setup}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{setup(bool z, unsigned long xp, unsigned long yp, long xi, long yi)}{setup(bool z, unsigned long xp, unsigned long yp, long xi, long yi)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::setup (
+\begin{DoxyParamCaption}
+\item[{bool}]{z, }
+\item[{unsigned long}]{xp, }
+\item[{unsigned long}]{yp, }
+\item[{long}]{xi, }
+\item[{long}]{yi}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_aac058ef4e26cc498e54ac5d0208e96e1}{}\label{class_tree_node_aac058ef4e26cc498e54ac5d0208e96e1}
+
+
+Sets up variables with initial conditions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em z} & whether this lineage is a tip or not (represents the end of a tree). \\
+\hline
+{\em xp} & the x position on the grid. \\
+\hline
+{\em yp} & the y position on the grid. \\
+\hline
+{\em xi} & the number of wraps in the x dimension. \\
+\hline
+{\em yi} & the number of wraps in the y dimension. \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!setup@{setup}}
+\index{setup@{setup}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{setup(bool z)}{setup(bool z)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::setup (
+\begin{DoxyParamCaption}
+\item[{bool}]{z}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_ab8300978f2020de993f8ead2e08b8377}{}\label{class_tree_node_ab8300978f2020de993f8ead2e08b8377}
+
+
+Sets up variables with initial conditions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em z} & whether this lineage is a tip or not (represents the end of a tree) \\
+\hline
+\end{DoxyParams}
+\index{Tree\+Node@{Tree\+Node}!setup@{setup}}
+\index{setup@{setup}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{setup(const bool \&is\+\_\+tip, const long \&xp, const long \&yp, const long \&xi, const long \&yi, const long double \&generation)}{setup(const bool &is_tip, const long &xp, const long &yp, const long &xi, const long &yi, const long double &generation)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+Node\+::setup (
+\begin{DoxyParamCaption}
+\item[{const bool \&}]{is\+\_\+tip, }
+\item[{const long \&}]{xp, }
+\item[{const long \&}]{yp, }
+\item[{const long \&}]{xi, }
+\item[{const long \&}]{yi, }
+\item[{const long double \&}]{generation}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_node_a5d27405bfc2cf6be90895de24b40e076}{}\label{class_tree_node_a5d27405bfc2cf6be90895de24b40e076}
+
+
+Overloaded \hyperlink{class_tree_node_aac058ef4e26cc498e54ac5d0208e96e1}{setup()} function, additionally taking a generation time point. 
+
+Used when creating lineages after the start of the simulation, when the generation is not 0. 
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+tip} & whether this lineage is a tip or not (represents the end of a tree). \\
+\hline
+{\em xp} & the x position on the grid. \\
+\hline
+{\em yp} & the y position on the grid. \\
+\hline
+{\em xi} & the number of wraps in the x dimension. \\
+\hline
+{\em yi} & the number of wraps in the y dimension. \\
+\hline
+{\em generation} & the current generation at creation time. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\index{Tree\+Node@{Tree\+Node}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Tree\+Node} \&}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_tree_node_a2d73715892a5f20100609978a53dea81}{}\label{class_tree_node_a2d73715892a5f20100609978a53dea81}
+
+
+Overloading the $<$$<$ operator for outputting a Treenode object to an output stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & the output stream. \\
+\hline
+{\em t} & a Treenode object to output. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream. 
+\end{DoxyReturn}
+\index{Tree\+Node@{Tree\+Node}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Tree\+Node@{Tree\+Node}}
+\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{is, }
+\item[{{\bf Tree\+Node} \&}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_tree_node_afc6e1f55282105fd812724a8bb09a918}{}\label{class_tree_node_afc6e1f55282105fd812724a8bb09a918}
+
+
+Overloading the $>$$>$ operator for inputting the Treenode object from an input stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is} & the input stream. \\
+\hline
+{\em t} & a Treenode object to input to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the input stream. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_tree_node_8h}{Tree\+Node.\+h}\item 
+necsim/\hyperlink{_tree_node_8cpp}{Tree\+Node.\+cpp}\end{DoxyCompactItemize}

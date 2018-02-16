@@ -1,0 +1,428 @@
+\hypertarget{class_data_point}{}\section{Data\+Point Class Reference}
+\label{class_data_point}\index{Data\+Point@{Data\+Point}}
+
+
+A data object used in coalescence simulations for calculating the output. Data from this object is outputted to an S\+Q\+Lite database after simulations are complete.  
+
+
+
+
+{\ttfamily \#include $<$Data\+Point.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_data_point_a1e1b3678b2d1522b7956148a57e1602f}{Data\+Point} ()\hypertarget{class_data_point_a1e1b3678b2d1522b7956148a57e1602f}{}\label{class_data_point_a1e1b3678b2d1522b7956148a57e1602f}
+
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_data_point_aecfe4a3c98e1f29f9e7f8267a26eadd9}{$\sim$\+Data\+Point} ()=default\hypertarget{class_data_point_aecfe4a3c98e1f29f9e7f8267a26eadd9}{}\label{class_data_point_aecfe4a3c98e1f29f9e7f8267a26eadd9}
+
+\begin{DoxyCompactList}\small\item\em Standard destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a426e22fa33be467e3cddf71990d3ca8a}{setup} (unsigned long x, unsigned long y, long xwrap\+\_\+in, long ywrap\+\_\+in, unsigned long reference\+\_\+in, unsigned long list\+\_\+position\+\_\+in, double min\+\_\+max\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Setup of lineage data with any information that\textquotesingle{}s wanted. Note that nwrap is set to 0 in this routine. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_abddc939aebb23f387a23ca5f9ce0eda0}{setup} (unsigned long reference\+\_\+in, unsigned long list\+\_\+position\+\_\+in, double min\+\_\+max\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Setup of lineage data with any information that\textquotesingle{}s wanted. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a1e8c41e56eb1d69a52f5246d9f7ee3f1}{setup} (\hyperlink{class_data_point}{Data\+Point} datin)
+\begin{DoxyCompactList}\small\item\em Copy constructor from another Datapoint object. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a2433657bfd215678d40904310b926033}{set\+Reference} (unsigned long z)
+\begin{DoxyCompactList}\small\item\em Sets the mpos (the position within the \hyperlink{class_row}{Row} of \hyperlink{class_tree_node}{Tree\+Node} objects.). \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_aa8279493a06f7c9f810e27673d38f5d4}{set\+Next} (unsigned long x)
+\begin{DoxyCompactList}\small\item\em Set the next link in the linked list. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a8cbeb60a0cb7e46a2bf37973dc72c3b2}{set\+List\+Position} (unsigned long l)
+\begin{DoxyCompactList}\small\item\em Sets the list position within the \hyperlink{class_species_list}{Species\+List} object. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_ae73f807fa45356311a58953fb39b4e46}{set\+Nwrap} (unsigned long n)
+\begin{DoxyCompactList}\small\item\em Sets the number of wraps from the first \hyperlink{class_species_list}{Species\+List} wrapped lineage. If and only if this is 0, the lineage is within the main grid (i.\+e xwrap and ywrap should be 0). \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a45a301225a2d39b98d19ed88264b5d31}{set\+Minmax} (double d)
+\begin{DoxyCompactList}\small\item\em Sets the minmax variable. This is the minimum maximum speciation rate required for speciation to have occured on this branch. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_data_point_a4b97b62d0d3438e0317e39084c9b95cb}{get\+Xpos} ()
+\begin{DoxyCompactList}\small\item\em Get the x position. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_data_point_a185dbf2dc87c0cb9aaaa75e7ec65e79a}{get\+Ypos} ()
+\begin{DoxyCompactList}\small\item\em Get the y position. \end{DoxyCompactList}\item 
+long \hyperlink{class_data_point_a94c95a87b33ce5d986ff74f6a5c96fcd}{get\+Xwrap} ()
+\begin{DoxyCompactList}\small\item\em Get the x wrapping. \end{DoxyCompactList}\item 
+long \hyperlink{class_data_point_ab9d7976595edc06922c997767afc9424}{get\+Ywrap} ()
+\begin{DoxyCompactList}\small\item\em Get the y wrapping. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_data_point_aa8b811037d67e2c74c16e9d85939969e}{get\+Reference} ()
+\begin{DoxyCompactList}\small\item\em Get the reference position variable. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_data_point_a77bfe024c349550b8f0812cca41c8649}{get\+Next} ()
+\begin{DoxyCompactList}\small\item\em Gets the next element linked to this \hyperlink{class_data_point}{Data\+Point}. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_data_point_a8c60a34fba35ffb915a57f0968043798}{get\+Listpos} ()
+\begin{DoxyCompactList}\small\item\em Gets the list position with the \hyperlink{class_species_list}{Species\+List} object at the relevant x,y position. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_data_point_a874d55e25ca0809ba5b8d5d5256731e5}{get\+Nwrap} ()
+\begin{DoxyCompactList}\small\item\em Get the position in the linked list from the \hyperlink{class_species_list}{Species\+List} object. If this is 0, indicates the lineage lies on the original grid, and xwrap and ywrap should be 0. \end{DoxyCompactList}\item 
+double \hyperlink{class_data_point_a190823c53c821336c7a40d1aee6a5995}{get\+Minmax} ()
+\begin{DoxyCompactList}\small\item\em Get the maximum minimum speciation rate required for speciation to have occured on this branch. \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a2d939bcbc5abae0d80fdd42a1b26725f}{decrease\+Nwrap} ()\hypertarget{class_data_point_a2d939bcbc5abae0d80fdd42a1b26725f}{}\label{class_data_point_a2d939bcbc5abae0d80fdd42a1b26725f}
+
+\begin{DoxyCompactList}\small\item\em Decreases the nwrap by 1 (to a minimum of 0). \end{DoxyCompactList}\item 
+void \hyperlink{class_data_point_a1d80702ad55b2c64f386b71052adc4d8}{set\+Endpoint} (long x, long y, long xwrapin, long ywrapin)
+\begin{DoxyCompactList}\small\item\em Sets the position in space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{class_data_point_adfa94e754617c0b58a39bf86925beeac}{operator$<$$<$} (ostream \&os, const \hyperlink{class_data_point}{Data\+Point} \&d)
+\begin{DoxyCompactList}\small\item\em An operator for piping the variables of the Datapoint object to the output stream. \end{DoxyCompactList}\item 
+istream \& \hyperlink{class_data_point_a5ea22488fc99136335b4c8474623ccc3}{operator$>$$>$} (istream \&is, \hyperlink{class_data_point}{Data\+Point} \&d)
+\begin{DoxyCompactList}\small\item\em An operator for piping the variables in to the Datapoint object from the input stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A data object used in coalescence simulations for calculating the output. Data from this object is outputted to an S\+Q\+Lite database after simulations are complete. 
+
+\subsection{Member Function Documentation}
+\index{Data\+Point@{Data\+Point}!get\+Listpos@{get\+Listpos}}
+\index{get\+Listpos@{get\+Listpos}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Listpos()}{getListpos()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Data\+Point\+::get\+Listpos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a8c60a34fba35ffb915a57f0968043798}{}\label{class_data_point_a8c60a34fba35ffb915a57f0968043798}
+
+
+Gets the list position with the \hyperlink{class_species_list}{Species\+List} object at the relevant x,y position. 
+
+\begin{DoxyReturn}{Returns}
+the listpos. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Minmax@{get\+Minmax}}
+\index{get\+Minmax@{get\+Minmax}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Minmax()}{getMinmax()}}]{\setlength{\rightskip}{0pt plus 5cm}double Data\+Point\+::get\+Minmax (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a190823c53c821336c7a40d1aee6a5995}{}\label{class_data_point_a190823c53c821336c7a40d1aee6a5995}
+
+
+Get the maximum minimum speciation rate required for speciation to have occured on this branch. 
+
+\begin{DoxyReturn}{Returns}
+the minmax. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Next@{get\+Next}}
+\index{get\+Next@{get\+Next}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Next()}{getNext()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Data\+Point\+::get\+Next (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a77bfe024c349550b8f0812cca41c8649}{}\label{class_data_point_a77bfe024c349550b8f0812cca41c8649}
+
+
+Gets the next element linked to this \hyperlink{class_data_point}{Data\+Point}. 
+
+\begin{DoxyReturn}{Returns}
+the reference of the next individual in the linked list 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Nwrap@{get\+Nwrap}}
+\index{get\+Nwrap@{get\+Nwrap}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Nwrap()}{getNwrap()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Data\+Point\+::get\+Nwrap (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a874d55e25ca0809ba5b8d5d5256731e5}{}\label{class_data_point_a874d55e25ca0809ba5b8d5d5256731e5}
+
+
+Get the position in the linked list from the \hyperlink{class_species_list}{Species\+List} object. If this is 0, indicates the lineage lies on the original grid, and xwrap and ywrap should be 0. 
+
+\begin{DoxyReturn}{Returns}
+the nwrap. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Reference@{get\+Reference}}
+\index{get\+Reference@{get\+Reference}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Reference()}{getReference()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Data\+Point\+::get\+Reference (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_aa8b811037d67e2c74c16e9d85939969e}{}\label{class_data_point_aa8b811037d67e2c74c16e9d85939969e}
+
+
+Get the reference position variable. 
+
+\begin{DoxyReturn}{Returns}
+the mpos. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Xpos@{get\+Xpos}}
+\index{get\+Xpos@{get\+Xpos}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Xpos()}{getXpos()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Data\+Point\+::get\+Xpos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a4b97b62d0d3438e0317e39084c9b95cb}{}\label{class_data_point_a4b97b62d0d3438e0317e39084c9b95cb}
+
+
+Get the x position. 
+
+\begin{DoxyReturn}{Returns}
+the xpos. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Xwrap@{get\+Xwrap}}
+\index{get\+Xwrap@{get\+Xwrap}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Xwrap()}{getXwrap()}}]{\setlength{\rightskip}{0pt plus 5cm}long Data\+Point\+::get\+Xwrap (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a94c95a87b33ce5d986ff74f6a5c96fcd}{}\label{class_data_point_a94c95a87b33ce5d986ff74f6a5c96fcd}
+
+
+Get the x wrapping. 
+
+\begin{DoxyReturn}{Returns}
+the xwrap. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Ypos@{get\+Ypos}}
+\index{get\+Ypos@{get\+Ypos}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Ypos()}{getYpos()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Data\+Point\+::get\+Ypos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a185dbf2dc87c0cb9aaaa75e7ec65e79a}{}\label{class_data_point_a185dbf2dc87c0cb9aaaa75e7ec65e79a}
+
+
+Get the y position. 
+
+\begin{DoxyReturn}{Returns}
+the ypos. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!get\+Ywrap@{get\+Ywrap}}
+\index{get\+Ywrap@{get\+Ywrap}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{get\+Ywrap()}{getYwrap()}}]{\setlength{\rightskip}{0pt plus 5cm}long Data\+Point\+::get\+Ywrap (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_ab9d7976595edc06922c997767afc9424}{}\label{class_data_point_ab9d7976595edc06922c997767afc9424}
+
+
+Get the y wrapping. 
+
+\begin{DoxyReturn}{Returns}
+the ywrap. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!set\+Endpoint@{set\+Endpoint}}
+\index{set\+Endpoint@{set\+Endpoint}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{set\+Endpoint(long x, long y, long xwrapin, long ywrapin)}{setEndpoint(long x, long y, long xwrapin, long ywrapin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::set\+Endpoint (
+\begin{DoxyParamCaption}
+\item[{long}]{x, }
+\item[{long}]{y, }
+\item[{long}]{xwrapin, }
+\item[{long}]{ywrapin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a1d80702ad55b2c64f386b71052adc4d8}{}\label{class_data_point_a1d80702ad55b2c64f386b71052adc4d8}
+
+
+Sets the position in space. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position. \\
+\hline
+{\em y} & the y position. \\
+\hline
+{\em xwrapin} & the number of wraps in the x direction. \\
+\hline
+{\em ywrapin} & the number of wraps in the y direction. \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!set\+List\+Position@{set\+List\+Position}}
+\index{set\+List\+Position@{set\+List\+Position}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{set\+List\+Position(unsigned long l)}{setListPosition(unsigned long l)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::set\+List\+Position (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{l}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a8cbeb60a0cb7e46a2bf37973dc72c3b2}{}\label{class_data_point_a8cbeb60a0cb7e46a2bf37973dc72c3b2}
+
+
+Sets the list position within the \hyperlink{class_species_list}{Species\+List} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & the input list position. \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!set\+Minmax@{set\+Minmax}}
+\index{set\+Minmax@{set\+Minmax}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{set\+Minmax(double d)}{setMinmax(double d)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::set\+Minmax (
+\begin{DoxyParamCaption}
+\item[{double}]{d}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a45a301225a2d39b98d19ed88264b5d31}{}\label{class_data_point_a45a301225a2d39b98d19ed88264b5d31}
+
+
+Sets the minmax variable. This is the minimum maximum speciation rate required for speciation to have occured on this branch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & the minmax to set. \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!set\+Next@{set\+Next}}
+\index{set\+Next@{set\+Next}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{set\+Next(unsigned long x)}{setNext(unsigned long x)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::set\+Next (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{x}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_aa8279493a06f7c9f810e27673d38f5d4}{}\label{class_data_point_aa8279493a06f7c9f810e27673d38f5d4}
+
+
+Set the next link in the linked list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the next Datapoint object. \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!set\+Nwrap@{set\+Nwrap}}
+\index{set\+Nwrap@{set\+Nwrap}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{set\+Nwrap(unsigned long n)}{setNwrap(unsigned long n)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::set\+Nwrap (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_ae73f807fa45356311a58953fb39b4e46}{}\label{class_data_point_ae73f807fa45356311a58953fb39b4e46}
+
+
+Sets the number of wraps from the first \hyperlink{class_species_list}{Species\+List} wrapped lineage. If and only if this is 0, the lineage is within the main grid (i.\+e xwrap and ywrap should be 0). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & the desired nwrap. \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!set\+Reference@{set\+Reference}}
+\index{set\+Reference@{set\+Reference}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{set\+Reference(unsigned long z)}{setReference(unsigned long z)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::set\+Reference (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{z}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a2433657bfd215678d40904310b926033}{}\label{class_data_point_a2433657bfd215678d40904310b926033}
+
+
+Sets the mpos (the position within the \hyperlink{class_row}{Row} of \hyperlink{class_tree_node}{Tree\+Node} objects.). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em z} & the desired mpos. \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!setup@{setup}}
+\index{setup@{setup}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{setup(unsigned long x, unsigned long y, long xwrap\+\_\+in, long ywrap\+\_\+in, unsigned long reference\+\_\+in, unsigned long list\+\_\+position\+\_\+in, double min\+\_\+max\+\_\+in)}{setup(unsigned long x, unsigned long y, long xwrap_in, long ywrap_in, unsigned long reference_in, unsigned long list_position_in, double min_max_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::setup (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{x, }
+\item[{unsigned long}]{y, }
+\item[{long}]{xwrap\+\_\+in, }
+\item[{long}]{ywrap\+\_\+in, }
+\item[{unsigned long}]{reference\+\_\+in, }
+\item[{unsigned long}]{list\+\_\+position\+\_\+in, }
+\item[{double}]{min\+\_\+max\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a426e22fa33be467e3cddf71990d3ca8a}{}\label{class_data_point_a426e22fa33be467e3cddf71990d3ca8a}
+
+
+Setup of lineage data with any information that\textquotesingle{}s wanted. Note that nwrap is set to 0 in this routine. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position on the grid \\
+\hline
+{\em y} & the y position on the grid \\
+\hline
+{\em xwrap\+\_\+in} & the number of wraps of the location on the grid in the x direction \\
+\hline
+{\em ywrap\+\_\+in} & the number of wraps of the location on the grid in the y direction \\
+\hline
+{\em reference\+\_\+in} & the position in the \hyperlink{class_tree_node}{Tree\+Node} reference object \\
+\hline
+{\em list\+\_\+position\+\_\+in} & the position within the \hyperlink{class_species_list}{Species\+List} object at the relevant x,y position \\
+\hline
+{\em min\+\_\+max\+\_\+in} & the input maximum minimum speciation rate required for speciation to have occured \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!setup@{setup}}
+\index{setup@{setup}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{setup(unsigned long reference\+\_\+in, unsigned long list\+\_\+position\+\_\+in, double min\+\_\+max\+\_\+in)}{setup(unsigned long reference_in, unsigned long list_position_in, double min_max_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::setup (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{reference\+\_\+in, }
+\item[{unsigned long}]{list\+\_\+position\+\_\+in, }
+\item[{double}]{min\+\_\+max\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_abddc939aebb23f387a23ca5f9ce0eda0}{}\label{class_data_point_abddc939aebb23f387a23ca5f9ce0eda0}
+
+
+Setup of lineage data with any information that\textquotesingle{}s wanted. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em reference\+\_\+in} & the reference point for the \hyperlink{class_tree_node}{Tree\+Node} reference object \\
+\hline
+{\em list\+\_\+position\+\_\+in} & the list position of this lineage in \hyperlink{class_species_list}{Species\+List} object \\
+\hline
+{\em min\+\_\+max\+\_\+in} & the input maximum minimum speciation rate required for speciation to have occured \\
+\hline
+\end{DoxyParams}
+\index{Data\+Point@{Data\+Point}!setup@{setup}}
+\index{setup@{setup}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{setup(\+Data\+Point datin)}{setup(DataPoint datin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Point\+::setup (
+\begin{DoxyParamCaption}
+\item[{{\bf Data\+Point}}]{datin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_data_point_a1e8c41e56eb1d69a52f5246d9f7ee3f1}{}\label{class_data_point_a1e8c41e56eb1d69a52f5246d9f7ee3f1}
+
+
+Copy constructor from another Datapoint object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em datin} & a Datapoint object to copy the data from. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\index{Data\+Point@{Data\+Point}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Data\+Point} \&}]{d}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_data_point_adfa94e754617c0b58a39bf86925beeac}{}\label{class_data_point_adfa94e754617c0b58a39bf86925beeac}
+
+
+An operator for piping the variables of the Datapoint object to the output stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & the output stream. \\
+\hline
+{\em d} & the Datapoint object to output. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the output stream at the end. 
+\end{DoxyReturn}
+\index{Data\+Point@{Data\+Point}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Data\+Point@{Data\+Point}}
+\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{is, }
+\item[{{\bf Data\+Point} \&}]{d}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_data_point_a5ea22488fc99136335b4c8474623ccc3}{}\label{class_data_point_a5ea22488fc99136335b4c8474623ccc3}
+
+
+An operator for piping the variables in to the Datapoint object from the input stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is} & the input stream \\
+\hline
+{\em d} & the Datapoint object to input to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the input stream at the end. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_data_point_8h}{Data\+Point.\+h}\item 
+necsim/\hyperlink{_data_point_8cpp}{Data\+Point.\+cpp}\end{DoxyCompactItemize}

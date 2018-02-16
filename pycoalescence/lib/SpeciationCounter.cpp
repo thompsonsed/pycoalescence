@@ -8,8 +8,8 @@
  *
  * @copyright <a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3 Licence.</a>
  * @brief Performs calculations of the coalescence tree structure and generates the SQL database objects.
- * 
- * For use on the SQL database outputs of NECSim v3.1+. It requires command line parameters and generates a data object from them.
+ *
+ * Requires command line parameters and generates a data object from them.
  * Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
  */
 

@@ -1,0 +1,33 @@
+
+.. _program_listing_file_necsim_Filesystem.h:
+
+Program Listing for File Filesystem.h
+=====================================
+
+- Return to documentation for :ref:`file_necsim_Filesystem.h`
+
+.. code-block:: cpp
+
+   // This file is part of NECSim project which is released under BSD-3 license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   
+   #include <sqlite3.h>
+   #include <string>
+   
+   #ifndef SPECIATIONCOUNTER_FILESYSTEM_H
+   #define SPECIATIONCOUNTER_FILESYSTEM_H
+   
+   using namespace std;
+   
+   void openSQLiteDatabase(const string &database_name, sqlite3 *& database);
+   
+   void createParent(const string &file);
+   
+   
+   bool doesExist(string testfile);
+   
+   bool doesExistNull(string testfile);
+   
+   unsigned long cantorPairing(unsigned long x1, unsigned long x2);
+   
+   #endif //SPECIATIONCOUNTER_FILESYSTEM_H

@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="_filesystem_8h" kind="file" language="C++">
+    <compoundname>Filesystem.h</compoundname>
+    <includes local="no">sqlite3.h</includes>
+    <includes local="no">string</includes>
+    <includedby refid="_community_8cpp" local="yes">necsim/Community.cpp</includedby>
+    <includedby refid="_filesystem_8cpp" local="yes">necsim/Filesystem.cpp</includedby>
+    <includedby refid="_log_file_8cpp" local="yes">necsim/LogFile.cpp</includedby>
+    <includedby refid="_tree_8h" local="yes">necsim/Tree.h</includedby>
+    <includedby refid="_map_8cpp" local="yes">necsim/Map.cpp</includedby>
+    <includedby refid="_simulate_dispersal_8cpp" local="yes">necsim/SimulateDispersal.cpp</includedby>
+    <incdepgraph>
+      <node id="2077">
+        <label>string</label>
+      </node>
+      <node id="2075">
+        <label>necsim/Filesystem.h</label>
+        <link refid="Filesystem.h"/>
+        <childnode refid="2076" relation="include">
+        </childnode>
+        <childnode refid="2077" relation="include">
+        </childnode>
+      </node>
+      <node id="2076">
+        <label>sqlite3.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2091">
+        <label>necsim/Tree.cpp</label>
+        <link refid="_tree_8cpp"/>
+      </node>
+      <node id="2081">
+        <label>necsim/LogFile.cpp</label>
+        <link refid="_log_file_8cpp"/>
+      </node>
+      <node id="2093">
+        <label>necsim/SimulateDispersal.cpp</label>
+        <link refid="_simulate_dispersal_8cpp"/>
+      </node>
+      <node id="2088">
+        <label>necsim/SpatialTree.cpp</label>
+        <link refid="_spatial_tree_8cpp"/>
+      </node>
+      <node id="2082">
+        <label>necsim/Tree.h</label>
+        <link refid="_tree_8h"/>
+        <childnode refid="2083" relation="include">
+        </childnode>
+        <childnode refid="2089" relation="include">
+        </childnode>
+        <childnode refid="2091" relation="include">
+        </childnode>
+      </node>
+      <node id="2078">
+        <label>necsim/Filesystem.h</label>
+        <link refid="Filesystem.h"/>
+        <childnode refid="2079" relation="include">
+        </childnode>
+        <childnode refid="2080" relation="include">
+        </childnode>
+        <childnode refid="2081" relation="include">
+        </childnode>
+        <childnode refid="2082" relation="include">
+        </childnode>
+        <childnode refid="2092" relation="include">
+        </childnode>
+        <childnode refid="2093" relation="include">
+        </childnode>
+      </node>
+      <node id="2085">
+        <label>necsim/ProtractedSpatialTree.h</label>
+        <link refid="_protracted_spatial_tree_8h"/>
+      </node>
+      <node id="2087">
+        <label>necsim/ProtractedTree.cpp</label>
+        <link refid="_protracted_tree_8cpp"/>
+      </node>
+      <node id="2092">
+        <label>necsim/Map.cpp</label>
+        <link refid="_map_8cpp"/>
+      </node>
+      <node id="2083">
+        <label>necsim/SpatialTree.h</label>
+        <link refid="_spatial_tree_8h"/>
+        <childnode refid="2084" relation="include">
+        </childnode>
+        <childnode refid="2085" relation="include">
+        </childnode>
+        <childnode refid="2086" relation="include">
+        </childnode>
+        <childnode refid="2088" relation="include">
+        </childnode>
+      </node>
+      <node id="2090">
+        <label>necsim/Metacommunity.cpp</label>
+        <link refid="_metacommunity_8cpp"/>
+      </node>
+      <node id="2086">
+        <label>necsim/ProtractedTree.h</label>
+        <link refid="_protracted_tree_8h"/>
+        <childnode refid="2085" relation="include">
+        </childnode>
+        <childnode refid="2087" relation="include">
+        </childnode>
+      </node>
+      <node id="2079">
+        <label>necsim/Community.cpp</label>
+        <link refid="_community_8cpp"/>
+      </node>
+      <node id="2089">
+        <label>necsim/Metacommunity.h</label>
+        <link refid="_metacommunity_8h"/>
+        <childnode refid="2090" relation="include">
+        </childnode>
+      </node>
+      <node id="2084">
+        <label>necsim/main.cpp</label>
+        <link refid="main_8cpp"/>
+      </node>
+      <node id="2080">
+        <label>necsim/Filesystem.cpp</label>
+        <link refid="_filesystem_8cpp"/>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_filesystem_8h_1a2dd35a078ed71b998730c8af8f4788f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void openSQLiteDatabase</definition>
+        <argsstring>(const string &amp;database_name, sqlite3 *&amp;database)</argsstring>
+        <name>openSQLiteDatabase</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>database_name</declname>
+        </param>
+        <param>
+          <type>sqlite3 *&amp;</type>
+          <declname>database</declname>
+        </param>
+        <briefdescription>
+<para>Safely opens a connection to the provided SQLite database. </para>        </briefdescription>
+        <detaileddescription>
+<para>Adds type safety for usage on different filesystems. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>database_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>database</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="30" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="23" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="_filesystem_8h_1adc3ac635764997d6023cbb00f7664196" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void createParent</definition>
+        <argsstring>(const string &amp;file)</argsstring>
+        <name>createParent</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>file</declname>
+        </param>
+        <briefdescription>
+<para>Checks that parent folder to the supplied file exists, and if it doesn&apos;t creates it. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the file path to check for </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="36" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="68" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="_filesystem_8h_1af836e59d723600545dfdfe76b0c14b94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool doesExist</definition>
+        <argsstring>(string testfile)</argsstring>
+        <name>doesExist</name>
+        <param>
+          <type>string</type>
+          <declname>testfile</declname>
+        </param>
+        <briefdescription>
+<para>Checks the existance of a file on the hard drive. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>testfile</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the file to examine </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>if true, file exists </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="44" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="82" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="_filesystem_8h_1a0b70d536db024e2f65c377c02fa596ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool doesExistNull</definition>
+        <argsstring>(string testfile)</argsstring>
+        <name>doesExistNull</name>
+        <param>
+          <type>string</type>
+          <declname>testfile</declname>
+        </param>
+        <briefdescription>
+<para>Checks for the existance of a file, but returns true if the file name is &apos;null&apos;. Note: this function just calls <ref refid="_filesystem_8h_1af836e59d723600545dfdfe76b0c14b94" kindref="member">doesExist()</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>testfile</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the file to examine </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>if true, file exists (or is null). </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="52" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="97" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="_filesystem_8h_1a494775fbade46418f7584db133d85762" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned long</type>
+        <definition>unsigned long cantorPairing</definition>
+        <argsstring>(unsigned long x1, unsigned long x2)</argsstring>
+        <name>cantorPairing</name>
+        <param>
+          <type>unsigned long</type>
+          <declname>x1</declname>
+        </param>
+        <param>
+          <type>unsigned long</type>
+          <declname>x2</declname>
+        </param>
+        <briefdescription>
+<para>Generates a unique ID for the pair of provided parameters. </para>        </briefdescription>
+        <detaileddescription>
+<para>Maps ZxZ -&gt; N, so only relevant for positive numbers. For any A and B, generates C such that no D and E produce C unless D=A and B=E.</para><para><xrefsect id="deprecated_1_deprecated000002"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Should not be used for large integers, or of unknown size, as integer overflows are likely. Cantor pairing explodes in size of return value.</para></xrefdescription></xrefsect></para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the first integer reference </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the second integer reference </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a unique reference for the two provided integers </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="67" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="102" bodyend="105"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Contains routines for checking files and folder exist, opening sqlite databases safely, with support for various virtual filesystems, and checking parents of a file exist. </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Samuel Thompson </para></simplesect>
+<simplesect kind="date"><para>19/07/2017</para></simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/BSD-3-Clause">BSD-3 Licence.</ulink> Contact: <ulink url="mailto:samuel.thompson14@imperial.ac.uk">samuel.thompson14@imperial.ac.uk</ulink> or <ulink url="mailto:thompsonsed@gmail.com">thompsonsed@gmail.com</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>BSD-3<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/BSD-3-Clause)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="preprocessor">#include<sp/>&lt;sqlite3.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SPECIATIONCOUNTER_FILESYSTEM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SPECIATIONCOUNTER_FILESYSTEM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_filesystem_8h_1a2dd35a078ed71b998730c8af8f4788f0" kindref="member">openSQLiteDatabase</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;database_name,<sp/>sqlite3<sp/>*&amp;<sp/>database);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_filesystem_8h_1adc3ac635764997d6023cbb00f7664196" kindref="member">createParent</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;file);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_filesystem_8h_1af836e59d723600545dfdfe76b0c14b94" kindref="member">doesExist</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>testfile);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_filesystem_8h_1a0b70d536db024e2f65c377c02fa596ba" kindref="member">doesExistNull</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>testfile);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="_filesystem_8h_1a494775fbade46418f7584db133d85762" kindref="member">cantorPairing</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x1,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x2);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//SPECIATIONCOUNTER_FILESYSTEM_H</highlight></codeline>
+    </programlisting>
+    <location file="necsim/Filesystem.h"/>
+  </compounddef>
+</doxygen>

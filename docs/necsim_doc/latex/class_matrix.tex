@@ -1,0 +1,420 @@
+\hypertarget{class_matrix}{}\section{Matrix$<$ T $>$ Class Template Reference}
+\label{class_matrix}\index{Matrix$<$ T $>$@{Matrix$<$ T $>$}}
+
+
+A class containing the \hyperlink{class_matrix}{Matrix} object, set up as an array of \hyperlink{class_row}{Row} objects. Includes basic operations, as well as the \hyperlink{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}{import\+Csv()} function for more advanced reading from file.  
+
+
+
+
+{\ttfamily \#include $<$Matrix.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_matrix_a53f60218c002f2bb454695a1fc35c5d3}{Matrix} (unsigned long rows=0, unsigned long cols=0)
+\begin{DoxyCompactList}\small\item\em The standard constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix_a3796b4f32dc8e11f908a90fd3dd39c45}{Matrix} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em The copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix_a91aa704de674203e96aece9e1955ccd3}{$\sim$\+Matrix} ()\hypertarget{class_matrix_a91aa704de674203e96aece9e1955ccd3}{}\label{class_matrix_a91aa704de674203e96aece9e1955ccd3}
+
+\begin{DoxyCompactList}\small\item\em The destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_afec0d39d2d97ec573024552983694a66}{Set\+Size} (unsigned long rows, unsigned long cols)
+\begin{DoxyCompactList}\small\item\em Sets the matrix size. Similar concept to that for Rows. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a0467ce3fc5d310bd78e2c48ae4e80b45}{Get\+Cols} () const 
+\begin{DoxyCompactList}\small\item\em Getter for the number of columns. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a7c3e1fb8bf860913a03d874c02655ac2}{Get\+Rows} () const 
+\begin{DoxyCompactList}\small\item\em Getter for the number of rows. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ T $>$ \& \hyperlink{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{operator\mbox{[}$\,$\mbox{]}} (unsigned long index)
+\begin{DoxyCompactList}\small\item\em Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a94508f84ba0d62e81aa8d508aa43f1ec}{operator=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the = operator. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{operator+} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the + operator. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{operator-\/} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/ operator. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{operator+=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the += operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{operator-\/=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/= operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{operator$\ast$} (const double s)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for scaling. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{operator$\ast$} (\hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_ae511e2f5874e7602fc968541efeefca1}{set\+Value} (const unsigned long \&x, const unsigned long \&y, const char $\ast$value)
+\begin{DoxyCompactList}\small\item\em Sets the value at the specified indices, including handling type conversion from char to the template class. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_aeff54b3b98211bde4c0cae25af7aaa0c}{import} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from either a csv or tif file. Calls either \hyperlink{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}{import\+Csv()} or import\+Tif() dependent on the provided file type. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}{import\+Csv} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a tif file using the gdal library functions. Currently supports importing from. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long {\bfseries num\+Cols} \{\}\hypertarget{class_matrix_a341aaedcfaac978957087bd0467dc527}{}\label{class_matrix_a341aaedcfaac978957087bd0467dc527}
+
+\item 
+unsigned long {\bfseries num\+Rows} \{\}\hypertarget{class_matrix_ac1e96667d48c7845708f978ddd17475d}{}\label{class_matrix_ac1e96667d48c7845708f978ddd17475d}
+
+\item 
+\hyperlink{class_row}{Row}$<$ T $>$ $\ast$ {\bfseries matrix}\hypertarget{class_matrix_a7a143ae112112155c9622ba17dc434c7}{}\label{class_matrix_a7a143ae112112155c9622ba17dc434c7}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{class_matrix_a5ed9a90fd6f010e7e9840a17d92d5361}{operator$<$$<$} (ostream \&os, const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the $<$$<$ operator for outputting to an output stream. This can be used for writing to console or storing to file. \end{DoxyCompactList}\item 
+istream \& \hyperlink{class_matrix_afcea9fa7d9a5052070fe1fda963ef237}{operator$>$$>$} (istream \&is, \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the $>$$>$ operator for inputting from an input stream. This can be used for writing to console or storing to file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\\*
+class Matrix$<$ T $>$}
+
+A class containing the \hyperlink{class_matrix}{Matrix} object, set up as an array of \hyperlink{class_row}{Row} objects. Includes basic operations, as well as the \hyperlink{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}{import\+Csv()} function for more advanced reading from file. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Matrix@{Matrix}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{Matrix(unsigned long rows=0, unsigned long cols=0)}{Matrix(unsigned long rows=0, unsigned long cols=0)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}$<$ T $>$\+::{\bf Matrix} (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{rows = {\ttfamily 0}, }
+\item[{unsigned long}]{cols = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\hypertarget{class_matrix_a53f60218c002f2bb454695a1fc35c5d3}{}\label{class_matrix_a53f60218c002f2bb454695a1fc35c5d3}
+
+
+The standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & optionally provide the number of rows. \\
+\hline
+{\em cols} & optionally provide the number of columns. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{Matrix(const Matrix \&m)}{Matrix(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}$<$ T $>$\+::{\bf Matrix} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a3796b4f32dc8e11f908a90fd3dd39c45}{}\label{class_matrix_a3796b4f32dc8e11f908a90fd3dd39c45}
+
+
+The copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & a \hyperlink{class_matrix}{Matrix} object to copy from. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Matrix@{Matrix}!Get\+Cols@{Get\+Cols}}
+\index{Get\+Cols@{Get\+Cols}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{Get\+Cols() const }{GetCols() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ unsigned long {\bf Matrix}$<$ T $>$\+::Get\+Cols (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a0467ce3fc5d310bd78e2c48ae4e80b45}{}\label{class_matrix_a0467ce3fc5d310bd78e2c48ae4e80b45}
+
+
+Getter for the number of columns. 
+
+\begin{DoxyReturn}{Returns}
+the number of columns. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!Get\+Rows@{Get\+Rows}}
+\index{Get\+Rows@{Get\+Rows}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{Get\+Rows() const }{GetRows() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ unsigned long {\bf Matrix}$<$ T $>$\+::Get\+Rows (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a7c3e1fb8bf860913a03d874c02655ac2}{}\label{class_matrix_a7c3e1fb8bf860913a03d874c02655ac2}
+
+
+Getter for the number of rows. 
+
+\begin{DoxyReturn}{Returns}
+the number of rows. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!import@{import}}
+\index{import@{import}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{import(const string \&filename)}{import(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Matrix}$<$ T $>$\+::import (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_aeff54b3b98211bde4c0cae25af7aaa0c}{}\label{class_matrix_aeff54b3b98211bde4c0cae25af7aaa0c}
+
+
+Imports the matrix from either a csv or tif file. Calls either \hyperlink{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}{import\+Csv()} or import\+Tif() dependent on the provided file type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the file to import. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!import\+Csv@{import\+Csv}}
+\index{import\+Csv@{import\+Csv}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{import\+Csv(const string \&filename)}{importCsv(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Matrix}$<$ T $>$\+::import\+Csv (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}{}\label{class_matrix_aab2f77cfbdbeffcfe67d63d876581b2e}
+
+
+Imports the matrix from a tif file using the gdal library functions. Currently supports importing from. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. Imports the matrix from a csv file using the fast-\/csv-\/parser method. \\
+\hline
+{\em filename} & the path to the file to import. Imports the matrix from a csv file using the standard, slower method. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000003}{Deprecated}]this function should not be used any more as it is much slower. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const double s)}{operator*(const double s)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const double}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{}\label{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}
+
+
+Overloading the $\ast$ operator for scaling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the constant to scale the matrix by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the scaled matrix. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator$\ast$(\+Matrix \&m)}{operator*(Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{}\label{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}
+
+
+Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to multiply with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product of each ith,jth value of the matrix. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!operator+@{operator+}}
+\index{operator+@{operator+}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator+(const Matrix \&m)}{operator+(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{}\label{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}
+
+
+Overloading the + operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the sum of the two matrices. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator+=(const Matrix \&m)}{operator+=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}\& {\bf Matrix}$<$ T $>$\+::operator+= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{}\label{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}
+
+
+Overloading the += operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator-\/(const Matrix \&m)}{operator-(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{}\label{class_matrix_a08e75978ea8288083ef36f53b4ac115d}
+
+
+Overloading the -\/ operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the subtraction of the two matrices. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator-\/=(const Matrix \&m)}{operator-=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}\& {\bf Matrix}$<$ T $>$\+::operator-\/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{}\label{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}
+
+
+Overloading the -\/= operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!operator=@{operator=}}
+\index{operator=@{operator=}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator=(const Matrix \&m)}{operator=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}\& {\bf Matrix}$<$ T $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_a94508f84ba0d62e81aa8d508aa43f1ec}{}\label{class_matrix_a94508f84ba0d62e81aa8d508aa43f1ec}
+
+
+Overloading the = operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to copy from. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator[](unsigned long index)}{operator[](unsigned long index)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Row}$<$T$>$\& {\bf Matrix}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{}\label{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}
+
+
+Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & the row number to get the value from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix row object. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!Set\+Size@{Set\+Size}}
+\index{Set\+Size@{Set\+Size}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{Set\+Size(unsigned long rows, unsigned long cols)}{SetSize(unsigned long rows, unsigned long cols)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Matrix}$<$ T $>$\+::Set\+Size (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{rows, }
+\item[{unsigned long}]{cols}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_afec0d39d2d97ec573024552983694a66}{}\label{class_matrix_afec0d39d2d97ec573024552983694a66}
+
+
+Sets the matrix size. Similar concept to that for Rows. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & the number of rows. \\
+\hline
+{\em cols} & the number of columns. \\
+\hline
+\end{DoxyParams}
+\index{Matrix@{Matrix}!set\+Value@{set\+Value}}
+\index{set\+Value@{set\+Value}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{set\+Value(const unsigned long \&x, const unsigned long \&y, const char $\ast$value)}{setValue(const unsigned long &x, const unsigned long &y, const char *value)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Matrix}$<$ T $>$\+::set\+Value (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{x, }
+\item[{const unsigned long \&}]{y, }
+\item[{const char $\ast$}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_matrix_ae511e2f5874e7602fc968541efeefca1}{}\label{class_matrix_ae511e2f5874e7602fc968541efeefca1}
+
+
+Sets the value at the specified indices, including handling type conversion from char to the template class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x index. \\
+\hline
+{\em y} & the y index. \\
+\hline
+{\em value} & the value to set \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\index{Matrix@{Matrix}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_matrix_a5ed9a90fd6f010e7e9840a17d92d5361}{}\label{class_matrix_a5ed9a90fd6f010e7e9840a17d92d5361}
+
+
+Overloading the $<$$<$ operator for outputting to an output stream. This can be used for writing to console or storing to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & the output stream. \\
+\hline
+{\em m} & the matrix to output. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream. 
+\end{DoxyReturn}
+\index{Matrix@{Matrix}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Matrix@{Matrix}}
+\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{is, }
+\item[{{\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_matrix_afcea9fa7d9a5052070fe1fda963ef237}{}\label{class_matrix_afcea9fa7d9a5052070fe1fda963ef237}
+
+
+Overloading the $>$$>$ operator for inputting from an input stream. This can be used for writing to console or storing to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is} & the input stream. \\
+\hline
+{\em m} & the matrix to input to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the input stream. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_matrix_8h}{Matrix.\+h}\end{DoxyCompactItemize}

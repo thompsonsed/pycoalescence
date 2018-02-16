@@ -1,0 +1,128 @@
+\hypertarget{class_log_file}{}\section{Log\+File Class Reference}
+\label{class_log_file}\index{Log\+File@{Log\+File}}
+
+
+Contains routines for writing to log files.  
+
+
+
+
+{\ttfamily \#include $<$Log\+File.\+h$>$}
+
+
+
+Collaboration diagram for Log\+File\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_log_file__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_log_file_ad11b3baf5602575c1396f726d3598188}{Log\+File} ()\hypertarget{class_log_file_ad11b3baf5602575c1396f726d3598188}{}\label{class_log_file_ad11b3baf5602575c1396f726d3598188}
+
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_log_file_a0b1339474eda3eb8bed23dce67fa55b0}{Log\+File} (const string \&file\+\_\+name\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Constructor taking location of a log file. \end{DoxyCompactList}\item 
+\hyperlink{class_log_file_a440a7de2dcbb9facb68e56dc47cb9dea}{$\sim$\+Log\+File} ()\hypertarget{class_log_file_a440a7de2dcbb9facb68e56dc47cb9dea}{}\label{class_log_file_a440a7de2dcbb9facb68e56dc47cb9dea}
+
+\begin{DoxyCompactList}\small\item\em Default destructor, including writing closure out to log file. \end{DoxyCompactList}\item 
+void {\bfseries init} (const string \&file\+\_\+name\+\_\+in)\hypertarget{class_log_file_a8f245a5659dba714deb45c8e93ce9681}{}\label{class_log_file_a8f245a5659dba714deb45c8e93ce9681}
+
+\item 
+void \hyperlink{class_log_file_ad8acf8bc3a616ad47f43307781ea3c63}{write} (const int \&level, string message)
+\begin{DoxyCompactList}\small\item\em Writes the message out to the logfile at the specified logging level. \end{DoxyCompactList}\item 
+void \hyperlink{class_log_file_a08c10809b0095438671be7603e1a53ae}{write} (const int \&level, stringstream \&message)
+\begin{DoxyCompactList}\small\item\em Writes the message out to the logfile at the specified logging level. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Log\+File} (const \hyperlink{class_log_file}{Log\+File} \&)=delete\hypertarget{class_log_file_ad18ff4b82ec0b081cbfd9556a48194fe}{}\label{class_log_file_ad18ff4b82ec0b081cbfd9556a48194fe}
+
+\item 
+\hyperlink{class_log_file}{Log\+File} \& {\bfseries operator=} (const \hyperlink{class_log_file}{Log\+File} \&)=delete\hypertarget{class_log_file_a3556b56361a4f9f1cc83e9c3967096ab}{}\label{class_log_file_a3556b56361a4f9f1cc83e9c3967096ab}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ofstream {\bfseries output\+\_\+stream}\hypertarget{class_log_file_aae3e784ed5a2414b57d46940a2995c82}{}\label{class_log_file_aae3e784ed5a2414b57d46940a2995c82}
+
+\item 
+string {\bfseries file\+\_\+name}\hypertarget{class_log_file_a0fcd1e0a15e6c08f147b39dbea2b253c}{}\label{class_log_file_a0fcd1e0a15e6c08f147b39dbea2b253c}
+
+\item 
+map$<$ int, string $>$ {\bfseries levels\+\_\+map}\hypertarget{class_log_file_a75e3b5022358adcff29923c0e9116ff4}{}\label{class_log_file_a75e3b5022358adcff29923c0e9116ff4}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains routines for writing to log files. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Log\+File@{Log\+File}!Log\+File@{Log\+File}}
+\index{Log\+File@{Log\+File}!Log\+File@{Log\+File}}
+\subsubsection[{\texorpdfstring{Log\+File(const string \&file\+\_\+name\+\_\+in)}{LogFile(const string &file_name_in)}}]{\setlength{\rightskip}{0pt plus 5cm}Log\+File\+::\+Log\+File (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{file\+\_\+name\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\hypertarget{class_log_file_a0b1339474eda3eb8bed23dce67fa55b0}{}\label{class_log_file_a0b1339474eda3eb8bed23dce67fa55b0}
+
+
+Constructor taking location of a log file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+name\+\_\+in} & the path to the log file to open \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Log\+File@{Log\+File}!write@{write}}
+\index{write@{write}!Log\+File@{Log\+File}}
+\subsubsection[{\texorpdfstring{write(const int \&level, string message)}{write(const int &level, string message)}}]{\setlength{\rightskip}{0pt plus 5cm}void Log\+File\+::write (
+\begin{DoxyParamCaption}
+\item[{const int \&}]{level, }
+\item[{string}]{message}
+\end{DoxyParamCaption}
+)}\hypertarget{class_log_file_ad8acf8bc3a616ad47f43307781ea3c63}{}\label{class_log_file_ad8acf8bc3a616ad47f43307781ea3c63}
+
+
+Writes the message out to the logfile at the specified logging level. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of logging severity \\
+\hline
+{\em message} & the message to write out \\
+\hline
+\end{DoxyParams}
+\index{Log\+File@{Log\+File}!write@{write}}
+\index{write@{write}!Log\+File@{Log\+File}}
+\subsubsection[{\texorpdfstring{write(const int \&level, stringstream \&message)}{write(const int &level, stringstream &message)}}]{\setlength{\rightskip}{0pt plus 5cm}void Log\+File\+::write (
+\begin{DoxyParamCaption}
+\item[{const int \&}]{level, }
+\item[{stringstream \&}]{message}
+\end{DoxyParamCaption}
+)}\hypertarget{class_log_file_a08c10809b0095438671be7603e1a53ae}{}\label{class_log_file_a08c10809b0095438671be7603e1a53ae}
+
+
+Writes the message out to the logfile at the specified logging level. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of logging severity \\
+\hline
+{\em message} & the message to write out \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_log_file_8h}{Log\+File.\+h}\item 
+necsim/\hyperlink{_log_file_8cpp}{Log\+File.\+cpp}\end{DoxyCompactItemize}

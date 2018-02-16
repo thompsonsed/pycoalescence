@@ -1,0 +1,1176 @@
+\hypertarget{class_tree}{}\section{Tree Class Reference}
+\label{class_tree}\index{Tree@{Tree}}
+
+
+Main simulation class for performing a non-\/spatial neutral simulation and generating the phylogenetic tree of the individuals.  
+
+
+
+
+{\ttfamily \#include $<$Tree.\+h$>$}
+
+
+
+Inheritance diagram for Tree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{class_tree__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Tree\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_tree__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_tree_a455d87022772b309a5974ea5f0295139}{import\+Simulation\+Variables} (const string \&configfile)
+\begin{DoxyCompactList}\small\item\em Import the simulation variables from the command line structure. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a62db83e47e5850c6a83793829b22b68b}{internal\+Setup} (const \hyperlink{struct_sim_parameters}{Sim\+Parameters} \&sim\+\_\+parameters\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets up the simulation parameters from the one provided. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_a5c6065ede9862e9fb6561eb8beaf5d78}{check\+Output\+Directory} ()
+\begin{DoxyCompactList}\small\item\em Asserts that the output directory is not null and exists. If it doesn\textquotesingle{}t exist, it attempts to create it. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ad0bcc474a9ab1d4e3e2458c4de7304ad}{check\+Sims} ()
+\begin{DoxyCompactList}\small\item\em Checks for existing paused simulations to resume from Sets b\+Paused if there are. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aafaede1da6c79583bf2e28b7a1881a5c}{check\+Sims} (string output\+\_\+dir, long seed, long task)
+\begin{DoxyCompactList}\small\item\em Checks for existing paused simulations to resume from. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_ac374d237b7e2e7e11f6a0ff395003635}{set\+Parameters} ()\hypertarget{class_tree_ac374d237b7e2e7e11f6a0ff395003635}{}\label{class_tree_ac374d237b7e2e7e11f6a0ff395003635}
+
+\begin{DoxyCompactList}\small\item\em Move the parameters from the sim\+\_\+parameters object to their relevant parameters. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a891764ffc1e29d3edbe0fd08e67a184b}{set\+Protracted\+Variables} (double speciation\+\_\+gen\+\_\+min, double speciation\+\_\+gen\+\_\+max)
+\begin{DoxyCompactList}\small\item\em Sets the protracted variables. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_ae07761c0a91a44ebe459904b1b8ffb43}{has\+Paused} ()
+\begin{DoxyCompactList}\small\item\em Gets the has\+\_\+paused variable for resuming sims. \end{DoxyCompactList}\item 
+vector$<$ double $>$ \hyperlink{class_tree_ac03c034a5730ee4f4d8727aace776412}{get\+Temporal\+Sampling} ()\hypertarget{class_tree_ac03c034a5730ee4f4d8727aace776412}{}\label{class_tree_ac03c034a5730ee4f4d8727aace776412}
+
+\begin{DoxyCompactList}\small\item\em Gets the map autocorrel times. \end{DoxyCompactList}\item 
+long long \hyperlink{class_tree_a857521315ca6bd9b3300d099488d74f1}{get\+Seed} ()
+\begin{DoxyCompactList}\small\item\em Getter for the simulation seed. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ab240ab1988cbde281a6811b3fdc1dd5d}{set\+Seed} (long long seed\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the simulation seed for the random number generator. \end{DoxyCompactList}\item 
+virtual unsigned long \hyperlink{class_tree_a1e0685310a5a9bca4d6069e8d4ce1f1b}{get\+Initial\+Count} ()
+\begin{DoxyCompactList}\small\item\em Gets the initial number of individuals. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_a869ab0aba75336f737cbb137c74b8abc}{set\+Object\+Sizes} ()
+\begin{DoxyCompactList}\small\item\em Sets the sizes of grid, active and data, based on the number of individuals counted from the samplemask. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup} ()
+\begin{DoxyCompactList}\small\item\em The setup function for generating the simulation objects. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aec2640897132a1b667e852bbafc14c78}{set\+Initial\+Values} ()\hypertarget{class_tree_aec2640897132a1b667e852bbafc14c78}{}\label{class_tree_aec2640897132a1b667e852bbafc14c78}
+
+\begin{DoxyCompactList}\small\item\em Sets the starting values for required parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a1ba0f5d27c6ef6e9e17f988aff2dfe65}{set\+Sim\+Start\+Variables} ()
+\begin{DoxyCompactList}\small\item\em Sets the variables at the start of a simulation for temporary data. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ab71da7797a6586ddd948661c34ce4788}{print\+Setup} ()
+\begin{DoxyCompactList}\small\item\em Prints the statement for the setup initiation. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ae3fb33c46cf7e3af44604a9875b375a3}{set\+Times} ()\hypertarget{class_tree_ae3fb33c46cf7e3af44604a9875b375a3}{}\label{class_tree_ae3fb33c46cf7e3af44604a9875b375a3}
+
+\begin{DoxyCompactList}\small\item\em Sets the temporal sampling points from the time config file. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a25f082da13789dfa3fefcbcfd08b4dfe}{determine\+Speciation\+Rates} ()
+\begin{DoxyCompactList}\small\item\em Determines the speciation rates to apply and then applies them to the coalescence tree post-\/simulation. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}{generate\+Objects} ()\hypertarget{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}{}\label{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}
+
+\begin{DoxyCompactList}\small\item\em Assigns the objects sizes in memory and fills with the starting lineages. \end{DoxyCompactList}\item 
+virtual unsigned long \hyperlink{class_tree_a4af845777294c9116c60115e651620b4}{fill\+Objects} (const unsigned long \&initial\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Fills the active and data objects with the starting lineages. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_tree_afe75245862a1c40030c1c8607518cf8d}{run\+Simulation} ()
+\begin{DoxyCompactList}\small\item\em Run the entire simulation given the start conditions already defined by \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a95360a2f62ef0eb436d586552b299e1f}{write\+Sim\+Start\+To\+Console} ()\hypertarget{class_tree_a95360a2f62ef0eb436d586552b299e1f}{}\label{class_tree_a95360a2f62ef0eb436d586552b299e1f}
+
+\begin{DoxyCompactList}\small\item\em Writes to the console that the simulation is beginning. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a37de93174eece50a2fc082b683d97047}{write\+Step\+To\+Console} ()\hypertarget{class_tree_a37de93174eece50a2fc082b683d97047}{}\label{class_tree_a37de93174eece50a2fc082b683d97047}
+
+\begin{DoxyCompactList}\small\item\em Write the step counter to console. This function should only be called in debugging mode. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a3f0c8928b4b72fb6f03cabd4d0e04457}{increment\+Generation} ()\hypertarget{class_tree_a3f0c8928b4b72fb6f03cabd4d0e04457}{}\label{class_tree_a3f0c8928b4b72fb6f03cabd4d0e04457}
+
+\begin{DoxyCompactList}\small\item\em Increments the generation counter and step references. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a23803bddf46ad28a1bdd46bf05693b1f}{choose\+Random\+Lineage} ()
+\begin{DoxyCompactList}\small\item\em Chooses a random lineage from active. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_ad65e94936001675b8bc908cf77e0cb53}{update\+Step\+Coalescence\+Variables} ()\hypertarget{class_tree_ad65e94936001675b8bc908cf77e0cb53}{}\label{class_tree_ad65e94936001675b8bc908cf77e0cb53}
+
+\begin{DoxyCompactList}\small\item\em Updates the coalescence variables in the step object. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a05c9e44f1a4d7af83e65b6c4565b1b28}{speciation} (const unsigned long \&chosen)
+\begin{DoxyCompactList}\small\item\em Speciation to supplied lineage. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a32e12cc62ce2d9ae893214b1f4cfad1f}{speciate\+Lineage} (const unsigned long \&data\+\_\+position)
+\begin{DoxyCompactList}\small\item\em Performs the actual speciation. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_ad74c05729c9e5235ab0fa6e34260093a}{remove\+Old\+Position} (const unsigned long \&chosen)
+\begin{DoxyCompactList}\small\item\em Removes the old position within active. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_ab1be13d2e99a4445a7cc84f907e0c90e}{switch\+Positions} (const unsigned long \&chosen)
+\begin{DoxyCompactList}\small\item\em Switches the chosen position with the endactive position. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a0dc015aa5a45d2a75d80456d680172ac}{calc\+Next\+Step} ()\hypertarget{class_tree_a0dc015aa5a45d2a75d80456d680172ac}{}\label{class_tree_a0dc015aa5a45d2a75d80456d680172ac}
+
+\begin{DoxyCompactList}\small\item\em Calculates the next step for the simulation. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_tree_abc9389511e1aecf5e573315fc8f4d77c}{calc\+Speciation} (const long double \&random\+\_\+number, const long double \&speciation\+\_\+rate, const unsigned long \&no\+\_\+generations)
+\begin{DoxyCompactList}\small\item\em Calculates the speciation probability from the random number, speciation rate and number of generations a lineage has existed for. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a16eedb70009e7570d933f88e8ce44117}{coalescence\+Event} (const unsigned long \&chosen, unsigned long \&coalchosen)
+\begin{DoxyCompactList}\small\item\em Perform the coalescence between lineages. Once coalesced, lineages are removed from the active scope. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_afcbe72c55b38c94ae17de9c2e1dd3a7f}{check\+Time\+Update} ()\hypertarget{class_tree_afcbe72c55b38c94ae17de9c2e1dd3a7f}{}\label{class_tree_afcbe72c55b38c94ae17de9c2e1dd3a7f}
+
+\begin{DoxyCompactList}\small\item\em Checks if the number of lineages should be expanded at another sample point. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a8bfa9a86f122b21900ec33ab4b1e323f}{add\+Lineages} (double generation\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Adds the required lineages at the generation time. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ab8a62d0ca2b1746676073e3f33e2a949}{check\+Sim\+Size} (unsigned long req\+\_\+data, unsigned long req\+\_\+active)
+\begin{DoxyCompactList}\small\item\em Checks the size of the main active and data objects is large enough. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a0973cc37d9b95144db76d36cb363caca}{make\+Tip} (const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the active reference to a tip, if it isn\textquotesingle{}t one already. Otherwise, creates a new tip for the new generation time. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a6af2aaa691ffbb9899e3f070a715e371}{convert\+Tip} (unsigned long i, double generationin)
+\begin{DoxyCompactList}\small\item\em Creates a new reference in data containing the tip with a new generation counter. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_afd6bd75c301d2f57c4997fcfc92f192e}{stop\+Simulation} ()
+\begin{DoxyCompactList}\small\item\em Finalises the simulation, and performs the correct tasks depending if the sim has been paused or finished. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aa6349a32b3fcfb82a5f8311b11db3982}{apply\+Spec\+Rate} (long double sr, double t)
+\begin{DoxyCompactList}\small\item\em Applies the given speciation rate to the tree. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ac89abe0404d05d0363258b72cb80700b}{apply\+Spec\+Rate\+Internal} (long double sr, double t)
+\begin{DoxyCompactList}\small\item\em Applies the given speciation rate to the tree, but does not output to a file. Instead returns a pointer to the nodes object. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ unsigned long $>$ $\ast$ \hyperlink{class_tree_a49a94b2218f7ae127a53af4a58d02b06}{get\+Cumulative\+Abundances} ()
+\begin{DoxyCompactList}\small\item\em Gets the sorted cumulative species abundances from the contained Tree\+List. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a9997b98824a786d9843a3df40de1226a}{setup\+Tree\+Generation} (long double sr, double t)
+\begin{DoxyCompactList}\small\item\em Sets up the generation of the tree object. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ab699328f13b22f48faa63a5638e907db}{apply\+Spec\+Rate} (long double sr)
+\begin{DoxyCompactList}\small\item\em Overloaded version of apply\+Spec\+Rates for the default generation (0.\+0). \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_acfc7efdec999f6dbf2ac089514d22091}{apply\+Multiple\+Rates} ()
+\begin{DoxyCompactList}\small\item\em Applies multiple speciation rates to the coalescence tree, ignoring repeated speciation rates. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_tree_aa23a57f7863d58384f61d464d998ab3c}{get\+Protracted} ()
+\begin{DoxyCompactList}\small\item\em Gets the protractedness of the simulation. Overridden by protracted child classes. \end{DoxyCompactList}\item 
+virtual string \hyperlink{class_tree_a34c0808026bf00546c8f9786376be730}{get\+Protracted\+Variables} ()
+\begin{DoxyCompactList}\small\item\em Gets the protracted variables and returns them as a single, newline separated string. This method is intended to be overridden in derived classes. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_tree_a6ffc42e941f352cd74f01f6f7011f00b}{get\+Protracted\+Generation\+Min} ()
+\begin{DoxyCompactList}\small\item\em Gets the minimum number of generations a lineage must exist. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_tree_a0c5e746982a87f24c083f4534bf92b45}{get\+Protracted\+Generation\+Max} ()
+\begin{DoxyCompactList}\small\item\em Gets the maximum number of generations a lineage can exist. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a8cd3db7add1884ea53b0d98002d39cd3}{sql\+Output} ()
+\begin{DoxyCompactList}\small\item\em Copy the in-\/memory database to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_afdf680e187c25ed39d1e66542ce44cc3}{output\+Data} ()\hypertarget{class_tree_afdf680e187c25ed39d1e66542ce44cc3}{}\label{class_tree_afdf680e187c25ed39d1e66542ce44cc3}
+
+\begin{DoxyCompactList}\small\item\em Outputs important simulation data to a csv file. Overloaded version which automatically calls \hyperlink{class_tree_a2d2065bbebee8b55270d2691d40cd974}{sort\+Data()} if no species richness is provided. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a5acf7d0eea9ea2ef4928bb6691b87724}{output\+Data} (unsigned long species\+\_\+richness)
+\begin{DoxyCompactList}\small\item\em Outputs important simulation data to a csv file. This function will likely be remove in future versions as all simulation output is now contained in an S\+Q\+Lite database. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_tree_a2d2065bbebee8b55270d2691d40cd974}{sort\+Data} ()\hypertarget{class_tree_a2d2065bbebee8b55270d2691d40cd974}{}\label{class_tree_a2d2065bbebee8b55270d2691d40cd974}
+
+\begin{DoxyCompactList}\small\item\em Sort and process the species list so that the useful information can be extracted from it. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ab8785fc9e27868a56335048321c13290}{write\+Times} ()\hypertarget{class_tree_ab8785fc9e27868a56335048321c13290}{}\label{class_tree_ab8785fc9e27868a56335048321c13290}
+
+\begin{DoxyCompactList}\small\item\em Writes the times to the terminal for simulation information. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ae784a6ed362f6c5263ee797759f715b6}{sql\+Create} ()\hypertarget{class_tree_ae784a6ed362f6c5263ee797759f715b6}{}\label{class_tree_ae784a6ed362f6c5263ee797759f715b6}
+
+\begin{DoxyCompactList}\small\item\em Generates the S\+QL database file from the full simulation data. This allows for greater analysis of the data after completion of the simulation. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a199f47b62b9b10917ff8b89d20c543a7}{sql\+Create\+Simulation\+Parameters} ()\hypertarget{class_tree_a199f47b62b9b10917ff8b89d20c543a7}{}\label{class_tree_a199f47b62b9b10917ff8b89d20c543a7}
+
+\begin{DoxyCompactList}\small\item\em Creates the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the S\+QL database. \end{DoxyCompactList}\item 
+virtual string \hyperlink{class_tree_aed6504b4f759fb31fdeb61cd03b2b3f9}{simulation\+Parameters\+Sql\+Insertion} ()
+\begin{DoxyCompactList}\small\item\em Creates a string containing the S\+QL insertion statement for the simulation parameters. \end{DoxyCompactList}\item 
+virtual string \hyperlink{class_tree_aa8bb5d93c7992404ede0a49bb69ccd1f}{protracted\+Vars\+To\+String} ()
+\begin{DoxyCompactList}\small\item\em Outputs the protracted variables to a string. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_ae5308f74e982485ac444aa394b952152}{sim\+Pause} ()\hypertarget{class_tree_ae5308f74e982485ac444aa394b952152}{}\label{class_tree_ae5308f74e982485ac444aa394b952152}
+
+\begin{DoxyCompactList}\small\item\em Pause the simulation and dump data from memory. \end{DoxyCompactList}\item 
+string \hyperlink{class_tree_a9b2df7fd1b61d3d70ac630f7fbfd683d}{initiate\+Pause} ()\hypertarget{class_tree_a9b2df7fd1b61d3d70ac630f7fbfd683d}{}\label{class_tree_a9b2df7fd1b61d3d70ac630f7fbfd683d}
+
+\begin{DoxyCompactList}\small\item\em Checks the output folder exists and initiates the pause. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a4c2988184328a5236ca61f16744cfac2}{dump\+Main} (string pause\+\_\+folder)
+\begin{DoxyCompactList}\small\item\em Saves the main simulation variables to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aca99503f49b91baae7401423fe547daf}{dump\+Active} (string pause\+\_\+folder)
+\begin{DoxyCompactList}\small\item\em Saves the active object to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_acd23fa139c7d097315c9479187b1a674}{dump\+Data} (string pause\+\_\+folder)
+\begin{DoxyCompactList}\small\item\em Saves the data object to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a3fddb18a5d19b64dec378dca3d3fea31}{complete\+Pause} ()\hypertarget{class_tree_a3fddb18a5d19b64dec378dca3d3fea31}{}\label{class_tree_a3fddb18a5d19b64dec378dca3d3fea31}
+
+\begin{DoxyCompactList}\small\item\em Completes the pause routine and outputs the sql dump. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_ac545d844141db977920fc9fd76ce9dbb}{set\+Resume\+Parameters} (string pausedir, string outdir, unsigned long seed, unsigned long task, unsigned long new\+\_\+max\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Sets the resume variables so that the simulation can be resumed. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aeade4bccb8394937a53bc4fbcf2b4300}{set\+Resume\+Parameters} ()\hypertarget{class_tree_aeade4bccb8394937a53bc4fbcf2b4300}{}\label{class_tree_aeade4bccb8394937a53bc4fbcf2b4300}
+
+\begin{DoxyCompactList}\small\item\em Sets the resume variables to the defaults. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_af57075728924141c7b6d311822a22dc0}{load\+Main\+Save} ()\hypertarget{class_tree_af57075728924141c7b6d311822a22dc0}{}\label{class_tree_af57075728924141c7b6d311822a22dc0}
+
+\begin{DoxyCompactList}\small\item\em Loads the main simulation parameters from the save file into memory. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_af7db53d4870d845741d3159f57b73b30}{load\+Data\+Save} ()\hypertarget{class_tree_af7db53d4870d845741d3159f57b73b30}{}\label{class_tree_af7db53d4870d845741d3159f57b73b30}
+
+\begin{DoxyCompactList}\small\item\em Loads the data object from the save file into memory. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_af145148202f11654d6d6a15a6c021924}{load\+Active\+Save} ()\hypertarget{class_tree_af145148202f11654d6d6a15a6c021924}{}\label{class_tree_af145148202f11654d6d6a15a6c021924}
+
+\begin{DoxyCompactList}\small\item\em Loads the active object from the save file into memory. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a8cfe5d30d53d702f18cd67981e2c9acb}{initiate\+Resume} ()\hypertarget{class_tree_a8cfe5d30d53d702f18cd67981e2c9acb}{}\label{class_tree_a8cfe5d30d53d702f18cd67981e2c9acb}
+
+\begin{DoxyCompactList}\small\item\em Checks for resuming and prints to the terminal. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a3d614f3848dc7acab168642efe345569}{sim\+Resume} ()
+\begin{DoxyCompactList}\small\item\em Resumes the simulation from a previous state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_row}{Row}$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ {\bfseries data}\hypertarget{class_tree_a5983af6c56e41be51be0766941093b4b}{}\label{class_tree_a5983af6c56e41be51be0766941093b4b}
+
+\item 
+unsigned long {\bfseries enddata}\hypertarget{class_tree_a50344999e6b64d15eef935b1f6023471}{}\label{class_tree_a50344999e6b64d15eef935b1f6023471}
+
+\item 
+\hyperlink{struct_sim_parameters}{Sim\+Parameters} {\bfseries sim\+\_\+parameters}\hypertarget{class_tree_a63c399793a209332ad0f5da7fc830d56}{}\label{class_tree_a63c399793a209332ad0f5da7fc830d56}
+
+\item 
+\hyperlink{class_n_rrand}{N\+Rrand} {\bfseries NR}\hypertarget{class_tree_aa7df162306777b040a9a2aac543e6801}{}\label{class_tree_aa7df162306777b040a9a2aac543e6801}
+
+\item 
+vector$<$ long double $>$ {\bfseries speciation\+\_\+rates}\hypertarget{class_tree_a61b4349fe78d09ac06eff4b7d6833105}{}\label{class_tree_a61b4349fe78d09ac06eff4b7d6833105}
+
+\item 
+bool {\bfseries seeded}\hypertarget{class_tree_a78935befd45946b8e69023bffca59c1d}{}\label{class_tree_a78935befd45946b8e69023bffca59c1d}
+
+\item 
+long long {\bfseries the\+\_\+seed}\hypertarget{class_tree_acf483ed0a44629c9aa4690a08017ee35}{}\label{class_tree_acf483ed0a44629c9aa4690a08017ee35}
+
+\item 
+long long {\bfseries the\+\_\+task}\hypertarget{class_tree_a9f74137d5c9c5529ec9a06f88dfa6960}{}\label{class_tree_a9f74137d5c9c5529ec9a06f88dfa6960}
+
+\item 
+string {\bfseries times\+\_\+file}\hypertarget{class_tree_a5e031ea8d94f48288547116a9e7d7add}{}\label{class_tree_a5e031ea8d94f48288547116a9e7d7add}
+
+\item 
+vector$<$ double $>$ {\bfseries reference\+\_\+times}\hypertarget{class_tree_a56bb1ea64368f5b705360a435350f9d5}{}\label{class_tree_a56bb1ea64368f5b705360a435350f9d5}
+
+\item 
+bool {\bfseries has\+\_\+times\+\_\+file}\hypertarget{class_tree_adf239a9aa029c9c6eda4b10c5ce20780}{}\label{class_tree_adf239a9aa029c9c6eda4b10c5ce20780}
+
+\item 
+time\+\_\+t {\bfseries start}\hypertarget{class_tree_ac077d686ee96b123aa779e8a8a5de3ce}{}\label{class_tree_ac077d686ee96b123aa779e8a8a5de3ce}
+
+\item 
+time\+\_\+t {\bfseries sim\+\_\+start}\hypertarget{class_tree_a01cc9b30f2b10b9f51b218df25b13b09}{}\label{class_tree_a01cc9b30f2b10b9f51b218df25b13b09}
+
+\item 
+time\+\_\+t {\bfseries sim\+\_\+end}\hypertarget{class_tree_a26100477c7e58a9e0a90cdee1379ed69}{}\label{class_tree_a26100477c7e58a9e0a90cdee1379ed69}
+
+\item 
+time\+\_\+t {\bfseries now}\hypertarget{class_tree_a5510d0fb5deb23fd39a2619d104f85fa}{}\label{class_tree_a5510d0fb5deb23fd39a2619d104f85fa}
+
+\item 
+time\+\_\+t {\bfseries sim\+\_\+finish}\hypertarget{class_tree_ac399ba59be9dc33a04223d10a82ee5ee}{}\label{class_tree_ac399ba59be9dc33a04223d10a82ee5ee}
+
+\item 
+time\+\_\+t {\bfseries out\+\_\+finish}\hypertarget{class_tree_a5ee1fa5adf72bb599badc041fbee7d09}{}\label{class_tree_a5ee1fa5adf72bb599badc041fbee7d09}
+
+\item 
+time\+\_\+t {\bfseries time\+\_\+taken}\hypertarget{class_tree_abd18bb487c0192588b6bed6f00bcfd07}{}\label{class_tree_abd18bb487c0192588b6bed6f00bcfd07}
+
+\item 
+\hyperlink{class_row}{Row}$<$ \hyperlink{class_data_point}{Data\+Point} $>$ {\bfseries active}\hypertarget{class_tree_a047b331de4979aa4713c69f09237ac35}{}\label{class_tree_a047b331de4979aa4713c69f09237ac35}
+
+\item 
+unsigned long {\bfseries endactive}\hypertarget{class_tree_ab478831f09c135bc9a4bc991c9fd5076}{}\label{class_tree_ab478831f09c135bc9a4bc991c9fd5076}
+
+\item 
+unsigned long {\bfseries startendactive}\hypertarget{class_tree_a3f1a90ab7ef917a996790e5ddfcebf85}{}\label{class_tree_a3f1a90ab7ef917a996790e5ddfcebf85}
+
+\item 
+unsigned long {\bfseries maxsimsize}\hypertarget{class_tree_a0244ee15452c38393246147d93836b4d}{}\label{class_tree_a0244ee15452c38393246147d93836b4d}
+
+\item 
+\hyperlink{class_community}{Community} {\bfseries community}\hypertarget{class_tree_adbb8b625d03dbcdca00f3d8d4b4a50df}{}\label{class_tree_adbb8b625d03dbcdca00f3d8d4b4a50df}
+
+\item 
+long {\bfseries steps}\hypertarget{class_tree_ae7d33b8c16eeb8cb0c7f96dbfbc61b4e}{}\label{class_tree_ae7d33b8c16eeb8cb0c7f96dbfbc61b4e}
+
+\item 
+unsigned long {\bfseries maxtime}\hypertarget{class_tree_a1868cf626a0b12f21a038989d4eca210}{}\label{class_tree_a1868cf626a0b12f21a038989d4eca210}
+
+\item 
+double {\bfseries generation}\hypertarget{class_tree_a84cc46d51045ff3b161ee8788950e0c2}{}\label{class_tree_a84cc46d51045ff3b161ee8788950e0c2}
+
+\item 
+long {\bfseries deme}\hypertarget{class_tree_a9fe104115b4593c772c03b57b82ff0de}{}\label{class_tree_a9fe104115b4593c772c03b57b82ff0de}
+
+\item 
+double {\bfseries deme\+\_\+sample}\hypertarget{class_tree_ac7a1d0583d3dcb55c50fec0e1fd57985}{}\label{class_tree_ac7a1d0583d3dcb55c50fec0e1fd57985}
+
+\item 
+long double {\bfseries spec}\hypertarget{class_tree_a586678f7084086add3a4136476abd375}{}\label{class_tree_a586678f7084086add3a4136476abd375}
+
+\item 
+string {\bfseries out\+\_\+directory}\hypertarget{class_tree_a85615771af7b568adca1b801995cfdc7}{}\label{class_tree_a85615771af7b568adca1b801995cfdc7}
+
+\item 
+sqlite3 $\ast$ {\bfseries database}\hypertarget{class_tree_aae24ce11e30fbd74fe078b23b46c14cd}{}\label{class_tree_aae24ce11e30fbd74fe078b23b46c14cd}
+
+\item 
+bool {\bfseries sim\+\_\+complete}\hypertarget{class_tree_a07f9982fd6f6243c78ef42371603bbe4}{}\label{class_tree_a07f9982fd6f6243c78ef42371603bbe4}
+
+\item 
+bool {\bfseries has\+\_\+imported\+\_\+vars}\hypertarget{class_tree_a97bde28466a098bb9e58c1bd5610fd68}{}\label{class_tree_a97bde28466a098bb9e58c1bd5610fd68}
+
+\item 
+sqlite3 $\ast$ {\bfseries outdatabase}\hypertarget{class_tree_afd585c8a4bdb86461780418f7b886abd}{}\label{class_tree_afd585c8a4bdb86461780418f7b886abd}
+
+\item 
+\hyperlink{struct_step}{Step} {\bfseries this\+\_\+step}\hypertarget{class_tree_af7de4d4f04360edcbe2a20db882b1f87}{}\label{class_tree_af7de4d4f04360edcbe2a20db882b1f87}
+
+\item 
+string {\bfseries sqloutname}\hypertarget{class_tree_ade2744c2510a6e8ae791ca7189f483bb}{}\label{class_tree_ade2744c2510a6e8ae791ca7189f483bb}
+
+\item 
+bool {\bfseries b\+Fullmode}\hypertarget{class_tree_a9379466b9fc0f25bd28543743000e700}{}\label{class_tree_a9379466b9fc0f25bd28543743000e700}
+
+\item 
+bool {\bfseries b\+Resume}\hypertarget{class_tree_ac9cbd7d17fb511c1fcc70c765f6440b0}{}\label{class_tree_ac9cbd7d17fb511c1fcc70c765f6440b0}
+
+\item 
+bool {\bfseries b\+Config}\hypertarget{class_tree_a6c8c76aec6a9faef9c38f4f275b0793d}{}\label{class_tree_a6c8c76aec6a9faef9c38f4f275b0793d}
+
+\item 
+bool {\bfseries has\+\_\+paused}\hypertarget{class_tree_aaa64e29ab7bc3c6f48d454063f0c39e1}{}\label{class_tree_aaa64e29ab7bc3c6f48d454063f0c39e1}
+
+\item 
+bool {\bfseries has\+\_\+imported\+\_\+pause}\hypertarget{class_tree_ad8d1d7e4fa673b28542ba31c5b637856}{}\label{class_tree_ad8d1d7e4fa673b28542ba31c5b637856}
+
+\item 
+bool {\bfseries b\+Is\+Protracted}\hypertarget{class_tree_a1f7515f16d99a9748ab2c4c667f1ffc4}{}\label{class_tree_a1f7515f16d99a9748ab2c4c667f1ffc4}
+
+\item 
+string {\bfseries pause\+\_\+sim\+\_\+directory}\hypertarget{class_tree_a504a4d7ae23146fd6236baa59da51a6e}{}\label{class_tree_a504a4d7ae23146fd6236baa59da51a6e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Main simulation class for performing a non-\/spatial neutral simulation and generating the phylogenetic tree of the individuals. 
+
+\subsection{Member Function Documentation}
+\index{Tree@{Tree}!add\+Lineages@{add\+Lineages}}
+\index{add\+Lineages@{add\+Lineages}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{add\+Lineages(double generation\+\_\+in)}{addLineages(double generation_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::add\+Lineages (
+\begin{DoxyParamCaption}
+\item[{double}]{generation\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a8bfa9a86f122b21900ec33ab4b1e323f}{}\label{class_tree_a8bfa9a86f122b21900ec33ab4b1e323f}
+
+
+Adds the required lineages at the generation time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em generation\+\_\+in} & the generation to add lineages at \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_a6e802a5034648cc26b24923f27f85727}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!apply\+Multiple\+Rates@{apply\+Multiple\+Rates}}
+\index{apply\+Multiple\+Rates@{apply\+Multiple\+Rates}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{apply\+Multiple\+Rates()}{applyMultipleRates()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::apply\+Multiple\+Rates (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_acfc7efdec999f6dbf2ac089514d22091}{}\label{class_tree_acfc7efdec999f6dbf2ac089514d22091}
+
+
+Applies multiple speciation rates to the coalescence tree, ignoring repeated speciation rates. 
+
+Speciation rates are read from the speciation\+\_\+rates object, which should have already been calculated. \index{Tree@{Tree}!apply\+Spec\+Rate@{apply\+Spec\+Rate}}
+\index{apply\+Spec\+Rate@{apply\+Spec\+Rate}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{apply\+Spec\+Rate(long double sr, double t)}{applySpecRate(long double sr, double t)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::apply\+Spec\+Rate (
+\begin{DoxyParamCaption}
+\item[{long double}]{sr, }
+\item[{double}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_aa6349a32b3fcfb82a5f8311b11db3982}{}\label{class_tree_aa6349a32b3fcfb82a5f8311b11db3982}
+
+
+Applies the given speciation rate to the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sr} & the required speciation rate \\
+\hline
+{\em t} & the required time of speciation \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!apply\+Spec\+Rate@{apply\+Spec\+Rate}}
+\index{apply\+Spec\+Rate@{apply\+Spec\+Rate}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{apply\+Spec\+Rate(long double sr)}{applySpecRate(long double sr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::apply\+Spec\+Rate (
+\begin{DoxyParamCaption}
+\item[{long double}]{sr}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ab699328f13b22f48faa63a5638e907db}{}\label{class_tree_ab699328f13b22f48faa63a5638e907db}
+
+
+Overloaded version of apply\+Spec\+Rates for the default generation (0.\+0). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sr} & the speciation rate to apply to the tree \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!apply\+Spec\+Rate\+Internal@{apply\+Spec\+Rate\+Internal}}
+\index{apply\+Spec\+Rate\+Internal@{apply\+Spec\+Rate\+Internal}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{apply\+Spec\+Rate\+Internal(long double sr, double t)}{applySpecRateInternal(long double sr, double t)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::apply\+Spec\+Rate\+Internal (
+\begin{DoxyParamCaption}
+\item[{long double}]{sr, }
+\item[{double}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ac89abe0404d05d0363258b72cb80700b}{}\label{class_tree_ac89abe0404d05d0363258b72cb80700b}
+
+
+Applies the given speciation rate to the tree, but does not output to a file. Instead returns a pointer to the nodes object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sr} & the required speciation rate \\
+\hline
+{\em t} & the required time of speciation \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!calc\+Speciation@{calc\+Speciation}}
+\index{calc\+Speciation@{calc\+Speciation}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{calc\+Speciation(const long double \&random\+\_\+number, const long double \&speciation\+\_\+rate, const unsigned long \&no\+\_\+generations)}{calcSpeciation(const long double &random_number, const long double &speciation_rate, const unsigned long &no_generations)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::calc\+Speciation (
+\begin{DoxyParamCaption}
+\item[{const long double \&}]{random\+\_\+number, }
+\item[{const long double \&}]{speciation\+\_\+rate, }
+\item[{const unsigned long \&}]{no\+\_\+generations}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_abc9389511e1aecf5e573315fc8f4d77c}{}\label{class_tree_abc9389511e1aecf5e573315fc8f4d77c}
+
+
+Calculates the speciation probability from the random number, speciation rate and number of generations a lineage has existed for. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em random\+\_\+number} & the generated random number from 0-\/1 \\
+\hline
+{\em speciation\+\_\+rate} & the speciation rate to be applied \\
+\hline
+{\em no\+\_\+generations} & the number of generations a lineage has existed for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+if true, speciation has occured 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_af9690f122e77c0a60d363af3e818c9a2}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!check\+Output\+Directory@{check\+Output\+Directory}}
+\index{check\+Output\+Directory@{check\+Output\+Directory}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{check\+Output\+Directory()}{checkOutputDirectory()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::check\+Output\+Directory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a5c6065ede9862e9fb6561eb8beaf5d78}{}\label{class_tree_a5c6065ede9862e9fb6561eb8beaf5d78}
+
+
+Asserts that the output directory is not null and exists. If it doesn\textquotesingle{}t exist, it attempts to create it. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Fatal\+\_\+\+Exception} & if the output directory creation fails \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+true if output creates successfully 
+\end{DoxyReturn}
+\index{Tree@{Tree}!check\+Sims@{check\+Sims}}
+\index{check\+Sims@{check\+Sims}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{check\+Sims()}{checkSims()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::check\+Sims (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ad0bcc474a9ab1d4e3e2458c4de7304ad}{}\label{class_tree_ad0bcc474a9ab1d4e3e2458c4de7304ad}
+
+
+Checks for existing paused simulations to resume from Sets b\+Paused if there are. 
+
+This version uses the default values read from the config file. \index{Tree@{Tree}!check\+Sims@{check\+Sims}}
+\index{check\+Sims@{check\+Sims}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{check\+Sims(string output\+\_\+dir, long seed, long task)}{checkSims(string output_dir, long seed, long task)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::check\+Sims (
+\begin{DoxyParamCaption}
+\item[{string}]{output\+\_\+dir, }
+\item[{long}]{seed, }
+\item[{long}]{task}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_aafaede1da6c79583bf2e28b7a1881a5c}{}\label{class_tree_aafaede1da6c79583bf2e28b7a1881a5c}
+
+
+Checks for existing paused simulations to resume from. 
+
+Sets b\+Paused if there are.
+
+This version uses the values supplied to the function directly
+
+
+\begin{DoxyParams}{Parameters}
+{\em output\+\_\+dir} & the output directory to check for \\
+\hline
+{\em seed} & the seed for paused sims \\
+\hline
+{\em task} & the task for paused sims \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!check\+Sim\+Size@{check\+Sim\+Size}}
+\index{check\+Sim\+Size@{check\+Sim\+Size}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{check\+Sim\+Size(unsigned long req\+\_\+data, unsigned long req\+\_\+active)}{checkSimSize(unsigned long req_data, unsigned long req_active)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::check\+Sim\+Size (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{req\+\_\+data, }
+\item[{unsigned long}]{req\+\_\+active}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ab8a62d0ca2b1746676073e3f33e2a949}{}\label{class_tree_ab8a62d0ca2b1746676073e3f33e2a949}
+
+
+Checks the size of the main active and data objects is large enough. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req\+\_\+data} & the required data object size \\
+\hline
+{\em req\+\_\+active} & the required active object size \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!choose\+Random\+Lineage@{choose\+Random\+Lineage}}
+\index{choose\+Random\+Lineage@{choose\+Random\+Lineage}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{choose\+Random\+Lineage()}{chooseRandomLineage()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::choose\+Random\+Lineage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a23803bddf46ad28a1bdd46bf05693b1f}{}\label{class_tree_a23803bddf46ad28a1bdd46bf05693b1f}
+
+
+Chooses a random lineage from active. 
+
+The index of the random lineage is stored in this\+\_\+step, as chosen. Also records the required variables for the step process, like x, y position. \index{Tree@{Tree}!coalescence\+Event@{coalescence\+Event}}
+\index{coalescence\+Event@{coalescence\+Event}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{coalescence\+Event(const unsigned long \&chosen, unsigned long \&coalchosen)}{coalescenceEvent(const unsigned long &chosen, unsigned long &coalchosen)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::coalescence\+Event (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{chosen, }
+\item[{unsigned long \&}]{coalchosen}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a16eedb70009e7570d933f88e8ce44117}{}\label{class_tree_a16eedb70009e7570d933f88e8ce44117}
+
+
+Perform the coalescence between lineages. Once coalesced, lineages are removed from the active scope. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chosen} & the chosen lineage for coalescence \\
+\hline
+{\em coalchosen} & the target lineage for coalscence \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!convert\+Tip@{convert\+Tip}}
+\index{convert\+Tip@{convert\+Tip}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{convert\+Tip(unsigned long i, double generationin)}{convertTip(unsigned long i, double generationin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::convert\+Tip (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{i, }
+\item[{double}]{generationin}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a6af2aaa691ffbb9899e3f070a715e371}{}\label{class_tree_a6af2aaa691ffbb9899e3f070a715e371}
+
+
+Creates a new reference in data containing the tip with a new generation counter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the reference in active of the lineage to make a tip \\
+\hline
+{\em generationin} & the generation to make the lineage a tip at \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!determine\+Speciation\+Rates@{determine\+Speciation\+Rates}}
+\index{determine\+Speciation\+Rates@{determine\+Speciation\+Rates}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{determine\+Speciation\+Rates()}{determineSpeciationRates()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::determine\+Speciation\+Rates (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a25f082da13789dfa3fefcbcfd08b4dfe}{}\label{class_tree_a25f082da13789dfa3fefcbcfd08b4dfe}
+
+
+Determines the speciation rates to apply and then applies them to the coalescence tree post-\/simulation. 
+
+Detects speciation rates from the config files supplied. \index{Tree@{Tree}!dump\+Active@{dump\+Active}}
+\index{dump\+Active@{dump\+Active}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{dump\+Active(string pause\+\_\+folder)}{dumpActive(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Active (
+\begin{DoxyParamCaption}
+\item[{string}]{pause\+\_\+folder}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_aca99503f49b91baae7401423fe547daf}{}\label{class_tree_aca99503f49b91baae7401423fe547daf}
+
+
+Saves the active object to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pause\+\_\+folder} & the folder to save files into \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!dump\+Data@{dump\+Data}}
+\index{dump\+Data@{dump\+Data}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{dump\+Data(string pause\+\_\+folder)}{dumpData(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Data (
+\begin{DoxyParamCaption}
+\item[{string}]{pause\+\_\+folder}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_acd23fa139c7d097315c9479187b1a674}{}\label{class_tree_acd23fa139c7d097315c9479187b1a674}
+
+
+Saves the data object to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pause\+\_\+folder} & the folder to save files into \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!dump\+Main@{dump\+Main}}
+\index{dump\+Main@{dump\+Main}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{dump\+Main(string pause\+\_\+folder)}{dumpMain(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Main (
+\begin{DoxyParamCaption}
+\item[{string}]{pause\+\_\+folder}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a4c2988184328a5236ca61f16744cfac2}{}\label{class_tree_a4c2988184328a5236ca61f16744cfac2}
+
+
+Saves the main simulation variables to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pause\+\_\+folder} & the folder to save files into \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!fill\+Objects@{fill\+Objects}}
+\index{fill\+Objects@{fill\+Objects}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{fill\+Objects(const unsigned long \&initial\+\_\+count)}{fillObjects(const unsigned long &initial_count)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+::fill\+Objects (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{initial\+\_\+count}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a4af845777294c9116c60115e651620b4}{}\label{class_tree_a4af845777294c9116c60115e651620b4}
+
+
+Fills the active and data objects with the starting lineages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+\_\+count} & the number of individuals expected to exist \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_a030ece1d0756057e56f4272510d3e567}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!get\+Cumulative\+Abundances@{get\+Cumulative\+Abundances}}
+\index{get\+Cumulative\+Abundances@{get\+Cumulative\+Abundances}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Cumulative\+Abundances()}{getCumulativeAbundances()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Row}$<$ unsigned long $>$ $\ast$ Tree\+::get\+Cumulative\+Abundances (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a49a94b2218f7ae127a53af4a58d02b06}{}\label{class_tree_a49a94b2218f7ae127a53af4a58d02b06}
+
+
+Gets the sorted cumulative species abundances from the contained Tree\+List. 
+
+For use with metacommunity applications \begin{DoxyReturn}{Returns}
+row of cumulative species abundances 
+\end{DoxyReturn}
+\index{Tree@{Tree}!get\+Initial\+Count@{get\+Initial\+Count}}
+\index{get\+Initial\+Count@{get\+Initial\+Count}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Initial\+Count()}{getInitialCount()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+::get\+Initial\+Count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a1e0685310a5a9bca4d6069e8d4ce1f1b}{}\label{class_tree_a1e0685310a5a9bca4d6069e8d4ce1f1b}
+
+
+Gets the initial number of individuals. 
+
+\begin{DoxyReturn}{Returns}
+the number of initial individuals to simulate 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_a05ac9205ab49dbe6056522722372063b}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!get\+Protracted@{get\+Protracted}}
+\index{get\+Protracted@{get\+Protracted}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted()}{getProtracted()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::get\+Protracted (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_aa23a57f7863d58384f61d464d998ab3c}{}\label{class_tree_aa23a57f7863d58384f61d464d998ab3c}
+
+
+Gets the protractedness of the simulation. Overridden by protracted child classes. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_ab0bb05fbdeb2aa75a3d3128ded3d655b}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!get\+Protracted\+Generation\+Max@{get\+Protracted\+Generation\+Max}}
+\index{get\+Protracted\+Generation\+Max@{get\+Protracted\+Generation\+Max}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted\+Generation\+Max()}{getProtractedGenerationMax()}}]{\setlength{\rightskip}{0pt plus 5cm}double Tree\+::get\+Protracted\+Generation\+Max (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a0c5e746982a87f24c083f4534bf92b45}{}\label{class_tree_a0c5e746982a87f24c083f4534bf92b45}
+
+
+Gets the maximum number of generations a lineage can exist. 
+
+Without overriding this function, should always return 0.\+0 (no maximum).
+
+\begin{DoxyReturn}{Returns}
+double the number of generations a lineage must exist 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_a2093dd13cdbfc66e6c1de1406023bad6}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!get\+Protracted\+Generation\+Min@{get\+Protracted\+Generation\+Min}}
+\index{get\+Protracted\+Generation\+Min@{get\+Protracted\+Generation\+Min}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted\+Generation\+Min()}{getProtractedGenerationMin()}}]{\setlength{\rightskip}{0pt plus 5cm}double Tree\+::get\+Protracted\+Generation\+Min (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a6ffc42e941f352cd74f01f6f7011f00b}{}\label{class_tree_a6ffc42e941f352cd74f01f6f7011f00b}
+
+
+Gets the minimum number of generations a lineage must exist. 
+
+Without overriding this function, should always return 0.\+0. \begin{DoxyReturn}{Returns}
+double the number of generations a lineage must exist 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_a331561815abc7d595e88d98e9268e7a1}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!get\+Protracted\+Variables@{get\+Protracted\+Variables}}
+\index{get\+Protracted\+Variables@{get\+Protracted\+Variables}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Protracted\+Variables()}{getProtractedVariables()}}]{\setlength{\rightskip}{0pt plus 5cm}string Tree\+::get\+Protracted\+Variables (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a34c0808026bf00546c8f9786376be730}{}\label{class_tree_a34c0808026bf00546c8f9786376be730}
+
+
+Gets the protracted variables and returns them as a single, newline separated string. This method is intended to be overridden in derived classes. 
+
+\begin{DoxyReturn}{Returns}
+string containing the protracted variables, separated by newlines. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_af0eca5eb2a790fcee9a0854e30088753}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!get\+Seed@{get\+Seed}}
+\index{get\+Seed@{get\+Seed}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{get\+Seed()}{getSeed()}}]{\setlength{\rightskip}{0pt plus 5cm}long long Tree\+::get\+Seed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a857521315ca6bd9b3300d099488d74f1}{}\label{class_tree_a857521315ca6bd9b3300d099488d74f1}
+
+
+Getter for the simulation seed. 
+
+\begin{DoxyReturn}{Returns}
+Returns the seeds 
+\end{DoxyReturn}
+\index{Tree@{Tree}!has\+Paused@{has\+Paused}}
+\index{has\+Paused@{has\+Paused}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{has\+Paused()}{hasPaused()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::has\+Paused (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ae07761c0a91a44ebe459904b1b8ffb43}{}\label{class_tree_ae07761c0a91a44ebe459904b1b8ffb43}
+
+
+Gets the has\+\_\+paused variable for resuming sims. 
+
+\begin{DoxyReturn}{Returns}
+if the simulation has paused 
+\end{DoxyReturn}
+\index{Tree@{Tree}!import\+Simulation\+Variables@{import\+Simulation\+Variables}}
+\index{import\+Simulation\+Variables@{import\+Simulation\+Variables}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{import\+Simulation\+Variables(const string \&configfile)}{importSimulationVariables(const string &configfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::import\+Simulation\+Variables (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{configfile}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a455d87022772b309a5974ea5f0295139}{}\label{class_tree_a455d87022772b309a5974ea5f0295139}
+
+
+Import the simulation variables from the command line structure. 
+
+This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} and run\+Sim() can be run immediately afterwards.
+
+
+\begin{DoxyParams}{Parameters}
+{\em comargs} & a vector of strings, containing the command-\/line arguments \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!internal\+Setup@{internal\+Setup}}
+\index{internal\+Setup@{internal\+Setup}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{internal\+Setup(const Sim\+Parameters \&sim\+\_\+parameters\+\_\+in)}{internalSetup(const SimParameters &sim_parameters_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::internal\+Setup (
+\begin{DoxyParamCaption}
+\item[{const {\bf Sim\+Parameters} \&}]{sim\+\_\+parameters\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a62db83e47e5850c6a83793829b22b68b}{}\label{class_tree_a62db83e47e5850c6a83793829b22b68b}
+
+
+Sets up the simulation parameters from the one provided. 
+
+Intended for usage with metacommunity application. No output directory is expected. 
+\begin{DoxyParams}{Parameters}
+{\em sim\+\_\+parameters\+\_\+in} & the simulation parameters to set up the simulation with \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!make\+Tip@{make\+Tip}}
+\index{make\+Tip@{make\+Tip}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{make\+Tip(const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in)}{makeTip(const unsigned long &tmp_active, const double &generation_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::make\+Tip (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{tmp\+\_\+active, }
+\item[{const double \&}]{generation\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a0973cc37d9b95144db76d36cb363caca}{}\label{class_tree_a0973cc37d9b95144db76d36cb363caca}
+
+
+Sets the active reference to a tip, if it isn\textquotesingle{}t one already. Otherwise, creates a new tip for the new generation time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tmp\+\_\+active} & the reference in active \\
+\hline
+{\em generation\+\_\+in} & the generation to set for the new lineage \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!output\+Data@{output\+Data}}
+\index{output\+Data@{output\+Data}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{output\+Data(unsigned long species\+\_\+richness)}{outputData(unsigned long species_richness)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::output\+Data (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{species\+\_\+richness}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a5acf7d0eea9ea2ef4928bb6691b87724}{}\label{class_tree_a5acf7d0eea9ea2ef4928bb6691b87724}
+
+
+Outputs important simulation data to a csv file. This function will likely be remove in future versions as all simulation output is now contained in an S\+Q\+Lite database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em species\+\_\+richness} & the species richness of the tree with the minimum speciation rate. Outputted into the csv file \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!print\+Setup@{print\+Setup}}
+\index{print\+Setup@{print\+Setup}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{print\+Setup()}{printSetup()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::print\+Setup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ab71da7797a6586ddd948661c34ce4788}{}\label{class_tree_ab71da7797a6586ddd948661c34ce4788}
+
+
+Prints the statement for the setup initiation. 
+
+This is stored in a separate function so that it can be called in isolation by child classes. \index{Tree@{Tree}!protracted\+Vars\+To\+String@{protracted\+Vars\+To\+String}}
+\index{protracted\+Vars\+To\+String@{protracted\+Vars\+To\+String}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{protracted\+Vars\+To\+String()}{protractedVarsToString()}}]{\setlength{\rightskip}{0pt plus 5cm}string Tree\+::protracted\+Vars\+To\+String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_aa8bb5d93c7992404ede0a49bb69ccd1f}{}\label{class_tree_aa8bb5d93c7992404ede0a49bb69ccd1f}
+
+
+Outputs the protracted variables to a string. 
+
+This function is intended to be overridden by derived classes. It is intended the output is used for writing to S\+QL databases.
+
+\begin{DoxyReturn}{Returns}
+string containing a list of the protracted speciation variables. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_a505a464578e6a7028e66f26b3e6b4a92}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!remove\+Old\+Position@{remove\+Old\+Position}}
+\index{remove\+Old\+Position@{remove\+Old\+Position}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{remove\+Old\+Position(const unsigned long \&chosen)}{removeOldPosition(const unsigned long &chosen)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::remove\+Old\+Position (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{chosen}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_ad74c05729c9e5235ab0fa6e34260093a}{}\label{class_tree_ad74c05729c9e5235ab0fa6e34260093a}
+
+
+Removes the old position within active. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chosen} & the desired active reference to remove from the grid. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_ae694bde4ab31b51c13c4a96f9a86a8ba}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!run\+Simulation@{run\+Simulation}}
+\index{run\+Simulation@{run\+Simulation}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{run\+Simulation()}{runSimulation()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::run\+Simulation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_afe75245862a1c40030c1c8607518cf8d}{}\label{class_tree_afe75245862a1c40030c1c8607518cf8d}
+
+
+Run the entire simulation given the start conditions already defined by \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} 
+
+Setup is assumed to have been run already. This function is the main function containing the main loop of the simulation. At the end of the simulation, returns true if the simulation is complete, false otherwise. \index{Tree@{Tree}!set\+Object\+Sizes@{set\+Object\+Sizes}}
+\index{set\+Object\+Sizes@{set\+Object\+Sizes}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{set\+Object\+Sizes()}{setObjectSizes()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Tree\+::set\+Object\+Sizes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a869ab0aba75336f737cbb137c74b8abc}{}\label{class_tree_a869ab0aba75336f737cbb137c74b8abc}
+
+
+Sets the sizes of grid, active and data, based on the number of individuals counted from the samplemask. 
+
+\begin{DoxyReturn}{Returns}
+a count of the number of individuals that exist in the simulation 
+\end{DoxyReturn}
+\index{Tree@{Tree}!set\+Protracted\+Variables@{set\+Protracted\+Variables}}
+\index{set\+Protracted\+Variables@{set\+Protracted\+Variables}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{set\+Protracted\+Variables(double speciation\+\_\+gen\+\_\+min, double speciation\+\_\+gen\+\_\+max)}{setProtractedVariables(double speciation_gen_min, double speciation_gen_max)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::set\+Protracted\+Variables (
+\begin{DoxyParamCaption}
+\item[{double}]{speciation\+\_\+gen\+\_\+min, }
+\item[{double}]{speciation\+\_\+gen\+\_\+max}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a891764ffc1e29d3edbe0fd08e67a184b}{}\label{class_tree_a891764ffc1e29d3edbe0fd08e67a184b}
+
+
+Sets the protracted variables. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speciation\+\_\+gen\+\_\+min} & the minimum number of generations to have passed before speciation is allowed \\
+\hline
+{\em speciation\+\_\+gen\+\_\+max} & the maximum number of generations a lineage can exist for before it is speciated. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_a6e04aa92dd30e889a468d9b9fc6fd58d}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!set\+Resume\+Parameters@{set\+Resume\+Parameters}}
+\index{set\+Resume\+Parameters@{set\+Resume\+Parameters}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{set\+Resume\+Parameters(string pausedir, string outdir, unsigned long seed, unsigned long task, unsigned long new\+\_\+max\+\_\+time)}{setResumeParameters(string pausedir, string outdir, unsigned long seed, unsigned long task, unsigned long new_max_time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::set\+Resume\+Parameters (
+\begin{DoxyParamCaption}
+\item[{string}]{pausedir, }
+\item[{string}]{outdir, }
+\item[{unsigned long}]{seed, }
+\item[{unsigned long}]{task, }
+\item[{unsigned long}]{new\+\_\+max\+\_\+time}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ac545d844141db977920fc9fd76ce9dbb}{}\label{class_tree_ac545d844141db977920fc9fd76ce9dbb}
+
+
+Sets the resume variables so that the simulation can be resumed. 
+
+The pause directory can be the same as the output directory if it is desirable to save to the same location.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pausedir} & the directory containing the pause folder for resuming the simulation \\
+\hline
+{\em outdir} & the directory to write simulation output to \\
+\hline
+{\em seed} & the simulation seed \\
+\hline
+{\em task} & the simulation task \\
+\hline
+{\em new\+\_\+max\+\_\+time} & the maximum simulation time to run for in seconds (0 keeps old simulation max time) \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!set\+Seed@{set\+Seed}}
+\index{set\+Seed@{set\+Seed}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{set\+Seed(long long seed\+\_\+in)}{setSeed(long long seed_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::set\+Seed (
+\begin{DoxyParamCaption}
+\item[{long long}]{seed\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_ab240ab1988cbde281a6811b3fdc1dd5d}{}\label{class_tree_ab240ab1988cbde281a6811b3fdc1dd5d}
+
+
+Sets the simulation seed for the random number generator. 
+
+This function should only be called once.
+
+The seed is set within the NR object. This will be fixed for the simulation and is only performed once.
+
+
+\begin{DoxyParams}{Parameters}
+{\em seed\+\_\+in} & the desired seed to set for the simulation \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!set\+Sim\+Start\+Variables@{set\+Sim\+Start\+Variables}}
+\index{set\+Sim\+Start\+Variables@{set\+Sim\+Start\+Variables}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{set\+Sim\+Start\+Variables()}{setSimStartVariables()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::set\+Sim\+Start\+Variables (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a1ba0f5d27c6ef6e9e17f988aff2dfe65}{}\label{class_tree_a1ba0f5d27c6ef6e9e17f988aff2dfe65}
+
+
+Sets the variables at the start of a simulation for temporary data. 
+
+This is not the main set-\/up routine, which creates the permanent data structures including maps, the coalescence tree and active lineage listings. \index{Tree@{Tree}!setup@{setup}}
+\index{setup@{setup}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{setup()}{setup()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::setup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{}\label{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}
+
+
+The setup function for generating the simulation objects. 
+
+The simulation parameters are set from comargs using \hyperlink{class_tree_ac374d237b7e2e7e11f6a0ff395003635}{set\+Parameters()}. Generates and fills the active and grid objects as well as importing all the maps from the supplied files. 
+
+Reimplemented in \hyperlink{class_spatial_tree_ae97336318c81e182e9f445f7efdbff8d}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!setup\+Tree\+Generation@{setup\+Tree\+Generation}}
+\index{setup\+Tree\+Generation@{setup\+Tree\+Generation}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{setup\+Tree\+Generation(long double sr, double t)}{setupTreeGeneration(long double sr, double t)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::setup\+Tree\+Generation (
+\begin{DoxyParamCaption}
+\item[{long double}]{sr, }
+\item[{double}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a9997b98824a786d9843a3df40de1226a}{}\label{class_tree_a9997b98824a786d9843a3df40de1226a}
+
+
+Sets up the generation of the tree object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sr} & the required speciation rate \\
+\hline
+{\em t} & the required time of speciation \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!sim\+Resume@{sim\+Resume}}
+\index{sim\+Resume@{sim\+Resume}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{sim\+Resume()}{simResume()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::sim\+Resume (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a3d614f3848dc7acab168642efe345569}{}\label{class_tree_a3d614f3848dc7acab168642efe345569}
+
+
+Resumes the simulation from a previous state. 
+
+Reads in the parameters and objects from file and re-\/starts the simulation. 
+
+Reimplemented in \hyperlink{class_spatial_tree_ad578ceeaf0ab3f4a2e39eb907881c11f}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!simulation\+Parameters\+Sql\+Insertion@{simulation\+Parameters\+Sql\+Insertion}}
+\index{simulation\+Parameters\+Sql\+Insertion@{simulation\+Parameters\+Sql\+Insertion}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{simulation\+Parameters\+Sql\+Insertion()}{simulationParametersSqlInsertion()}}]{\setlength{\rightskip}{0pt plus 5cm}string Tree\+::simulation\+Parameters\+Sql\+Insertion (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_aed6504b4f759fb31fdeb61cd03b2b3f9}{}\label{class_tree_aed6504b4f759fb31fdeb61cd03b2b3f9}
+
+
+Creates a string containing the S\+QL insertion statement for the simulation parameters. 
+
+\begin{DoxyReturn}{Returns}
+string containing the S\+QL insertion statement 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_acc54786661c182b6df23e57a61716e0f}{Spatial\+Tree}.
+
+\index{Tree@{Tree}!speciate\+Lineage@{speciate\+Lineage}}
+\index{speciate\+Lineage@{speciate\+Lineage}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{speciate\+Lineage(const unsigned long \&data\+\_\+position)}{speciateLineage(const unsigned long &data_position)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::speciate\+Lineage (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{data\+\_\+position}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a32e12cc62ce2d9ae893214b1f4cfad1f}{}\label{class_tree_a32e12cc62ce2d9ae893214b1f4cfad1f}
+
+
+Performs the actual speciation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+position} & the position in the array of Tree\+Nodes for this lineage \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_protracted_tree_aaa2f1db86b0fd49a69d0809bd1c1fb81}{Protracted\+Tree}.
+
+\index{Tree@{Tree}!speciation@{speciation}}
+\index{speciation@{speciation}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{speciation(const unsigned long \&chosen)}{speciation(const unsigned long &chosen)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::speciation (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{chosen}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a05c9e44f1a4d7af83e65b6c4565b1b28}{}\label{class_tree_a05c9e44f1a4d7af83e65b6c4565b1b28}
+
+
+Speciation to supplied lineage. 
+
+Also calls the remove\+Old\+Pos() and \hyperlink{class_tree_ab1be13d2e99a4445a7cc84f907e0c90e}{switch\+Positions()} functions for removing the lineage out of active reference. 
+\begin{DoxyParams}{Parameters}
+{\em chosen} & \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!sql\+Output@{sql\+Output}}
+\index{sql\+Output@{sql\+Output}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{sql\+Output()}{sqlOutput()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::sql\+Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a8cd3db7add1884ea53b0d98002d39cd3}{}\label{class_tree_a8cd3db7add1884ea53b0d98002d39cd3}
+
+
+Copy the in-\/memory database to file. 
+
+This function should not be called if the database is already opened on disc, and won\textquotesingle{}t do anything if it is. \index{Tree@{Tree}!stop\+Simulation@{stop\+Simulation}}
+\index{stop\+Simulation@{stop\+Simulation}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{stop\+Simulation()}{stopSimulation()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::stop\+Simulation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_afd6bd75c301d2f57c4997fcfc92f192e}{}\label{class_tree_afd6bd75c301d2f57c4997fcfc92f192e}
+
+
+Finalises the simulation, and performs the correct tasks depending if the sim has been paused or finished. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\index{Tree@{Tree}!switch\+Positions@{switch\+Positions}}
+\index{switch\+Positions@{switch\+Positions}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{switch\+Positions(const unsigned long \&chosen)}{switchPositions(const unsigned long &chosen)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::switch\+Positions (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{chosen}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_ab1be13d2e99a4445a7cc84f907e0c90e}{}\label{class_tree_ab1be13d2e99a4445a7cc84f907e0c90e}
+
+
+Switches the chosen position with the endactive position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chosen} & the chosen lineage to switch with endactive. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_spatial_tree_a71c99204503ec59815a5338ab934331d}{Spatial\+Tree}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_tree_8h}{Tree.\+h}\item 
+necsim/\hyperlink{_tree_8cpp}{Tree.\+cpp}\end{DoxyCompactItemize}

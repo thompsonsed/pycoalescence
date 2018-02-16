@@ -1,0 +1,317 @@
+\hypertarget{class_config_option}{}\section{Config\+Option Class Reference}
+\label{class_config_option}\index{Config\+Option@{Config\+Option}}
+
+
+Config option class to store and import options from a file.  
+
+
+
+
+{\ttfamily \#include $<$Config\+File\+Parser.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_option_ac0639cf9fc6660b1436ebc9e7af52525}{Config\+Option} ()\hypertarget{class_config_option_ac0639cf9fc6660b1436ebc9e7af52525}{}\label{class_config_option_ac0639cf9fc6660b1436ebc9e7af52525}
+
+\begin{DoxyCompactList}\small\item\em default construtor for \hyperlink{class_config_option}{Config\+Option} \end{DoxyCompactList}\item 
+void \hyperlink{class_config_option_ac1ae69813100e755359b25b11dfeb8c7}{set\+Config} (const string \&file, bool \hyperlink{_speciation_counter_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}, bool full\+\_\+parse=false)
+\begin{DoxyCompactList}\small\item\em Sets the config file the specified string. A boolean is also provided, set equal to true if this is the main command line import. This causes the deletion of the first few command line options after import. \end{DoxyCompactList}\item 
+void \hyperlink{class_config_option_a45cdefa1516c378e5a90803d594ccd34}{parse\+Config} ()\hypertarget{class_config_option_a45cdefa1516c378e5a90803d594ccd34}{}\label{class_config_option_a45cdefa1516c378e5a90803d594ccd34}
+
+\begin{DoxyCompactList}\small\item\em Reads a config file of a specific configuration. Each line must be a set of values related to the object determined by ref=\textquotesingle{}object\textquotesingle{}. Each key must have the form key=value, which will be read as a string into a Key\+Option structure. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{struct_section_option}{Section\+Option} $>$ \hyperlink{class_config_option_a7d9570023d8c96962f90784283b68859}{get\+Section\+Options} ()
+\begin{DoxyCompactList}\small\item\em Returns the vector of key options imported from the file. \end{DoxyCompactList}\item 
+void \hyperlink{class_config_option_ac824f16f50a77fcc5c11d5ac3fb244cc}{set\+Section\+Option} (string section, string reference, string value)
+\begin{DoxyCompactList}\small\item\em Sets the section option with the provided section, key and value. \end{DoxyCompactList}\item 
+\hyperlink{struct_section_option}{Section\+Option} \hyperlink{class_config_option_a66d2199cf3bd4fa015ef38e34fe02bd1}{operator\mbox{[}$\,$\mbox{]}} (int index)
+\begin{DoxyCompactList}\small\item\em Gets the \hyperlink{struct_section_option}{Section\+Option} at the provided index. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_config_option_acb7b9141efc8d0e50e21ff1adce8e9cb}{get\+Section\+Options\+Size} ()
+\begin{DoxyCompactList}\small\item\em Gets the size of the key options vector. \end{DoxyCompactList}\item 
+vector$<$ string $>$ \hyperlink{class_config_option_a025402f31cd098e827dee09d08736398}{get\+Sections} ()
+\begin{DoxyCompactList}\small\item\em Gets the sections contained in the Section\+Options object. \end{DoxyCompactList}\item 
+bool \hyperlink{class_config_option_a3a99578bbd121d5494340388f8a3498c}{has\+Section} (const string \&sec)
+\begin{DoxyCompactList}\small\item\em Checks whether the config option has the specified section. \end{DoxyCompactList}\item 
+vector$<$ string $>$ \hyperlink{class_config_option_a1cd1b4a0e620ba32a4e8864346357dcd}{get\+Section\+Values} (string sec)
+\begin{DoxyCompactList}\small\item\em Gets all values within a section. \end{DoxyCompactList}\item 
+string \hyperlink{class_config_option_a36917196846e64db6634730fa9b2b3f3}{get\+Section\+Options} (string section, string ref)
+\begin{DoxyCompactList}\small\item\em Returns a specific value for a particular key options and reference. \end{DoxyCompactList}\item 
+string \hyperlink{class_config_option_a9f4884f12f74d865a3370c2f24ffcc67}{get\+Section\+Options} (string section, string ref, string def)
+\begin{DoxyCompactList}\small\item\em Returns a specific value for a particular key options and reference. This overloaded version of the function returns the default value def when no match is found. \end{DoxyCompactList}\item 
+int \hyperlink{class_config_option_afbd1ed9d006c8ff48d90e63a57f55e2a}{import\+Config} (vector$<$ string $>$ \&comargs)
+\begin{DoxyCompactList}\small\item\em Imports the parameters from the config file and returns an integer of the number of arguments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{class_config_option_a9e0cbadb5ac652eb62eb6e046dad5126}{operator$<$$<$} (ostream \&os, const \hyperlink{class_config_option}{Config\+Option} \&c)
+\begin{DoxyCompactList}\small\item\em Overloading the $<$$<$ operator for outputting to the output stream. \end{DoxyCompactList}\item 
+istream \& \hyperlink{class_config_option_ad418094c35f378a7b92ca5922e45a206}{operator$>$$>$} (istream \&is, \hyperlink{class_config_option}{Config\+Option} \&c)
+\begin{DoxyCompactList}\small\item\em Overloading the $>$$>$ operator for inputting from an input stream. Note that the config file must still exist for re-\/inport and parsing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Config option class to store and import options from a file. 
+
+\subsection{Member Function Documentation}
+\index{Config\+Option@{Config\+Option}!get\+Section\+Options@{get\+Section\+Options}}
+\index{get\+Section\+Options@{get\+Section\+Options}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{get\+Section\+Options()}{getSectionOptions()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Section\+Option} $>$ Config\+Option\+::get\+Section\+Options (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a7d9570023d8c96962f90784283b68859}{}\label{class_config_option_a7d9570023d8c96962f90784283b68859}
+
+
+Returns the vector of key options imported from the file. 
+
+\begin{DoxyReturn}{Returns}
+vector of key options 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!get\+Section\+Options@{get\+Section\+Options}}
+\index{get\+Section\+Options@{get\+Section\+Options}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{get\+Section\+Options(string section, string ref)}{getSectionOptions(string section, string ref)}}]{\setlength{\rightskip}{0pt plus 5cm}string Config\+Option\+::get\+Section\+Options (
+\begin{DoxyParamCaption}
+\item[{string}]{section, }
+\item[{string}]{ref}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a36917196846e64db6634730fa9b2b3f3}{}\label{class_config_option_a36917196846e64db6634730fa9b2b3f3}
+
+
+Returns a specific value for a particular key options and reference. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em section} & the section to match \\
+\hline
+{\em ref} & the reference to match \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the string at the correct place in Key\+Options.\+val 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!get\+Section\+Options@{get\+Section\+Options}}
+\index{get\+Section\+Options@{get\+Section\+Options}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{get\+Section\+Options(string section, string ref, string def)}{getSectionOptions(string section, string ref, string def)}}]{\setlength{\rightskip}{0pt plus 5cm}string Config\+Option\+::get\+Section\+Options (
+\begin{DoxyParamCaption}
+\item[{string}]{section, }
+\item[{string}]{ref, }
+\item[{string}]{def}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a9f4884f12f74d865a3370c2f24ffcc67}{}\label{class_config_option_a9f4884f12f74d865a3370c2f24ffcc67}
+
+
+Returns a specific value for a particular key options and reference. This overloaded version of the function returns the default value def when no match is found. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em section} & the section to match \\
+\hline
+{\em ref} & the reference to match \\
+\hline
+{\em def} & the default value to return if no match is found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the string at the correct place in Key\+Options.\+val 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!get\+Section\+Options\+Size@{get\+Section\+Options\+Size}}
+\index{get\+Section\+Options\+Size@{get\+Section\+Options\+Size}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{get\+Section\+Options\+Size()}{getSectionOptionsSize()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Config\+Option\+::get\+Section\+Options\+Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_acb7b9141efc8d0e50e21ff1adce8e9cb}{}\label{class_config_option_acb7b9141efc8d0e50e21ff1adce8e9cb}
+
+
+Gets the size of the key options vector. 
+
+\begin{DoxyReturn}{Returns}
+the size of the configuration vector. 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!get\+Sections@{get\+Sections}}
+\index{get\+Sections@{get\+Sections}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{get\+Sections()}{getSections()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ string $>$ Config\+Option\+::get\+Sections (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a025402f31cd098e827dee09d08736398}{}\label{class_config_option_a025402f31cd098e827dee09d08736398}
+
+
+Gets the sections contained in the Section\+Options object. 
+
+\begin{DoxyReturn}{Returns}
+A vector of the section names. 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!get\+Section\+Values@{get\+Section\+Values}}
+\index{get\+Section\+Values@{get\+Section\+Values}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{get\+Section\+Values(string sec)}{getSectionValues(string sec)}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ string $>$ Config\+Option\+::get\+Section\+Values (
+\begin{DoxyParamCaption}
+\item[{string}]{sec}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a1cd1b4a0e620ba32a4e8864346357dcd}{}\label{class_config_option_a1cd1b4a0e620ba32a4e8864346357dcd}
+
+
+Gets all values within a section. 
+
+Throws a Config\+\_\+\+Exception if the section is not found. 
+\begin{DoxyParams}{Parameters}
+{\em sec} & the section to find values for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a vector of the section\textquotesingle{}s values. 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!has\+Section@{has\+Section}}
+\index{has\+Section@{has\+Section}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{has\+Section(const string \&sec)}{hasSection(const string &sec)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Option\+::has\+Section (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sec}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a3a99578bbd121d5494340388f8a3498c}{}\label{class_config_option_a3a99578bbd121d5494340388f8a3498c}
+
+
+Checks whether the config option has the specified section. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sec} & the section name to check for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the section has been found 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!import\+Config@{import\+Config}}
+\index{import\+Config@{import\+Config}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{import\+Config(vector$<$ string $>$ \&comargs)}{importConfig(vector< string > &comargs)}}]{\setlength{\rightskip}{0pt plus 5cm}int Config\+Option\+::import\+Config (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{comargs}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_afbd1ed9d006c8ff48d90e63a57f55e2a}{}\label{class_config_option_afbd1ed9d006c8ff48d90e63a57f55e2a}
+
+
+Imports the parameters from the config file and returns an integer of the number of arguments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em comargs} & a vector of command line arguments to import to from file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a count of the number of arguments (should also be the size of comargs). 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{operator[](int index)}{operator[](int index)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Section\+Option} Config\+Option\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{int}]{index}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_a66d2199cf3bd4fa015ef38e34fe02bd1}{}\label{class_config_option_a66d2199cf3bd4fa015ef38e34fe02bd1}
+
+
+Gets the \hyperlink{struct_section_option}{Section\+Option} at the provided index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & the index of the \hyperlink{struct_section_option}{Section\+Option} to obtain, must be less than configs.\+size() \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the section option at the index 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!set\+Config@{set\+Config}}
+\index{set\+Config@{set\+Config}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{set\+Config(const string \&file, bool main, bool full\+\_\+parse=false)}{setConfig(const string &file, bool main, bool full_parse=false)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Option\+::set\+Config (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{file, }
+\item[{bool}]{main, }
+\item[{bool}]{full\+\_\+parse = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_ac1ae69813100e755359b25b11dfeb8c7}{}\label{class_config_option_ac1ae69813100e755359b25b11dfeb8c7}
+
+
+Sets the config file the specified string. A boolean is also provided, set equal to true if this is the main command line import. This causes the deletion of the first few command line options after import. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & the target config file (in .txt format). \\
+\hline
+{\em main} & boolean of if this is the main command line import. \\
+\hline
+{\em full\+\_\+parse} & sets b\+Full\+Parse to provided value \\
+\hline
+\end{DoxyParams}
+\index{Config\+Option@{Config\+Option}!set\+Section\+Option@{set\+Section\+Option}}
+\index{set\+Section\+Option@{set\+Section\+Option}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{set\+Section\+Option(string section, string reference, string value)}{setSectionOption(string section, string reference, string value)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Option\+::set\+Section\+Option (
+\begin{DoxyParamCaption}
+\item[{string}]{section, }
+\item[{string}]{reference, }
+\item[{string}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_option_ac824f16f50a77fcc5c11d5ac3fb244cc}{}\label{class_config_option_ac824f16f50a77fcc5c11d5ac3fb244cc}
+
+
+Sets the section option with the provided section, key and value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em section} & the section name \\
+\hline
+{\em reference} & the reference key for the parameter \\
+\hline
+{\em value} & the value of the key \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\index{Config\+Option@{Config\+Option}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Config\+Option} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_config_option_a9e0cbadb5ac652eb62eb6e046dad5126}{}\label{class_config_option_a9e0cbadb5ac652eb62eb6e046dad5126}
+
+
+Overloading the $<$$<$ operator for outputting to the output stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & the output stream. \\
+\hline
+{\em c} & the \hyperlink{class_config_option}{Config\+Option} object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+os the output stream. 
+\end{DoxyReturn}
+\index{Config\+Option@{Config\+Option}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Config\+Option@{Config\+Option}}
+\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{is, }
+\item[{{\bf Config\+Option} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_config_option_ad418094c35f378a7b92ca5922e45a206}{}\label{class_config_option_ad418094c35f378a7b92ca5922e45a206}
+
+
+Overloading the $>$$>$ operator for inputting from an input stream. Note that the config file must still exist for re-\/inport and parsing. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is} & the input stream \\
+\hline
+{\em c} & the \hyperlink{class_config_option}{Config\+Option} object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+is the input stream 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_config_file_parser_8h}{Config\+File\+Parser.\+h}\item 
+necsim/\hyperlink{_config_file_parser_8cpp}{Config\+File\+Parser.\+cpp}\end{DoxyCompactItemize}

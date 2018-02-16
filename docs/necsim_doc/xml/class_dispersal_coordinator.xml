@@ -1,0 +1,988 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_dispersal_coordinator" kind="class" language="C++" prot="public">
+    <compoundname>DispersalCoordinator</compoundname>
+    <includes refid="_dispersal_coordinator_8h" local="no">DispersalCoordinator.h</includes>
+      <sectiondef kind="protected-type">
+      <memberdef kind="typedef" id="class_dispersal_coordinator_1a95a865c016904f23990926af1e7534da" prot="protected" static="no">
+        <type>void(DispersalCoordinator::*</type>
+        <definition>typedef void(DispersalCoordinator::* DispersalCoordinator::dispersal_fptr) (Step &amp;this_step)</definition>
+        <argsstring>)(Step &amp;this_step)</argsstring>
+        <name>dispersal_fptr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="55" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_dispersal_coordinator_1a6f3d41e77253cb394c63253431decd36" prot="protected" static="no">
+        <type>bool(DispersalCoordinator::*</type>
+        <definition>typedef bool(DispersalCoordinator::* DispersalCoordinator::end_fptr) (const unsigned long &amp;density, long &amp;oldx, long &amp;oldy, long &amp;oldxwrap, long &amp;oldywrap, const long &amp;startx, const long &amp;starty, const long &amp;startxwrap, const long &amp;startywrap)</definition>
+        <argsstring>)(const unsigned long &amp;density, long &amp;oldx, long &amp;oldy, long &amp;oldxwrap, long &amp;oldywrap, const long &amp;startx, const long &amp;starty, const long &amp;startxwrap, const long &amp;startywrap)</argsstring>
+        <name>end_fptr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="59" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_dispersal_coordinator_1a3d780624030ef3d6b3e2b5ae642854fe" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_matrix" kindref="compound">Matrix</ref>&lt; double &gt;</type>
+        <definition>Matrix&lt;double&gt; DispersalCoordinator::dispersal_prob_map</definition>
+        <argsstring></argsstring>
+        <name>dispersal_prob_map</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="43" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dispersal_coordinator_1ac4c17447257ed00e1b5610e0e35a5443" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_n_rrand" kindref="compound">NRrand</ref> *</type>
+        <definition>NRrand* DispersalCoordinator::NR</definition>
+        <argsstring></argsstring>
+        <name>NR</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="48" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dispersal_coordinator_1abcd97d006f49882c6f5c4c24df6cb52a" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_map" kindref="compound">Map</ref> *</type>
+        <definition>Map* DispersalCoordinator::habitat_map</definition>
+        <argsstring></argsstring>
+        <name>habitat_map</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="50" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dispersal_coordinator_1ae3f83d100dad7c60137edf42b3c199c1" prot="protected" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* DispersalCoordinator::generation</definition>
+        <argsstring></argsstring>
+        <name>generation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="52" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dispersal_coordinator_1a93262d2bb612108bfcdc56c1ba11bad1" prot="protected" static="no" mutable="no">
+        <type>dispersal_fptr</type>
+        <definition>dispersal_fptr DispersalCoordinator::doDispersal</definition>
+        <argsstring></argsstring>
+        <name>doDispersal</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="56" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dispersal_coordinator_1a1612005c176cd769797a4d4e459e2dec" prot="protected" static="no" mutable="no">
+        <type>end_fptr</type>
+        <definition>end_fptr DispersalCoordinator::checkEndPointFptr</definition>
+        <argsstring></argsstring>
+        <name>checkEndPointFptr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="63" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dispersal_coordinator_1a66668e6ceec55afa61c1e99719bc6146" prot="protected" static="no" mutable="no">
+        <type>unsigned long</type>
+        <definition>unsigned long DispersalCoordinator::xdim</definition>
+        <argsstring></argsstring>
+        <name>xdim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="64" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dispersal_coordinator_1a164f6a8e881c3786bf2d3f70b68b9431" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DispersalCoordinator::DispersalCoordinator</definition>
+        <argsstring>()</argsstring>
+        <name>DispersalCoordinator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="67" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="16" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a34be74448be124dcc46fc041e585cef5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DispersalCoordinator::~DispersalCoordinator</definition>
+        <argsstring>()</argsstring>
+        <name>~DispersalCoordinator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="69" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="20" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a3cfdb18edbf4dd1c45d0cf6af47f91fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::setRandomNumber</definition>
+        <argsstring>(NRrand *NR_ptr)</argsstring>
+        <name>setRandomNumber</name>
+        <param>
+          <type><ref refid="class_n_rrand" kindref="compound">NRrand</ref> *</type>
+          <declname>NR_ptr</declname>
+        </param>
+        <briefdescription>
+<para>Sets the random number pointer to an <ref refid="class_n_rrand" kindref="compound">NRrand</ref> instance. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>NR_ptr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the random number object to set to </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="75" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="25" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a03bc78c6b218366d6165ca49b7e9b35c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::setHabitatMap</definition>
+        <argsstring>(Map *map_ptr)</argsstring>
+        <name>setHabitatMap</name>
+        <param>
+          <type><ref refid="class_map" kindref="compound">Map</ref> *</type>
+          <declname>map_ptr</declname>
+        </param>
+        <briefdescription>
+<para>Sets the pointer to the <ref refid="class_map" kindref="compound">Map</ref> object. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_ptr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to a <ref refid="class_map" kindref="compound">Map</ref> object </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="81" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="31" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1aad9a57afe4629674c958e4d0de4d2451" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::setGenerationPtr</definition>
+        <argsstring>(double *generation_ptr)</argsstring>
+        <name>setGenerationPtr</name>
+        <param>
+          <type>double *</type>
+          <declname>generation_ptr</declname>
+        </param>
+        <briefdescription>
+<para>Sets the generation pointer to the provided double. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>generation_ptr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to the generation double </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="87" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="37" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1ab0face98d80793e7f4a8ad1bf4dfe3f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::setDispersal</definition>
+        <argsstring>(const string &amp;dispersal_method, const string &amp;dispersal_file, const unsigned long dispersal_x, const unsigned long dispersal_y, const double &amp;m_probin, const double &amp;cutoffin, const double &amp;sigmain, const double &amp;tauin, const bool &amp;restrict_self)</argsstring>
+        <name>setDispersal</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>dispersal_method</declname>
+        </param>
+        <param>
+          <type>const string &amp;</type>
+          <declname>dispersal_file</declname>
+        </param>
+        <param>
+          <type>const unsigned long</type>
+          <declname>dispersal_x</declname>
+        </param>
+        <param>
+          <type>const unsigned long</type>
+          <declname>dispersal_y</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>m_probin</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>cutoffin</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>sigmain</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>tauin</declname>
+        </param>
+        <param>
+          <type>const bool &amp;</type>
+          <declname>restrict_self</declname>
+        </param>
+        <briefdescription>
+<para>Sets the dispersal method and parameters. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dispersal_method</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string containing the dispersal type. Can be one of [normal, fat-tail, norm-uniform] </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dispersal_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string containing the dispersal file, or &quot;none&quot; if using dispersal kernel </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m_probin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the probability of drawing from the uniform distribution. Only relevant for uniform dispersals </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cutoffin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the maximum value to be drawn from the uniform dispersal. Only relevant for uniform dispersals </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sigmain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the fatness of the fat-tailed dispersal kernel </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tauin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the width of the fat-tailed dispersal kernel </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>restrict_self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, denies possibility that dispersal comes from the same cell as the parent </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="101" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="43" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a4bac3aeedb3ceb40601c3db951032d0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::disperseNullDispersalMap</definition>
+        <argsstring>(Step &amp;this_step)</argsstring>
+        <name>disperseNullDispersalMap</name>
+        <param>
+          <type><ref refid="struct_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>this_step</declname>
+        </param>
+        <briefdescription>
+<para>Picks a random cell from the whole map and stores the value in the step object. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>this_step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the step object to store end points in </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="110" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="76" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a6605069356e02d1c130b6d68e5d08483" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::disperseDispersalMap</definition>
+        <argsstring>(Step &amp;this_step)</argsstring>
+        <name>disperseDispersalMap</name>
+        <param>
+          <type><ref refid="struct_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>this_step</declname>
+        </param>
+        <briefdescription>
+<para>Picks a random dispersal distance from the dispersal map. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>this_step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the step object to store end points in </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="116" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="83" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1af2a3792c5e0bea86fa044c4cd3e5146c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::calculateCellCoordinates</definition>
+        <argsstring>(Step &amp;this_step, const unsigned long &amp;col_ref)</argsstring>
+        <name>calculateCellCoordinates</name>
+        <param>
+          <type><ref refid="struct_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>this_step</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>col_ref</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the new coordinates for a column reference. This includes converting between the fine map and sample map. New coordinates are saved in this_step. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>this_step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the step to save new coordinates in. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col_ref</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the column reference for </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="126" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="109" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a737c7f1a06650b467d06a91c0474fb79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned long</type>
+        <definition>unsigned long DispersalCoordinator::calculateCellReference</definition>
+        <argsstring>(Step &amp;this_step)</argsstring>
+        <name>calculateCellReference</name>
+        <param>
+          <type><ref refid="struct_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>this_step</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the cell reference for a particular coordinate. </para>        </briefdescription>
+        <detaileddescription>
+<para>The formula for this calculation is x + (y * xdim) where xdim is the dimensions of the fine map, and x and y are the coordinates for the fine map</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>this_step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the step object containing the x, y location, and x,y wrapping </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the cell reference from the dispersal_prob_map which corresponds to the required cell </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="137" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="120" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a79b6018cda012a59f7b80de40b394a6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::disperseDensityMap</definition>
+        <argsstring>(Step &amp;this_step)</argsstring>
+        <name>disperseDensityMap</name>
+        <param>
+          <type><ref refid="struct_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>this_step</declname>
+        </param>
+        <briefdescription>
+<para>Calls the dispersal kernel from the supplied dispersal distribution. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>this_step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the step object to store end points in </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="143" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="127" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1ae72980ec66825c641545675037885248" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::setEndPointFptr</definition>
+        <argsstring>(const bool &amp;restrict_self)</argsstring>
+        <name>setEndPointFptr</name>
+        <param>
+          <type>const bool &amp;</type>
+          <declname>restrict_self</declname>
+        </param>
+        <briefdescription>
+<para>Sets the end point function pointer correctly, based on whether it is restricted or not. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>restrict_self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, denies possibility that dispersal comes from the same cell as the parent </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="149" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="171" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a46fe28ad569bda217e168b33216a888b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DispersalCoordinator::checkEndPoint</definition>
+        <argsstring>(const unsigned long &amp;density, long &amp;oldx, long &amp;oldy, long &amp;oldxwrap, long &amp;oldywrap, const long &amp;startx, const long &amp;starty, const long &amp;startxwrap, const long &amp;startywrap)</argsstring>
+        <name>checkEndPoint</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>density</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldx</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldy</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldxwrap</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldywrap</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startx</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>starty</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startxwrap</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startywrap</declname>
+        </param>
+        <briefdescription>
+<para>Check the end point for the given coordinates and density. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>density</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the density at the end point - avoids an extra call to <ref refid="class_map_1ab96b3097832c620a024184ed54d5e2d1" kindref="member">Map::getVal()</ref> </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old x position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old y position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldxwrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old x wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldywrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old y wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting x position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>starty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting y position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startxwrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting x wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startywrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the ending y wrap </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the end point passes the density and restricted checks </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="164" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="184" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a72d8a718590c6dde6f0e8d1ac991d99d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DispersalCoordinator::checkEndPointDensity</definition>
+        <argsstring>(const unsigned long &amp;density, long &amp;oldx, long &amp;oldy, long &amp;oldxwrap, long &amp;oldywrap, const long &amp;startx, const long &amp;starty, const long &amp;startxwrap, const long &amp;startywrap)</argsstring>
+        <name>checkEndPointDensity</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>density</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldx</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldy</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldxwrap</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldywrap</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startx</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>starty</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startxwrap</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startywrap</declname>
+        </param>
+        <briefdescription>
+<para>Check the end point for the given coordinates and density. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>density</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the density at the end point - avoids an extra call to <ref refid="class_map_1ab96b3097832c620a024184ed54d5e2d1" kindref="member">Map::getVal()</ref> </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old x position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old y position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldxwrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old x wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldywrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old y wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting x position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>starty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting y position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startxwrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting x wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startywrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the ending y wrap </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the end point passes the density and restricted checks </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="181" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="191" bodyend="205"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a055c62c70087ab163bede5c4c4a8be33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DispersalCoordinator::checkEndPointRestricted</definition>
+        <argsstring>(const unsigned long &amp;density, long &amp;oldx, long &amp;oldy, long &amp;oldxwrap, long &amp;oldywrap, const long &amp;startx, const long &amp;starty, const long &amp;startxwrap, const long &amp;startywrap)</argsstring>
+        <name>checkEndPointRestricted</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>density</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldx</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldy</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldxwrap</declname>
+        </param>
+        <param>
+          <type>long &amp;</type>
+          <declname>oldywrap</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startx</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>starty</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startxwrap</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>startywrap</declname>
+        </param>
+        <briefdescription>
+<para>Check the end point for the given coordinates and density. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>density</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the density at the end point - avoids an extra call to <ref refid="class_map_1ab96b3097832c620a024184ed54d5e2d1" kindref="member">Map::getVal()</ref> </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old x position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old y position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldxwrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old x wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oldywrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the old y wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting x position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>starty</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting y position </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startxwrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the starting x wrap </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>startywrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the ending y wrap </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the end point passes the density and restricted checks </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="198" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="207" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a08e7c2e1882bd2f83ffd33eed2491fa0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::disperse</definition>
+        <argsstring>(Step &amp;this_step)</argsstring>
+        <name>disperse</name>
+        <param>
+          <type><ref refid="struct_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>this_step</declname>
+        </param>
+        <briefdescription>
+<para>Performs the dispersal routine using the <ref refid="struct_step" kindref="compound">Step</ref> object to read starting positions and record the end positions. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>this_step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <ref refid="struct_step" kindref="compound">Step</ref> object for reading starting position and storing output distances and angles </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="206" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="217" bodyend="220"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Class for generating dispersal distances and provide routines for reading dispersal distance maps as a unwound map-of-maps. This class also handles reading density maps for rejection sampling. </para>    </briefdescription>
+    <detaileddescription>
+<para>It requires linking to a density map, random number generator and a generation counter from the <ref refid="class_tree" kindref="compound">Tree</ref> class.</para><para>Note that no element of this object is recorded during a paused simulation, as all objects pointed to are stored elsewhere and behaviours are recalculated upon simulation resume. </para>    </detaileddescription>
+    <collaborationgraph>
+      <node id="396">
+        <label>Row&lt; double &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="404">
+        <label>Step</label>
+        <link refid="struct_step"/>
+      </node>
+      <node id="397">
+        <label>Map</label>
+        <link refid="class_map"/>
+        <childnode refid="398" relation="usage">
+          <edgelabel>NextMap</edgelabel>
+          <edgelabel>landscape_type</edgelabel>
+        </childnode>
+        <childnode refid="400" relation="usage">
+          <edgelabel>fine_map</edgelabel>
+          <edgelabel>coarse_map</edgelabel>
+          <edgelabel>pristine_fine_map</edgelabel>
+          <edgelabel>pristine_coarse_map</edgelabel>
+        </childnode>
+        <childnode refid="402" relation="usage">
+          <edgelabel>mapvars</edgelabel>
+        </childnode>
+      </node>
+      <node id="403">
+        <label>ConfigOption</label>
+        <link refid="class_config_option"/>
+      </node>
+      <node id="399">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="405">
+        <label>NRrand</label>
+        <link refid="class_n_rrand"/>
+      </node>
+      <node id="402">
+        <label>SimParameters</label>
+        <link refid="struct_sim_parameters"/>
+        <childnode refid="403" relation="usage">
+          <edgelabel>configs</edgelabel>
+        </childnode>
+        <childnode refid="398" relation="usage">
+          <edgelabel>reproduction_file</edgelabel>
+          <edgelabel>times_file</edgelabel>
+          <edgelabel>sample_mask_file</edgelabel>
+          <edgelabel>fine_map_file</edgelabel>
+          <edgelabel>dispersal_method</edgelabel>
+          <edgelabel>dispersal_file</edgelabel>
+          <edgelabel>pristine_fine_map_file</edgelabel>
+          <edgelabel>output_directory</edgelabel>
+          <edgelabel>pristine_coarse_map_file</edgelabel>
+          <edgelabel>coarse_map_file</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+      </node>
+      <node id="395">
+        <label>Matrix&lt; double &gt;</label>
+        <link refid="class_matrix"/>
+        <childnode refid="396" relation="usage">
+          <edgelabel>matrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="400">
+        <label>Matrix&lt; uint32_t &gt;</label>
+        <link refid="class_matrix"/>
+        <childnode refid="401" relation="usage">
+          <edgelabel>matrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="401">
+        <label>Row&lt; uint32_t &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="394">
+        <label>DispersalCoordinator</label>
+        <link refid="class_dispersal_coordinator"/>
+        <childnode refid="395" relation="usage">
+          <edgelabel>dispersal_prob_map</edgelabel>
+        </childnode>
+        <childnode refid="397" relation="usage">
+          <edgelabel>habitat_map</edgelabel>
+        </childnode>
+        <childnode refid="404" relation="usage">
+          <edgelabel>doDispersal</edgelabel>
+        </childnode>
+        <childnode refid="405" relation="usage">
+          <edgelabel>NR</edgelabel>
+        </childnode>
+      </node>
+      <node id="398">
+        <label>std::string</label>
+        <childnode refid="399" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="necsim/DispersalCoordinator.h" line="38" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="37" bodyend="208"/>
+    <listofallmembers>
+      <member refid="class_dispersal_coordinator_1af2a3792c5e0bea86fa044c4cd3e5146c" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>calculateCellCoordinates</name></member>
+      <member refid="class_dispersal_coordinator_1a737c7f1a06650b467d06a91c0474fb79" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>calculateCellReference</name></member>
+      <member refid="class_dispersal_coordinator_1a46fe28ad569bda217e168b33216a888b" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPoint</name></member>
+      <member refid="class_dispersal_coordinator_1a72d8a718590c6dde6f0e8d1ac991d99d" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPointDensity</name></member>
+      <member refid="class_dispersal_coordinator_1a1612005c176cd769797a4d4e459e2dec" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPointFptr</name></member>
+      <member refid="class_dispersal_coordinator_1a055c62c70087ab163bede5c4c4a8be33" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPointRestricted</name></member>
+      <member refid="class_dispersal_coordinator_1a95a865c016904f23990926af1e7534da" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>dispersal_fptr</name></member>
+      <member refid="class_dispersal_coordinator_1a3d780624030ef3d6b3e2b5ae642854fe" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>dispersal_prob_map</name></member>
+      <member refid="class_dispersal_coordinator_1a164f6a8e881c3786bf2d3f70b68b9431" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>DispersalCoordinator</name></member>
+      <member refid="class_dispersal_coordinator_1a08e7c2e1882bd2f83ffd33eed2491fa0" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>disperse</name></member>
+      <member refid="class_dispersal_coordinator_1a79b6018cda012a59f7b80de40b394a6a" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>disperseDensityMap</name></member>
+      <member refid="class_dispersal_coordinator_1a6605069356e02d1c130b6d68e5d08483" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>disperseDispersalMap</name></member>
+      <member refid="class_dispersal_coordinator_1a4bac3aeedb3ceb40601c3db951032d0e" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>disperseNullDispersalMap</name></member>
+      <member refid="class_dispersal_coordinator_1a93262d2bb612108bfcdc56c1ba11bad1" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>doDispersal</name></member>
+      <member refid="class_dispersal_coordinator_1a6f3d41e77253cb394c63253431decd36" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>end_fptr</name></member>
+      <member refid="class_dispersal_coordinator_1ae3f83d100dad7c60137edf42b3c199c1" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>generation</name></member>
+      <member refid="class_dispersal_coordinator_1abcd97d006f49882c6f5c4c24df6cb52a" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>habitat_map</name></member>
+      <member refid="class_dispersal_coordinator_1ac4c17447257ed00e1b5610e0e35a5443" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>NR</name></member>
+      <member refid="class_dispersal_coordinator_1ab0face98d80793e7f4a8ad1bf4dfe3f1" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setDispersal</name></member>
+      <member refid="class_dispersal_coordinator_1ae72980ec66825c641545675037885248" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setEndPointFptr</name></member>
+      <member refid="class_dispersal_coordinator_1aad9a57afe4629674c958e4d0de4d2451" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setGenerationPtr</name></member>
+      <member refid="class_dispersal_coordinator_1a03bc78c6b218366d6165ca49b7e9b35c" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setHabitatMap</name></member>
+      <member refid="class_dispersal_coordinator_1a3cfdb18edbf4dd1c45d0cf6af47f91fe" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setRandomNumber</name></member>
+      <member refid="class_dispersal_coordinator_1a66668e6ceec55afa61c1e99719bc6146" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>xdim</name></member>
+      <member refid="class_dispersal_coordinator_1a34be74448be124dcc46fc041e585cef5" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>~DispersalCoordinator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

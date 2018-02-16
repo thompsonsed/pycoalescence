@@ -1,0 +1,138 @@
+\hypertarget{_py_logging_8cpp}{}\section{Py\+Logging.\+cpp File Reference}
+\label{_py_logging_8cpp}\index{Py\+Logging.\+cpp@{Py\+Logging.\+cpp}}
+
+
+Routines for writing to python logging module.  
+
+
+{\ttfamily \#include $<$Python.\+h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include \char`\"{}necsim/\+Logging.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Py\+Logging.\+h\char`\"{}}\\*
+Include dependency graph for Py\+Logging.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_py_logging_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries write\+Info} (string message)\hypertarget{_py_logging_8cpp_a4489578cda60bd87e9f634bc97ccfba1}{}\label{_py_logging_8cpp_a4489578cda60bd87e9f634bc97ccfba1}
+
+\item 
+void {\bfseries write\+Warning} (string message)\hypertarget{_py_logging_8cpp_ae911b2f9a56fe4054c9e72613eb73562}{}\label{_py_logging_8cpp_ae911b2f9a56fe4054c9e72613eb73562}
+
+\item 
+void {\bfseries write\+Error} (string message)\hypertarget{_py_logging_8cpp_a36370a5a1bc7559a8c29f35453158bb5}{}\label{_py_logging_8cpp_a36370a5a1bc7559a8c29f35453158bb5}
+
+\item 
+void {\bfseries write\+Critical} (string message)\hypertarget{_py_logging_8cpp_ae237237ebe013cbaa842ee6b43db15ba}{}\label{_py_logging_8cpp_ae237237ebe013cbaa842ee6b43db15ba}
+
+\item 
+Py\+Object $\ast$ \hyperlink{_py_logging_8cpp_a097ab5db9e7a680d4bbb69d4208d26b2}{set\+\_\+log\+\_\+function} (Py\+Object $\ast$dummy, Py\+Object $\ast$args)
+\begin{DoxyCompactList}\small\item\em Sets the logging function to the provided specification. \end{DoxyCompactList}\item 
+void \hyperlink{_py_logging_8cpp_adfc52d9192c002e36e0a8967c3091268}{write\+\_\+log} (int level, char $\ast$message)
+\begin{DoxyCompactList}\small\item\em Writes the message out to python\textquotesingle{}s logging module at the level supplied. \end{DoxyCompactList}\item 
+void \hyperlink{_py_logging_8cpp_a0b934c1eebf12a6ae82467f7fc56f5b7}{write\+\_\+log} (int level, string message)
+\begin{DoxyCompactList}\small\item\em Writes the message out to python\textquotesingle{}s logging module at the level supplied. Overloaded version with support for normal strings. \end{DoxyCompactList}\item 
+Py\+Object $\ast$ \hyperlink{_py_logging_8cpp_aacf1c4b75e0c736bc8947f45ef904694}{set\+\_\+logger} (Py\+Object $\ast$self, Py\+Object $\ast$args)
+\begin{DoxyCompactList}\small\item\em Sets the logger to the inputted object Saves the logger in loggingmodule. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Routines for writing to python logging module. 
+
+\begin{DoxyAuthor}{Author}
+Sam Thompson
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+\href{https://opensource.org/licenses/BSD-3-Clause}{\tt B\+S\+D-\/3 Licence.} 
+\end{DoxyCopyright}
+
+
+\subsection{Function Documentation}
+\index{Py\+Logging.\+cpp@{Py\+Logging.\+cpp}!set\+\_\+log\+\_\+function@{set\+\_\+log\+\_\+function}}
+\index{set\+\_\+log\+\_\+function@{set\+\_\+log\+\_\+function}!Py\+Logging.\+cpp@{Py\+Logging.\+cpp}}
+\subsubsection[{\texorpdfstring{set\+\_\+log\+\_\+function(\+Py\+Object $\ast$dummy, Py\+Object $\ast$args)}{set_log_function(PyObject *dummy, PyObject *args)}}]{\setlength{\rightskip}{0pt plus 5cm}Py\+Object$\ast$ set\+\_\+log\+\_\+function (
+\begin{DoxyParamCaption}
+\item[{Py\+Object $\ast$}]{dummy, }
+\item[{Py\+Object $\ast$}]{args}
+\end{DoxyParamCaption}
+)}\hypertarget{_py_logging_8cpp_a097ab5db9e7a680d4bbb69d4208d26b2}{}\label{_py_logging_8cpp_a097ab5db9e7a680d4bbb69d4208d26b2}
+
+
+Sets the logging function to the provided specification. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dummy} & the dummy object \\
+\hline
+{\em args} & the args provided (should be one callable logging function) \\
+\hline
+\end{DoxyParams}
+\index{Py\+Logging.\+cpp@{Py\+Logging.\+cpp}!set\+\_\+logger@{set\+\_\+logger}}
+\index{set\+\_\+logger@{set\+\_\+logger}!Py\+Logging.\+cpp@{Py\+Logging.\+cpp}}
+\subsubsection[{\texorpdfstring{set\+\_\+logger(\+Py\+Object $\ast$self, Py\+Object $\ast$args)}{set_logger(PyObject *self, PyObject *args)}}]{\setlength{\rightskip}{0pt plus 5cm}Py\+Object$\ast$ set\+\_\+logger (
+\begin{DoxyParamCaption}
+\item[{Py\+Object $\ast$}]{self, }
+\item[{Py\+Object $\ast$}]{args}
+\end{DoxyParamCaption}
+)}\hypertarget{_py_logging_8cpp_aacf1c4b75e0c736bc8947f45ef904694}{}\label{_py_logging_8cpp_aacf1c4b75e0c736bc8947f45ef904694}
+
+
+Sets the logger to the inputted object Saves the logger in loggingmodule. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em self} & required for python objects \\
+\hline
+{\em args} & the logger to link for error outputting \\
+\hline
+\end{DoxyParams}
+\index{Py\+Logging.\+cpp@{Py\+Logging.\+cpp}!write\+\_\+log@{write\+\_\+log}}
+\index{write\+\_\+log@{write\+\_\+log}!Py\+Logging.\+cpp@{Py\+Logging.\+cpp}}
+\subsubsection[{\texorpdfstring{write\+\_\+log(int level, char $\ast$message)}{write_log(int level, char *message)}}]{\setlength{\rightskip}{0pt plus 5cm}void write\+\_\+log (
+\begin{DoxyParamCaption}
+\item[{int}]{level, }
+\item[{char $\ast$}]{message}
+\end{DoxyParamCaption}
+)}\hypertarget{_py_logging_8cpp_adfc52d9192c002e36e0a8967c3091268}{}\label{_py_logging_8cpp_adfc52d9192c002e36e0a8967c3091268}
+
+
+Writes the message out to python\textquotesingle{}s logging module at the level supplied. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & logging level to write out at (10\+: Debug, 20\+: Info, 30\+: Warning, 40\+: Error, 50\+: Critical) \\
+\hline
+{\em message} & the string to write out \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the python object as a result (should be Py\+\_\+\+R\+E\+T\+U\+R\+N\+\_\+\+N\+O\+NE) 
+\end{DoxyReturn}
+\index{Py\+Logging.\+cpp@{Py\+Logging.\+cpp}!write\+\_\+log@{write\+\_\+log}}
+\index{write\+\_\+log@{write\+\_\+log}!Py\+Logging.\+cpp@{Py\+Logging.\+cpp}}
+\subsubsection[{\texorpdfstring{write\+\_\+log(int level, string message)}{write_log(int level, string message)}}]{\setlength{\rightskip}{0pt plus 5cm}void write\+\_\+log (
+\begin{DoxyParamCaption}
+\item[{int}]{level, }
+\item[{string}]{message}
+\end{DoxyParamCaption}
+)}\hypertarget{_py_logging_8cpp_a0b934c1eebf12a6ae82467f7fc56f5b7}{}\label{_py_logging_8cpp_a0b934c1eebf12a6ae82467f7fc56f5b7}
+
+
+Writes the message out to python\textquotesingle{}s logging module at the level supplied. Overloaded version with support for normal strings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & logging level to write out at (10\+: Debug, 20\+: Info, 30\+: Warning, 40\+: Error, 50\+: Critical) \\
+\hline
+{\em message} & the string to write out \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the python object as a result (should be Py\+\_\+\+R\+E\+T\+U\+R\+N\+\_\+\+N\+O\+NE) 
+\end{DoxyReturn}

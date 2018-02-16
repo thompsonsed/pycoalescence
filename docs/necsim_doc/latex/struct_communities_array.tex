@@ -1,0 +1,148 @@
+\hypertarget{struct_communities_array}{}\section{Communities\+Array Class Reference}
+\label{struct_communities_array}\index{Communities\+Array@{Communities\+Array}}
+
+
+A structure for containing an array of previous calculation information, including which fragments have been already calculated for.  
+
+
+
+
+{\ttfamily \#include $<$Community.\+h$>$}
+
+
+
+Collaboration diagram for Communities\+Array\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{struct_communities_array__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{struct_communities_array_ab216cad89ebc4cf73859093060a4a20c}{push\+Back} (unsigned long reference, long double speciation\+\_\+rate, long double time, bool fragment, unsigned long metacommunity\+\_\+reference)
+\begin{DoxyCompactList}\small\item\em Adds an extra \hyperlink{struct_community_parameters}{Community\+Parameters} object to the calc\+\_\+array vector with the supplied variables. \end{DoxyCompactList}\item 
+void \hyperlink{struct_communities_array_a0abeec9457993dffd047a78db4e4b289}{push\+Back} (\hyperlink{struct_community_parameters}{Community\+Parameters} tmp\+\_\+param)
+\begin{DoxyCompactList}\small\item\em Adds the provided \hyperlink{struct_community_parameters}{Community\+Parameters} object to the calc\+\_\+array vector. \end{DoxyCompactList}\item 
+\hyperlink{struct_community_parameters}{Community\+Parameters} \& \hyperlink{struct_communities_array_adf488e4c1790eb8d850820d8014d89fa}{add\+New} (long double speciation\+\_\+rate, long double time, bool fragment, unsigned long metacommunity\+\_\+reference)
+\begin{DoxyCompactList}\small\item\em Adds a new communities calculation paremeters reference, with a new unique reference. \end{DoxyCompactList}\item 
+bool \hyperlink{struct_communities_array_a53d5250849767365e4d50751c3583309}{has\+Pair} (long double speciation\+\_\+rate, double time, bool fragment, unsigned long metacommunity\+\_\+reference)
+\begin{DoxyCompactList}\small\item\em Checks whether the calculation with the supplied variables has already been performed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ \hyperlink{struct_community_parameters}{Community\+Parameters} $>$ {\bfseries calc\+\_\+array}\hypertarget{struct_communities_array_addd27a8197dd835e55c529294ecae398}{}\label{struct_communities_array_addd27a8197dd835e55c529294ecae398}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A structure for containing an array of previous calculation information, including which fragments have been already calculated for. 
+
+\subsection{Member Function Documentation}
+\index{Communities\+Array@{Communities\+Array}!add\+New@{add\+New}}
+\index{add\+New@{add\+New}!Communities\+Array@{Communities\+Array}}
+\subsubsection[{\texorpdfstring{add\+New(long double speciation\+\_\+rate, long double time, bool fragment, unsigned long metacommunity\+\_\+reference)}{addNew(long double speciation_rate, long double time, bool fragment, unsigned long metacommunity_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Community\+Parameters} \& Communities\+Array\+::add\+New (
+\begin{DoxyParamCaption}
+\item[{long double}]{speciation\+\_\+rate, }
+\item[{long double}]{time, }
+\item[{bool}]{fragment, }
+\item[{unsigned long}]{metacommunity\+\_\+reference}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_communities_array_adf488e4c1790eb8d850820d8014d89fa}{}\label{struct_communities_array_adf488e4c1790eb8d850820d8014d89fa}
+
+
+Adds a new communities calculation paremeters reference, with a new unique reference. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speciation\+\_\+rate} & the speciation rate of the new calculation \\
+\hline
+{\em time} & the time used in the new calculation \\
+\hline
+{\em fragment} & true if fragments were used in the new calculation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the new \hyperlink{struct_community_parameters}{Community\+Parameters} object added 
+\end{DoxyReturn}
+\index{Communities\+Array@{Communities\+Array}!has\+Pair@{has\+Pair}}
+\index{has\+Pair@{has\+Pair}!Communities\+Array@{Communities\+Array}}
+\subsubsection[{\texorpdfstring{has\+Pair(long double speciation\+\_\+rate, double time, bool fragment, unsigned long metacommunity\+\_\+reference)}{hasPair(long double speciation_rate, double time, bool fragment, unsigned long metacommunity_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Communities\+Array\+::has\+Pair (
+\begin{DoxyParamCaption}
+\item[{long double}]{speciation\+\_\+rate, }
+\item[{double}]{time, }
+\item[{bool}]{fragment, }
+\item[{unsigned long}]{metacommunity\+\_\+reference}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_communities_array_a53d5250849767365e4d50751c3583309}{}\label{struct_communities_array_a53d5250849767365e4d50751c3583309}
+
+
+Checks whether the calculation with the supplied variables has already been performed. 
+
+\begin{DoxyNote}{Note}
+
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em speciation\+\_\+rate} & the speciation rate to check for \\
+\hline
+{\em time} & the time to check for \\
+\hline
+{\em fragment} & bool for checking if fragments were used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the reference exists in past community parameters 
+\end{DoxyReturn}
+\index{Communities\+Array@{Communities\+Array}!push\+Back@{push\+Back}}
+\index{push\+Back@{push\+Back}!Communities\+Array@{Communities\+Array}}
+\subsubsection[{\texorpdfstring{push\+Back(unsigned long reference, long double speciation\+\_\+rate, long double time, bool fragment, unsigned long metacommunity\+\_\+reference)}{pushBack(unsigned long reference, long double speciation_rate, long double time, bool fragment, unsigned long metacommunity_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}void Communities\+Array\+::push\+Back (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{reference, }
+\item[{long double}]{speciation\+\_\+rate, }
+\item[{long double}]{time, }
+\item[{bool}]{fragment, }
+\item[{unsigned long}]{metacommunity\+\_\+reference}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_communities_array_ab216cad89ebc4cf73859093060a4a20c}{}\label{struct_communities_array_ab216cad89ebc4cf73859093060a4a20c}
+
+
+Adds an extra \hyperlink{struct_community_parameters}{Community\+Parameters} object to the calc\+\_\+array vector with the supplied variables. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em reference} & the reference for this set of community parameters \\
+\hline
+{\em speciation\+\_\+rate} & the speciation rate of the past calculation \\
+\hline
+{\em time} & the time of the past calculation \\
+\hline
+{\em fragment} & bool of whether fragments were used in the past calculation \\
+\hline
+{\em metacommunity\+\_\+reference} & reference for the metacommunity parameters, or 0 if no metacommunity \\
+\hline
+\end{DoxyParams}
+\index{Communities\+Array@{Communities\+Array}!push\+Back@{push\+Back}}
+\index{push\+Back@{push\+Back}!Communities\+Array@{Communities\+Array}}
+\subsubsection[{\texorpdfstring{push\+Back(\+Community\+Parameters tmp\+\_\+param)}{pushBack(CommunityParameters tmp_param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Communities\+Array\+::push\+Back (
+\begin{DoxyParamCaption}
+\item[{{\bf Community\+Parameters}}]{tmp\+\_\+param}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_communities_array_a0abeec9457993dffd047a78db4e4b289}{}\label{struct_communities_array_a0abeec9457993dffd047a78db4e4b289}
+
+
+Adds the provided \hyperlink{struct_community_parameters}{Community\+Parameters} object to the calc\+\_\+array vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tmp\+\_\+param} & the set of community parameters to add \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/\hyperlink{_community_8h}{Community.\+h}\item 
+necsim/\hyperlink{_community_8cpp}{Community.\+cpp}\end{DoxyCompactItemize}

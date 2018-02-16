@@ -1,0 +1,641 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_protracted_tree" kind="class" language="C++" prot="public">
+    <compoundname>ProtractedTree</compoundname>
+    <basecompoundref refid="class_tree" prot="public" virt="virtual">Tree</basecompoundref>
+    <derivedcompoundref refid="class_protracted_spatial_tree" prot="public" virt="non-virtual">ProtractedSpatialTree</derivedcompoundref>
+    <includes refid="_protracted_spatial_tree_8h" local="no">ProtractedSpatialTree.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_protracted_tree_1abf37925f160812b6c93075662e5583a9" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ProtractedTree::speciation_generation_min</definition>
+        <argsstring></argsstring>
+        <name>speciation_generation_min</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="36" column="1" bodyfile="necsim/ProtractedTree.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_protracted_tree_1a2088ca8bd700701d518e8f63540973e3" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ProtractedTree::speciation_generation_max</definition>
+        <argsstring></argsstring>
+        <name>speciation_generation_max</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="40" column="1" bodyfile="necsim/ProtractedTree.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_protracted_tree_1a43bd50d3c1092727160413dffd11df41" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ProtractedTree::ProtractedTree</definition>
+        <argsstring>()</argsstring>
+        <name>ProtractedTree</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="43" column="1" bodyfile="necsim/ProtractedTree.h" bodystart="43" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1af9690f122e77c0a60d363af3e818c9a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ProtractedTree::calcSpeciation</definition>
+        <argsstring>(const long double &amp;random_number, const long double &amp;speciation_rate, const unsigned long &amp;no_generations) override</argsstring>
+        <name>calcSpeciation</name>
+        <reimplements refid="class_tree_1abc9389511e1aecf5e573315fc8f4d77c">calcSpeciation</reimplements>
+        <param>
+          <type>const long double &amp;</type>
+          <declname>random_number</declname>
+        </param>
+        <param>
+          <type>const long double &amp;</type>
+          <declname>speciation_rate</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>no_generations</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the speciation probability from the random number, speciation rate and number of generations a lineage has existed for. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>random_number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the generated random number from 0-1 </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>speciation_rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the speciation rate to be applied </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>no_generations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of generations a lineage has existed for </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>if true, speciation has occured </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="58" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="18" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1aaa2f1db86b0fd49a69d0809bd1c1fb81" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void ProtractedTree::speciateLineage</definition>
+        <argsstring>(const unsigned long &amp;data_position) override</argsstring>
+        <name>speciateLineage</name>
+        <reimplements refid="class_tree_1a32e12cc62ce2d9ae893214b1f4cfad1f">speciateLineage</reimplements>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>data_position</declname>
+        </param>
+        <briefdescription>
+<para>Performs the actual speciation. Includes handling of speciated lineages under protracted conditions. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data_position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the position in the array of TreeNodes for this lineage </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="67" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="33" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1ab0bb05fbdeb2aa75a3d3128ded3d655b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ProtractedTree::getProtracted</definition>
+        <argsstring>() override</argsstring>
+        <name>getProtracted</name>
+        <reimplements refid="class_tree_1aa23a57f7863d58384f61d464d998ab3c">getProtracted</reimplements>
+        <briefdescription>
+<para>Gets the protractedness of the simulation. Overridden by protracted child classes. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para></para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="74" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="50" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1a6e04aa92dd30e889a468d9b9fc6fd58d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void ProtractedTree::setProtractedVariables</definition>
+        <argsstring>(double speciation_gen_min, double speciation_gen_max) override</argsstring>
+        <name>setProtractedVariables</name>
+        <reimplements refid="class_tree_1a891764ffc1e29d3edbe0fd08e67a184b">setProtractedVariables</reimplements>
+        <param>
+          <type>double</type>
+          <declname>speciation_gen_min</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>speciation_gen_max</declname>
+        </param>
+        <briefdescription>
+<para>Sets the protracted variables. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speciation_gen_min</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the minimum number of generations to have passed before speciation is allowed </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>speciation_gen_max</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the maximum number of generations a lineage can exist for before it is speciated. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="81" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="55" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1af0eca5eb2a790fcee9a0854e30088753" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string ProtractedTree::getProtractedVariables</definition>
+        <argsstring>() override</argsstring>
+        <name>getProtractedVariables</name>
+        <reimplements refid="class_tree_1a34c0808026bf00546c8f9786376be730">getProtractedVariables</reimplements>
+        <briefdescription>
+<para>Gets the protracted variables and returns them as a single, newline separated string. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>string containing the protracted variables, separated by newlines. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="88" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="61" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1a331561815abc7d595e88d98e9268e7a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double ProtractedTree::getProtractedGenerationMin</definition>
+        <argsstring>() override</argsstring>
+        <name>getProtractedGenerationMin</name>
+        <reimplements refid="class_tree_1a6ffc42e941f352cd74f01f6f7011f00b">getProtractedGenerationMin</reimplements>
+        <briefdescription>
+<para>Gets the minimum number of generations a lineage must exist. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>double the number of generations a lineage must exist </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="95" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="68" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1a2093dd13cdbfc66e6c1de1406023bad6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double ProtractedTree::getProtractedGenerationMax</definition>
+        <argsstring>() override</argsstring>
+        <name>getProtractedGenerationMax</name>
+        <reimplements refid="class_tree_1a0c5e746982a87f24c083f4534bf92b45">getProtractedGenerationMax</reimplements>
+        <briefdescription>
+<para>Gets the maximum number of generations a lineage can exist. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>double the number of generations a lineage must exist </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="102" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="73" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1a505a464578e6a7028e66f26b3e6b4a92" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string ProtractedTree::protractedVarsToString</definition>
+        <argsstring>() override</argsstring>
+        <name>protractedVarsToString</name>
+        <reimplements refid="class_tree_1aa8bb5d93c7992404ede0a49bb69ccd1f">protractedVarsToString</reimplements>
+        <briefdescription>
+<para>Outputs the protracted variables to a string. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function is intended to be overridden by derived classes. It is intended the output is used for writing to SQL databases.</para><para><simplesect kind="return"><para>string containing a list of the protracted speciation variables. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="112" column="1" bodyfile="necsim/ProtractedTree.cpp" bodystart="78" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="class_protracted_tree_1a56a3631e65bb91d04ba4626c4c1ea79a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ProtractedTree::applySpecRate</definition>
+        <argsstring>(double sr, double t)</argsstring>
+        <name>applySpecRate</name>
+        <param>
+          <type>double</type>
+          <declname>sr</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Applies the given speciation rate to the tree. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Currently this just copies code from the version in tree, which is not ideal, but this avoids creating an extra function.</para></simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the required speciation rate </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ProtractedTree.h" line="122" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Sam Thompson </para></simplesect>
+<simplesect kind="date"><para>10/07/2017 </para></simplesect>
+</para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="521">
+        <label>ProtractedTree</label>
+        <link refid="class_protracted_tree"/>
+        <childnode refid="522" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="523">
+        <label>ProtractedSpatialTree</label>
+        <link refid="class_protracted_spatial_tree"/>
+        <childnode refid="521" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="522">
+        <label>Tree</label>
+        <link refid="class_tree"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="537">
+        <label>Row&lt; double &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="547">
+        <label>std::vector&lt; long double &gt;</label>
+      </node>
+      <node id="548">
+        <label>Step</label>
+        <link refid="struct_step"/>
+      </node>
+      <node id="533">
+        <label>std::vector&lt; double &gt;</label>
+      </node>
+      <node id="542">
+        <label>std::vector&lt; CommunityParameters &gt;</label>
+        <childnode refid="531" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="546">
+        <label>Row&lt; unsigned long &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="531">
+        <label>CommunityParameters</label>
+        <link refid="struct_community_parameters"/>
+      </node>
+      <node id="539">
+        <label>Row&lt; bool &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="550">
+        <label>Row&lt; DataPoint &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="552">
+        <label>ConfigOption</label>
+        <link refid="class_config_option"/>
+      </node>
+      <node id="524">
+        <label>ProtractedTree</label>
+        <link refid="class_protracted_tree"/>
+        <childnode refid="525" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="526">
+        <label>Community</label>
+        <link refid="class_community"/>
+        <childnode refid="527" relation="usage">
+          <edgelabel>fragments</edgelabel>
+        </childnode>
+        <childnode refid="531" relation="usage">
+          <edgelabel>current_community_parameters</edgelabel>
+        </childnode>
+        <childnode refid="532" relation="usage">
+          <edgelabel>spec_sim_parameters</edgelabel>
+        </childnode>
+        <childnode refid="534" relation="usage">
+          <edgelabel>samplemask</edgelabel>
+        </childnode>
+        <childnode refid="540" relation="usage">
+          <edgelabel>nodes</edgelabel>
+        </childnode>
+        <childnode refid="541" relation="usage">
+          <edgelabel>past_communities</edgelabel>
+        </childnode>
+        <childnode refid="543" relation="usage">
+          <edgelabel>past_metacommunities</edgelabel>
+        </childnode>
+        <childnode refid="546" relation="usage">
+          <edgelabel>row_out</edgelabel>
+        </childnode>
+      </node>
+      <node id="530">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="544">
+        <label>std::vector&lt; MetacommunityParameters &gt;</label>
+        <childnode refid="545" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="525">
+        <label>Tree</label>
+        <link refid="class_tree"/>
+        <childnode refid="526" relation="usage">
+          <edgelabel>community</edgelabel>
+        </childnode>
+        <childnode refid="547" relation="usage">
+          <edgelabel>speciation_rates</edgelabel>
+        </childnode>
+        <childnode refid="548" relation="usage">
+          <edgelabel>this_step</edgelabel>
+        </childnode>
+        <childnode refid="529" relation="usage">
+          <edgelabel>times_file</edgelabel>
+          <edgelabel>pause_sim_directory</edgelabel>
+          <edgelabel>sqloutname</edgelabel>
+          <edgelabel>out_directory</edgelabel>
+        </childnode>
+        <childnode refid="549" relation="usage">
+          <edgelabel>NR</edgelabel>
+        </childnode>
+        <childnode refid="540" relation="usage">
+          <edgelabel>data</edgelabel>
+        </childnode>
+        <childnode refid="550" relation="usage">
+          <edgelabel>active</edgelabel>
+        </childnode>
+        <childnode refid="533" relation="usage">
+          <edgelabel>reference_times</edgelabel>
+        </childnode>
+        <childnode refid="551" relation="usage">
+          <edgelabel>sim_parameters</edgelabel>
+        </childnode>
+      </node>
+      <node id="549">
+        <label>NRrand</label>
+        <link refid="class_n_rrand"/>
+      </node>
+      <node id="545">
+        <label>MetacommunityParameters</label>
+        <link refid="struct_metacommunity_parameters"/>
+      </node>
+      <node id="532">
+        <label>SpecSimParameters</label>
+        <link refid="struct_spec_sim_parameters"/>
+        <childnode refid="533" relation="usage">
+          <edgelabel>all_times</edgelabel>
+          <edgelabel>all_speciation_rates</edgelabel>
+        </childnode>
+      </node>
+      <node id="540">
+        <label>Row&lt; TreeNode &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="551">
+        <label>SimParameters</label>
+        <link refid="struct_sim_parameters"/>
+        <childnode refid="552" relation="usage">
+          <edgelabel>configs</edgelabel>
+        </childnode>
+        <childnode refid="529" relation="usage">
+          <edgelabel>reproduction_file</edgelabel>
+          <edgelabel>times_file</edgelabel>
+          <edgelabel>sample_mask_file</edgelabel>
+          <edgelabel>fine_map_file</edgelabel>
+          <edgelabel>dispersal_method</edgelabel>
+          <edgelabel>dispersal_file</edgelabel>
+          <edgelabel>pristine_fine_map_file</edgelabel>
+          <edgelabel>output_directory</edgelabel>
+          <edgelabel>pristine_coarse_map_file</edgelabel>
+          <edgelabel>coarse_map_file</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+      </node>
+      <node id="534">
+        <label>Samplematrix</label>
+        <link refid="class_samplematrix"/>
+        <childnode refid="535" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="538">
+        <label>Matrix&lt; bool &gt;</label>
+        <link refid="class_matrix"/>
+        <childnode refid="539" relation="usage">
+          <edgelabel>matrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="535">
+        <label>DataMask</label>
+        <link refid="class_data_mask"/>
+        <childnode refid="536" relation="usage">
+          <edgelabel>sample_mask_exact</edgelabel>
+        </childnode>
+        <childnode refid="538" relation="usage">
+          <edgelabel>sample_mask</edgelabel>
+        </childnode>
+        <childnode refid="529" relation="usage">
+          <edgelabel>inputfile</edgelabel>
+        </childnode>
+      </node>
+      <node id="528">
+        <label>Fragment</label>
+        <link refid="struct_fragment"/>
+        <childnode refid="529" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+      <node id="541">
+        <label>CommunitiesArray</label>
+        <link refid="struct_communities_array"/>
+        <childnode refid="542" relation="usage">
+          <edgelabel>calc_array</edgelabel>
+        </childnode>
+      </node>
+      <node id="536">
+        <label>Matrix&lt; double &gt;</label>
+        <link refid="class_matrix"/>
+        <childnode refid="537" relation="usage">
+          <edgelabel>matrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="543">
+        <label>MetacommunitiesArray</label>
+        <link refid="struct_metacommunities_array"/>
+        <childnode refid="544" relation="usage">
+          <edgelabel>calc_array</edgelabel>
+        </childnode>
+      </node>
+      <node id="527">
+        <label>std::vector&lt; Fragment &gt;</label>
+        <childnode refid="528" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="529">
+        <label>std::string</label>
+        <childnode refid="530" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="necsim/ProtractedTree.h" line="30" column="1" bodyfile="necsim/ProtractedTree.h" bodystart="29" bodyend="123"/>
+    <listofallmembers>
+      <member refid="class_tree_1a047b331de4979aa4713c69f09237ac35" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>active</name></member>
+      <member refid="class_tree_1a8bfa9a86f122b21900ec33ab4b1e323f" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>addLineages</name></member>
+      <member refid="class_tree_1acfc7efdec999f6dbf2ac089514d22091" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>applyMultipleRates</name></member>
+      <member refid="class_protracted_tree_1a56a3631e65bb91d04ba4626c4c1ea79a" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>applySpecRate</name></member>
+      <member refid="class_tree_1aa6349a32b3fcfb82a5f8311b11db3982" prot="public" virt="non-virtual" ambiguityscope="Tree::"><scope>ProtractedTree</scope><name>applySpecRate</name></member>
+      <member refid="class_tree_1ab699328f13b22f48faa63a5638e907db" prot="public" virt="non-virtual" ambiguityscope="Tree::"><scope>ProtractedTree</scope><name>applySpecRate</name></member>
+      <member refid="class_tree_1ac89abe0404d05d0363258b72cb80700b" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>applySpecRateInternal</name></member>
+      <member refid="class_tree_1a6c8c76aec6a9faef9c38f4f275b0793d" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>bConfig</name></member>
+      <member refid="class_tree_1a9379466b9fc0f25bd28543743000e700" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>bFullmode</name></member>
+      <member refid="class_tree_1a1f7515f16d99a9748ab2c4c667f1ffc4" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>bIsProtracted</name></member>
+      <member refid="class_tree_1ac9cbd7d17fb511c1fcc70c765f6440b0" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>bResume</name></member>
+      <member refid="class_tree_1a0dc015aa5a45d2a75d80456d680172ac" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>calcNextStep</name></member>
+      <member refid="class_protracted_tree_1af9690f122e77c0a60d363af3e818c9a2" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>calcSpeciation</name></member>
+      <member refid="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>checkOutputDirectory</name></member>
+      <member refid="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>checkSims</name></member>
+      <member refid="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>checkSims</name></member>
+      <member refid="class_tree_1ab8a62d0ca2b1746676073e3f33e2a949" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>checkSimSize</name></member>
+      <member refid="class_tree_1afcbe72c55b38c94ae17de9c2e1dd3a7f" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>checkTimeUpdate</name></member>
+      <member refid="class_tree_1a23803bddf46ad28a1bdd46bf05693b1f" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>chooseRandomLineage</name></member>
+      <member refid="class_tree_1a16eedb70009e7570d933f88e8ce44117" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>coalescenceEvent</name></member>
+      <member refid="class_tree_1adbb8b625d03dbcdca00f3d8d4b4a50df" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>community</name></member>
+      <member refid="class_tree_1a3fddb18a5d19b64dec378dca3d3fea31" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>completePause</name></member>
+      <member refid="class_tree_1a6af2aaa691ffbb9899e3f070a715e371" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>convertTip</name></member>
+      <member refid="class_tree_1a5983af6c56e41be51be0766941093b4b" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>data</name></member>
+      <member refid="class_tree_1aae24ce11e30fbd74fe078b23b46c14cd" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>database</name></member>
+      <member refid="class_tree_1a9fe104115b4593c772c03b57b82ff0de" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>deme</name></member>
+      <member refid="class_tree_1ac7a1d0583d3dcb55c50fec0e1fd57985" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>deme_sample</name></member>
+      <member refid="class_tree_1a25f082da13789dfa3fefcbcfd08b4dfe" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>determineSpeciationRates</name></member>
+      <member refid="class_tree_1aca99503f49b91baae7401423fe547daf" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>dumpActive</name></member>
+      <member refid="class_tree_1acd23fa139c7d097315c9479187b1a674" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>dumpData</name></member>
+      <member refid="class_tree_1a4c2988184328a5236ca61f16744cfac2" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>dumpMain</name></member>
+      <member refid="class_tree_1ab478831f09c135bc9a4bc991c9fd5076" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>endactive</name></member>
+      <member refid="class_tree_1a50344999e6b64d15eef935b1f6023471" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>enddata</name></member>
+      <member refid="class_tree_1a4af845777294c9116c60115e651620b4" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>fillObjects</name></member>
+      <member refid="class_tree_1a50b3d13d4032e0d7a69890b9bd7f84fa" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>generateObjects</name></member>
+      <member refid="class_tree_1a84cc46d51045ff3b161ee8788950e0c2" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>generation</name></member>
+      <member refid="class_tree_1a49a94b2218f7ae127a53af4a58d02b06" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>getCumulativeAbundances</name></member>
+      <member refid="class_tree_1a1e0685310a5a9bca4d6069e8d4ce1f1b" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>getInitialCount</name></member>
+      <member refid="class_protracted_tree_1ab0bb05fbdeb2aa75a3d3128ded3d655b" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>getProtracted</name></member>
+      <member refid="class_protracted_tree_1a2093dd13cdbfc66e6c1de1406023bad6" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>getProtractedGenerationMax</name></member>
+      <member refid="class_protracted_tree_1a331561815abc7d595e88d98e9268e7a1" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>getProtractedGenerationMin</name></member>
+      <member refid="class_protracted_tree_1af0eca5eb2a790fcee9a0854e30088753" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>getProtractedVariables</name></member>
+      <member refid="class_tree_1a857521315ca6bd9b3300d099488d74f1" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>getSeed</name></member>
+      <member refid="class_tree_1ac03c034a5730ee4f4d8727aace776412" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>getTemporalSampling</name></member>
+      <member refid="class_tree_1ad8d1d7e4fa673b28542ba31c5b637856" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>has_imported_pause</name></member>
+      <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>has_imported_vars</name></member>
+      <member refid="class_tree_1aaa64e29ab7bc3c6f48d454063f0c39e1" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>has_paused</name></member>
+      <member refid="class_tree_1adf239a9aa029c9c6eda4b10c5ce20780" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>has_times_file</name></member>
+      <member refid="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>hasPaused</name></member>
+      <member refid="class_tree_1a455d87022772b309a5974ea5f0295139" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>importSimulationVariables</name></member>
+      <member refid="class_tree_1a3f0c8928b4b72fb6f03cabd4d0e04457" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>incrementGeneration</name></member>
+      <member refid="class_tree_1a9b2df7fd1b61d3d70ac630f7fbfd683d" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>initiatePause</name></member>
+      <member refid="class_tree_1a8cfe5d30d53d702f18cd67981e2c9acb" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>initiateResume</name></member>
+      <member refid="class_tree_1a62db83e47e5850c6a83793829b22b68b" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>internalSetup</name></member>
+      <member refid="class_tree_1af145148202f11654d6d6a15a6c021924" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>loadActiveSave</name></member>
+      <member refid="class_tree_1af7db53d4870d845741d3159f57b73b30" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>loadDataSave</name></member>
+      <member refid="class_tree_1af57075728924141c7b6d311822a22dc0" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>loadMainSave</name></member>
+      <member refid="class_tree_1a0973cc37d9b95144db76d36cb363caca" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>makeTip</name></member>
+      <member refid="class_tree_1a0244ee15452c38393246147d93836b4d" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>maxsimsize</name></member>
+      <member refid="class_tree_1a1868cf626a0b12f21a038989d4eca210" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>maxtime</name></member>
+      <member refid="class_tree_1a5510d0fb5deb23fd39a2619d104f85fa" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>now</name></member>
+      <member refid="class_tree_1aa7df162306777b040a9a2aac543e6801" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>NR</name></member>
+      <member refid="class_tree_1a85615771af7b568adca1b801995cfdc7" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>out_directory</name></member>
+      <member refid="class_tree_1a5ee1fa5adf72bb599badc041fbee7d09" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>out_finish</name></member>
+      <member refid="class_tree_1afd585c8a4bdb86461780418f7b886abd" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>outdatabase</name></member>
+      <member refid="class_tree_1afdf680e187c25ed39d1e66542ce44cc3" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>outputData</name></member>
+      <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>outputData</name></member>
+      <member refid="class_tree_1a504a4d7ae23146fd6236baa59da51a6e" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>pause_sim_directory</name></member>
+      <member refid="class_tree_1ab71da7797a6586ddd948661c34ce4788" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>printSetup</name></member>
+      <member refid="class_protracted_tree_1a43bd50d3c1092727160413dffd11df41" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>ProtractedTree</name></member>
+      <member refid="class_protracted_tree_1a505a464578e6a7028e66f26b3e6b4a92" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>protractedVarsToString</name></member>
+      <member refid="class_tree_1a56bb1ea64368f5b705360a435350f9d5" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>reference_times</name></member>
+      <member refid="class_tree_1ad74c05729c9e5235ab0fa6e34260093a" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>removeOldPosition</name></member>
+      <member refid="class_tree_1afe75245862a1c40030c1c8607518cf8d" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>runSimulation</name></member>
+      <member refid="class_tree_1a78935befd45946b8e69023bffca59c1d" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>seeded</name></member>
+      <member refid="class_tree_1aec2640897132a1b667e852bbafc14c78" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setInitialValues</name></member>
+      <member refid="class_tree_1a869ab0aba75336f737cbb137c74b8abc" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setObjectSizes</name></member>
+      <member refid="class_tree_1ac374d237b7e2e7e11f6a0ff395003635" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>setParameters</name></member>
+      <member refid="class_protracted_tree_1a6e04aa92dd30e889a468d9b9fc6fd58d" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>setProtractedVariables</name></member>
+      <member refid="class_tree_1ac545d844141db977920fc9fd76ce9dbb" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setResumeParameters</name></member>
+      <member refid="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setResumeParameters</name></member>
+      <member refid="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setSeed</name></member>
+      <member refid="class_tree_1a1ba0f5d27c6ef6e9e17f988aff2dfe65" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setSimStartVariables</name></member>
+      <member refid="class_tree_1ae3fb33c46cf7e3af44604a9875b375a3" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setTimes</name></member>
+      <member refid="class_tree_1aec10ea2b720edc13a38310afdfe2b6e4" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>setup</name></member>
+      <member refid="class_tree_1a9997b98824a786d9843a3df40de1226a" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setupTreeGeneration</name></member>
+      <member refid="class_tree_1a07f9982fd6f6243c78ef42371603bbe4" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>sim_complete</name></member>
+      <member refid="class_tree_1a26100477c7e58a9e0a90cdee1379ed69" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>sim_end</name></member>
+      <member refid="class_tree_1ac399ba59be9dc33a04223d10a82ee5ee" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>sim_finish</name></member>
+      <member refid="class_tree_1a63c399793a209332ad0f5da7fc830d56" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>sim_parameters</name></member>
+      <member refid="class_tree_1a01cc9b30f2b10b9f51b218df25b13b09" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>sim_start</name></member>
+      <member refid="class_tree_1ae5308f74e982485ac444aa394b952152" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>simPause</name></member>
+      <member refid="class_tree_1a3d614f3848dc7acab168642efe345569" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>simResume</name></member>
+      <member refid="class_tree_1aed6504b4f759fb31fdeb61cd03b2b3f9" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>simulationParametersSqlInsertion</name></member>
+      <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>sortData</name></member>
+      <member refid="class_tree_1a586678f7084086add3a4136476abd375" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>spec</name></member>
+      <member refid="class_protracted_tree_1aaa2f1db86b0fd49a69d0809bd1c1fb81" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>speciateLineage</name></member>
+      <member refid="class_tree_1a05c9e44f1a4d7af83e65b6c4565b1b28" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>speciation</name></member>
+      <member refid="class_protracted_tree_1a2088ca8bd700701d518e8f63540973e3" prot="private" virt="non-virtual"><scope>ProtractedTree</scope><name>speciation_generation_max</name></member>
+      <member refid="class_protracted_tree_1abf37925f160812b6c93075662e5583a9" prot="private" virt="non-virtual"><scope>ProtractedTree</scope><name>speciation_generation_min</name></member>
+      <member refid="class_tree_1a61b4349fe78d09ac06eff4b7d6833105" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>speciation_rates</name></member>
+      <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>sqlCreate</name></member>
+      <member refid="class_tree_1a199f47b62b9b10917ff8b89d20c543a7" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>sqlCreateSimulationParameters</name></member>
+      <member refid="class_tree_1ade2744c2510a6e8ae791ca7189f483bb" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>sqloutname</name></member>
+      <member refid="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>sqlOutput</name></member>
+      <member refid="class_tree_1ac077d686ee96b123aa779e8a8a5de3ce" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>start</name></member>
+      <member refid="class_tree_1a3f1a90ab7ef917a996790e5ddfcebf85" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>startendactive</name></member>
+      <member refid="class_tree_1ae7d33b8c16eeb8cb0c7f96dbfbc61b4e" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>steps</name></member>
+      <member refid="class_tree_1afd6bd75c301d2f57c4997fcfc92f192e" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>stopSimulation</name></member>
+      <member refid="class_tree_1ab1be13d2e99a4445a7cc84f907e0c90e" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>switchPositions</name></member>
+      <member refid="class_tree_1acf483ed0a44629c9aa4690a08017ee35" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>the_seed</name></member>
+      <member refid="class_tree_1a9f74137d5c9c5529ec9a06f88dfa6960" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>the_task</name></member>
+      <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>this_step</name></member>
+      <member refid="class_tree_1abd18bb487c0192588b6bed6f00bcfd07" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>time_taken</name></member>
+      <member refid="class_tree_1a5e031ea8d94f48288547116a9e7d7add" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>times_file</name></member>
+      <member refid="class_tree_1ad376a7c639d857312f5de2ef47482f68" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>Tree</name></member>
+      <member refid="class_tree_1ad65e94936001675b8bc908cf77e0cb53" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>updateStepCoalescenceVariables</name></member>
+      <member refid="class_tree_1a95360a2f62ef0eb436d586552b299e1f" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>writeSimStartToConsole</name></member>
+      <member refid="class_tree_1a37de93174eece50a2fc082b683d97047" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>writeStepToConsole</name></member>
+      <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>writeTimes</name></member>
+      <member refid="class_tree_1a2348b20e31754ce28b00f6b6e9536644" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>~Tree</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -5,28 +5,33 @@
 
 
 
-Welcome to PyCoalescence
+Welcome to pycoalescence
 ========================
 
-PyCoalescence is a python package for running and analysing spatially-explicit neutral ecology simulations efficiently and easily.
+pycoalescence is a python package for running and analysing spatially-explicit neutral ecology simulations efficiently and easily.
 Input your maps and output a simulated landscape of individuals.
 
-There are two parts to this project. Models are run in :ref:`NECSim <Introduction_NECSim>`, built in ``c++``,
+There are two parts to this project. Models are run in :ref:`necsim <Introduction_necsim>`, built in ``c++``,
 using coalescence methods. Most users will not need to use this tool directly.
-:ref:`PyCoalescence <Introduction_PyCoalescence>` is an API for NECSim that aids setting up, running and
+:ref:`pycoalescence <Introduction_pycoalescence>` is an API for necsim that aids setting up, running and
 analysing models.
 
 
 .. toctree::
     :maxdepth: 2
 
-    README_PyCoalescence
+    README_pycoalescence
 
 
 .. toctree::
     :maxdepth: 2
 
-    Exhaled/exhaled_library
+    api/api_library
+
+.. toctree::
+    :maxdepth: 2
+    
+    
 
 Code Documentation
 ==================

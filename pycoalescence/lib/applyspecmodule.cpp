@@ -10,8 +10,7 @@
  * @brief Contains the module for python integration for additional applying speciation rates after a 
  * simulation is completed.
  *
- * For use on the SQL database outputs of NECSim v3.1+. It requires command line parameters and generates a data object
- * from them.
+ * Requires command line parameters and generates a data object from them.
  * Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
  */
  
