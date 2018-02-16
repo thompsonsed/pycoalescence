@@ -20,9 +20,6 @@ import os
 import sys
 import re
 import textwrap
-
-
-
 from recommonmark.parser import CommonMarkParser
 
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
@@ -44,6 +41,8 @@ if read_the_docs_build:
 	if not use_exhale:
 		MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+	scipy.spatial = Mock(name='scipy.spatial')
+	scipy.spatial.Voronoi = Mock(name="scipy.spatial.Voronoi")
 if use_exhale:
 	from exhale import configs
 
