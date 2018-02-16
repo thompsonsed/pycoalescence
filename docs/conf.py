@@ -74,8 +74,8 @@ extensions = [
 	'sphinx.ext.viewcode',
 	'breathe'
 ]
-if use_exhale and not read_the_docs_build:
-	extensions.extend(['breathe', 'exhale'])
+if use_exhale:
+	extensions.extend(['exhale'])
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
