@@ -27,7 +27,7 @@ from recommonmark.parser import CommonMarkParser
 
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
-use_exhale = os.environ.get("use_exhale", False)
+use_exhale = os.environ.get("use_exhale", True)
 
 if read_the_docs_build:
 	try:
