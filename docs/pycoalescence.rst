@@ -11,7 +11,7 @@ Module Contents
 '''''''''''''''
 
 .. contents::
-    :depth: 2
+    :depth: 4
     :local:
 
 Submodules
@@ -46,18 +46,22 @@ Detailed :ref:`here <performing_simulations>`.
     :undoc-members:
     :show-inheritance:
 
+
 fragments module
---------------------------------
+----------------
+
 
 Detailed :ref:`here <Simulate_landscapes>`.
+
 
 .. automodule:: pycoalescence.fragments
     :members:
     :undoc-members:
     :show-inheritance:
 
+
 map module
---------------------------------
+----------
 
 Detailed :ref:`here <Simulate_landscapes>`.
 
