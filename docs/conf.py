@@ -43,7 +43,7 @@ if read_the_docs_build:
 	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker",
 					'exhale', 'configs']
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-else:
+if use_exhale:
 	from exhale import configs
 
 
