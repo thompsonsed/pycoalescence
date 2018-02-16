@@ -26,12 +26,12 @@ analysing models.
 .. toctree::
     :maxdepth: 2
 
-    api/api_library
+    necsim/necsim_library
 
 .. toctree::
     :maxdepth: 2
     
-    
+    README_landscapes
 
 Code Documentation
 ==================
@@ -45,8 +45,6 @@ Code Documentation
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 
 Version |release|

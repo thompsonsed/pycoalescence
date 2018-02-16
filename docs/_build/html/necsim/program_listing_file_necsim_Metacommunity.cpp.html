@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File Metacommunity.cpp &#8212; pycoalescence 1.2.5 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Metacommunity.h" href="file_necsim_Metacommunity.h.html" />
+    <link rel="prev" title="File Metacommunity.cpp" href="file_necsim_Metacommunity.cpp.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Metacommunity.h.html" title="File Metacommunity.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Metacommunity.cpp.html" title="File Metacommunity.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.cpp.html" accesskey="U">File Metacommunity.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-metacommunity-cpp">
+<span id="program-listing-file-necsim-metacommunity-cpp"></span><h1>Program Listing for File Metacommunity.cpp<a class="headerlink" href="#program-listing-for-file-metacommunity-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_Metacommunity.cpp.html#file-necsim-metacommunity-cpp"><span class="std std-ref">File Metacommunity.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;Metacommunity.h&quot;</span><span class="cp"></span>
+
+
+<span class="n">Metacommunity</span><span class="o">::</span><span class="n">Metacommunity</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">community_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">parameters_checked</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">metacommunity_cumulative_abundances</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">setCommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">community_size_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span>
+                                           <span class="n">string</span> <span class="n">database_name_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">createParent</span><span class="p">(</span><span class="n">database_name_in</span><span class="p">);</span>
+    <span class="n">community_size</span> <span class="o">=</span> <span class="n">community_size_in</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
+    <span class="c1">// open the sqlite connection to the output database</span>
+    <span class="n">openSqlConnection</span><span class="p">(</span><span class="n">database_name_in</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">checkSimulationParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">parameters_checked</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">database</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Cannot read simulation parameters as database is null pointer.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// Now do the same for times</span>
+        <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">sql_call</span> <span class="o">=</span> <span class="s">&quot;SELECT seed, task from SIMULATION_PARAMETERS&quot;</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">sql_call</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">sql_call</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
+                                    <span class="k">nullptr</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+        <span class="n">random</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+        <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
+        <span class="n">sqlite3_finalize</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
+        <span class="n">parameters_checked</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">addSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">species_count</span><span class="p">,</span> <span class="n">TreeNode</span> <span class="o">*</span><span class="n">tree_node</span><span class="p">,</span> <span class="n">set</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">species_list</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="k">auto</span> <span class="n">species_id</span> <span class="o">=</span> <span class="n">selectLineageFromMetacommunity</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">species_list</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">||</span> <span class="n">species_list</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">species_id</span><span class="p">)</span> <span class="o">!=</span> <span class="n">species_list</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">species_list</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">species_id</span><span class="p">);</span>
+        <span class="n">species_count</span> <span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">tree_node</span><span class="o">-&gt;</span><span class="n">burnSpecies</span><span class="p">(</span><span class="n">species_id</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">createMetacommunityNSENeutralModel</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Running spatially-implicit model for metacommunity generation.&quot;</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+    <span class="c1">// First set up a non-spatial coalescence simulation to generate our metacommunity</span>
+    <span class="n">SimParameters</span> <span class="n">temp_parameters</span><span class="p">;</span>
+    <span class="n">temp_parameters</span><span class="p">.</span><span class="n">setMetacommunityParameters</span><span class="p">(</span><span class="n">community_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">task</span><span class="p">);</span>
+    <span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">internalSetup</span><span class="p">(</span><span class="n">temp_parameters</span><span class="p">);</span>
+    <span class="c1">// Run our simulation and calculate the species abundance distribution (as this is all that needs to be stored).</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">runSimulation</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Completion of the non-spatial coalescence simulation &quot;</span>
+                                     <span class="s">&quot;to create the metacommunity did not finish in time.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">applySpecRateInternal</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// row_out now contains the number of individuals per species</span>
+    <span class="c1">// Make it cumulative to increase the speed of indexing using binary search.</span>
+    <span class="n">metacommunity_cumulative_abundances</span> <span class="o">=</span> <span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">getCumulativeAbundances</span><span class="p">();</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Spatially-implicit simulation completed.&quot;</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">selectLineageFromMetacommunity</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">max_indices</span> <span class="o">=</span> <span class="n">metacommunity_cumulative_abundances</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">random_value</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">i0</span><span class="p">(</span><span class="n">community_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="c1">// binary search</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">random_value</span> <span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span><span class="n">metacommunity_cumulative_abundances</span><span class="p">)[</span><span class="n">max_indices</span><span class="p">])</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Random number generation out of range of the community size in lineage selection.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mid_point</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">min_indices</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">min_indices</span> <span class="o">&lt;</span> <span class="n">max_indices</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mid_point</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(((</span><span class="n">max_indices</span> <span class="o">-</span> <span class="n">min_indices</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_indices</span><span class="p">));</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">random_value</span> <span class="o">==</span> <span class="p">(</span><span class="o">*</span><span class="n">metacommunity_cumulative_abundances</span><span class="p">)[</span><span class="n">mid_point</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">min_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
+            <span class="n">max_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">random_value</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="o">*</span><span class="n">metacommunity_cumulative_abundances</span><span class="p">)[</span><span class="n">mid_point</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">max_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">min_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">min_indices</span> <span class="o">==</span> <span class="n">max_indices</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">max_indices</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">min_indices</span> <span class="o">!=</span> <span class="n">max_indices</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Error in binary search algorithm for lineage selection. Please report this bug.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+    <span class="k">return</span> <span class="n">min_indices</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;********************&quot;</span><span class="p">);</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Metacommunity application&quot;</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+    <span class="kt">time_t</span> <span class="n">tStart</span><span class="p">{};</span>
+    <span class="kt">time_t</span> <span class="n">tEnd</span><span class="p">{};</span>
+    <span class="c1">// Start the clock</span>
+    <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tStart</span><span class="p">);</span>
+    <span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
+    <span class="c1">// Make sure that the connection is opened to file.</span>
+    <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">checkSimulationParameters</span><span class="p">();</span>
+    <span class="n">createMetacommunityNSENeutralModel</span><span class="p">();</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Creating coalescence tree from metacommunity...&quot;</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+    <span class="n">doApplication</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
+    <span class="n">output</span><span class="p">();</span>
+    <span class="n">printEndTimes</span><span class="p">(</span><span class="n">tStart</span><span class="p">,</span> <span class="n">tEnd</span><span class="p">);</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_Metacommunity.cpp.html"
+                        title="previous chapter">File Metacommunity.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_Metacommunity.h.html"
+                        title="next chapter">File Metacommunity.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_Metacommunity.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Metacommunity.h.html" title="File Metacommunity.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Metacommunity.cpp.html" title="File Metacommunity.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.cpp.html" >File Metacommunity.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

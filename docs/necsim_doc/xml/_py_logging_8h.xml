@@ -10,56 +10,26 @@
     <includedby refid="necsimmodule_8cpp" local="yes">necsimmodule.cpp</includedby>
     <includedby refid="_py_logging_8cpp" local="yes">PyLogging.cpp</includedby>
     <incdepgraph>
-      <node id="3379">
+      <node id="1501">
         <label>string</label>
       </node>
-      <node id="3378">
+      <node id="1500">
         <label>Python.h</label>
       </node>
-      <node id="3380">
+      <node id="1502">
         <label>necsim/LogFile.h</label>
       </node>
-      <node id="3377">
+      <node id="1499">
         <label>PyLogging.h</label>
         <link refid="PyLogging.h"/>
-        <childnode refid="3378" relation="include">
+        <childnode refid="1500" relation="include">
         </childnode>
-        <childnode refid="3379" relation="include">
+        <childnode refid="1501" relation="include">
         </childnode>
-        <childnode refid="3380" relation="include">
+        <childnode refid="1502" relation="include">
         </childnode>
       </node>
     </incdepgraph>
-    <invincdepgraph>
-      <node id="3385">
-        <label>PyLogging.cpp</label>
-        <link refid="_py_logging_8cpp"/>
-      </node>
-      <node id="3382">
-        <label>applyspecmodule.cpp</label>
-        <link refid="applyspecmodule_8cpp"/>
-      </node>
-      <node id="3384">
-        <label>necsimmodule.cpp</label>
-        <link refid="necsimmodule_8cpp"/>
-      </node>
-      <node id="3383">
-        <label>dispersalmodule.cpp</label>
-        <link refid="dispersalmodule_8cpp"/>
-      </node>
-      <node id="3381">
-        <label>PyLogging.h</label>
-        <link refid="PyLogging.h"/>
-        <childnode refid="3382" relation="include">
-        </childnode>
-        <childnode refid="3383" relation="include">
-        </childnode>
-        <childnode refid="3384" relation="include">
-        </childnode>
-        <childnode refid="3385" relation="include">
-        </childnode>
-      </node>
-    </invincdepgraph>
       <sectiondef kind="var">
       <memberdef kind="variable" id="_py_logging_8h_1ae269920327ad06583db48e0bb122605e" prot="public" static="no" mutable="no">
         <type>PyObject *</type>
@@ -303,7 +273,7 @@
 <codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PYLOGGING_H</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Python.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_log_file_8h" kindref="compound">necsim/LogFile.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/LogFile.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight></codeline>
 <codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>PyObject<sp/>*<sp/>loggingmodule;</highlight></codeline>
 <codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>PyGILState_STATE<sp/>gstate;</highlight></codeline>
@@ -313,15 +283,15 @@
 <codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>PyObject<sp/>*<sp/>call_logging<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="22"><highlight class="normal"></highlight></codeline>
 <codeline lineno="23"><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>PyObject<sp/>*<ref refid="_py_logging_8h_1ac5c8cc1b55a6d2753d51817bd568aada" kindref="member">logger</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>PyObject<sp/>*logger;</highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal">PyObject<sp/>*<sp/><ref refid="_py_logging_8h_1a097ab5db9e7a680d4bbb69d4208d26b2" kindref="member">set_log_function</ref>(PyObject<sp/>*dummy,<sp/>PyObject<sp/>*args);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">PyObject<sp/>*<sp/>set_log_function(PyObject<sp/>*dummy,<sp/>PyObject<sp/>*args);</highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal">PyObject<sp/>*<sp/><ref refid="_py_logging_8h_1aacf1c4b75e0c736bc8947f45ef904694" kindref="member">set_logger</ref>(PyObject<sp/>*<sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">,<sp/>PyObject<sp/>*<sp/>args);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">PyObject<sp/>*<sp/>set_logger(PyObject<sp/>*<sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">,<sp/>PyObject<sp/>*<sp/>args);</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_py_logging_8h_1adfc52d9192c002e36e0a8967c3091268" kindref="member">write_log</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>level,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<sp/>message);</highlight></codeline>
+<codeline lineno="50"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>write_log(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>level,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<sp/>message);</highlight></codeline>
 <codeline lineno="51"><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_py_logging_8h_1adfc52d9192c002e36e0a8967c3091268" kindref="member">write_log</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>level,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
+<codeline lineno="59"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>write_log(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>level,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"></highlight></codeline>
 <codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>PYLOGGING_H</highlight></codeline>
     </programlisting>

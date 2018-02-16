@@ -19,7 +19,7 @@ var annotated_dup =
     [ "MetacommunityParameters", "struct_metacommunity_parameters.html", "struct_metacommunity_parameters" ],
     [ "module_state", "structmodule__state.html", "structmodule__state" ],
     [ "NRrand", "class_n_rrand.html", "class_n_rrand" ],
-    [ "ProtractedSpatialTree", "class_protracted_spatial_tree.html", null ],
+    [ "ProtractedSpatialTree", "class_protracted_spatial_tree.html", "class_protracted_spatial_tree" ],
     [ "ProtractedTree", "class_protracted_tree.html", "class_protracted_tree" ],
     [ "ReproductionMap", "class_reproduction_map.html", "class_reproduction_map" ],
     [ "Row", "class_row.html", "class_row" ],

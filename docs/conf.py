@@ -20,11 +20,14 @@ import os
 import sys
 import re
 import textwrap
-from exhale import configs
+
+
 
 from recommonmark.parser import CommonMarkParser
 
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+use_exhale = os.environ.get("use_exhale", False)
 
 if read_the_docs_build:
 	try:
@@ -32,17 +35,22 @@ if read_the_docs_build:
 	except ImportError:
 		from mock import Mock as MagicMock
 
+
 	class Mock(MagicMock):
 		@classmethod
 		def __getattr__(cls, name):
-				return MagicMock()
-
-	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
+			return MagicMock()
+	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker",
+					'exhale', 'configs']
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+else:
+	from exhale import configs
+
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.append(os.path.abspath('../'))
 sys.path.append(os.path.abspath('../pycoalescence'))
+
 import pycoalescence
 # -- General configuration ------------------------------------------------
 
@@ -55,15 +63,17 @@ import pycoalescence
 # ones.
 extensions = [
 	'sphinx.ext.autodoc',
+	# 'sphinx.ext.autosectionlabel',
 	'sphinx.ext.doctest',
 	'sphinx.ext.todo',
 	'sphinx.ext.coverage',
 	'sphinx.ext.mathjax',
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
-	'breathe',
-	'exhale'
+	'breathe'
 ]
+if use_exhale and not read_the_docs_build:
+	extensions.extend(['breathe', 'exhale'])
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -569,13 +579,14 @@ with open("README_necsim.rst", mode="r") as readme:
 if sys.version_info[0] != 3:
 	data= data.decode('utf-8', 'ignore')
 exhale_args = {
-	"containmentFolder": "./api",
-	"rootFileName": "api_library.rst",
+	"containmentFolder": "./necsim",
+	"rootFileName": "necsim_library.rst",
 	"rootFileTitle": "necim",
 	"doxygenStripFromPath": stripPath,
 	"afterTitleDescription": data,
 	"createTreeView": True,
 	"exhaleExecutesDoxygen": False,
+	# "verboseBuild" : True
 	# "exhaleDoxygenStdin": '''
 	# INPUT=../pycoalescence/lib
 	# OUTPUT={}
@@ -647,7 +658,7 @@ def setup(app):
 
 
 
-	# import the exhale module from the current directory and generate the api
+	# import the exhale module from the current directory and generate the necsim
 	# sys.path.insert(0, os.path.abspath('.'))  # exhale.py is in this directory
 	# from exhale import generate
 	# generate(exhaleArgs)

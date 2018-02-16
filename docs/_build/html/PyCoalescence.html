@@ -31,6 +31,7 @@
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="necsim module" href="necsim/necsim.html" />
     <link rel="prev" title="Modules" href="modules.html" /> 
   </head>
   <body role="document">
@@ -43,6 +44,9 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="necsim/necsim.html" title="necsim module"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="Modules"
              accesskey="P">previous</a> |</li>
@@ -1018,28 +1022,6 @@ and one for fragment octaves fits.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pycoalescence.coalescence_tree.isclose">
-<code class="descname">isclose</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rel_tol=1e-09</em>, <em>abs_tol=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#isclose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.isclose" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>a</strong> &#8211; value 1</li>
-<li><strong>b</strong> &#8211; value 2</li>
-<li><strong>rel_tol</strong> &#8211; percentage relative to larger value</li>
-<li><strong>abs_tol</strong> &#8211; absolute value for similarity</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true for significantly different a and b, false otherwise</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pycoalescence.coalescence_tree.scale_simulation_fit">
 <code class="descname">scale_simulation_fit</code><span class="sig-paren">(</span><em>simulated_value</em>, <em>actual_value</em>, <em>number_individuals</em>, <em>total_individuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#scale_simulation_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.scale_simulation_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates goodness of fit for the provided values, and scales based on the total number of individuals that exist.
@@ -1070,22 +1052,11 @@ number of individuals.</p>
 <p>Detailed <a class="reference internal" href="README_pycoalescence.html#performing-simulations"><span class="std std-ref">here</span></a>.</p>
 <span class="target" id="module-pycoalescence.simulation"></span><p>Contains the Simulation class as part of the pycoalescence package.</p>
 <p>Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.</p>
-<dl class="exception">
-<dt id="pycoalescence.simulation.FileExistsError">
-<em class="property">exception </em><code class="descname">FileExistsError</code><a class="reference internal" href="_modules/pycoalescence/simulation.html#FileExistsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.FileExistsError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></code></p>
-</dd></dl>
-
-<dl class="exception">
-<dt id="pycoalescence.simulation.FileNotFoundError">
-<em class="property">exception </em><code class="descname">FileNotFoundError</code><a class="reference internal" href="_modules/pycoalescence/simulation.html#FileNotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.FileNotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></code></p>
-</dd></dl>
-
 <dl class="class">
 <dt id="pycoalescence.simulation.Simulation">
 <em class="property">class </em><code class="descname">Simulation</code><span class="sig-paren">(</span><em>logging_level=30</em>, <em>log_output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class containing routines to set up and run simulations, including detecting map dimensions from tif files.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A class containing routines to set up and run simulations, including detecting map dimensions from tif files.</p>
 <dl class="method">
 <dt id="pycoalescence.simulation.Simulation.add_pristine_map">
 <code class="descname">add_pristine_map</code><span class="sig-paren">(</span><em>fine_map</em>, <em>coarse_map</em>, <em>time</em>, <em>rate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.add_pristine_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.add_pristine_map" title="Permalink to this definition">¶</a></dt>
@@ -1173,7 +1144,7 @@ error.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
-<li><a class="reference internal" href="#pycoalescence.fragments.FileExistsError" title="pycoalescence.fragments.FileExistsError"><strong>FileExistsError</strong></a> &#8211; if the file already exists when it&#8217;s not expected to</li>
+<li><strong>FileExistsError</strong> &#8211; if the file already exists when it&#8217;s not expected to</li>
 <li><strong>FileNotExistsError</strong> &#8211; if the file does not exist when we expect it to</li>
 </ul>
 </td>
@@ -1789,16 +1760,11 @@ ensures no seg faults occur.</p>
 <p>Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
 <span class="target" id="module-pycoalescence.fragments"></span><p>Contains the FragmentedLandscape class for creating a fragmented landscape using hexagonal packing and an even spread of
 individuals between fragments. Requires scipy and matplotlib.</p>
-<dl class="exception">
-<dt id="pycoalescence.fragments.FileExistsError">
-<em class="property">exception </em><code class="descname">FileExistsError</code><a class="reference internal" href="_modules/pycoalescence/fragments.html#FileExistsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.FileExistsError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></code></p>
-</dd></dl>
-
 <dl class="class">
 <dt id="pycoalescence.fragments.Fragment">
 <em class="property">class </em><code class="descname">Fragment</code><span class="sig-paren">(</span><em>x=None</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragments.html#Fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.Fragment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simple class containing the centres of fragments for a fragmented landscape</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Simple class containing the centres of fragments for a fragmented landscape</p>
 <dl class="method">
 <dt id="pycoalescence.fragments.Fragment.place_on_grid">
 <code class="descname">place_on_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragments.html#Fragment.place_on_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.Fragment.place_on_grid" title="Permalink to this definition">¶</a></dt>
@@ -1839,7 +1805,8 @@ individuals between fragments. Requires scipy and matplotlib.</p>
 <dl class="class">
 <dt id="pycoalescence.fragments.FragmentedLandscape">
 <em class="property">class </em><code class="descname">FragmentedLandscape</code><span class="sig-paren">(</span><em>number_fragments=None</em>, <em>size=None</em>, <em>total=None</em>, <em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragments.html#FragmentedLandscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.FragmentedLandscape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Contains hexagonal packing algorithms for spacing clumps evenly on the landscape. Includes a LLoyd&#8217;s smoothing
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Contains hexagonal packing algorithms for spacing clumps evenly on the landscape. Includes a LLoyd&#8217;s smoothing
 algorithm for better spacing of fragments.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1988,7 +1955,7 @@ hexagonal packing algorithm to increase the equality of the spacing.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#pycoalescence.fragments.FileExistsError" title="pycoalescence.fragments.FileExistsError"><strong>FileExistsError</strong></a> &#8211; if the output file already exists</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>FileExistsError</strong> &#8211; if the output file already exists</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> &#8211; the path to the tif file to write out to.</td>
 </tr>
@@ -2626,6 +2593,9 @@ and provides a selection of optimisation flags for high-performance systems.
   <h4>Previous topic</h4>
   <p class="topless"><a href="modules.html"
                         title="previous chapter">Modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="necsim/necsim.html"
+                        title="next chapter">necsim module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -2656,6 +2626,9 @@ and provides a selection of optimisation flags for high-performance systems.
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="necsim/necsim.html" title="necsim module"
+             >next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="Modules"
              >previous</a> |</li>

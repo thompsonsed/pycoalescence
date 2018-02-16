@@ -2,7 +2,6 @@ var searchData=
 [
   ['i0',['i0',['../class_n_rrand.html#abb6db53dd1fdd9388b39e5dcd26c13ac',1,'NRrand']]],
   ['import',['import',['../class_matrix.html#aeff54b3b98211bde4c0cae25af7aaa0c',1,'Matrix::import()'],['../class_reproduction_map.html#a144d2f39ff2e978acd9d2ebcb6f8dc97',1,'ReproductionMap::import()']]],
-  ['importargs',['importArgs',['../_config_file_parser_8cpp.html#ab14ba2a8e5a50a5a24b48c45294ef483',1,'importArgs(const unsigned int &amp;argc, char *argv[], vector&lt; string &gt; &amp;comargs):&#160;ConfigFileParser.cpp'],['../_config_file_parser_8h.html#ab14ba2a8e5a50a5a24b48c45294ef483',1,'importArgs(const unsigned int &amp;argc, char *argv[], vector&lt; string &gt; &amp;comargs):&#160;ConfigFileParser.cpp']]],
   ['importbooleanmask',['importBooleanMask',['../class_data_mask.html#a819eacf6968b0384a0221599dac09122',1,'DataMask']]],
   ['importconfig',['importConfig',['../class_config_option.html#afbd1ed9d006c8ff48d90e63a57f55e2a',1,'ConfigOption']]],
   ['importcsv',['importCsv',['../class_matrix.html#aab2f77cfbdbeffcfe67d63d876581b2e',1,'Matrix']]],

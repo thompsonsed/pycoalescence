@@ -2,16 +2,8 @@
 \label{class_metacommunity}\index{Metacommunity@{Metacommunity}}
 
 
-Generates a metacommunity using spatially-\/implicit neutral simulations, which is used to draw individuals from a community.  
-
-
-
-
-{\ttfamily \#include $<$Metacommunity.\+h$>$}
-
-
-
-Inheritance diagram for Metacommunity\+:\nopagebreak
+Inheritance diagram for Metacommunity\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -43,7 +35,122 @@ void \hyperlink{class_metacommunity_a2557f1dc48f4a7aba97431ac8a8c7dbd}{create\+M
 unsigned long \hyperlink{class_metacommunity_ac1884bfd79b272d8dcb470f34f579cf1}{select\+Lineage\+From\+Metacommunity} ()
 \begin{DoxyCompactList}\small\item\em Selects a random lineage from the metacommunity (r\+Out), which should be a cumulative sum of species abundances. Performs a binary search on r\+Out. \end{DoxyCompactList}\item 
 void \hyperlink{class_metacommunity_adf30667aa617bc969706eab2facd5482}{apply} (\hyperlink{struct_spec_sim_parameters}{Spec\+Sim\+Parameters} $\ast$sp) override
-\begin{DoxyCompactList}\small\item\em Applies the speciation parameters to the completed simulation, including running the spatially-\/implicit for the metacommunity structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Applies the speciation parameters to the completed simulation, including running the spatially-\/implicit for the metacommunity structure. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a710a402dffa1b85183dd7f4a5a44f988}{set\+List} (\hyperlink{class_row}{Row}$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ $\ast$l)
+\begin{DoxyCompactList}\small\item\em Set the nodes object to the input \hyperlink{class_row}{Row} of Treenode objects. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a6fe2fdb93911f403dd879ca2847e4933}{set\+Database} (sqlite3 $\ast$dbin)
+\begin{DoxyCompactList}\small\item\em Sets the database object for the sqlite functions. \end{DoxyCompactList}\item 
+bool \hyperlink{class_community_a045f762ca30c3a20e8ef5911a4982160}{has\+Imported\+Data} ()
+\begin{DoxyCompactList}\small\item\em Get the boolean of whether the data has been imported yet. \end{DoxyCompactList}\item 
+long double \hyperlink{class_community_a4e5dea65183810c3b27441736eca825a}{get\+Minimum\+Speciation} ()
+\begin{DoxyCompactList}\small\item\em Get the minimum speciation rate the simulation was originally run with. This value is read in from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the database file. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a01a137383e1e23f2191d63f16513a00a}{import\+Samplemask} (string s\+Samplemask)
+\begin{DoxyCompactList}\small\item\em Imports the samplemask if it hasn\textquotesingle{}t already been imported. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_community_a07970398c04e7c31ceda695c2860e20f}{count\+Species} ()
+\begin{DoxyCompactList}\small\item\em Counts the number of species that have speciated currently on the tree. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_community_a241f69d1f69e61fc53c112fd874bf3ba}{calc\+Species} ()
+\begin{DoxyCompactList}\small\item\em Calculate the number of species in the list for the parameters in the current\+\_\+community\+\_\+parameters object. This is the main function which reconstructs the coalescence tree. Each Treenode object will end having its existence value set correctly after a call to this function. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a502a409a75567d78575625346b6a969f}{calc\+Species\+Abundance} ()\hypertarget{class_community_a502a409a75567d78575625346b6a969f}{}\label{class_community_a502a409a75567d78575625346b6a969f}
+
+\begin{DoxyCompactList}\small\item\em Calculates the species abundance of the dataset. The species abundances will be with r\+Out after a call do this function. If a samplemask has been applied, only lineages which originally existed in the samplemask will be counted. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_community_abd099aacb5332a9b89b3421e01269d24}{reset\+Tree} ()\hypertarget{class_community_abd099aacb5332a9b89b3421e01269d24}{}\label{class_community_abd099aacb5332a9b89b3421e01269d24}
+
+\begin{DoxyCompactList}\small\item\em Resets the entire tree. Sets existance to false, speciation to false and removes any species ID. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a579c5f423fc2461838a80baf6b396310}{detect\+Dimensions} (string db)
+\begin{DoxyCompactList}\small\item\em This function detects the maximum x and y values of the sql database. This allows for the dimensions before opening the map file. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a389c35f39ed73eb1e5dc1476c220c140}{open\+Sql\+Connection} (string inputfile)
+\begin{DoxyCompactList}\small\item\em Opens the connection to the sql database file Note that this imports the database to memory, so functionality should be changed for extremely large database files. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_acba6b894e62ad4ecccbcf86f064ebc46}{set\+Internal\+Database} ()\hypertarget{class_community_acba6b894e62ad4ecccbcf86f064ebc46}{}\label{class_community_acba6b894e62ad4ecccbcf86f064ebc46}
+
+\begin{DoxyCompactList}\small\item\em Opens a connection to an in-\/memory database. This will eventually be written to the output file. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a527f03120e4cb211e466cab7e405ba9a}{internal\+Option} ()\hypertarget{class_community_a527f03120e4cb211e466cab7e405ba9a}{}\label{class_community_a527f03120e4cb211e466cab7e405ba9a}
+
+\begin{DoxyCompactList}\small\item\em Internally sets the file referencing, data import and sql connection flags to true, for allowing checks to pass from internal object creation (so no external files are needed) \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a85db7255d3a1d53509ed2800fc24de31}{import\+Data} (string inputfile)
+\begin{DoxyCompactList}\small\item\em Imports the data from the desired S\+QL database object into the array. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a548d36e99e592f0bfc09c8315b27f8bb}{import\+Sim\+Parameters} (string file)
+\begin{DoxyCompactList}\small\item\em Imports the simulation parameters by reading the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the provided file. This imports the grid\+\_\+x\+\_\+size, grid\+\_\+y\+\_\+size (which should also be the sample map dimensions) and the minimum speciation rate. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a8ac0ce642595283f342c2f1841f4c20f}{get\+Max\+Species\+Abundances\+ID} ()
+\begin{DoxyCompactList}\small\item\em Gets the maximum species abundance ID from the database and stores it in the max\+\_\+species\+\_\+id variable. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ unsigned long $>$ $\ast$ \hyperlink{class_community_a51d90183f6a26e7d192abfd748945f2b}{get\+Cumulative\+Abundances} ()
+\begin{DoxyCompactList}\small\item\em Changes the r\+Out object so that values represent cummulative species abundances. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ unsigned long $>$ \hyperlink{class_community_a63fd8d32af6d52d009d1fd54098e4594}{get\+Row\+Out} ()
+\begin{DoxyCompactList}\small\item\em Returns the row\+\_\+out object, which should contain species abundances or cumulative abundances. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_community_a8523432488d6586521c5994cad4215d8}{get\+Species\+Number} ()
+\begin{DoxyCompactList}\small\item\em Gets the number of species in the most recent calculation. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_af6fe28e1047ed5b56fde833e4b2b30de}{get\+Max\+Fragment\+Abundances\+ID} ()
+\begin{DoxyCompactList}\small\item\em Gets the maximum fragment abundance ID from the database and stores it in the max\+\_\+fragment\+\_\+id variable. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a04d65ed53ea9e2cb6ce02dddccf3d33e}{get\+Max\+Species\+Locations\+ID} ()
+\begin{DoxyCompactList}\small\item\em Gets the maximum species locations ID from the database and stores it in the max\+\_\+locations\+\_\+id variable. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_aa5643c34557be54ea2674e78a1e0c53a}{set\+Protracted\+Parameters} (double max\+\_\+speciation\+\_\+gen\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the protracted parameters for application of protracted speciation. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a3833e048848d21bc0292c05e86b7d5ce}{set\+Protracted\+Parameters} (const double \&max\+\_\+speciation\+\_\+gen\+\_\+in, const double \&mix\+\_\+speciation\+\_\+gen\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the protracted parameters for application of protracted speciation. \end{DoxyCompactList}\item 
+void {\bfseries override\+Protracted\+Parameters} (const double \&min\+\_\+speciation\+\_\+gen\+\_\+in, const double \&max\+\_\+speciation\+\_\+gen\+\_\+in)\hypertarget{class_community_a132137f2a27a6fad21ada4c94726480a}{}\label{class_community_a132137f2a27a6fad21ada4c94726480a}
+
+\item 
+void \hyperlink{class_community_a649afbf07398a1717ad49cb22bb744ff}{set\+Protracted} (bool protracted\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the protracted boolean to the input. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_ad6e92dafaf00fd65cc29ca436dc61a2e}{create\+Database} ()
+\begin{DoxyCompactList}\small\item\em Creates a new table in the database file and outputs the database object to the same file as the input file. Calculates the community structure for the set of community parameters in current\+\_\+community\+\_\+parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a078a9a1210d6b7e8f6f378891f7e8b86}{generate\+Coalescence\+Tree} ()\hypertarget{class_community_a078a9a1210d6b7e8f6f378891f7e8b86}{}\label{class_community_a078a9a1210d6b7e8f6f378891f7e8b86}
+
+\begin{DoxyCompactList}\small\item\em Calls calc\+Species and calc\+Species\+Abundances to generate the coalescence tree and calculate species abundances. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a8cb8044c6b2e290e7933cbc78d7019be}{output\+Species\+Abundances} ()\hypertarget{class_community_a8cb8044c6b2e290e7933cbc78d7019be}{}\label{class_community_a8cb8044c6b2e290e7933cbc78d7019be}
+
+\begin{DoxyCompactList}\small\item\em Outputs the species abundances into the database. \end{DoxyCompactList}\item 
+bool \hyperlink{class_community_a7a1c541651f7b2326db2334233072d04}{check\+Calculations\+Performed} (long double speciation\+\_\+rate, double time, bool fragments, unsigned long metacommunity\+\_\+size, long double metacommunity\+\_\+speciation\+\_\+rate)
+\begin{DoxyCompactList}\small\item\em Checks if calculations with the given set of parameters has already been performed. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a28f6996de89e7596da6777cc55e9861d}{add\+Calculation\+Performed} (long double speciation\+\_\+rate, double time, bool fragments, unsigned long metacommunity\+\_\+size, long double metacommunity\+\_\+speciation\+\_\+rate)
+\begin{DoxyCompactList}\small\item\em Adds a performed calculation to the lists of calculations. Also sets the current\+\_\+community\+\_\+parameters pointer to the set of parameters to be applied. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_ad6515ff43ea8189a1acdcccfe893bbba}{create\+Fragment\+Database} (const \hyperlink{struct_fragment}{Fragment} \&f)
+\begin{DoxyCompactList}\small\item\em Creates a new table in the database file and outputs the database object to the same file as the input file. Essentially creates a species abundance distribution (as in \hyperlink{class_community_ad6e92dafaf00fd65cc29ca436dc61a2e}{create\+Database()}), but for the specified fragment within the samplemask. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a280850bd6077692755cc419028aa5d67}{export\+Database} ()
+\begin{DoxyCompactList}\small\item\em Output the database from memory to the database file. Most of the time, it is desirable for the outputfile to be the same path as the input file and will write to the same object. \end{DoxyCompactList}\item 
+bool \hyperlink{class_community_a23b9398df3a63c75d01e3ed3982432c2}{check\+Species\+Locations\+Reference} ()
+\begin{DoxyCompactList}\small\item\em Checks for the current \hyperlink{struct_community_parameters}{Community\+Parameters} reference in the S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS table. \end{DoxyCompactList}\item 
+bool \hyperlink{class_community_a5b2236c98b613c0ec96998bd932101f5}{check\+Species\+Abundances\+Reference} ()
+\begin{DoxyCompactList}\small\item\em Checks for the current \hyperlink{struct_community_parameters}{Community\+Parameters} reference in the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a08be240fddc6ea481014567276a84dd0}{record\+Spatial} ()\hypertarget{class_community_a08be240fddc6ea481014567276a84dd0}{}\label{class_community_a08be240fddc6ea481014567276a84dd0}
+
+\begin{DoxyCompactList}\small\item\em Record the full spatial data. Creates a new table, S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS containing every species and their parameters. This allows for more in-\/depth analysis to be performed if necessary. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_ac9433a0c34911ec1128b5459f61488fc}{calc\+Fragments} (string fragment\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Calculates the limits of each fragment in the sample map and adds it to the vector of fragments. If the fragment\+\_\+file is null, then the program will attempt to calculate fragments from the map. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a706aba5b07c98849cb2b4b0318488f99}{apply\+Fragments} ()\hypertarget{class_community_a706aba5b07c98849cb2b4b0318488f99}{}\label{class_community_a706aba5b07c98849cb2b4b0318488f99}
+
+\begin{DoxyCompactList}\small\item\em Calculate species abundances for each fragment, and call \hyperlink{class_community_ad6515ff43ea8189a1acdcccfe893bbba}{create\+Fragment\+Database()} for each \hyperlink{struct_fragment}{Fragment}. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a24c425f32b1e3b10227e2d04cbacfe31}{get\+Previous\+Calcs} ()\hypertarget{class_community_a24c425f32b1e3b10227e2d04cbacfe31}{}\label{class_community_a24c425f32b1e3b10227e2d04cbacfe31}
+
+\begin{DoxyCompactList}\small\item\em Gets the previous calculations that have already been performed. \end{DoxyCompactList}\item 
+vector$<$ unsigned long $>$ \hyperlink{class_community_aed61108d8c4fd42d39a9112c5062cad4}{get\+Unique\+Community\+Refs} ()
+\begin{DoxyCompactList}\small\item\em Gets the unique community references from the S\+QL database. \end{DoxyCompactList}\item 
+vector$<$ unsigned long $>$ \hyperlink{class_community_a257e8e3dce33b235985ed9d167817a89}{get\+Unique\+Metacommunity\+Refs} ()
+\begin{DoxyCompactList}\small\item\em Gets the unique metacommunity reference from the S\+QL database. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_afbc8709084a00a7450e3a168cb016db9}{write\+New\+Community\+Parameters} ()\hypertarget{class_community_afbc8709084a00a7450e3a168cb016db9}{}\label{class_community_afbc8709084a00a7450e3a168cb016db9}
+
+\begin{DoxyCompactList}\small\item\em Write all performed calculations to the output database. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_ac900c23ffe2572504fca11f20b7ba8cd}{write\+New\+Metacommunty\+Parameters} ()\hypertarget{class_community_ac900c23ffe2572504fca11f20b7ba8cd}{}\label{class_community_ac900c23ffe2572504fca11f20b7ba8cd}
+
+\begin{DoxyCompactList}\small\item\em Write all performed calculations to the output database. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_af3f5939bfb59fdf3b7d7b5f3699bd225}{update\+Community\+Parameters} ()\hypertarget{class_community_af3f5939bfb59fdf3b7d7b5f3699bd225}{}\label{class_community_af3f5939bfb59fdf3b7d7b5f3699bd225}
+
+\begin{DoxyCompactList}\small\item\em Updates the fragments tag on those simulations which now have had fragments added. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_adcfc04e92cbb597682dcc1f2913d6668}{write\+Speciation\+Rates} ()\hypertarget{class_community_adcfc04e92cbb597682dcc1f2913d6668}{}\label{class_community_adcfc04e92cbb597682dcc1f2913d6668}
+
+\begin{DoxyCompactList}\small\item\em Prints speciation rates to terminal. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_adfa9a1c84bb326092805614ad195fcdd}{calculate\+Tree} ()\hypertarget{class_community_adfa9a1c84bb326092805614ad195fcdd}{}\label{class_community_adfa9a1c84bb326092805614ad195fcdd}
+
+\begin{DoxyCompactList}\small\item\em Calculates the coalescence tree for each set of parameters in speciation\+\_\+parameters;. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_ad2483623c7ad7a11564fc49305204585}{output} ()
+\begin{DoxyCompactList}\small\item\em Outputs the data to the S\+QL database. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a36216913433e3e011ee2420e83e1fe4a}{print\+End\+Times} (time\+\_\+t t\+Start, time\+\_\+t t\+End)
+\begin{DoxyCompactList}\small\item\em Prints the application times. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a8ce443a30731d2249852d2b615f4a29a}{do\+Application} (\hyperlink{struct_spec_sim_parameters}{Spec\+Sim\+Parameters} $\ast$sp)
+\begin{DoxyCompactList}\small\item\em Creates the coalescence tree for the given speciation parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a7289dd39ee9b69ca314e1752a7b45701}{do\+Application} (\hyperlink{struct_spec_sim_parameters}{Spec\+Sim\+Parameters} $\ast$sp, \hyperlink{class_row}{Row}$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ $\ast$data)
+\begin{DoxyCompactList}\small\item\em Creates the coalescence tree for the given speciation parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_aee7488d02cccb897ed1d561e242391df}{do\+Application\+Internal} (\hyperlink{struct_spec_sim_parameters}{Spec\+Sim\+Parameters} $\ast$sp, \hyperlink{class_row}{Row}$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ $\ast$data)
+\begin{DoxyCompactList}\small\item\em Creates the coalescence tree for the given speciation parameters, using internal file referencing to avoid any actual file creation. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -70,13 +177,131 @@ bool {\bfseries parameters\+\_\+checked}\hypertarget{class_metacommunity_a8b0ca6
 \item 
 \hyperlink{class_tree}{Tree} {\bfseries metacommunity\+\_\+tree}\hypertarget{class_metacommunity_a85e91103025feb641bf0df9d02152b99}{}\label{class_metacommunity_a85e91103025feb641bf0df9d02152b99}
 
+\item 
+bool {\bfseries b\+Mem}\hypertarget{class_community_ad5344789223153c3756dbad28948410b}{}\label{class_community_ad5344789223153c3756dbad28948410b}
+
+\item 
+bool {\bfseries b\+File\+Set}\hypertarget{class_community_a82d7b635a6d81a0036238d02c5833e6d}{}\label{class_community_a82d7b635a6d81a0036238d02c5833e6d}
+
+\item 
+sqlite3 $\ast$ {\bfseries database}\hypertarget{class_community_a382c0e6e90ca8055d3192bfe2af4d741}{}\label{class_community_a382c0e6e90ca8055d3192bfe2af4d741}
+
+\item 
+sqlite3 $\ast$ {\bfseries outdatabase}\hypertarget{class_community_a884634e98e0aacb082968664acd5a32e}{}\label{class_community_a884634e98e0aacb082968664acd5a32e}
+
+\item 
+bool {\bfseries b\+Sql\+Connection}\hypertarget{class_community_aa9fe335ff9e94c626d1e0d41ff145524}{}\label{class_community_aa9fe335ff9e94c626d1e0d41ff145524}
+
+\item 
+\hyperlink{class_row}{Row}$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ $\ast$ {\bfseries nodes}\hypertarget{class_community_aa1309616989642b98c15e6e2ed25b379}{}\label{class_community_aa1309616989642b98c15e6e2ed25b379}
+
+\item 
+\hyperlink{class_row}{Row}$<$ unsigned long $>$ {\bfseries row\+\_\+out}\hypertarget{class_community_a06e5a133792f29fa17a1b0664d650541}{}\label{class_community_a06e5a133792f29fa17a1b0664d650541}
+
+\item 
+unsigned long {\bfseries i\+Species}\hypertarget{class_community_a094f10ce5bbbcab19bccda352f545aad}{}\label{class_community_a094f10ce5bbbcab19bccda352f545aad}
+
+\item 
+bool {\bfseries b\+Sample}\hypertarget{class_community_a40b8a468ecba59b2cb2c04750208495f}{}\label{class_community_a40b8a468ecba59b2cb2c04750208495f}
+
+\item 
+bool {\bfseries b\+Data\+Import}\hypertarget{class_community_ab6496c803e44395f4490f6301fc15a13}{}\label{class_community_ab6496c803e44395f4490f6301fc15a13}
+
+\item 
+\hyperlink{class_samplematrix}{Samplematrix} {\bfseries samplemask}\hypertarget{class_community_ac7434119a77086e3b38a4a94c8fbff01}{}\label{class_community_ac7434119a77086e3b38a4a94c8fbff01}
+
+\item 
+vector$<$ \hyperlink{struct_fragment}{Fragment} $>$ {\bfseries fragments}\hypertarget{class_community_a8a17909b92a0cec3b63cec41e92796cb}{}\label{class_community_a8a17909b92a0cec3b63cec41e92796cb}
+
+\item 
+\hyperlink{struct_community_parameters}{Community\+Parameters} $\ast$ {\bfseries current\+\_\+community\+\_\+parameters}\hypertarget{class_community_a77e925f82bee5441d8ec45406066dcfb}{}\label{class_community_a77e925f82bee5441d8ec45406066dcfb}
+
+\item 
+long double {\bfseries min\+\_\+spec\+\_\+rate}\hypertarget{class_community_a9dc6f7d4ab75b382be85c2b74edac6b7}{}\label{class_community_a9dc6f7d4ab75b382be85c2b74edac6b7}
+
+\item 
+unsigned long {\bfseries grid\+\_\+x\+\_\+size}\hypertarget{class_community_a383dba82c8c76bf5c130c2bf4ac057e5}{}\label{class_community_a383dba82c8c76bf5c130c2bf4ac057e5}
+
+\item 
+unsigned long {\bfseries grid\+\_\+y\+\_\+size}\hypertarget{class_community_a308d12fa4ef95015860d4181b075c93f}{}\label{class_community_a308d12fa4ef95015860d4181b075c93f}
+
+\item 
+unsigned long {\bfseries samplemask\+\_\+x\+\_\+size}\hypertarget{class_community_a960bb6bb58eaec017d36d16cb3a3bc8a}{}\label{class_community_a960bb6bb58eaec017d36d16cb3a3bc8a}
+
+\item 
+unsigned long {\bfseries samplemask\+\_\+y\+\_\+size}\hypertarget{class_community_a10722b2fe8855460946f04f0ae69fd74}{}\label{class_community_a10722b2fe8855460946f04f0ae69fd74}
+
+\item 
+unsigned long {\bfseries samplemask\+\_\+x\+\_\+offset}\hypertarget{class_community_ac4985481c86bd62a50fa946699867216}{}\label{class_community_ac4985481c86bd62a50fa946699867216}
+
+\item 
+unsigned long {\bfseries samplemask\+\_\+y\+\_\+offset}\hypertarget{class_community_aeaebe975a46d62b70380e50ff7ebd09a}{}\label{class_community_aeaebe975a46d62b70380e50ff7ebd09a}
+
+\item 
+\hyperlink{struct_communities_array}{Communities\+Array} {\bfseries past\+\_\+communities}\hypertarget{class_community_a0726a962287af565658aaa8f9d9ea6c1}{}\label{class_community_a0726a962287af565658aaa8f9d9ea6c1}
+
+\item 
+\hyperlink{struct_metacommunities_array}{Metacommunities\+Array} {\bfseries past\+\_\+metacommunities}\hypertarget{class_community_ae00d8d9f52d163b040cc716955569ad3}{}\label{class_community_ae00d8d9f52d163b040cc716955569ad3}
+
+\item 
+bool {\bfseries protracted}\hypertarget{class_community_acab5a676e365934f9dfd2148ab9d5a60}{}\label{class_community_acab5a676e365934f9dfd2148ab9d5a60}
+
+\item 
+double {\bfseries min\+\_\+speciation\+\_\+gen}\hypertarget{class_community_a6b906ec2096b22631b60aa3511925fe0}{}\label{class_community_a6b906ec2096b22631b60aa3511925fe0}
+
+\item 
+double {\bfseries max\+\_\+speciation\+\_\+gen}\hypertarget{class_community_aeff6623b51fdd177e87b6eebfba27080}{}\label{class_community_aeff6623b51fdd177e87b6eebfba27080}
+
+\item 
+double {\bfseries applied\+\_\+min\+\_\+speciation\+\_\+gen}\hypertarget{class_community_aa5e9946a354a46d675e015d803cc7fa1}{}\label{class_community_aa5e9946a354a46d675e015d803cc7fa1}
+
+\item 
+double {\bfseries applied\+\_\+max\+\_\+speciation\+\_\+gen}\hypertarget{class_community_a77d20815b5638387ce186130657ec660}{}\label{class_community_a77d20815b5638387ce186130657ec660}
+
+\item 
+unsigned long {\bfseries max\+\_\+species\+\_\+id}\hypertarget{class_community_a31f80e452a92aabdf2d9ba7bcc798f84}{}\label{class_community_a31f80e452a92aabdf2d9ba7bcc798f84}
+
+\item 
+unsigned long {\bfseries max\+\_\+fragment\+\_\+id}\hypertarget{class_community_a5de3afc536570241b82489d1b9c87d03}{}\label{class_community_a5de3afc536570241b82489d1b9c87d03}
+
+\item 
+unsigned long {\bfseries max\+\_\+locations\+\_\+id}\hypertarget{class_community_ae503af91bc33ed302a363098a3b49a61}{}\label{class_community_ae503af91bc33ed302a363098a3b49a61}
+
+\item 
+\hyperlink{struct_spec_sim_parameters}{Spec\+Sim\+Parameters} $\ast$ {\bfseries spec\+\_\+sim\+\_\+parameters}\hypertarget{class_community_a45df8aefb9914e7c8f3133143069ca35}{}\label{class_community_a45df8aefb9914e7c8f3133143069ca35}
+
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-Generates a metacommunity using spatially-\/implicit neutral simulations, which is used to draw individuals from a community. 
-
 \subsection{Member Function Documentation}
+\index{Metacommunity@{Metacommunity}!add\+Calculation\+Performed@{add\+Calculation\+Performed}}
+\index{add\+Calculation\+Performed@{add\+Calculation\+Performed}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{add\+Calculation\+Performed(long double speciation\+\_\+rate, double time, bool fragments, unsigned long metacommunity\+\_\+size, long double metacommunity\+\_\+speciation\+\_\+rate)}{addCalculationPerformed(long double speciation_rate, double time, bool fragments, unsigned long metacommunity_size, long double metacommunity_speciation_rate)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::add\+Calculation\+Performed (
+\begin{DoxyParamCaption}
+\item[{long double}]{speciation\+\_\+rate, }
+\item[{double}]{time, }
+\item[{bool}]{fragments, }
+\item[{unsigned long}]{metacommunity\+\_\+size, }
+\item[{long double}]{metacommunity\+\_\+speciation\+\_\+rate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a28f6996de89e7596da6777cc55e9861d}{}\label{class_community_a28f6996de89e7596da6777cc55e9861d}
+
+
+Adds a performed calculation to the lists of calculations. Also sets the current\+\_\+community\+\_\+parameters pointer to the set of parameters to be applied. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speciation\+\_\+rate} & the speciation rate of the performed calculation \\
+\hline
+{\em time} & the time of the performed calculation \\
+\hline
+{\em fragments} & if true, fragments were used \\
+\hline
+{\em metacommunity\+\_\+size} & the metacommunity size of the performed calculation \\
+\hline
+{\em metacommunity\+\_\+speciation\+\_\+rate} & the metacommunity speciation rate of the performed calculation \\
+\hline
+\end{DoxyParams}
 \index{Metacommunity@{Metacommunity}!add\+Species@{add\+Species}}
 \index{add\+Species@{add\+Species}!Metacommunity@{Metacommunity}}
 \subsubsection[{\texorpdfstring{add\+Species(unsigned long \&species\+\_\+count, Tree\+Node $\ast$tree\+\_\+node, set$<$ unsigned long $>$ \&species\+\_\+list) override}{addSpecies(unsigned long &species_count, TreeNode *tree_node, set< unsigned long > &species_list) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::add\+Species (
@@ -123,6 +348,69 @@ Applies the speciation parameters to the completed simulation, including running
 
 Reimplemented from \hyperlink{class_community_ac1dee14af27a0add712e257e316cadbf}{Community}.
 
+\index{Metacommunity@{Metacommunity}!calc\+Fragments@{calc\+Fragments}}
+\index{calc\+Fragments@{calc\+Fragments}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{calc\+Fragments(string fragment\+\_\+file)}{calcFragments(string fragment_file)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::calc\+Fragments (
+\begin{DoxyParamCaption}
+\item[{string}]{fragment\+\_\+file}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_ac9433a0c34911ec1128b5459f61488fc}{}\label{class_community_ac9433a0c34911ec1128b5459f61488fc}
+
+
+Calculates the limits of each fragment in the sample map and adds it to the vector of fragments. If the fragment\+\_\+file is null, then the program will attempt to calculate fragments from the map. 
+
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000002}{Bug}]Only rectangular fragments will be detected. Problems will also be encountered for adjacent fragments. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em fragment\+\_\+file} & the fragment file to read from. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!calc\+Species@{calc\+Species}}
+\index{calc\+Species@{calc\+Species}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{calc\+Species()}{calcSpecies()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Community\+::calc\+Species (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a241f69d1f69e61fc53c112fd874bf3ba}{}\label{class_community_a241f69d1f69e61fc53c112fd874bf3ba}
+
+
+Calculate the number of species in the list for the parameters in the current\+\_\+community\+\_\+parameters object. This is the main function which reconstructs the coalescence tree. Each Treenode object will end having its existence value set correctly after a call to this function. 
+
+\begin{DoxyReturn}{Returns}
+the number of species present. 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!check\+Calculations\+Performed@{check\+Calculations\+Performed}}
+\index{check\+Calculations\+Performed@{check\+Calculations\+Performed}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{check\+Calculations\+Performed(long double speciation\+\_\+rate, double time, bool fragments, unsigned long metacommunity\+\_\+size, long double metacommunity\+\_\+speciation\+\_\+rate)}{checkCalculationsPerformed(long double speciation_rate, double time, bool fragments, unsigned long metacommunity_size, long double metacommunity_speciation_rate)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Community\+::check\+Calculations\+Performed (
+\begin{DoxyParamCaption}
+\item[{long double}]{speciation\+\_\+rate, }
+\item[{double}]{time, }
+\item[{bool}]{fragments, }
+\item[{unsigned long}]{metacommunity\+\_\+size, }
+\item[{long double}]{metacommunity\+\_\+speciation\+\_\+rate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a7a1c541651f7b2326db2334233072d04}{}\label{class_community_a7a1c541651f7b2326db2334233072d04}
+
+
+Checks if calculations with the given set of parameters has already been performed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speciation\+\_\+rate} & the speciation rate to check for \\
+\hline
+{\em time} & the time to check for \\
+\hline
+{\em fragments} & if true, checks fragments have been used \\
+\hline
+{\em metacommunity\+\_\+size} & the metacommunity size to check for \\
+\hline
+{\em metacommunity\+\_\+speciation\+\_\+rate} & the metacommunity speciation rate to check for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \index{Metacommunity@{Metacommunity}!check\+Simulation\+Parameters@{check\+Simulation\+Parameters}}
 \index{check\+Simulation\+Parameters@{check\+Simulation\+Parameters}!Metacommunity@{Metacommunity}}
 \subsubsection[{\texorpdfstring{check\+Simulation\+Parameters()}{checkSimulationParameters()}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::check\+Simulation\+Parameters (
@@ -137,6 +425,419 @@ Gets the seed and the task from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\
 \begin{DoxyNote}{Note}
 Should only be called once, and will have no effect if called multiple times. 
 \end{DoxyNote}
+\index{Metacommunity@{Metacommunity}!check\+Species\+Abundances\+Reference@{check\+Species\+Abundances\+Reference}}
+\index{check\+Species\+Abundances\+Reference@{check\+Species\+Abundances\+Reference}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{check\+Species\+Abundances\+Reference()}{checkSpeciesAbundancesReference()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Community\+::check\+Species\+Abundances\+Reference (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a5b2236c98b613c0ec96998bd932101f5}{}\label{class_community_a5b2236c98b613c0ec96998bd932101f5}
+
+
+Checks for the current \hyperlink{struct_community_parameters}{Community\+Parameters} reference in the S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table. 
+
+\begin{DoxyReturn}{Returns}
+return true if the reference exists in the S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS table 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!check\+Species\+Locations\+Reference@{check\+Species\+Locations\+Reference}}
+\index{check\+Species\+Locations\+Reference@{check\+Species\+Locations\+Reference}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{check\+Species\+Locations\+Reference()}{checkSpeciesLocationsReference()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Community\+::check\+Species\+Locations\+Reference (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a23b9398df3a63c75d01e3ed3982432c2}{}\label{class_community_a23b9398df3a63c75d01e3ed3982432c2}
+
+
+Checks for the current \hyperlink{struct_community_parameters}{Community\+Parameters} reference in the S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS table. 
+
+\begin{DoxyReturn}{Returns}
+true if the reference exists in the S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS table 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!count\+Species@{count\+Species}}
+\index{count\+Species@{count\+Species}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{count\+Species()}{countSpecies()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Community\+::count\+Species (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a07970398c04e7c31ceda695c2860e20f}{}\label{class_community_a07970398c04e7c31ceda695c2860e20f}
+
+
+Counts the number of species that have speciated currently on the tree. 
+
+\begin{DoxyReturn}{Returns}
+the number of species 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!create\+Database@{create\+Database}}
+\index{create\+Database@{create\+Database}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{create\+Database()}{createDatabase()}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::create\+Database (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_ad6e92dafaf00fd65cc29ca436dc61a2e}{}\label{class_community_ad6e92dafaf00fd65cc29ca436dc61a2e}
+
+
+Creates a new table in the database file and outputs the database object to the same file as the input file. Calculates the community structure for the set of community parameters in current\+\_\+community\+\_\+parameters. 
+
+The new S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table contains the species abundance distribution for the whole samplemask. A similar tabe F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES is generated by \hyperlink{class_community_ad6515ff43ea8189a1acdcccfe893bbba}{create\+Fragment\+Database()} if specified via the command line parameters. \index{Metacommunity@{Metacommunity}!create\+Fragment\+Database@{create\+Fragment\+Database}}
+\index{create\+Fragment\+Database@{create\+Fragment\+Database}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{create\+Fragment\+Database(const Fragment \&f)}{createFragmentDatabase(const Fragment &f)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::create\+Fragment\+Database (
+\begin{DoxyParamCaption}
+\item[{const {\bf Fragment} \&}]{f}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_ad6515ff43ea8189a1acdcccfe893bbba}{}\label{class_community_ad6515ff43ea8189a1acdcccfe893bbba}
+
+
+Creates a new table in the database file and outputs the database object to the same file as the input file. Essentially creates a species abundance distribution (as in \hyperlink{class_community_ad6e92dafaf00fd65cc29ca436dc61a2e}{create\+Database()}), but for the specified fragment within the samplemask. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & the \hyperlink{struct_fragment}{Fragment} to sample from. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!detect\+Dimensions@{detect\+Dimensions}}
+\index{detect\+Dimensions@{detect\+Dimensions}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{detect\+Dimensions(string db)}{detectDimensions(string db)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::detect\+Dimensions (
+\begin{DoxyParamCaption}
+\item[{string}]{db}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a579c5f423fc2461838a80baf6b396310}{}\label{class_community_a579c5f423fc2461838a80baf6b396310}
+
+
+This function detects the maximum x and y values of the sql database. This allows for the dimensions before opening the map file. 
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000001}{Deprecated}]This function is deprecated as of 08/2016 due to simulation parameters being stored in the S\+QL database. \end{DoxyRefDesc}
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000001}{Bug}]If species do not exist across the whole range of the samplemask, samplemask size will not be set correctly and samplemask referencing may be incorrect. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em db} & the path to the input database to read from. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!do\+Application@{do\+Application}}
+\index{do\+Application@{do\+Application}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{do\+Application(\+Spec\+Sim\+Parameters $\ast$sp)}{doApplication(SpecSimParameters *sp)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::do\+Application (
+\begin{DoxyParamCaption}
+\item[{{\bf Spec\+Sim\+Parameters} $\ast$}]{sp}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a8ce443a30731d2249852d2b615f4a29a}{}\label{class_community_a8ce443a30731d2249852d2b615f4a29a}
+
+
+Creates the coalescence tree for the given speciation parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sp} & speciation parameters to apply, including speciation rate, times and spatial sampling procedure \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!do\+Application@{do\+Application}}
+\index{do\+Application@{do\+Application}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{do\+Application(\+Spec\+Sim\+Parameters $\ast$sp, Row$<$ Tree\+Node $>$ $\ast$data)}{doApplication(SpecSimParameters *sp, Row< TreeNode > *data)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::do\+Application (
+\begin{DoxyParamCaption}
+\item[{{\bf Spec\+Sim\+Parameters} $\ast$}]{sp, }
+\item[{{\bf Row}$<$ {\bf Tree\+Node} $>$ $\ast$}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a7289dd39ee9b69ca314e1752a7b45701}{}\label{class_community_a7289dd39ee9b69ca314e1752a7b45701}
+
+
+Creates the coalescence tree for the given speciation parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sp} & speciation parameters to apply, including speciation rate, times and spatial sampling procedure \\
+\hline
+{\em data} & the \hyperlink{class_row}{Row} of Tree\+Nodes that contains the coalescence tree. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!do\+Application\+Internal@{do\+Application\+Internal}}
+\index{do\+Application\+Internal@{do\+Application\+Internal}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{do\+Application\+Internal(\+Spec\+Sim\+Parameters $\ast$sp, Row$<$ Tree\+Node $>$ $\ast$data)}{doApplicationInternal(SpecSimParameters *sp, Row< TreeNode > *data)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::do\+Application\+Internal (
+\begin{DoxyParamCaption}
+\item[{{\bf Spec\+Sim\+Parameters} $\ast$}]{sp, }
+\item[{{\bf Row}$<$ {\bf Tree\+Node} $>$ $\ast$}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_aee7488d02cccb897ed1d561e242391df}{}\label{class_community_aee7488d02cccb897ed1d561e242391df}
+
+
+Creates the coalescence tree for the given speciation parameters, using internal file referencing to avoid any actual file creation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sp} & speciation parameters to apply, including speciation rate, times and spatial sampling procedure \\
+\hline
+{\em data} & the \hyperlink{class_row}{Row} of Tree\+Nodes that contains the coalescence tree. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!export\+Database@{export\+Database}}
+\index{export\+Database@{export\+Database}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{export\+Database()}{exportDatabase()}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::export\+Database (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a280850bd6077692755cc419028aa5d67}{}\label{class_community_a280850bd6077692755cc419028aa5d67}
+
+
+Output the database from memory to the database file. Most of the time, it is desirable for the outputfile to be the same path as the input file and will write to the same object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em outputfile} & the path to the output file. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!get\+Cumulative\+Abundances@{get\+Cumulative\+Abundances}}
+\index{get\+Cumulative\+Abundances@{get\+Cumulative\+Abundances}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Cumulative\+Abundances()}{getCumulativeAbundances()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Row}$<$ unsigned long $>$ $\ast$ Community\+::get\+Cumulative\+Abundances (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a51d90183f6a26e7d192abfd748945f2b}{}\label{class_community_a51d90183f6a26e7d192abfd748945f2b}
+
+
+Changes the r\+Out object so that values represent cummulative species abundances. 
+
+Allows binary sort on r\+Out (much faster) and the previous r\+Out value can be obtained by value = r\+Out\mbox{[}i\mbox{]} -\/ r\+Out\mbox{[}i-\/1\mbox{]} \begin{DoxyReturn}{Returns}
+pointer to sorted \hyperlink{class_row}{Row} of species abundances 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!get\+Max\+Fragment\+Abundances\+ID@{get\+Max\+Fragment\+Abundances\+ID}}
+\index{get\+Max\+Fragment\+Abundances\+ID@{get\+Max\+Fragment\+Abundances\+ID}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Max\+Fragment\+Abundances\+I\+D()}{getMaxFragmentAbundancesID()}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::get\+Max\+Fragment\+Abundances\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_af6fe28e1047ed5b56fde833e4b2b30de}{}\label{class_community_af6fe28e1047ed5b56fde833e4b2b30de}
+
+
+Gets the maximum fragment abundance ID from the database and stores it in the max\+\_\+fragment\+\_\+id variable. 
+
+\begin{DoxyNote}{Note}
+Does not check for F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES existence and will throw an error if it cannot access it 
+\end{DoxyNote}
+\index{Metacommunity@{Metacommunity}!get\+Max\+Species\+Abundances\+ID@{get\+Max\+Species\+Abundances\+ID}}
+\index{get\+Max\+Species\+Abundances\+ID@{get\+Max\+Species\+Abundances\+ID}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Max\+Species\+Abundances\+I\+D()}{getMaxSpeciesAbundancesID()}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::get\+Max\+Species\+Abundances\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a8ac0ce642595283f342c2f1841f4c20f}{}\label{class_community_a8ac0ce642595283f342c2f1841f4c20f}
+
+
+Gets the maximum species abundance ID from the database and stores it in the max\+\_\+species\+\_\+id variable. 
+
+\begin{DoxyNote}{Note}
+Does not check for S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES existence and will throw an error if it cannot access it 
+\end{DoxyNote}
+\index{Metacommunity@{Metacommunity}!get\+Max\+Species\+Locations\+ID@{get\+Max\+Species\+Locations\+ID}}
+\index{get\+Max\+Species\+Locations\+ID@{get\+Max\+Species\+Locations\+ID}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Max\+Species\+Locations\+I\+D()}{getMaxSpeciesLocationsID()}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::get\+Max\+Species\+Locations\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a04d65ed53ea9e2cb6ce02dddccf3d33e}{}\label{class_community_a04d65ed53ea9e2cb6ce02dddccf3d33e}
+
+
+Gets the maximum species locations ID from the database and stores it in the max\+\_\+locations\+\_\+id variable. 
+
+\begin{DoxyNote}{Note}
+Does not check for S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS existence and will throw an error if it cannot access it 
+\end{DoxyNote}
+\index{Metacommunity@{Metacommunity}!get\+Minimum\+Speciation@{get\+Minimum\+Speciation}}
+\index{get\+Minimum\+Speciation@{get\+Minimum\+Speciation}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Minimum\+Speciation()}{getMinimumSpeciation()}}]{\setlength{\rightskip}{0pt plus 5cm}long double Community\+::get\+Minimum\+Speciation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a4e5dea65183810c3b27441736eca825a}{}\label{class_community_a4e5dea65183810c3b27441736eca825a}
+
+
+Get the minimum speciation rate the simulation was originally run with. This value is read in from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the database file. 
+
+\begin{DoxyReturn}{Returns}
+the minimum speciation rate. 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!get\+Row\+Out@{get\+Row\+Out}}
+\index{get\+Row\+Out@{get\+Row\+Out}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Row\+Out()}{getRowOut()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Row}$<$ unsigned long $>$ Community\+::get\+Row\+Out (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a63fd8d32af6d52d009d1fd54098e4594}{}\label{class_community_a63fd8d32af6d52d009d1fd54098e4594}
+
+
+Returns the row\+\_\+out object, which should contain species abundances or cumulative abundances. 
+
+\begin{DoxyNote}{Note}
+Does not recalculate species abundances, so if get\+Cumulative\+Abundances has been called, will return the cumulative species abundances instead. 
+
+Returns a copy, so could cause problems for extremely large simulations with immense numbers of species. 
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+row\+\_\+out, the species abundances, or the cumulative abundances if get\+Cumulative\+Abundances has been called 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!get\+Species\+Number@{get\+Species\+Number}}
+\index{get\+Species\+Number@{get\+Species\+Number}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Species\+Number()}{getSpeciesNumber()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Community\+::get\+Species\+Number (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a8523432488d6586521c5994cad4215d8}{}\label{class_community_a8523432488d6586521c5994cad4215d8}
+
+
+Gets the number of species in the most recent calculation. 
+
+\begin{DoxyReturn}{Returns}
+the number of species in the most recent calculation 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!get\+Unique\+Community\+Refs@{get\+Unique\+Community\+Refs}}
+\index{get\+Unique\+Community\+Refs@{get\+Unique\+Community\+Refs}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Unique\+Community\+Refs()}{getUniqueCommunityRefs()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ unsigned long $>$ Community\+::get\+Unique\+Community\+Refs (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_aed61108d8c4fd42d39a9112c5062cad4}{}\label{class_community_aed61108d8c4fd42d39a9112c5062cad4}
+
+
+Gets the unique community references from the S\+QL database. 
+
+\begin{DoxyReturn}{Returns}
+a vector containing the unique references 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!get\+Unique\+Metacommunity\+Refs@{get\+Unique\+Metacommunity\+Refs}}
+\index{get\+Unique\+Metacommunity\+Refs@{get\+Unique\+Metacommunity\+Refs}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{get\+Unique\+Metacommunity\+Refs()}{getUniqueMetacommunityRefs()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ unsigned long $>$ Community\+::get\+Unique\+Metacommunity\+Refs (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a257e8e3dce33b235985ed9d167817a89}{}\label{class_community_a257e8e3dce33b235985ed9d167817a89}
+
+
+Gets the unique metacommunity reference from the S\+QL database. 
+
+\begin{DoxyReturn}{Returns}
+a vector containing the unique references 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!has\+Imported\+Data@{has\+Imported\+Data}}
+\index{has\+Imported\+Data@{has\+Imported\+Data}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{has\+Imported\+Data()}{hasImportedData()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Community\+::has\+Imported\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a045f762ca30c3a20e8ef5911a4982160}{}\label{class_community_a045f762ca30c3a20e8ef5911a4982160}
+
+
+Get the boolean of whether the data has been imported yet. 
+
+\begin{DoxyReturn}{Returns}
+true if database has been imported. 
+\end{DoxyReturn}
+\index{Metacommunity@{Metacommunity}!import\+Data@{import\+Data}}
+\index{import\+Data@{import\+Data}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{import\+Data(string inputfile)}{importData(string inputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::import\+Data (
+\begin{DoxyParamCaption}
+\item[{string}]{inputfile}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a85db7255d3a1d53509ed2800fc24de31}{}\label{class_community_a85db7255d3a1d53509ed2800fc24de31}
+
+
+Imports the data from the desired S\+QL database object into the array. 
+
+\begin{DoxyNote}{Note}
+Opens the sql connection if it has not already been opened. 
+
+If nodes is not of length 0, this function does nothing. This is so that any in-\/memory data is not overwritten. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em inputfile} & the path to the input S\+Q\+Lite database. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!import\+Samplemask@{import\+Samplemask}}
+\index{import\+Samplemask@{import\+Samplemask}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{import\+Samplemask(string s\+Samplemask)}{importSamplemask(string sSamplemask)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::import\+Samplemask (
+\begin{DoxyParamCaption}
+\item[{string}]{s\+Samplemask}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a01a137383e1e23f2191d63f16513a00a}{}\label{class_community_a01a137383e1e23f2191d63f16513a00a}
+
+
+Imports the samplemask if it hasn\textquotesingle{}t already been imported. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s\+Samplemask} & the path to the samplemask file. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!import\+Sim\+Parameters@{import\+Sim\+Parameters}}
+\index{import\+Sim\+Parameters@{import\+Sim\+Parameters}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{import\+Sim\+Parameters(string file)}{importSimParameters(string file)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::import\+Sim\+Parameters (
+\begin{DoxyParamCaption}
+\item[{string}]{file}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a548d36e99e592f0bfc09c8315b27f8bb}{}\label{class_community_a548d36e99e592f0bfc09c8315b27f8bb}
+
+
+Imports the simulation parameters by reading the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the provided file. This imports the grid\+\_\+x\+\_\+size, grid\+\_\+y\+\_\+size (which should also be the sample map dimensions) and the minimum speciation rate. 
+
+\begin{DoxyNote}{Note}
+Opens the sql connection if it has not already been opened.
+
+If b\+Data\+Import has already been set, no operation is performed.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em file} & the sqlite database simulation output which will be used for coalescence tree generation. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!open\+Sql\+Connection@{open\+Sql\+Connection}}
+\index{open\+Sql\+Connection@{open\+Sql\+Connection}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{open\+Sql\+Connection(string inputfile)}{openSqlConnection(string inputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::open\+Sql\+Connection (
+\begin{DoxyParamCaption}
+\item[{string}]{inputfile}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a389c35f39ed73eb1e5dc1476c220c140}{}\label{class_community_a389c35f39ed73eb1e5dc1476c220c140}
+
+
+Opens the connection to the sql database file Note that this imports the database to memory, so functionality should be changed for extremely large database files. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inputfile} & the sql database output from a N\+E\+C\+Sim simulation. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!output@{output}}
+\index{output@{output}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{output()}{output()}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_ad2483623c7ad7a11564fc49305204585}{}\label{class_community_ad2483623c7ad7a11564fc49305204585}
+
+
+Outputs the data to the S\+QL database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+name} & the path to the sql database to output to \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!print\+End\+Times@{print\+End\+Times}}
+\index{print\+End\+Times@{print\+End\+Times}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{print\+End\+Times(time\+\_\+t t\+Start, time\+\_\+t t\+End)}{printEndTimes(time_t tStart, time_t tEnd)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::print\+End\+Times (
+\begin{DoxyParamCaption}
+\item[{time\+\_\+t}]{t\+Start, }
+\item[{time\+\_\+t}]{t\+End}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a36216913433e3e011ee2420e83e1fe4a}{}\label{class_community_a36216913433e3e011ee2420e83e1fe4a}
+
+
+Prints the application times. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t\+Start} & the start time \\
+\hline
+{\em t\+End} & the end time \\
+\hline
+\end{DoxyParams}
 \index{Metacommunity@{Metacommunity}!select\+Lineage\+From\+Metacommunity@{select\+Lineage\+From\+Metacommunity}}
 \index{select\+Lineage\+From\+Metacommunity@{select\+Lineage\+From\+Metacommunity}!Metacommunity@{Metacommunity}}
 \subsubsection[{\texorpdfstring{select\+Lineage\+From\+Metacommunity()}{selectLineageFromMetacommunity()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunity\+::select\+Lineage\+From\+Metacommunity (
@@ -173,9 +874,94 @@ Sets the parameters for the metacommunity.
 {\em database\+\_\+name\+\_\+in} & the path to the database to store the metacommunity in \\
 \hline
 \end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!set\+Database@{set\+Database}}
+\index{set\+Database@{set\+Database}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{set\+Database(sqlite3 $\ast$dbin)}{setDatabase(sqlite3 *dbin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::set\+Database (
+\begin{DoxyParamCaption}
+\item[{sqlite3 $\ast$}]{dbin}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a6fe2fdb93911f403dd879ca2847e4933}{}\label{class_community_a6fe2fdb93911f403dd879ca2847e4933}
+
+
+Sets the database object for the sqlite functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dbin} & the sqlite3 input database. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!set\+List@{set\+List}}
+\index{set\+List@{set\+List}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{set\+List(\+Row$<$ Tree\+Node $>$ $\ast$l)}{setList(Row< TreeNode > *l)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::set\+List (
+\begin{DoxyParamCaption}
+\item[{{\bf Row}$<$ {\bf Tree\+Node} $>$ $\ast$}]{l}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a710a402dffa1b85183dd7f4a5a44f988}{}\label{class_community_a710a402dffa1b85183dd7f4a5a44f988}
+
+
+Set the nodes object to the input \hyperlink{class_row}{Row} of Treenode objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & the \hyperlink{class_row}{Row} of Treenode objects to link to. \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!set\+Protracted@{set\+Protracted}}
+\index{set\+Protracted@{set\+Protracted}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{set\+Protracted(bool protracted\+\_\+in)}{setProtracted(bool protracted_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::set\+Protracted (
+\begin{DoxyParamCaption}
+\item[{bool}]{protracted\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a649afbf07398a1717ad49cb22bb744ff}{}\label{class_community_a649afbf07398a1717ad49cb22bb744ff}
+
+
+Sets the protracted boolean to the input. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em protracted\+\_\+in} & the protracted boolean to set \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!set\+Protracted\+Parameters@{set\+Protracted\+Parameters}}
+\index{set\+Protracted\+Parameters@{set\+Protracted\+Parameters}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{set\+Protracted\+Parameters(double max\+\_\+speciation\+\_\+gen\+\_\+in)}{setProtractedParameters(double max_speciation_gen_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::set\+Protracted\+Parameters (
+\begin{DoxyParamCaption}
+\item[{double}]{max\+\_\+speciation\+\_\+gen\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_aa5643c34557be54ea2674e78a1e0c53a}{}\label{class_community_aa5643c34557be54ea2674e78a1e0c53a}
+
+
+Sets the protracted parameters for application of protracted speciation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+speciation\+\_\+gen} & the maximum number of generations a lineage can exist for before speciating \\
+\hline
+\end{DoxyParams}
+\index{Metacommunity@{Metacommunity}!set\+Protracted\+Parameters@{set\+Protracted\+Parameters}}
+\index{set\+Protracted\+Parameters@{set\+Protracted\+Parameters}!Metacommunity@{Metacommunity}}
+\subsubsection[{\texorpdfstring{set\+Protracted\+Parameters(const double \&max\+\_\+speciation\+\_\+gen\+\_\+in, const double \&mix\+\_\+speciation\+\_\+gen\+\_\+in)}{setProtractedParameters(const double &max_speciation_gen_in, const double &mix_speciation_gen_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::set\+Protracted\+Parameters (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{max\+\_\+speciation\+\_\+gen\+\_\+in, }
+\item[{const double \&}]{mix\+\_\+speciation\+\_\+gen\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_community_a3833e048848d21bc0292c05e86b7d5ce}{}\label{class_community_a3833e048848d21bc0292c05e86b7d5ce}
+
+
+Sets the protracted parameters for application of protracted speciation. 
+
+This overloaded version is for setting protracted parameters before a full simulation has been outputted (i.\+e. immediately after completion of the simulation).
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+speciation\+\_\+gen\+\_\+in} & the maximum number of generations a lineage can exist for before speciating \\
+\hline
+{\em min\+\_\+speciation\+\_\+gen\+\_\+in} & the minimum number of generations a lineage must exist before speciating. \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-necsim/\hyperlink{_metacommunity_8h}{Metacommunity.\+h}\item 
-necsim/\hyperlink{_metacommunity_8cpp}{Metacommunity.\+cpp}\end{DoxyCompactItemize}
+necsim/Metacommunity.\+h\item 
+necsim/Metacommunity.\+cpp\end{DoxyCompactItemize}

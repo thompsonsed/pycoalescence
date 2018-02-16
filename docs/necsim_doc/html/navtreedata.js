@@ -15,26 +15,18 @@ var NAVTREE =
         [ "Variables", "functions_vars.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
-    ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
-      [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Macros", "globals_defs.html", null ]
-      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"_community_8cpp.html",
-"class_community.html#aa9fe335ff9e94c626d1e0d41ff145524",
-"class_metacommunity.html#afd81750697ac8540b71de001ee53fc61",
-"class_tree.html#a63c399793a209332ad0f5da7fc830d56",
-"struct_metacommunity_parameters.html#a5f0c670813ba6a1e34d05e7eba782251"
+"annotated.html",
+"class_map.html#ab74d57e0de40b6e16c7bb62489ecff5c",
+"class_protracted_spatial_tree.html#a96919ff86b2a4d1de5ba14c2598a9346",
+"class_samplematrix.html#a9b796f2279f1716c2a555ff3d641ea0b",
+"class_species_list.html#af84a5aa6584f16dfb8e8f2ce379cf947",
+"struct_metacommunities_array.html#a5c15d164bc32cd2731c9382fe3fbbfbe"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -3,8 +3,6 @@ var searchData=
   ['samplematrix',['Samplematrix',['../class_samplematrix.html#abe3fb4ca1e24678f2720f451cee80492',1,'Samplematrix']]],
   ['sectionoption',['SectionOption',['../struct_section_option.html#a0a6a33e41311ea0eef34b76379421362',1,'SectionOption']]],
   ['selectlineagefrommetacommunity',['selectLineageFromMetacommunity',['../class_metacommunity.html#ac1884bfd79b272d8dcb470f34f579cf1',1,'Metacommunity']]],
-  ['set_5flog_5ffunction',['set_log_function',['../_py_logging_8cpp.html#a097ab5db9e7a680d4bbb69d4208d26b2',1,'set_log_function(PyObject *dummy, PyObject *args):&#160;PyLogging.cpp'],['../_py_logging_8h.html#a097ab5db9e7a680d4bbb69d4208d26b2',1,'set_log_function(PyObject *dummy, PyObject *args):&#160;PyLogging.cpp']]],
-  ['set_5flogger',['set_logger',['../_py_logging_8cpp.html#aacf1c4b75e0c736bc8947f45ef904694',1,'set_logger(PyObject *self, PyObject *args):&#160;PyLogging.cpp'],['../_py_logging_8h.html#aacf1c4b75e0c736bc8947f45ef904694',1,'set_logger(PyObject *self, PyObject *args):&#160;PyLogging.cpp']]],
   ['setcommunityparameters',['setCommunityParameters',['../class_metacommunity.html#af9407da2a2e99848ac11ce3a426d4c8a',1,'Metacommunity']]],
   ['setconfig',['setConfig',['../class_config_option.html#ac1ae69813100e755359b25b11dfeb8c7',1,'ConfigOption']]],
   ['setdatabase',['setDatabase',['../class_community.html#a6fe2fdb93911f403dd879ca2847e4933',1,'Community']]],

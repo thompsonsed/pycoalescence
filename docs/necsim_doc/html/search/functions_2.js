@@ -17,7 +17,6 @@ var searchData=
   ['calculatecellreference',['calculateCellReference',['../class_dispersal_coordinator.html#a737c7f1a06650b467d06a91c0474fb79',1,'DispersalCoordinator']]],
   ['calculatenewposition',['calculateNewPosition',['../class_simulate_dispersal.html#a75eeedf1627eb25945a2d8f5dd0a2379',1,'SimulateDispersal']]],
   ['calculatetree',['calculateTree',['../class_community.html#adfa9a1c84bb326092805614ad195fcdd',1,'Community']]],
-  ['cantorpairing',['cantorPairing',['../_filesystem_8cpp.html#a494775fbade46418f7584db133d85762',1,'cantorPairing(unsigned long x1, unsigned long x2):&#160;Filesystem.cpp'],['../_filesystem_8h.html#a494775fbade46418f7584db133d85762',1,'cantorPairing(unsigned long x1, unsigned long x2):&#160;Filesystem.cpp']]],
   ['changepercentcover',['changePercentCover',['../class_species_list.html#a40206bc9836f394653997a61c1c8617a',1,'SpeciesList']]],
   ['checkcalculationsperformed',['checkCalculationsPerformed',['../class_community.html#a7a1c541651f7b2326db2334233072d04',1,'Community']]],
   ['checkendpoint',['checkEndPoint',['../class_dispersal_coordinator.html#a46fe28ad569bda217e168b33216a888b',1,'DispersalCoordinator']]],
@@ -33,7 +32,6 @@ var searchData=
   ['checksims',['checkSims',['../class_tree.html#ad0bcc474a9ab1d4e3e2458c4de7304ad',1,'Tree::checkSims()'],['../class_tree.html#aafaede1da6c79583bf2e28b7a1881a5c',1,'Tree::checkSims(string output_dir, long seed, long task)']]],
   ['checksimsize',['checkSimSize',['../class_tree.html#ab8a62d0ca2b1746676073e3f33e2a949',1,'Tree']]],
   ['checksimulationparameters',['checkSimulationParameters',['../class_metacommunity.html#ad3775b6cecab860b008d15cc9c7650ea',1,'Metacommunity']]],
-  ['checkspeciation',['checkSpeciation',['../_community_8cpp.html#ac0d535bc74d14e6a7c851f1242548dc0',1,'checkSpeciation(const long double &amp;random_number, const long double &amp;speciation_rate, const unsigned long &amp;no_generations):&#160;Community.cpp'],['../_community_8h.html#ac0d535bc74d14e6a7c851f1242548dc0',1,'checkSpeciation(const long double &amp;random_number, const long double &amp;speciation_rate, const unsigned long &amp;no_generations):&#160;Community.cpp']]],
   ['checkspeciesabundancesreference',['checkSpeciesAbundancesReference',['../class_community.html#a5b2236c98b613c0ec96998bd932101f5',1,'Community']]],
   ['checkspecieslocationsreference',['checkSpeciesLocationsReference',['../class_community.html#a23b9398df3a63c75d01e3ed3982432c2',1,'Community']]],
   ['checktimeupdate',['checkTimeUpdate',['../class_tree.html#afcbe72c55b38c94ae17de9c2e1dd3a7f',1,'Tree']]],
@@ -54,9 +52,7 @@ var searchData=
   ['converttip',['convertTip',['../class_tree.html#a6af2aaa691ffbb9899e3f070a715e371',1,'Tree']]],
   ['countcellexpansion',['countCellExpansion',['../class_spatial_tree.html#a706ec7831f8c68e9245c00ebab76414f',1,'SpatialTree']]],
   ['countspecies',['countSpecies',['../class_community.html#a07970398c04e7c31ceda695c2860e20f',1,'Community']]],
-  ['createcommunity',['createCommunity',['../applyspecmodule_8cpp.html#ac7b006cc638258663ff8ebd5b55920e4',1,'applyspecmodule.cpp']]],
   ['createdatabase',['createDatabase',['../class_community.html#ad6e92dafaf00fd65cc29ca436dc61a2e',1,'Community']]],
   ['createfragmentdatabase',['createFragmentDatabase',['../class_community.html#ad6515ff43ea8189a1acdcccfe893bbba',1,'Community']]],
-  ['createmetacommunitynseneutralmodel',['createMetacommunityNSENeutralModel',['../class_metacommunity.html#a2557f1dc48f4a7aba97431ac8a8c7dbd',1,'Metacommunity']]],
-  ['createparent',['createParent',['../_filesystem_8cpp.html#adc3ac635764997d6023cbb00f7664196',1,'createParent(const string &amp;file):&#160;Filesystem.cpp'],['../_filesystem_8h.html#adc3ac635764997d6023cbb00f7664196',1,'createParent(const string &amp;file):&#160;Filesystem.cpp']]]
+  ['createmetacommunitynseneutralmodel',['createMetacommunityNSENeutralModel',['../class_metacommunity.html#a2557f1dc48f4a7aba97431ac8a8c7dbd',1,'Metacommunity']]]
 ];
