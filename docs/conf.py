@@ -41,11 +41,9 @@ if read_the_docs_build:
 	if not use_exhale:
 		MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-	sys.modules["scipy2"] = Mock()
-	sys.modules["scipy2.spatial"] = Mock()
-	sys.modules["scipy2.spatial.Voronoi"] = Mock()
-	import scipy2
-	from scipy2.spatial import Voronoi
+	sys.modules["scipy"] = Mock()
+	sys.modules["scipy.spatial"] = Mock()
+	sys.modules["scipy.spatial.Voronoi"] = Mock()
 if use_exhale:
 	from exhale import configs
 
