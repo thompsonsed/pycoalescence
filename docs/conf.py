@@ -37,12 +37,15 @@ if read_the_docs_build:
 		@classmethod
 		def __getattr__(cls, name):
 			return MagicMock()
-	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker", "scipy"]
+	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
 	if not use_exhale:
 		MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-	scipy.spatial = Mock(name='scipy.spatial')
-	scipy.spatial.Voronoi = Mock(name="scipy.spatial.Voronoi")
+	sys.modules["scipy2"] = Mock()
+	sys.modules["scipy2.spatial"] = Mock()
+	sys.modules["scipy2.spatial.Voronoi"] = Mock()
+	import scipy2
+	from scipy2.spatial import Voronoi
 if use_exhale:
 	from exhale import configs
 
