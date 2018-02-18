@@ -75,7 +75,14 @@ Recommended, but not essential:
 
 - gdal library available `here <http://www.gdal.org>`__: provides reading of tif files.
 - The fast-cpp-csv-parser by Ben Strasser, available
-   `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__: provides much faster csv read and write capabilities.
+  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__: provides much faster csv read and write capabilities.
+  This is only really necessary if you have extremely large csv files as your map objects. If that is the case, I would
+  highly recommend moving to using tif files, as they provide much more error-checking support.
+
+.. note:: To use the fast-cpp-csv-parser, copy the whole folder (with csv.h in) to the necsim directory. Then
+          reconfigure and recompile your code, making sure that you see 'fast-cpp-csv-parser = enabled' in the
+          configuration output.
+
 
 
 Compiler Options

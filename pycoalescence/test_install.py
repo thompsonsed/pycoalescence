@@ -1578,6 +1578,8 @@ class TestCoalSampleRun2(unittest.TestCase):
 		cls.tree.set_speciation_params(record_spatial=True, record_fragments="sample/FragmentsTest.csv",
 									   speciation_rates=[0.5, 0.6])
 		cls.tree.apply_speciation()
+		# Copy the simulation file to a backup
+		shutil.copy2(cls.coal.output_database, "output/temp.db")
 
 	def testNumberIndividuals(self):
 		"""
@@ -1586,6 +1588,20 @@ class TestCoalSampleRun2(unittest.TestCase):
 		self.assertEqual(356, self.tree.get_number_individuals())
 		self.assertEqual(53, self.tree.get_number_individuals(fragment="fragment1"))
 		self.assertEqual(39, self.tree.get_number_individuals(fragment="fragment2"))
+
+	def testIncorrectFragmentsRaisesError(self):
+		"""
+		Tests that having an incorrect fragments file raises an error as expected. Tests if either there are the wrong
+		number of columns, or an failed conversion from string to integer/double.
+		"""
+		for f in [1, 2, 3]:
+			fragment_file = "sample/FragmentsTestFail{}.csv".format(f)
+			with self.assertRaises(ApplySpecError):
+				t = CoalescenceTree("output/temp.db")
+				t.wipe_data()
+				t.set_speciation_params(record_spatial=False, record_fragments=fragment_file,
+										speciation_rates=[0.5, 0.6])
+				t.apply_speciation()
 
 class TestNullLandscape(unittest.TestCase):
 	"""
@@ -2399,7 +2415,7 @@ class TestCoalComplexRun4(unittest.TestCase):
 		"""
 		self.coal = Simulation()
 		self.tree = CoalescenceTree()
-		self.coal.set_simulation_params(seed=6, job_type=13, output_directory="output", min_speciation_rate=0.5,
+		self.coal.set_simulation_params(seed=7, job_type=13, output_directory="output", min_speciation_rate=0.5,
 										sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
 										time_config_file="null", dispersal_method="norm-uniform", m_prob=10 ** -8,
@@ -2432,10 +2448,10 @@ class TestCoalComplexRun4(unittest.TestCase):
 		Also tests that both methods of obtaining species richness work.
 		"""
 		self.tree.calculate_richness()
-		self.assertEqual(self.tree.get_landscape_richness(1), 3643)
-		self.assertEqual(self.tree.get_landscape_richness(2), 3671)
-		self.assertEqual(self.tree.get_landscape_richness(3), 3693)
-		self.assertEqual(self.tree.get_landscape_richness(7), 0)
+		self.assertEqual(3638, self.tree.get_landscape_richness(1))
+		self.assertEqual(3665, self.tree.get_landscape_richness(2))
+		self.assertEqual(3691, self.tree.get_landscape_richness(3))
+		self.assertEqual(0, self.tree.get_landscape_richness(7))
 		self.assertEqual(self.tree.get_landscape_richness(1), self.tree.get_richness(1))
 		self.assertEqual(self.tree.get_landscape_richness(3), self.tree.get_richness(3))
 		self.assertEqual(self.tree.get_landscape_richness(5), self.tree.get_richness(5))

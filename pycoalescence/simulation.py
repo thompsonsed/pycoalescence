@@ -141,8 +141,6 @@ class Simulation:
 		self.time_since_pristine = 1  # The number of generations ago a habitat was pristine
 		self.tau = 0
 		self.time_config_file = ""
-		# Deprecated, but here for compability reasons
-		self.is_setup = True
 		# the optional parameters specifying the location (i.e. where in the world the simulation is of
 		# and the compute node (such as NUS_HPC or LOCAL_MACBOOK)
 		self.sim_location = None
@@ -367,25 +365,6 @@ class Simulation:
 		else:
 			raise RuntimeError("Cannot generate map config file without setting up map variables")
 
-	def setup(self, coalescence_simulator=os.path.join(mod_directory, "build/default/./NECSim")):
-		"""
-		Set the location of the coalescence and speciation executables. Make sure that both programs have been compiled
-		for the operating system running the simulations.
-
-		:param str coalescence_simulator: the path to the Coal_v1 executable
-
-		.. deprecated:: 1.2.4
-			No longer required as of 1.2.4 as all components have been migrated to use Python API
-
-		:return: None
-		"""
-		if coalescence_simulator is not None:
-			self.coalescence_simulator = coalescence_simulator
-			if not os.path.exists(coalescence_simulator):
-				err = "File not found: " + str(coalescence_simulator)
-				raise IOError(err)
-			self.is_setup = True
-
 	def run_simple(self, seed, task, output, alpha, sigma, size):
 		"""
 		Runs a simple coalescence simulation on a square infinite landscape with the provided parameters.
@@ -519,7 +498,7 @@ class Simulation:
 			else:
 				os.remove(output_file)
 		self.config_open = True
-		if self.is_setup_map and self.is_setup_param and self.is_setup:
+		if self.is_setup_map and self.is_setup_param:
 			# New method using ConfigParser
 			config.add_section("main")
 			config.set("main", "seed", str(self.seed))
@@ -583,9 +562,9 @@ class Simulation:
 		:param str dispersal_map: the dispersal map for reading dispersal values. Default to "none" if none provided
 		:param str reproduction_map: a map of relative reproduction probabilities, at the scale of the fine map
 
-		:rtype None
+		:rtype: None
 
-		:return None
+		:return: None
 		"""
 		if fine_file in [None, "null", "none"]:
 			raise ValueError("Fine map file cannot be 'none' or 'null' for automatic parameter detection."
@@ -619,7 +598,9 @@ class Simulation:
 
 		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but
 		not a coarse map.
+
 		:raises IOError: if one of the required maps does not exist
+		
 		:raises ValueError: if the dimensions of the dispersal map do not make sense when used with the fine map
 		provided
 
@@ -821,8 +802,6 @@ class Simulation:
 				raise RuntimeError('Output directory not set.')
 			else:
 				self.is_setup_param = True
-		if not self.is_setup:
-			raise RuntimeError('Coalescence and Speciation programs not identified')
 
 	def resume_coalescence(self, pause_directory, seed, job_type, max_time, out_directory=None,
 						   protracted=None, spatial=None):
@@ -878,20 +857,7 @@ class Simulation:
 				raise self.necsim.NECSimError(str(e))
 		else:
 			logging.warning("Using deprecated method.")
-			self.is_setup = False
-			self.setup()
-			if self.protracted:
-				raise RuntimeError("Cannot use deprecated NECSim method for protracted simulations. Ensure install is"
-								   "completed successfully to use protracted speciation.")
-			if self.is_setup:
-				call_list = [self.coalescence_simulator, "-r", pause_directory, seed, job_type, max_time]
-				try:
-					execute_log_info([str(x) for x in call_list])
-				except (OSError, subprocess.CalledProcessError) as err:
-					warnings.warn("Error thrown while trying to resume simulation: ")
-					raise err
-			else:
-				raise RuntimeError("Setup is incomplete. Please run setup() first.")
+			raise ImportError("Cannot run simulation without successful import of necsim module")
 
 	def persistent_ram_usage(self):
 		"""
@@ -931,7 +897,7 @@ class Simulation:
 
 		:return: the estimated RAM usage in bytes
 
-		:rtype float
+		:rtype: float
 		"""
 		total_ram = self.persistent_ram_usage()
 		# The grid object
@@ -945,7 +911,7 @@ class Simulation:
 
 		:return: a count of the number of individuals to be simulated
 
-		:rtype float
+		:rtype: float
 		"""
 		if self.count_total is None:
 			if self.sample_map.file_name in [None, "none", "null"]:
@@ -963,7 +929,7 @@ class Simulation:
 	def import_fine_map_array(self):
 		"""
 		Imports the fine map array to the in-memory object, subsetted to the same size as the sample grid.
-		:rtype None
+		:rtype: None
 		"""
 		if self.fine_map_array is None:
 			ds = gdal.Open(self.fine_map.file_name)
@@ -976,7 +942,7 @@ class Simulation:
 	def import_sample_map_array(self):
 		"""
 		Imports the sample map array to the in-memory object.
-		:rtype None
+		:rtype: None
 		"""
 		if self.sample_map_array is None:
 			ds2 = gdal.Open(self.sample_map.file_name)
@@ -997,7 +963,7 @@ class Simulation:
 		:param y_dim: the y dimension of the grid map subset
 
 		:return: an estimate of the total individuals that exist in the subset.
-		:rtype int
+		:rtype: int
 		"""
 		self.import_fine_map_array()
 		if self.sample_map.file_name not in ["none", "null", None] and \
@@ -1020,7 +986,7 @@ class Simulation:
 		:param y_dim: the y dimension of the grid map subset
 
 		:return: the total individuals that exist in the subset.
-		:rtype int
+		:rtype: int
 		"""
 		self.import_fine_map_array()
 		if self.sample_map.file_name not in ["none", "null", None] and \
@@ -1134,8 +1100,8 @@ class Simulation:
 		Gets the optimised solution as a dictionary containing the important optimised variables.
 		This can be read back in with set_optimised_solution
 
-		:return dict containing the important optimised variables
-		:rtype dict
+		:return: dict containing the important optimised variables
+		:rtype: dict
 		"""
 		return {"grid_x_size": self.grid.x_size,
 				"grid_y_size": self.grid.y_size,
@@ -1149,7 +1115,7 @@ class Simulation:
 		This should contain the grid_x_size, grid_y_size, grid_file_name, sample_x_offset and sample_y_offset.
 
 		:param dict dict_in: the dictionary containing the optimised RAM solution variables
-		:rtype None
+		:rtype: None
 		"""
 		self.grid.x_size = dict_in["grid_x_size"]
 		self.grid.y_size = dict_in["grid_y_size"]
@@ -1199,7 +1165,7 @@ class Simulation:
 
 	def generate_command(self):
 		"""Completes the setup process by creating the list that will be passed to the c++ executable"""
-		if (self.is_setup_map or self.is_full) and self.is_setup_param and self.is_setup:
+		if (self.is_setup_map or self.is_full) and self.is_setup_param:
 			if self.is_setup_complete:
 				err = "Set up already completed"
 				warnings.warn(err, RuntimeWarning)
@@ -1266,13 +1232,12 @@ class Simulation:
 
 		:param expected: boolean for expected existance of the output file
 
-		:rtype None
+		:rtype: None
 		"""
 		if not expected:
 			if os.path.exists(self.output_database):
 				try:
 					t = CoalescenceTree(self.output_database)
-					t.setup()
 				except IOError:
 					pass
 				else:
@@ -1352,7 +1317,7 @@ class Simulation:
 
 		:raises RuntimeError: if previous set-up routines are not complete
 		"""
-		if self.is_setup_complete and self.is_setup and self.is_setup_map and self.is_setup_param:
+		if self.is_setup_complete and self.is_setup_map and self.is_setup_param:
 			self.check_maps()
 		else:
 			err = "Set up is incomplete."
@@ -1445,7 +1410,7 @@ class Simulation:
 		:param max_y: the y value to start subsetting from
 		:param size: the size of the square
 		:return: bool true if it is smaller
-		:rtype bool
+		:rtype: bool
 		"""
 		return self._fine_map_sum(max_x, max_y, size) > \
 			   size * size * self.get_average_density()
