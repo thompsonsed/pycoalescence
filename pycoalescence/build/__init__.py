@@ -10,4 +10,4 @@ except ImportError as ie:
 		# Create a dummy NECSim object so readthedocs won't fail to build documentation without compiling the program
 		necsimmodule = None
 		Dispersal = None
-		warnings.warn("Could not import NECSim cpp module: {}".format(str(ie)))
+		logging.warning("Could not import NECSim cpp module: {}".format(str(ie)))

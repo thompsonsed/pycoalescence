@@ -39,8 +39,8 @@ try:
 	config_success = True
 except ImportError as ie:
 	ConfigParser = None
-	warnings.warn("Could not import ConfigParser. Config options disabled.")
-	warnings.warn(str(ie))
+	logging.warning("Could not import ConfigParser. Config options disabled.")
+	logging.warning(str(ie))
 	config_success = False
 
 try:
@@ -56,7 +56,7 @@ except ImportError as ie:
 		import gdal
 	except ImportError:
 		gdal = None
-		warnings.warn("Problem importing  (gdal) modules. " + str(ie))
+		logging.warning("Problem importing  (gdal) modules. " + str(ie))
 
 try:
 	import sqlite3
@@ -66,7 +66,7 @@ except ImportError as ie:
 	sqlite_import = False
 	CoalescenceTree = None
 	sqlite3 = None
-	warnings.warn("Problem importing sqlite module " + str(ie))
+	logging.warning("Problem importing sqlite module " + str(ie))
 
 necsim_import_success = False
 import_warnings = []
@@ -190,7 +190,8 @@ class Simulation:
 		"""
 		Overriding the destructor for proper destruction of the logger object
 		"""
-		for handler in self.logger.handlers:
+		handlers = self.logger.handlers.copy()
+		for handler in handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
 		self.necsim = None
@@ -243,7 +244,7 @@ class Simulation:
 			config_file = os.path.join(self.output_directory,
 									   "timeconf_{}_{}.txt".format(str(self.job_type), str(self.seed)))
 		if not os.path.exists(os.path.dirname(config_file)):
-			logging.warning(
+			self.logger.info(
 				'Path {} does not exist for writing output to, creating.'.format(os.path.dirname(config_file)))
 			os.makedirs(os.path.dirname(config_file))
 		if len(self.sample_time_list) != 0:
@@ -267,7 +268,7 @@ class Simulation:
 		if not config_success:
 			raise ImportError("ConfigParser import was unsuccessful: cannot create config file.")
 		if not os.path.exists(os.path.dirname(output_file)):
-			logging.warning(
+			self.logger.info(
 				'Path {} does not exist for writing output to, creating.'.format(os.path.dirname(output_file)))
 			os.makedirs(os.path.dirname(output_file))
 		config = ConfigParser.ConfigParser()
@@ -330,7 +331,7 @@ class Simulation:
 							config.set(tmp_coarse, "time", str(t))
 							config.set(tmp_coarse, "rate", str(self.rates_list[i]))
 						except IndexError as ie:
-							warnings.warn('Discrepancy between pristine file list, time list or rate list. Check inputs: ' +
+							self.logger.warning('Discrepancy between pristine file list, time list or rate list. Check inputs: ' +
 										  ie.message)
 							break
 				if self.grid.file_name == "set":
@@ -487,7 +488,7 @@ class Simulation:
 		if not config_success:
 			raise ImportError("ConfigParser import was unsuccessful: cannot create config file.")
 		if not os.path.exists(os.path.dirname(output_file)):
-			logging.warning(
+			self.logger.info(
 				'Path {} does not exist for writing output to, creating.'.format(os.path.dirname(output_file)))
 			os.makedirs(os.path.dirname(output_file))
 		config = ConfigParser.ConfigParser()
@@ -698,7 +699,7 @@ class Simulation:
 			self.is_setup_map = True
 		else:
 			err = "Map objects are already set up."
-			warnings.warn(err, RuntimeWarning)
+			self.loger.warning(err)
 
 	def set_simulation_params(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0, deme=1,
 							  sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
@@ -776,20 +777,20 @@ class Simulation:
 			if protracted:
 				self.protracted = True
 				if max_speciation_gen is None:
-					logging.warning("Using protracted speciation, but no maximum speciation generation supplied."
+					self.logger.warning("Using protracted speciation, but no maximum speciation generation supplied."
 									" Default to 10^100")
 					self.max_speciation_gen = 10 ** 100
 				else:
 					self.max_speciation_gen = max_speciation_gen
 				if min_speciation_gen is None:
-					logging.warning("Using protracted speciation, but no minimum speciation generation supplied."
+					self.logger.warning("Using protracted speciation, but no minimum speciation generation supplied."
 									" Default to 0.0")
 					self.min_speciation_gen = 0.0
 				else:
 					self.min_speciation_gen = min_speciation_gen
 		else:
 			err = "Parameters already set up."
-			warnings.warn(err, RuntimeWarning)
+			self.logger.warning(err)
 
 	def check_simulation_params(self):
 		"""
@@ -856,7 +857,7 @@ class Simulation:
 			except Exception as e:
 				raise self.necsim.NECSimError(str(e))
 		else:
-			logging.warning("Using deprecated method.")
+			self.logger.warning("Using deprecated method.")
 			raise ImportError("Cannot run simulation without successful import of necsim module")
 
 	def persistent_ram_usage(self):
@@ -1161,14 +1162,14 @@ class Simulation:
 			if not ignore_errors:
 				raise err
 			else:
-				logging.info(str(err))
+				self.logger.info(str(err))
 
 	def generate_command(self):
 		"""Completes the setup process by creating the list that will be passed to the c++ executable"""
 		if (self.is_setup_map or self.is_full) and self.is_setup_param:
 			if self.is_setup_complete:
 				err = "Set up already completed"
-				warnings.warn(err, RuntimeWarning)
+				self.logger.warning(err)
 			else:
 				if not self.is_full:
 					tmp_call_list = [self.coalescence_simulator, self.seed, self.job_type, self.map_config,
@@ -1265,23 +1266,23 @@ class Simulation:
 			# Now check that the rest of the map naming structures make sense.
 			if self.pristine_fine_map_file in {"none", None} and len(self.pristine_fine_list) == 0:
 				if self.pristine_coarse_map_file not in {"none", None} or len(self.pristine_coarse_list) > 1:
-					logging.warning(
+					self.logger.warning(
 						"Pristine fine file is 'none' but pristine coarse file is not none. Check file names.")
-					logging.warning("Defaulting to pristine_coarse_map_file = 'none'")
+					self.logger.warning("Defaulting to pristine_coarse_map_file = 'none'")
 					self.pristine_coarse_map_file = "none"
 					self.pristine_coarse_list = []
 				if len(self.pristine_fine_list) > 1:
-					logging.warning(
+					self.logger.warning(
 						"Set pristine fine map file to 'none', but then added other pristine maps. Changing.")
 					self.pristine_fine_list = []
 			if self.coarse_map.file_name in {"none", None}:
 				if self.pristine_coarse_map_file not in {"none", None}:
-					logging.warning("Coarse file is 'none' but pristine coarse file is not none. Check file names.")
-					logging.warning("Defaulting to pristine_coarse_map_file = 'none'")
+					self.logger.warning("Coarse file is 'none' but pristine coarse file is not none. Check file names.")
+					self.logger.warning("Defaulting to pristine_coarse_map_file = 'none'")
 					self.pristine_coarse_map_file = "none"
 					self.pristine_coarse_list = []
 			if self.fine_map.file_name == "none":
-				logging.warning("Fine map file cannot be 'none', changing to 'null'.")
+				self.logger.warning("Fine map file cannot be 'none', changing to 'null'.")
 				self.fine_map.file_name = "null"
 			# Check offset of sample mask with fine map
 			if self.fine_map.x_offset > self.fine_map.x_size - self.sample_map.x_size or \
@@ -1361,7 +1362,7 @@ class Simulation:
 				os.makedirs(self.output_directory)
 			# Call the c++ code and run the simulation
 			if not necsim_import_success:
-				logging.error("NECSim import unsuccessful: cannot run simulations using c++ API. Attempting system call"
+				self.logger.error("NECSim import unsuccessful: cannot run simulations using c++ API. Attempting system call"
 							  " instead")
 			if self.full_config_file != '' and self.full_config_file is not None and necsim_import_success:
 				# Run NECSim
@@ -1379,16 +1380,16 @@ class Simulation:
 					raise self.necsim.NECSimError(str(e))
 			else:
 				# Deprecated method if cannot link to shared objects
-				logging.warning("Using deprecated os call method.")
+				self.logger.warning("Using deprecated os call method.")
 				if necsim_import_success:
-					logging.warning("NECSim not successfully imported.")
+					self.logger.warning("NECSim not successfully imported.")
 				else:
-					logging.warning("Config file was :" + self.full_config_file)
+					self.logger.warning("Config file was :" + self.full_config_file)
 				try:
 					execute_log_info(self.call_list)
 				except:
-					logging.critical("Error raised using deprecated os call method.")
-					logging.critical("Call was " + str(self.call_list))
+					self.logger.critical("Error raised using deprecated os call method.")
+					self.logger.critical("Call was " + str(self.call_list))
 		else:
 			err = "Set up is incomplete."
 			raise RuntimeError(err)

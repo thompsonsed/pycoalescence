@@ -26,7 +26,7 @@ except ImportError as ie:
 		import gdal
 	except ImportError:
 		gdal = None
-		warnings.warn("Problem importing  (gdal) modules. " + str(ie))
+		logging.warning("Problem importing  (gdal) modules. " + str(ie))
 
 necsim_import_success = False
 import_warnings = []
@@ -60,7 +60,7 @@ try:
 		import sqlite as sqlite3
 except ImportError as ie:
 	sqlite3 = None
-	warnings.warn("Problem importing sqlite module " + str(ie))
+	logging.warning("Problem importing sqlite module " + str(ie))
 
 from .system_operations import check_file_exists, create_logger, write_to_log, check_parent
 
@@ -180,10 +180,11 @@ class Map(object):
 		ds.FlushCache()
 		ds = None
 
-	def create(self, file):
+	def create(self, file, bands=1):
 		"""
 		Create the file output and writes the grid to the output.
 		:param file: the output file to create
+		:param bands: optionally provide a number of bands to create
 		"""
 		#TODO unittests for this
 		if self.data is None:
@@ -194,7 +195,7 @@ class Map(object):
 		self.file_name = file
 		check_parent(self.file_name)
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.file_name,
-															 self.data.shape[0], self.data.shape[1], 1,
+															 self.data.shape[1], self.data.shape[0], bands,
 															 gdal.GDT_Byte)
 		if not output_raster:
 			raise IOError("Could not create tif file at {}.".format(self.file_name))
@@ -370,7 +371,7 @@ class Map(object):
 		# Check that each of the dimensions matches
 		out = dst[4:] / src[4:]
 		if out[0] != out[1]:
-			warnings.warn('Inequal scaling of x and y dimensions. Check map files.')
+			self.logger.info('Inequal scaling of x and y dimensions. Check map files.')
 		return out[0]
 
 	def calculate_offset(self, file_offset):

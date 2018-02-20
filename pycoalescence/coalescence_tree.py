@@ -558,19 +558,19 @@ class CoalescenceTree(object):
 			self.record_spatial = record_spatial
 			self.record_fragments = record_fragments
 			if sample_file is None:
-				warnings.warn("No sample file provided, defaulting to null.", RuntimeWarning)
+				self.logger.info("No sample file provided, defaulting to null.")
 				self.sample_file = "null"
 			else:
 				self.sample_file = sample_file
 			if self.time_config_file is None:
 				if time_config_file is None:
-					warnings.warn("No time config file provided, defaulting to null.", RuntimeWarning)
+					self.logger.warning("No time config file provided, defaulting to null.")
 					self.time_config_file = "null"
 				else:
 					self.time_config_file = time_config_file
 			self.applied_speciation_rates_list = speciation_rates
 		else:
-			warnings.warn("Speciation parameters already set.", RuntimeWarning)
+			self.logger.warning("Speciation parameters already set.")
 		if self.sample_file == "null" and self.record_fragments == "null":
 			raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
 							 "provide a samplemask or set record_fragments=False.")
@@ -585,9 +585,8 @@ class CoalescenceTree(object):
 		if self.time_config_file is None:
 			self.time_config_file = "null"
 		if not os.path.exists(self.file):
-			warnings.warn(str("Check file existance for " + self.file +
-							  ". Potential lack of access (verify that definition is a relative path)."),
-						  RuntimeWarning)
+			self.logger.warning(str("Check file existance for " + self.file +
+							  ". Potential lack of access (verify that definition is a relative path)."))
 		# Convert fragment file to null if it is true
 		# Log warning if sample file is null and record fragments is true
 		if applyspec_import:
@@ -604,7 +603,7 @@ class CoalescenceTree(object):
 			except Exception as e:
 				raise ApplySpecError(str(e))
 		else:
-			logging.warning("Using deprecated speciation application method.")
+			self.logger.warning("Using deprecated speciation application method.")
 			sim_list = [self.speciation_simulator, self.file, self.record_spatial, self.sample_file,
 						self.time_config_file, self.record_fragments]
 			sim_list.extend([str(x) for x in self.applied_speciation_rates_list])
@@ -612,7 +611,7 @@ class CoalescenceTree(object):
 			try:
 				execute_log_info(sim_list_str)
 			except subprocess.CalledProcessError as cpe:
-				warnings.warn("CalledProcessError while applying speciation rates: " +
+				self.logger.warning("CalledProcessError while applying speciation rates: " +
 							  ",".join([str(x) for x in sim_list_str]))
 				raise cpe
 
@@ -877,7 +876,7 @@ class CoalescenceTree(object):
 			self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES(?,?,?,?,?, NULL, NULL)", output)
 			self.database.commit()
 		else:
-			logging.warning("Alpha diversity already calculated.")
+			self.logger.warning("Alpha diversity already calculated.")
 
 	def calculate_beta_diversity(self):
 		"""
@@ -911,7 +910,7 @@ class CoalescenceTree(object):
 			self.database.commit()
 			self.database.commit()
 		else:
-			logging.warning("Beta diversity already calculated.")
+			self.logger.warning("Beta diversity already calculated.")
 
 	def get_alpha_diversity(self, reference=1):
 		"""
@@ -967,7 +966,7 @@ class CoalescenceTree(object):
 		conn = sqlite3.connect(filename)
 		tmp_cursor = conn.cursor()
 		if self.comparison_file is not None:
-			warnings.warn("Comparison data has already been imported.")
+			self.logger.warning("Comparison data has already been imported.")
 		try:
 			if check_sql_table_exist(conn, "BIODIVERSITY_METRICS"):
 				self.comparison_data = tmp_cursor.execute("SELECT metric, fragment, value, no_individuals"
@@ -1016,7 +1015,7 @@ class CoalescenceTree(object):
 		if self.comparison_octaves is None:
 			# If comparison_octaves has not been calculated, then do that now.
 			if self.comparison_abundances is None:
-				warnings.warn(
+				self.logger.warning(
 					"Comparison abundances not yet imported, or FRAGMENT_ABUNDANCES does not exist in comparison file.")
 			# Check whether the FRAGMENT_OCTAVES table exists, if it is, just stored that in self.comparison_octaves
 			if self.comparison_file is not None:

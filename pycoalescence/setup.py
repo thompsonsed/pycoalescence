@@ -22,22 +22,70 @@ try:
 except (ImportError, SystemError, ValueError):
 	from system_operations import execute_log_info, set_logging_method, mod_directory, execute_silent
 
+def make_depend():
+	"""
+	Runs make depend in the lib directory to calculate all dependencies for the header and source files.
+
+	.. note:: Fails silently if makedepend is not installed, printing an error to logging.
+	"""
+	try:
+		execute_silent(["make", "depend"], cwd=os.path.join(mod_directory, "lib/"))
+	except (RuntimeError, subprocess.CalledProcessError) as rte:
+		logging.error("Could not execute makedepend: " + str(rte))
+		logging.error("Using default dependencies instead.")
+		use_default_depends()
+
+def create_default_depend():
+	"""
+	Runs the default makedepend command, outputting dependencies to lib/depends_default.
+
+	Used to generate a default dependency file on a system where makedepend exists, for a system where it does not.
+	"""
+	try:
+		execute_silent(["makedepend", "*.cpp", "necsim/*.cpp", "-f" "depends_default", "-p", "obj/"],
+					   cwd=os.path.join(mod_directory, "lib/"))
+	except (RuntimeError, subprocess.CalledProcessError) as rte:
+		logging.error("Could not execute makedepend: " + str(rte))
+
+def use_default_depends():
+	"""
+	Uses the default dependencies, copying all contents of depends_default to the end of Makefile.
+
+	.. note:: Zero error-checking is done here as the Makefiles should not change, and the depends_default file should
+			  be created using create_default_depend()
+
+	"""
+	# First read Makefile
+	with open("lib/Makefile", "r") as f_in:
+		lines = f_in.readlines()
+	with open("lib/depends_default", "r") as f_default:
+		lines_default = f_default.readlines()
+	# Now write all back out
+	with open("lib/Makefile", "w") as f_out:
+		for line in lines:
+			if "# DO NOT DELETE" in line:
+				break
+			f_out.write(line)
+		for line in lines_default:
+			f_out.write(line)
+
+
 
 
 def do_compile():
 	"""
-	Compiles the c++ NECSim program by running make. This changes the working directory to wherever the module has been
+	Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been
 	installed for the subprocess call.
 	"""
 	# Check that the make file exists
 	if os.path.exists(os.path.join(mod_directory, "lib/")):
+		make_depend()
 		try:
-			execute_silent(["make", "depend"], cwd=os.path.join(mod_directory, "lib/"))
 			execute_log_info(["make", "all"], cwd=os.path.join(mod_directory, "lib/"))
 			logging.info("Compilation exited successfully.")
-		except subprocess.CalledProcessError as cpe:
-			warnings.warn(str(cpe))
-			warnings.warn("Compilation attempted, but error thrown.")
+		except (RuntimeError, subprocess.CalledProcessError) as rte:
+			logging.error(str(rte))
+			logging.error("Compilation attempted, but error thrown.")
 	else:
 		raise IOError("C++ library does not exist! Check relative file path")
 
@@ -99,7 +147,7 @@ def move_executable(directory=os.path.join(mod_directory, "build/default/")):
 			try:
 				os.mkdir(dirname)
 			except OSError as ose:
-				warnings.warn("Could not create directory " + directory)
+				logging.warning("Could not create directory " + directory)
 				raise ose
 	os.rename(source_file, os.path.join(directory, "NECSim"))
 	os.rename(source_file2, os.path.join(directory, "SpeciationCounter"))
@@ -115,11 +163,15 @@ def configure(opts=None):
 	if os.path.exists(os.path.join(mod_directory, "lib/configure")):
 		try:
 			if opts is None:
-				execute_log_info(["./configure", "--with-verbose", "BUILDIR={}".format(get_build_dir()),  "OBJDIR=obj"],
+				execute_log_info(["./configure", "--with-verbose", "BUILDDIR={}".format(get_build_dir()),  "OBJDIR=obj"],
 								 cwd=os.path.join(mod_directory, "lib/"))
 			else:
 				command = ["./configure"]
 				command.extend(opts)
+				if "BUILDDIR" not in opts:
+					command.append("BUILDDIR={}".format(get_build_dir()))
+				if "OBJDIR" not in opts:
+					command.append("OBJDIR=obj")
 				execute_log_info(command, cwd=os.path.join(mod_directory, "lib/"))
 		except subprocess.CalledProcessError as cpe:
 			cpe.message += "Configuration attempted, but error thrown"
@@ -135,9 +187,9 @@ def autoconf():
 	try:
 		execute_log_info(["autoconf"], cwd=os.path.join(mod_directory, "lib/"))
 	except (RuntimeError, subprocess.CalledProcessError) as cpe:
-		warnings.warn("Could not run autoconf function to generate configure executable. "
+		logging.warning("Could not run autoconf function to generate configure executable. "
 					  "Please run this functionality manually if installation fails.")
-		warnings.warn(str(cpe))
+		logging.warning(str(cpe))
 
 
 def clean():
@@ -147,7 +199,7 @@ def clean():
 	try:
 		execute_log_info(["make", "clean"], cwd=os.path.join(mod_directory, "lib/"))
 	except subprocess.CalledProcessError as cpe:
-		warnings.warn(cpe.message)
+		logging.warning(cpe.message)
 		raise RuntimeError("Make file has not been generated. Cannot clean.")
 
 def get_compilation_flags(display_warnings=False):
@@ -212,7 +264,6 @@ def run_configure(argv=[None], logging_level=logging.INFO, display_warnings=Fals
 	else:
 		if argv[1] == "--h" or argv[1] == "-h" or argv[1] == "-help" or argv[1] == "--help":
 			execute_log_info(["./configure", "--help"], cwd=os.path.join(mod_directory, "lib/"))
-			exit(0)
 		if isinstance(argv, str):
 			call.append(argv[2])
 		else:

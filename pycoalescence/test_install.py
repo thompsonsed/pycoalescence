@@ -10,7 +10,6 @@ from __future__ import absolute_import
 import os, sys, inspect
 import unittest
 from shutil import rmtree
-import warnings
 import numpy as np
 import gdal
 # Conditional import for python 2 being stupid
@@ -82,9 +81,9 @@ def make_all_compile(recompile=False, build_dir="build/", opt_list=None, folder_
 				do_compile()
 				move_executable(output_path)
 		except RuntimeError as rte:
-			warnings.warn(rte.message)
+			logging.warning(rte.message)
 		except IOError as ioe:
-			warnings.warn(ioe.message)
+			logging.warning(ioe.message)
 		except Exception as ue:
 			raise ue
 
@@ -109,8 +108,8 @@ def setUpModule():
 				log_path = "Logs_tmp"
 				os.rename("Logs/", "Logs_tmp")
 			except OSError as oe:
-				warnings.warn(oe.message)
-				warnings.warn("Cannot rename Log directory: deleting instead.")
+				logging.warning(oe.message)
+				logging.warning("Cannot rename Log directory: deleting instead.")
 				log_path = None
 
 
@@ -1182,7 +1181,7 @@ class TestSimsRaiseErrors(unittest.TestCase):
 		"""
 		Tests a protracted simulation raises an error if there is a problem
 		"""
-		c = Simulation()
+		c = Simulation(logging_level=logging.ERROR)
 		c.set_simulation_params(6, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
 								time_config_file="null", dispersal_method="fat-tail", protracted=True)
@@ -1471,22 +1470,22 @@ class TestNonSpatialSimulation(unittest.TestCase):
 		Runs the simulations to be used in testing
 		:return:
 		"""
-		cls.c = Simulation()
+		cls.c = Simulation(logging_level=logging.ERROR)
 		cls.c.set_simulation_params(seed=1, job_type=39, output_directory="output", min_speciation_rate=1, deme=100,
 								spatial=False)
 		cls.c.finalise_setup()
 		cls.c.run_coalescence()
-		cls.c2 = Simulation()
+		cls.c2 = Simulation(logging_level=logging.ERROR)
 		cls.c2.set_simulation_params(seed=1, job_type=40, output_directory="output", min_speciation_rate=0.5, deme=100,
 								 spatial=False)
 		cls.c2.finalise_setup()
 		cls.c2.run_coalescence()
-		cls.c3 = Simulation()
+		cls.c3 = Simulation(logging_level=logging.ERROR)
 		cls.c3.set_simulation_params(seed=1, job_type=41, output_directory="output", min_speciation_rate=0.5, deme=100,
 									spatial=False, protracted=True, min_speciation_gen=0, max_speciation_gen=1)
 		cls.c3.finalise_setup()
 		cls.c3.run_coalescence()
-		cls.c4 = Simulation()
+		cls.c4 = Simulation(logging_level=logging.ERROR)
 		cls.c4.set_simulation_params(seed=1, job_type=42, output_directory="output", min_speciation_rate=0.5, deme=100,
 									 spatial=False, protracted=True, min_speciation_gen=100, max_speciation_gen=1000)
 		cls.c4.finalise_setup()
@@ -1764,16 +1763,16 @@ class TestCoalPause2(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		self.coal = Simulation()
-		self.coal2 = Simulation()
-		self.tree2 = CoalescenceTree()
+		self.coal = Simulation(logging_level=logging.ERROR)
+		self.coal2 = Simulation(logging_level=logging.ERROR)
+		self.tree2 = CoalescenceTree(logging_level=logging.ERROR)
 		self.coal.set_simulation_params(seed=10, job_type=26, output_directory="output", min_speciation_rate=0.5,
 										sigma=2, tau=2, deme=1, sample_size=0.1, max_time=0,
 										dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
 										gen_since_pristine=200,
 										time_config_file="null", dispersal_method="normal", protracted=True,
 										min_speciation_gen=0.0, max_speciation_gen=100)
-		self.coal3 = Simulation()
+		self.coal3 = Simulation(logging_level=logging.ERROR)
 		self.coal3.set_simulation_params(seed=10, job_type=26, output_directory="output", min_speciation_rate=0.5,
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
@@ -3180,10 +3179,10 @@ class TestCoalProtractedSanityChecks(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		self.coal1 = Simulation()
-		self.coal2 = Simulation()
-		self.coal3 = Simulation()
-		self.coal4 = Simulation()
+		self.coal1 = Simulation(logging_level=logging.ERROR)
+		self.coal2 = Simulation(logging_level=logging.ERROR)
+		self.coal3 = Simulation(logging_level=logging.ERROR)
+		self.coal4 = Simulation(logging_level=logging.ERROR)
 		self.tree1 = CoalescenceTree()
 		self.tree2 = CoalescenceTree()
 		self.tree3 = CoalescenceTree()
@@ -4011,6 +4010,10 @@ class TestSystemOperations(unittest.TestCase):
 		with open(file_name, 'r') as f:
 			s = f.readline()
 			self.assertTrue("test output" in s)
+		handlers = logger.handlers.copy()
+		for handler in handlers:
+			handler.close()
+			logger.removeHandler(handler)
 
 	def testCantorPairing(self):
 		"""
