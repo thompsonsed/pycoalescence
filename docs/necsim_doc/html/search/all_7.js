@@ -5,5 +5,6 @@ var searchData=
   ['haspaused',['hasPaused',['../class_tree.html#ae07761c0a91a44ebe459904b1b8ffb43',1,'Tree']]],
   ['hasreproduced',['hasReproduced',['../class_reproduction_map.html#aa8afbdf28197532a65c17035a075fe9b',1,'ReproductionMap']]],
   ['hassection',['hasSection',['../class_config_option.html#a3a99578bbd121d5494340388f8a3498c',1,'ConfigOption']]],
-  ['hasspeciated',['hasSpeciated',['../class_tree_node.html#a1c6376914155dee34c708a9daa664f81',1,'TreeNode']]]
+  ['hasspeciated',['hasSpeciated',['../class_tree_node.html#a1c6376914155dee34c708a9daa664f81',1,'TreeNode']]],
+  ['header_5fmissing',['header_missing',['../structio_1_1error_1_1header__missing.html',1,'io::error']]]
 ];

@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Template Class Matrix &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Metacommunity" href="class_Metacommunity.html" />
+    <link rel="prev" title="Class LogFile" href="class_LogFile.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_Metacommunity.html" title="Class Metacommunity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="class_LogFile.html" title="Class LogFile"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necim</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="template-class-matrix">
+<span id="id1"></span><h1>Template Class Matrix<a class="headerlink" href="#template-class-matrix" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_necsim_Matrix.h.html#file-necsim-matrix-h"><span class="std std-ref">File Matrix.h</span></a></li>
+</ul>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<span class="target" id="necsimclass_matrix"></span><em class="property">template </em>&lt;class <em>T</em>&gt;</dt>
+<dt id="_CPPv26Matrix">
+<span id="Matrix"></span><em class="property">class </em><code class="descclassname"></code><code class="descname">Matrix</code><a class="headerlink" href="#_CPPv26Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A class containing the <a class="reference internal" href="#necsimclass_matrix"><span class="std std-ref">Matrix</span></a> object, set up as an array of <a class="reference internal" href="class_Row.html#necsimclass_row"><span class="std std-ref">Row</span></a> objects. Includes basic operations, as well as the <a class="reference internal" href="#necsimclass_matrix_1a0a5d9135e9807b81ddc3cf05e777a902"><span class="std std-ref">importCsv()</span></a> function for more advanced reading from file. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv2N6Matrix6MatrixEmm">
+<span id="Matrix::Matrix__unsigned-l.unsigned-l"></span><span class="target" id="necsimclass_matrix_1a53f60218c002f2bb454695a1fc35c5d3"></span><code class="descname">Matrix</code><span class="sig-paren">(</span>unsigned long <em>rows</em> = 0, unsigned long <em>cols</em> = 0<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6Matrix6MatrixEmm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The standard constructor. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">rows</span></code>: optionally provide the number of rows. </li>
+<li><code class="docutils literal"><span class="pre">cols</span></code>: optionally provide the number of columns. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6Matrix6MatrixERK6Matrix">
+<span id="Matrix::Matrix__MatrixCR"></span><span class="target" id="necsimclass_matrix_1a3796b4f32dc8e11f908a90fd3dd39c45"></span><code class="descname">Matrix</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N6Matrix6MatrixEmm" title="Matrix::Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6Matrix6MatrixERK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The copy constructor. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: a <a class="reference internal" href="#necsimclass_matrix"><span class="std std-ref">Matrix</span></a> object to copy from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixD0Ev">
+<span id="Matrix::~Matrix"></span><span class="target" id="necsimclass_matrix_1a91aa704de674203e96aece9e1955ccd3"></span><code class="descname">~Matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The destructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6Matrix7setSizeEmm">
+<span id="Matrix::setSize__unsigned-l.unsigned-l"></span><span class="target" id="necsimclass_matrix_1aa393296d4132d7aafc4e236ddfe59f06"></span>void <code class="descname">setSize</code><span class="sig-paren">(</span>unsigned long <em>rows</em>, unsigned long <em>cols</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6Matrix7setSizeEmm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the matrix size. Similar concept to that for Rows. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">rows</span></code>: the number of rows. </li>
+<li><code class="docutils literal"><span class="pre">cols</span></code>: the number of columns. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2NK6Matrix7getColsEv">
+<span id="Matrix::getColsC"></span><span class="target" id="necsimclass_matrix_1a9b4ce445c65dcea66c66dda875cc39d8"></span>unsigned long <code class="descname">getCols</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv2NK6Matrix7getColsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Getter for the number of columns. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of columns. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2NK6Matrix7getRowsEv">
+<span id="Matrix::getRowsC"></span><span class="target" id="necsimclass_matrix_1a442879db6473eeab202928dc47992206"></span>unsigned long <code class="descname">getRows</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv2NK6Matrix7getRowsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Getter for the number of rows. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of rows. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixixEm">
+<span id="Matrix::subscript-operator__unsigned-l"></span><span class="target" id="necsimclass_matrix_1ae7e14b4bd8bb570260a4e578e4a601b7"></span><a class="reference internal" href="class_Row.html#_CPPv23Row" title="Row">Row</a>&lt;T&gt; &amp;<code class="descname">operator[]</code><span class="sig-paren">(</span>unsigned long <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixixEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overoads the [] operator for <a class="reference internal" href="#necsimclass_matrix"><span class="std std-ref">Matrix</span></a>. Allows referencing of a value i,j using <a class="reference internal" href="#necsimclass_matrix"><span class="std std-ref">Matrix</span></a>[i][j]. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the matrix row object. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">index</span></code>: the row number to get the value from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixaSERK6Matrix">
+<span id="Matrix::assign-operator__MatrixCR"></span><span class="target" id="necsimclass_matrix_1a94508f84ba0d62e81aa8d508aa43f1ec"></span><a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixaSERK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the = operator. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: the matrix to copy from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixplERK6Matrix">
+<span id="Matrix::add-operator__MatrixCR"></span><span class="target" id="necsimclass_matrix_1a311f3649e41cb4a3155f3f71a65829cb"></span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> <code class="descname">operator+</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixplERK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the + operator. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the matrix object which is the sum of the two matrices. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: the matrix to add to this matrix. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixmiERK6Matrix">
+<span id="Matrix::sub-operator__MatrixCR"></span><span class="target" id="necsimclass_matrix_1a08e75978ea8288083ef36f53b4ac115d"></span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> <code class="descname">operator-</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixmiERK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the - operator. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the matrix object which is the subtraction of the two matrices. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: the matrix to subtract from this matrix. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixpLERK6Matrix">
+<span id="Matrix::add-assign-operator__MatrixCR"></span><span class="target" id="necsimclass_matrix_1a480a72298ae1fc8443b0edfaa66d7c46"></span><a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<code class="descname">operator+=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixpLERK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the += operator so that the new object is written to the current object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: the <a class="reference internal" href="#necsimclass_matrix"><span class="std std-ref">Matrix</span></a> object to add to this matrix. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixmIERK6Matrix">
+<span id="Matrix::sub-assign-operator__MatrixCR"></span><span class="target" id="necsimclass_matrix_1a0e459fd035b2435ea016dc93c55ccac0"></span><a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<code class="descname">operator-=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixmIERK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the -= operator so that the new object is written to the current object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: the <a class="reference internal" href="#necsimclass_matrix"><span class="std std-ref">Matrix</span></a> object to subtract from this matrix. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixmlEKd">
+<span id="Matrix::mul-operator__doubleC"></span><span class="target" id="necsimclass_matrix_1ac4e94b307c56a15fb47a9255855f94a9"></span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> <code class="descname">operator*</code><span class="sig-paren">(</span><em class="property">const</em> double <em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixmlEKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the * operator for scaling. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the scaled matrix. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">s</span></code>: the constant to scale the matrix by. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6MatrixmlER6Matrix">
+<span id="Matrix::mul-operator__MatrixR"></span><span class="target" id="necsimclass_matrix_1ac396cdd2d98e1b4d99f7e17c1c26b1ec"></span><em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> <code class="descname">operator*</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6MatrixmlER6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the * operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the product of each ith,jth value of the matrix. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">m</span></code>: the matrix to multiply with </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6Matrix8setValueERKmRKmPKc">
+<span id="Matrix::setValue__unsigned-lCR.unsigned-lCR.cCP"></span><span class="target" id="necsimclass_matrix_1ae511e2f5874e7602fc968541efeefca1"></span>void <code class="descname">setValue</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>x</em>, <em class="property">const</em> unsigned long &amp;<em>y</em>, <em class="property">const</em> char *<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6Matrix8setValueERKmRKmPKc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the value at the specified indices, including handling type conversion from char to the template class. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">x</span></code>: the x index. </li>
+<li><code class="docutils literal"><span class="pre">y</span></code>: the y index. </li>
+<li><code class="docutils literal"><span class="pre">value</span></code>: the value to set </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6Matrix6importERK6string">
+<span id="Matrix::import__stringCR"></span><span class="target" id="necsimclass_matrix_1a2476517be70c810ad586d0f0cf4ec121"></span><em class="property">virtual</em> void <code class="descname">import</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6Matrix6importERK6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the matrix from a csv file. </p>
+<p><dl class="docutils">
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">runtime_error</span></code>: if type detection for the filename fails. </li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">filename</span></code>: the file to import. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6Matrix9importCsvERK6string">
+<span id="Matrix::importCsv__stringCR"></span><span class="target" id="necsimclass_matrix_1a0a5d9135e9807b81ddc3cf05e777a902"></span>bool <code class="descname">importCsv</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6Matrix9importCsvERK6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the matrix from a csv file using the fast-csv-parser method. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the csv can be imported. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">filename</span></code>: the path to the file to import. Imports the matrix from a csv file using the standard, slower method. </li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">filename</span></code>: the path to the file to import. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Protected Attributes</p>
+<dl class="member">
+<dt id="_CPPv2N6Matrix7numColsE">
+<span id="Matrix::numCols__unsigned-l"></span><span class="target" id="necsimclass_matrix_1a341aaedcfaac978957087bd0467dc527"></span>unsigned long <code class="descname">numCols</code> = {}<a class="headerlink" href="#_CPPv2N6Matrix7numColsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N6Matrix7numRowsE">
+<span id="Matrix::numRows__unsigned-l"></span><span class="target" id="necsimclass_matrix_1ac1e96667d48c7845708f978ddd17475d"></span>unsigned long <code class="descname">numRows</code> = {}<a class="headerlink" href="#_CPPv2N6Matrix7numRowsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N6Matrix6matrixE">
+<span id="Matrix::matrix__Row:T:P"></span><span class="target" id="necsimclass_matrix_1a7a143ae112112155c9622ba17dc434c7"></span><a class="reference internal" href="class_Row.html#_CPPv23Row" title="Row">Row</a>&lt;T&gt; *<code class="descname">matrix</code><a class="headerlink" href="#_CPPv2N6Matrix6matrixE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Friends</p>
+<dl class="function">
+<dt id="_CPPv28writeOutR7ostreamRK6Matrix">
+<span id="writeOut__ostreamR.MatrixCR"></span><span class="target" id="necsimclass_matrix_1ab3d577ddd4221a3da49296c2c4ae4e04"></span>ostream &amp;<code class="descname">writeOut</code><span class="sig-paren">(</span>ostream &amp;<em>os</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv28writeOutR7ostreamRK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Writes the object to the output stream. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the output stream </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">os</span></code>: the output stream to write to </li>
+<li><code class="docutils literal"><span class="pre">m</span></code>: the object to write out </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv26readInR7istreamR6Matrix">
+<span id="readIn__istreamR.MatrixR"></span><span class="target" id="necsimclass_matrix_1a7518cae16b9081c23c94b77b6d84e0d8"></span>istream &amp;<code class="descname">readIn</code><span class="sig-paren">(</span>istream &amp;<em>is</em>, <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv26readInR7istreamR6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reads in from the input stream. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd></dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">is</span></code>: the input stream to read from </li>
+<li><code class="docutils literal"><span class="pre">m</span></code>: the object to read into </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2lsR7ostreamRK6Matrix">
+<span id="lshift-operator__ostreamR.MatrixCR"></span><span class="target" id="necsimclass_matrix_1a5ed9a90fd6f010e7e9840a17d92d5361"></span>ostream &amp;<code class="descname">operator&lt;&lt;</code><span class="sig-paren">(</span>ostream &amp;<em>os</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2lsR7ostreamRK6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the &lt;&lt; operator for outputting to an output stream. This can be used for writing to console or storing to file. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the output stream. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">os</span></code>: the output stream. </li>
+<li><code class="docutils literal"><span class="pre">m</span></code>: the matrix to output. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2rsR7istreamR6Matrix">
+<span id="rshift-operator__istreamR.MatrixR"></span><span class="target" id="necsimclass_matrix_1afcea9fa7d9a5052070fe1fda963ef237"></span>istream &amp;<code class="descname">operator&gt;&gt;</code><span class="sig-paren">(</span>istream &amp;<em>is</em>, <a class="reference internal" href="#_CPPv26Matrix" title="Matrix">Matrix</a> &amp;<em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2rsR7istreamR6Matrix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overloading the &gt;&gt; operator for inputting from an input stream. This can be used for writing to console or storing to file. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the input stream. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">is</span></code>: the input stream. </li>
+<li><code class="docutils literal"><span class="pre">m</span></code>: the matrix to input to. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Template Class Matrix</a><ul>
+<li><a class="reference internal" href="#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="class_LogFile.html"
+                        title="previous chapter">Class LogFile</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="class_Metacommunity.html"
+                        title="next chapter">Class Metacommunity</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/class_Matrix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_Metacommunity.html" title="Class Metacommunity"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="class_LogFile.html" title="Class LogFile"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

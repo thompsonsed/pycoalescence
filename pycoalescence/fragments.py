@@ -23,9 +23,7 @@ except ImportError as ie:
 		raise ie
 from .spatial_algorithms import lloyds_algorithm, archimedes_spiral
 from .system_operations import check_parent
-if sys.version_info[0] != 3:
-	class FileExistsError(IOError):
-		pass
+from .future_except import FileExistsError
 
 class Fragment:
 	"""

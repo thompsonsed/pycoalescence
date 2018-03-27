@@ -3,21 +3,21 @@ Contains the Simulation class as part of the pycoalescence package.
 
 Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.
 """
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
 
 import logging
-import subprocess
-import warnings
-import numpy as np
-import types
-import copy
 import sys
-import os
+
+import copy
 import math
+import numpy as np
+import os
+import types
 
 from .map import Map
-from .system_operations import execute_log_info, mod_directory, create_logger, write_to_log, check_file_exists
+from .system_operations import execute_log_info, create_logger, write_to_log, check_file_exists
+from .future_except import FileNotFoundError, FileExistsError
 
 global sqlite_import, config_success
 try:
@@ -27,15 +27,6 @@ try:
 		import ConfigParser
 
 		ConfigParser.ConfigParser.read_file = ConfigParser.ConfigParser.read
-
-
-		class FileExistsError(IOError):
-			pass
-
-
-		class FileNotFoundError(IOError):
-			pass
-
 	config_success = True
 except ImportError as ie:
 	ConfigParser = None
@@ -190,7 +181,7 @@ class Simulation:
 		"""
 		Overriding the destructor for proper destruction of the logger object
 		"""
-		handlers = self.logger.handlers.copy()
+		handlers = copy.copy(self.logger.handlers)
 		for handler in handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
@@ -272,11 +263,7 @@ class Simulation:
 				'Path {} does not exist for writing output to, creating.'.format(os.path.dirname(output_file)))
 			os.makedirs(os.path.dirname(output_file))
 		config = ConfigParser.ConfigParser()
-		if os.path.exists(output_file):
-			if self.config_open:
-				with open(output_file, "wa") as f:
-					config.read_file(f)
-			else:
+		if os.path.exists(output_file) and not self.config_open:
 				os.remove(output_file)
 		self.config_open = True
 		if self.is_setup_map:
@@ -360,7 +347,7 @@ class Simulation:
 					if not config.has_section("dispersal"):
 						config.add_section("dispersal")
 					config.set("dispersal", "dispersal_file", self.dispersal_map.file_name)
-				with open(output_file, "w") as f:
+				with open(output_file, "a") as f:
 					config.write(f)
 				self.map_config = output_file
 		else:
@@ -492,12 +479,8 @@ class Simulation:
 				'Path {} does not exist for writing output to, creating.'.format(os.path.dirname(output_file)))
 			os.makedirs(os.path.dirname(output_file))
 		config = ConfigParser.ConfigParser()
-		if os.path.exists(output_file):
-			if self.config_open:
-				with open(output_file, "r") as f:
-					config.read_file(f)
-			else:
-				os.remove(output_file)
+		if os.path.exists(output_file) and not self.config_open:
+			os.remove(output_file)
 		self.config_open = True
 		if self.is_setup_map and self.is_setup_param:
 			# New method using ConfigParser
@@ -611,10 +594,13 @@ class Simulation:
 		if self.sample_map.file_name == "null":
 			self.sample_map.set_dimensions(x_size=self.fine_map.x_size, y_size=self.fine_map.y_size,
 										   x_offset=self.fine_map.x_offset, y_offset=self.fine_map.y_offset)
+			self.sample_map.x_ul = self.fine_map.x_ul
+			self.sample_map.y_ul = self.fine_map.y_ul
 		else:
 			self.sample_map.set_dimensions()
-		self.fine_map.x_offset = -self.fine_map.calculate_offset(self.sample_map)[0]
-		self.fine_map.y_offset = -self.fine_map.calculate_offset(self.sample_map)[1]
+		x, y = self.fine_map.calculate_offset(self.sample_map)[0:2]
+		self.fine_map.x_offset = -x
+		self.fine_map.y_offset = -y
 		if self.coarse_map.file_name in ["null", "none"]:
 			tmpname = copy.deepcopy(self.coarse_map.file_name)
 			self.coarse_map = copy.deepcopy(self.fine_map)
@@ -636,10 +622,18 @@ class Simulation:
 								 " unsupported.")
 		if self.reproduction_map.file_name not in {"none", "null", None}:
 			self.reproduction_map.set_dimensions()
-			if self.reproduction_map.x_size != self.fine_map.x_size or \
-							self.reproduction_map.y_size != self.fine_map.y_size:
-				raise ValueError("Dimensions of the reproduction map do not match the fine map. This is currently "
-								 "unsupported.")
+			if not self.reproduction_map.has_equal_dimensions(self.fine_map):
+				# if the sizes match, then proceed with a warning
+				if self.reproduction_map.x_size == self.fine_map.x_size and \
+					self.reproduction_map.y_size == self.fine_map.y_size:
+					self.logger.warning("Coordinates of reproduction map did not match fine map.")
+					self.reproduction_map.x_offset = self.fine_map.x_offset
+					self.reproduction_map.y_offset = self.fine_map.y_offset
+					self.reproduction_map.x_res = self.fine_map.x_res
+					self.reproduction_map.y_res = self.fine_map.y_res
+				else:
+					raise ValueError("Dimensions of the reproduction map do not match the fine map. This is currently "
+								     "unsupported.")
 		self.check_maps()
 
 	def set_map(self, map_file, x_size=None, y_size=None):
@@ -699,7 +693,7 @@ class Simulation:
 			self.is_setup_map = True
 		else:
 			err = "Map objects are already set up."
-			self.loger.warning(err)
+			self.logger.warning(err)
 
 	def set_simulation_params(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0, deme=1,
 							  sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
@@ -991,7 +985,7 @@ class Simulation:
 		"""
 		self.import_fine_map_array()
 		if self.sample_map.file_name not in ["none", "null", None] and \
-						self.sample_map.file_name is not self.fine_map.file_name:
+						self.sample_map.file_name != self.fine_map.file_name:
 			self.import_sample_map_array()
 			# Less accurate, but faster way.
 			return int(np.sum(np.floor(np.multiply(self.fine_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim],
@@ -1012,8 +1006,11 @@ class Simulation:
 
 	def check_sample_map_equals_sample_grid(self):
 		"""
-		Checks if the grid and sample map are the same size and offset (in which case, future operations can be simplified"
-		:return:
+		Checks if the grid and sample map are the same size and offset (in which case, future operations can be
+		simplified).
+
+		:return: true if the grid and sample map dimensions and offsets are equal
+		:rtype: bool
 		"""
 		return self.grid.x_size == self.sample_map.x_size and self.grid.y_size == self.sample_map.x_size and \
 			   self.grid.x_offset == 0 and self.grid.y_offset == 0
@@ -1024,7 +1021,10 @@ class Simulation:
 
 		If ram_limit is None, this function does nothing.
 
-		:note This function assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.
+		:note Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.
+
+		:note Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as
+			  a maximum size.
 
 		:param ram_limit: the desired amount of RAM to limit to, in GB
 
@@ -1040,61 +1040,73 @@ class Simulation:
 				raise MemoryError(
 					"Cannot achieve RAM limit: minimum requirements are {}GB.".format(round(static_usage, 2)))
 			remaining_space = (ram_limit - static_usage) * 1024 ** 3
+			self.logger.info("Remaining space is {}GB.\n".format(round(remaining_space/1024**3, 2)))
 			# Rough calculation of number of cells we have remaining (aim for 75% to be sure)
 			average_density = self.get_average_density()
 			# This is the size of the grid object in memory
-			tmp_space = 0.95 * (remaining_space / ((8 * average_density) + 32))
+			tmp_space = 0.95 * (remaining_space / ((16 * average_density) + 32))
 			size = int(np.rint(tmp_space ** 0.5))
-			size = min(size, self.sample_map.x_size, self.sample_map.y_size)
-			if size < 2:
-				raise MemoryError("Could not find square grid to achieve RAM limit. Please set this manually.")
-			if size > self.sample_map.x_size or size > self.sample_map.y_size:
-				self.logger.info("Memory limit high enough for full spatial simulation. No optimisation necessary.")
-			max_attained = 0
-			max_x = 0
-			max_y = 0
-			# Now loop over every square of the required size on the grid, until we find one with the maximum density
-			if (self.sample_map.x_size * self.sample_map.y_size) > 1000000:
-				printing = True
-			else:
-				printing = False
-			end_x = self.sample_map.x_size - size - 1
-			if size < 10:
-				self.logger.warning("Extremely small grid size: {}. Disabling maximum density checking.".format(size))
-				max_x = int(self.sample_map.x_size / 2)
-				max_y = int(self.sample_map.y_size / 2)
-				max_attained = 1
-			else:
-				for x in range(0, max(self.sample_map.x_size - size - 1, 1), int(round(max(10.0, size / 10)))):
+			if size < self.sample_map.x_size or size < self.sample_map.y_size:
+				if size > self.sample_map.x_size or size > self.sample_map.y_size:
+					size = min(self.sample_map.x_size, self.sample_map.y_size)
+				if size < 2:
+					raise MemoryError("Could not find square grid to achieve RAM limit. Please set this manually.")
+				if size > self.sample_map.x_size or size > self.sample_map.y_size:
+					self.logger.info("Memory limit high enough for full spatial simulation. No optimisation necessary.")
+				max_attained = 0
+				max_x = 0
+				max_y = 0
+				# Now loop over every square of the required size on the grid, until we find one with the maximum density
+				if (self.sample_map.x_size * self.sample_map.y_size) > 1000000:
+					printing = True
+				else:
+					printing = False
+				end_x = self.sample_map.x_size - size - 1
+				if size < 10:
+					self.logger.warning("Extremely small grid size: {}. Disabling maximum density checking.".format(size))
+					max_x = int(self.sample_map.x_size / 2)
+					max_y = int(self.sample_map.y_size / 2)
+					max_attained = 1
+				else:
+					for x in range(0, max(self.sample_map.x_size - size - 1, 1), int(round(max(10.0, size / 10)))):
+						if printing:
+							self.logger.info("\rChecking {} / {} : {}%".format(x, end_x, round(100 * x / end_x)))
+						for y in range(0, max(self.sample_map.y_size - size - 1, 1), int(round(max(10.0, size / 10)))):
+							# print("x, y: {}, {}".format(x, y))
+							tmp_total = self.grid_density_actual(x, y, size, size)
+							if tmp_total > max_attained:
+								max_x = x
+								max_y = y
+								max_attained = tmp_total
 					if printing:
-						self.logger.info("\rChecking {} / {} : {}%".format(x, end_x, round(100 * x / end_x)))
-					for y in range(0, max(self.sample_map.y_size - size - 1, 1), int(round(max(10.0, size / 10)))):
-						# print("x, y: {}, {}".format(x, y))
-						tmp_total = self.grid_density_actual(x, y, size, size)
-						if tmp_total > max_attained:
-							max_x = x
-							max_y = y
-							max_attained = tmp_total
-				if printing:
-					self.logger.info("\rChecking complete               \n")
-			if max_attained > 0:
-				# Now do one last check for consistency
-				if self._fine_map_check(max_x, max_y, size):
-					if printing:
-						self.logger.info("Shrinking due to high densities in sample zone.\n")
-					size = int(math.floor(0.9 * size * (size * size * self.deme / self._fine_map_sum_res)))
-				self.grid.x_size = size
-				self.grid.y_size = size
-				self.sample_map.x_offset = max_x
-				self.sample_map.y_offset = max_y
-				self.grid.file_name = "set"
-				if self.check_sample_map_equals_sample_grid():
-					self.grid.file_name = "none"
-				# Now remove our in-memory arrays
-				self._wipe_objects()
-			else:
-				raise MemoryError("Could not optimise maps for desired memory usage. "
-								  "Attempted grid size of {} and achived max of {}".format(size, max_attained))
+						self.logger.info("\rChecking complete               \n")
+				if max_attained > 0:
+					# Now do one last check for consistency
+					while self._fine_map_check(max_x, max_y, size):
+						if printing:
+							printing = False
+							self.logger.info("Shrinking due to high densities in sample zone.\n")
+						# Brute-force dividing by 2 each time
+						size = max(1, int(size/2))
+					if max_x + size > self.sample_map.x_size or max_y + size > self.sample_map.y_size:
+						self.logger.debug("Max x,y: {}, {}".format(max_x, max_y))
+						self.logger.debug("Size: {}".format(size))
+						self.logger.debug("Fine map size: {}, {}".format(self.fine_map.x_size,
+																		 self.fine_map.y_size))
+						self.logger.debug("Sample map size: {}, {}".format(self.sample_map.x_size,
+																		   self.sample_map.y_size))
+						raise RuntimeError("Incorrect dimension setting - please report this bug")
+					self.grid.x_size = size
+					self.grid.y_size = size
+					self.sample_map.x_offset = max_x
+					self.sample_map.y_offset = max_y
+					self.grid.file_name = "set"
+					if self.check_sample_map_equals_sample_grid():
+						self.grid.file_name = "none"
+				else:
+					raise MemoryError("Could not optimise maps for desired memory usage. "
+								  	  "Attempted grid size of {} and achived max of {}".format(size, max_attained))
+			self._wipe_objects()
 
 	def get_optimised_solution(self):
 		"""
@@ -1137,6 +1149,13 @@ class Simulation:
 
 		"""
 		self.check_simulation_params()
+		try:
+			self.run_checks(expected=expected)
+		except (FileExistsError, FileNotFoundError) as err:
+			if not ignore_errors:
+				raise err
+			else:
+				self.logger.info(str(err))
 		# Now check if config files need to be written.
 		config_require = config_default
 		if self.full_config_file != '' and not self.is_full:
@@ -1156,13 +1175,6 @@ class Simulation:
 			self.create_config()
 		self.is_setup_complete = True
 		self.calculate_sql_database()
-		try:
-			self.run_checks(expected=expected)
-		except (FileExistsError, FileNotFoundError) as err:
-			if not ignore_errors:
-				raise err
-			else:
-				self.logger.info(str(err))
 
 	def generate_command(self):
 		"""Completes the setup process by creating the list that will be passed to the c++ executable"""
@@ -1281,18 +1293,22 @@ class Simulation:
 					self.logger.warning("Defaulting to pristine_coarse_map_file = 'none'")
 					self.pristine_coarse_map_file = "none"
 					self.pristine_coarse_list = []
+			else:
+				if self.coarse_map.file_name != "null" and not self.fine_map.is_within(self.coarse_map):
+					raise ValueError("Offsets mean that coarse map does not fully encompass fine map. Check that your"
+									 " maps exist at the same spatial coordinates.")
 			if self.fine_map.file_name == "none":
 				self.logger.warning("Fine map file cannot be 'none', changing to 'null'.")
 				self.fine_map.file_name = "null"
 			# Check offset of sample mask with fine map
-			if self.fine_map.x_offset > self.fine_map.x_size - self.sample_map.x_size or \
-					self.fine_map.y_offset > self.fine_map.y_size - self.sample_map.y_size:
-				raise ValueError("Offsets mean that fine map does not fully encompass sample map. Check that your maps exist"
-								 " at the same spatial coordinates.")
-			if self.coarse_map.x_offset > (self.coarse_map.x_size * self.coarse_scale) - self.fine_map.x_size or \
-					self.coarse_map.y_offset > (self.coarse_map.y_size * self.coarse_scale) - self.fine_map.y_size:
-				raise ValueError("Offsets mean that coarse map does not fully encompass fine map. Check that your maps exist"
-								 " at the same spatial coordinates.")
+			if self.sample_map.file_name != "null" and not self.sample_map.is_within(self.fine_map):
+				raise ValueError(
+					"Offsets mean that fine map does not fully encompass sample map. Check that your maps exist"
+					" at the same spatial coordinates.")
+			if self.grid.file_name == "set" and \
+				self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size or \
+				self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size:
+				raise ValueError("Grid is not within the sample map - please check offsets of sample map.")
 			# Now check our combination of dispersal map, reproduction map and infinite landscape with our fine/coarse maps
 			# makes sense
 			if self.dispersal_map.file_name not in {"none", None}:
@@ -1318,7 +1334,7 @@ class Simulation:
 
 		:raises RuntimeError: if previous set-up routines are not complete
 		"""
-		if self.is_setup_complete and self.is_setup_map and self.is_setup_param:
+		if self.is_setup_map and self.is_setup_param:
 			self.check_maps()
 		else:
 			err = "Set up is incomplete."
@@ -1413,19 +1429,5 @@ class Simulation:
 		:return: bool true if it is smaller
 		:rtype: bool
 		"""
-		return self._fine_map_sum(max_x, max_y, size) > \
-			   size * size * self.get_average_density()
-
-	def _fine_map_sum(self, max_x, max_y, size):
-		"""
-		Gets the total of a subset of a subset from the fine map and stores the value
-
-		:param max_x:
-		:param max_y:
-		:param size:
-		:return:
-		"""
-		if self._fine_map_sum_res is None:
-			self._fine_map_sum_res = int(np.sum(np.rint(self.fine_map_array[max_x:max_x + size, max_y:max_y + size] *
-														self.deme)))
-		return self._fine_map_sum_res
+		self._fine_map_sum_res = self.grid_density_actual(max_x, max_y, size, size)
+		return self._fine_map_sum_res > size * size * self.get_average_density()

@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File ReproductionMap.h &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Setup.cpp" href="file_necsim_Setup.cpp.html" />
+    <link rel="prev" title="File ReproductionMap.h" href="file_necsim_ReproductionMap.h.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Setup.cpp.html" title="File Setup.cpp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_ReproductionMap.h.html" title="File ReproductionMap.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_ReproductionMap.h.html" accesskey="U">File ReproductionMap.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-reproductionmap-h">
+<span id="program-listing-file-necsim-reproductionmap-h"></span><h1>Program Listing for File ReproductionMap.h<a class="headerlink" href="#program-listing-for-file-reproductionmap-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_ReproductionMap.h.html#file-necsim-reproductionmap-h"><span class="std std-ref">File ReproductionMap.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+
+<span class="cp">#ifndef REPRODUCTIONMAP_H</span>
+<span class="cp">#define REPRODUCTIONMAP_H</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;Map.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
+
+
+<span class="k">class</span> <span class="nc">ReproductionMap</span>
+<span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// Matrix containing the relative reproduction probabilities</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">reproduction_map</span><span class="p">;</span>
+    <span class="c1">// Path to the map file</span>
+    <span class="n">string</span> <span class="n">map_file</span><span class="p">;</span>
+    <span class="c1">// Maximum value across the map</span>
+    <span class="kt">double</span> <span class="n">max_val</span><span class="p">;</span>
+    <span class="c1">// If true,</span>
+    <span class="kt">bool</span> <span class="n">null_map</span><span class="p">;</span>
+    <span class="c1">// The fine map offsets and the sample map dimensions</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="p">;</span>
+    <span class="c1">// Function pointer for our reproduction map checker</span>
+    <span class="k">typedef</span> <span class="nf">bool</span> <span class="p">(</span><span class="n">ReproductionMap</span><span class="o">::*</span><span class="n">rep_ptr</span><span class="p">)(</span><span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">random_no</span><span class="p">,</span>
+                                             <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span>
+                                             <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+    <span class="c1">// once setup will contain the end check function to use for this simulation.</span>
+    <span class="n">rep_ptr</span> <span class="n">reproductionMapChecker_fptr</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ReproductionMap</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">map_file</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+        <span class="n">max_val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">null_map</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">import</span><span class="p">(</span><span class="n">string</span> <span class="n">file_name</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size_x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size_y</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setReproductionFunction</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setOffsets</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_offset</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_offset</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xdim</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ydim</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">rejectionSampleNull</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span>
+                             <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">rejectionSample</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span>
+                     <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">double</span> <span class="nf">getVal</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">hasReproduced</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">long</span> <span class="n">index</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reproduction_map</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span> <span class="n">ReproductionMap</span><span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">map_file</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">reproduction_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">reproduction_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">offset_x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">offset_y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">x_dim</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">y_dim</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">istream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">ReproductionMap</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">is</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span>
+        <span class="n">getline</span><span class="p">(</span><span class="n">is</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">map_file</span><span class="p">);</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">col</span> <span class="o">&gt;&gt;</span> <span class="n">row</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">offset_x</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">offset_y</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">x_dim</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">y_dim</span><span class="p">;</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">map_file</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+<span class="p">};</span>
+
+
+<span class="cp">#endif </span><span class="c1">//REPRODUCTIONMAP_H</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_ReproductionMap.h.html"
+                        title="previous chapter">File ReproductionMap.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_Setup.cpp.html"
+                        title="next chapter">File Setup.cpp</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_ReproductionMap.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Setup.cpp.html" title="File Setup.cpp"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_ReproductionMap.h.html" title="File ReproductionMap.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_ReproductionMap.h.html" >File ReproductionMap.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

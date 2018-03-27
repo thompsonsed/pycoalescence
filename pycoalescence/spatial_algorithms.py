@@ -5,8 +5,30 @@ from __future__ import absolute_import
 
 import copy
 import math
-from scipy.spatial import Voronoi
+import logging
 
+try:
+	from osgeo import osr, ogr
+except ImportError as ie:
+	logging.warning("Could not import from osgeo: {}".format(ie))
+try:
+	from scipy.spatial import Voronoi
+except ImportError as ie:
+	logging.warning("Cannot import Voronoi from scipy.spatial: {}".format(ie))
+
+def calculate_distance_between(x1, y1, x2, y2):
+	"""
+	Calculates the distance between the points (x1, y1) and (x2, y2)
+
+	.. note:: Returns the absolute value
+
+	:param x1: x coordinate of the first point
+	:param y1: y coordinate of the first point
+	:param x2: x coordinate of the second point
+	:param y2: y coordinate of the second point
+	:return: the absolute distance between the points
+	"""
+	return ((x1 - x2)**2 + (y1 - y2)**2)**0.5
 
 def calculate_centre_of_mass(points_list):
 	"""
@@ -35,8 +57,11 @@ def calculate_centre_of_mass(points_list):
 		centre_x += (each[0] + points_list[i + 1][0]) * added_area
 		centre_y += (each[1] + points_list[i + 1][1]) * added_area
 	area *= 0.5
-	centre_x /= 6 * area
-	centre_y /= 6 * area
+	try:
+		centre_x /= 6 * area
+		centre_y /= 6 * area
+	except ZeroDivisionError:
+		raise ValueError("Points not ordered in polygon")
 	return centre_x, centre_y
 
 
@@ -61,6 +86,7 @@ def lloyds_algorithm(points_list, maxima, n=7):
 	:param n: the number of iterations to perform Lloyd's algorthim for.
 	:return list containing the new point centres.
 	"""
+	# Note that lloyd's algorithm is only tested at quite a high level
 	for num in range(n):
 		vor = Voronoi(reflect_dimensions(points_list, maximums=maxima))
 		include_regions = []
@@ -113,3 +139,22 @@ def archimedes_spiral(centre_x, centre_y, radius, theta):
 	"""
 	return int(math.floor(radius * math.cos(theta) + centre_x)),\
 		   int(math.floor(radius * math.sin(theta) + centre_y))
+
+def convert_coordinates(x, y, input_srs, output_srs):
+	"""
+	Converts the coordinates from the input srs to the output srs.
+
+	:param x: the x coordinate to transform
+	:param y: the y coordinate to transform
+	:param input_srs: the input srs to transform from
+	:param output_srs: the output srs to transform to
+
+	:rtype: list
+	:return: transformed [x, y] coordinates
+	"""
+	coord_transform = osr.CoordinateTransformation(input_srs, output_srs)
+	# create a geometry from coordinates
+	point = ogr.Geometry(ogr.wkbPoint)
+	point.AddPoint(x, y)
+	point.Transform(coord_transform)
+	return point.GetX(), point.GetY()

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['protractedspatialtree',['ProtractedSpatialTree',['../class_protracted_spatial_tree.html',1,'']]],
-  ['protractedtree',['ProtractedTree',['../class_protracted_tree.html',1,'']]]
+  ['header_5fmissing',['header_missing',['../structio_1_1error_1_1header__missing.html',1,'io::error']]]
 ];

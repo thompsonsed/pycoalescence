@@ -10,102 +10,108 @@
     <includes refid="_custom_exceptions_8h" local="yes">CustomExceptions.h</includes>
     <includes refid="_logging_8h" local="yes">Logging.h</includes>
     <incdepgraph>
-      <node id="321">
+      <node id="358">
         <label>CustomExceptions.h</label>
         <link refid="_custom_exceptions_8h_source"/>
-        <childnode refid="322" relation="include">
+        <childnode refid="359" relation="include">
         </childnode>
-        <childnode refid="323" relation="include">
+        <childnode refid="360" relation="include">
         </childnode>
       </node>
-      <node id="323">
+      <node id="360">
         <label>Logging.h</label>
         <link refid="_logging_8h_source"/>
-        <childnode refid="315" relation="include">
+        <childnode refid="352" relation="include">
         </childnode>
-        <childnode refid="324" relation="include">
+        <childnode refid="361" relation="include">
         </childnode>
-        <childnode refid="325" relation="include">
+        <childnode refid="362" relation="include">
         </childnode>
-        <childnode refid="322" relation="include">
+        <childnode refid="359" relation="include">
         </childnode>
-        <childnode refid="326" relation="include">
+        <childnode refid="353" relation="include">
+        </childnode>
+        <childnode refid="363" relation="include">
+        </childnode>
+        <childnode refid="368" relation="include">
         </childnode>
       </node>
-      <node id="322">
+      <node id="368">
+        <label>CPLCustomHandler.h</label>
+        <link refid="_c_p_l_custom_handler_8h_source"/>
+      </node>
+      <node id="359">
         <label>stdexcept</label>
       </node>
-      <node id="315">
+      <node id="352">
         <label>string</label>
       </node>
-      <node id="330">
+      <node id="367">
         <label>map</label>
       </node>
-      <node id="319">
+      <node id="356">
         <label>Filesystem.h</label>
         <link refid="_filesystem_8h_source"/>
-        <childnode refid="320" relation="include">
+        <childnode refid="357" relation="include">
         </childnode>
-        <childnode refid="315" relation="include">
+        <childnode refid="352" relation="include">
         </childnode>
       </node>
-      <node id="320">
+      <node id="357">
         <label>sqlite3.h</label>
       </node>
-      <node id="328">
+      <node id="365">
         <label>fstream</label>
       </node>
-      <node id="325">
+      <node id="362">
         <label>cstdio</label>
       </node>
-      <node id="329">
+      <node id="366">
         <label>ctime</label>
       </node>
-      <node id="318">
+      <node id="355">
         <label>boost/filesystem.hpp</label>
       </node>
-      <node id="316">
+      <node id="353">
         <label>sstream</label>
       </node>
-      <node id="317">
+      <node id="354">
         <label>zconf.h</label>
       </node>
-      <node id="324">
+      <node id="361">
         <label>iostream</label>
       </node>
-      <node id="326">
+      <node id="363">
         <label>LogFile.h</label>
         <link refid="_log_file_8h_source"/>
-        <childnode refid="327" relation="include">
+        <childnode refid="364" relation="include">
         </childnode>
-        <childnode refid="328" relation="include">
+        <childnode refid="365" relation="include">
         </childnode>
-        <childnode refid="329" relation="include">
+        <childnode refid="366" relation="include">
         </childnode>
-        <childnode refid="330" relation="include">
-        </childnode>
-        <childnode refid="321" relation="include">
+        <childnode refid="367" relation="include">
         </childnode>
       </node>
-      <node id="314">
+      <node id="351">
         <label>necsim/Filesystem.cpp</label>
         <link refid="Filesystem.cpp"/>
-        <childnode refid="315" relation="include">
+        <childnode refid="352" relation="include">
         </childnode>
-        <childnode refid="316" relation="include">
+        <childnode refid="353" relation="include">
         </childnode>
-        <childnode refid="317" relation="include">
+        <childnode refid="354" relation="include">
         </childnode>
-        <childnode refid="318" relation="include">
+        <childnode refid="355" relation="include">
         </childnode>
-        <childnode refid="319" relation="include">
+        <childnode refid="356" relation="include">
         </childnode>
-        <childnode refid="321" relation="include">
+        <childnode refid="358" relation="include">
         </childnode>
-        <childnode refid="323" relation="include">
+        <childnode refid="360" relation="include">
         </childnode>
       </node>
-      <node id="327">
+      <node id="364">
         <label>cstring</label>
       </node>
     </incdepgraph>
@@ -260,6 +266,32 @@
         </inbodydescription>
         <location file="necsim/Filesystem.cpp" line="102" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="102" bodyend="105"/>
       </memberdef>
+      <memberdef kind="function" id="_filesystem_8cpp_1a9e12562fb15ce7c6462457551d293d66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; string &gt;</type>
+        <definition>vector&lt;string&gt; getCsvLineAndSplitIntoTokens</definition>
+        <argsstring>(istream &amp;str)</argsstring>
+        <name>getCsvLineAndSplitIntoTokens</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+<para>Gets the next line from a csv filestream and splits the row into a vector of strings, where each string is the value from the csv file, delimited by a comma (i.e. each column of the row). </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the input stream from the csv file. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a vector where each element corresponds to the respective row from the csv. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.cpp" line="107" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="107" bodyend="127"/>
+      </memberdef>
       </sectiondef>
     <briefdescription>
 <para>Contains routines for checking files and folder exist, opening sqlite databases safely, with support for various virtual filesystems, and checking parents of a file exist. </para>    </briefdescription>
@@ -363,6 +395,28 @@
 <codeline lineno="103"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>((x1<sp/>+<sp/>x2)<sp/>*<sp/>(x1<sp/>+<sp/>x2<sp/>+<sp/>1)/2)<sp/>+<sp/>x2;</highlight></codeline>
 <codeline lineno="105"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal">vector&lt;string&gt;<sp/>getCsvLineAndSplitIntoTokens(istream<sp/>&amp;str)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>vector&lt;string&gt;<sp/>result;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>line;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>getline(str,line);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>stringstream<sp/>lineStream(line);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>cell;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(getline(lineStream,cell,<sp/></highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>result.push_back(cell);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>checks<sp/>for<sp/>a<sp/>trailing<sp/>comma<sp/>with<sp/>no<sp/>data<sp/>after<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!lineStream<sp/>&amp;&amp;<sp/>cell.empty())</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>there<sp/>was<sp/>a<sp/>trailing<sp/>comma<sp/>then<sp/>add<sp/>an<sp/>empty<sp/>element.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>result.emplace_back(</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>result;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="necsim/Filesystem.cpp"/>
   </compounddef>

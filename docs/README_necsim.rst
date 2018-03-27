@@ -5,17 +5,14 @@
 Introduction
 ------------
 
-Provided here is a set of tools for running and analysing backwards-time (coalescent) neutral models in ecology. necsim
-is a generic spatial coalescence simulator for neutral systems.
-It applies the model to maps for the supplied parameters and outputs information for each
-individual to a SQL database.
+**necsim** is a generic spatial coalescence simulator for neutral systems. It is intended to simulate an ecological
+community under individual-based neutral dynamics. It applies the model to maps for the supplied parameters and outputs
+information for each individual to a SQL database.
 
-Functionality is also provided for applying varying speciation rates to
-outputs of ``necsim`` for analysis after simulations are complete. This
-enables the main simulation to be run with the *minimum* speciation rate
-required and afterwards analysis can be completed using different
-speciation rates. The same functionality is also provided within ``necsim`` for application of speciation rates immediately
-after simulations are complete.
+Functionality is also provided for applying varying speciation rates to outputs of **necsim** for analysis after
+simulations are complete. This enables the main simulation to be run with the *minimum* speciation rate
+required and afterwards analysis can be completed using different speciation rates. The same functionality is also
+provided within **necsim** for application of speciation rates immediately after simulations are complete.
 
 .. important::
    The recommended method of installing the program and running simulations is to use the
@@ -44,10 +41,10 @@ For compilation, there are several provided options:
 * Compilation can be handled within pycoalescence by running ``python setup.py``. **This is the recommended option.**
 * Alternatively, compilation can be completed with additional options using make. The steps are outlined below
 
-    - You might need to first run ``autoconf`` from within the ``necsim`` directory to generate the configure executable.
-    - Run ``./configure`` (located within the ``necsim`` directory). Provide additional compilation flags if necessary (detailed below).
+    - You might need to first run ``autoconf`` from within the **necsim** directory to generate the configure executable.
+    - Run ``./configure`` (located within the **necsim** directory). Provide additional compilation flags if necessary (detailed below).
     - Run ``make all`` to create the executable.
-    - [Optional] Move the executable (called necsim) to the *build/Default* directory in **pycoalescence**.
+    - [Optional] Move the executable (called **necsim**) to the *build/Default* directory in **pycoalescence**.
 
 * If you require compilation outside of the pycoalescence module, make use of the the file **Makefile** located in
   **Makefiles/SimpleCompile**. This can be modified and run using ``make`` to generate the executable.
@@ -77,9 +74,10 @@ Recommended, but not essential:
 - The fast-cpp-csv-parser by Ben Strasser, available
   `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__: provides much faster csv read and write capabilities.
   This is only really necessary if you have extremely large csv files as your map objects. If that is the case, I would
-  highly recommend moving to using tif files, as they provide much more error-checking support.
+  highly recommend moving to using tif files, as they provide much more error-checking support within **necsim**, as well as
+  much more advanced tools for dealing with spatial data.
 
-.. note:: To use the fast-cpp-csv-parser, copy the whole folder (with csv.h in) to the necsim directory. Then
+.. note:: To use the fast-cpp-csv-parser, copy the whole folder (with csv.h in) to the **necsim** directory. Then
           reconfigure and recompile your code, making sure that you see 'fast-cpp-csv-parser = enabled' in the
           configuration output.
 
@@ -380,7 +378,7 @@ Additional information can be found in SpeciationCounter_ regarding the optional
 
 SpeciationCounter
 -----------------
-SpeciationCounter provides a method for applying additional speciation rates to outputs from necsim, without having to
+SpeciationCounter provides a method for applying additional speciation rates to outputs from **necsim**, without having to
 re-run the entire simulation. SpeciationCounter works by reconstructing the coalescence tree, checking at each point if
 an additional speciation rate has occured. As such, SpeciationCounter can only apply speciation rates higher than the
 initial speciation rate the program was run with.
@@ -390,7 +388,7 @@ Applying Speciation Rates
 
 Run ``./SpeciationCounter`` with the following command-line options:
 
-1.  path to the SQLite database file (this is the output of a ``necsim`` simulation).
+1.  path to the SQLite database file (this is the output of a **necsim** simulation).
 2.  T/F for recording spatial data. If true, the SPECIES\_LOCATIONS table will be created (see Outputs_.)
 3.  a sample mask to use for the data. Species' identities for the individuals will only be calculated from locations
     specified by a 1 in the sample mask (0 otherwise). Use "null" to record all locations.
@@ -487,7 +485,7 @@ handling.
 
    -  Provides the routines for applying different speciation rates to a
       phylogenetic tree, to be used either immediately after simulation
-      within ``necsim``, or at a later time using SpeciationCounter_
+      within **necsim**, or at a later time using SpeciationCounter_
 
 Known Bugs
 ----------

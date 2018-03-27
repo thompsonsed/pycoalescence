@@ -2,28 +2,19 @@
 Contains basic analyses for the output of a pycoalescence simulation.
 """
 from __future__ import absolute_import
-import os
-import subprocess
+
 import logging
-import random
+import sqlite3
+import subprocess
+
 import math
 import numpy as np
-import sqlite3
+import os
+import random
 from collections import defaultdict
 
-try:
-	from math import isclose
-except ImportError:
-	# Python 2 compatibility
-	def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
-		"""
-		:param a: value 1
-		:param b: value 2
-		:param rel_tol: percentage relative to larger value
-		:param abs_tol: absolute value for similarity
-		:return: true for significantly different a and b, false otherwise
-		"""
-		return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+from sqlite_connection import check_sql_table_exist
+
 e_list = []
 try:
 	try:
@@ -41,17 +32,16 @@ except ImportError as ie:
 	applyspecmodule = None
 	applyspec_import = False
 
-
 	# Empty class for exception handling
 	class ApplySpecError(Exception):
 		pass
 
-import warnings
 import sys
 import json
-# import pdb
 
+from .future_except import FileNotFoundError
 from .system_operations import execute_log_info, mod_directory, create_logger, write_to_log
+from .spatial_algorithms import calculate_distance_between
 import pycoalescence
 
 # Reads the parameter descriptions from the json file.
@@ -76,52 +66,6 @@ def get_parameter_description(key=None):
 		return _parameter_descriptions[key]
 	except ValueError:
 		raise ValueError("Key {} was not found in parameter dictionary. Use key=None to show the whole dictionary")
-
-
-def check_sql_table_exist(database, table_name):
-	"""
-	Checks that the supplied table exists in the supplied database.
-
-	:param database: the database to check existence in
-	:param table_name: the table name to check for
-
-	:return: boolean of whether the table exists
-	:rtype: bool
-	"""
-	opened_here = False
-	if isinstance(database, str):
-		opened_here = True
-		database = sqlite3.connect(database)
-	cursor = database.cursor()
-	table_names = [x[0] for x in cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
-	if opened_here:
-		database.close()
-		database = None
-	return table_name in table_names
-
-
-def fetch_table_from_sql(database, table_name):
-	"""
-	Returns a list of the data contained by the provided table in the database.
-
-	:raises sqlite3.OperationalError: if the table is not contained in the database (protects SQL injections).
-
-	:param database: the database to obtain from
-	:param table_name: the table name to fetch data from
-	:return: a list of lists, containing all data within the provided table in the database
-	"""
-	try:
-		db = sqlite3.connect(database)
-		c = db.cursor()
-		if not check_sql_table_exist(db, table_name):
-			raise sqlite3.OperationalError("Table {} does not exist in database.".format(table_name))
-		c.execute("SELECT * FROM {}".format(table_name))
-		out = [list(x) for x in c.fetchall()]
-		db.close()
-		db = None
-		return out
-	except sqlite3.OperationalError as soe:
-		raise IOError("Cannot fetch {} from database {}: {}".format(table_name, database, soe))
 
 
 class CoalescenceTree(object):
@@ -1190,7 +1134,7 @@ class CoalescenceTree(object):
 		output = self.cursor.execute("SELECT richness FROM FRAGMENT_RICHNESS WHERE community_reference == ? AND "
 									 "fragment ==  ?", (reference, fragment)).fetchall()
 		if len(output) == 0:
-			raise RuntimeError("No output while fetching fragment data.")
+			raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
 		else:
 			return output[0][0]
 
@@ -1207,19 +1151,36 @@ class CoalescenceTree(object):
 		output = self.cursor.execute("SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE "
 									 "community_reference == ? AND fragment ==  ?", (reference, fragment)).fetchall()
 		if len(output) == 0:
-			raise RuntimeError("No output while fetching fragment data")
+			raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
 		return [list(x) for x in output]
 
+	def get_all_fragment_abundances(self):
+		"""
+		Returns the whole table of fragment abundances from the database.
 
-	def get_fragment_list(self):
+		:return: a list of reference, fragment, species_id, no_individuals
+		"""
+		self._check_database()
+		if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
+			raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
+		output = self.cursor.execute("SELECT community_reference, fragment, species_id, no_individuals FROM "
+									 "FRAGMENT_ABUNDANCES").fetchall()
+		if len(output) == 0:
+			raise RuntimeError("No output while fetching all fragment abundances")
+		return [list(x) for x in output]
+
+	def get_fragment_list(self, community_reference=1):
 		"""
 		Returns a list of all fragments that exist in FRAGMENT_ABUNDANCES.
+
+		:param community_reference: community reference to obtain for (default 1)
 		:return: list all all fragment names
 		"""
 		self._check_database()
 		if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
 			raise RuntimeError("Fragment abundances have not been calculated; cannot obtain fragment list.")
-		fetch = self.cursor.execute("SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES").fetchall()
+		fetch = self.cursor.execute("SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE "
+									"community_reference == ?", (community_reference, )).fetchall()
 		if len(fetch) == 0:
 			raise sqlite3.OperationalError("No fragments exist in FRAGMENT_ABUNDANCES.")
 		return [x[0] for x in fetch]
@@ -1799,6 +1760,7 @@ class CoalescenceTree(object):
 		self.cursor.execute('DROP TABLE IF EXISTS SPECIES_RICHNESS')
 		self.cursor.execute("DROP TABLE IF EXISTS ALPHA_DIVERSITY")
 		self.cursor.execute("DROP TABLE IF EXISTS BETA_DIVERSITY")
+		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_DISTANCE_SIMILARITY")
 		self.database.commit()
 
 	def wipe_data(self):
@@ -1809,14 +1771,9 @@ class CoalescenceTree(object):
 		self._check_database()
 		self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_ABUNDANCES")
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_ABUNDANCES")
-		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_RICHNESS")
 		self.cursor.execute("DROP TABLE IF EXISTS COMMUNITY_PARAMETERS")
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LOCATIONS")
-		self.cursor.execute("DROP TABLE IF EXISTS BIODIVERSITY_METRICS")
-		self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_OCTAVES")
-		self.cursor.execute('DROP TABLE IF EXISTS FRAGMENT_RICHNESS')
-		self.cursor.execute("DROP TABLE IF EXISTS ALPHA_DIVERSITY")
-		self.cursor.execute("DROP TABLE IF EXISTS BETA_DIVERSITY")
+		self.clear_calculations()
 		self.database.commit()
 
 	def sample_fragment_richness(self, fragment, number_of_individuals, community_reference=1, n=1):
@@ -1904,6 +1861,104 @@ class CoalescenceTree(object):
 				# Randomly select number_of_individuals
 				richness_out.append(len(set(np.random.choice(species_ids, size=number_of_individuals, replace=False))))
 			return np.mean(richness_out)
+
+	def calculate_species_distance_similarity(self):
+		"""
+		Calculates the probability two individuals are of the same species as a function of distance.
+
+		Stores the mean distance between individuals of the same species in the BIODIVERSITY_METRICS table, and stores
+		the full data in new table (SPECIES_DISTANCE_SIMILARITY). Distances are binned to the nearest integer.
+
+		.. note:: Extremely slow for large landscape sizes.
+
+		"""
+		self._check_database()
+		species_locations = self.cursor.execute("SELECT species_id, x, y, community_reference FROM "
+											  "SPECIES_LOCATIONS").fetchall()
+		tmp_create = "CREATE TABLE SPECIES_DISTANCE_SIMILARITY (ref INT PRIMARY KEY NOT NULL, distance INT NOT NULL," \
+					 " no_individuals INT NOT NULL, community_reference INT NOT NULL)"
+		if not check_sql_table_exist(self.database, "SPECIES_DISTANCE_SIMILARITY"):
+			try:
+				self.cursor.execute(tmp_create)
+				self.database.commit()
+			except Exception as e:
+				e.message = "Error creating SPECIES_RICHNESS table: " + str(e)
+				raise e
+		else:
+			raise RuntimeError("SPECIES_DISTANCE_SIMILARITY table already exists in the output database.")
+		if not check_sql_table_exist(self.database, "SPECIES_LOCATIONS"):
+			raise RuntimeError("SPECIES_LOCATIONS table does not exist in output database - calculate species locations"
+							   "first.")
+		max_val = [x for x in self.cursor.execute("SELECT min(x), max(x),"
+												  " min(y), max(y) FROM SPECIES_LOCATIONS").fetchone()]
+		references = set([x[3] for x in species_locations])
+		ref = 0
+		output = []
+		means = []
+		max_distance = int(calculate_distance_between(max_val[0], max_val[2], max_val[1], max_val[3])) + 1
+		for reference in references:
+			select = [x[0:3] for x in species_locations if x[3] == reference]
+			species_list = {}
+			if len(select) == 0:
+				continue
+			sum_distances = [0] * max_distance
+			# first loop over every individual
+			for row in select:
+				if row[0] not in species_list.keys():
+					species_list[row[0]] = []
+				species_list[row[0]].append([row[1], row[2]])
+			# Now loop over every species and calculate the mean distance
+			for species_id, locations in species_list.items():
+				total_length = len(locations)
+				for i, location in enumerate(locations):
+					for j in range(i+1, total_length):
+						distance = int(calculate_distance_between(location[0], location[1],
+																  locations[j][0], locations[j][1]))
+						sum_distances[distance] += 1
+			total_sim = 0
+			number_all = 0
+			for distance, item in enumerate(sum_distances):
+				if item == 0:
+					continue
+				output.append([distance, item, reference])
+				total_sim += item * distance
+				number_all += item
+			if number_all == 0:
+				self.logger.info("No distances found for {} - likely no species exist with more than one"
+									" location.".format(reference))
+				mean = 0
+			else:
+				mean = total_sim/number_all
+			means.append([reference, mean])
+		sql_output = []
+		for row in output:
+			ref += 1
+			tmp = [ref]
+			tmp.extend(row)
+			sql_output.append(tmp)
+		ref = self.check_biodiversity_table_exists()
+		bio_output = []
+		for x in means:
+			ref += 1
+			tmp = [ref, "mean_distance_between_individuals", "whole"]
+			tmp.extend([x[0], float(x[1])])
+			bio_output.append(tmp)
+		self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)", bio_output)
+		self.cursor.executemany("INSERT INTO SPECIES_DISTANCE_SIMILARITY VALUES(?,?,?,?)", sql_output)
+		self.database.commit()
+
+	def get_species_distance_similarity(self, community_reference=1):
+		"""
+		Gets the species distance similarity table for the provided community reference.
+
+		:return: list containing the distance, number of similar species with that distance
+		"""
+		self._check_database()
+		if not check_sql_table_exist(self.database, "SPECIES_DISTANCE_SIMILARITY"):
+			raise IOError("Database {} does not contain SPECIES_DISTANCE_SIMILARITY table".format(self.file))
+		sql_fetch = self.cursor.execute("SELECT distance, no_individuals FROM SPECIES_DISTANCE_SIMILARITY "
+										"WHERE community_reference == ?", (community_reference,)).fetchall()
+		return [list(x) for x in sql_fetch]
 
 def collate_fits(file_dir, filename="Collated_fits.db"):
 	"""

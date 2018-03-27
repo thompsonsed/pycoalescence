@@ -12,12 +12,30 @@ import logging
 import sys
 import os
 
+if sys.version[0] == "3":
+	from subprocess import STDOUT, check_output
+
+
 # Logging will not raise an exception if there has been no logging file set.
 logging.raiseExceptions = True
 # Set up the module directory
 mod_directory = os.path.dirname(os.path.abspath(__file__))
 
 logging_set = False
+
+try:
+	from math import isclose
+except ImportError:
+	# Python 2 compatibility
+	def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+		"""
+		:param a: value 1
+		:param b: value 2
+		:param rel_tol: percentage relative to larger value
+		:param abs_tol: absolute value for similarity
+		:return: true for significantly different a and b, false otherwise
+		"""
+		return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
 def check_parent(file_path):
 	"""
@@ -63,9 +81,14 @@ def execute(cmd, silent=False, **kwargs):
 	:param silent: if true, does not log any warnings
 	:return a line from the execution output
 	"""
-	popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, **kwargs)
-	for stdout_line in iter(popen.stdout.readline, ""):
-		yield stdout_line
+	popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+							 universal_newlines=True, **kwargs)
+	while True:
+		output = popen.stdout.readline()
+		if output == '' and popen.poll() is not None:
+			break
+		if output:
+			yield output
 	error_logs = []
 	for stderr_line in iter(popen.stderr.readline, ""):
 		error_logs.append(stderr_line)
@@ -80,7 +103,6 @@ def execute(cmd, silent=False, **kwargs):
 		if not silent:
 			for log in error_logs:
 				logging.warning(log)
-
 
 
 def execute_log_info(cmd, **kwargs):

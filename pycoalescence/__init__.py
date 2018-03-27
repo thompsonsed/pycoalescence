@@ -3,7 +3,7 @@ pycoalescence provides the facilities for running spatially-explicit neutral coa
 and performing basic analysis of the simulation outputs. The program requires necsim to function properly.
 
 """
-__version__ = '1.2.5'
+__version__ = '1.2.6'
 # __all__ = ['coalescence', 'coal_analyse', 'system_operations', 'setup']
 import logging
 from pycoalescence.simulation import Simulation, Map
@@ -11,6 +11,7 @@ from pycoalescence.coalescence_tree import CoalescenceTree
 from pycoalescence.setup import configure_and_compile as setup
 from pycoalescence.system_operations import set_logging_method
 from pycoalescence.merger import Merger
+from pycoalescence.dispersal_simulation import DispersalSimulation
 # Support for no scipy installed
 try:
 	from pycoalescence.fragments import FragmentedLandscape

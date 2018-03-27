@@ -1,0 +1,1053 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File Landscape.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Landscape.h" href="file_necsim_Landscape.h.html" />
+    <link rel="prev" title="File Landscape.cpp" href="file_necsim_Landscape.cpp.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Landscape.cpp.html" title="File Landscape.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.cpp.html" accesskey="U">File Landscape.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-landscape-cpp">
+<span id="program-listing-file-necsim-landscape-cpp"></span><h1>Program Listing for File Landscape.cpp<a class="headerlink" href="#program-listing-for-file-landscape-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_Landscape.cpp.html#file-necsim-landscape-cpp"><span class="std std-ref">File Landscape.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details</span>
+<span class="cp">#include</span> <span class="cpf">&quot;Landscape.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
+
+<span class="kt">uint32_t</span> <span class="nf">importToMapAndRound</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">matrix_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">matrix_x</span><span class="p">,</span>
+                             <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">matrix_y</span><span class="p">,</span>
+                             <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">scalar</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#ifndef SIZE_LIMIT</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">matrix_x</span> <span class="o">&gt;</span> <span class="mi">1000000</span> <span class="o">||</span> <span class="n">matrix_y</span> <span class="o">&gt;</span> <span class="mi">1000000</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Extremely large map sizes set for &quot;</span> <span class="o">+</span> <span class="n">map_file</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">matrix_x</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>
+                                    <span class="n">to_string</span><span class="p">(</span><span class="n">matrix_y</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">temp_matrix</span><span class="p">;</span>
+<span class="c1">//  temp_matrix.open(map_file);</span>
+    <span class="n">temp_matrix</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">matrix_y</span><span class="p">,</span> <span class="n">matrix_x</span><span class="p">);</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Calculating fine map&quot;</span><span class="p">);</span>
+<span class="cp">#endif</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">map_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">matrix_y</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">matrix_x</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">temp_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>  <span class="c1">// There is a map to read in.</span>
+    <span class="p">{</span>
+        <span class="n">temp_matrix</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">map_file</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;import complete&quot;</span><span class="p">);</span>
+<span class="cp">#endif</span>
+    <span class="kt">uint32_t</span> <span class="n">max_value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">matrix_in</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">temp_matrix</span><span class="p">.</span><span class="n">getRows</span><span class="p">(),</span> <span class="n">temp_matrix</span><span class="p">.</span><span class="n">getCols</span><span class="p">());</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">matrix_y</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">matrix_x</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">matrix_in</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">max</span><span class="p">(</span><span class="n">round</span><span class="p">(</span><span class="n">temp_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">scalar</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">));</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">matrix_in</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_value</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">max_value</span> <span class="o">=</span> <span class="n">matrix_in</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">temp_matrix</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">max_value</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="n">mapvarsin</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks to make sure it hasn&#39;t been run already.</span>
+    <span class="p">{</span>
+        <span class="n">mapvars</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">;</span>
+        <span class="n">deme</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">deme</span><span class="p">;</span>
+        <span class="n">x_dim</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">grid_x_size</span><span class="p">;</span>
+        <span class="n">y_dim</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">grid_y_size</span><span class="p">;</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">coarse_map_scale</span><span class="p">;</span>
+        <span class="n">nUpdate</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">check_set_dim</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">update_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">gen_since_pristine</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">gen_since_pristine</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">gen_since_pristine</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">gen_since_pristine</span> <span class="o">=</span> <span class="mf">0.000000000000000001</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">habitat_change_rate</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">habitat_change_rate</span><span class="p">;</span>
+        <span class="n">landscape_type</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">.</span><span class="n">landscape_type</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">writeError</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_001: Dimensions have already been set&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">checkMapExists</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptionsSize</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">string</span> <span class="n">tmppath</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">configs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getOption</span><span class="p">(</span><span class="s">&quot;path&quot;</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">doesExistNull</span><span class="p">(</span><span class="n">tmppath</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calcFineMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">fileinput</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_file</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mapxsize</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_x_size</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mapysize</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_y_size</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks that the dimensions have been set.</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_002: dimensions not set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// Note that the default &quot;null&quot; type is to have 100% forest cover in every cell.</span>
+    <span class="n">fine_max</span> <span class="o">=</span> <span class="n">importToMapAndRound</span><span class="p">(</span><span class="n">fileinput</span><span class="p">,</span> <span class="n">fine_map</span><span class="p">,</span> <span class="n">mapxsize</span><span class="p">,</span> <span class="n">mapysize</span><span class="p">,</span> <span class="n">deme</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calcPristineFineMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">file_input</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">pristine_fine_map_file</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_x_size</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_x_size</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_y_size</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_y_size</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks that the dimensions have been set.</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_002: dimensions not set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">has_pristine</span> <span class="o">=</span> <span class="n">file_input</span> <span class="o">!=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+    <span class="n">pristine_fine_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">pristine_fine_max</span> <span class="o">=</span> <span class="n">importToMapAndRound</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">pristine_fine_map</span><span class="p">,</span> <span class="n">map_x_size</span><span class="p">,</span> <span class="n">map_y_size</span><span class="p">,</span> <span class="n">deme</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calcCoarseMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">file_input</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_file</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_x_size</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_x_size</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_y_size</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_y_size</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks that the dimensions have been set.</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_003: dimensions not set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">has_coarse</span> <span class="o">=</span> <span class="n">file_input</span> <span class="o">!=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+    <span class="n">coarse_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_coarse</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">coarse_max</span> <span class="o">=</span> <span class="n">importToMapAndRound</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">coarse_map</span><span class="p">,</span> <span class="n">map_x_size</span><span class="p">,</span> <span class="n">map_y_size</span><span class="p">,</span> <span class="n">deme</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calcPristineCoarseMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">file_input</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">pristine_coarse_map_file</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_x_size</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_x_size</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_y_size</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_y_size</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks that the dimensions have been set.</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_003: dimensions not set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">pristine_coarse_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_coarse</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">has_pristine</span> <span class="o">=</span> <span class="n">file_input</span> <span class="o">!=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">pristine_coarse_max</span> <span class="o">=</span> <span class="n">importToMapAndRound</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">pristine_coarse_map</span><span class="p">,</span> <span class="n">map_x_size</span><span class="p">,</span> <span class="n">map_y_size</span><span class="p">,</span> <span class="n">deme</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">setTimeVars</span><span class="p">(</span><span class="kt">double</span> <span class="n">gen_since_pristine_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">habitat_change_rate_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">update_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">gen_since_pristine</span> <span class="o">=</span> <span class="n">gen_since_pristine_in</span><span class="p">;</span>
+    <span class="n">habitat_change_rate</span> <span class="o">=</span> <span class="n">habitat_change_rate_in</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calcOffset</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">mapvars</span><span class="p">.</span><span class="n">times_file</span> <span class="o">!=</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mapvars</span><span class="p">.</span><span class="n">setPristine</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//  os &lt;&lt; mapvars.times_file &lt;&lt; endl;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_004: fine map not set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">has_coarse</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">coarse_map</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">(),</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="c1">//      throw FatalException(&quot;ERROR_MAP_004: coarse map not set.&quot;);</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">checkAllDimensionsZero</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">calculateOffsetsFromMaps</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">calculateOffsetsFromParameters</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="n">dispersal_relative_cost</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">dispersal_relative_cost</span><span class="p">;</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">finex: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_x_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;finey: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_y_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;coarsex: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_x_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;coarsey: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_y_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;offsets: &quot;</span>
+         <span class="o">&lt;&lt;</span> <span class="s">&quot;(&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_y_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)(&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_y_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;pristine fine file: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_fine_map</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;pristine coarse file: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_coarse_map</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="cp">#endif</span>
+    <span class="c1">//      os &lt;&lt; &quot;fine variables: &quot; &lt;&lt; finexmin &lt;&lt; &quot;,&quot; &lt;&lt; fine_x_max &lt;&lt; endl;</span>
+    <span class="c1">//      os &lt;&lt; &quot;coarse variabes: &quot; &lt;&lt; coarse_x_min &lt;&lt; &quot;,&quot; &lt;&lt; coarse_x_max &lt;&lt; endl;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">fine_x_min</span> <span class="o">&lt;</span> <span class="n">coarse_x_min</span> <span class="o">||</span> <span class="n">fine_x_max</span> <span class="o">&gt;</span> <span class="n">coarse_x_max</span> <span class="o">||</span> <span class="p">(</span><span class="n">fine_x_max</span> <span class="o">-</span> <span class="n">fine_x_min</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">x_dim</span> <span class="o">||</span> <span class="p">(</span><span class="n">fine_y_max</span> <span class="o">-</span> <span class="n">fine_y_min</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">y_dim</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
+            <span class="s">&quot;ERROR_MAP_006: FATAL - fine map extremes outside coarse map or sample grid larger than fine map&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">checkAllDimensionsZero</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_x_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_y_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_x_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+            <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_y_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">sample_x_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">sample_y_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+            <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_x_size</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_y_size</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_x_size</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+            <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_y_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calculateOffsetsFromMaps</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// TODO complete this functionality - required for rcoalescence</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">calculateOffsetsFromParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">fine_x_offset</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_x_offset</span> <span class="o">+</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">sample_x_offset</span><span class="p">;</span>
+    <span class="n">fine_y_offset</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">fine_map_y_offset</span> <span class="o">+</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">sample_y_offset</span><span class="p">;</span>
+    <span class="n">coarse_x_offset</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_x_offset</span><span class="p">;</span>
+    <span class="n">coarse_y_offset</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_y_offset</span><span class="p">;</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">coarse_map_scale</span><span class="p">;</span>
+    <span class="c1">// this is the location of the top left (or north west) corner of the respective map</span>
+    <span class="c1">// and the x and y distance from the top left of the grid object that contains the initial lineages.</span>
+    <span class="n">fine_x_min</span> <span class="o">=</span> <span class="o">-</span><span class="n">fine_x_offset</span><span class="p">;</span>
+    <span class="n">fine_y_min</span> <span class="o">=</span> <span class="o">-</span><span class="n">fine_y_offset</span><span class="p">;</span>
+    <span class="n">fine_x_max</span> <span class="o">=</span> <span class="n">fine_x_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">());</span>
+    <span class="n">fine_y_max</span> <span class="o">=</span> <span class="n">fine_y_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_coarse</span><span class="p">)</span> <span class="c1">// Check if there is a coarse map</span>
+    <span class="p">{</span>
+        <span class="n">coarse_x_min</span> <span class="o">=</span> <span class="o">-</span><span class="n">coarse_x_offset</span> <span class="o">-</span> <span class="n">fine_x_offset</span><span class="p">;</span>
+        <span class="n">coarse_y_min</span> <span class="o">=</span> <span class="o">-</span><span class="n">coarse_y_offset</span> <span class="o">-</span> <span class="n">fine_y_offset</span><span class="p">;</span>
+        <span class="n">coarse_x_max</span> <span class="o">=</span> <span class="n">coarse_x_min</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">());</span>
+        <span class="n">coarse_y_max</span> <span class="o">=</span> <span class="n">coarse_y_min</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="c1">// Just set the offsets to the same as the fine map</span>
+    <span class="p">{</span>
+        <span class="n">coarse_x_min</span> <span class="o">=</span> <span class="n">fine_x_min</span><span class="p">;</span>
+        <span class="n">coarse_y_min</span> <span class="o">=</span> <span class="n">fine_y_min</span><span class="p">;</span>
+        <span class="n">coarse_x_max</span> <span class="o">=</span> <span class="n">fine_x_max</span><span class="p">;</span>
+        <span class="n">coarse_y_max</span> <span class="o">=</span> <span class="n">fine_y_max</span><span class="p">;</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">validateMaps</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Validating maps...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">dTotal</span> <span class="o">=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">+</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">iCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">==</span> <span class="n">pristine_fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">==</span> <span class="n">pristine_fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                <span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">==</span> <span class="n">pristine_coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">==</span>
+                                                                            <span class="n">pristine_coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Validating maps...map sizes okay&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+            <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
+                    <span class="s">&quot;ERROR_MAP_009: Landscape validation failed - modern and pristine maps are not the same dimensions.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">fine_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pristine_fine_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+                    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;fine map: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; pristine map: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_fine_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; x,y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+                    <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_007: Landscape validation failed - fine map value larger &quot;</span>
+                                              <span class="s">&quot;than pristine fine map value.&quot;</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="kt">double</span> <span class="n">dPercentComplete</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">((</span><span class="kt">double</span><span class="p">)(</span><span class="n">i</span> <span class="o">+</span> <span class="n">iCounter</span><span class="p">)</span> <span class="o">/</span> <span class="n">dTotal</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Validating maps...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dPercentComplete</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;%                &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">iCounter</span> <span class="o">=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">coarse_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+                    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;coarse map: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; pristine map: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; coarse map x+1: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                         <span class="o">&lt;&lt;</span> <span class="s">&quot; pristine map: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; x,y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">j</span><span class="p">;</span>
+                    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+                    <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MAP_008: Landscape validation failed - coarse map value larger &quot;</span>
+                                              <span class="s">&quot;than pristine coarse map value.&quot;</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="kt">double</span> <span class="n">dPercentComplete</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">((</span><span class="kt">double</span><span class="p">)(</span><span class="n">i</span> <span class="o">+</span> <span class="n">iCounter</span><span class="p">)</span> <span class="o">/</span> <span class="n">dTotal</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Validating maps...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dPercentComplete</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;%                &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+                <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+    <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Validating maps complete                                       &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">updateMap</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// only update the map if the pristine state has not been reached.</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">mapvars</span><span class="p">.</span><span class="n">is_pristine</span> <span class="o">&amp;&amp;</span> <span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mapvars</span><span class="p">.</span><span class="n">gen_since_pristine</span> <span class="o">&lt;</span> <span class="n">generation</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Only update the map if the maps have actually changed</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">mapvars</span><span class="p">.</span><span class="n">setPristine</span><span class="p">(</span><span class="n">nUpdate</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">nUpdate</span><span class="o">++</span><span class="p">;</span>
+                <span class="c1">// pristine_fine_map = mapvars.pristine_fine_map_file;</span>
+                <span class="c1">// pristine_coarse_map = mapvars.pristine_coarse_map_file;</span>
+                <span class="n">current_map_time</span> <span class="o">=</span> <span class="n">gen_since_pristine</span><span class="p">;</span>
+                <span class="n">gen_since_pristine</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">gen_since_pristine</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">gen_since_pristine</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">gen_since_pristine</span> <span class="o">=</span> <span class="mf">0.000000000000000001</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">habitat_change_rate</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">habitat_change_rate</span><span class="p">;</span>
+                <span class="n">fine_max</span> <span class="o">=</span> <span class="n">pristine_fine_max</span><span class="p">;</span>
+                <span class="n">fine_map</span> <span class="o">=</span> <span class="n">pristine_fine_map</span><span class="p">;</span>
+                <span class="n">coarse_max</span> <span class="o">=</span> <span class="n">pristine_coarse_max</span><span class="p">;</span>
+                <span class="n">coarse_map</span> <span class="o">=</span> <span class="n">pristine_coarse_map</span><span class="p">;</span>
+                <span class="n">calcPristineCoarseMap</span><span class="p">();</span>
+                <span class="n">calcPristineFineMap</span><span class="p">();</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">is_pristine</span> <span class="o">=</span> <span class="n">mapvars</span><span class="p">.</span><span class="n">is_pristine</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">recalculateHabitatMax</span><span class="p">();</span>
+
+
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">string</span> <span class="n">landscape_type</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s">&quot;infinite&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Setting infinite landscape.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">getValFunc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Landscape</span><span class="o">::</span><span class="n">getValInfinite</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s">&quot;tiled_coarse&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Setting tiled coarse infinite landscape.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">getValFunc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Landscape</span><span class="o">::</span><span class="n">getValCoarseTiled</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s">&quot;tiled_fine&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Setting tiled fine infinite landscape.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">getValFunc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Landscape</span><span class="o">::</span><span class="n">getValFineTiled</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s">&quot;closed&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">getValFunc</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Landscape</span><span class="o">::</span><span class="n">getValFinite</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Provided landscape type is not a valid option: &quot;</span> <span class="o">+</span> <span class="n">landscape_type</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getVal</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span>
+                          <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">getValFunc</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">,</span> <span class="n">current_generation</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getValInfinite</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">xval</span><span class="p">,</span> <span class="n">yval</span><span class="p">;</span>
+    <span class="n">xval</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_dim</span> <span class="o">*</span> <span class="n">xwrap</span><span class="p">);</span>  <span class="c1">//</span>
+    <span class="n">yval</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_dim</span> <span class="o">*</span> <span class="n">ywrap</span><span class="p">);</span>
+    <span class="c1">//      // return 0 if the requested coordinate is completely outside the map</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">xval</span> <span class="o">&lt;</span> <span class="n">coarse_x_min</span> <span class="o">||</span> <span class="n">xval</span> <span class="o">&gt;=</span> <span class="n">coarse_x_max</span> <span class="o">||</span> <span class="n">yval</span> <span class="o">&lt;</span> <span class="n">coarse_y_min</span> <span class="o">||</span> <span class="n">yval</span> <span class="o">&gt;=</span> <span class="n">coarse_y_max</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">deme</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">getValFinite</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">,</span> <span class="n">current_generation</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getValCoarseTiled</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">fmod</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">fine_x_offset</span> <span class="o">+</span> <span class="n">coarse_x_offset</span><span class="p">,</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">());</span>
+    <span class="kt">double</span> <span class="n">newy</span> <span class="o">=</span> <span class="n">fmod</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">fine_x_offset</span> <span class="o">+</span> <span class="n">coarse_x_offset</span><span class="p">,</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">newx</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">newx</span> <span class="o">+=</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">newy</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">newy</span> <span class="o">+=</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">getValCoarse</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="n">current_generation</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getValFineTiled</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">double</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">fmod</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">fine_x_offset</span><span class="p">,</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">());</span>
+    <span class="kt">double</span> <span class="n">newy</span> <span class="o">=</span> <span class="n">fmod</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">fine_y_offset</span><span class="p">,</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">());</span>
+    <span class="c1">// Now adjust for incorrect wrapping behaviour of fmod</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">newx</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">newx</span> <span class="o">+=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">newy</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">newy</span> <span class="o">+=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">newx</span> <span class="o">&gt;=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">||</span> <span class="n">newx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">newy</span> <span class="o">&gt;=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">||</span> <span class="n">newy</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Fine map indexing out of range of fine map.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x, y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">newx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">newy</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;cols, rows: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="nf">out_of_range</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+    <span class="k">return</span> <span class="n">getValFine</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="n">current_generation</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getValCoarse</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">xval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">yval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">retval</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">is_pristine</span> <span class="o">||</span> <span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">]</span> <span class="o">==</span> <span class="n">coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="kt">double</span> <span class="n">currentTime</span> <span class="o">=</span> <span class="n">current_generation</span> <span class="o">-</span> <span class="n">current_map_time</span><span class="p">;</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">floor</span><span class="p">(</span><span class="n">coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">]</span> <span class="o">+</span>
+                                           <span class="p">(</span><span class="n">habitat_change_rate</span> <span class="o">*</span>
+                                            <span class="p">((</span><span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">]</span> <span class="o">-</span> <span class="n">coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span> <span class="o">/</span>
+                                                    <span class="p">(</span><span class="n">gen_since_pristine</span><span class="o">-</span><span class="n">current_map_time</span><span class="p">))</span> <span class="o">*</span> <span class="n">currentTime</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="cp">#ifdef pristine_mode</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">retval</span> <span class="o">&gt;</span> <span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">ec</span> <span class="o">=</span>
+                <span class="s">&quot;Returned value greater than pristine value. Check file input. (or disable this error before &quot;</span>
+                <span class="s">&quot;compilation.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+            <span class="n">ec</span> <span class="o">+=</span> <span class="s">&quot;pristine value: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">pristine_coarse_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span> <span class="o">+</span>
+                  <span class="s">&quot; returned value: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">retval</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ec</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="c1">// Note that debug mode will throw an exception if the returned value is less than the pristine state</span>
+
+<span class="cp">#endif</span>
+    <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getValFine</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span><span class="n">xval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">yval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">retval</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">is_pristine</span> <span class="o">||</span> <span class="n">pristine_fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">]</span> <span class="o">==</span> <span class="n">fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="n">pristine_fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="kt">double</span> <span class="n">currentTime</span> <span class="o">=</span> <span class="n">current_generation</span> <span class="o">-</span> <span class="n">current_map_time</span><span class="p">;</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">floor</span><span class="p">(</span><span class="n">fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">]</span> <span class="o">+</span>
+                                           <span class="p">(</span><span class="n">habitat_change_rate</span> <span class="o">*</span> <span class="p">((</span><span class="n">pristine_fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">]</span> <span class="o">-</span> <span class="n">fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span> <span class="o">/</span>
+                                                   <span class="p">(</span><span class="n">gen_since_pristine</span><span class="o">-</span><span class="n">current_map_time</span><span class="p">))</span> <span class="o">*</span> <span class="n">currentTime</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="c1">// os &lt;&lt;fine_map[yval][xval] &lt;&lt; &quot;-&quot;&lt;&lt; retval &lt;&lt; endl;</span>
+<span class="c1">// Note that debug mode will throw an exception if the returned value is less than the pristine state</span>
+<span class="cp">#ifdef pristine_mode</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">retval</span> <span class="o">&gt;</span> <span class="n">pristine_fine_map</span><span class="p">[</span><span class="n">yval</span><span class="p">][</span><span class="n">xval</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Returned value greater than pristine value. Check file input. (or disable this &quot;</span>
+                                      <span class="s">&quot;error before compilation.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+    <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getValFinite</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">current_generation</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">double</span> <span class="n">xval</span><span class="p">,</span> <span class="n">yval</span><span class="p">;</span>
+    <span class="n">xval</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_dim</span> <span class="o">*</span> <span class="n">xwrap</span><span class="p">);</span>  <span class="c1">//</span>
+    <span class="n">yval</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_dim</span> <span class="o">*</span> <span class="n">ywrap</span><span class="p">);</span>
+    <span class="c1">//      // return 0 if the requested coordinate is completely outside the map</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">xval</span> <span class="o">&lt;</span> <span class="n">coarse_x_min</span> <span class="o">||</span> <span class="n">xval</span> <span class="o">&gt;=</span> <span class="n">coarse_x_max</span> <span class="o">||</span> <span class="n">yval</span> <span class="o">&lt;</span> <span class="n">coarse_y_min</span> <span class="o">||</span> <span class="n">yval</span> <span class="o">&gt;=</span> <span class="n">coarse_y_max</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">xval</span> <span class="o">&lt;</span> <span class="n">fine_x_min</span> <span class="o">||</span> <span class="n">xval</span> <span class="o">&gt;=</span> <span class="n">fine_x_max</span> <span class="o">||</span> <span class="n">yval</span> <span class="o">&lt;</span> <span class="n">fine_y_min</span> <span class="o">||</span>
+       <span class="n">yval</span> <span class="o">&gt;=</span> <span class="n">fine_y_max</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">has_coarse</span><span class="p">)</span>  <span class="c1">// check if the coordinate comes from the coarse resolution map.</span>
+    <span class="p">{</span>
+        <span class="c1">// take in to account the fine map offsetting</span>
+        <span class="n">xval</span> <span class="o">+=</span> <span class="n">fine_x_offset</span><span class="p">;</span>
+        <span class="n">yval</span> <span class="o">+=</span> <span class="n">fine_y_offset</span><span class="p">;</span>
+        <span class="c1">// take in to account the coarse map offsetting and the increased scale of the larger map.</span>
+        <span class="n">xval</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">xval</span> <span class="o">+</span> <span class="n">coarse_x_offset</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span><span class="p">);</span>
+        <span class="n">yval</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">yval</span> <span class="o">+</span> <span class="n">coarse_y_offset</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nf">getValCoarse</span><span class="p">(</span><span class="n">xval</span><span class="p">,</span> <span class="n">yval</span><span class="p">,</span> <span class="n">current_generation</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// take in to account the fine map offsetting</span>
+    <span class="c1">// this is done twice to avoid having all the comparisons involve additions.</span>
+    <span class="n">xval</span> <span class="o">+=</span> <span class="n">fine_x_offset</span><span class="p">;</span>
+    <span class="n">yval</span> <span class="o">+=</span> <span class="n">fine_y_offset</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nf">getValFine</span><span class="p">(</span><span class="n">xval</span><span class="p">,</span> <span class="n">yval</span><span class="p">,</span> <span class="n">current_generation</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">convertSampleXToFineX</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">fine_x_offset</span> <span class="o">+</span> <span class="p">(</span><span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">convertSampleYToFineY</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">y</span> <span class="o">+</span> <span class="n">fine_y_offset</span> <span class="o">+</span> <span class="p">(</span><span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">convertFineToSample</span><span class="p">(</span><span class="kt">long</span> <span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">tmpx</span> <span class="o">=</span> <span class="kt">double</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">tmpy</span> <span class="o">=</span> <span class="kt">double</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">convertCoordinates</span><span class="p">(</span><span class="n">tmpx</span><span class="p">,</span> <span class="n">tmpy</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">);</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">tmpx</span><span class="p">));</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">tmpy</span><span class="p">));</span>
+<span class="p">}</span>
+
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getInitialCount</span><span class="p">(</span><span class="kt">double</span> <span class="n">dSample</span><span class="p">,</span> <span class="n">DataMask</span><span class="o">&amp;</span> <span class="n">samplemask</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">toret</span><span class="p">;</span>
+    <span class="n">toret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">samplemask</span><span class="p">.</span><span class="n">getDefault</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="n">samplemask</span><span class="p">.</span><span class="n">sample_mask</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="n">samplemask</span><span class="p">.</span><span class="n">sample_mask</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_x</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">max_y</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+            <span class="n">xwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">ywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">samplemask</span><span class="p">.</span><span class="n">recalculate_coordinates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">);</span>
+            <span class="n">toret</span> <span class="o">+=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">dSample</span> <span class="o">*</span> <span class="p">(</span><span class="n">getVal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span>
+                                                <span class="n">samplemask</span><span class="p">.</span><span class="n">getExactValue</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">)),</span> <span class="mf">0.0</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">toret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">SimParameters</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getSimParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">mapvars</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">checkMap</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">getVal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">checkFine</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">tmpx</span><span class="p">,</span> <span class="n">tmpy</span><span class="p">;</span>
+    <span class="n">tmpx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">;</span>
+    <span class="n">tmpy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="n">tmpx</span> <span class="o">&lt;</span> <span class="n">fine_x_min</span> <span class="o">||</span> <span class="n">tmpx</span> <span class="o">&gt;=</span> <span class="n">fine_x_max</span> <span class="o">||</span> <span class="n">tmpy</span> <span class="o">&lt;</span> <span class="n">fine_y_min</span> <span class="o">||</span> <span class="n">tmpy</span> <span class="o">&gt;=</span> <span class="n">fine_y_max</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">convertCoordinates</span><span class="p">(</span><span class="kt">double</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">ywrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">xwrap</span> <span class="o">+=</span> <span class="n">floor</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">x_dim</span><span class="p">);</span>
+    <span class="n">ywrap</span> <span class="o">+=</span> <span class="n">floor</span><span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">y_dim</span><span class="p">);</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">runDispersal</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">dist</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">angle</span><span class="p">,</span>
+                       <span class="kt">long</span><span class="o">&amp;</span> <span class="n">startx</span><span class="p">,</span>
+                       <span class="kt">long</span><span class="o">&amp;</span> <span class="n">starty</span><span class="p">,</span>
+                       <span class="kt">long</span><span class="o">&amp;</span> <span class="n">startxwrap</span><span class="p">,</span>
+                       <span class="kt">long</span><span class="o">&amp;</span> <span class="n">startywrap</span><span class="p">,</span>
+                       <span class="kt">bool</span><span class="o">&amp;</span> <span class="n">disp_comp</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">generation</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="c1">// Checks that the start point is not out of matrix - this might have to be disabled to ensure that when updating the</span>
+<span class="c1">// map, it doesn&#39;t cause problems.</span>
+<span class="cp">#ifdef pristine_mode</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">checkMap</span><span class="p">(</span><span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">disp_comp</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+
+    <span class="c1">// Different calculations for each quadrant to ensure that the dispersal reads the probabilities correctly.</span>
+    <span class="kt">double</span> <span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">;</span>
+    <span class="n">newx</span> <span class="o">=</span> <span class="n">startx</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_dim</span> <span class="o">*</span> <span class="n">startxwrap</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="n">newy</span> <span class="o">=</span> <span class="n">starty</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_dim</span> <span class="o">*</span> <span class="n">startywrap</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dispersal_relative_cost</span> <span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// then nothing complicated is required and we can jump straight to the final point.</span>
+        <span class="n">newx</span> <span class="o">+=</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+        <span class="n">newy</span> <span class="o">+=</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>  <span class="c1">// we need to see which deforested patches we pass over</span>
+    <span class="p">{</span>
+        <span class="kt">long</span> <span class="n">boost</span><span class="p">;</span>
+        <span class="n">boost</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">cur_dist</span><span class="p">,</span> <span class="n">tot_dist</span><span class="p">,</span> <span class="n">l</span><span class="p">;</span>
+        <span class="n">cur_dist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">tot_dist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// Four different calculations for the different quadrants.</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">M_PI_4</span> <span class="o">||</span> <span class="n">angle</span> <span class="o">&lt;=</span> <span class="n">M_PI_4</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Continue while the dist travelled is less than the dist energy</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">cur_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// Check if the starting position of the loop is in the fine map or not.</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkFine</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="c1">// Keep the standard movement rate</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="c1">// Accellerate the travel speed if the point is outside the fine grid.</span>
+                    <span class="c1">// Note this means that lineages travelling from outside the fine grid to within the</span>
+                    <span class="c1">// fine grid may</span>
+                    <span class="c1">// see 1 grid&#39;s worth of approximation, rather than exact values.</span>
+                    <span class="c1">// This is an acceptable approximation!</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="n">deme</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="c1">// Add the value to the new x and y values.</span>
+                <span class="n">newx</span> <span class="o">=</span> <span class="n">newx</span> <span class="o">+</span> <span class="n">boost</span><span class="p">;</span>
+                <span class="n">newy</span> <span class="o">=</span> <span class="n">newy</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+                <span class="c1">// Check if the new point is within forest.</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkMap</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">dispersal_relative_cost</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="c1">// Move forward different dists based on the difficulty of moving through forest.</span>
+                <span class="n">cur_dist</span> <span class="o">=</span> <span class="n">cur_dist</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">boost</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">));</span>
+                <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">tot_dist</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">M_PI_4</span> <span class="o">&amp;&amp;</span> <span class="n">angle</span> <span class="o">&lt;=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">M_PI_4</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">cur_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkFine</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="n">deme</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="c1">// Add the change to the new x and y values.</span>
+                <span class="n">newx</span> <span class="o">=</span> <span class="n">newx</span> <span class="o">-</span> <span class="n">boost</span><span class="p">;</span>
+                <span class="n">newy</span> <span class="o">=</span> <span class="n">newy</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="n">M_PI</span> <span class="o">-</span> <span class="n">angle</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkMap</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">dispersal_relative_cost</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">cur_dist</span> <span class="o">=</span> <span class="n">cur_dist</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="n">l</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">M_PI</span> <span class="o">-</span> <span class="n">angle</span><span class="p">));</span>
+                <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">tot_dist</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">M_PI</span> <span class="o">-</span> <span class="n">angle</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="n">M_PI_4</span> <span class="o">&amp;&amp;</span> <span class="n">angle</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">M_PI_4</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">cur_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkFine</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="n">deme</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="c1">// Add the change to the new x and y values.</span>
+                <span class="n">newx</span> <span class="o">=</span> <span class="n">newx</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="n">angle</span> <span class="o">-</span> <span class="n">M_PI_2</span><span class="p">);</span>
+                <span class="n">newy</span> <span class="o">=</span> <span class="n">newy</span> <span class="o">+</span> <span class="n">boost</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkMap</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">dispersal_relative_cost</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">cur_dist</span> <span class="o">=</span> <span class="n">cur_dist</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">boost</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span> <span class="o">-</span> <span class="n">M_PI_2</span><span class="p">);</span>
+                <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">tot_dist</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span> <span class="o">-</span> <span class="n">M_PI_2</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">M_PI_4</span> <span class="o">&amp;&amp;</span> <span class="n">angle</span> <span class="o">&lt;=</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">M_PI_4</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">//              os &lt;&lt; &quot;...ang4...&quot; &lt;&lt;  flush;</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">cur_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkFine</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">boost</span> <span class="o">=</span> <span class="n">deme</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">newx</span> <span class="o">=</span> <span class="n">newx</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">M_PI_2</span> <span class="o">-</span> <span class="n">angle</span><span class="p">);</span>
+                <span class="n">newy</span> <span class="o">=</span> <span class="n">newy</span> <span class="o">-</span> <span class="n">boost</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">checkMap</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">dispersal_relative_cost</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">cur_dist</span> <span class="o">=</span> <span class="n">cur_dist</span> <span class="o">+</span> <span class="n">l</span> <span class="o">*</span> <span class="n">boost</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">M_PI_2</span> <span class="o">-</span> <span class="n">angle</span><span class="p">);</span>
+                <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">tot_dist</span> <span class="o">+</span> <span class="n">boost</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">M_PI_2</span> <span class="o">-</span> <span class="n">angle</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">// Move the point back to get the exact placement</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">checkMap</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">tot_dist</span> <span class="o">-</span> <span class="n">min</span><span class="p">(</span><span class="n">cur_dist</span> <span class="o">-</span> <span class="n">dist</span><span class="p">,</span> <span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">boost</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">disp_comp</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">newx</span> <span class="o">=</span> <span class="n">startx</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">tot_dist</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+        <span class="n">newy</span> <span class="o">=</span> <span class="n">starty</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">tot_dist</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">getVal</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">long</span> <span class="n">newxwrap</span><span class="p">,</span> <span class="n">newywrap</span><span class="p">;</span>
+        <span class="n">newxwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">newywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">convertCoordinates</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="n">newxwrap</span><span class="p">,</span> <span class="n">newywrap</span><span class="p">);</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">checkMap</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="n">newxwrap</span><span class="p">,</span> <span class="n">newywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="n">string</span><span class="p">(</span>
+                <span class="s">&quot;ERROR_MOVE_007: Dispersal attempted to non-forest. Check dispersal function. Forest cover: &quot;</span> <span class="o">+</span>
+                <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">getVal</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newy</span><span class="p">,</span> <span class="n">newxwrap</span><span class="p">,</span> <span class="n">newywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))));</span>
+        <span class="p">}</span>
+<span class="cp">#endif</span>
+        <span class="n">startx</span> <span class="o">=</span> <span class="n">newx</span><span class="p">;</span>
+        <span class="n">starty</span> <span class="o">=</span> <span class="n">newy</span><span class="p">;</span>
+        <span class="n">startxwrap</span> <span class="o">=</span> <span class="n">newxwrap</span><span class="p">;</span>
+        <span class="n">startywrap</span> <span class="o">=</span> <span class="n">newywrap</span><span class="p">;</span>
+        <span class="n">disp_comp</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">clearMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">current_map_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">check_set_dim</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">is_pristine</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">printVars</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;fine x limits: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_x_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;fine y limits: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_y_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;fine map offset: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_y_offset</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;coarse x limits: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_x_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;coarse y limits: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_y_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x,y dims: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">x_dim</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; , &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y_dim</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getHabitatMax</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">habitat_max</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">recalculateHabitatMax</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">habitat_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">is_pristine</span> <span class="o">&amp;&amp;</span> <span class="n">has_pristine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&lt;</span> <span class="n">pristine_fine_max</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">habitat_max</span> <span class="o">=</span> <span class="n">pristine_fine_max</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&lt;</span> <span class="n">pristine_coarse_max</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">habitat_max</span> <span class="o">=</span> <span class="n">pristine_coarse_max</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&lt;</span> <span class="n">fine_max</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">habitat_max</span> <span class="o">=</span> <span class="n">fine_max</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&lt;</span> <span class="n">coarse_max</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">habitat_max</span> <span class="o">=</span> <span class="n">coarse_max</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&lt;</span> <span class="n">pristine_fine_max</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">habitat_max</span> <span class="o">=</span> <span class="n">pristine_fine_max</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&lt;</span> <span class="n">pristine_coarse_max</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">habitat_max</span> <span class="o">=</span> <span class="n">pristine_coarse_max</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">habitat_max</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;habitat_max may be unreasonably large: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">habitat_max</span><span class="p">));</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;fine, coarse, pfine, pcoarse: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coarse_max</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_fine_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pristine_coarse_max</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_Landscape.cpp.html"
+                        title="previous chapter">File Landscape.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_Landscape.h.html"
+                        title="next chapter">File Landscape.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_Landscape.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Landscape.cpp.html" title="File Landscape.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.cpp.html" >File Landscape.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

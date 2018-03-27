@@ -4,23 +4,29 @@ if possible. Command line flags can be provided (see :ref:`Compilation Options <
 information) to modify the install.
 """
 
-from __future__ import print_function, absolute_import  # Only Python 2.x
-import sys
-import subprocess
-import os
-import shutil
-import warnings
+from __future__ import print_function, absolute_import, division  # Only Python 2.x
+
 import logging
-import re
-from distutils import sysconfig
 import platform
+import subprocess
+import sys
+import time
+
+import os
+import re
+import shutil
+from distutils import sysconfig
 
 # Import system operations for subprocess executation and log file handling
 
 try:
+	from .future_except import FileNotFoundError
 	from .system_operations import execute_log_info, set_logging_method, mod_directory, execute_silent
+
 except (ImportError, SystemError, ValueError):
+	from future_except import FileNotFoundError
 	from system_operations import execute_log_info, set_logging_method, mod_directory, execute_silent
+
 
 def make_depend():
 	"""
@@ -79,7 +85,10 @@ def do_compile():
 	"""
 	# Check that the make file exists
 	if os.path.exists(os.path.join(mod_directory, "lib/")):
+		time.sleep(0.5)
 		make_depend()
+		# Sleep to ensure that file timings are updated (support for HPC systems with inaccurate timings.
+		time.sleep(0.5)
 		try:
 			execute_log_info(["make", "all"], cwd=os.path.join(mod_directory, "lib/"))
 			logging.info("Compilation exited successfully.")
@@ -186,7 +195,7 @@ def autoconf():
 	"""
 	try:
 		execute_log_info(["autoconf"], cwd=os.path.join(mod_directory, "lib/"))
-	except (RuntimeError, subprocess.CalledProcessError) as cpe:
+	except (RuntimeError, subprocess.CalledProcessError, FileNotFoundError) as cpe:
 		logging.warning("Could not run autoconf function to generate configure executable. "
 					  "Please run this functionality manually if installation fails.")
 		logging.warning(str(cpe))
@@ -197,6 +206,7 @@ def clean():
 	Runs make clean in the NECSim directory to wipe any previous potential compile attempts.
 	"""
 	try:
+		time.sleep(0.5)
 		execute_log_info(["make", "clean"], cwd=os.path.join(mod_directory, "lib/"))
 	except subprocess.CalledProcessError as cpe:
 		logging.warning(cpe.message)

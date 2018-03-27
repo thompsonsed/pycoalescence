@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Simulating and generating landscapes &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Program Listing for File TreeNode.h" href="necsim/program_listing_file_necsim_TreeNode.h.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Modules"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="necsim/program_listing_file_necsim_TreeNode.h.html" title="Program Listing for File TreeNode.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulating-and-generating-landscapes">
+<h1>Simulating and generating landscapes<a class="headerlink" href="#simulating-and-generating-landscapes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><strong>pycoalescence</strong> provides functionality for generating fragmented landscapes for simulations, and simulating dispersal
+kernels to produce a variety of landscape-level dispersal metrics. Generation of landscapes is provided through the
+<a class="reference internal" href="pycoalescence.html#pycoalescence.fragments.FragmentedLandscape" title="pycoalescence.fragments.FragmentedLandscape"><code class="xref py py-class docutils literal"><span class="pre">FragmentedLandscape</span> <span class="pre">class</span></code></a>. Simulations of dispersal kernels is
+provided through the <code class="xref py py-class docutils literal"><span class="pre">DispersalSimulation</span> <span class="pre">class</span></code>.</p>
+</div>
+<div class="section" id="generating-landscapes">
+<h2>Generating landscapes<a class="headerlink" href="#generating-landscapes" title="Permalink to this headline">¶</a></h2>
+<p>The parameters for generating a fragmented landscape are the total landscape size, the habitat area within the landscape
+(i.e. the number of individuals) and the number of fragments to place. The habitat area cannot be more than 50% of the
+landscape size, as at this point fragments become non-distinct. The process is handled by the
+<a class="reference internal" href="pycoalescence.html#pycoalescence.fragments.FragmentedLandscape" title="pycoalescence.fragments.FragmentedLandscape"><code class="xref py py-class docutils literal"><span class="pre">FragmentedLandscape</span> <span class="pre">class</span></code></a>. The process is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">FragmentedLandscape</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">FragmentedLandscape</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">number_fragments</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fragment.tif&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simulated-landscapes">
+<span id="simulate-landscapes"></span><h2>Simulated landscapes<a class="headerlink" href="#simulated-landscapes" title="Permalink to this headline">¶</a></h2>
+<p>To simulate a dispersal kernel on a landscape, there are two processes; simulating a single step and simulating multiple
+steps. For a single step, the distance travelled is recorded into the output database. The mean, standard deviation and
+other metrics can be obtained from this. For multiple steps, the total distance travelled after n steps is recorded.
+Both methods follow the same structure,</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">DispersalSimulation</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">DispersalSimulation</span><span class="p">(</span><span class="n">dispersal_db</span><span class="o">=</span><span class="s2">&quot;path/output.db&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">test_mean_dispersal</span><span class="p">(</span><span class="n">number_repeats</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">output_database</span><span class="o">=</span><span class="n">out_db</span><span class="p">,</span> <span class="n">map_file</span><span class="o">=</span><span class="s2">&quot;path/map.tif&quot;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+                      <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">landscape_type</span><span class="o">=</span><span class="s2">&quot;tiled&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">test_mean_distance_travelled</span><span class="p">(</span><span class="n">number_repeats</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">number_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                               <span class="n">map_file</span><span class="o">=</span><span class="s2">&quot;path/map.tif&quot;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                               <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">landscape_type</span><span class="o">=</span><span class="s2">&quot;tiled&quot;</span><span class="p">)</span>
+<span class="c1"># The reference parameters correspond to the order they were simulated with</span>
+<span class="n">parameters_list</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">getdatabase_parameters</span><span class="p">()</span>
+<span class="c1"># Each of these contain parameters for the first and second simulation</span>
+<span class="n">parameters_1</span> <span class="o">=</span> <span class="n">parameters_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">parameters_2</span> <span class="o">=</span> <span class="n">parameters_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># We can therefore just use the reference numbers (1 or 2) to obtain metrics</span>
+<span class="n">m</span><span class="o">.</span><span class="n">get_mean_dispersal</span><span class="p">(</span><span class="n">parameter_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">get_mean_distance_travelled</span><span class="p">(</span><span class="n">parameter_reference</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">get_stdev_dispersal</span><span class="p">(</span><span class="n">parameters_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-and-writing-tif-files">
+<h2>Reading and writing tif files<a class="headerlink" href="#reading-and-writing-tif-files" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map" title="pycoalescence.map.Map"><code class="xref py py-class docutils literal"><span class="pre">Map</span> <span class="pre">class</span></code></a> is used for detecting offsets and dimensions of tif files for
+the main program. There are therefore a number of additional features in this class.</p>
+<ul class="simple">
+<li>Data can be read using <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map.get_subset" title="pycoalescence.map.Map.get_subset"><code class="xref py py-func docutils literal"><span class="pre">get_subset()</span></code></a> and
+<a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map.get_cached_subset" title="pycoalescence.map.Map.get_cached_subset"><code class="xref py py-func docutils literal"><span class="pre">get_cached_subset()</span></code></a>.</li>
+<li>Dimensions can be determined using <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map.get_dimensions" title="pycoalescence.map.Map.get_dimensions"><code class="xref py py-func docutils literal"><span class="pre">get_dimensions()</span></code></a>. The entire tif
+file can also be read into a numpy array using <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map.open" title="pycoalescence.map.Map.open"><code class="xref py py-func docutils literal"><span class="pre">open()</span></code></a> and then indexing on
+<code class="xref py py-attr docutils literal"><span class="pre">data</span></code>.</li>
+<li>A shapefile can be rasterised to a new tif file using <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map.rasterise" title="pycoalescence.map.Map.rasterise"><code class="xref py py-func docutils literal"><span class="pre">rasterise()</span></code></a>.</li>
+<li>Tif files can be re-projected to either a new or the same file using
+<a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map.reproject_raster" title="pycoalescence.map.Map.reproject_raster"><code class="xref py py-func docutils literal"><span class="pre">open()</span></code></a>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All processing is done using the gdal module.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulating and generating landscapes</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#generating-landscapes">Generating landscapes</a></li>
+<li><a class="reference internal" href="#simulated-landscapes">Simulated landscapes</a></li>
+<li><a class="reference internal" href="#reading-and-writing-tif-files">Reading and writing tif files</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="necsim/program_listing_file_necsim_TreeNode.h.html"
+                        title="previous chapter">Program Listing for File TreeNode.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="next chapter">Modules</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/README_landscapes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Modules"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="necsim/program_listing_file_necsim_TreeNode.h.html" title="Program Listing for File TreeNode.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File SpeciationCommands.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File SpeciationCommands.h" href="file_necsim_SpeciationCommands.h.html" />
+    <link rel="prev" title="File SpeciationCommands.cpp" href="file_necsim_SpeciationCommands.cpp.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SpeciationCommands.h.html" title="File SpeciationCommands.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SpeciationCommands.cpp.html" title="File SpeciationCommands.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_SpeciationCommands.cpp.html" accesskey="U">File SpeciationCommands.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-speciationcommands-cpp">
+<span id="program-listing-file-necsim-speciationcommands-cpp"></span><h1>Program Listing for File SpeciationCommands.cpp<a class="headerlink" href="#program-listing-for-file-speciationcommands-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_SpeciationCommands.cpp.html#file-necsim-speciationcommands-cpp"><span class="std std-ref">File SpeciationCommands.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;SpeciationCommands.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">void</span> <span class="n">SpeciationCommands</span><span class="o">::</span><span class="n">parseArgs</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bAskHelp</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">((</span><span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="s">&quot;-d&quot;</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-h&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-help&quot;</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="n">bAskHelp</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">bInvalidArguments</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Incorrect number of arguments.&quot;</span><span class="p">);</span>
+            <span class="n">bInvalidArguments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">comargs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;-e&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;-e&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">samplemask</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">times_file</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">all_speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">stof</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">7</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bInvalidArguments</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bAskHelp</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">all_speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">stod</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">6</span><span class="p">]));</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bInvalidArguments</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bAskHelp</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bRunDefault</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;true&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;True&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;T&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span> <span class="o">||</span>
+           <span class="n">comargs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;t&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">use_spatial</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">use_spatial</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;false&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;False&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;F&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;FALSE&quot;</span> <span class="o">||</span>
+           <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;f&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">use_fragments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;true&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;True&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;T&quot;</span> <span class="o">||</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span> <span class="o">||</span>
+               <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;t&quot;</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="n">comargs</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="n">sp</span><span class="p">.</span><span class="n">use_fragments</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">bInvalidArguments</span> <span class="o">||</span> <span class="n">bAskHelp</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;At least six command-line arguments are expected.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;1 - Path to SQL database file.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;2 - T/F of whether to record full spatial data.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;3 - the sample mask to use (use null if no mask is to be used)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;4 - the file containing tempororal points of interest. If null, the present is used for all &quot;</span>
+              <span class="s">&quot;calculations.&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;5 - T/F of whether to calculate abundances for each rectangular fragment. Alternatively, provide a &quot;</span>
+              <span class="s">&quot;csv file with fragment data to be read.&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;6 - Speciation rate.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;7 - onwards - Further speciation rates. [OPTIONAL]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Would you like to run with the default paramenters?&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;       (This requires a SQL database file at ../../Data/Coal_sim/Test_output/SQL_data/data_0_1.db)&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter Y/N: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="n">string</span> <span class="n">sDef</span><span class="p">;</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">sDef</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">sDef</span> <span class="o">==</span> <span class="s">&quot;Y&quot;</span> <span class="o">||</span> <span class="n">sDef</span> <span class="o">==</span> <span class="s">&quot;y&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">bRunDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Nothing to do!&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-d&quot;</span> <span class="o">||</span> <span class="n">bRunDefault</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;../../Data/Coal_sim/Test_output/SQL_data/data_0_1.db&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">all_speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.001</span><span class="p">);</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">samplemask</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">fragment_config_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">use_fragments</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">sp</span><span class="p">.</span><span class="n">use_spatial</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="n">SpeciationCommands</span><span class="o">::</span><span class="n">applyFromComargs</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc_in</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">argc</span> <span class="o">=</span> <span class="n">argc_in</span><span class="p">;</span>
+    <span class="n">importArgs</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">argc</span><span class="p">),</span> <span class="n">argv</span><span class="p">,</span> <span class="n">comargs</span><span class="p">);</span>
+    <span class="n">parseArgs</span><span class="p">();</span>
+    <span class="n">Community</span> <span class="n">tree_list</span><span class="p">;</span>
+    <span class="n">tree_list</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sp</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_SpeciationCommands.cpp.html"
+                        title="previous chapter">File SpeciationCommands.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_SpeciationCommands.h.html"
+                        title="next chapter">File SpeciationCommands.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_SpeciationCommands.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SpeciationCommands.h.html" title="File SpeciationCommands.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SpeciationCommands.cpp.html" title="File SpeciationCommands.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_SpeciationCommands.cpp.html" >File SpeciationCommands.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

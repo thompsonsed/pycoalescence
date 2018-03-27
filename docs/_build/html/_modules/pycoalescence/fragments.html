@@ -1,0 +1,542 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pycoalescence.fragments &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycoalescence.fragments</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains the FragmentedLandscape class for creating a fragmented landscape using hexagonal packing and an even spread of</span>
+<span class="sd">individuals between fragments. Requires scipy and matplotlib.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">figure</span>
+	<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">ie</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span> <span class="nn">gdal</span>
+	<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="n">ie</span>
+<span class="kn">from</span> <span class="nn">.spatial_algorithms</span> <span class="kn">import</span> <span class="n">lloyds_algorithm</span><span class="p">,</span> <span class="n">archimedes_spiral</span>
+<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">check_parent</span>
+<span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileExistsError</span>
+
+<div class="viewcode-block" id="Fragment"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.Fragment">[docs]</a><span class="k">class</span> <span class="nc">Fragment</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Simple class containing the centres of fragments for a fragmented landscape</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Default initiator</span>
+
+<span class="sd">		:param x: the x position of the fragment centre</span>
+<span class="sd">		:param y: the y position of the fragment centre</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">if</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">y</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Fragment.setup"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.Fragment.setup">[docs]</a>	<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sets up the fragment from the x and y position.</span>
+
+<span class="sd">		:param x: the x position of the fragment centre</span>
+<span class="sd">		:param y: the y position of the fragment centre</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Fragment.place_on_grid"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.Fragment.place_on_grid">[docs]</a>	<span class="k">def</span> <span class="nf">place_on_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Changes the x and y positions to integers (always rounds down).</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="FragmentedLandscape"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape">[docs]</a><span class="k">class</span> <span class="nc">FragmentedLandscape</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Contains hexagonal packing algorithms for spacing clumps evenly on the landscape. Includes a LLoyd&#39;s smoothing</span>
+<span class="sd">	algorithm for better spacing of fragments.</span>
+
+<span class="sd">	.. note::</span>
+
+<span class="sd">		Fragments will not be distinct units for unfragmented landscapes (with above around 50% habitat cover).</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_fragments</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initiates the FragmentLandscape object with the supplied parameters.</span>
+
+<span class="sd">		:param number_fragments: the number of individual fragments to exist on the landscape</span>
+<span class="sd">		:param size: the size of the x and y dimensions of the landscape</span>
+<span class="sd">		:param total: the total number of individuals to place on the landscape</span>
+<span class="sd">		:param output_file: the output tif file to write the output to</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="c1"># upper bound for the number of x, y dimensions required</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_rows</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">is_shrunk</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c1"># this will be true if this height is less than the width</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">total_added</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># if this number is 0, we have no more extra points to add</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">needs_voronoi</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="k">if</span> <span class="n">number_fragments</span> <span class="ow">and</span> <span class="n">size</span> <span class="ow">and</span> <span class="n">total</span> <span class="ow">and</span> <span class="n">output_file</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">number_fragments</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FragmentedLandscape.setup"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.setup">[docs]</a>	<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_fragments</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sets up the landscape by checking parameters and setting object sizes.</span>
+
+<span class="sd">		:param number_fragments: the number of individual fragments to exist on the landscape</span>
+<span class="sd">		:param size: the size of the x and y dimensions of the landscape</span>
+<span class="sd">		:param total: the total number of individuals to place on the landscape</span>
+<span class="sd">		:param output_file: the output tif file to write the output to</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span> <span class="o">=</span> <span class="n">number_fragments</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="n">output_file</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">)]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_precursory_validation</span><span class="p">(</span><span class="n">number_fragments</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FragmentedLandscape.generate"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.generate">[docs]</a>	<span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override_smoothing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Convenience function for creating fragments in one function. Generates the landscape and writes out to the</span>
+<span class="sd">		output file.</span>
+
+<span class="sd">		If smoothing is true, will run Lloyd&#39;s algorithm</span>
+<span class="sd">		after the hexagonal packing algorithm to increase the equality of the spacing.</span>
+
+<span class="sd">		.. note:: smoothing is recommended for any landscape that is doesn&#39;t contain a square number of fragments.</span>
+
+<span class="sd">		:param override_smoothing: if true, overrides the default smoothing settings (enabled for landscapes with fewer</span>
+<span class="sd">			than 100000 fragments.</span>
+<span class="sd">		:param n: the number of iterations to run Lloyd&#39;s algorithm for</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_file_and_path</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">override_smoothing</span><span class="o">=</span><span class="n">override_smoothing</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">write_to_raster</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FragmentedLandscape.create"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.create">[docs]</a>	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override_smoothing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the landscape, including running the hexagonal packing and smoothing algorithms (if required).</span>
+
+<span class="sd">		.. note:: smoothing is recommended for any landscape that is doesn&#39;t contain a square number of fragments.</span>
+
+<span class="sd">		:param override_smoothing: if true, overrides the default smoothing settings (enabled for landscapes with fewer</span>
+<span class="sd">			than 100000 fragments.</span>
+
+<span class="sd">		:param n: the number of iterations to run Lloyd&#39;s algorithm for</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">smoothing</span> <span class="o">=</span> <span class="bp">True</span>
+		<span class="k">if</span> <span class="n">override_smoothing</span><span class="p">:</span>
+			<span class="n">smoothing</span> <span class="o">=</span> <span class="n">override_smoothing</span>
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
+			<span class="n">smoothing</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">place_fragments</span><span class="p">(</span><span class="n">smoothing</span><span class="o">=</span><span class="n">smoothing</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fill_grid</span><span class="p">()</span></div>
+
+	<span class="k">def</span> <span class="nf">_check_file_and_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the file does not already exist and the file path exists.</span>
+
+<span class="sd">		:raises FileExistsError if the file already exists.</span>
+
+<span class="sd">		:param file: the file to check for</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="n">FileExistsError</span><span class="p">(</span><span class="s2">&quot;File is None&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="n">FileExistsError</span><span class="p">(</span><span class="s2">&quot;File already exists at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">))</span>
+		<span class="n">check_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FragmentedLandscape.place_fragments"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.place_fragments">[docs]</a>	<span class="k">def</span> <span class="nf">place_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smoothing</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Places the fragments evenly on the landscape. If smoothing is true, will run Lloyd&#39;s algorithm after the</span>
+<span class="sd">		hexagonal packing algorithm to increase the equality of the spacing.</span>
+
+<span class="sd">		.. note:: smoothing is recommended for any landscape that is doesn&#39;t contain a square number of fragments.</span>
+
+<span class="sd">		:param smoothing: if true, runs Lloyd&#39;s algorithm after the hexagonal packing</span>
+<span class="sd">		:param n: the number of iterations to run Lloyd&#39;s algorithm for</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_calculate_dimensions</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_place_initial_grid</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_add_remainders</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_scale_fragment_centres</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">smoothing</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_smooth_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FragmentedLandscape.fill_grid"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.fill_grid">[docs]</a>	<span class="k">def</span> <span class="nf">fill_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Distributes the sizes evenly between the fragments, generating the actual landscape.</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_fill_fragments</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+			<span class="n">fragment</span><span class="o">.</span><span class="n">place_on_grid</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_fill_next_cell</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_final_validation</span><span class="p">()</span></div>
+
+	<span class="k">def</span> <span class="nf">_fill_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generates the sizes for the fragments, splitting the sizes as evenly across the landscape as possible</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">lower_size</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">)</span>
+		<span class="n">running_total</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+			<span class="n">fragment</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">lower_size</span>
+			<span class="n">running_total</span> <span class="o">+=</span> <span class="n">lower_size</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">-</span> <span class="n">running_total</span>
+		<span class="k">if</span> <span class="n">diff</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">increment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span> <span class="o">/</span> <span class="n">diff</span>
+			<span class="k">while</span> <span class="n">running_total</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">i</span><span class="p">))]</span><span class="o">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+				<span class="n">i</span> <span class="o">+=</span> <span class="n">increment</span>
+				<span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">:</span>
+					<span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span>
+				<span class="n">running_total</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="n">running_total</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+			<span class="n">running_total</span> <span class="o">+=</span> <span class="n">frag</span><span class="o">.</span><span class="n">size</span>
+		<span class="k">if</span> <span class="n">running_total</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Generated total greater than expected total: {} &gt; {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">running_total</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_fill_next_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_x</span><span class="p">,</span> <span class="n">cell_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fills the next cell from the given point by spiralling outwards until it reaches a cell that is empty.</span>
+
+<span class="sd">		This uses the archimedian spiral formula from the centre of fragments and calls itself recursively to generate</span>
+<span class="sd">		the new points.</span>
+
+<span class="sd">		:raises TypeError: if the grid is too small for the number of points to add.</span>
+
+<span class="sd">		:param cell_x: the x coordinate of the centre of the spiral</span>
+<span class="sd">		:param cell_y: the y coordinate of the centre of the spiral</span>
+<span class="sd">		:param radius: the radius for the archimedian spiral. This is increased as cells are checked</span>
+<span class="sd">		:param theta: the angle for the archimedian spiral. This is increased as cells are checked</span>
+<span class="sd">		:param size: the number of individuals yet to place</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="c1"># Use the archimedian spiral formula</span>
+			<span class="k">while</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">check_x</span><span class="p">,</span> <span class="n">check_y</span> <span class="o">=</span> <span class="n">archimedes_spiral</span><span class="p">(</span><span class="n">cell_x</span><span class="p">,</span> <span class="n">cell_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+				<span class="n">check_x</span> <span class="o">=</span> <span class="n">check_x</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+				<span class="n">check_y</span> <span class="o">=</span> <span class="n">check_y</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+				<span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">check_x</span><span class="p">,</span> <span class="n">check_y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="n">theta</span> <span class="o">+=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+					<span class="n">radius</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+					<span class="n">check_x</span><span class="p">,</span> <span class="n">check_y</span> <span class="o">=</span> <span class="n">archimedes_spiral</span><span class="p">(</span><span class="n">cell_x</span><span class="p">,</span> <span class="n">cell_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+					<span class="n">check_x</span> <span class="o">=</span> <span class="n">check_x</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+					<span class="n">check_y</span> <span class="o">=</span> <span class="n">check_y</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+					<span class="k">if</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+						<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Grid too small for adding fragment sizes!&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">check_x</span><span class="p">,</span> <span class="n">check_y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+				<span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+		<span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
+			<span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;Error placing points. Please report this bug: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ie</span><span class="p">)</span>
+			<span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_calculate_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Calculates the dimensions of the landscape in terms of columns and rows of fragments.</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_rows</span> <span class="o">=</span> <span class="mi">1</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">=</span> <span class="mi">1</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_rows</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_rows</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">:</span>
+				<span class="c1"># Then the case is very basic. Yay!</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_rows</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># Should use Lloyd&#39;s algorthim with Voronoi diagrams</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">))</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_place_initial_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Places the initial points on the grid, without worrying about the remainders.</span>
+
+<span class="sd">		This is a very basic hexagonal packing algorithm.</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span><span class="p">)):</span>
+			<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span><span class="p">)):</span>
+				<span class="k">if</span> <span class="n">y</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="c1"># offset the odd indices</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">total_added</span><span class="p">]</span> <span class="o">=</span> <span class="n">Fragment</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">total_added</span><span class="p">]</span> <span class="o">=</span> <span class="n">Fragment</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">total_added</span> <span class="o">+=</span> <span class="mi">1</span>
+
+	<span class="k">def</span> <span class="nf">_add_remainders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the remainder points to the outside of the grid, adding to odd columns, from the inside out.</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_added</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Total added ({}) plus remainder ({}) != the number of fragments ({}).&quot;</span>
+							 <span class="s2">&quot; Please report this bug.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_added</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_fragments</span><span class="p">))</span>
+		<span class="n">tot</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">iteration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span>
+			<span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">total_added</span><span class="p">]</span> <span class="o">=</span> <span class="n">Fragment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tot</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">-=</span> <span class="mi">1</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">total_added</span> <span class="o">+=</span> <span class="mi">1</span>
+				<span class="n">tot</span> <span class="o">+=</span> <span class="n">iteration</span>
+			<span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">total_added</span><span class="p">]</span> <span class="o">=</span> <span class="n">Fragment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_cols</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">-=</span> <span class="mi">1</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">total_added</span> <span class="o">+=</span> <span class="mi">1</span>
+
+	<span class="k">def</span> <span class="nf">_scale_fragment_centres</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Scales the fragment centres from their values so that they correctly cover the whole landscape.</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">maximum_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">each</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">])</span> <span class="o">+</span> <span class="mf">0.5</span>
+		<span class="n">maximum_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">each</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">])</span> <span class="o">+</span> <span class="mf">0.5</span>
+		<span class="n">scaling_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">maximum_x</span>
+		<span class="n">scaling_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">maximum_y</span>
+		<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+			<span class="n">fragment</span><span class="o">.</span><span class="n">x</span> <span class="o">*=</span> <span class="n">scaling_x</span>
+			<span class="n">fragment</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="n">scaling_y</span>
+
+	<span class="k">def</span> <span class="nf">_smooth_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Smooth the points using Lloyd&#39;s algorithm so that they are more evenly spaced. Increase n to increase the number</span>
+<span class="sd">		of iterations of Lloyd&#39;s algorithm and increase the convergence.</span>
+
+<span class="sd">		Note that LLoyd&#39;s algorithm only finds a local solution for equal distances between points.</span>
+
+<span class="sd">		:param n: the number of iterations of Lloyd&#39;s algorithm (higher is more even spacing)</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="n">fragment</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">]</span>
+		<span class="n">maxima</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+		<span class="n">new_points</span> <span class="o">=</span> <span class="n">lloyds_algorithm</span><span class="p">(</span><span class="n">points_list</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">maxima</span><span class="o">=</span><span class="n">maxima</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">):</span>
+			<span class="n">fragment</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">new_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">_precursory_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_fragments</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">total</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the dimensions and numbers make sense.</span>
+
+<span class="sd">		:raises ValueError: if the combination of parameters does not make sense.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">number_fragments</span> <span class="o">&gt;</span> <span class="n">size</span> <span class="o">*</span> <span class="n">size</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot add more fragments than cells on the grid.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">number_fragments</span> <span class="o">&gt;</span> <span class="n">total</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot add more fragments than total individuals.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="n">size</span> <span class="o">*</span> <span class="n">size</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot add more individuals than cells on the grid.&quot;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_final_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the number of fragments is correct, that each fragment exists within the plot and</span>
+
+<span class="sd">		:raises ValueError: if any of the validation checks fail</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_added</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Fragment number not correct. Please report this bug.&quot;</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Fragments not set up correctly. Please report this bug.&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remainder</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Remainders not correct. Please report this bug.&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Total does not equal size: {} != {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">),</span>
+																			   <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">)))</span>
+		<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">ve</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Validation failed: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ve</span><span class="p">))</span>
+
+<div class="viewcode-block" id="FragmentedLandscape.write_to_raster"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.write_to_raster">[docs]</a>	<span class="k">def</span> <span class="nf">write_to_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes the landscape to a tif file.</span>
+
+<span class="sd">		:raises FileExistsError: if the output file already exists</span>
+
+<span class="sd">		:param output_file: the path to the tif file to write out to.</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_file_and_path</span><span class="p">()</span>
+		<span class="n">geotransform</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+		<span class="c1"># Stupid attempt to fix the no data issue for writing out numpy arrays</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+		<span class="n">output_raster</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s1">&#39;GTiff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">,</span>
+															 <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+															 <span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Byte</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">output_raster</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create tif file at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">))</span>
+		<span class="n">output_raster</span><span class="o">.</span><span class="n">SetGeoTransform</span><span class="p">(</span><span class="n">geotransform</span><span class="p">)</span>
+		<span class="n">out_band</span> <span class="o">=</span> <span class="n">output_raster</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">out_band</span><span class="o">.</span><span class="n">WriteArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+		<span class="n">out_band</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>
+		<span class="n">out_band</span><span class="o">.</span><span class="n">SetNoDataValue</span><span class="p">(</span><span class="o">-</span><span class="mi">99</span><span class="p">)</span>
+		<span class="k">del</span> <span class="n">output_raster</span></div>
+
+<div class="viewcode-block" id="FragmentedLandscape.plot"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragments.FragmentedLandscape.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Returns a matplotlib.pyplot.figure object containing an image of the fragmented landscape (with axes removed).</span>
+
+<span class="sd">		Requires that the fragmented landscape has been created already using :meth:`~create`.</span>
+
+<span class="sd">		:return: figure object containing the fragmented landscape.</span>
+<span class="sd">		:rtype: matplotlib.pyplot.figure</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+		<span class="n">fig</span><span class="o">.</span><span class="n">figimage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys_r&quot;</span><span class="p">,</span> <span class="n">resize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">fig</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

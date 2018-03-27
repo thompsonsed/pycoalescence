@@ -4,7 +4,8 @@ Routines for assisting in porting older outputs of simulations to updated naming
 
 import sqlite3
 
-from .coalescence_tree import check_sql_table_exist
+from sqlite_connection import check_sql_table_exist
+
 
 def update_parameter_names(database):
 	"""

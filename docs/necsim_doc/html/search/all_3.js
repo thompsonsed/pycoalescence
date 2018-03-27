@@ -18,8 +18,10 @@ var searchData=
   ['doapplication',['doApplication',['../class_community.html#a8ce443a30731d2249852d2b615f4a29a',1,'Community::doApplication(SpecSimParameters *sp)'],['../class_community.html#a7289dd39ee9b69ca314e1752a7b45701',1,'Community::doApplication(SpecSimParameters *sp, Row&lt; TreeNode &gt; *data)']]],
   ['doapplicationinternal',['doApplicationInternal',['../class_community.html#aee7488d02cccb897ed1d561e242391df',1,'Community']]],
   ['doimport',['doImport',['../class_data_mask.html#a85f7b85bb4ac54aa884a8a06f1d35d1b',1,'DataMask']]],
+  ['double_5fquote_5fescape',['double_quote_escape',['../structio_1_1double__quote__escape.html',1,'io']]],
   ['dumpactive',['dumpActive',['../class_tree.html#aca99503f49b91baae7401423fe547daf',1,'Tree']]],
   ['dumpdata',['dumpData',['../class_tree.html#acd23fa139c7d097315c9479187b1a674',1,'Tree']]],
   ['dumpmain',['dumpMain',['../class_tree.html#a4c2988184328a5236ca61f16744cfac2',1,'Tree']]],
-  ['dumpmap',['dumpMap',['../class_spatial_tree.html#a51b4c8703d179cc4a4c861f8b36b4a9b',1,'SpatialTree']]]
+  ['dumpmap',['dumpMap',['../class_spatial_tree.html#a51b4c8703d179cc4a4c861f8b36b4a9b',1,'SpatialTree']]],
+  ['duplicated_5fcolumn_5fin_5fheader',['duplicated_column_in_header',['../structio_1_1error_1_1duplicated__column__in__header.html',1,'io::error']]]
 ];

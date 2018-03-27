@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File SimulateDispersal.h &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File SimulationTemplates.h" href="file_necsim_SimulationTemplates.h.html" />
+    <link rel="prev" title="File SimulateDispersal.h" href="file_necsim_SimulateDispersal.h.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulationTemplates.h.html" title="File SimulationTemplates.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulateDispersal.h.html" title="File SimulateDispersal.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.h.html" accesskey="U">File SimulateDispersal.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-simulatedispersal-h">
+<span id="program-listing-file-necsim-simulatedispersal-h"></span><h1>Program Listing for File SimulateDispersal.h<a class="headerlink" href="#program-listing-for-file-simulatedispersal-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_SimulateDispersal.h.html#file-necsim-simulatedispersal-h"><span class="std std-ref">File SimulateDispersal.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+
+<span class="cp">#ifndef DISPERSAL_TEST</span>
+<span class="cp">#define DISPERSAL_TEST</span>
+<span class="cp">#ifndef PYTHON_COMPILE</span>
+<span class="cp">#define PYTHON_COMPILE</span>
+<span class="cp">#endif</span>
+<span class="cp">#include</span><span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Map.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
+<span class="k">struct</span> <span class="n">Cell</span>
+<span class="p">{</span>
+    <span class="kt">long</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">Cell</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Cell</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span>
+    <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">double</span> <span class="nf">distanceBetween</span><span class="p">(</span><span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c2</span><span class="p">);</span>
+
+<span class="k">class</span> <span class="nc">SimulateDispersal</span>
+<span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// The density map object</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">density_map</span><span class="p">;</span>
+    <span class="c1">// Set to true when the size of the density map has been set</span>
+    <span class="kt">bool</span> <span class="n">has_set_size</span><span class="p">;</span>
+    <span class="c1">// The random number generator object</span>
+    <span class="n">NRrand</span> <span class="n">random</span><span class="p">;</span>
+    <span class="c1">// The map file path</span>
+    <span class="n">string</span> <span class="n">map_name</span><span class="p">;</span>
+    <span class="c1">// The random number seed</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">;</span>
+    <span class="c1">// The dispersal method</span>
+    <span class="n">string</span> <span class="n">dispersal_method</span><span class="p">;</span>
+    <span class="c1">// The dispersal sigma value</span>
+    <span class="kt">double</span> <span class="n">sigma</span><span class="p">;</span>
+    <span class="c1">// The dispersal nu value (for fat-tailed dispersal kernels)</span>
+    <span class="kt">double</span> <span class="n">tau</span><span class="p">;</span>
+    <span class="c1">// The dispersal m_probability - chance of picking from a uniform distribution (for norm-uniform dispersal kernels)</span>
+    <span class="kt">double</span> <span class="n">m_prob</span><span class="p">;</span>
+    <span class="c1">// The maximum dispersal distance for the norm-uniform dispersal distance</span>
+    <span class="kt">double</span> <span class="n">cutoff</span><span class="p">;</span>
+    <span class="c1">// The sqlite3 database object for storing outputs</span>
+    <span class="n">sqlite3</span> <span class="o">*</span> <span class="n">database</span><span class="p">;</span>
+    <span class="c1">// Vector for storing successful dispersal distances</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">distances</span><span class="p">;</span>
+    <span class="c1">// Vector for storing the cells (for randomly choosing from)</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="n">cells</span><span class="p">;</span>
+    <span class="c1">// The number of repeats to run the dispersal loop for</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num_repeats</span><span class="p">;</span>
+    <span class="c1">// The number of num_steps within each dispersal loop for the average distance travelled/</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num_steps</span><span class="p">;</span>
+    <span class="c1">// The maximal density value</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_density</span><span class="p">;</span>
+    <span class="c1">// If true, sequentially selects dispersal probabilities, default is true</span>
+    <span class="kt">bool</span> <span class="n">is_sequential</span><span class="p">;</span>
+    <span class="c1">// Reference number for this set of parameters in the database output</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">parameter_reference</span><span class="p">;</span>
+    <span class="c1">// Function pointer for the landscape function</span>
+    <span class="k">typedef</span> <span class="nf">bool</span> <span class="p">(</span><span class="n">SimulateDispersal</span><span class="o">::*</span><span class="n">landscape_fptr</span><span class="p">)(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span>
+                                                      <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+    <span class="n">landscape_fptr</span> <span class="n">getValFptr</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">SimulateDispersal</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">has_set_size</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">m_prob</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">cutoff</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">num_repeats</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">max_density</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">is_sequential</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">parameter_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">SimulateDispersal</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setSequential</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bSequential</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setSizes</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setSeed</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+        <span class="n">random</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setDispersalParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">dispersal_method_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">sigma_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">tau_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">m_prob_in</span><span class="p">,</span>
+                                 <span class="kt">double</span> <span class="n">cutoff_in</span><span class="p">,</span> <span class="n">string</span> <span class="n">landscape_type</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setLandscapeType</span><span class="p">(</span><span class="n">string</span> <span class="n">landscape_type</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setOutputDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">out_database</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setNumberRepeats</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">setNumberSteps</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">storeCellList</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">Cell</span><span class="o">&amp;</span> <span class="n">getRandomCell</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calculateNewPosition</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">start_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">getEndPointInfinite</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">getEndPointTiled</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">getEndPointClosed</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">getEndPoint</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">runMeanDispersalDistance</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">runMeanDistanceTravelled</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">writeDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">writeParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">checkMaxParameterReference</span><span class="p">();</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">checkMaxIdNumber</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_SimulateDispersal.h.html"
+                        title="previous chapter">File SimulateDispersal.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_SimulationTemplates.h.html"
+                        title="next chapter">File SimulationTemplates.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_SimulateDispersal.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulationTemplates.h.html" title="File SimulationTemplates.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulateDispersal.h.html" title="File SimulateDispersal.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.h.html" >File SimulateDispersal.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

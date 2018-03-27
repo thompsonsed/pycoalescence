@@ -4,65 +4,33 @@ Contains the Map class as part of the PyCoalescence Project.
 Operations involve simulating dispersal kernels on maps, detecting map file dimensions and obtaining offsets between
 maps.
 """
-import copy
 import logging
-import warnings
-import types
-import sys
-import os
 import math
 
+import copy
 import numpy as np
+import os
+import types
+
+from pycoalescence.spatial_algorithms import convert_coordinates
+
 try:
 	NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
 except AttributeError:
-	# No support for complex numbers compile
+	# No support for complex numbers compilation
 	NumberTypes = (int, float)
-
 try:
-	from osgeo import gdal
+	from osgeo import gdal, ogr, osr
+	default_val = gdal.GDT_Float32
 except ImportError as ie:
+	default_val = 6
 	try:
 		import gdal
+		from gdal import ogr, osr
 	except ImportError:
 		gdal = None
-		logging.warning("Problem importing  (gdal) modules. " + str(ie))
-
-necsim_import_success = False
-import_warnings = []
-try:
-	# Python 2
-	try:
-		from build import Dispersal
-	except ImportError as ime:
-		import_warnings.append(ime)
-		from .build import Dispersal
-	DispersalError = Dispersal.DispersalError
-	necsim_import_success = True
-except (AttributeError, ImportError) as ie:
-	logging.warning(
-		"Could not import dispersal shared objects. Check compilation has been successfully completed under "
-		"same python version.")
-	logging.warning(str(ie))
-	for each in import_warnings:
-		logging.warning(each)
-	necsim_import_success = False
-
-
-	class DispersalError(Exception):
-		pass
-
-try:
-	try:
-		import sqlite3
-	except ImportError:
-		# Python 3 compatibility
-		import sqlite as sqlite3
-except ImportError as ie:
-	sqlite3 = None
-	logging.warning("Problem importing sqlite module " + str(ie))
-
-from .system_operations import check_file_exists, create_logger, write_to_log, check_parent
+		raise ie
+from .system_operations import check_file_exists, create_logger, check_parent, isclose
 
 
 class Map(object):
@@ -72,10 +40,12 @@ class Map(object):
 	The internal array of the tif file is stored in self.data, and band 1 of the file can be opened by using
 	open()
 
+	.. important:: Currently, Map does not support skewed rasters (not north/south).
+
 	:ivar data: if the map file has been opened, contains the full tif data as a numpy array.
 	"""
 
-	def __init__(self, file=None, is_sample=None, logging_level=logging.WARNING, dispersal_db=None):
+	def __init__(self, file=None, is_sample=None, logging_level=logging.WARNING):
 		"""
 		Constructor for the Map class, optionally setting the sample map, the logging level and the dispersal database
 		location (if a dispersal simulation has already been run).
@@ -83,10 +53,7 @@ class Map(object):
 		:param file: sets the filename for reading tif files.
 		:param is_sample: sets the sample mask to true, if it is a sampled file
 		:param logging_level: the level of logging to output during dispersal simulations
-		:param dispersal_db: path to a complete dispersal simulation database. Can also be a Map object containing the
-		completed simulation
 		"""
-		self._db_conn = None
 		self.data = None
 		self.file_name = file
 		self.band_number = None
@@ -96,16 +63,14 @@ class Map(object):
 		self.y_offset = 0
 		self.x_res = 0
 		self.y_res = 0
+		self.y_ul = 0
+		self.x_ul = 0
 		self.dimensions_set = False
 		self.is_sample = is_sample
 		self.logging_level = logging_level
 		self.logger = logging.Logger("maplogger")
 		self._create_logger()
-		# The dispersal simulation data
-		if isinstance(dispersal_db, Map):
-			self.dispersal_database = dispersal_db.dispersal_database
-		else:
-			self.dispersal_database = dispersal_db
+
 
 	def __del__(self):
 		"""
@@ -119,7 +84,9 @@ class Map(object):
 	def __deepcopy__(self, memo):
 		"""
 		Overriding the default deep copy operator to ignore copying the logger object
+
 		:param memo: the memorised key values
+
 		:return: the copy of the Map object
 		"""
 		cls = self.__class__
@@ -140,17 +107,50 @@ class Map(object):
 
 		:rtype: None
 		"""
-		if file:
-			self.file_name = file
-		if self.file_name is None:
-			raise ValueError("Cannot open file as it is {}".format(self.file_name))
-		if not os.path.exists(self.file_name):
-			raise IOError("File {} does not exist for reading.".format(self.file_name))
+		if not self.output_exists(file):
+			check_file_exists(self.file_name)
 		ds = gdal.Open(self.file_name)
 		self.band_number = band_no
 		self.data = np.array(ds.GetRasterBand(self.band_number).ReadAsArray(),
 							 dtype=np.float)
 		ds = None
+
+	def get_dtype(self, band_no=None):
+		"""
+		Gets the data type of the provided band number
+		:param band_no: band number to obtain the data type of
+
+		:rtype: int
+		:return: the gdal data type number in the raster file
+		"""
+		ds = gdal.Open(self.file_name)
+		if band_no is None:
+			if self.band_number is None:
+				self.band_number = 1
+		else:
+			self.band_number = band_no
+		check_file_exists(self.file_name)
+		ds = gdal.Open(self.file_name)
+		data_type = ds.GetRasterBand(self.band_number).DataType
+		ds = None
+		return data_type
+
+	def output_exists(self, file=None):
+		"""
+		Checks if the output (or provided file) exists.
+
+		If file is provided, self.file_name is set to file.
+
+		:param file: optionally, the file to check exists
+
+		:return: true if the output file does exist
+		:rtype bool:
+		"""
+		if file:
+			self.file_name = file
+		if self.file_name is None:
+			raise ValueError("Cannot check existence of {}".format(self.file_name))
+		return os.path.exists(self.file_name)
 
 	def write(self, file=None, band_no=None):
 		"""
@@ -163,13 +163,9 @@ class Map(object):
 
 		:rtype None
 		"""
-		if file:
-			self.file_name = file
 		if band_no:
 			self.band_number = band_no
-		if self.file_name is None:
-			raise ValueError("Cannot open file as it is {}".format(self.file_name))
-		if not os.path.exists(self.file_name):
+		if not self.output_exists(file):
 			raise IOError("File {} does not exist for writing.".format(self.file_name))
 		ds = gdal.Open(self.file_name, gdal.GA_Update)
 		if not ds:
@@ -182,17 +178,16 @@ class Map(object):
 
 	def create(self, file, bands=1):
 		"""
-		Create the file output and writes the grid to the output.
+		Create the file output and writes the data to the output.
+
 		:param file: the output file to create
 		:param bands: optionally provide a number of bands to create
 		"""
-		#TODO unittests for this
 		if self.data is None:
 			raise ValueError("Data is None for writing to file.")
 		geotransform = (0, 1, 0, 0, 0, -1)
-		if os.path.exists(file):
+		if self.output_exists(file):
 			raise IOError("File already exists at {}.".format(file))
-		self.file_name = file
 		check_parent(self.file_name)
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.file_name,
 															 self.data.shape[1], self.data.shape[0], bands,
@@ -205,6 +200,26 @@ class Map(object):
 		out_band.FlushCache()
 		out_band.SetNoDataValue(-99)
 		del output_raster
+
+	def create_copy(self, dst_file, src_file=None):
+		"""
+		Creates a file copying projection and other attributes over from the desired copy
+
+		:param dst_file: existing file to copy attributes from
+		:param src_file: the output file to create
+		"""
+		if src_file is None:
+			src_file = self.file_name
+		if not os.path.exists(src_file):
+			raise IOError("File does not exist at {}.".format(src_file))
+		if self.output_exists(dst_file):
+			raise IOError("File already exists at {}.".format(dst_file))
+		src_ds = gdal.Open(src_file)
+		driver = gdal.GetDriverByName("GTiff")
+		dst_ds = driver.CreateCopy(dst_file, src_ds, strict=0)
+		# Once we're done, close properly the dataset
+		dst_ds = None
+		src_ds = None
 
 	def set_dimensions(self, file_name=None, x_size=None, y_size=None, x_offset=None, y_offset=None):
 		""" Sets the dimensions and file for the Map object
@@ -228,7 +243,7 @@ class Map(object):
 			x_size = None
 			y_size = None
 		if x_size is None:
-			self.x_size, self.y_size, self.x_offset, self.y_offset, self.x_res, self.y_res = self.read_dimensions()
+			self.x_size, self.y_size, _, _, self.x_res, self.y_res, self.x_ul, self.y_ul = self.read_dimensions()
 			self.dimensions_set = True
 		else:
 			self.x_size = x_size
@@ -250,7 +265,7 @@ class Map(object):
 		:param bool is_sample: indicates this is a sample mask rather than offset map
 		"""
 		if is_sample:
-			self.zero_offset()
+			self.zero_offsets()
 			self.is_sample = True
 
 	def zero_offsets(self):
@@ -263,8 +278,8 @@ class Map(object):
 	def check_map(self):
 		"""Checks that the dimensions for the map have been set and that the map file exists"""
 		if not (isinstance(self.x_size, NumberTypes) and isinstance(self.y_size, NumberTypes) and
-					isinstance(self.x_offset, NumberTypes) and isinstance(self.y_offset, NumberTypes) and
-					isinstance(self.x_res, NumberTypes) and isinstance(self.y_res, NumberTypes)):
+				isinstance(self.x_offset, NumberTypes) and isinstance(self.y_offset, NumberTypes) and
+				isinstance(self.x_res, NumberTypes) and isinstance(self.y_res, NumberTypes)):
 			raise ValueError(
 				"values not set as numbers in " + self.file_name + ": " + str(self.x_size) + ", " + str(self.y_size) +
 				" | " + str(self.x_offset) + ", " + str(self.y_offset) +
@@ -284,28 +299,41 @@ class Map(object):
 			raise ImportError("Gdal module not imported correctly: cannot read tif files")
 		if ".tif" not in self.file_name:
 			raise IOError("tif file not detected - dimensions cannot be read: " + self.file_name)
-		if not os.path.exists(self.file_name):
+		if not self.output_exists():
 			raise IOError(
 				"File " + str(self.file_name) + " does not exist or is not accessible. Check read/write access.")
 		ds = gdal.Open(self.file_name)
+		if ds is None:
+			raise IOError("Gdal could not open the file {}.".format(self.file_name))
 		x = ds.RasterXSize
 		y = ds.RasterYSize
 		ulx, xres, xskew, uly, yskew, yres = ds.GetGeoTransform()
 		ds = None
-		return [x, y, ulx, uly, xres, yres]
+		return [x, y, self.x_offset, self.y_offset, xres, yres, ulx, uly]
 
 	def get_dimensions(self):
 		"""
 		Calls read_dimensions() if dimensions have not been read, or reads stored information.
 
-		:return: a list containing [0] x, [1] y, [2] upper left x, [3] upper left y, [4] x resolution, [5] y resolution
-		.. note:: the returned list will contain the x and y offset values instead of the ulx and uly values if the
-				  dimensions have already been set (i.e. self.x_size != 0 and self.y_size != 0)
+		:return: a list containing [0] x, [1] y, [2] x offset, [3] y offset, [4] x resolution, [5] y resolution,
+				 [6] upper left x, [7] upper left y
 		"""
 		if self.x_size == 0 and self.y_size == 0:
 			return self.read_dimensions()
 		else:
-			return [self.x_size, self.y_size, self.x_offset, self.y_offset, self.x_res, self.y_res]
+			return [self.x_size, self.y_size, self.x_offset, self.y_offset, self.x_res, self.y_res,
+					self.x_ul, self.y_ul]
+
+	def get_projection(self):
+		"""
+		Gets the projection of the map
+		"""
+		if not self.output_exists():
+			raise IOError("Output file {} does not exist for fetching projection.".format(self.file_name))
+		ds = gdal.Open(self.file_name)
+		sr = ds.GetProjection()
+		ds = None
+		return sr
 
 	def get_cached_subset(self, x_offset, y_offset, x_size, y_size):
 		"""
@@ -322,7 +350,7 @@ class Map(object):
 			raise ImportError("Gdal module not imported correctly: cannot read tif files")
 		if ".tif" not in self.file_name:
 			raise IOError("tif file not detected - dimensions cannot be read: " + self.file_name)
-		if not os.path.exists(self.file_name):
+		if not self.output_exists():
 			raise IOError(
 				"File " + str(self.file_name) + " does not exist or is not accessible. Check read/write access.")
 		if self.data is None:
@@ -343,13 +371,29 @@ class Map(object):
 			raise ImportError("Gdal module not imported correctly: cannot read tif files")
 		if ".tif" not in self.file_name:
 			raise IOError("tif file not detected - dimensions cannot be read: " + self.file_name)
-		if not os.path.exists(self.file_name):
+		if not self.output_exists():
 			raise IOError(
 				"File " + str(self.file_name) + " does not exist or is not accessible. Check read/write access.")
 		ds = gdal.Open(self.file_name)
 		to_return = np.array(ds.GetRasterBand(1).ReadAsArray(x_offset, y_offset, x_size, y_size))
 		ds = None
 		return to_return
+
+	def convert_lat_long(self, lat, long):
+		"""
+		Converts the input latitude and longitude to x, y coordinates on the Map
+
+		:param lat: the latitude to obtain the y coordinate of
+		:param long: the longitude to obtain the x coordinate of
+
+		:raises IndexError: if the provided coordinates are outside the Map object.
+
+		:return: [x, y] coordinates on the Map
+		"""
+		_, _, _, _, pixel_width, pixel_height, x_origin, y_origin = self.get_dimensions()
+		x = int((long - x_origin) / pixel_width)
+		y = int((y_origin - lat) / (-pixel_height))
+		return [x, y]
 
 	def calculate_scale(self, file_scaled):
 		"""
@@ -369,7 +413,7 @@ class Map(object):
 		src = np.array(self.read_dimensions())
 		dst = np.array(scaled.read_dimensions())
 		# Check that each of the dimensions matches
-		out = dst[4:] / src[4:]
+		out = dst[4:6] / src[4:6]
 		if out[0] != out[1]:
 			self.logger.info('Inequal scaling of x and y dimensions. Check map files.')
 		return out[0]
@@ -378,8 +422,12 @@ class Map(object):
 		"""
 		Calculates the offset of the map object from the supplied file_offset.
 
+		The self map should be the smaller
+
 		:param str/Map file_offset: the path to the file to calculate the offset.
 			Can also be a Map object with the filename contained.
+
+		:raises TypeError: if the spatial reference systems of the two files do not match
 
 		:return: the offset x and y (at the resolution of the file_home) in integers
 		"""
@@ -389,7 +437,16 @@ class Map(object):
 		elif isinstance(file_offset, Map):
 			offset = file_offset
 		else:
-			raise ValueError("file_offset type must be Map or str. Type provided: " + str(type(file_offset)))
+			raise TypeError("file_offset type must be Map or str. Type provided: " + str(type(file_offset)))
+		try:
+			if offset.get_projection() != self.get_projection():
+				self.logger.error("Projection of {} does not match projection of {}.\n".format(self.file_name,
+																							 offset.file_name))
+				self.logger.error("{} = {}.\n".format(self.file_name, self.get_projection()))
+				self.logger.error("{} = {}.\n".format(self.file_name, offset.get_projection()))
+				raise TypeError("Projections and spatial reference systems of two maps do not match.")
+		except IOError:
+			pass
 		try:
 			src = np.array(self.read_dimensions())
 		except IOError:
@@ -398,8 +455,238 @@ class Map(object):
 			off = np.array(offset.read_dimensions())
 		except IOError:
 			off = np.array(offset.get_dimensions())
-		diff = [int(round(x, 0)) for x in (src[2:4] - off[2:4]) / src[4:]]
+		diff = [int(round(x, 0)) for x in (src[6:] - off[6:]) / src[4:6]]
 		return diff
+
+	def get_extent(self):
+		"""
+		Gets the left and right x, and lower and upper y values.
+		:return: list of the left x, right x, upper y, lower y values.
+		:rtype: list
+		"""
+		x, y, _, _, x_res, y_res, left_x, upp_y = self.get_dimensions()
+		right_x = left_x + (x * x_res)
+		low_y = upp_y + (y * y_res)
+		return [left_x, right_x, upp_y, low_y]
+
+	def is_within(self, map):
+		"""
+		Checks if the object is within the provided Map object.
+
+		.. note:: Uses the extents of the raster file for checking location, ignoring any offsetting
+
+		:type map: Map
+		:param map: the Map object to check if this class is within
+
+		:return: true if this Map is entirely within the supplied Map
+		:rtype: bool
+		"""
+		if not isinstance(map, Map):
+			raise TypeError("Supplied object must be of Map class.")
+		outer_left_x, outer_right_x, outer_upp_y, outer_low_y = map.get_extent()
+		inner_left_x, inner_right_x, inner_upp_y, inner_low__y = self.get_extent()
+		smaller_list = [outer_left_x, inner_right_x, inner_upp_y, outer_low_y]
+		larger_list = [inner_left_x, outer_right_x, outer_upp_y, inner_low__y]
+		for i, smaller in enumerate(smaller_list):
+			if smaller > larger_list[i]:
+				if not isclose(smaller, larger_list[i], rel_tol=1e-5):
+					return False
+		return True
+
+	def has_equal_dimensions(self, map):
+		"""
+		Checks if the supplied Map has equal dimensions to this Map.
+
+		.. note:: Dimension matching uses an absolute value (0.0001) for latitude/longitude, and relative value for
+				  pixel resolution. The map sizes must fit perfectly.
+
+
+		:type map: Map
+		:param map: the Map object to check if dimensions match
+
+		:return: true if the dimensions match, false otherwise
+		:rtype: bool
+		"""
+		if not isinstance(map, Map):
+			raise TypeError("Supplied object must be of Map class.")
+		this_dims = self.get_dimensions()
+		other_dims = map.get_dimensions()
+		for i, size in enumerate(this_dims[0:2]):
+			if other_dims[i] != size:
+				return False
+		for i, coordinate in enumerate(this_dims[2:4]):
+			if not isclose(other_dims[i + 2], coordinate, abs_tol=0.0001):
+				return False
+		for i, dimension in enumerate(this_dims[4:]):
+			if not isclose(other_dims[i + 4], dimension, rel_tol=1e-4):
+				return False
+		return True
+
+	def rasterise(self, shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, field=None,
+				  burn_val=[1], data_type=default_val, attribute_filter=None,
+				  x_buffer=1, y_buffer=1, **kwargs):
+		"""
+		Rasterises the provided shape file to produce the output raster.
+
+		If x_res or y_res are not provided, self.x_res and self.y_res will be used.
+
+		If a field is provided, the value in that field will become the value in the raster.
+
+		:param shape_file: path to the .shp vector file to rasterise, or an ogr.DataSource object contain the shape file
+		:param raster_file: path to the output raster file (should not already exist)
+		:param x_res: the x resolution of the output raster
+		:param y_res: the y resolution of the output raster
+		:param output_srs: optionally define the output projection of the raster file
+		:param field: the field to set as raster values
+		:param burn_val: the r,g,b value to use if there is no field for the location
+		:param data_type: the gdal type for output data
+		:param attribute_filter: optionally provide a filter to extract features by, of the form "field=fieldval"
+		:param x_buffer: number of extra pixels to include at left and right sides
+		:param y_buffer: number of extra pixels to include at top and bottom
+		:param kwargs: additional options to provide to gdal.RasterizeLayer
+
+		:raises IOError: if the shape file does not exist
+		:raises IOError: if the output raster already exists
+		:raises ValueError: if the provided shape_file is not a .shp file
+		:raises RuntimeError: if gdal throws an error during rasterisation
+
+		:rtype: None
+		"""
+		if self.output_exists(raster_file):
+			raise IOError("File already exists at {}".format(self.file_name))
+		check_parent(self.file_name)
+		if x_res is not None and y_res is not None:
+			self.x_res = x_res
+			self.y_res = y_res
+		if self.x_res is None or self.y_res is None or self.x_res == 0 or self.y_res == 0:
+			raise ValueError("Must provide both an x and y resolution.")
+		# Only continue if the input file is a valid shape file and it exists.
+		if not isinstance(shape_file, ogr.DataSource):
+			if not os.path.exists(shape_file):
+				raise IOError("Shape file does not exist at {}".format(shape_file))
+			if not shape_file.endswith('.shp'):
+				raise ValueError("Provided shape file is not .shp file: ".format(shape_file))
+			orig_data_src = ogr.Open(shape_file)
+		else:
+			orig_data_src = shape_file
+		if not isinstance(output_srs, osr.SpatialReference):
+			if output_srs:
+				output_srs = osr.SpatialReference(wkt=output_srs)
+		if isinstance(burn_val, int) or isinstance(burn_val, float):
+			burn_val = [burn_val]
+		# Open the vector file
+
+		# Make a copy of the layer's data source because we'll need to
+		# modify its attributes table
+		source_ds = ogr.GetDriverByName("Memory").CopyDataSource(orig_data_src, "")
+		source_layer = source_ds.GetLayer(0)
+		if attribute_filter is not None:
+			source_layer.SetAttributeFilter(attribute_filter)
+		source_srs = source_layer.GetSpatialRef()
+		x_min, x_max, y_min, y_max = source_layer.GetExtent()
+		if output_srs and output_srs != source_srs:
+			x_min, y_min = convert_coordinates(x_min, y_min, source_srs, output_srs)
+			x_max, y_max = convert_coordinates(x_max, y_max, source_srs, output_srs)
+		x_dim = int(math.ceil((x_max - x_min) / self.x_res) + (2*x_buffer))
+		y_dim = int(math.ceil((y_max - y_min) / self.y_res) + (2*y_buffer))
+		target_ds = gdal.GetDriverByName('GTiff').Create(self.file_name, x_dim,
+														 y_dim, 1, data_type)
+		if target_ds is None:
+			raise IOError("Could not create raster file at {} with dimensions {}, {} and data type {}".format(
+				self.file_name, x_dim, y_dim, data_type
+			))
+		if output_srs:
+			target_ds.SetProjection(output_srs.ExportToWkt())
+		else:
+			if source_srs:
+				# Make the target raster have the same projection as the source
+				target_ds.SetProjection(source_srs.ExportToWkt())
+			else:
+				# Source has no projection (needs GDAL >= 1.7.0 to work)
+				target_ds.SetProjection('LOCAL_CS["arbitrary"]')
+		target_ds.SetGeoTransform((
+			x_min-(self.x_res * x_buffer), self.x_res, 0,
+			y_max + (self.y_res * y_buffer), 0, -self.y_res,
+		))
+		# Rasterize
+		opts = []
+		kw = {}
+		if "allTouched" not in kwargs:
+			opts.append('allTouched=FALSE')
+		for key in kwargs:
+			opts.append("{}={}".format(key, kwargs[key]))
+		if field is not None and "ATTRIBUTE" not in kwargs:
+			opts.append('attribute={}'.format(field))
+		else:
+			kw["burn_values"] = burn_val
+		kw["options"] = opts
+		err = gdal.RasterizeLayer(target_ds, [1], source_layer, **kw)
+		target_ds.FlushCache()
+		del target_ds
+		if err != 0:
+			raise RuntimeError("Error rasterising layer. Gdal error code: {}".format(err))
+
+	def reproject_raster(self, dest_projection=None,
+						 source_file=None, dest_file=None,
+						 x_scalar=1.0, y_scalar=1.0,
+						 resample_algorithm=gdal.GRA_NearestNeighbour,
+						 warp_memory_limit=0.0):
+		"""
+		Re-writes the file with a new projection.
+
+		.. note:: Writes to an in-memory file (filename_tmp.tif) which then overwrites the original file, unless
+				  dest_file is not None
+
+		:param source_projection: provide a source projection to reproject from
+		:param dest_projection: the destination file projection, cannot be None
+		:param source_file: optionally provide a file name to reproject. Defaults to self.file_name
+		:param dest_file: the destination file to output to (if None, overwrites original file)
+		:param x_scalar: multiplier to change the x resolution by, defaults to 1
+		:param y_scalar: multiplier to change the y resolution by, defaults to 1
+		:param resample_algorithm: should be one of the gdal.GRA algorithms
+		:param warp_memory_limit: optionally provide a memory cache limit (uses default if 0.0)
+		"""
+		if source_file is not None:
+			self.file_name = source_file
+		if dest_projection is None:
+			if x_scalar == 1.0 and y_scalar == 1.0:
+				raise ValueError("Destination projection not provided and no re-scaling - no reprojection possible.")
+			dest_projection = osr.SpatialReference(wkt=self.get_projection())
+		source_ds = gdal.Open(self.file_name, gdal.GA_ReadOnly)
+		# Create the VRT for obtaining the new geotransform
+		tmp_ds = gdal.AutoCreateWarpedVRT(source_ds,
+										  None,  # src_wkt : left to default value --> will use the one from source
+										  dest_projection.ExportToWkt(),
+										  resample_algorithm,
+										  0)
+		dst_xsize = int(tmp_ds.RasterXSize / x_scalar)
+		dst_ysize = int(tmp_ds.RasterYSize / y_scalar)
+		# Re-scale the resolutions
+		dst_gt = list(tmp_ds.GetGeoTransform())
+		dst_gt[1] = dst_gt[1] * x_scalar
+		dst_gt[5] = dst_gt[5] * y_scalar
+		tmp_ds = None
+		data_type = self.get_dtype()
+		if dest_file is None:
+			# Create in-memory driver and populate it
+			mem_drv = gdal.GetDriverByName('MEM')
+			dest = mem_drv.Create('', dst_xsize, dst_ysize, 1, data_type)
+		else:
+			if os.path.exists(dest_file):
+				raise IOError("Destination file already exists at {}.".format(dest_file))
+			dest = gdal.GetDriverByName('GTiff').Create(dest_file, dst_xsize, dst_ysize, 1, data_type)
+		dest.SetProjection(dest_projection.ExportToWkt())
+		dest.SetGeoTransform(dst_gt)
+		gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
+				  warpMemoryLimit=warp_memory_limit)
+		dest.FlushCache()
+		if dest_file is None:
+			os.remove(self.file_name)
+			driver = gdal.GetDriverByName("GTiff")
+			dst_ds = driver.CreateCopy(self.file_name, dest, strict=0)
+			dst_ds.FlushCache()
+			dst_ds = None
+		dest = None
 
 	def get_x_y(self):
 		"""
@@ -424,277 +711,3 @@ class Map(object):
 		if logging_level is None:
 			logging_level = self.logging_level
 		self.logger = create_logger(self.logger, file, logging_level)
-
-	def _open_database_connection(self, database=None):
-		"""
-		Opens the connection to the database, raising the appropriate errors if the database does not exist
-		Should have a matching call to _close_database_connection() for safely destroying the connection to the database
-		file.
-		"""
-		if database is not None:
-			if self.dispersal_database is not None:
-				self._close_database_connection()
-			self.dispersal_database = database
-		if self.dispersal_database is None:
-			raise ValueError("Dispersal database is not set, run test_average_dispersal() first or set dispersal_db.")
-		if not os.path.exists(self.dispersal_database):
-			raise IOError("Dispersal database does not exist: " + self.dispersal_database)
-		# Open the SQLite connection
-		try:
-			self._db_conn = sqlite3.connect(self.dispersal_database)
-		except sqlite3.OperationalError as e:
-			self._db_conn = None
-			raise IOError("Error opening SQLite database: " + str(e))
-
-	def _close_database_connection(self):
-		"""
-		Safely closes the database connection
-		"""
-		if self._db_conn is not None:
-			try:
-				self._db_conn.close()
-				self._db_conn = None
-			except sqlite3.OperationalError as e:
-				self._db_conn = None
-				raise IOError("Could not close database: " + str(e))
-
-	def _check_table_exists(self, database=None, table_name = "DISPERSAL_DISTANCES"):
-		"""
-		Checks that the dispersal distances table exits, and returns true/false.
-
-		:param database: the database to open
-		:return: true if the DISPERSAL_DISTANCES table exists in the output database
-		:rtype bool
-		"""
-		self._open_database_connection(database)
-		existence = self._db_conn.cursor().execute("SELECT name FROM sqlite_master WHERE type='table' AND"
-												   " name='{}';".format(table_name)).fetchone() is not None
-		self._close_database_connection()
-		return existence
-
-	def _setup_dispersal(self, map_file=None):
-		"""
-		Checks that the map file makes sense, and the map file exists.
-
-		:param map_file:
-		:return:
-		"""
-		if map_file is None:
-			if self.file_name is None:
-				raise ValueError("No map file set and none supplied to function.")
-			else:
-				self.file_name = map_file
-		else:
-			self.file_name = map_file
-		# Now calculate dimensions if the map file is not null
-		if self.file_name != "null":
-			self.set_dimensions()
-		elif not self.dimensions_set:
-			raise ValueError("Null map dimensions must be set manually before attemting to simulate dispersal.")
-		# Check the map file exists and dimensions are correct
-		self.check_map()
-
-	def test_mean_distance_travelled(self, number_repeats, number_steps, output_database="output.db", map_file=None,
-									 seed=1, dispersal_method="normal", landscape_type="tiled", sigma=1, tau=1,
-									 m_prob=0.0, cutoff=100):
-		"""
-		Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled
-		after number_steps have been moved.
-
-		.. note::
-
-				mean distance travelled with number_steps=1 should be equivalent to running
-				:func:`~test_mean_dispersal`
-
-		:param int number_repeats: the number of times to iterate on the map
-		:param int number_steps: the number of steps to take each time before recording the distance travelled
-		:param str output_database: the path to the output database
-		:param str map_file: the path to the map file to iterate on
-		:param int seed: the random seed
-		:param str dispersal_method: the dispersal method to use ("normal", "fat-tailed" or "norm-uniform")
-		:param str landscape_type: the landscape type to use ("infinite", "tiled" or "closed")
-		:param float sigma: the sigma value to use for normal and norm-uniform dispersal
-		:param float tau: the tau value to use for fat-tailed dispersal
-		:param float m_prob: the m_prob to use for norm-uniform dispersal
-		:param float cutoff: the cutoff value to use for norm-uniform dispersal
-		:return:
-		"""
-		self._setup_dispersal(map_file=map_file)
-		if output_database == "output.db" and self.file_name is not None:
-			output_database = self.file_name
-		# Delete the file if it exists, and recursively create the folder if it doesn't
-		check_parent(output_database)
-		if necsim_import_success:
-			Dispersal.set_logger(self.logger)
-			Dispersal.set_log_function(write_to_log)
-			Dispersal.test_mean_distance_travelled(output_database, self.file_name, dispersal_method, landscape_type,
-												   sigma, tau, m_prob, cutoff, number_repeats, number_steps, seed,
-												   self.x_size, self.y_size)
-			self.dispersal_database = output_database
-		else:
-			raise ImportError("Successful c++ module import required for testing dispersal functions.")
-
-	def test_mean_dispersal(self, number_repeats, output_database="output.db", map_file=None, seed=1,
-							dispersal_method="normal", landscape_type="tiled", sigma=1, tau=1, m_prob=0.0, cutoff=100,
-							sequential=False):
-		"""
-		Tests the dispersal kernel on the provided map, producing a database containing each dispersal distance for
-		analysis purposes.
-
-		.. note:: should be equivalent to :func:`~test_mean_distance_travelled` with number_steps = 1
-
-		:param int number_repeats: the number of times to iterate on the map
-		:param str output_database: the path to the output database
-		:param str map_file: the path to the map file to iterate on
-		:param int seed: the random seed
-		:param str dispersal_method: the dispersal method to use ("normal", "fat-tailed" or "norm-uniform")
-		:param str landscape_type: the landscape type to use ("infinite", "tiled" or "closed")
-		:param float sigma: the sigma value to use for normal and norm-uniform dispersal
-		:param float tau: the tau value to use for fat-tailed dispersal
-		:param float m_prob: the m_prob to use for norm-uniform dispersal
-		:param float cutoff: the cutoff value to use for norm-uniform dispersal
-		:param bool sequential: if true, end locations of one dispersal event are used as the start for the next. Otherwise,
-		a new random cell is chosen
-		"""
-		self._setup_dispersal(map_file=map_file)
-		if output_database == "output.db" and self.file_name is not None:
-			output_database = self.file_name
-		# Delete the file if it exists, and recursively create the folder if it doesn't
-		check_parent(output_database)
-		if necsim_import_success:
-			Dispersal.set_logger(self.logger)
-			Dispersal.set_log_function(write_to_log)
-			Dispersal.test_mean_dispersal(output_database, self.file_name, dispersal_method, landscape_type, sigma, tau,
-										  m_prob, cutoff, number_repeats, seed, self.x_size, self.y_size,
-										  int(sequential))
-			self.dispersal_database = output_database
-		else:
-			raise ImportError("Successful c++ module import required for testing dispersal functions.")
-
-	def get_mean_dispersal(self, database=None, parameter_reference = 1):
-		"""
-		Gets the mean dispersal for the map if test_mean_dispersal has already been run.
-
-		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
-		:raises: IOError if the output database does not exist
-
-		:param str database: the database to open
-		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
-		:return: mean dispersal from the database
-		"""
-		if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
-			raise IOError("Database {} does not have a DISPERSAL_DISTANCES table".format(self.dispersal_database))
-		try:
-			self._open_database_connection(database=database)
-			cursor = self._db_conn.cursor()
-			sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
-									   (parameter_reference, )).fetchall()[0][0]
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get average distance from database: " + str(e))
-		self._close_database_connection()
-		return sql_fetch
-
-	def get_mean_distance_travelled(self, database=None, parameter_reference=1):
-		"""
-		Gets the mean dispersal for the map if test_mean_dispersal has already been run.
-
-		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
-		:raises: IOError if the output database does not exist
-
-		:param str database: the database to open
-		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
-		:return: mean of dispersal from the database
-		"""
-		if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
-			raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
-		try:
-			self._open_database_connection(database=database)
-			cursor = self._db_conn.cursor()
-			sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
-									   (parameter_reference, )).fetchall()[0][0]
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get average distance from database: " + str(e))
-		self._close_database_connection()
-		return sql_fetch
-
-	def get_stdev_dispersal(self, database=None, parameter_reference=1):
-		"""
-		Gets the standard deviation of dispersal for the map if test_mean_dispersal has already been run.
-
-		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
-		:raises: IOError if the output database does not exist
-
-		:param str database: the database to open
-		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
-		:return: standard deviation of dispersal from the database
-		"""
-		if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
-			raise IOError("Database {} does not have a DISPERSAL_DISTANCES table".format(self.dispersal_database))
-		try:
-			self._open_database_connection(database=database)
-			cursor = self._db_conn.cursor()
-			sql_fetch = [x[0] for x in cursor.execute("SELECT distance FROM DISPERSAL_DISTANCES "
-													  "WHERE parameter_reference = ?",
-													  (parameter_reference, )).fetchall()]
-			if len(sql_fetch) == 0:
-				raise ValueError("No distances in DISPERSAL_DISTANCES, cannot find standard deviation.")
-			stdev_distance = np.std(sql_fetch)
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get average distance from database: " + str(e))
-		self._close_database_connection()
-		return stdev_distance
-
-
-	def get_stdev_distance_travelled(self, database=None, parameter_reference=1):
-		"""
-		Gets the standard deviation of the  distance travelled for the map if test_mean_distance_travelled has already
-		been run.
-
-		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
-		:raises: IOError if the output database does not exist
-
-		:param str database: the database to open
-		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
-
-		:return: standard deviation of dispersal from the database
-		"""
-		if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
-			raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
-		try:
-			self._open_database_connection(database=database)
-			cursor = self._db_conn.cursor()
-			sql_fetch = [x[0] for x in cursor.execute("SELECT distance FROM DISTANCES_TRAVELLED"
-													  " WHERE parameter_reference = ?",
-													  (parameter_reference, )).fetchall()]
-			if len(sql_fetch) == 0:
-				raise ValueError("No distances in DISTANCES_TRAVELLED, cannot find standard deviation.")
-			stdev_distance = np.std(sql_fetch)
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get average distance from database: " + str(e))
-		self._close_database_connection()
-		return stdev_distance
-
-	def get_database_parameters(self):
-		"""
-		Gets the dispersal simulation parameters from the dispersal_db
-		:return: the dispersal simulation parameters
-		"""
-		self._open_database_connection()
-		try:
-			cursor = self._db_conn.cursor()
-			cursor.execute("SELECT ref, simulation_type, sigma, tau, m_prob, cutoff, dispersal_method, map_file, seed,"
-						   " number_steps, number_repeats FROM PARAMETERS")
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
-		column_names = [member[0] for member in cursor.description]
-		main_dict = {}
-		for row in cursor.fetchall():
-			values = [x for x in row]
-			if sys.version_info[0] != 3:
-				for i, each in enumerate(values):
-					if isinstance(each, unicode):
-						values[i] = each.encode('ascii')
-			main_dict[values[0]] = dict(zip(column_names[1:], values[1:]))
-		# Now convert it into a dictionary
-		self._close_database_connection()
-		return main_dict

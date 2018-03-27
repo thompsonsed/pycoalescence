@@ -1,12 +1,8 @@
 var searchData=
 [
-  ['reproductionmap',['ReproductionMap',['../class_reproduction_map.html',1,'']]],
-  ['row',['Row',['../class_row.html',1,'']]],
-  ['row_3c_20bool_20_3e',['Row&lt; bool &gt;',['../class_row.html',1,'']]],
-  ['row_3c_20datapoint_20_3e',['Row&lt; DataPoint &gt;',['../class_row.html',1,'']]],
-  ['row_3c_20double_20_3e',['Row&lt; double &gt;',['../class_row.html',1,'']]],
-  ['row_3c_20specieslist_20_3e',['Row&lt; SpeciesList &gt;',['../class_row.html',1,'']]],
-  ['row_3c_20treenode_20_3e',['Row&lt; TreeNode &gt;',['../class_row.html',1,'']]],
-  ['row_3c_20uint32_5ft_20_3e',['Row&lt; uint32_t &gt;',['../class_row.html',1,'']]],
-  ['row_3c_20unsigned_20long_20_3e',['Row&lt; unsigned long &gt;',['../class_row.html',1,'']]]
+  ['ignore_5foverflow',['ignore_overflow',['../structio_1_1ignore__overflow.html',1,'io']]],
+  ['integer_5fmust_5fbe_5fpositive',['integer_must_be_positive',['../structio_1_1error_1_1integer__must__be__positive.html',1,'io::error']]],
+  ['integer_5foverflow',['integer_overflow',['../structio_1_1error_1_1integer__overflow.html',1,'io::error']]],
+  ['integer_5funderflow',['integer_underflow',['../structio_1_1error_1_1integer__underflow.html',1,'io::error']]],
+  ['invalid_5fsingle_5fcharacter',['invalid_single_character',['../structio_1_1error_1_1invalid__single__character.html',1,'io::error']]]
 ];

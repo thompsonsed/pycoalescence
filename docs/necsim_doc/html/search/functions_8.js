@@ -1,10 +1,10 @@
 var searchData=
 [
   ['i0',['i0',['../class_n_rrand.html#abb6db53dd1fdd9388b39e5dcd26c13ac',1,'NRrand']]],
-  ['import',['import',['../class_matrix.html#aeff54b3b98211bde4c0cae25af7aaa0c',1,'Matrix::import()'],['../class_reproduction_map.html#a144d2f39ff2e978acd9d2ebcb6f8dc97',1,'ReproductionMap::import()']]],
+  ['import',['import',['../class_matrix.html#a2476517be70c810ad586d0f0cf4ec121',1,'Matrix::import()'],['../class_reproduction_map.html#a144d2f39ff2e978acd9d2ebcb6f8dc97',1,'ReproductionMap::import()']]],
   ['importbooleanmask',['importBooleanMask',['../class_data_mask.html#a819eacf6968b0384a0221599dac09122',1,'DataMask']]],
   ['importconfig',['importConfig',['../class_config_option.html#afbd1ed9d006c8ff48d90e63a57f55e2a',1,'ConfigOption']]],
-  ['importcsv',['importCsv',['../class_matrix.html#aab2f77cfbdbeffcfe67d63d876581b2e',1,'Matrix']]],
+  ['importcsv',['importCsv',['../class_matrix.html#a0a5d9135e9807b81ddc3cf05e777a902',1,'Matrix']]],
   ['importdata',['importData',['../class_community.html#a85db7255d3a1d53509ed2800fc24de31',1,'Community']]],
   ['importmaps',['importMaps',['../class_simulate_dispersal.html#a8c7c65b4788010f02213fba5c985f49a',1,'SimulateDispersal::importMaps()'],['../class_spatial_tree.html#ab9603c25cd1c8466d1e4bfa3f73f191f',1,'SpatialTree::importMaps()']]],
   ['importparameters',['importParameters',['../struct_sim_parameters.html#affb4a6133434c61c720b648012ccbcea',1,'SimParameters::importParameters(ConfigOption *configOption)'],['../struct_sim_parameters.html#a2c587f1f41e13c51696ca24e5edadc96',1,'SimParameters::importParameters(const string &amp;conf_in)'],['../struct_sim_parameters.html#a65833f22d1f30997727ed71e989af02e',1,'SimParameters::importParameters()']]],
@@ -22,6 +22,6 @@ var searchData=
   ['initiateresume',['initiateResume',['../class_tree.html#a8cfe5d30d53d702f18cd67981e2c9acb',1,'Tree']]],
   ['internaloption',['internalOption',['../class_community.html#a527f03120e4cb211e466cab7e405ba9a',1,'Community']]],
   ['internalsetup',['internalSetup',['../class_tree.html#a62db83e47e5850c6a83793829b22b68b',1,'Tree']]],
-  ['ispristine',['isPristine',['../class_map.html#a7c4ca1306850126bf6c040f1c0cc0754',1,'Map']]],
+  ['ispristine',['isPristine',['../class_landscape.html#a264624ebb17fe757f4e7c9e082592b79',1,'Landscape']]],
   ['istip',['isTip',['../class_tree_node.html#a469a21919177bd1161f9bfa3c13bd148',1,'TreeNode']]]
 ];

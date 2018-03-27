@@ -1,6 +1,6 @@
 
 from __future__ import absolute_import
-import warnings
+import logging
 try:
 	from .necsimlinker import necsimmodule, Dispersal, applyspecmodule
 except ImportError as ie:

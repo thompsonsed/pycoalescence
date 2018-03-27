@@ -6,6 +6,7 @@ VPATH="necsim:$VPATH"
 OJBDIR="$OBJDIR"
 BUILDDIR="$BUILDDIR"
 platform_so="$PLATFORM_SO"
+
 dnl Check the provided arguments
 AC_ARG_WITH(debug, [AS_HELP_STRING([--with-debug],[enable debug mode])],[],[]with_debug=no)
 AC_ARG_WITH(verbose, [AS_HELP_STRING([--with-verbose],[enable verbose mode enabled])],[],[with_verbose=no])
@@ -13,21 +14,42 @@ AC_ARG_WITH(gdal, [AS_HELP_STRING([--with-gdal[PATH]],[prefix of gdal [guess]])]
 AC_ARG_WITH(hpc, [AS_HELP_STRING([--with-hpc],[add compile options for icp compilation on IC HPC])],[],[with_hpc=no])
 AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing default paths])
 AC_ARG_VAR([PYTHON_LIB], [Library location for python header files, bypassing default paths])
-dnl AC_ARG_VAR([PYTHON_CONFIG], [Path to python-config])
-dnl echo "$LDFLAGS"
-dnl AC_PROG_LIBTOOL - not working for some reason
+
+dnl Switch to c++ mode
 define(m4_pattern_allow)
-dnl Find the machine host
-dnl AC_CANONICAL_HOST
-
-
-dnl Switch to a C++ compiler, and check if it works.
 AC_LANG(C++)
-AC_PROG_CXX
+
+dnl Check if c++ compiler works works.
+AC_PROG_CXX([icpc icc g++ gcc])
+dnl AC_PROG_CXX
+
+
+dnl test hpc compilation mode
+hpc_mode="disabled"
+if [[ "$with_hpc" == yes ]]
+then
+	echo "Attempting icpc usage...."
+	hpc_mode="enabled"
+	if [[ "$CXX" != icpc ]]
+	then
+		hpc_mode="disabled"
+		AC_MSG_WARN([Could not find icpc compiler. Defaulting to system compiler.])
+	else
+		verbose_mode="disabled"
+		CPPFLAGS="$CPPFLAGS -xSSE4.2 -axAVX,CORE-AVX-I,CORE-AVX2"
+	fi
+else
+	hpc_mode="disabled"
+fi
+
+
 user_options=""
 dnl now test the command-line options
 dnl test cls-dispersal restriction
 debug_mode="disabled"
+
+
+
 if [[ "$with_debug" != no ]]
 then
 	debug_mode="enabled"
@@ -43,22 +65,6 @@ else
 	user_options="$user_options -Dverbose"
 fi
 
-dnl test hpc compilation mode
-if [[ "$with_hpc" == yes ]]
-then
-	AC_PROG_CXX([icpc icc g++ gcc])
-	hpc_mode="enabled"
-	if [[ "$CXX" != icpc ]]
-	then
-		hpc_mode="disabled"
-		AC_MSG_WARN([Could not find icpc compiler. Defaulting to system compiler.])
-	else
-		verbose_mode="disabled"
-		CPPFLAGS="$CPPFLAGS -xSSE4.2 -axAVX,CORE-AVX-I,CORE-AVX2"
-	fi
-else
-	hpc_mode="disabled"
-fi
 dnl Check sqlite headers exist
 AC_CHECK_HEADERS(sqlite3.h, [has_sqlite3=1], [has_sqlite3=0])
 with_sqlite3="yes"

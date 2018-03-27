@@ -1,7 +1,7 @@
 var class_spatial_tree =
 [
     [ "SpatialTree", "class_spatial_tree.html#a051cc56f4f1284c419616ca6b582d52f", null ],
-    [ "~SpatialTree", "class_spatial_tree.html#ad2b7d5f103ed5d7c3b9219b55c176219", null ],
+    [ "~SpatialTree", "class_spatial_tree.html#ab5c557551d05c27f7688de97c0806216", null ],
     [ "addLineages", "class_spatial_tree.html#a6e802a5034648cc26b24923f27f85727", null ],
     [ "addWrappedLineage", "class_spatial_tree.html#a5b26973b7f2dd3ca842a2eb8d2957896", null ],
     [ "applyMultipleRates", "class_spatial_tree.html#acfc7efdec999f6dbf2ac089514d22091", null ],
@@ -123,11 +123,11 @@ var class_spatial_tree =
     [ "grid_x_size", "class_spatial_tree.html#aa4c60d73794de44877b9ed66b73b4ed8", null ],
     [ "grid_y_size", "class_spatial_tree.html#a03c67ea3848796e91a3b45afc9e99365", null ],
     [ "habitat_change_rate", "class_spatial_tree.html#abdb9b4692e583b7db0e292cd0e26da56", null ],
-    [ "habitat_map", "class_spatial_tree.html#a3849ee88827d7278afe73cce56408d83", null ],
     [ "has_imported_pause", "class_spatial_tree.html#ad8d1d7e4fa673b28542ba31c5b637856", null ],
     [ "has_imported_vars", "class_spatial_tree.html#a97bde28466a098bb9e58c1bd5610fd68", null ],
     [ "has_paused", "class_spatial_tree.html#aaa64e29ab7bc3c6f48d454063f0c39e1", null ],
     [ "has_times_file", "class_spatial_tree.html#adf239a9aa029c9c6eda4b10c5ce20780", null ],
+    [ "landscape", "class_spatial_tree.html#abce7e0ce105b3f401b8dce770a20f8a2", null ],
     [ "maxsimsize", "class_spatial_tree.html#a0244ee15452c38393246147d93836b4d", null ],
     [ "maxtime", "class_spatial_tree.html#a1868cf626a0b12f21a038989d4eca210", null ],
     [ "now", "class_spatial_tree.html#a5510d0fb5deb23fd39a2619d104f85fa", null ],

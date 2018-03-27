@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="fast-cpp-csv-parser2_2_r_e_a_d_m_e_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>Fast<sp/>C++<sp/>CSV<sp/>Parser</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>is<sp/>a<sp/>small,<sp/>easy-to-use<sp/>and<sp/>fast<sp/>header-only<sp/>library<sp/>for<sp/>reading<sp/>comma<sp/>separated<sp/>value<sp/>(CSV)<sp/>files.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Features</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Automatically<sp/>rearranges<sp/>columns<sp/>by<sp/>parsing<sp/>the<sp/>header<sp/>line.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Disk<sp/>I/O<sp/>and<sp/>CSV-parsing<sp/>are<sp/>overlapped<sp/>using<sp/>threads<sp/>for<sp/>efficiency.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Parsing<sp/>features<sp/>such<sp/>as<sp/>escaped<sp/>strings<sp/>can<sp/>be<sp/>enabled<sp/>and<sp/>disabled<sp/>at<sp/>compile<sp/>time<sp/>using<sp/>templates.<sp/>You<sp/>only<sp/>pay<sp/>in<sp/>speed<sp/>for<sp/>the<sp/>features<sp/>you<sp/>actually<sp/>use.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Can<sp/>read<sp/>multiple<sp/>GB<sp/>files<sp/>in<sp/>reasonable<sp/>time.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Support<sp/>for<sp/>custom<sp/>columns<sp/>separators<sp/>(i.e.<sp/>Tab<sp/>separated<sp/>value<sp/>files<sp/>are<sp/>supported),<sp/>quote<sp/>escaped<sp/>strings,<sp/>automatic<sp/>space<sp/>trimming.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Works<sp/>with<sp/>`*`nix<sp/>and<sp/>Windows<sp/>newlines<sp/>and<sp/>automatically<sp/>ignores<sp/>UTF-8<sp/>BOMs.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>Exception<sp/>classes<sp/>with<sp/>enough<sp/>context<sp/>to<sp/>format<sp/>useful<sp/>error<sp/>messages.<sp/>what()<sp/>returns<sp/>error<sp/>messages<sp/>ready<sp/>to<sp/>be<sp/>shown<sp/>to<sp/>a<sp/>user.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Getting<sp/>Started</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>following<sp/>small<sp/>example<sp/>should<sp/>contain<sp/>most<sp/>of<sp/>the<sp/>syntax<sp/>you<sp/>need<sp/>to<sp/>use<sp/>the<sp/>library.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>include<sp/>&quot;csv.h&quot;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>main(){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>io::CSVReader&lt;3&gt;<sp/>in(&quot;ram.csv&quot;);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>in.read_header(io::ignore_extra_column,<sp/>&quot;vendor&quot;,<sp/>&quot;size&quot;,<sp/>&quot;speed&quot;);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>std::string<sp/>vendor;<sp/>int<sp/>size;<sp/>double<sp/>speed;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>while(in.read_row(vendor,<sp/>size,<sp/>speed)){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>do<sp/>stuff<sp/>with<sp/>the<sp/>data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Installation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>library<sp/>only<sp/>needs<sp/>a<sp/>standard<sp/>conformant<sp/>C++11<sp/>compiler.<sp/>It<sp/>has<sp/>no<sp/>further<sp/>dependencies.<sp/>The<sp/>library<sp/>is<sp/>completely<sp/>contained<sp/>inside<sp/>a<sp/>single<sp/>header<sp/>file<sp/>and<sp/>therefore<sp/>it<sp/>is<sp/>sufficient<sp/>to<sp/>copy<sp/>this<sp/>file<sp/>to<sp/>some<sp/>place<sp/>on<sp/>your<sp/>include<sp/>path.<sp/>The<sp/>library<sp/>does<sp/>not<sp/>have<sp/>to<sp/>be<sp/>explicitly<sp/>build.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Note<sp/>however,<sp/>that<sp/>threads<sp/>are<sp/>used<sp/>and<sp/>some<sp/>compiler<sp/>(for<sp/>example<sp/>GCC)<sp/>require<sp/>you<sp/>to<sp/>link<sp/>against<sp/>additional<sp/>librarie<sp/>to<sp/>make<sp/>it<sp/>work.<sp/>With<sp/>GCC<sp/>it<sp/>is<sp/>important<sp/>to<sp/>add<sp/>-lpthread<sp/>as<sp/>the<sp/>last<sp/>item<sp/>when<sp/>linking,<sp/>i.e.<sp/>the<sp/>order<sp/>in<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">g++<sp/>-std=c++0x<sp/>a.o<sp/>b.o<sp/>-o<sp/>prog<sp/>-lpthread</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">is<sp/>important.<sp/>If<sp/>you<sp/>for<sp/>some<sp/>reason<sp/>do<sp/>not<sp/>want<sp/>to<sp/>use<sp/>threads<sp/>you<sp/>can<sp/>define<sp/>CSV_IO_NO_THREAD<sp/>before<sp/>including<sp/>the<sp/>header.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Remember<sp/>that<sp/>the<sp/>library<sp/>makes<sp/>use<sp/>of<sp/>C++11<sp/>features<sp/>and<sp/>therefore<sp/>you<sp/>have<sp/>to<sp/>enable<sp/>support<sp/>for<sp/>it<sp/>(f.e.<sp/>add<sp/>-std=c++0x<sp/>or<sp/>-std=gnu++0x).<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>library<sp/>was<sp/>developed<sp/>and<sp/>tested<sp/>with<sp/>GCC<sp/>4.6.1</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Note<sp/>that<sp/>VS2013<sp/>is<sp/>not<sp/>C++11<sp/>compilant<sp/>and<sp/>will<sp/>therefore<sp/>not<sp/>work<sp/>out<sp/>of<sp/>the<sp/>box.<sp/>See<sp/>[here](https://code.google.com/p/fast-cpp-csv-parser/issues/detail?id=6)<sp/>for<sp/>what<sp/>needs<sp/>to<sp/>be<sp/>adjusted<sp/>to<sp/>make<sp/>the<sp/>code<sp/>work.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Documentation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>libary<sp/>provides<sp/>two<sp/>classes:<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`LineReader`:<sp/>A<sp/>class<sp/>to<sp/>efficiently<sp/>read<sp/>large<sp/>files<sp/>line<sp/>by<sp/>line.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`CSVReader`:<sp/>A<sp/>class<sp/>that<sp/>efficiently<sp/>reads<sp/>large<sp/>CSV<sp/>files.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Note<sp/>that<sp/>everything<sp/>is<sp/>contained<sp/>in<sp/>the<sp/>`io`<sp/>namespace.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>`LineReader`</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">class<sp/>LineReader{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>Constructors</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>LineReader(some_string_type<sp/>file_name);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>LineReader(some_string_type<sp/>file_name,<sp/>std::FILE*source);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>LineReader(some_string_type<sp/>file_name,<sp/>std::istream&amp;source);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>LineReader(some_string_type<sp/>file_name,<sp/>std::unique_ptr&lt;ByteSourceBase&gt;source);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>Reading</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>char*next_line();</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>File<sp/>Location</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>set_file_line(unsigned);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>unsigned<sp/>get_file_line(unsigned)const;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>set_file_name(some_string_type<sp/>file_name);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>const<sp/>char*get_truncated_file_name()const;</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>constructor<sp/>takes<sp/>a<sp/>file<sp/>name<sp/>and<sp/>optionally<sp/>a<sp/>data<sp/>source.<sp/>If<sp/>no<sp/>data<sp/>source<sp/>is<sp/>provided<sp/>the<sp/>function<sp/>tries<sp/>to<sp/>open<sp/>the<sp/>file<sp/>with<sp/>the<sp/>given<sp/>name<sp/>and<sp/>throws<sp/>an<sp/>`error::can_not_open_file<sp/>exception`<sp/>on<sp/>failure.<sp/>If<sp/>a<sp/>data<sp/>source<sp/>is<sp/>provided<sp/>then<sp/>the<sp/>file<sp/>name<sp/>is<sp/>only<sp/>used<sp/>to<sp/>format<sp/>error<sp/>messages.<sp/>In<sp/>that<sp/>case<sp/>you<sp/>can<sp/>essentially<sp/>put<sp/>any<sp/>string<sp/>there.<sp/>Using<sp/>a<sp/>string<sp/>that<sp/>describes<sp/>the<sp/>data<sp/>source<sp/>results<sp/>in<sp/>more<sp/>informative<sp/>error<sp/>messages.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">`some_string_type`<sp/>can<sp/>be<sp/>a<sp/>`std::string`<sp/>or<sp/>a<sp/>`char*`.<sp/>If<sp/>the<sp/>data<sp/>source<sp/>is<sp/>a<sp/>`std::FILE*`<sp/>then<sp/>the<sp/>library<sp/>will<sp/>take<sp/>care<sp/>of<sp/>calling<sp/>`std::fclose`.<sp/>If<sp/>it<sp/>is<sp/>a<sp/>`std::istream`<sp/>then<sp/>the<sp/>stream<sp/>is<sp/>not<sp/>closed<sp/>by<sp/>the<sp/>library.<sp/>For<sp/>best<sp/>performance<sp/>open<sp/>the<sp/>streams<sp/>in<sp/>binary<sp/>mode.<sp/>However<sp/>using<sp/>text<sp/>mode<sp/>also<sp/>works.<sp/>`ByteSourceBase`<sp/>provides<sp/>an<sp/>interface<sp/>that<sp/>you<sp/>can<sp/>use<sp/>to<sp/>implement<sp/>further<sp/>data<sp/>sources.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">class<sp/>ByteSourceBase{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>virtual<sp/>int<sp/>read(char*buffer,<sp/>int<sp/>size)=0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>virtual<sp/>~ByteSourceBase(){}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>read<sp/>function<sp/>should<sp/>fill<sp/>the<sp/>provided<sp/>buffer<sp/>with<sp/>at<sp/>most<sp/>`size`<sp/>bytes<sp/>from<sp/>the<sp/>data<sp/>source.<sp/>It<sp/>should<sp/>return<sp/>the<sp/>number<sp/>of<sp/>bytes<sp/>actually<sp/>written<sp/>to<sp/>the<sp/>buffer.<sp/>If<sp/>data<sp/>source<sp/>has<sp/>run<sp/>out<sp/>of<sp/>bytes<sp/>(because<sp/>for<sp/>example<sp/>an<sp/>end<sp/>of<sp/>file<sp/>was<sp/>reached)<sp/>then<sp/>the<sp/>function<sp/>should<sp/>return<sp/>0.<sp/>If<sp/>a<sp/>fatal<sp/>error<sp/>occures<sp/>then<sp/>you<sp/>can<sp/>throw<sp/>an<sp/>exception.<sp/>Note<sp/>that<sp/>the<sp/>function<sp/>can<sp/>be<sp/>called<sp/>both<sp/>from<sp/>the<sp/>main<sp/>and<sp/>the<sp/>worker<sp/>thread.<sp/>However,<sp/>it<sp/>is<sp/>guarenteed<sp/>that<sp/>they<sp/>do<sp/>not<sp/>call<sp/>the<sp/>function<sp/>at<sp/>the<sp/>same<sp/>time.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Lines<sp/>are<sp/>read<sp/>by<sp/>calling<sp/>the<sp/>`next_line`<sp/>function.<sp/>It<sp/>returns<sp/>a<sp/>pointer<sp/>to<sp/>a<sp/>null<sp/>terminated<sp/>C-string<sp/>that<sp/>contains<sp/>the<sp/>line.<sp/>If<sp/>the<sp/>end<sp/>of<sp/>file<sp/>is<sp/>reached<sp/>a<sp/>null<sp/>pointer<sp/>is<sp/>returned.<sp/>The<sp/>newline<sp/>character<sp/>is<sp/>not<sp/>included<sp/>in<sp/>the<sp/>string.<sp/>You<sp/>may<sp/>modify<sp/>the<sp/>string<sp/>as<sp/>long<sp/>as<sp/>you<sp/>do<sp/>not<sp/>write<sp/>past<sp/>the<sp/>null<sp/>terminator.<sp/>The<sp/>string<sp/>stays<sp/>valid<sp/>until<sp/>the<sp/>destructor<sp/>is<sp/>called<sp/>or<sp/>until<sp/>next_line<sp/>is<sp/>called<sp/>again.<sp/>Windows<sp/>and<sp/>`*`nix<sp/>newlines<sp/>are<sp/>handled<sp/>transparently.<sp/>UTF-8<sp/>BOMs<sp/>are<sp/>automatically<sp/>ignored<sp/>and<sp/>missing<sp/>newlines<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>file<sp/>are<sp/>no<sp/>problem.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Important:**<sp/>There<sp/>is<sp/>a<sp/>limit<sp/>of<sp/>2^24-1<sp/>characters<sp/>per<sp/>line.<sp/>If<sp/>this<sp/>limit<sp/>is<sp/>exceeded<sp/>a<sp/>`error::line_length_limit_exceeded`<sp/>exception<sp/>is<sp/>thrown.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Looping<sp/>over<sp/>all<sp/>the<sp/>lines<sp/>in<sp/>a<sp/>file<sp/>can<sp/>be<sp/>done<sp/>in<sp/>the<sp/>following<sp/>way.</highlight></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">LineReader<sp/>in(...);</highlight></codeline>
+<codeline><highlight class="normal">while(char*line<sp/>=<sp/>in.next_line()){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>...</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>remaining<sp/>functions<sp/>are<sp/>mainly<sp/>used<sp/>used<sp/>to<sp/>format<sp/>error<sp/>messages.<sp/>The<sp/>file<sp/>line<sp/>indicates<sp/>the<sp/>current<sp/>position<sp/>in<sp/>the<sp/>file,<sp/>i.e.,<sp/>after<sp/>the<sp/>first<sp/>`next_line`<sp/>call<sp/>it<sp/>is<sp/>1<sp/>and<sp/>after<sp/>the<sp/>second<sp/>2.<sp/>Before<sp/>the<sp/>first<sp/>call<sp/>it<sp/>is<sp/>0.<sp/>The<sp/>file<sp/>name<sp/>is<sp/>truncated<sp/>as<sp/>internally<sp/>C-strings<sp/>are<sp/>used<sp/>to<sp/>avoid<sp/>`std::bad_alloc`<sp/>exceptions<sp/>during<sp/>error<sp/>reporting.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Note:**<sp/>It<sp/>is<sp/>not<sp/>possible<sp/>to<sp/>exchange<sp/>the<sp/>line<sp/>termination<sp/>character.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>`CSVReader`</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">`CSVReader`<sp/>uses<sp/>policies.<sp/>These<sp/>are<sp/>classes<sp/>with<sp/>only<sp/>static<sp/>members<sp/>to<sp/>allow<sp/>core<sp/>functionality<sp/>to<sp/>be<sp/>exchanged<sp/>in<sp/>an<sp/>efficient<sp/>way.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">template&lt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>unsigned<sp/>column_count,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>class<sp/>trim_policy<sp/>=<sp/>trim_chars&lt;&apos;<sp/>&apos;,<sp/>&apos;\t&apos;&gt;,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>class<sp/>quote_policy<sp/>=<sp/>no_quote_escape&lt;&apos;,&apos;&gt;,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>class<sp/>overflow_policy<sp/>=<sp/>throw_on_overflow,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>class<sp/>comment_policy<sp/>=<sp/>no_comment</highlight></codeline>
+<codeline><highlight class="normal">&gt;</highlight></codeline>
+<codeline><highlight class="normal">class<sp/>CSVReader{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>Constructors</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>same<sp/>as<sp/>for<sp/>LineReader</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>Parsing<sp/>Header</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>read_header(ignore_column<sp/>ignore_policy,<sp/>some_string_type<sp/>col_name1,<sp/>some_string_type<sp/>col_name2,<sp/>...);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>set_header(some_string_type<sp/>col_name1,<sp/>some_string_type<sp/>col_name2,<sp/>...);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>has_column(some_string_type<sp/>col_name)const;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>Read</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>read_row(ColType1&amp;col1,<sp/>ColType2&amp;col2,<sp/>...);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>File<sp/>Location<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>set_file_line(unsigned);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>unsigned<sp/>get_file_line()const;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>set_file_name(some_string_type<sp/>file_name);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>const<sp/>char*get_truncated_file_name()const;</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`column_count`<sp/>template<sp/>parameter<sp/>indicates<sp/>how<sp/>many<sp/>columns<sp/>you<sp/>want<sp/>to<sp/>read<sp/>from<sp/>the<sp/>CSV<sp/>file.<sp/>This<sp/>must<sp/>not<sp/>necessarily<sp/>coincide<sp/>with<sp/>the<sp/>actual<sp/>number<sp/>of<sp/>columns<sp/>in<sp/>the<sp/>file.<sp/>The<sp/>three<sp/>policies<sp/>govern<sp/>various<sp/>aspects<sp/>of<sp/>the<sp/>parsing.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>trim<sp/>policy<sp/>indicates<sp/>what<sp/>characters<sp/>should<sp/>be<sp/>ignored<sp/>at<sp/>the<sp/>begin<sp/>and<sp/>the<sp/>end<sp/>of<sp/>every<sp/>column.<sp/>The<sp/>default<sp/>ignores<sp/>spaces<sp/>and<sp/>tabs.<sp/>This<sp/>makes<sp/>sure<sp/>that</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">a,b,c</highlight></codeline>
+<codeline><highlight class="normal">1,2,3</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">is<sp/>interpreted<sp/>in<sp/>the<sp/>same<sp/>way<sp/>as</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>a,<sp/>b,<sp/><sp/><sp/>c</highlight></codeline>
+<codeline><highlight class="normal">1<sp/><sp/>,<sp/>2,<sp/><sp/><sp/>3</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>trim_chars<sp/>can<sp/>take<sp/>any<sp/>number<sp/>of<sp/>template<sp/>parameters.<sp/>For<sp/>example<sp/>`trim_chars&lt;&apos;<sp/>&apos;,<sp/>&apos;\t&apos;,<sp/>&apos;_&apos;&gt;<sp/>`is<sp/>also<sp/>valid.<sp/>If<sp/>no<sp/>character<sp/>should<sp/>be<sp/>trimmed<sp/>use<sp/>`trim_chars&lt;&gt;`.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>quote<sp/>policy<sp/>indicates<sp/>how<sp/>string<sp/>should<sp/>be<sp/>escaped.<sp/>It<sp/>also<sp/>specifies<sp/>the<sp/>column<sp/>separator.<sp/>The<sp/>predefined<sp/>policies<sp/>are:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`no_quote_escape&lt;sep&gt;`<sp/>:<sp/>Strings<sp/>are<sp/>not<sp/>escaped.<sp/>&quot;`sep`&quot;<sp/>is<sp/>used<sp/>as<sp/>column<sp/>separator.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`double_quote_escape&lt;sep,<sp/>quote&gt;`<sp/>:<sp/>Strings<sp/>are<sp/>escaped<sp/>using<sp/>quotes.<sp/>Quotes<sp/>are<sp/>escaped<sp/>using<sp/>two<sp/>consecutive<sp/>quotes.<sp/>&quot;`sep`&quot;<sp/>is<sp/>used<sp/>as<sp/>column<sp/>separator<sp/>and<sp/>&quot;`quote`&quot;<sp/>as<sp/>quoting<sp/>character.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Important**:<sp/>When<sp/>combining<sp/>trimming<sp/>and<sp/>quoting<sp/>the<sp/>rows<sp/>are<sp/>first<sp/>trimmed<sp/>and<sp/>then<sp/>unquoted.<sp/>A<sp/>consequence<sp/>is<sp/>that<sp/>spaces<sp/>inside<sp/>the<sp/>quotes<sp/>will<sp/>be<sp/>conserved.<sp/>If<sp/>you<sp/>want<sp/>to<sp/>get<sp/>rid<sp/>of<sp/>spaces<sp/>inside<sp/>the<sp/>quotes,<sp/>you<sp/>need<sp/>to<sp/>remove<sp/>them<sp/>yourself.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Important**:<sp/>Quoting<sp/>can<sp/>be<sp/>quite<sp/>expensive.<sp/>Disable<sp/>it<sp/>if<sp/>you<sp/>do<sp/>not<sp/>need<sp/>it.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>overflow<sp/>policy<sp/>indicates<sp/>what<sp/>should<sp/>be<sp/>done<sp/>if<sp/>the<sp/>integers<sp/>in<sp/>the<sp/>input<sp/>are<sp/>too<sp/>large<sp/>to<sp/>fit<sp/>into<sp/>the<sp/>variables.<sp/>There<sp/>following<sp/>policies<sp/>are<sp/>predefined:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`throw_on_overflow`<sp/>:<sp/>Throw<sp/>an<sp/>`error::integer_overflow`<sp/>or<sp/>`error::integer_underflow`<sp/>exception.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`ignore_overflow`<sp/>:<sp/>Do<sp/>nothing<sp/>and<sp/>let<sp/>the<sp/>overflow<sp/>happen.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`set_to_max_on_overflow`<sp/>:<sp/>Set<sp/>the<sp/>value<sp/>to<sp/>`numeric_limits&lt;...&gt;::max()`<sp/>(or<sp/>to<sp/>the<sp/>min-pendant).</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>comment<sp/>policy<sp/>allows<sp/>to<sp/>skip<sp/>lines<sp/>based<sp/>on<sp/>some<sp/>criteria.<sp/>Valid<sp/>predefined<sp/>policies<sp/>are:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`no_comment`<sp/>:<sp/>Do<sp/>not<sp/>ignore<sp/>any<sp/>line.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`empty_line_comment`<sp/>:<sp/>Ignore<sp/>all<sp/>lines<sp/>that<sp/>are<sp/>empty<sp/>or<sp/>only<sp/>contains<sp/>spaces<sp/>and<sp/>tabs.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`single_line_comment&lt;com1,<sp/>com2,<sp/>...&gt;`<sp/>:<sp/>Ignore<sp/>all<sp/>lines<sp/>that<sp/>start<sp/>with<sp/>com1<sp/>or<sp/>com2<sp/>or<sp/>...<sp/>as<sp/>the<sp/>first<sp/>character.<sp/>There<sp/>may<sp/>not<sp/>be<sp/>any<sp/>space<sp/>between<sp/>the<sp/>beginning<sp/>of<sp/>the<sp/>line<sp/>and<sp/>the<sp/>comment<sp/>character.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`single_and_empty_line_comment&lt;com1,<sp/>com2,<sp/>...&gt;`<sp/>:<sp/>Ignore<sp/>all<sp/>empty<sp/>lines<sp/>and<sp/>single<sp/>line<sp/>comments.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Examples:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`CSVReader&lt;4,<sp/>trim_chars&lt;&apos;<sp/>&apos;&gt;,<sp/>double_quote_escape&lt;&apos;,&apos;,&apos;\&quot;&apos;&gt;<sp/>&gt;`<sp/>reads<sp/>4<sp/>columns<sp/>from<sp/>a<sp/>normal<sp/>CSV<sp/>file<sp/>with<sp/>string<sp/>escaping<sp/>enabled.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`CSVReader&lt;3,<sp/>trim_chars&lt;&apos;<sp/>&apos;&gt;,<sp/>no_quote_escape&lt;&apos;\t&apos;&gt;,<sp/>single_line_comment&lt;&apos;#&apos;&gt;<sp/>&gt;`<sp/>reads<sp/>3<sp/>columns<sp/>from<sp/>a<sp/>tab<sp/>separated<sp/>file<sp/>with<sp/>string<sp/>escaping<sp/>disabled.<sp/>Lines<sp/>starting<sp/>with<sp/>a<sp/>#<sp/>are<sp/>ignored.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>constructors<sp/>and<sp/>the<sp/>file<sp/>location<sp/>functions<sp/>are<sp/>exactly<sp/>the<sp/>same<sp/>as<sp/>for<sp/>`LineReader`.<sp/>See<sp/>its<sp/>documentation<sp/>for<sp/>details.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">There<sp/>are<sp/>three<sp/>methods<sp/>that<sp/>deal<sp/>with<sp/>headers.<sp/>The<sp/>`read_header`<sp/>methods<sp/>reads<sp/>a<sp/>line<sp/>from<sp/>the<sp/>file<sp/>and<sp/>rearranges<sp/>the<sp/>columns<sp/>to<sp/>match<sp/>that<sp/>order.<sp/>It<sp/>also<sp/>checks<sp/>whether<sp/>all<sp/>necessary<sp/>columns<sp/>are<sp/>present.<sp/>The<sp/>`set_header`<sp/>method<sp/>does<sp/>*not*<sp/>read<sp/>any<sp/>input.<sp/>Use<sp/>it<sp/>if<sp/>the<sp/>file<sp/>does<sp/>not<sp/>have<sp/>any<sp/>header.<sp/>Obviously<sp/>it<sp/>is<sp/>impossible<sp/>to<sp/>rearrange<sp/>columns<sp/>or<sp/>check<sp/>for<sp/>their<sp/>availability<sp/>when<sp/>using<sp/>it.<sp/>The<sp/>order<sp/>in<sp/>the<sp/>file<sp/>and<sp/>in<sp/>the<sp/>program<sp/>must<sp/>match<sp/>when<sp/>using<sp/>`set_header`.<sp/>The<sp/>`has_column`<sp/>method<sp/>checks<sp/>whether<sp/>a<sp/>column<sp/>is<sp/>present<sp/>in<sp/>the<sp/>file.<sp/>The<sp/>first<sp/>argument<sp/>of<sp/>`read_header`<sp/>is<sp/>a<sp/>bitfield<sp/>that<sp/>determines<sp/>how<sp/>the<sp/>function<sp/>should<sp/>react<sp/>to<sp/>column<sp/>mismatches.<sp/>The<sp/>default<sp/>behavior<sp/>is<sp/>to<sp/>throw<sp/>an<sp/>`error::extra_column_in_header`<sp/>exception<sp/>if<sp/>the<sp/>file<sp/>contains<sp/>more<sp/>columns<sp/>than<sp/>expected<sp/>and<sp/>an<sp/>`error::missing_column_in_header`<sp/>when<sp/>there<sp/>are<sp/>not<sp/>enough.<sp/>This<sp/>behavior<sp/>can<sp/>be<sp/>altered<sp/>using<sp/>the<sp/>following<sp/>flags.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`ignore_no_column`:<sp/>The<sp/>default<sp/>behavior,<sp/>no<sp/>flags<sp/>are<sp/>set</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`ignore_extra_column`:<sp/>If<sp/>a<sp/>column<sp/>with<sp/>a<sp/>name<sp/>is<sp/>in<sp/>the<sp/>file<sp/>but<sp/>not<sp/>in<sp/>the<sp/>argument<sp/>list,<sp/>then<sp/>it<sp/>is<sp/>silently<sp/>ignored.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`ignore_missing_column`:<sp/>If<sp/>a<sp/>column<sp/>with<sp/>a<sp/>name<sp/>is<sp/>not<sp/>in<sp/>the<sp/>file<sp/>but<sp/>is<sp/>in<sp/>the<sp/>argument<sp/>list,<sp/>then<sp/>`read_row`<sp/>will<sp/>not<sp/>modify<sp/>the<sp/>corresponding<sp/>variable.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">When<sp/>using<sp/>`ignore_column_missing`<sp/>it<sp/>is<sp/>a<sp/>good<sp/>idea<sp/>to<sp/>initialize<sp/>the<sp/>variables<sp/>passed<sp/>to<sp/>`read_row`<sp/>with<sp/>a<sp/>default<sp/>value,<sp/>for<sp/>example:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>file<sp/>only<sp/>contains<sp/>column<sp/>&quot;a&quot;</highlight></codeline>
+<codeline><highlight class="normal">CSVReader&lt;2&gt;in(...);</highlight></codeline>
+<codeline><highlight class="normal">in.read_header(ignore_missing_column,<sp/>&quot;a&quot;,<sp/>&quot;b&quot;);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>a,b<sp/>=<sp/>42;</highlight></codeline>
+<codeline><highlight class="normal">while(in.read_row(a,b)){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>a<sp/>contains<sp/>the<sp/>value<sp/>from<sp/>the<sp/>file</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>b<sp/>is<sp/>left<sp/>unchanged<sp/>by<sp/>read_row,<sp/>i.e.,<sp/>it<sp/>is<sp/>42</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">If<sp/>only<sp/>some<sp/>columns<sp/>are<sp/>optional<sp/>or<sp/>their<sp/>default<sp/>value<sp/>depends<sp/>on<sp/>other<sp/>columns<sp/>you<sp/>have<sp/>to<sp/>use<sp/>`has_column`,<sp/>for<sp/>example:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```cpp</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>file<sp/>only<sp/>contains<sp/>the<sp/>columns<sp/>&quot;a&quot;<sp/>and<sp/>&quot;b&quot;</highlight></codeline>
+<codeline><highlight class="normal">CSVReader&lt;2&gt;in(...);</highlight></codeline>
+<codeline><highlight class="normal">in.read_header(ignore_missing_column,<sp/>&quot;a&quot;,<sp/>&quot;b&quot;,<sp/>&quot;sum&quot;);</highlight></codeline>
+<codeline><highlight class="normal">if(!in.has_column(&quot;a&quot;)<sp/>||<sp/>!in.has_column(&quot;b&quot;))</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>throw<sp/>my_neat_error_class();</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/>has_sum<sp/>=<sp/>in.has_column(&quot;sum&quot;);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>a,b,sum;</highlight></codeline>
+<codeline><highlight class="normal">while(in.read_row(a,b,sum)){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>if(!has_sum)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sum<sp/>=<sp/>a+b;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Important**:<sp/>Do<sp/>not<sp/>call<sp/>`has_column`<sp/>from<sp/>within<sp/>the<sp/>read-loop.<sp/>It<sp/>would<sp/>work<sp/>correctly<sp/>but<sp/>significantly<sp/>slowdown<sp/>processing.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">If<sp/>two<sp/>columns<sp/>have<sp/>the<sp/>same<sp/>name<sp/>an<sp/>error::duplicated_column_in_header<sp/>exception<sp/>is<sp/>thrown.<sp/>If<sp/>`read_header`<sp/>is<sp/>called<sp/>but<sp/>the<sp/>file<sp/>is<sp/>empty<sp/>a<sp/>`error::header_missing`<sp/>exception<sp/>is<sp/>thrown.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`read_row`<sp/>function<sp/>reads<sp/>a<sp/>line,<sp/>splits<sp/>it<sp/>into<sp/>the<sp/>columns<sp/>and<sp/>arranges<sp/>them<sp/>correctly.<sp/>It<sp/>trims<sp/>the<sp/>entries<sp/>and<sp/>unescapes<sp/>them.<sp/>If<sp/>requested<sp/>the<sp/>content<sp/>is<sp/>interpreted<sp/>as<sp/>integer<sp/>or<sp/>as<sp/>floating<sp/>point.<sp/>The<sp/>variables<sp/>passed<sp/>to<sp/>read_row<sp/>may<sp/>be<sp/>of<sp/>the<sp/>following<sp/>types.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>builtin<sp/>signed<sp/>integer:<sp/>These<sp/>are<sp/>`signed<sp/>char`,<sp/>`short`,<sp/>`int`,<sp/>`long`<sp/>and<sp/>`long<sp/>long`.<sp/>The<sp/>input<sp/>must<sp/>be<sp/>encoded<sp/>as<sp/>a<sp/>base<sp/>10<sp/>ASCII<sp/>number<sp/>optionally<sp/>preceded<sp/>by<sp/>a<sp/>+<sp/>or<sp/>-.<sp/>The<sp/>function<sp/>detects<sp/>whether<sp/>the<sp/>integer<sp/>is<sp/>too<sp/>large<sp/>would<sp/>overflow<sp/>(or<sp/>underflow)<sp/>and<sp/>behaves<sp/>as<sp/>indicated<sp/>by<sp/>overflow_policy.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>builtin<sp/>unsigned<sp/>integer:<sp/>Just<sp/>as<sp/>the<sp/>signed<sp/>counterparts<sp/>except<sp/>that<sp/>a<sp/>leading<sp/>+<sp/>or<sp/>-<sp/>is<sp/>not<sp/>allowed.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>builtin<sp/>floating<sp/>point:<sp/>These<sp/>are<sp/>`float`,<sp/>`double`<sp/>and<sp/>`long<sp/>double`.<sp/>The<sp/>input<sp/>may<sp/>have<sp/>a<sp/>leading<sp/>+<sp/>or<sp/>-.<sp/>The<sp/>number<sp/>must<sp/>be<sp/>base<sp/>10<sp/>encoded.<sp/>The<sp/>decimal<sp/>point<sp/>may<sp/>either<sp/>be<sp/>a<sp/>dot<sp/>or<sp/>a<sp/>comma.<sp/>(Note<sp/>that<sp/>a<sp/>comma<sp/>will<sp/>only<sp/>work<sp/>if<sp/>it<sp/>is<sp/>not<sp/>also<sp/>used<sp/>as<sp/>column<sp/>separator<sp/>or<sp/>the<sp/>number<sp/>is<sp/>escaped.)<sp/>A<sp/>base<sp/>10<sp/>exponent<sp/>may<sp/>be<sp/>specified<sp/>using<sp/>the<sp/>&quot;1e10&quot;<sp/>syntax.<sp/>The<sp/>&quot;e&quot;<sp/>may<sp/>be<sp/>lower-<sp/>or<sp/>uppercase.<sp/>Examples<sp/>for<sp/>valid<sp/>floating<sp/>points<sp/>are<sp/>&quot;1&quot;,<sp/>&quot;-42.42&quot;<sp/>and<sp/>&quot;+123.456E789&quot;.<sp/>The<sp/>input<sp/>is<sp/>rounded<sp/>to<sp/>the<sp/>next<sp/>floating<sp/>point<sp/>or<sp/>infinity<sp/>if<sp/>it<sp/>is<sp/>too<sp/>large<sp/>or<sp/>small.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`char`:<sp/>The<sp/>column<sp/>content<sp/>must<sp/>be<sp/>a<sp/>single<sp/>character.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`std::string`:<sp/>The<sp/>column<sp/>content<sp/>is<sp/>assigned<sp/>to<sp/>the<sp/>string.<sp/>The<sp/>std::string<sp/>is<sp/>filled<sp/>with<sp/>the<sp/>trimmed<sp/>and<sp/>unescaped<sp/>version.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>*<sp/>`char*`:<sp/>A<sp/>pointer<sp/>directly<sp/>into<sp/>the<sp/>buffer.<sp/>The<sp/>string<sp/>is<sp/>trimmed<sp/>and<sp/>unescaped<sp/>and<sp/>null<sp/>terminated.<sp/>This<sp/>pointer<sp/>stays<sp/>valid<sp/>until<sp/>read_row<sp/>is<sp/>called<sp/>again<sp/>or<sp/>the<sp/>CSVReader<sp/>is<sp/>destroyed.<sp/>Use<sp/>this<sp/>for<sp/>user<sp/>defined<sp/>types.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Note<sp/>that<sp/>there<sp/>is<sp/>no<sp/>inherent<sp/>overhead<sp/>to<sp/>using<sp/>`char*`<sp/>and<sp/>then<sp/>interpreting<sp/>it<sp/>compared<sp/>to<sp/>using<sp/>one<sp/>of<sp/>the<sp/>parsers<sp/>directly<sp/>build<sp/>into<sp/>`CSVReader`.<sp/>The<sp/>builtin<sp/>number<sp/>parsers<sp/>are<sp/>pure<sp/>convenience.<sp/>If<sp/>you<sp/>need<sp/>a<sp/>slightly<sp/>different<sp/>syntax<sp/>then<sp/>use<sp/>`char*`<sp/>and<sp/>do<sp/>the<sp/>parsing<sp/>yourself.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>FAQ</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Q:<sp/>The<sp/>library<sp/>is<sp/>throwing<sp/>a<sp/>std::system_error<sp/>with<sp/>code<sp/>-1.<sp/>How<sp/>to<sp/>get<sp/>it<sp/>to<sp/>work?</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A:<sp/>Your<sp/>compiler&apos;s<sp/>std::thread<sp/>implementation<sp/>is<sp/>broken.<sp/>Define<sp/>CSV\_IO\_NO\_THREAD<sp/>to<sp/>disable<sp/>threading<sp/>support.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Q:<sp/>My<sp/>values<sp/>are<sp/>not<sp/>just<sp/>ints<sp/>or<sp/>strings.<sp/>I<sp/>want<sp/>to<sp/>parse<sp/>my<sp/>customized<sp/>type.<sp/>Is<sp/>this<sp/>possible?</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A:<sp/>Read<sp/>a<sp/>`char*`<sp/>and<sp/>parse<sp/>the<sp/>string.<sp/>At<sp/>first<sp/>this<sp/>seems<sp/>expensive<sp/>but<sp/>it<sp/>is<sp/>not<sp/>as<sp/>the<sp/>pointer<sp/>you<sp/>get<sp/>points<sp/>directly<sp/>into<sp/>the<sp/>memory<sp/>buffer.<sp/>In<sp/>fact<sp/>there<sp/>is<sp/>no<sp/>inherent<sp/>reason<sp/>why<sp/>a<sp/>custom<sp/>int-parser<sp/>realized<sp/>this<sp/>way<sp/>must<sp/>be<sp/>any<sp/>slower<sp/>than<sp/>the<sp/>int-parser<sp/>build<sp/>into<sp/>the<sp/>library.<sp/>By<sp/>reading<sp/>a<sp/>`char*`<sp/>the<sp/>library<sp/>takes<sp/>care<sp/>of<sp/>column<sp/>reordering<sp/>and<sp/>quote<sp/>escaping<sp/>and<sp/>leaves<sp/>the<sp/>actual<sp/>parsing<sp/>to<sp/>you.<sp/>Note<sp/>that<sp/>using<sp/>a<sp/>std::string<sp/>is<sp/>slower<sp/>as<sp/>it<sp/>involves<sp/>a<sp/>memory<sp/>copy.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Q:<sp/>I<sp/>get<sp/>lots<sp/>of<sp/>compiler<sp/>errors<sp/>when<sp/>compiling<sp/>the<sp/>header!<sp/>Please<sp/>fix<sp/>it.<sp/>:(</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A:<sp/>Have<sp/>you<sp/>enabled<sp/>the<sp/>C++11<sp/>mode<sp/>of<sp/>your<sp/>compiler?<sp/>If<sp/>you<sp/>use<sp/>GCC<sp/>you<sp/>have<sp/>to<sp/>add<sp/>-std=c++0x<sp/>to<sp/>the<sp/>commandline.<sp/>If<sp/>this<sp/>does<sp/>not<sp/>resolve<sp/>the<sp/>problem,<sp/>then<sp/>please<sp/>open<sp/>a<sp/>ticket.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Q:<sp/>The<sp/>library<sp/>crashes<sp/>when<sp/>parsing<sp/>large<sp/>files!<sp/>Please<sp/>fix<sp/>it.<sp/>:(</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A:<sp/>When<sp/>using<sp/>GCC<sp/>have<sp/>you<sp/>linked<sp/>against<sp/>-lpthread?<sp/>Read<sp/>the<sp/>installation<sp/>section<sp/>for<sp/>details<sp/>on<sp/>how<sp/>to<sp/>do<sp/>this.<sp/>If<sp/>this<sp/>does<sp/>not<sp/>resolve<sp/>the<sp/>issue<sp/>then<sp/>please<sp/>open<sp/>a<sp/>ticket.<sp/>(The<sp/>reason<sp/>why<sp/>it<sp/>only<sp/>crashes<sp/>only<sp/>on<sp/>large<sp/>files<sp/>is<sp/>that<sp/>the<sp/>first<sp/>chuck<sp/>is<sp/>read<sp/>synchronous<sp/>and<sp/>if<sp/>the<sp/>whole<sp/>file<sp/>fits<sp/>into<sp/>this<sp/>chuck<sp/>then<sp/>no<sp/>asynchronous<sp/>call<sp/>is<sp/>performed.)<sp/>Alternatively<sp/>you<sp/>can<sp/>define<sp/>CSV\_IO\_NO\_THREAD.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Q:<sp/>Does<sp/>the<sp/>library<sp/>support<sp/>UTF?</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A:<sp/>The<sp/>library<sp/>has<sp/>basic<sp/>UTF-8<sp/>support,<sp/>or<sp/>to<sp/>be<sp/>more<sp/>precise<sp/>it<sp/>does<sp/>not<sp/>break<sp/>when<sp/>passing<sp/>UTF-8<sp/>strings<sp/>through<sp/>it.<sp/>If<sp/>you<sp/>read<sp/>a<sp/>`char*`<sp/>then<sp/>you<sp/>get<sp/>a<sp/>pointer<sp/>to<sp/>the<sp/>UTF-8<sp/>string.<sp/>You<sp/>will<sp/>have<sp/>to<sp/>decode<sp/>the<sp/>string<sp/>on<sp/>your<sp/>own.<sp/>The<sp/>separator,<sp/>quoting,<sp/>and<sp/>commenting<sp/>characters<sp/>used<sp/>by<sp/>the<sp/>library<sp/>can<sp/>only<sp/>be<sp/>ASCII<sp/>characters.</highlight></codeline>
+    </programlisting>
+    <location file="necsim/fast-cpp-csv-parser2/README.md"/>
+  </compounddef>
+</doxygen>

@@ -28,7 +28,7 @@ var class_simulate_dispersal =
     [ "cells", "class_simulate_dispersal.html#abcb3ce61b835cbd007d09726302d692a", null ],
     [ "cutoff", "class_simulate_dispersal.html#a532f1c5ba22d681c5761dcce4fc8555d", null ],
     [ "database", "class_simulate_dispersal.html#afd3f96f169715aacbcc2939614a6a910", null ],
-    [ "density_map", "class_simulate_dispersal.html#aa699133749e7a30f225cb355f95f51e6", null ],
+    [ "density_map", "class_simulate_dispersal.html#a238dcc03606fc99a0e1cd80ff229c0bd", null ],
     [ "dispersal_method", "class_simulate_dispersal.html#aedabf3440f475bc15d4b95f9e8500d94", null ],
     [ "distances", "class_simulate_dispersal.html#a616354e9527a71396a428bb63f444a15", null ],
     [ "getValFptr", "class_simulate_dispersal.html#ae1f3a40b1805f024e41ec8df9c38c01e", null ],

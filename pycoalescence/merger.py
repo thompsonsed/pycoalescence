@@ -19,9 +19,10 @@ except ImportError:
 try:
 	from math import isclose
 except ImportError:
-	from .coalescence_tree import isclose
+	from .system_operations import isclose
 
-from .coalescence_tree import CoalescenceTree, check_sql_table_exist, fetch_table_from_sql
+from .coalescence_tree import CoalescenceTree
+from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, sql_get_max_from_column
 from .system_operations import cantor_pairing, check_parent
 
 
@@ -45,6 +46,16 @@ class Merger(CoalescenceTree):
 		self.fragment_octaves = []
 		self.community_parameters = []
 		self.metacommunity_parameters = []
+		self.max_species_id = 0
+		self.max_locations_id = 0
+
+	def __del__(self):
+		"""
+		Closes the connection to the database.
+		"""
+		if self.database:
+			self.database.close()
+			self.database = None
 
 	def set_database(self, filename):
 		"""
@@ -383,8 +394,8 @@ class Merger(CoalescenceTree):
 		"""
 		for i, row in enumerate(species_list):
 			row[0] = cantor_pairing(row[0], guild)
-			if i != 0:
-				row[8] = row[8] + self.species_list_parent_counter
+			if i != 0 and row[8] != 0:
+					row[8] = row[8] + self.species_list_parent_counter
 			row.append(guild)
 		self.species_list_parent_counter += len(species_list)
 		self.species_list.extend([tuple(x) for x in species_list])
@@ -420,9 +431,12 @@ class Merger(CoalescenceTree):
 		:param species_list: the list of lists of species information to append
 		:param guild: the guild to append to each species row.
 		"""
+		tmp_max = self.max_locations_id
 		for row in species_locations:
 			row[0] = cantor_pairing(row[0], guild)
 			row.append(guild)
+			self.max_locations_id = max(row[1], self.max_locations_id)
+			row[1] += tmp_max
 		self.species_locations.extend([tuple(x) for x in species_locations])
 
 	def _write_species_locations(self):
@@ -444,7 +458,8 @@ class Merger(CoalescenceTree):
 
 	def _read_species_abundances(self, input_simulation):
 		"""
-		Reads the SPECIES_ABUNDANCES table from the input simulation
+		Reads the SPECIES_ABUNDANCES table from the input simulation.
+
 		:param input_simulation: the completed simulation to read the SPECIES_ABUNDANCES object from.
 		:return:
 		"""
@@ -454,12 +469,16 @@ class Merger(CoalescenceTree):
 	def _add_species_abundances(self, species_abundances, guild):
 		"""
 		Adds to the species_abundances object with the provided list of species and guild reference.
+
 		:param species_abundances: the list of lists of species information to append
 		:param guild: the guild to append to each species row.
 		"""
+		tmp_max = self.max_species_id
 		for row in species_abundances:
 			row[0] = cantor_pairing(row[0], guild)
 			row.append(guild)
+			self.max_species_id = max(row[1], self.max_species_id)
+			row[1] += tmp_max
 		self.species_abundances.extend([tuple(x) for x in species_abundances])
 
 	def _write_species_abundances(self):

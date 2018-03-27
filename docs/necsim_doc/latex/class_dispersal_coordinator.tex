@@ -11,7 +11,8 @@ Class for generating dispersal distances and provide routines for reading disper
 
 
 
-Collaboration diagram for Dispersal\+Coordinator\+:\nopagebreak
+Collaboration diagram for Dispersal\+Coordinator\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,8 +24,8 @@ Collaboration diagram for Dispersal\+Coordinator\+:\nopagebreak
 \item 
 void \hyperlink{class_dispersal_coordinator_a3cfdb18edbf4dd1c45d0cf6af47f91fe}{set\+Random\+Number} (\hyperlink{class_n_rrand}{N\+Rrand} $\ast$N\+R\+\_\+ptr)
 \begin{DoxyCompactList}\small\item\em Sets the random number pointer to an \hyperlink{class_n_rrand}{N\+Rrand} instance. \end{DoxyCompactList}\item 
-void \hyperlink{class_dispersal_coordinator_a03bc78c6b218366d6165ca49b7e9b35c}{set\+Habitat\+Map} (\hyperlink{class_map}{Map} $\ast$map\+\_\+ptr)
-\begin{DoxyCompactList}\small\item\em Sets the pointer to the \hyperlink{class_map}{Map} object. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a0db146f56de14e0b4a095526a7b6c779}{set\+Habitat\+Map} (\hyperlink{class_landscape}{Landscape} $\ast$map\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em Sets the pointer to the Map object. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_aad9a57afe4629674c958e4d0de4d2451}{set\+Generation\+Ptr} (double $\ast$generation\+\_\+ptr)
 \begin{DoxyCompactList}\small\item\em Sets the generation pointer to the provided double. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_ab0face98d80793e7f4a8ad1bf4dfe3f1}{set\+Dispersal} (const string \&dispersal\+\_\+method, const string \&dispersal\+\_\+file, const unsigned long dispersal\+\_\+x, const unsigned long dispersal\+\_\+y, const double \&m\+\_\+probin, const double \&cutoffin, const double \&sigmain, const double \&tauin, const bool \&restrict\+\_\+self)
@@ -61,13 +62,13 @@ typedef bool(Dispersal\+Coordinator\+::$\ast$ {\bfseries end\+\_\+fptr}) (const 
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_matrix}{Matrix}$<$ double $>$ {\bfseries dispersal\+\_\+prob\+\_\+map}\hypertarget{class_dispersal_coordinator_a3d780624030ef3d6b3e2b5ae642854fe}{}\label{class_dispersal_coordinator_a3d780624030ef3d6b3e2b5ae642854fe}
+Map$<$ double $>$ {\bfseries dispersal\+\_\+prob\+\_\+map}\hypertarget{class_dispersal_coordinator_ac840e1b9b3da20c131137c2801754d87}{}\label{class_dispersal_coordinator_ac840e1b9b3da20c131137c2801754d87}
 
 \item 
 \hyperlink{class_n_rrand}{N\+Rrand} $\ast$ {\bfseries NR}\hypertarget{class_dispersal_coordinator_ac4c17447257ed00e1b5610e0e35a5443}{}\label{class_dispersal_coordinator_ac4c17447257ed00e1b5610e0e35a5443}
 
 \item 
-\hyperlink{class_map}{Map} $\ast$ {\bfseries habitat\+\_\+map}\hypertarget{class_dispersal_coordinator_abcd97d006f49882c6f5c4c24df6cb52a}{}\label{class_dispersal_coordinator_abcd97d006f49882c6f5c4c24df6cb52a}
+\hyperlink{class_landscape}{Landscape} $\ast$ {\bfseries habitat\+\_\+map}\hypertarget{class_dispersal_coordinator_a3eb82a6bacdb78297e37ba8cbef10a28}{}\label{class_dispersal_coordinator_a3eb82a6bacdb78297e37ba8cbef10a28}
 
 \item 
 double $\ast$ {\bfseries generation}\hypertarget{class_dispersal_coordinator_ae3f83d100dad7c60137edf42b3c199c1}{}\label{class_dispersal_coordinator_ae3f83d100dad7c60137edf42b3c199c1}
@@ -153,7 +154,7 @@ Check the end point for the given coordinates and density.
 
 
 \begin{DoxyParams}{Parameters}
-{\em density} & the density at the end point -\/ avoids an extra call to \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{Map\+::get\+Val()} \\
+{\em density} & the density at the end point -\/ avoids an extra call to Map\+::get\+Val() \\
 \hline
 {\em oldx} & the old x position \\
 \hline
@@ -196,7 +197,7 @@ Check the end point for the given coordinates and density.
 
 
 \begin{DoxyParams}{Parameters}
-{\em density} & the density at the end point -\/ avoids an extra call to \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{Map\+::get\+Val()} \\
+{\em density} & the density at the end point -\/ avoids an extra call to Map\+::get\+Val() \\
 \hline
 {\em oldx} & the old x position \\
 \hline
@@ -239,7 +240,7 @@ Check the end point for the given coordinates and density.
 
 
 \begin{DoxyParams}{Parameters}
-{\em density} & the density at the end point -\/ avoids an extra call to \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{Map\+::get\+Val()} \\
+{\em density} & the density at the end point -\/ avoids an extra call to Map\+::get\+Val() \\
 \hline
 {\em oldx} & the old x position \\
 \hline
@@ -395,18 +396,18 @@ Sets the generation pointer to the provided double.
 \end{DoxyParams}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Habitat\+Map@{set\+Habitat\+Map}}
 \index{set\+Habitat\+Map@{set\+Habitat\+Map}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
-\subsubsection[{\texorpdfstring{set\+Habitat\+Map(\+Map $\ast$map\+\_\+ptr)}{setHabitatMap(Map *map_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Habitat\+Map (
+\subsubsection[{\texorpdfstring{set\+Habitat\+Map(\+Landscape $\ast$map\+\_\+ptr)}{setHabitatMap(Landscape *map_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Habitat\+Map (
 \begin{DoxyParamCaption}
-\item[{{\bf Map} $\ast$}]{map\+\_\+ptr}
+\item[{{\bf Landscape} $\ast$}]{map\+\_\+ptr}
 \end{DoxyParamCaption}
-)}\hypertarget{class_dispersal_coordinator_a03bc78c6b218366d6165ca49b7e9b35c}{}\label{class_dispersal_coordinator_a03bc78c6b218366d6165ca49b7e9b35c}
+)}\hypertarget{class_dispersal_coordinator_a0db146f56de14e0b4a095526a7b6c779}{}\label{class_dispersal_coordinator_a0db146f56de14e0b4a095526a7b6c779}
 
 
-Sets the pointer to the \hyperlink{class_map}{Map} object. 
+Sets the pointer to the Map object. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em map\+\_\+ptr} & pointer to a \hyperlink{class_map}{Map} object \\
+{\em map\+\_\+ptr} & pointer to a Map object \\
 \hline
 \end{DoxyParams}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Random\+Number@{set\+Random\+Number}}

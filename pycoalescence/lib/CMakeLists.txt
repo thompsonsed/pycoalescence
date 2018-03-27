@@ -17,8 +17,8 @@ set(SOURCE_FILES
         necsim/Logging.cpp
         necsim/Logging.h
         necsim/main.cpp
-        necsim/Map.cpp
-        necsim/Map.h
+        necsim/Landscape.cpp
+        necsim/Landscape.h
         necsim/Matrix.h
         necsim/ProtractedTree.cpp
         necsim/ProtractedTree.h
@@ -33,7 +33,8 @@ set(SOURCE_FILES
         necsim/DataMask.cpp
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
-        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h)
+        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp)
 
 #set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.62.0/include)
 #set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.62.0/lib)
@@ -92,7 +93,7 @@ add_library(applyspecmodule SHARED ${SOURCE_FILES})
 include_directories(${PYTHON_INCLUDE_DIRS})
 add_definitions(-Dwith_gdal)
 target_link_libraries(applyspecmodule ${PYTHON_LIBRARIES})
-target_link_libraries(applyspecmodule "${SQL_DIR}")
+    target_link_libraries(applyspecmodule "${SQL_DIR}")
 target_link_libraries(applyspecmodule gdal)
 target_link_libraries(applyspecmodule ${Boost_LIBRARIES})
 set(SOURCE_FILES

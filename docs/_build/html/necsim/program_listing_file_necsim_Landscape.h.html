@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File Landscape.h &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File LicenseHeader.h" href="file_necsim_LicenseHeader.h.html" />
+    <link rel="prev" title="File Landscape.h" href="file_necsim_Landscape.h.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_LicenseHeader.h.html" title="File LicenseHeader.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.h.html" accesskey="U">File Landscape.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-landscape-h">
+<span id="program-listing-file-necsim-landscape-h"></span><h1>Program Listing for File Landscape.h<a class="headerlink" href="#program-listing-for-file-landscape-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_Landscape.h.html#file-necsim-landscape-h"><span class="std std-ref">File Landscape.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details</span>
+<span class="cp">#ifndef LANDSCAPE_H</span>
+<span class="cp">#define LANDSCAPE_H</span>
+
+<span class="cp"># include &lt;string&gt;</span>
+<span class="cp"># include &lt;cstdio&gt;</span>
+<span class="cp"># include &lt;vector&gt;</span>
+<span class="cp"># include &lt;iostream&gt;</span>
+<span class="cp"># include &lt;fstream&gt;</span>
+<span class="cp"># include &lt;cmath&gt;</span>
+<span class="cp"># include &lt;stdexcept&gt;</span>
+<span class="cp"># include &lt;boost/filesystem.hpp&gt;</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;Map.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;DataMask.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SimParameters.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">uint32_t</span> <span class="nf">importToMapAndRound</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">matrix_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">matrix_x</span><span class="p">,</span>
+                             <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">matrix_y</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">scalar</span><span class="p">);</span>
+
+<span class="k">class</span> <span class="nc">Landscape</span>
+<span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// The map files which are read in (or generated if running with &quot;null&quot; as the map file&quot;.</span>
+    <span class="c1">// Pristine maps are meant for before any deforestation occured, whereas the other maps are intended for modern day maps.</span>
+    <span class="c1">// A linear transformation from modern to pristine maps is used, approaching the habitat_change_rate variable times the difference between the pristine and modern maps.</span>
+    <span class="c1">// Once the gen_since_pristine number of generations has been reached, the map will jump to the pristine condition.</span>
+    <span class="c1">// the finer grid for the area around the sample area.</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">fine_map</span><span class="p">;</span>
+    <span class="c1">// the pristine finer map.</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">pristine_fine_map</span><span class="p">;</span>
+    <span class="c1">// the coarser grid for the wider zone.</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">coarse_map</span><span class="p">;</span>
+    <span class="c1">// the pristine coarser map.</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">pristine_coarse_map</span><span class="p">;</span>
+    <span class="c1">// for importing and storing the simulation set-up options.</span>
+    <span class="n">SimParameters</span> <span class="n">mapvars</span><span class="p">;</span>
+    <span class="c1">// the minimum values for each dimension for offsetting.</span>
+    <span class="kt">long</span> <span class="n">fine_x_min</span><span class="p">{},</span> <span class="n">fine_y_min</span><span class="p">{},</span> <span class="n">coarse_x_min</span><span class="p">{},</span> <span class="n">coarse_y_min</span><span class="p">{};</span>
+    <span class="c1">// the maximum values for each dimension for offsetting.</span>
+    <span class="kt">long</span> <span class="n">fine_x_max</span><span class="p">{},</span> <span class="n">fine_y_max</span><span class="p">{},</span> <span class="n">coarse_x_max</span><span class="p">{},</span> <span class="n">coarse_y_max</span><span class="p">{};</span>
+    <span class="c1">// the offsetting of the map in FINE map units.</span>
+    <span class="kt">long</span> <span class="n">fine_x_offset</span><span class="p">{},</span> <span class="n">fine_y_offset</span><span class="p">{},</span> <span class="n">coarse_x_offset</span><span class="p">{},</span> <span class="n">coarse_y_offset</span><span class="p">{};</span>
+    <span class="c1">// the scale of the coarse map compared with the smaller map.</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">scale</span><span class="p">{};</span>
+    <span class="c1">// the length of the grid where the species start.</span>
+    <span class="kt">long</span> <span class="n">x_dim</span><span class="p">{};</span>
+    <span class="c1">// the height of the grid where the species start.</span>
+    <span class="kt">long</span> <span class="n">y_dim</span><span class="p">{};</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">deme</span><span class="p">{};</span>
+    <span class="c1">// for checking that the dimensions have been set before attempting to import the maps.</span>
+    <span class="kt">bool</span> <span class="n">check_set_dim</span><span class="p">;</span>
+    <span class="c1">// for setting the movement cost through forest.</span>
+    <span class="kt">double</span> <span class="n">dispersal_relative_cost</span><span class="p">{};</span>
+    <span class="c1">// the last time the map was updated, in generations.</span>
+    <span class="kt">double</span> <span class="n">update_time</span><span class="p">{};</span>
+    <span class="c1">// the rate at which the habitat transforms from the modern forest map to the pristine habitat map.</span>
+    <span class="c1">// A value of 1 will give a smooth curve from the present day to pristine habitat.</span>
+    <span class="kt">double</span> <span class="n">habitat_change_rate</span><span class="p">{};</span>
+    <span class="c1">// the number of generations at which point the habitat becomes entirely pristine.</span>
+    <span class="kt">double</span> <span class="n">gen_since_pristine</span><span class="p">{};</span>
+    <span class="c1">// the time the current map was updated.</span>
+    <span class="kt">double</span> <span class="n">current_map_time</span><span class="p">;</span>
+    <span class="c1">// checks whether the simulation has already been set to the pristine state.</span>
+    <span class="kt">bool</span> <span class="n">is_pristine</span><span class="p">;</span>
+    <span class="c1">// flag of whether the simulation has a pristine state or not.</span>
+    <span class="kt">bool</span> <span class="n">has_pristine</span><span class="p">;</span>
+    <span class="c1">// the maximum value for habitat</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">habitat_max</span><span class="p">;</span>
+    <span class="c1">// the maximum value on the fine map file</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">fine_max</span><span class="p">;</span>
+    <span class="c1">// the maximum value on the coarse map file</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">coarse_max</span><span class="p">;</span>
+    <span class="c1">// the maximum value on the pristine fine map file</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pristine_fine_max</span><span class="p">;</span>
+    <span class="c1">// the maximum value on the pristine coarse map file</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pristine_coarse_max</span><span class="p">;</span>
+    <span class="c1">// if true, dispersal is possible from anywhere, only the fine map spatial structure is preserved</span>
+    <span class="n">string</span> <span class="n">landscape_type</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">NextMap</span><span class="p">;</span>
+    <span class="c1">// If this is false, there is no coarse map defined, so ignore the boundaries.</span>
+    <span class="kt">bool</span> <span class="n">has_coarse</span><span class="p">;</span>
+    <span class="c1">// the number of updates to have occured.</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nUpdate</span><span class="p">{};</span>
+
+    <span class="c1">// Typedef for single application of the infinite landscape verses bounded landscape.</span>
+    <span class="k">typedef</span> <span class="kt">unsigned</span> <span class="nf">long</span> <span class="p">(</span><span class="n">Landscape</span><span class="o">::*</span><span class="n">fptr</span><span class="p">)(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
+                                             <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dCurrentGen</span><span class="p">);</span>
+
+    <span class="n">fptr</span> <span class="n">getValFunc</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Landscape</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">check_set_dim</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// sets the check to false.</span>
+        <span class="n">is_pristine</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">current_map_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">habitat_max</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">getValFunc</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">has_coarse</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">has_pristine</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">landscape_type</span> <span class="o">=</span> <span class="s">&quot;closed&quot;</span><span class="p">;</span>
+        <span class="n">fine_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">coarse_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">pristine_fine_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">pristine_coarse_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">getHabitatMax</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="n">mapvarsin</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">checkMapExists</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calcFineMap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calcPristineFineMap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calcCoarseMap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calcPristineCoarseMap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setTimeVars</span><span class="p">(</span><span class="kt">double</span> <span class="n">gen_since_pristine_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">habitat_change_rate_in</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">calcOffset</span><span class="p">();</span>
+
+    <span class="kt">bool</span> <span class="nf">checkAllDimensionsZero</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calculateOffsetsFromMaps</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">calculateOffsetsFromParameters</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">validateMaps</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">updateMap</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">isPristine</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">is_pristine</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setPristine</span><span class="p">(</span><span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">bPristinein</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">is_pristine</span> <span class="o">=</span> <span class="n">bPristinein</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="nf">getPristine</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">gen_since_pristine</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">string</span> <span class="nf">getLandscapeType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">landscape_type</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">checkPristine</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">has_pristine</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">generation</span> <span class="o">&gt;=</span> <span class="n">gen_since_pristine</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">is_pristine</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setLandscape</span><span class="p">(</span><span class="n">string</span> <span class="n">is_infinite</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getVal</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getValCoarse</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">xval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">yval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getValFine</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">xval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">yval</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getValFinite</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
+                               <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getValInfinite</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
+                                 <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getValCoarseTiled</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
+                                    <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getValFineTiled</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
+                                  <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_generation</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">convertSampleXToFineX</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">convertSampleYToFineY</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">convertFineToSample</span><span class="p">(</span><span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getInitialCount</span><span class="p">(</span><span class="kt">double</span> <span class="n">dSample</span><span class="p">,</span> <span class="n">DataMask</span> <span class="o">&amp;</span><span class="n">samplemask</span><span class="p">);</span>
+
+    <span class="n">SimParameters</span> <span class="nf">getSimParameters</span><span class="p">();</span>
+
+    <span class="kt">bool</span> <span class="nf">checkMap</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">checkFine</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">convertCoordinates</span><span class="p">(</span><span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">runDispersal</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span>
+                               <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">,</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">disp_comp</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation</span><span class="p">);</span>
+
+    <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Landscape</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">mapvars</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_max</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_offset</span>
+           <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">scale</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">x_dim</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">y_dim</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">deme</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">check_set_dim</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">dispersal_relative_cost</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">update_time</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">habitat_change_rate</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">gen_since_pristine</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">current_map_time</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">is_pristine</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">NextMap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">nUpdate</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">landscape_type</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">pristine_fine_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">pristine_coarse_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">habitat_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">has_coarse</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">has_pristine</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">istream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">Landscape</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">mapvars</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_min</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_min</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_min</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_max</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_min</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_max</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_offset</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_offset</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_offset</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_offset</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">scale</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">x_dim</span>
+           <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">y_dim</span>
+           <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">deme</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">check_set_dim</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">dispersal_relative_cost</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">update_time</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">habitat_change_rate</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">gen_since_pristine</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">current_map_time</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">is_pristine</span><span class="p">;</span>
+        <span class="n">getline</span><span class="p">(</span><span class="n">is</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">NextMap</span><span class="p">);</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">nUpdate</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">landscape_type</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_max</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">pristine_fine_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">pristine_coarse_max</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">habitat_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">has_coarse</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">has_pristine</span><span class="p">;</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">mapvars</span><span class="p">.</span><span class="n">landscape_type</span><span class="p">);</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">calcFineMap</span><span class="p">();</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">calcCoarseMap</span><span class="p">();</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">calcPristineFineMap</span><span class="p">();</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">calcPristineCoarseMap</span><span class="p">();</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">recalculateHabitatMax</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">string</span> <span class="n">printVars</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">clearMap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">recalculateHabitatMax</span><span class="p">();</span>
+
+<span class="p">};</span>
+
+<span class="cp">#endif </span><span class="c1">// LANDSCAPE_H</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_Landscape.h.html"
+                        title="previous chapter">File Landscape.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_LicenseHeader.h.html"
+                        title="next chapter">File LicenseHeader.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_Landscape.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_LicenseHeader.h.html" title="File LicenseHeader.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.h.html" >File Landscape.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Samuel Thompson.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

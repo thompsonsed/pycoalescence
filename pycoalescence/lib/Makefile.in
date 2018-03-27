@@ -33,11 +33,11 @@ spec: start_msg_spec SpeciationCounter end_msg
 
 # The old compilation methods for executables - now deprecated
 SpeciationCounter: SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o
-	$(CXX) -o SpeciationCounter SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
+	$(CXX) -o SpeciationCounter SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o CPLCustomHandler.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 # NECSim compilation
-NECSim: main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Map.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o
-	$(CXX) -o NECSim main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Map.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
+NECSim: main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o
+	$(CXX) -o NECSim main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 start_msg: 
 	@echo "-----------------------------------------------"
@@ -53,11 +53,11 @@ end_msg:
 coal: start_msg NECSim end_msg
 
 # python shared object files
-necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Map.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o)
+necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandler.o)
 
-dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o)
+dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o)
 
-applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Map.o)
+applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandler.o)
 
 $(BUILDDIR)/necsimmodule.so: $(necsim_objects)
 
@@ -83,7 +83,7 @@ clean:
 $(BUILDDIR)/%.so: %.o
 	$(CXX) $(PLATFORM_SO) $(CPPFLAGS) $(LDFLAGS) $(LIBS) -fPIC -o $@ $+
 
-$(OBJDIR)/%.o: %.cpp
+$(OBJDIR)/%.o: %.cpp %.h
 	$(CXX) $(CPPFLAGS) -c -o $@ $<
 
 # DO NOT DELETE

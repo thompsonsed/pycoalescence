@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['datamask',['DataMask',['../class_data_mask.html',1,'']]],
-  ['datapoint',['DataPoint',['../class_data_point.html',1,'']]],
-  ['dispersalcoordinator',['DispersalCoordinator',['../class_dispersal_coordinator.html',1,'']]]
+  ['base',['base',['../structio_1_1error_1_1base.html',1,'io::error']]],
+  ['bytesourcebase',['ByteSourceBase',['../classio_1_1_byte_source_base.html',1,'io']]]
 ];
