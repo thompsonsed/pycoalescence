@@ -533,10 +533,18 @@ class Simulation:
 		"""
 		Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
 		the specified dimensions.
-		Note that if sample_file is "null", values will remain at 0.
+
+		If sample_file is "null", dimension values will remain at 0.
 		If coarse_file is "null", it will default to the size of fine_file with zero offset.
 		If the coarse file is "none", it will not be used.
 		If the pristine fine or coarse files are "none", they will not be used.
+
+		.. note:: the dispersal map should be of dimensions xy by xy where x, y are the fine map dimensions. Dispersal
+				  probabilities should sum to 1 across each row, and each row/column index represents dispersal from the
+				  row index to the column index according to index = x+(y*xdim), where x,y are the coordinates of the
+				  cell and xdim is the x dimension of the fine map. See the
+				  :class:`PatchedLandscape class <pycoalescence.patched_landscape.PatchedLandscape>` for routines for
+				  generating these landscapes.
 
 		:param str sample_file: the sample map file. Provide "null" if on samplemask is required
 		:param str fine_file: the fine map file. Defaults to "null" if none provided

@@ -176,7 +176,7 @@ class Map(object):
 		ds.FlushCache()
 		ds = None
 
-	def create(self, file, bands=1):
+	def create(self, file, bands=1, datatype=gdal.GDT_Byte):
 		"""
 		Create the file output and writes the data to the output.
 
@@ -191,7 +191,7 @@ class Map(object):
 		check_parent(self.file_name)
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.file_name,
 															 self.data.shape[1], self.data.shape[0], bands,
-															 gdal.GDT_Byte)
+															 datatype)
 		if not output_raster:
 			raise IOError("Could not create tif file at {}.".format(self.file_name))
 		output_raster.SetGeoTransform(geotransform)

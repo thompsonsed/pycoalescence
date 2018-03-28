@@ -6,14 +6,14 @@ from __future__ import absolute_import
 import logging
 import sqlite3
 import subprocess
-
 import math
 import numpy as np
 import os
 import random
+import sys
+import json
 from collections import defaultdict
 
-from sqlite_connection import check_sql_table_exist
 
 e_list = []
 try:
@@ -36,13 +36,13 @@ except ImportError as ie:
 	class ApplySpecError(Exception):
 		pass
 
-import sys
-import json
 
 from .future_except import FileNotFoundError
 from .system_operations import execute_log_info, mod_directory, create_logger, write_to_log
 from .spatial_algorithms import calculate_distance_between
+from .sqlite_connection import check_sql_table_exist
 import pycoalescence
+
 
 # Reads the parameter descriptions from the json file.
 try:

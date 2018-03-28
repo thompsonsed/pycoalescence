@@ -84,7 +84,8 @@ compilation for an HPC using the intel compiler and copy the executable to "../.
 
 Compilation Options
 '''''''''''''''''''
-These are the possible flags which can be provided during installation as options in ``python setup.py [opts]``.
+These are the possible flags which can be provided during installation as options in ``python setup.py [opts]``. It is
+not usually expected that you need to provide any of these options.
 
 .. csv-table::
    :header: "Option", "Description"
@@ -108,7 +109,7 @@ The recommended method is:
 
 #. Specify simulation parameters
 
-   - Set simulation parameters using :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`
+   - Use :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`
      to set the job number, task number, output directory and other key simulation variables.
    - Set the map variables by one of the following:
 
@@ -173,6 +174,7 @@ files, which as default are mainconf_*job_num*_*seed*.txt and the other as timec
    - First add the pristine map options using :func:`add_pristine_map() <pycoalescence.simulation.Simulation.add_pristine_map>`
      This can be performed multiple times to add several maps.
    - Add the options to the configuration file (:func:`create_map_config() <pycoalescence.simulation.Simulation.create_map_config>`)
+
 .. note::
     See Glossary_ for definitions of :term:`sample map`, :term:`fine map` and :term:`coarse map`.
 
@@ -190,7 +192,7 @@ A simple simulation
     c = Simulation(logging_level=20)
     # set the main simulation parameters - use default values for other keyword arguments
     c.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
-                            sigma=4, tau=4, deme=10, sample_size=0.1, max_time=1)
+                            sigma=4, deme=10, sample_size=0.1, max_time=1)
     # Optionally add a set of speciation rates to apply at the end of the simulation
     c.set_speciation_rates([0.1, 0.2, 0.3])
     # set the map parameters - null means the map will be generated with 100% cover everywhere (no file input).
@@ -213,8 +215,8 @@ inputted map files.
     # set the main simulation parameters
     c.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
                             sigma=4, tau=4, deme=1, sample_size=0.1
-                            max_time=100, dispersal_method="normal", m_prob=0.0, cutoff=0, dispersal_relative_cost=1,
-                            min_num_species=1, forest_change_rate=0.2,
+                            max_time=100, dispersal_method="fat-tailed", m_prob=0.0, cutoff=0,
+                            dispersal_relative_cost=1, min_num_species=1, forest_change_rate=0.2,
                             pristine_forest_time=200, time_config_file="null", restrict_self=False,
                             infinite_landscape=False)
     # Add a set of speciation rates to be applied at the end of the simulation
@@ -325,11 +327,30 @@ the required parameters for each dispersal method; any additional parameters pro
 - Normal-uniform distribution
     This requires :math:`\sigma`, :math:`m` and :math:`c` . Here, we pick with probability :math:`1-m` from a normal
     distribution with standard deviation :math:`\sigma`, and probability :math:`m` from a uniform distribution. This
-    uniform distribution picks a random distance equally between 0 and :math:`c`, the maximal dispersal distance. For
+    uniform distribution picks a random distance uniformly between 0 and :math:`c`, the maximal dispersal distance. For
     very large :math:`c`, extremely long distance dispersal is possible.
 
-**pycoalescence** also has the ability to simulate a dispersal kernel on a landscape. For more information about that
+It is also possible to provide a dispersal probability map, which sets the probability of dispersing from one cell to
+another. The dispersal map should be dimensions *xy* by *xy* where *x* and *y* are the dimensions of the fine map. A
+dispersal map can be set by using
+:func:`set_map_files(dispersal_map="/path/to/dispersal.tif") <pycoalescence.simulation.Simulation.set_map_files>`.
+
+**pycoalescence** has the ability to simulate a dispersal kernel on a landscape. For more information about that
 process, see :ref:`here <simulate_landscapes>`
+
+.. important:: In this scenario, it is not possible to use a coarse map, which should be "none".
+
+Differing reproductive rates
+''''''''''''''''''''''''''''
+
+Simulations can use varying reproductive rates across the landscape, but using
+:func:`set_map_files(reproduction_map="/path/to/rep.tif") <pycoalescence.simulation.Simulation.set_map_files>`. In this
+scenario, all species have different per-capita reproduction rates across the landscape.
+
+.. note:: Density is already taken into account during simulations for reproduction rates, so the reproduction map
+          should be solely for the *per-capita* differences in reproductive rate.
+
+.. important:: A reproduction map can only be used with a fine map, and coarse map should be set to "none".
 
 
 Limitations of simulation variables
@@ -364,6 +385,9 @@ Certain simulation variables have limitations, depending on the method of settin
     .. hint:: Scalings and offsets between maps should also work correctly, but if problems are encountered, try manually
               specifying offsets and dimensions to identify any problems.
 
+    - Both the reproduction map and dispersal map (if provided) must match the dimensions of the fine map. No coarse map
+      should be provided in either scenario.
+
 An example of how the map files are related is shown below. Black arrows indicate the offsets for the fine map (in the x
 and y dimensions) and purple arrows indicate the offsets for the coarse map.
 
@@ -384,10 +408,10 @@ following:
     Run with a pristine infinite landscape outside of the coares map boundaries.
 
 - "tiled_coarse"
-    Tile the coarse map infinitely in all dimensions.
+    Tile the coarse map infinitely in all dimensions. A coarse map must be provided.
 
 - "tiled_fine"
-    Tile the fine map infinitely in all dimensions.
+    Tile the fine map infinitely in all dimensions. No coarse map should be provided.
 
 Optimising Simulations
 ''''''''''''''''''''''
@@ -504,9 +528,9 @@ as comparing simulated landscapes to real data and calculating goodness of fits.
 The general procedure for using this module involves a few functions, all contained in the
 :class:`CoalescenceTree class <pycoalescence.coalescence_tree.CoalescenceTree>`.
 
-- :func:`set_database() <pycoalescence.coalescence_tree.CoalescenceTree.set_database>` generates the link to the SQL database, which
-  should be an output from a **necsim** simulation (probably run using the
-  :class:`Simulation class <pycoalescence.simulation.Simulation>`.
+- :func:`set_database() <pycoalescence.coalescence_tree.CoalescenceTree.set_database>` generates the link to the SQL
+  database, which should be an output from a **necsim** simulation (run using the
+  :class:`Simulation class <pycoalescence.simulation.Simulation>`).
 - :func:`import_comparison_data() <pycoalescence.coalescence_tree.import_comparison_data>` reads an SQL database which
   contains real data to compare to the simulation output. The comparison data should contain the following tables:
 
@@ -525,20 +549,21 @@ Additionally, one can provide the following if comparisons between fragments are
 Extended Features
 ~~~~~~~~~~~~~~~~~
 
-- Read tif files and perform a number of operations taking into account the spatial locations of the data in question.
+- Read tif files and perform a number of operations taking into account georeferencing of the data.
   Functionality is contained within the :class:`Map class <pycoalescence.map.Map>` (see :ref:`here <map_reading>`).
 - Generate fragmented landscapes (see :ref:`here <generate_landscapes>`). This may be useful for generating example
   landscapes of a particular size with desired characteristics.
 - Simulate a dispersal kernel on a landscape to obtain characteristics of the effective dispersal kernel. Currently only
   a single map is supported with "closed", "infinite" or "tiled" landscape types (see :ref:`here <simulate_landscapes>`).
 - Simulations can be merged into a single output, with each simulation occupying a separate guild (see
-  :ref:`here <merging_simulations>`).
+  :ref:`here <merging_simulations>`). Analyses can then be performed on the combined data.
 
 
 
 
 Testing install
 ~~~~~~~~~~~~~~~
+
 The system install can be tested by running :py:mod:`test_install.py <pycoalescence.test_install>` from the command line
 (``python test_install.py``) which requires that ``python setup.py`` has been successfully run previously.
 
