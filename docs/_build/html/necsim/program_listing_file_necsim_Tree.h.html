@@ -108,11 +108,11 @@
     <span class="c1">// for file naming - good to know which task in a series is being executed here</span>
     <span class="kt">long</span> <span class="kt">long</span> <span class="n">the_task</span><span class="p">;</span>
     <span class="c1">// The map file containing the times that we want to expand the model and record all lineages again.</span>
-    <span class="c1">// If this is null, has_times_file will be false and the vector will be empty.</span>
+    <span class="c1">// If this is null, uses_temporal_sampling will be false and the vector will be empty.</span>
     <span class="n">string</span> <span class="n">times_file</span><span class="p">;</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">reference_times</span><span class="p">;</span>
     <span class="c1">// Set to true if we are recording at times other than the present day.</span>
-    <span class="kt">bool</span> <span class="n">has_times_file</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">uses_temporal_sampling</span><span class="p">;</span>
     <span class="c1">// The time variables (for timing the simulation in real time)</span>
     <span class="kt">time_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">sim_start</span><span class="p">,</span> <span class="n">sim_end</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span> <span class="n">sim_finish</span><span class="p">,</span> <span class="n">out_finish</span><span class="p">;</span>
     <span class="kt">time_t</span> <span class="n">time_taken</span><span class="p">;</span>
@@ -187,7 +187,7 @@
         <span class="c1">// Set the database to NULL pointers.</span>
         <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">outdatabase</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">has_times_file</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">uses_temporal_sampling</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">sim_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">sim_end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>

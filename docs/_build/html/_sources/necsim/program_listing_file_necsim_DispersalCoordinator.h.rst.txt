@@ -32,6 +32,7 @@ Program Listing for File DispersalCoordinator.h
        
        // Our map of dispersal probabilities (if required)
        // This will contain cummulative probabilities across rows
+       // So dispersal is from the y cell to each of the x cells.
        Map<double> dispersal_prob_map;
        // Our random number generator for dispersal distances
        // This is a pointer so that the random number generator is the same
@@ -71,7 +72,8 @@ Program Listing for File DispersalCoordinator.h
                          const unsigned long dispersal_x, const unsigned long dispersal_y,
                          const double &m_probin, const double &cutoffin,
                          const double &sigmain, const double &tauin, const bool &restrict_self);
-       
+   
+       void setDispersal(SimParameters * simParameters);
        void disperseNullDispersalMap(Step &this_step);
        
        void disperseDispersalMap(Step &this_step);

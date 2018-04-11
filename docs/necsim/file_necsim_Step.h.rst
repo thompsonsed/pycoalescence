@@ -35,6 +35,12 @@ BSD-3 Licence.
 
 
 
+Includes
+--------
+
+
+- ``Cell.h`` (:ref:`file_necsim_Cell.h`)
+
 
 
 Included By

@@ -91,7 +91,11 @@
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setHabitatMap</span><span class="p">(</span><span class="n">Landscape</span> <span class="o">*</span><span class="n">map_ptr</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">habitat_map</span> <span class="o">=</span> <span class="n">map_ptr</span><span class="p">;</span>
-    <span class="n">xdim</span> <span class="o">=</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">getSimParameters</span><span class="p">().</span><span class="n">fine_map_x_size</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">map_ptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Attempting to set map pointer to null pointer in DispersalCoordinator.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">xdim</span> <span class="o">=</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">getSimParameters</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">generation_ptr</span><span class="p">)</span>
@@ -108,6 +112,11 @@
     <span class="c1">// Open our file connection</span>
     <span class="k">if</span><span class="p">(</span><span class="n">dispersal_file</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
     <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">NR</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Random number generator pointer has not been set in DispersalCoordinator.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Using dispersal kernel.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
         <span class="n">setEndPointFptr</span><span class="p">(</span><span class="n">restrict_self</span><span class="p">);</span>
         <span class="n">NR</span><span class="o">-&gt;</span><span class="n">setDispersalParams</span><span class="p">(</span><span class="n">sigmain</span><span class="p">,</span> <span class="n">tauin</span><span class="p">);</span>
         <span class="n">NR</span><span class="o">-&gt;</span><span class="n">setDispersalMethod</span><span class="p">(</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">m_probin</span><span class="p">,</span> <span class="n">cutoffin</span><span class="p">);</span>
@@ -115,10 +124,12 @@
     <span class="p">}</span>
     <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dispersal_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
     <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Using null dispersal file.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
         <span class="n">doDispersal</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseNullDispersalMap</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Using dispersal file.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
         <span class="n">doDispersal</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseDispersalMap</span><span class="p">;</span>
         <span class="c1">// Check file existance</span>
         <span class="n">ifstream</span> <span class="nf">infile</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
@@ -132,6 +143,17 @@
         <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
         <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
     <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">simParameters</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">simParameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulation parameters pointer has not been set for DispersalCoordinator.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">setDispersal</span><span class="p">(</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">dispersal_file</span><span class="p">,</span>
+                 <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_size</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">m_prob</span><span class="p">,</span>
+                 <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sigma</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">tau</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">restrict_self</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseNullDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
@@ -153,7 +175,7 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_col</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
     <span class="k">while</span><span class="p">(</span><span class="n">max_col</span> <span class="o">-</span> <span class="n">min_col</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">to_check</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">max_col</span><span class="o">-</span><span class="n">min_col</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_col</span><span class="p">;</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">to_check</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">max_col</span> <span class="o">-</span> <span class="n">min_col</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_col</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row_ref</span><span class="p">][</span><span class="n">to_check</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">random_no</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">min_col</span> <span class="o">=</span> <span class="n">to_check</span><span class="p">;</span>

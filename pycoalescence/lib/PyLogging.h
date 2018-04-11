@@ -13,12 +13,13 @@
 #include <string>
 #include "necsim/LogFile.h"
 
-extern PyObject * loggingmodule;
-extern PyGILState_STATE gstate;
 extern bool log_set;
 extern bool logger_set;
 
-static PyObject * call_logging = nullptr;
+/**
+ * @brief A python object container for the logger function call for outputting using python's logging module.
+ */
+extern PyObject * call_logging;
 
 
 /**
@@ -35,7 +36,6 @@ PyObject * set_log_function(PyObject *dummy, PyObject *args);
 
 /**
  * @brief Sets the logger to the inputted object
- * Saves the logger in loggingmodule
  * @param self required for python objects
  * @param args the logger to link for error outputting
  */

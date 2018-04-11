@@ -30,28 +30,36 @@ Program Listing for File SpecSimParameters.h
        unsigned long metacommunity_size;
        double metacommunity_speciation_rate;
    
-       void setup(string file_in, bool use_spatial_in, string sample_file, string time_config, string use_fragments_in,
+       void setup(string file_in, bool use_spatial_in, string sample_file, vector<double> times, string use_fragments_in,
                   vector<double> speciation_rates, double min_speciation_gen_in, double max_speciation_gen_in)
        {
-           setup(file_in, use_spatial_in, sample_file, time_config, use_fragments_in, speciation_rates,
+           setup(file_in, use_spatial_in, sample_file, times, use_fragments_in, speciation_rates,
                  min_speciation_gen_in, max_speciation_gen_in, 0, 0.0);
        }
    
-       void setup(string file_in, bool use_spatial_in, string sample_file, string time_config, string use_fragments_in,
+       void setup(string file_in, bool use_spatial_in, string sample_file, vector<double> times, string use_fragments_in,
                   vector<double> speciation_rates, double min_speciation_gen_in, double max_speciation_gen_in,
                   unsigned long metacommunity_size_in, double metacommunity_speciation_rate_in)
        {
            filename = std::move(file_in);
            use_spatial = use_spatial_in;
            samplemask = std::move(sample_file);
-           times_file = std::move(time_config);
+           if(times.size() == 0)
+           {
+               times_file = "null";
+               all_times.push_back(0.0);
+           }
+           else
+           {
+               times_file = "set";
+               all_times = times;
+           }
            min_speciation_gen = std::move(min_speciation_gen_in);
            max_speciation_gen = std::move(max_speciation_gen_in);
-           importTimeConfig();
            use_fragments = !(use_fragments_in == "F");
            fragment_config_file = use_fragments_in;
            bMultiRun = speciation_rates.size() > 1;
-           for(double speciation_rate : speciation_rates)
+           for(auto speciation_rate : speciation_rates)
            {
                all_speciation_rates.push_back(speciation_rate);
            }

@@ -44,6 +44,8 @@ Includes
 
 - ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
+- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+
 - ``SimulateDispersal.h`` (:ref:`file_necsim_SimulateDispersal.h`)
 
 - ``utility``
@@ -57,5 +59,5 @@ Functions
 ---------
 
 
-- :ref:`function_distanceBetween`
+- :ref:`function_distanceBetweenCells`
 

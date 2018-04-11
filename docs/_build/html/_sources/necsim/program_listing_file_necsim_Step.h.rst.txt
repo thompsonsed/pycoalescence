@@ -14,14 +14,14 @@ Program Listing for File Step.h
    #ifndef STEP_H
    #define STEP_H
    
+   #include "Cell.h"
+   
    struct Step
    {
        unsigned long chosen, coalchosen;
        long oldx, oldy, oldxwrap, oldywrap;
        bool coal, bContinueSim;
        unsigned int time_reference;
-       double distance;
-       double angle;
    #ifdef verbose
        long number_printed;
    #endif
@@ -37,11 +37,19 @@ Program Listing for File Step.h
            coal = false;
            bContinueSim = true;
            time_reference = 0;
-           distance = 0.0;
-           angle = 0.0;
    #ifdef verbose
            number_printed =0;
    #endif
+       }
+   
+       Step(const Cell & cell)
+       {
+           oldx = cell.x;
+           oldy = cell.y;
+           oldxwrap = 0;
+           oldywrap = 0;
+           coal = false;
+           bContinueSim = true;
        }
        
        
@@ -54,8 +62,6 @@ Program Listing for File Step.h
            oldxwrap = 0;
            oldywrap = 0;
            coal = false;
-           distance = 0.0;
-           angle = 0.0;
        }
        
        

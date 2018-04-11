@@ -105,7 +105,7 @@
     <span class="c1">// the pristine coarser map.</span>
     <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">pristine_coarse_map</span><span class="p">;</span>
     <span class="c1">// for importing and storing the simulation set-up options.</span>
-    <span class="n">SimParameters</span> <span class="n">mapvars</span><span class="p">;</span>
+    <span class="n">SimParameters</span> <span class="o">*</span> <span class="n">mapvars</span><span class="p">;</span>
     <span class="c1">// the minimum values for each dimension for offsetting.</span>
     <span class="kt">long</span> <span class="n">fine_x_min</span><span class="p">{},</span> <span class="n">fine_y_min</span><span class="p">{},</span> <span class="n">coarse_x_min</span><span class="p">{},</span> <span class="n">coarse_y_min</span><span class="p">{};</span>
     <span class="c1">// the maximum values for each dimension for offsetting.</span>
@@ -162,6 +162,7 @@
 <span class="k">public</span><span class="o">:</span>
     <span class="n">Landscape</span><span class="p">()</span>
     <span class="p">{</span>
+        <span class="n">mapvars</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">check_set_dim</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// sets the check to false.</span>
         <span class="n">is_pristine</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">current_map_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -178,7 +179,8 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">getHabitatMax</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="n">mapvarsin</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">mapvarsin</span><span class="p">);</span>
+
 
     <span class="kt">bool</span> <span class="nf">checkMapExists</span><span class="p">();</span>
 
@@ -268,7 +270,7 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getInitialCount</span><span class="p">(</span><span class="kt">double</span> <span class="n">dSample</span><span class="p">,</span> <span class="n">DataMask</span> <span class="o">&amp;</span><span class="n">samplemask</span><span class="p">);</span>
 
-    <span class="n">SimParameters</span> <span class="nf">getSimParameters</span><span class="p">();</span>
+    <span class="n">SimParameters</span> <span class="o">*</span> <span class="nf">getSimParameters</span><span class="p">();</span>
 
     <span class="kt">bool</span> <span class="nf">checkMap</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
 
@@ -281,7 +283,7 @@
 
     <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Landscape</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">mapvars</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
            <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_max</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_min</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_offset</span>
@@ -300,7 +302,7 @@
 
     <span class="k">friend</span> <span class="n">istream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">Landscape</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">mapvars</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_min</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_min</span><span class="p">;</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_x_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_min</span><span class="p">;</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_x_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_min</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_y_max</span><span class="p">;</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_min</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_y_max</span><span class="p">;</span>
@@ -314,7 +316,7 @@
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">fine_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">coarse_max</span><span class="p">;</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">pristine_fine_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">pristine_coarse_max</span><span class="p">;</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">habitat_max</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">has_coarse</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">has_pristine</span><span class="p">;</span>
-        <span class="n">r</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">mapvars</span><span class="p">.</span><span class="n">landscape_type</span><span class="p">);</span>
+        <span class="n">r</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">mapvars</span><span class="o">-&gt;</span><span class="n">landscape_type</span><span class="p">);</span>
         <span class="n">r</span><span class="p">.</span><span class="n">calcFineMap</span><span class="p">();</span>
         <span class="n">r</span><span class="p">.</span><span class="n">calcCoarseMap</span><span class="p">();</span>
         <span class="n">r</span><span class="p">.</span><span class="n">calcPristineFineMap</span><span class="p">();</span>

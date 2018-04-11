@@ -18,30 +18,30 @@
 #define PYTHON_COMPILE
 #endif
 #include <Python.h>
+#include <utility>
 #include <vector>
 #include <string>
 #include <cstring>
 #include <unistd.h>
-#include <signal.h>
+#include <csignal>
 
 #include "applyspecmodule.h"
 #include "PyLogging.h"
+#include "PyImports.h"
 #include "necsim/Community.h"
 #include "necsim/Metacommunity.h"
 
-PyObject * loggingmodule;
-PyGILState_STATE gstate;
 bool log_set = false;
 bool logger_set = false;
-PyObject * logger;
-
+PyObject * logger = nullptr;
+PyObject * call_logging = nullptr;
 /**
  * @brief Applies the speciation parameters to the provided template class, which can be a Metacommunity or a Community
  * @tparam T either a Metacommunity of Community object to calculate community structure for
  * @param database_str path to the database input/output
  * @param use_spatial flag for lineage location analysis
  * @param sample_file path to spatial sampling file, or "null"
- * @param time_config_file path to temporal sampling file, or "null"
+ * @param times vector of times to apply
  * @param fragment_file path to fragment list, or "T" for fragment detection, or "null"
  * @param speciation_rates speciation rates to apply
  * @param min_speciation_gen minimum speciation rate for protracted simulations
@@ -50,14 +50,14 @@ PyObject * logger;
  * @param metacommunity_speciation_rate speciation rate to use in metacommunity generation
  */
 template<class T> void createCommunity(string database_str, bool use_spatial, string sample_file,
-									   string time_config_file, string fragment_file, vector<double> & speciation_rates,
+									   vector<double> &times, string fragment_file, vector<double> &speciation_rates,
 									   double min_speciation_gen, double max_speciation_gen,
 									   unsigned long metacommunity_size, double metacommunity_speciation_rate)
 {
 	T community;
 	SpecSimParameters speciation_parameters;
-	speciation_parameters.setup(database_str, use_spatial, sample_file, time_config_file,
-								fragment_file, speciation_rates, min_speciation_gen, max_speciation_gen,
+	speciation_parameters.setup(std::move(database_str), use_spatial, std::move(sample_file), times,
+								std::move(fragment_file), speciation_rates, min_speciation_gen, max_speciation_gen,
 								metacommunity_size, metacommunity_speciation_rate);
 	community.apply(&speciation_parameters);
 }
@@ -67,17 +67,16 @@ static PyObject * apply(PyObject * self, PyObject * args)
 	char * database;
 	int record_spatial;
 	char * sample_file;
-	char * time_config_file;
 	char * fragment_file;
 	double min_spec_gen = 0.0;
 	double max_spec_gen = 0.0;
 	unsigned long metacommunity_size = 0;
 	double metacommunity_speciation_rate = 0.0;
-	PyObject *pList;
-	PyObject *pItem;
-	Py_ssize_t n;
-	if (!PyArg_ParseTuple(args, "sisssO!|ddkd", &database, &record_spatial, &sample_file, &time_config_file,
-						  &fragment_file, &PyList_Type, &pList, &min_spec_gen,
+	PyObject *list_speciation_rates;
+	PyObject *list_times;
+	if (!PyArg_ParseTuple(args, "sissO!O!|ddkd", &database, &record_spatial, &sample_file,
+						  &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times,
+						  &min_spec_gen,
 						  &max_spec_gen, &metacommunity_size, &metacommunity_speciation_rate))
 	{
 		return NULL;
@@ -103,23 +102,18 @@ static PyObject * apply(PyObject * self, PyObject * args)
 	}
 	// Convert all our variables to the relevant form
 	string database_str = database;
-	bool use_spatial = record_spatial;
+	auto use_spatial = static_cast<bool>(record_spatial);
 	string sample_file_str = sample_file;
-	string time_config_file_str = time_config_file;
 	string fragment_file_str = fragment_file;
-
-	n = PyList_Size(pList);
 	vector<double> spec_rates;
-	for (int i=0; i<n; i++)
+	vector<double> times;
+	if(!importPyListToVectorDouble(list_speciation_rates, spec_rates, "Speciation rates must be floats."))
 	{
-		pItem = PyList_GetItem(pList, i);
-		if(!PyFloat_Check(pItem))
-		{
-			PyErr_SetString(PyExc_TypeError, "Speciation rates must be floats.");
-			return NULL;
-		}
-		double tmpspec = PyFloat_AS_DOUBLE(pItem);
-		spec_rates.push_back(tmpspec);
+		return NULL;
+	}
+	if(!importPyListToVectorDouble(list_times, times, "Times must be floats."))
+	{
+		return NULL;
 	}
 	// Now run the actual simulation
 	try
@@ -127,7 +121,7 @@ static PyObject * apply(PyObject * self, PyObject * args)
 		if(metacommunity_size == 0)
 		{
 			Py_INCREF(logger);
-			createCommunity<Community>(database_str, use_spatial, sample_file_str, time_config_file_str,
+			createCommunity<Community>(database_str, use_spatial, sample_file_str, times,
 									   fragment_file_str, spec_rates, min_spec_gen, max_spec_gen,
 									   metacommunity_size, metacommunity_speciation_rate);
 			Py_DECREF(logger);
@@ -135,7 +129,7 @@ static PyObject * apply(PyObject * self, PyObject * args)
 		else
 		{
 			Py_INCREF(logger);
-			createCommunity<Metacommunity>(database_str, use_spatial, sample_file_str, time_config_file_str,
+			createCommunity<Metacommunity>(database_str, use_spatial, sample_file_str, times,
 									   fragment_file_str, spec_rates, min_spec_gen, max_spec_gen,
 									   metacommunity_size, metacommunity_speciation_rate);
 			Py_DECREF(logger);

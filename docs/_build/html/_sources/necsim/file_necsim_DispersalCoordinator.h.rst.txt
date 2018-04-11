@@ -69,6 +69,8 @@ Included By
 
 - :ref:`file_necsim_SpatialTree.h`
 
+- :ref:`file_necsim_SimulateDispersal.h`
+
 
 
 

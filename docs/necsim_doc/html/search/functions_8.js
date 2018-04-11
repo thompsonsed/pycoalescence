@@ -6,7 +6,7 @@ var searchData=
   ['importconfig',['importConfig',['../class_config_option.html#afbd1ed9d006c8ff48d90e63a57f55e2a',1,'ConfigOption']]],
   ['importcsv',['importCsv',['../class_matrix.html#a0a5d9135e9807b81ddc3cf05e777a902',1,'Matrix']]],
   ['importdata',['importData',['../class_community.html#a85db7255d3a1d53509ed2800fc24de31',1,'Community']]],
-  ['importmaps',['importMaps',['../class_simulate_dispersal.html#a8c7c65b4788010f02213fba5c985f49a',1,'SimulateDispersal::importMaps()'],['../class_spatial_tree.html#ab9603c25cd1c8466d1e4bfa3f73f191f',1,'SpatialTree::importMaps()']]],
+  ['importmaps',['importMaps',['../class_simulate_dispersal.html#a275eef6872de493273fc047467935d7b',1,'SimulateDispersal::importMaps()'],['../class_spatial_tree.html#ab9603c25cd1c8466d1e4bfa3f73f191f',1,'SpatialTree::importMaps()']]],
   ['importparameters',['importParameters',['../struct_sim_parameters.html#affb4a6133434c61c720b648012ccbcea',1,'SimParameters::importParameters(ConfigOption *configOption)'],['../struct_sim_parameters.html#a2c587f1f41e13c51696ca24e5edadc96',1,'SimParameters::importParameters(const string &amp;conf_in)'],['../struct_sim_parameters.html#a65833f22d1f30997727ed71e989af02e',1,'SimParameters::importParameters()']]],
   ['importreproductionmap',['importReproductionMap',['../class_spatial_tree.html#a5d9f29a12f8b66798139c89f153130db',1,'SpatialTree']]],
   ['importsamplemask',['importSamplemask',['../class_community.html#a01a137383e1e23f2191d63f16513a00a',1,'Community::importSamplemask()'],['../class_data_mask.html#ac756e21b1c8d9412d565fb020eec9a06',1,'DataMask::importSampleMask()']]],

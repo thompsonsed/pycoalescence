@@ -110,7 +110,6 @@ $(document).ready(function(){initNavTree('class_simulate_dispersal.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_simulate_dispersal-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -127,10 +126,15 @@ Collaboration diagram for SimulateDispersal:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_simulate_dispersal__coll__graph.jpg" border="0" usemap="#_simulate_dispersal_coll__map" alt="Collaboration graph"/></div>
 <map name="_simulate_dispersal_coll__map" id="_simulate_dispersal_coll__map">
-<area shape="rect" id="node2" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. " alt="" coords="28,12,72,37"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="241,105,321,131"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="218,5,344,44"/>
-<area shape="rect" id="node6" href="class_n_rrand.html" title="Contains the functions for random number generation. " alt="" coords="345,105,412,131"/>
+<area shape="rect" id="node3" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. " alt="" coords="718,6,762,31"/>
+<area shape="rect" id="node4" href="class_dispersal_coordinator.html" title="Class for generating dispersal distances and provide routines for reading dispersal distance maps as ..." alt="" coords="925,238,1071,263"/>
+<area shape="rect" id="node5" href="class_landscape.html" title="Contains all maps and provides the functions for accessing a grid cell in the correct temporal and sp..." alt="" coords="697,183,783,209"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="213,359,293,385"/>
+<area shape="rect" id="node8" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m..." alt="" coords="481,134,594,159"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="5,353,131,391"/>
+<area shape="rect" id="node9" href="class_config_option.html" title="Config option class to store and import options from a file. " alt="" coords="203,134,303,159"/>
+<area shape="rect" id="node11" href="struct_step.html" title="Stores the elements associated with a single step in a coalescence simulation. " alt="" coords="716,246,764,271"/>
+<area shape="rect" id="node12" href="class_n_rrand.html" title="Contains the functions for random number generation. " alt="" coords="706,314,774,339"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -139,21 +143,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3da09319132db8c7ad035290be6590ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a3da09319132db8c7ad035290be6590ef">setSequential</a> (bool bSequential)</td></tr>
 <tr class="memdesc:a3da09319132db8c7ad035290be6590ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the is_sequential flag.  <a href="#a3da09319132db8c7ad035290be6590ef">More...</a><br /></td></tr>
 <tr class="separator:a3da09319132db8c7ad035290be6590ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade30de5c9c7daebb6ccc4168fec3e813"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#ade30de5c9c7daebb6ccc4168fec3e813">setSizes</a> (unsigned long x, unsigned long y)</td></tr>
-<tr class="memdesc:ade30de5c9c7daebb6ccc4168fec3e813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the sizes of the density map.  <a href="#ade30de5c9c7daebb6ccc4168fec3e813">More...</a><br /></td></tr>
-<tr class="separator:ade30de5c9c7daebb6ccc4168fec3e813"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c7c65b4788010f02213fba5c985f49a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a8c7c65b4788010f02213fba5c985f49a">importMaps</a> (string map_file)</td></tr>
-<tr class="memdesc:a8c7c65b4788010f02213fba5c985f49a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import the map from the prescribed file.  <a href="#a8c7c65b4788010f02213fba5c985f49a">More...</a><br /></td></tr>
-<tr class="separator:a8c7c65b4788010f02213fba5c985f49a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777d7cab80b8543647970d6d64b797a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a777d7cab80b8543647970d6d64b797a9">setSimulationParameters</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> *sim_parameters)</td></tr>
+<tr class="memdesc:a777d7cab80b8543647970d6d64b797a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pointer to the simulation parameters object.  <a href="#a777d7cab80b8543647970d6d64b797a9">More...</a><br /></td></tr>
+<tr class="separator:a777d7cab80b8543647970d6d64b797a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275eef6872de493273fc047467935d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a275eef6872de493273fc047467935d7b">importMaps</a> ()</td></tr>
+<tr class="memdesc:a275eef6872de493273fc047467935d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import the maps from the prescribed files.  <a href="#a275eef6872de493273fc047467935d7b">More...</a><br /></td></tr>
+<tr class="separator:a275eef6872de493273fc047467935d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f2cd557ac9b21c107eac75e7c916af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a46f2cd557ac9b21c107eac75e7c916af">setSeed</a> (unsigned long s)</td></tr>
 <tr class="memdesc:a46f2cd557ac9b21c107eac75e7c916af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the seed for the random number generator.  <a href="#a46f2cd557ac9b21c107eac75e7c916af">More...</a><br /></td></tr>
 <tr class="separator:a46f2cd557ac9b21c107eac75e7c916af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93b3d450679b00c015f5e18d91f3a426"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a93b3d450679b00c015f5e18d91f3a426">setDispersalParameters</a> (string dispersal_method_in, double sigma_in, double tau_in, double m_prob_in, double cutoff_in, string landscape_type)</td></tr>
-<tr class="memdesc:a93b3d450679b00c015f5e18d91f3a426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the dispersal parameters.  <a href="#a93b3d450679b00c015f5e18d91f3a426">More...</a><br /></td></tr>
-<tr class="separator:a93b3d450679b00c015f5e18d91f3a426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a627bcb0be7e7d6b0ef1dbd44b32a1909"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a627bcb0be7e7d6b0ef1dbd44b32a1909"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setLandscapeType</b> (string landscape_type)</td></tr>
-<tr class="separator:a627bcb0be7e7d6b0ef1dbd44b32a1909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acae5067045d5989df6d7dce80bcfe276"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#acae5067045d5989df6d7dce80bcfe276">setOutputDatabase</a> (string out_database)</td></tr>
 <tr class="memdesc:acae5067045d5989df6d7dce80bcfe276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the output database for writing results to.  <a href="#acae5067045d5989df6d7dce80bcfe276">More...</a><br /></td></tr>
 <tr class="separator:acae5067045d5989df6d7dce80bcfe276"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,21 +168,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7d0a2b28dd8d45f1b8a74dbcd82290e7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a7d0a2b28dd8d45f1b8a74dbcd82290e7">getRandomCell</a> ()</td></tr>
 <tr class="memdesc:a7d0a2b28dd8d45f1b8a74dbcd82290e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a random cell from the list of cells.  <a href="#a7d0a2b28dd8d45f1b8a74dbcd82290e7">More...</a><br /></td></tr>
 <tr class="separator:a7d0a2b28dd8d45f1b8a74dbcd82290e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75eeedf1627eb25945a2d8f5dd0a2379"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a75eeedf1627eb25945a2d8f5dd0a2379">calculateNewPosition</a> (const double &amp;dist, const double &amp;angle, const <a class="el" href="struct_cell.html">Cell</a> &amp;start_cell, <a class="el" href="struct_cell.html">Cell</a> &amp;end_cell)</td></tr>
-<tr class="memdesc:a75eeedf1627eb25945a2d8f5dd0a2379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the new position from the start cell based on the distance and angle moved. Stores the new x and y location in the end cell.  <a href="#a75eeedf1627eb25945a2d8f5dd0a2379">More...</a><br /></td></tr>
-<tr class="separator:a75eeedf1627eb25945a2d8f5dd0a2379"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb12b6b2f113e58c62636b2b4456f4da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#acb12b6b2f113e58c62636b2b4456f4da">getEndPointInfinite</a> (const double &amp;dist, const double &amp;angle, const <a class="el" href="struct_cell.html">Cell</a> &amp;this_cell, <a class="el" href="struct_cell.html">Cell</a> &amp;end_cell)</td></tr>
-<tr class="memdesc:acb12b6b2f113e58c62636b2b4456f4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the density is greater than 0 a given distance from the start point on an infinite null landscape.  <a href="#acb12b6b2f113e58c62636b2b4456f4da">More...</a><br /></td></tr>
-<tr class="separator:acb12b6b2f113e58c62636b2b4456f4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9694673493b261697020f42aa2fdf9e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a9694673493b261697020f42aa2fdf9e7">getEndPointTiled</a> (const double &amp;dist, const double &amp;angle, const <a class="el" href="struct_cell.html">Cell</a> &amp;this_cell, <a class="el" href="struct_cell.html">Cell</a> &amp;end_cell)</td></tr>
-<tr class="memdesc:a9694673493b261697020f42aa2fdf9e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the density is greater than 0 a given distance from the start point on an infinite tiled landscape.  <a href="#a9694673493b261697020f42aa2fdf9e7">More...</a><br /></td></tr>
-<tr class="separator:a9694673493b261697020f42aa2fdf9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7fa3b37534cdd35871b30c7bb511351"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#ab7fa3b37534cdd35871b30c7bb511351">getEndPointClosed</a> (const double &amp;dist, const double &amp;angle, const <a class="el" href="struct_cell.html">Cell</a> &amp;this_cell, <a class="el" href="struct_cell.html">Cell</a> &amp;end_cell)</td></tr>
-<tr class="memdesc:ab7fa3b37534cdd35871b30c7bb511351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the density a given distance from the start point on an closed landscape.  <a href="#ab7fa3b37534cdd35871b30c7bb511351">More...</a><br /></td></tr>
-<tr class="separator:ab7fa3b37534cdd35871b30c7bb511351"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10a1dd769e993d018e7c7ae9208240ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a10a1dd769e993d018e7c7ae9208240ab">getEndPoint</a> (const double &amp;dist, const double &amp;angle, const <a class="el" href="struct_cell.html">Cell</a> &amp;this_cell, <a class="el" href="struct_cell.html">Cell</a> &amp;end_cell)</td></tr>
-<tr class="memdesc:a10a1dd769e993d018e7c7ae9208240ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the density a given distance from the start point, calling the relevant landscape function.  <a href="#a10a1dd769e993d018e7c7ae9208240ab">More...</a><br /></td></tr>
-<tr class="separator:a10a1dd769e993d018e7c7ae9208240ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5069adc35fba116716bebd288dd9e65f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a5069adc35fba116716bebd288dd9e65f">getEndPoint</a> (<a class="el" href="struct_cell.html">Cell</a> &amp;this_cell)</td></tr>
+<tr class="memdesc:a5069adc35fba116716bebd288dd9e65f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the density a given distance from the start point, calling the relevant landscape function.  <a href="#a5069adc35fba116716bebd288dd9e65f">More...</a><br /></td></tr>
+<tr class="separator:a5069adc35fba116716bebd288dd9e65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a759f6bb3b8288345eaf7c0d66ad29e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a759f6bb3b8288345eaf7c0d66ad29e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a4a759f6bb3b8288345eaf7c0d66ad29e">runMeanDispersalDistance</a> ()</td></tr>
 <tr class="memdesc:a4a759f6bb3b8288345eaf7c0d66ad29e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulates the dispersal kernel for the set parameters, storing the mean dispersal distance. <br /></td></tr>
@@ -207,44 +193,23 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:abafd3fc30df157d12e462c4b1907d8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum id number from the output SQL database and returns val + 1 Assumes that the database exists.  <a href="#abafd3fc30df157d12e462c4b1907d8fa">More...</a><br /></td></tr>
 <tr class="separator:abafd3fc30df157d12e462c4b1907d8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
-Protected Types</h2></td></tr>
-<tr class="memitem:a33cf29f05f05fbf3cd70f759e62f57f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33cf29f05f05fbf3cd70f759e62f57f0"></a>
-typedef bool(SimulateDispersal::*&#160;</td><td class="memItemRight" valign="bottom"><b>landscape_fptr</b>) (const double &amp;dist, const double &amp;angle, const <a class="el" href="struct_cell.html">Cell</a> &amp;this_cell, <a class="el" href="struct_cell.html">Cell</a> &amp;end_cell)</td></tr>
-<tr class="separator:a33cf29f05f05fbf3cd70f759e62f57f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a238dcc03606fc99a0e1cd80ff229c0bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a238dcc03606fc99a0e1cd80ff229c0bd"></a>
-Map&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>density_map</b></td></tr>
-<tr class="separator:a238dcc03606fc99a0e1cd80ff229c0bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff72c923e8454470b2d4c8935061fb21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff72c923e8454470b2d4c8935061fb21"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_set_size</b></td></tr>
-<tr class="separator:aff72c923e8454470b2d4c8935061fb21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3538ef66eedcee56817aabb26a1d9d27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3538ef66eedcee56817aabb26a1d9d27"></a>
+<a class="el" href="class_landscape.html">Landscape</a>&#160;</td><td class="memItemRight" valign="bottom"><b>density_landscape</b></td></tr>
+<tr class="separator:a3538ef66eedcee56817aabb26a1d9d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55da369d57d854168ff6e851b0d7892a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55da369d57d854168ff6e851b0d7892a"></a>
+<a class="el" href="class_dispersal_coordinator.html">DispersalCoordinator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dispersal_coordinator</b> {}</td></tr>
+<tr class="separator:a55da369d57d854168ff6e851b0d7892a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d11b4ed3e3942d2bb42e66116fffd2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d11b4ed3e3942d2bb42e66116fffd2d"></a>
+<a class="el" href="struct_sim_parameters.html">SimParameters</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>simParameters</b></td></tr>
+<tr class="separator:a6d11b4ed3e3942d2bb42e66116fffd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f6389fc4116b52622a900c55532f86b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f6389fc4116b52622a900c55532f86b"></a>
 <a class="el" href="class_n_rrand.html">NRrand</a>&#160;</td><td class="memItemRight" valign="bottom"><b>random</b></td></tr>
 <tr class="separator:a5f6389fc4116b52622a900c55532f86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1dc4cf60a69aafc2be4c80b0e9228c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1dc4cf60a69aafc2be4c80b0e9228c2"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>map_name</b></td></tr>
-<tr class="separator:af1dc4cf60a69aafc2be4c80b0e9228c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9ab2fa8b2c3e1bb1ba49b31679ae0d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9ab2fa8b2c3e1bb1ba49b31679ae0d7"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>seed</b></td></tr>
 <tr class="separator:af9ab2fa8b2c3e1bb1ba49b31679ae0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedabf3440f475bc15d4b95f9e8500d94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedabf3440f475bc15d4b95f9e8500d94"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>dispersal_method</b></td></tr>
-<tr class="separator:aedabf3440f475bc15d4b95f9e8500d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6d6ae35911ed2bd045bf8e5bb30b628"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6d6ae35911ed2bd045bf8e5bb30b628"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>sigma</b></td></tr>
-<tr class="separator:ad6d6ae35911ed2bd045bf8e5bb30b628"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa195b7e1b697c93e85a923eea5fabccc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa195b7e1b697c93e85a923eea5fabccc"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>tau</b></td></tr>
-<tr class="separator:aa195b7e1b697c93e85a923eea5fabccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4b679b39467170abf45845d4591e6db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4b679b39467170abf45845d4591e6db"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>m_prob</b></td></tr>
-<tr class="separator:ae4b679b39467170abf45845d4591e6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a532f1c5ba22d681c5761dcce4fc8555d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a532f1c5ba22d681c5761dcce4fc8555d"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>cutoff</b></td></tr>
-<tr class="separator:a532f1c5ba22d681c5761dcce4fc8555d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd3f96f169715aacbcc2939614a6a910"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd3f96f169715aacbcc2939614a6a910"></a>
 sqlite3 *&#160;</td><td class="memItemRight" valign="bottom"><b>database</b></td></tr>
 <tr class="separator:afd3f96f169715aacbcc2939614a6a910"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,71 +225,19 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>num_repeats<
 <tr class="memitem:a7f3401f3a7f1ec48635973d94e3470e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f3401f3a7f1ec48635973d94e3470e8"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>num_steps</b></td></tr>
 <tr class="separator:a7f3401f3a7f1ec48635973d94e3470e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0edc9ca52d14b3ea78c99c33b200447e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0edc9ca52d14b3ea78c99c33b200447e"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>max_density</b></td></tr>
-<tr class="separator:a0edc9ca52d14b3ea78c99c33b200447e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9f8100eaf9faf01a482342f605a8091"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9f8100eaf9faf01a482342f605a8091"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>generation</b></td></tr>
+<tr class="separator:ae9f8100eaf9faf01a482342f605a8091"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72f4b5ec8d52f080f2c9df991fb546ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72f4b5ec8d52f080f2c9df991fb546ef"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_sequential</b></td></tr>
 <tr class="separator:a72f4b5ec8d52f080f2c9df991fb546ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d15ba06c50a249328f867a105848f72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d15ba06c50a249328f867a105848f72"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_reference</b></td></tr>
 <tr class="separator:a2d15ba06c50a249328f867a105848f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1f3a40b1805f024e41ec8df9c38c01e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1f3a40b1805f024e41ec8df9c38c01e"></a>
-landscape_fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getValFptr</b></td></tr>
-<tr class="separator:ae1f3a40b1805f024e41ec8df9c38c01e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains routines for importing a density map file, running a dispersal kernel n times on a landscape and record the dispersal distances. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a75eeedf1627eb25945a2d8f5dd0a2379"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SimulateDispersal::calculateNewPosition </td>
-          <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>dist</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>start_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>end_cell</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calculates the new position from the start cell based on the distance and angle moved. Stores the new x and y location in the end cell. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dist</td><td>the distance to move </td></tr>
-    <tr><td class="paramname">angle</td><td>the direction from the start cell to move </td></tr>
-    <tr><td class="paramname">start_cell</td><td>the cell containing the start x and y position </td></tr>
-    <tr><td class="paramname">end_cell</td><td>the cell to contain the end x and y position </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="abafd3fc30df157d12e462c4b1907d8fa"></a>
 <div class="memitem">
 <div class="memproto">
@@ -351,38 +264,16 @@ landscape_fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getValFptr<
 
 </div>
 </div>
-<a class="anchor" id="a10a1dd769e993d018e7c7ae9208240ab"></a>
+<a class="anchor" id="a5069adc35fba116716bebd288dd9e65f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool SimulateDispersal::getEndPoint </td>
+          <td class="memname">void SimulateDispersal::getEndPoint </td>
           <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>dist</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>this_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>end_cell</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>this_cell</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -391,167 +282,10 @@ landscape_fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getValFptr<
 <p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dist</td><td>the distance of dispersal </td></tr>
-    <tr><td class="paramname">angle</td><td>the angle of dispersal </td></tr>
     <tr><td class="paramname">this_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> containing the x and y coordinates of the starting position </td></tr>
-    <tr><td class="paramname">end_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> to store the end point in</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ab7fa3b37534cdd35871b30c7bb511351"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SimulateDispersal::getEndPointClosed </td>
-          <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>dist</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>this_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>end_cell</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks the density a given distance from the start point on an closed landscape. </p>
-<p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dist</td><td>the distance of dispersal </td></tr>
-    <tr><td class="paramname">angle</td><td>the angle of dispersal </td></tr>
-    <tr><td class="paramname">this_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> containing the x and y coordinates of the starting position </td></tr>
-    <tr><td class="paramname">end_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> to store the end point in</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="acb12b6b2f113e58c62636b2b4456f4da"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SimulateDispersal::getEndPointInfinite </td>
-          <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>dist</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>this_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>end_cell</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks the density is greater than 0 a given distance from the start point on an infinite null landscape. </p>
-<p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dist</td><td>the distance of dispersal </td></tr>
-    <tr><td class="paramname">angle</td><td>the angle of dispersal </td></tr>
-    <tr><td class="paramname">this_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> containing the x and y coordinates of the starting position </td></tr>
-    <tr><td class="paramname">end_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> to store the end point in </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a9694673493b261697020f42aa2fdf9e7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SimulateDispersal::getEndPointTiled </td>
-          <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>dist</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>this_cell</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_cell.html">Cell</a> &amp;&#160;</td>
-          <td class="paramname"><em>end_cell</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks the density is greater than 0 a given distance from the start point on an infinite tiled landscape. </p>
-<p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dist</td><td>the distance of dispersal </td></tr>
-    <tr><td class="paramname">angle</td><td>the angle of dispersal </td></tr>
-    <tr><td class="paramname">this_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> containing the x and y coordinates of the starting position </td></tr>
-    <tr><td class="paramname">end_cell</td><td><a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> to store the end point in</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd></dl>
 
 </div>
 </div>
@@ -573,87 +307,32 @@ landscape_fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getValFptr<
 
 </div>
 </div>
-<a class="anchor" id="a8c7c65b4788010f02213fba5c985f49a"></a>
+<a class="anchor" id="a275eef6872de493273fc047467935d7b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void SimulateDispersal::importMaps </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>map_file</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Import the map from the prescribed file. </p>
+<p>Import the maps from the prescribed files. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">map_file</td><td>the map file to import from </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a93b3d450679b00c015f5e18d91f3a426"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SimulateDispersal::setDispersalParameters </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>dispersal_method_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>sigma_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tau_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>m_prob_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>cutoff_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>landscape_type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the dispersal parameters. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dispersal_method_in</td><td>the dispersal method (e.g. "normal") </td></tr>
-    <tr><td class="paramname">sigma_in</td><td>the sigma value for normal and fat-tailed dispersals </td></tr>
-    <tr><td class="paramname">tau_in</td><td>the nu value for fat-tailed dispersals </td></tr>
-    <tr><td class="paramname">m_prob_in</td><td>the m_prob for norm-uniform dispersals </td></tr>
-    <tr><td class="paramname">cutoff_in</td><td>the maximum dispersal distance for norm-uniform dispersal </td></tr>
-    <tr><td class="paramname">landscape_type</td><td>string containing the landscape type (one of "closed", "tiled" or "infinite"). </td></tr>
+    <tr><td class="paramname">fine_map_file</td><td>path to the fine map file </td></tr>
+    <tr><td class="paramname">fine_map_x</td><td>fine map x dimension </td></tr>
+    <tr><td class="paramname">fine_map_y</td><td>fine map y dimension </td></tr>
+    <tr><td class="paramname">fine_map_x_offset</td><td>fine map x offset </td></tr>
+    <tr><td class="paramname">fine_map_y_offset</td><td>fine map y offset </td></tr>
+    <tr><td class="paramname">coarse_map_file</td><td>file path to the coarse map file </td></tr>
+    <tr><td class="paramname">coarse_map_x</td><td>coarse map x dimension </td></tr>
+    <tr><td class="paramname">coarse_map_y</td><td>coarse map y dimension </td></tr>
+    <tr><td class="paramname">coarse_map_x_offset</td><td>coarse map x offset </td></tr>
+    <tr><td class="paramname">coarse_map_y_offset</td><td>coarse map y offset </td></tr>
   </table>
   </dd>
 </dl>
@@ -788,35 +467,24 @@ landscape_fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getValFptr<
 
 </div>
 </div>
-<a class="anchor" id="ade30de5c9c7daebb6ccc4168fec3e813"></a>
+<a class="anchor" id="a777d7cab80b8543647970d6d64b797a9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SimulateDispersal::setSizes </td>
+          <td class="memname">void SimulateDispersal::setSimulationParameters </td>
           <td>(</td>
-          <td class="paramtype">unsigned long&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="struct_sim_parameters.html">SimParameters</a> *&#160;</td>
+          <td class="paramname"><em>sim_parameters</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">unsigned long&#160;</td>
-          <td class="paramname"><em>y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets the sizes of the density map. </p>
+<p>Sets the pointer to the simulation parameters object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>the x dimension (number of columns) in the density map </td></tr>
-    <tr><td class="paramname">y</td><td>the y dimension (number of rows) in the density map </td></tr>
+    <tr><td class="paramname">sim_parameters</td><td>pointer to the simulation parameters to use </td></tr>
   </table>
   </dd>
 </dl>

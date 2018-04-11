@@ -130,48 +130,22 @@
     <span class="c1">//  strings containing the file names to be imported.</span>
     <span class="n">string</span> <span class="n">fine_map_input</span><span class="p">,</span> <span class="n">coarse_map_input</span><span class="p">;</span>
     <span class="n">string</span> <span class="n">pristine_fine_map_input</span><span class="p">,</span> <span class="n">pristine_coarse_map_input</span><span class="p">;</span>
-    <span class="c1">// the time since pristine forest and the rate of change of the rainforest.</span>
-    <span class="kt">double</span> <span class="n">gen_since_pristine</span><span class="p">,</span> <span class="n">habitat_change_rate</span><span class="p">;</span>
     <span class="c1">// the variables for the grid containing the initial individuals.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">;</span>
-    <span class="c1">// The fine map variables at the same resolution as the grid.</span>
-    <span class="c1">// the coarse map variables at a scaled resolution of the fine map.</span>
-    <span class="kt">long</span> <span class="n">fine_map_x_size</span><span class="p">,</span> <span class="n">fine_map_y_size</span><span class="p">,</span> <span class="n">fine_map_x_offset</span><span class="p">,</span> <span class="n">fine_map_y_offset</span><span class="p">;</span>
-    <span class="kt">long</span> <span class="n">coarse_map_x_size</span><span class="p">,</span> <span class="n">coarse_map_y_size</span><span class="p">,</span> <span class="n">coarse_map_x_offset</span><span class="p">,</span> <span class="n">coarse_map_y_offset</span><span class="p">,</span> <span class="n">coarse_map_scale</span><span class="p">;</span>
     <span class="c1">// Landscape object containing both the coarse and fine maps for checking whether or not there is habitat at a</span>
     <span class="c1">// particular location.</span>
     <span class="n">Landscape</span> <span class="n">landscape</span><span class="p">;</span>
     <span class="c1">// An indexing spatial positioning of the lineages</span>
     <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">SpeciesList</span><span class="o">&gt;</span> <span class="n">grid</span><span class="p">;</span>
-    <span class="c1">// dispersal and sigma references</span>
-    <span class="kt">double</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">tau</span><span class="p">;</span>
-    <span class="c1">// the cost for moving through non-habitat. 1.0 means there is no cost. 10 means that movement is 10x</span>
-    <span class="c1">// slower through habitat.</span>
-    <span class="kt">double</span> <span class="n">dispersal_relative_cost</span><span class="p">;</span>
-    <span class="c1">// the desired number of species we are aiming for. If it is 0, we will carry on forever.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">desired_specnum</span><span class="p">;</span>
     <span class="c1">// contains the DataMask for where we should start lineages from.</span>
     <span class="n">DataMask</span> <span class="n">samplegrid</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">SpatialTree</span><span class="p">()</span> <span class="o">:</span> <span class="n">Tree</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
         <span class="n">outdatabase</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">gen_since_pristine</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">habitat_change_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
         <span class="n">grid_x_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">grid_y_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">fine_map_x_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">fine_map_y_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">fine_map_x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">fine_map_y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">coarse_map_x_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">coarse_map_y_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">coarse_map_x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">coarse_map_y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">coarse_map_scale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="n">dispersal_relative_cost</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
         <span class="n">desired_specnum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
 

@@ -25,11 +25,13 @@ Collaboration diagram for Dispersal\+Coordinator\+:
 void \hyperlink{class_dispersal_coordinator_a3cfdb18edbf4dd1c45d0cf6af47f91fe}{set\+Random\+Number} (\hyperlink{class_n_rrand}{N\+Rrand} $\ast$N\+R\+\_\+ptr)
 \begin{DoxyCompactList}\small\item\em Sets the random number pointer to an \hyperlink{class_n_rrand}{N\+Rrand} instance. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_a0db146f56de14e0b4a095526a7b6c779}{set\+Habitat\+Map} (\hyperlink{class_landscape}{Landscape} $\ast$map\+\_\+ptr)
-\begin{DoxyCompactList}\small\item\em Sets the pointer to the Map object. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Sets the pointer to the \hyperlink{class_landscape}{Landscape} object. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_aad9a57afe4629674c958e4d0de4d2451}{set\+Generation\+Ptr} (double $\ast$generation\+\_\+ptr)
 \begin{DoxyCompactList}\small\item\em Sets the generation pointer to the provided double. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_ab0face98d80793e7f4a8ad1bf4dfe3f1}{set\+Dispersal} (const string \&dispersal\+\_\+method, const string \&dispersal\+\_\+file, const unsigned long dispersal\+\_\+x, const unsigned long dispersal\+\_\+y, const double \&m\+\_\+probin, const double \&cutoffin, const double \&sigmain, const double \&tauin, const bool \&restrict\+\_\+self)
 \begin{DoxyCompactList}\small\item\em Sets the dispersal method and parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a8504699586755df070b44da71ea346a5}{set\+Dispersal} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$sim\+Parameters)
+\begin{DoxyCompactList}\small\item\em Sets the dispersal parameters from the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_a4bac3aeedb3ceb40601c3db951032d0e}{disperse\+Null\+Dispersal\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
 \begin{DoxyCompactList}\small\item\em Picks a random cell from the whole map and stores the value in the step object. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_a6605069356e02d1c130b6d68e5d08483}{disperse\+Dispersal\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
@@ -123,7 +125,7 @@ Calculates the new coordinates for a column reference. This includes converting 
 
 Calculates the cell reference for a particular coordinate. 
 
-The formula for this calculation is x + (y $\ast$ xdim) where xdim is the dimensions of the fine map, and x and y are the coordinates for the fine map
+The formula for this calculation is x + (y $\ast$ xdim) where xdim is the x dimension of the fine map, and x and y are the coordinates for the fine map
 
 
 \begin{DoxyParams}{Parameters}
@@ -362,6 +364,22 @@ Sets the dispersal method and parameters.
 {\em restrict\+\_\+self} & if true, denies possibility that dispersal comes from the same cell as the parent \\
 \hline
 \end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Dispersal@{set\+Dispersal}}
+\index{set\+Dispersal@{set\+Dispersal}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{set\+Dispersal(\+Sim\+Parameters $\ast$sim\+Parameters)}{setDispersal(SimParameters *simParameters)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+Dispersal (
+\begin{DoxyParamCaption}
+\item[{{\bf Sim\+Parameters} $\ast$}]{sim\+Parameters}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a8504699586755df070b44da71ea346a5}{}\label{class_dispersal_coordinator_a8504699586755df070b44da71ea346a5}
+
+
+Sets the dispersal parameters from the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sim\+Parameters} & pointer to the simulation parameters to set \\
+\hline
+\end{DoxyParams}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+End\+Point\+Fptr@{set\+End\+Point\+Fptr}}
 \index{set\+End\+Point\+Fptr@{set\+End\+Point\+Fptr}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
 \subsubsection[{\texorpdfstring{set\+End\+Point\+Fptr(const bool \&restrict\+\_\+self)}{setEndPointFptr(const bool &restrict_self)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::set\+End\+Point\+Fptr (
@@ -403,11 +421,11 @@ Sets the generation pointer to the provided double.
 )}\hypertarget{class_dispersal_coordinator_a0db146f56de14e0b4a095526a7b6c779}{}\label{class_dispersal_coordinator_a0db146f56de14e0b4a095526a7b6c779}
 
 
-Sets the pointer to the Map object. 
+Sets the pointer to the \hyperlink{class_landscape}{Landscape} object. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em map\+\_\+ptr} & pointer to a Map object \\
+{\em map\+\_\+ptr} & pointer to a \hyperlink{class_landscape}{Landscape} object \\
 \hline
 \end{DoxyParams}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Random\+Number@{set\+Random\+Number}}

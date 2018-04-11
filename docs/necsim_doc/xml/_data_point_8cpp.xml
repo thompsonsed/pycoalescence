@@ -4,79 +4,79 @@
     <compoundname>DataPoint.cpp</compoundname>
     <includes refid="_data_point_8h" local="yes">DataPoint.h</includes>
     <incdepgraph>
-      <node id="237">
+      <node id="250">
         <label>Logging.h</label>
         <link refid="_logging_8h_source"/>
-        <childnode refid="238" relation="include">
+        <childnode refid="251" relation="include">
         </childnode>
-        <childnode refid="236" relation="include">
+        <childnode refid="249" relation="include">
         </childnode>
-        <childnode refid="239" relation="include">
+        <childnode refid="252" relation="include">
         </childnode>
-        <childnode refid="240" relation="include">
+        <childnode refid="253" relation="include">
         </childnode>
-        <childnode refid="241" relation="include">
+        <childnode refid="254" relation="include">
         </childnode>
-        <childnode refid="242" relation="include">
+        <childnode refid="255" relation="include">
         </childnode>
-        <childnode refid="247" relation="include">
+        <childnode refid="260" relation="include">
         </childnode>
       </node>
-      <node id="247">
+      <node id="260">
         <label>CPLCustomHandler.h</label>
         <link refid="_c_p_l_custom_handler_8h_source"/>
       </node>
-      <node id="240">
+      <node id="253">
         <label>stdexcept</label>
       </node>
-      <node id="238">
+      <node id="251">
         <label>string</label>
       </node>
-      <node id="246">
+      <node id="259">
         <label>map</label>
       </node>
-      <node id="244">
+      <node id="257">
         <label>fstream</label>
       </node>
-      <node id="234">
+      <node id="247">
         <label>necsim/DataPoint.cpp</label>
         <link refid="DataPoint.cpp"/>
-        <childnode refid="235" relation="include">
+        <childnode refid="248" relation="include">
         </childnode>
       </node>
-      <node id="239">
+      <node id="252">
         <label>cstdio</label>
       </node>
-      <node id="245">
+      <node id="258">
         <label>ctime</label>
       </node>
-      <node id="241">
+      <node id="254">
         <label>sstream</label>
       </node>
-      <node id="236">
+      <node id="249">
         <label>iostream</label>
       </node>
-      <node id="242">
+      <node id="255">
         <label>LogFile.h</label>
         <link refid="_log_file_8h_source"/>
-        <childnode refid="243" relation="include">
+        <childnode refid="256" relation="include">
         </childnode>
-        <childnode refid="244" relation="include">
+        <childnode refid="257" relation="include">
         </childnode>
-        <childnode refid="245" relation="include">
+        <childnode refid="258" relation="include">
         </childnode>
-        <childnode refid="246" relation="include">
+        <childnode refid="259" relation="include">
         </childnode>
       </node>
-      <node id="235">
+      <node id="248">
         <label>DataPoint.h</label>
         <link refid="_data_point_8h_source"/>
-        <childnode refid="236" relation="include">
+        <childnode refid="249" relation="include">
         </childnode>
-        <childnode refid="237" relation="include">
+        <childnode refid="250" relation="include">
         </childnode>
       </node>
-      <node id="243">
+      <node id="256">
         <label>cstring</label>
       </node>
     </incdepgraph>
@@ -116,7 +116,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DataPoint.cpp" line="145" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="145" bodyend="150"/>
+        <location file="necsim/DataPoint.cpp" line="138" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="138" bodyend="143"/>
       </memberdef>
       <memberdef kind="function" id="_data_point_8cpp_1a5ea22488fc99136335b4c8474623ccc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>istream &amp;</type>
@@ -153,7 +153,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DataPoint.cpp" line="152" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="152" bodyend="160"/>
+        <location file="necsim/DataPoint.cpp" line="145" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="145" bodyend="153"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -273,47 +273,40 @@
 <codeline lineno="117"><highlight class="normal"></highlight></codeline>
 <codeline lineno="118"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a2d939bcbc5abae0d80fdd42a1b26725f" kindref="member">DataPoint::decreaseNwrap</ref>()</highlight></codeline>
 <codeline lineno="119"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(nwrap==0)</highlight></codeline>
 <codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(nwrap==0)</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>out_of_range(</highlight><highlight class="stringliteral">&quot;ERROR_DATA_001:<sp/>Trying<sp/>to<sp/>decrease<sp/><sp/>nwrap<sp/>less<sp/>than<sp/>0.&quot;</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nwrap<sp/>--;</highlight></codeline>
-<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal">(out_of_range&amp;<sp/>oor)</highlight></codeline>
-<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/>oor.what()<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"></highlight></codeline>
-<codeline lineno="137"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a1d80702ad55b2c64f386b71052adc4d8" kindref="member">DataPoint::setEndpoint</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>xwrapin,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ywrapin)</highlight></codeline>
-<codeline lineno="138"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>x;</highlight></codeline>
-<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>y;</highlight></codeline>
-<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>xwrapin;</highlight></codeline>
-<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>ywrapin;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>out_of_range(</highlight><highlight class="stringliteral">&quot;ERROR_DATA_001:<sp/>Trying<sp/>to<sp/>decrease<sp/><sp/>nwrap<sp/>less<sp/>than<sp/>0.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>--;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a1d80702ad55b2c64f386b71052adc4d8" kindref="member">DataPoint::setEndpoint</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>xwrapin,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ywrapin)</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>x;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>y;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>xwrapin;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>ywrapin;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal">ostream<sp/>&amp;<ref refid="class_data_point_1adfa94e754617c0b58a39bf86925beeac" kindref="member">operator&lt;&lt;</ref>(ostream<sp/>&amp;os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.xpos<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ypos<sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.xwrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ywrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.next_lineage<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.reference<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.list_position<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.nwrap&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.min_max<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>os;</highlight></codeline>
 <codeline lineno="143"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="145"><highlight class="normal">ostream<sp/>&amp;<ref refid="class_data_point_1adfa94e754617c0b58a39bf86925beeac" kindref="member">operator&lt;&lt;</ref>(ostream<sp/>&amp;os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
+<codeline lineno="145"><highlight class="normal">istream<sp/>&amp;<ref refid="class_data_point_1a5ea22488fc99136335b4c8474623ccc3" kindref="member">operator&gt;&gt;</ref>(istream<sp/>&amp;is,<sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
 <codeline lineno="146"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.xpos<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ypos<sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.xwrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ywrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.next_lineage<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.reference<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.list_position<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.nwrap&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.min_max<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>os;</highlight></codeline>
-<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal">istream<sp/>&amp;<ref refid="class_data_point_1a5ea22488fc99136335b4c8474623ccc3" kindref="member">operator&gt;&gt;</ref>(istream<sp/>&amp;is,<sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
-<codeline lineno="153"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>m.numRows&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;m.numCols&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;endl;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>delim;</highlight></codeline>
-<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>&quot;datapoint&quot;<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.xpos<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ypos<sp/><sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.xwrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ywrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.next_lineage<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.reference<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.list_position<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.nwrap&gt;&gt;<sp/>delim;</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.min_max;</highlight></codeline>
-<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>is;</highlight></codeline>
-<codeline lineno="160"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>m.numRows&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;m.numCols&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>delim;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>&quot;datapoint&quot;<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.xpos<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ypos<sp/><sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.xwrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ywrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.next_lineage<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.reference<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.list_position<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.nwrap&gt;&gt;<sp/>delim;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.min_max;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>is;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="necsim/DataPoint.cpp"/>
   </compounddef>

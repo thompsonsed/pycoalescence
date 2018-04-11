@@ -55,9 +55,9 @@ coal: start_msg NECSim end_msg
 # python shared object files
 necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandler.o)
 
-dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o)
+dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o Landscape.o Datamask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o)
 
-applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandler.o)
+applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandler.o PyImports.o)
 
 $(BUILDDIR)/necsimmodule.so: $(necsim_objects)
 
@@ -80,7 +80,7 @@ clean:
 ## Pattern rule for compilation
 
 
-$(BUILDDIR)/%.so: %.o
+$(BUILDDIR)/%.so: $(OBJDIR)/%.o
 	$(CXX) $(PLATFORM_SO) $(CPPFLAGS) $(LDFLAGS) $(LIBS) -fPIC -o $@ $+
 
 $(OBJDIR)/%.o: %.cpp %.h
@@ -88,6 +88,7 @@ $(OBJDIR)/%.o: %.cpp %.h
 
 # DO NOT DELETE
 
+obj/PyImports.o: PyImports.h
 obj/PyLogging.o: necsim/Logging.h necsim/LogFile.h necsim/CPLCustomHandler.h
 obj/PyLogging.o: PyLogging.h necsim/LogFile.h
 obj/SpeciationCounter.o: necsim/SpeciationCommands.h necsim/Community.h
@@ -97,19 +98,22 @@ obj/SpeciationCounter.o: necsim/DataMask.h necsim/SimParameters.h
 obj/SpeciationCounter.o: necsim/ConfigFileParser.h necsim/Map.h
 obj/SpeciationCounter.o: necsim/SpecSimParameters.h
 obj/applyspecmodule.o: applyspecmodule.h PyLogging.h necsim/LogFile.h
-obj/applyspecmodule.o: necsim/Community.h necsim/TreeNode.h necsim/Logging.h
-obj/applyspecmodule.o: necsim/LogFile.h necsim/CPLCustomHandler.h
-obj/applyspecmodule.o: necsim/Matrix.h necsim/DataMask.h
-obj/applyspecmodule.o: necsim/SimParameters.h necsim/ConfigFileParser.h
-obj/applyspecmodule.o: necsim/Map.h necsim/SpecSimParameters.h
-obj/applyspecmodule.o: necsim/Metacommunity.h necsim/Community.h
-obj/applyspecmodule.o: necsim/Tree.h necsim/NRrand.h necsim/DataPoint.h
-obj/applyspecmodule.o: necsim/Filesystem.h necsim/CustomExceptions.h
-obj/applyspecmodule.o: necsim/Step.h
+obj/applyspecmodule.o: PyImports.h necsim/Community.h necsim/TreeNode.h
+obj/applyspecmodule.o: necsim/Logging.h necsim/LogFile.h
+obj/applyspecmodule.o: necsim/CPLCustomHandler.h necsim/Matrix.h
+obj/applyspecmodule.o: necsim/DataMask.h necsim/SimParameters.h
+obj/applyspecmodule.o: necsim/ConfigFileParser.h necsim/Map.h
+obj/applyspecmodule.o: necsim/SpecSimParameters.h necsim/Metacommunity.h
+obj/applyspecmodule.o: necsim/Community.h necsim/Tree.h necsim/NRrand.h
+obj/applyspecmodule.o: necsim/DataPoint.h necsim/Filesystem.h
+obj/applyspecmodule.o: necsim/CustomExceptions.h necsim/Step.h necsim/Cell.h
 obj/dispersalmodule.o: dispersalmodule.h PyLogging.h necsim/LogFile.h
-obj/dispersalmodule.o: necsim/SimulateDispersal.h necsim/Map.h
-obj/dispersalmodule.o: necsim/NRrand.h necsim/Logging.h necsim/LogFile.h
-obj/dispersalmodule.o: necsim/CPLCustomHandler.h
+obj/dispersalmodule.o: necsim/SimulateDispersal.h necsim/Landscape.h
+obj/dispersalmodule.o: necsim/Map.h necsim/DataMask.h necsim/SimParameters.h
+obj/dispersalmodule.o: necsim/ConfigFileParser.h necsim/Logging.h
+obj/dispersalmodule.o: necsim/LogFile.h necsim/CPLCustomHandler.h
+obj/dispersalmodule.o: necsim/DispersalCoordinator.h necsim/NRrand.h
+obj/dispersalmodule.o: necsim/Step.h necsim/Cell.h PyImports.h
 obj/necsimmodule.o: necsim/Setup.h necsimmodule.h PyLogging.h
 obj/necsimmodule.o: necsim/LogFile.h necsim/SpatialTree.h necsim/Tree.h
 obj/necsimmodule.o: necsim/TreeNode.h necsim/Logging.h necsim/LogFile.h
@@ -118,10 +122,11 @@ obj/necsimmodule.o: necsim/SimParameters.h necsim/ConfigFileParser.h
 obj/necsimmodule.o: necsim/NRrand.h necsim/DataPoint.h necsim/Community.h
 obj/necsimmodule.o: necsim/DataMask.h necsim/Map.h necsim/SpecSimParameters.h
 obj/necsimmodule.o: necsim/Filesystem.h necsim/CustomExceptions.h
-obj/necsimmodule.o: necsim/Step.h necsim/SpeciesList.h necsim/Landscape.h
-obj/necsimmodule.o: necsim/Setup.h necsim/DispersalCoordinator.h
-obj/necsimmodule.o: necsim/ReproductionMap.h necsim/ProtractedTree.h
-obj/necsimmodule.o: necsim/SpatialTree.h necsim/SimulationTemplates.h
+obj/necsimmodule.o: necsim/Step.h necsim/Cell.h necsim/SpeciesList.h
+obj/necsimmodule.o: necsim/Landscape.h necsim/Setup.h
+obj/necsimmodule.o: necsim/DispersalCoordinator.h necsim/ReproductionMap.h
+obj/necsimmodule.o: necsim/ProtractedTree.h necsim/SpatialTree.h
+obj/necsimmodule.o: necsim/SimulationTemplates.h
 obj/necsimmodule.o: necsim/ProtractedSpatialTree.h necsim/ProtractedTree.h
 obj/necsim/CPLCustomHandler.o: necsim/CPLCustomHandler.h necsim/Logging.h
 obj/necsim/CPLCustomHandler.o: necsim/LogFile.h
@@ -143,7 +148,7 @@ obj/necsim/DataPoint.o: necsim/CPLCustomHandler.h
 obj/necsim/DispersalCoordinator.o: necsim/DispersalCoordinator.h
 obj/necsim/DispersalCoordinator.o: necsim/NRrand.h necsim/Logging.h
 obj/necsim/DispersalCoordinator.o: necsim/LogFile.h necsim/CPLCustomHandler.h
-obj/necsim/DispersalCoordinator.o: necsim/Map.h necsim/Step.h
+obj/necsim/DispersalCoordinator.o: necsim/Map.h necsim/Step.h necsim/Cell.h
 obj/necsim/DispersalCoordinator.o: necsim/Landscape.h necsim/DataMask.h
 obj/necsim/DispersalCoordinator.o: necsim/SimParameters.h
 obj/necsim/DispersalCoordinator.o: necsim/ConfigFileParser.h
@@ -168,22 +173,23 @@ obj/necsim/Metacommunity.o: necsim/SimParameters.h necsim/ConfigFileParser.h
 obj/necsim/Metacommunity.o: necsim/Map.h necsim/SpecSimParameters.h
 obj/necsim/Metacommunity.o: necsim/Tree.h necsim/NRrand.h necsim/DataPoint.h
 obj/necsim/Metacommunity.o: necsim/Filesystem.h necsim/CustomExceptions.h
-obj/necsim/Metacommunity.o: necsim/Step.h
+obj/necsim/Metacommunity.o: necsim/Step.h necsim/Cell.h
 obj/necsim/ProtractedTree.o: necsim/ProtractedTree.h necsim/SpatialTree.h
 obj/necsim/ReproductionMap.o: necsim/ReproductionMap.h necsim/Map.h
 obj/necsim/ReproductionMap.o: necsim/NRrand.h necsim/Logging.h
 obj/necsim/ReproductionMap.o: necsim/LogFile.h necsim/CPLCustomHandler.h
 obj/necsim/Setup.o: necsim/Setup.h necsim/Logging.h necsim/LogFile.h
 obj/necsim/Setup.o: necsim/CPLCustomHandler.h
-obj/necsim/SimulateDispersal.o: necsim/SimulateDispersal.h necsim/Map.h
-obj/necsim/SimulateDispersal.o: necsim/NRrand.h necsim/Logging.h
+obj/necsim/SimulateDispersal.o: necsim/SimulateDispersal.h necsim/Landscape.h
+obj/necsim/SimulateDispersal.o: necsim/Map.h necsim/DataMask.h
+obj/necsim/SimulateDispersal.o: necsim/SimParameters.h
+obj/necsim/SimulateDispersal.o: necsim/ConfigFileParser.h necsim/Logging.h
 obj/necsim/SimulateDispersal.o: necsim/LogFile.h necsim/CPLCustomHandler.h
+obj/necsim/SimulateDispersal.o: necsim/DispersalCoordinator.h necsim/NRrand.h
+obj/necsim/SimulateDispersal.o: necsim/Step.h necsim/Cell.h
 obj/necsim/SimulateDispersal.o: necsim/CustomExceptions.h necsim/Filesystem.h
 obj/necsim/SimulateDispersal.o: necsim/Community.h necsim/TreeNode.h
-obj/necsim/SimulateDispersal.o: necsim/Matrix.h necsim/DataMask.h
-obj/necsim/SimulateDispersal.o: necsim/SimParameters.h
-obj/necsim/SimulateDispersal.o: necsim/ConfigFileParser.h
-obj/necsim/SimulateDispersal.o: necsim/SpecSimParameters.h
+obj/necsim/SimulateDispersal.o: necsim/Matrix.h necsim/SpecSimParameters.h
 obj/necsim/SpatialTree.o: necsim/SpatialTree.h
 obj/necsim/SpeciationCommands.o: necsim/SpeciationCommands.h
 obj/necsim/SpeciationCommands.o: necsim/Community.h necsim/TreeNode.h
@@ -192,6 +198,9 @@ obj/necsim/SpeciationCommands.o: necsim/CPLCustomHandler.h necsim/Matrix.h
 obj/necsim/SpeciationCommands.o: necsim/DataMask.h necsim/SimParameters.h
 obj/necsim/SpeciationCommands.o: necsim/ConfigFileParser.h necsim/Map.h
 obj/necsim/SpeciationCommands.o: necsim/SpecSimParameters.h
+obj/necsim/SpeciesGrid.o: necsim/SpeciesGrid.h necsim/SpeciesList.h
+obj/necsim/SpeciesGrid.o: necsim/Matrix.h necsim/Logging.h necsim/LogFile.h
+obj/necsim/SpeciesGrid.o: necsim/CPLCustomHandler.h necsim/NRrand.h
 obj/necsim/SpeciesList.o: necsim/SpeciesList.h necsim/Matrix.h
 obj/necsim/SpeciesList.o: necsim/Logging.h necsim/LogFile.h
 obj/necsim/SpeciesList.o: necsim/CPLCustomHandler.h necsim/NRrand.h
@@ -201,7 +210,7 @@ obj/necsim/Tree.o: necsim/SimParameters.h necsim/ConfigFileParser.h
 obj/necsim/Tree.o: necsim/NRrand.h necsim/DataPoint.h necsim/Community.h
 obj/necsim/Tree.o: necsim/DataMask.h necsim/Map.h necsim/SpecSimParameters.h
 obj/necsim/Tree.o: necsim/Filesystem.h necsim/CustomExceptions.h
-obj/necsim/Tree.o: necsim/Step.h
+obj/necsim/Tree.o: necsim/Step.h necsim/Cell.h
 obj/necsim/TreeNode.o: necsim/TreeNode.h necsim/Logging.h necsim/LogFile.h
 obj/necsim/TreeNode.o: necsim/CPLCustomHandler.h
 obj/necsim/main.o: necsim/SpatialTree.h necsim/SimulationTemplates.h

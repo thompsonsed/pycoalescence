@@ -90,6 +90,7 @@
 
     <span class="c1">// Our map of dispersal probabilities (if required)</span>
     <span class="c1">// This will contain cummulative probabilities across rows</span>
+    <span class="c1">// So dispersal is from the y cell to each of the x cells.</span>
     <span class="n">Map</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">dispersal_prob_map</span><span class="p">;</span>
     <span class="c1">// Our random number generator for dispersal distances</span>
     <span class="c1">// This is a pointer so that the random number generator is the same</span>
@@ -130,6 +131,7 @@
                       <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">m_probin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">cutoffin</span><span class="p">,</span>
                       <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">tauin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">);</span>
 
+    <span class="kt">void</span> <span class="nf">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">simParameters</span><span class="p">);</span>
     <span class="kt">void</span> <span class="nf">disperseNullDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">disperseDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">);</span>

@@ -123,8 +123,10 @@
     <span class="kt">bool</span> <span class="n">restrict_self</span><span class="p">{};</span>
     <span class="c1">// file containing the points to record data from</span>
     <span class="n">string</span> <span class="n">times_file</span><span class="p">;</span>
+    <span class="c1">// vector of times</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">times</span><span class="p">{};</span>
     <span class="c1">// Stores the full list of configs imported from file</span>
-    <span class="n">ConfigOption</span> <span class="n">configs</span><span class="p">;</span>
+    <span class="n">ConfigOption</span> <span class="n">configs</span><span class="p">{};</span>
     <span class="c1">// Set to true if the completely pristine state has been reached.</span>
     <span class="kt">bool</span> <span class="n">is_pristine</span><span class="p">{};</span>
     <span class="c1">// if the sample file is not null, this variable tells us whether different points in space require different</span>
@@ -218,7 +220,7 @@
         <span class="n">cutoff</span> <span class="o">=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;dispersal&quot;</span><span class="p">,</span> <span class="s">&quot;cutoff&quot;</span><span class="p">,</span> <span class="s">&quot;0.0&quot;</span><span class="p">));</span>
         <span class="c1">// quick and dirty conversion for string to bool</span>
         <span class="n">restrict_self</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">stoi</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;dispersal&quot;</span><span class="p">,</span> <span class="s">&quot;restrict_self&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">)));</span>
-        <span class="n">landscape_type</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;dispersal&quot;</span><span class="p">,</span> <span class="s">&quot;infinite_landscape&quot;</span><span class="p">,</span> <span class="s">&quot;none&quot;</span><span class="p">);</span>
+        <span class="n">landscape_type</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;dispersal&quot;</span><span class="p">,</span> <span class="s">&quot;landscape_type&quot;</span><span class="p">,</span> <span class="s">&quot;none&quot;</span><span class="p">);</span>
         <span class="n">dispersal_file</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;dispersal&quot;</span><span class="p">,</span> <span class="s">&quot;dispersal_file&quot;</span><span class="p">,</span> <span class="s">&quot;none&quot;</span><span class="p">);</span>
         <span class="n">reproduction_file</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;reproduction&quot;</span><span class="p">,</span> <span class="s">&quot;map&quot;</span><span class="p">,</span> <span class="s">&quot;none&quot;</span><span class="p">);</span>
         <span class="n">output_directory</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;output_directory&quot;</span><span class="p">,</span> <span class="s">&quot;Default&quot;</span><span class="p">);</span>
@@ -230,15 +232,27 @@
         <span class="n">deme_sample</span> <span class="o">=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;sample_size&quot;</span><span class="p">));</span>
         <span class="n">max_time</span> <span class="o">=</span> <span class="n">stoul</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;max_time&quot;</span><span class="p">));</span>
         <span class="n">dispersal_relative_cost</span> <span class="o">=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;dispersal_relative_cost&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">));</span>
-        <span class="n">times_file</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;time_config&quot;</span><span class="p">);</span>
         <span class="n">spec</span> <span class="o">=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;min_spec_rate&quot;</span><span class="p">));</span>
         <span class="n">desired_specnum</span> <span class="o">=</span> <span class="n">stoul</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="s">&quot;min_species&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">));</span>
         <span class="k">if</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">hasSection</span><span class="p">(</span><span class="s">&quot;protracted&quot;</span><span class="p">))</span>
         <span class="p">{</span>
-            <span class="n">is_protracted</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">stoi</span><span class="p">(</span>
-                    <span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;protracted&quot;</span><span class="p">,</span> <span class="s">&quot;has_protracted&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">)));</span>
+            <span class="n">is_protracted</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">stoi</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;protracted&quot;</span><span class="p">,</span> <span class="s">&quot;has_protracted&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">)));</span>
             <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;protracted&quot;</span><span class="p">,</span> <span class="s">&quot;min_speciation_gen&quot;</span><span class="p">,</span> <span class="s">&quot;0.0&quot;</span><span class="p">));</span>
             <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptions</span><span class="p">(</span><span class="s">&quot;protracted&quot;</span><span class="p">,</span> <span class="s">&quot;max_speciation_gen&quot;</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">configs</span><span class="p">.</span><span class="n">hasSection</span><span class="p">(</span><span class="s">&quot;times&quot;</span><span class="p">))</span>
+        <span class="p">{</span>
+
+            <span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;set&quot;</span><span class="p">;</span>
+            <span class="k">auto</span> <span class="n">times_str</span> <span class="o">=</span> <span class="n">configs</span><span class="p">.</span><span class="n">getSectionValues</span><span class="p">(</span><span class="s">&quot;times&quot;</span><span class="p">);</span>
+            <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">times_str</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">stod</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">}</span>
         <span class="n">setPristine</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
     <span class="p">}</span>
@@ -365,7 +379,7 @@
                         <span class="c1">// check matches</span>
                         <span class="k">if</span><span class="p">(</span><span class="n">habitat_change_rate</span> <span class="o">!=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getOption</span><span class="p">(</span><span class="s">&quot;rate&quot;</span><span class="p">))</span> <span class="o">||</span> <span class="n">gen_since_pristine</span> <span class="o">!=</span> <span class="n">stod</span><span class="p">(</span><span class="n">configs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getOption</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">)))</span>
                         <span class="p">{</span>
-                            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Forest transform values do not match between fine and coarse maps. Using fine values.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                            <span class="n">writeWarning</span><span class="p">(</span><span class="s">&quot;Forest transform values do not match between fine and coarse maps. Using fine values.&quot;</span><span class="p">);</span>
                         <span class="p">}</span>
                     <span class="p">}</span>
                 <span class="p">}</span>
@@ -387,18 +401,45 @@
         <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Seed: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">the_seed</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Speciation rate: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">spec</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal (tau, sigma): &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">tau</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sigma</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal method: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dispersal_method</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;norm-uniform&quot;</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal (m, cutoff): &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m_prob</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cutoff</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="p">}</span>
         <span class="k">if</span><span class="p">(</span><span class="n">is_protracted</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Protracted variables: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">max_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Job Type: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">the_task</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Max time: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">max_time</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">printSpatialVars</span><span class="p">();</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-deme sample: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">deme_sample</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Output directory: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">output_directory</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Disp Rel Cost: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dispersal_relative_cost</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Times: &quot;</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;set&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">times</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; 0.0&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">printSpatialVars</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal (tau, sigma): &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">tau</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sigma</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal method: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dispersal_method</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;norm-uniform&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal (m, cutoff): &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m_prob</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cutoff</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Fine input file: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map_file</span>  <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-dimensions: (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map_x_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map_y_size</span> <span class="o">&lt;&lt;</span><span class="s">&quot;)&quot;</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-offset: (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fine_map_y_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
@@ -411,9 +452,6 @@
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-optimised area: (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">grid_x_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">grid_y_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-optimised offsets: (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sample_x_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sample_y_offset</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-deme: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">deme</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-deme sample: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">deme_sample</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Output directory: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">output_directory</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Disp Rel Cost: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dispersal_relative_cost</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
 
@@ -450,6 +488,11 @@
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">dispersal_method</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">m_prob</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">cutoff</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">restrict_self</span> <span class="o">&lt;&lt;</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">landscape_type</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">times_file</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">dispersal_file</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">uses_spatial_sampling</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span> <span class="nl">each</span> <span class="p">:</span> <span class="n">m</span><span class="p">.</span><span class="n">times</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">each</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">configs</span><span class="p">;</span>
         <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
     <span class="p">}</span>
@@ -474,11 +517,18 @@
         <span class="n">getline</span><span class="p">(</span><span class="n">is</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">times_file</span><span class="p">);</span>
         <span class="n">getline</span><span class="p">(</span><span class="n">is</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">dispersal_file</span><span class="p">);</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">uses_spatial_sampling</span><span class="p">;</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">tmp_size</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">tmp_time</span><span class="p">;</span>
+        <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">tmp_size</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tmp_size</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">tmp_time</span><span class="p">;</span>
+            <span class="n">m</span><span class="p">.</span><span class="n">times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_time</span><span class="p">);</span>
+        <span class="p">}</span>
         <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">configs</span><span class="p">;</span>
         <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">};</span>
-
 
 <span class="cp">#endif </span><span class="c1">//SPECIATIONCOUNTER_SIMPARAMETERS_H</span>
 </pre></div>

@@ -105,7 +105,7 @@ class Merger(CoalescenceTree):
 					 "sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, " \
 					 "pristine_coarse_map TEXT NOT NULL, pristine_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
 					 "dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, " \
-					 "restrict_self INT NOT NULL, infinite_landscape TEXT NOT NULL, protracted INT NOT NULL, " \
+					 "restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, " \
 					 "min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, " \
 					 "dispersal_map TEXT NOT NULL, guild INT PRIMARY KEY NOT NULL, filename TEXT NOT NULL);"
 		try:

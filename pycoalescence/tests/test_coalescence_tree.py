@@ -109,7 +109,7 @@ class TestParameterDescriptions(unittest.TestCase):
 					"m_probability": "the probability of choosing from the uniform dispersal kernel in normal-uniform dispersal",
 					"sigma": "the sigma dispersal value for normal, fat-tailed and normal-uniform dispersals",
 					"deme": "the number of individuals inhabiting a cell at a map density of 1",
-					"time_config_file": "the time config file containing points to sample in time, given in generations",
+					"time_config_file": "will be 'set' if temporal sampling is used, 'null' otherwise",
 					"coarse_map_y": "the coarse density map y dimension",
 					"fine_map_x": "the fine density map x dimension",
 					"coarse_map_y_offset": "the number of cells the coarse map is offset from the fine map in the y dimension, at the fine resolution",
@@ -120,7 +120,7 @@ class TestParameterDescriptions(unittest.TestCase):
 					"speciation_rate": "the minimum speciation rate the simulation was run with",
 					"job_type": "the job reference number given to this simulation",
 					"coarse_map_x_offset": "the number of cells the coarse map is offset from the fine map in the x dimension, at the fine resolution",
-					"infinite_landscape": "if false, landscapes have hard boundaries. Otherwise, can be infinite, with 1s everywhere, or tiled_coarse or tiled_fine for repeated units of tiled maps",
+					"landscape_type": "if false, landscapes have hard boundaries. Otherwise, can be infinite, with 1s everywhere, or tiled_coarse or tiled_fine for repeated units of tiled maps",
 					"max_time": "the maximum simulation time to run for (in seconds)",
 					"sim_complete": "set to true upon simulation completion, false for incomplete simulations",
 					"protracted": "if true, the simulation was run with protracted speciation.",
@@ -365,7 +365,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		cls.tree.wipe_data()
 		cls.tree.set_speciation_params(record_spatial="T",
 									   record_fragments="sample/FragmentsTest.csv", speciation_rates=[0.5, 0.7],
-									   sample_file="sample/SA_samplemaskINT.tif", time_config_file="null")
+									   sample_file="sample/SA_samplemaskINT.tif")
 		cls.tree.apply_speciation()
 		cls.tree.calculate_fragment_richness()
 		cls.tree.calculate_fragment_octaves()
@@ -386,7 +386,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 							   sample_file='sample/SA_samplemaskINT.tif', grid_x=13, grid_y=13,
 							   sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
 							   pristine_coarse_map='none', pristine_fine_map='none', sim_complete=1,
-							   dispersal_method='normal', m_probability=0.0, cutoff=0.0, infinite_landscape='closed',
+							   dispersal_method='normal', m_probability=0.0, cutoff=0.0, landscape_type='closed',
 							   protracted=0, min_speciation_gen=0.0, max_speciation_gen=0.0, dispersal_map="none")
 		for key in sim_params.keys():
 			self.assertEqual(sim_params[key], expected_params[key],

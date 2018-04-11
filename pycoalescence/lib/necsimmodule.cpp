@@ -26,11 +26,10 @@
 
 
 using namespace std;
-PyObject * loggingmodule;
-PyGILState_STATE gstate;
 bool log_set = false;
 bool logger_set = false;
-PyObject * logger;
+PyObject * logger = nullptr;
+PyObject * call_logging = nullptr;
 
 /**
  * @brief Template function for the running the main simulation from a configuration file.

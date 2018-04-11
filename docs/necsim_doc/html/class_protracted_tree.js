@@ -90,7 +90,6 @@ var class_protracted_tree =
     [ "has_imported_pause", "class_protracted_tree.html#ad8d1d7e4fa673b28542ba31c5b637856", null ],
     [ "has_imported_vars", "class_protracted_tree.html#a97bde28466a098bb9e58c1bd5610fd68", null ],
     [ "has_paused", "class_protracted_tree.html#aaa64e29ab7bc3c6f48d454063f0c39e1", null ],
-    [ "has_times_file", "class_protracted_tree.html#adf239a9aa029c9c6eda4b10c5ce20780", null ],
     [ "maxsimsize", "class_protracted_tree.html#a0244ee15452c38393246147d93836b4d", null ],
     [ "maxtime", "class_protracted_tree.html#a1868cf626a0b12f21a038989d4eca210", null ],
     [ "now", "class_protracted_tree.html#a5510d0fb5deb23fd39a2619d104f85fa", null ],
@@ -116,5 +115,6 @@ var class_protracted_tree =
     [ "the_task", "class_protracted_tree.html#a9f74137d5c9c5529ec9a06f88dfa6960", null ],
     [ "this_step", "class_protracted_tree.html#af7de4d4f04360edcbe2a20db882b1f87", null ],
     [ "time_taken", "class_protracted_tree.html#abd18bb487c0192588b6bed6f00bcfd07", null ],
-    [ "times_file", "class_protracted_tree.html#a5e031ea8d94f48288547116a9e7d7add", null ]
+    [ "times_file", "class_protracted_tree.html#a5e031ea8d94f48288547116a9e7d7add", null ],
+    [ "uses_temporal_sampling", "class_protracted_tree.html#abed1688c75153c4af4e8c574a26dd636", null ]
 ];

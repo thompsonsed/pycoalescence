@@ -51,7 +51,9 @@ var hierarchy =
     [ "io::LineReader", "classio_1_1_line_reader.html", null ],
     [ "LogFile", "class_log_file.html", null ],
     [ "Matrix< T >", "class_matrix.html", null ],
-    [ "Matrix< SpeciesList >", "class_matrix.html", null ],
+    [ "Matrix< SpeciesList >", "class_matrix.html", [
+      [ "SpeciesGrid", "class_species_grid.html", null ]
+    ] ],
     [ "MetacommunitiesArray", "struct_metacommunities_array.html", null ],
     [ "MetacommunityParameters", "struct_metacommunity_parameters.html", null ],
     [ "module_state", "structmodule__state.html", null ],

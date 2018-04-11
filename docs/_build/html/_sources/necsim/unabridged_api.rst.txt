@@ -374,6 +374,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_SpeciesGrid.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_SpeciesList.rst
 
 .. toctree::
@@ -443,12 +448,12 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_distanceBetween.rst
+   function_distanceBetweenCells.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_distanceBetween.rst
+   function_distanceBetweenCells.rst
 
 .. toctree::
    :maxdepth: 5
@@ -549,6 +554,36 @@ Functions
    :maxdepth: 5
 
    function_importArgs.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importPyListToVectorDouble.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importPyListToVectorDouble.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importPyListToVectorString.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importPyListToVectorString.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importPyListToVectorULong.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importPyListToVectorULong.rst
 
 .. toctree::
    :maxdepth: 5
@@ -843,6 +878,11 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_set_dispersal_parameters.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_set_log_function.rst
 
 .. toctree::
@@ -859,6 +899,16 @@ Functions
    :maxdepth: 5
 
    function_set_logger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_set_map_parameters.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_set_pristine_map_parameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -992,6 +1042,21 @@ Variables
 .. toctree::
    :maxdepth: 5
 
+   variable_call_logging.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_call_logging.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_call_logging.rst
+
+.. toctree::
+   :maxdepth: 5
+
    variable_DispersalError.rst
 
 .. toctree::
@@ -1012,22 +1077,7 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable_gstate.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_gstate.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_gstate.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_gstate.rst
+   variable_globalSimParameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1173,26 +1223,6 @@ Variables
    :maxdepth: 5
 
    variable_logger_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_loggingmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_loggingmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_loggingmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_loggingmodule.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1369,6 +1399,11 @@ Files
    :maxdepth: 5
 
    file_applyspecmodule.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_Cell.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1553,6 +1588,16 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_PyImports.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_PyImports.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_PyLogging.cpp.rst
 
 .. toctree::
@@ -1634,6 +1679,16 @@ Files
    :maxdepth: 5
 
    file_SpeciationCounter.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_SpeciesGrid.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_SpeciesGrid.h.rst
 
 .. toctree::
    :maxdepth: 5

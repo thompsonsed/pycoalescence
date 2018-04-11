@@ -43,7 +43,7 @@ class TestFileCreation(unittest.TestCase):
 		self.coal.set_simulation_params(0, 0, "output/test_output/test_output2/", 0.1, 4, 4, deme=1, sample_size=1.0,
 										max_time=2,
 										dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-										gen_since_pristine=2, time_config_file="null", dispersal_method="normal")
+										gen_since_pristine=2, dispersal_method="normal")
 		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.finalise_setup()
@@ -73,7 +73,7 @@ class TestFileNaming(unittest.TestCase):
 		coal = Simulation()
 		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_pristine=2, time_config_file="null", dispersal_method="normal")
+								   gen_since_pristine=2, dispersal_method="normal")
 		coal.set_map_parameters("null", 10, 10, "none", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "none", "none")
 
 		with warnings.catch_warning(record=True) as w:
@@ -89,7 +89,7 @@ class TestFileNaming(unittest.TestCase):
 		coal = Simulation()
 		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_pristine=2, time_config_file="null", dispersal_method="normal")
+								   gen_since_pristine=2, dispersal_method="normal")
 		coal.set_map_parameters("none", 10, 10, "null", 10, 10, 0, 0, "none", 20, 20, 0, 0, 1, "null", "null")
 		with warnings.catch_warning(record=True) as w:
 			warnings.simplefilter("always")
@@ -107,7 +107,7 @@ class TestFileNaming(unittest.TestCase):
 		coal = Simulation()
 		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_pristine=2, time_config_file="null", dispersal_method="normal")
+								   gen_since_pristine=2, dispersal_method="normal")
 		coal.set_map_parameters("none", 10, 10, "null", 10, 10, 0, 0, "none", 20, 20, 0, 0, 1, "none", "null")
 		with warnings.catch_warning(record=True) as w:
 			warnings.simplefilter("always")
@@ -125,7 +125,7 @@ class TestFileNaming(unittest.TestCase):
 		coal = Simulation()
 		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_pristine=2, time_config_file="null", dispersal_method="normal")
+								   gen_since_pristine=2, dispersal_method="normal")
 		with self.assertRaises(ValueError):
 			coal.set_map_files(sample_file="null", fine_file="null")
 
@@ -145,12 +145,12 @@ class TestOffsetMismatch(unittest.TestCase):
 		cls.coal1.set_simulation_params(seed=1, job_type=38, output_directory="output", min_speciation_rate=0.1,
 										sigma=4, max_time=2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0)
+										cutoff=0.0)
 		cls.coal2 = Simulation()
 		cls.coal2.set_simulation_params(seed=1, job_type=38, output_directory="output", min_speciation_rate=0.1,
 										sigma=4, max_time=2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0)
+										cutoff=0.0)
 
 	def testRaisesErrorFineSampleOffset(self):
 		"""
@@ -199,7 +199,7 @@ class TestSimulationRaisesErrors(unittest.TestCase):
 		c = Simulation()
 		c.set_simulation_params(5, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null", dispersal_method="fat-tail")
+								dispersal_method="fat-tail")
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 						coarse_file="sample/SA_sample_coarse.tif")
 		# Now change map name to something that doesn't exist
@@ -217,7 +217,7 @@ class TestSimulationRaisesErrors(unittest.TestCase):
 		c = Simulation(logging_level=logging.ERROR)
 		c.set_simulation_params(6, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null", dispersal_method="fat-tail", protracted=True)
+								dispersal_method="fat-tail", protracted=True)
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 						coarse_file="sample/SA_sample_coarse.tif")
 		# Now change map name to something that doesn't exist
@@ -240,27 +240,18 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		self.coal = Simulation()
+		self.coal = Simulation(logging_level=logging.CRITICAL)
 		self.coal.set_simulation_params(1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="fat-tail")
+										dispersal_method="fat-tail")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.add_sample_time(0.0)
 		self.coal.add_sample_time(1.0)
-		self.coal.create_temporal_sampling_config("output/tempconf1.txt")
-		self.coal.create_map_config("output/mapconf1.txt")
+		self.coal.create_map_config("output/conf1.txt")
 		self.coal.create_config("output/conf1.txt")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.finalise_setup()
-
-	@classmethod
-	def tearDownClass(cls):
-		"""
-		Removes the files from output."
-		:return:
-		"""
-		os.remove("output/mapconf1.txt")
 
 	def testConfigWrite(self):
 		"""
@@ -269,10 +260,9 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 		with open("output/conf1.txt", "r") as mapconf:
 			lines = mapconf.readlines()
 			lines = [x.strip() for x in lines]
-			self.assertEqual(lines[0], "[main]")
-			self.assertEqual(lines[1].replace(" ", ""), "seed=1")
-			self.assertEqual(lines[2].replace(" ", ""), "job_type=23")
-			self.assertEqual(lines[12].replace(" ", ""), "time_config=output/tempconf1.txt")
+			self.assertEqual(lines[27], "[main]")
+			self.assertEqual(lines[28].replace(" ", ""), "seed=1")
+			self.assertEqual(lines[29].replace(" ", ""), "job_type=23")
 
 	def testMapConfigWrite(self):
 		"""
@@ -303,12 +293,12 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 		"""
 		Tests the map config writing is correct.
 		"""
-		with open("output/tempconf1.txt", "r") as f:
+		with open("output/conf1.txt", "r") as f:
 			lines = f.readlines()
 			lines = [x.strip().replace(" ", "") for x in lines]
-			self.assertEqual(lines[0], "[main]", msg="Time config file doesn't produce expected output.")
-			self.assertEqual(lines[1], "time0=0.0", msg="Time config file doesn't produce expected output.")
-			self.assertEqual(lines[2], "time1=1.0", msg="Time config file doesn't produce expected output.")
+			self.assertEqual(lines[40], "[times]", msg="Time config file doesn't produce expected output.")
+			self.assertEqual(lines[41], "time0=0.0", msg="Time config file doesn't produce expected output.")
+			self.assertEqual(lines[42], "time1=1.0", msg="Time config file doesn't produce expected output.")
 
 
 class TestSimulationSetMaps(unittest.TestCase):
@@ -346,6 +336,29 @@ class TestSimulationSetMaps(unittest.TestCase):
 		Tests that the simulation completes successfully and outputs as intended.
 		"""
 		self.assertEqual(self.c.get_richness(), 6)
+
+	def testOrdersPristineMaps(self):
+		"""
+		Tests that the pristine maps are correctly re-ordered.
+		"""
+		pristine_maps_fine = ["mapb", "mapa", "mapc", "mapd"]
+		pristine_maps_coarse = ["mapcb", "mapca", "mapcc", "mapcd"]
+		times = [10, 0, 11, 14]
+		rates = [0.0, 0.2, 0.9, 0.3]
+		s = Simulation()
+		s.pristine_fine_list = pristine_maps_fine
+		s.pristine_coarse_list = pristine_maps_coarse
+		s.times_list = times
+		s.rates_list = rates
+		s.sort_pristine_maps()
+		expected_fine = ["mapa", "mapb", "mapc", "mapd"]
+		expected_coarse= ["mapca", "mapcb", "mapcc", "mapcd"]
+		expected_times = [0, 10, 11, 14]
+		expected_rates = [0.2, 0.0, 0.9, 0.3]
+		self.assertListEqual(expected_fine, s.pristine_fine_list)
+		self.assertListEqual(expected_coarse, s.pristine_coarse_list)
+		self.assertListEqual(expected_times, s.times_list)
+		self.assertListEqual(expected_rates, s.rates_list)
 
 
 class TestSimulationDimensionsAndOffsets(unittest.TestCase):
@@ -414,8 +427,7 @@ class TestSimulationDimensionsAndOffsets(unittest.TestCase):
 		"""
 		with self.assertRaises(RuntimeError):
 			self.coal.run_coalescence()
-		with self.assertRaises(RuntimeError):
-			self.coal.generate_command()
+
 
 
 class TestSimulationExtremeSpeciation(unittest.TestCase):
@@ -432,8 +444,8 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 								sigma=2.0, tau=1, deme=1, sample_size=1, max_time=4,
 								dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null", dispersal_method="normal",
-								infinite_landscape=False)
+								dispersal_method="normal",
+								landscape_type=False)
 		c.set_map("null", 10, 10)
 		c.finalise_setup()
 		c.run_coalescence()
@@ -448,8 +460,8 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 								sigma=2.0, tau=1, deme=1, sample_size=1, max_time=4,
 								dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null", dispersal_method="normal",
-								infinite_landscape=False)
+								dispersal_method="normal",
+								landscape_type=False)
 		c.set_map("null", 10, 10)
 		c.finalise_setup()
 		c.run_coalescence()
@@ -470,8 +482,7 @@ class TestSimulationMapDensityReading(unittest.TestCase):
 		cls.c.set_simulation_params(seed=1, job_type=36, output_directory="output", min_speciation_rate=0.5,
 									sigma=2, tau=2, deme=64000, sample_size=0.00005, max_time=10,
 									dispersal_relative_cost=1,
-									min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-									time_config_file="null")
+									min_num_species=1, habitat_change_rate=0, gen_since_pristine=200)
 		cls.c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 
 	def testActualDensity(self):

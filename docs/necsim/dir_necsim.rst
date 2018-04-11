@@ -14,6 +14,7 @@ Subdirectories
 Files
 -----
 
+- :ref:`file_necsim_Cell.h`
 - :ref:`file_necsim_Community.cpp`
 - :ref:`file_necsim_Community.h`
 - :ref:`file_necsim_ConfigFileParser.cpp`
@@ -58,6 +59,8 @@ Files
 - :ref:`file_necsim_SpatialTree.h`
 - :ref:`file_necsim_SpeciationCommands.cpp`
 - :ref:`file_necsim_SpeciationCommands.h`
+- :ref:`file_necsim_SpeciesGrid.cpp`
+- :ref:`file_necsim_SpeciesGrid.h`
 - :ref:`file_necsim_SpeciesList.cpp`
 - :ref:`file_necsim_SpeciesList.h`
 - :ref:`file_necsim_SpecSimParameters.h`

@@ -16,12 +16,170 @@
 #include "dispersalmodule.h"
 #include "PyLogging.h"
 #include "necsim/SimulateDispersal.h"
+#include "PyImports.h"
 
-PyObject * loggingmodule;
-PyGILState_STATE gstate;
 bool log_set = false;
 bool logger_set = false;
-PyObject * logger;
+PyObject * logger = nullptr;
+PyObject * call_logging = nullptr;
+SimParameters globalSimParameters;
+
+/**
+ * @brief Sets the map parameters.
+ * @param self the python self object
+ * @param args arguments to parse, should contain all key map parameters
+ * @return pointer to the python object
+ */
+PyObject *set_map_parameters(PyObject *self, PyObject *args)
+{
+	char * landscape_type;
+	char * fine_map_file;
+	char * coarse_map_file;
+	// parse arguments
+	if(!PyArg_ParseTuple(args, "isiiiiiisiiiis", &globalSimParameters.deme, &fine_map_file,
+						 &globalSimParameters.fine_map_x_size, &globalSimParameters.fine_map_y_size,
+						 &globalSimParameters.fine_map_x_offset, &globalSimParameters.fine_map_y_offset,
+						 &globalSimParameters.sample_x_size, &globalSimParameters.sample_y_size,
+						 &coarse_map_file, &globalSimParameters.coarse_map_x_size,
+						 &globalSimParameters.coarse_map_y_size, &globalSimParameters.coarse_map_x_offset,
+						 &globalSimParameters.coarse_map_y_offset, &landscape_type))
+	{
+		return nullptr;
+	}
+	globalSimParameters.sample_x_offset = 0;
+	globalSimParameters.sample_y_offset = 0;
+	globalSimParameters.grid_x_size = globalSimParameters.sample_x_size;
+	globalSimParameters.grid_y_size = globalSimParameters.sample_y_size;
+	globalSimParameters.fine_map_file = fine_map_file;
+	globalSimParameters.coarse_map_file = coarse_map_file;
+	globalSimParameters.landscape_type = landscape_type;
+	Py_RETURN_NONE;
+
+}
+
+/**
+ * @brief Sets the pristine map parameters.
+ * @param self the python self object
+ * @param args arguments to parse, should be lists of the fine and coarse map parameters
+ * @return pointer to the python object
+ */
+static PyObject * set_pristine_map_parameters(PyObject * self, PyObject * args)
+{
+	vector<string> path_fine;
+	vector<unsigned long> number_fine;
+	vector<double> rate_fine;
+	vector<double> time_fine;
+	vector<string> path_coarse;
+	vector<double> number_coarse;
+	vector<double> rate_coarse;
+	vector<double> time_coarse;
+	PyObject * p_path_fine;
+	PyObject * p_number_fine;
+	PyObject * p_rate_fine;
+	PyObject * p_time_fine;
+	PyObject * p_path_coarse;
+	PyObject * p_number_coarse;
+	PyObject * p_rate_coarse;
+	PyObject * p_time_coarse;
+	if(!PyArg_ParseTuple(args, "O!O!O!O!O!O!O!O!", &PyList_Type, &p_path_fine, &PyList_Type, &p_number_fine,
+						 &PyList_Type, &p_rate_fine, &PyList_Type, &p_time_fine, &PyList_Type, &p_path_coarse,
+						 &PyList_Type, &p_number_coarse, &PyList_Type, &p_rate_coarse, &PyList_Type, &p_time_coarse))
+	{
+		return nullptr;
+	}
+	try
+	{
+		Py_INCREF(logger);
+		importPyListToVectorString(p_path_fine, path_fine, "Fine map paths must be strings.");
+		importPyListToVectorULong(p_number_fine, number_fine, "Fine map numbers must be integers.");
+		importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats.");
+		importPyListToVectorDouble(p_time_fine, time_fine, "Fine map times must be floats.");
+		importPyListToVectorString(p_path_coarse, path_coarse, "Coarse map paths must be strings.");
+		importPyListToVectorULong(p_number_fine, number_fine, "Coarse map numbers must be integers.");
+		importPyListToVectorDouble(p_rate_coarse, rate_coarse, "Coarse map rates must be floats.");
+		importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats.");
+		globalSimParameters.habitat_change_rate = 0.0;
+		if(!rate_fine.empty())
+		{
+			globalSimParameters.habitat_change_rate = rate_fine[0];
+		}
+		globalSimParameters.gen_since_pristine = 0.0;
+		if(!time_fine.empty())
+		{
+			globalSimParameters.gen_since_pristine = time_fine[0];
+		}
+		if(time_fine.size() != rate_fine.size() || rate_fine.size() != number_fine.size() ||
+		   number_fine.size() != time_fine.size())
+		{
+			PyErr_SetString(DispersalError, "Lengths of fine map lists must be the same.");
+			return nullptr;
+		}
+		if(time_coarse.size() != rate_coarse.size() || rate_coarse.size() != number_coarse.size() ||
+		   number_coarse.size() != time_coarse.size())
+		{
+			throw runtime_error("Lengths of coarse map lists must be the same.");
+		}
+		for(unsigned long i = 0; i < time_fine.size(); i ++)
+		{
+			string tmp = "pristine_fine" + to_string(number_fine[i]);
+			globalSimParameters.configs.setSectionOption(tmp, "path", path_fine[i]);
+			globalSimParameters.configs.setSectionOption(tmp, "number", to_string(number_fine[i]));
+			globalSimParameters.configs.setSectionOption(tmp, "time", to_string(time_fine[i]));
+			globalSimParameters.configs.setSectionOption(tmp, "rate", to_string(rate_fine[i]));
+		}
+		for(unsigned long i = 0; i < time_coarse.size(); i ++)
+		{
+			string tmp = "pristine_coarse" + to_string(number_fine[i]);
+			globalSimParameters.configs.setSectionOption(tmp, "path", path_coarse[i]);
+			globalSimParameters.configs.setSectionOption(tmp, "number", to_string(number_coarse[i]));
+			globalSimParameters.configs.setSectionOption(tmp, "time", to_string(time_coarse[i]));
+			globalSimParameters.configs.setSectionOption(tmp, "rate", to_string(rate_coarse[i]));
+		}
+		Py_DECREF(logger);
+
+	}
+	catch(exception &e)
+	{
+		Py_DECREF(logger);
+		PyErr_SetString(DispersalError, e.what());
+		return nullptr;
+	}
+	Py_RETURN_NONE;
+}
+
+/**
+ * @brief Sets the dispersal parameters.
+ * @param self the python self object
+ * @param args arguments to parse
+ * @return pointer to the python object
+ */
+static PyObject * set_dispersal_parameters(PyObject * self, PyObject *args)
+{
+
+	char * dispersal_method;
+	char * dispersal_file;
+	double sigma, tau, m_prob, cutoff, dispersal_rel_cost;
+	int restrict_self;
+	// parse arguments
+	if(!PyArg_ParseTuple(args, "ssdddddi", &dispersal_method, &dispersal_file, &sigma, &tau, &m_prob, &cutoff,
+						 &dispersal_rel_cost, &restrict_self))
+	{
+		return nullptr;
+	}
+	Py_INCREF(logger);
+	globalSimParameters.dispersal_relative_cost = dispersal_rel_cost;
+	globalSimParameters.dispersal_file = dispersal_file;
+	globalSimParameters.dispersal_method = dispersal_method;
+	globalSimParameters.restrict_self = static_cast<bool>(restrict_self);
+	globalSimParameters.sigma = sigma;
+	globalSimParameters.tau = tau;
+	globalSimParameters.m_prob = m_prob;
+	globalSimParameters.cutoff = cutoff;
+	Py_DECREF(logger);
+	Py_RETURN_NONE;
+	
+}
+
 
 /**
  * @brief Simulates the provided dispersal kernel on the map file, saving the mean dispersal distance to the output
@@ -34,30 +192,32 @@ PyObject * logger;
 static PyObject * test_mean_dispersal(PyObject *self, PyObject *args)
 {
 	char * output_database;
-	char * map_file;
-	char * dispersal_method;
-	char * landscape_type;
-	int map_x, map_y;
-	double sigma, tau, m_prob, cutoff;
 	int num_repeats, seed, is_sequential;
-	
 	// parse arguments
-	if(!PyArg_ParseTuple(args, "ssssddddiiiii", &output_database, &map_file, &dispersal_method, &landscape_type,
-						 &sigma, &tau, &m_prob, &cutoff, &num_repeats, &seed, &map_x, &map_y, &is_sequential))
+	if(!PyArg_ParseTuple(args, "siii", &output_database, &num_repeats, &seed, &is_sequential))
 	{
 		return nullptr;
 	}
 	try
 	{
+#ifdef DEBUG
+		if(!logger || !log_set)
+		{
+			throw FatalException("Logger has not been set properly.");
+		}
+		if(!call_logging || !logger_set)
+		{
+			throw FatalException("Logging  module has not been set.");
+		}
+#endif // DEBUG
 		Py_INCREF(logger);
 		SimulateDispersal disp_sim;
-		disp_sim.setDispersalParameters(dispersal_method, sigma, tau, m_prob, cutoff, landscape_type);
-		disp_sim.setSequential(bool(is_sequential));
+		disp_sim.setSimulationParameters(&globalSimParameters);
+		disp_sim.setSequential(static_cast<bool>(is_sequential));
 		disp_sim.setOutputDatabase(output_database);
 		disp_sim.setSeed(static_cast<unsigned long>(seed));
 		disp_sim.setNumberRepeats(static_cast<unsigned long>(num_repeats));
-		disp_sim.setSizes(static_cast<unsigned long>(map_x), static_cast<unsigned long>(map_y));
-		disp_sim.importMaps(map_file);
+		disp_sim.importMaps();
 		disp_sim.runMeanDispersalDistance();
 		disp_sim.writeDatabase("DISPERSAL_DISTANCES");
 		Py_DECREF(logger);
@@ -81,16 +241,10 @@ static PyObject * test_mean_dispersal(PyObject *self, PyObject *args)
 static PyObject * test_mean_distance_travelled(PyObject *self, PyObject *args)
 {
 	char * output_database;
-	char * map_file;
-	char * dispersal_method;
-	char * landscape_type;
-	int map_x, map_y;
-	double sigma, tau, m_prob, cutoff;
 	int num_repeats, seed, num_steps;
 
 	// parse arguments
-	if(!PyArg_ParseTuple(args, "ssssddddiiiii", &output_database, &map_file, &dispersal_method, &landscape_type,
-						 &sigma, &tau, &m_prob, &cutoff, &num_repeats, &num_steps, &seed, &map_x, &map_y))
+	if(!PyArg_ParseTuple(args, "siii", &output_database, &num_repeats, &num_steps, &seed))
 	{
 		return nullptr;
 	}
@@ -98,13 +252,12 @@ static PyObject * test_mean_distance_travelled(PyObject *self, PyObject *args)
 	{
 		Py_INCREF(logger);
 		SimulateDispersal disp_sim;
-		disp_sim.setDispersalParameters(dispersal_method, sigma, tau, m_prob, cutoff, landscape_type);
+		disp_sim.setSimulationParameters(&globalSimParameters);
 		disp_sim.setOutputDatabase(output_database);
 		disp_sim.setSeed(static_cast<unsigned long>(seed));
 		disp_sim.setNumberRepeats(static_cast<unsigned long>(num_repeats));
 		disp_sim.setNumberSteps(static_cast<unsigned long>(num_steps));
-		disp_sim.setSizes(static_cast<unsigned long>(map_x), static_cast<unsigned long>(map_y));
-		disp_sim.importMaps(map_file);
+		disp_sim.importMaps();
 		disp_sim.runMeanDistanceTravelled();
 		disp_sim.writeDatabase("DISTANCES_TRAVELLED");
 		Py_DECREF(logger);
@@ -124,8 +277,14 @@ static PyObject * test_mean_distance_travelled(PyObject *self, PyObject *args)
 
 static PyMethodDef DispersalMethods[] = 
 {
+	{"set_map_parameters", set_map_parameters, METH_VARARGS,
+			"Sets the map parameters for the dispersal simulation."},
+	{"set_pristine_map_parameters", set_pristine_map_parameters, METH_VARARGS,
+			"Sets the pristine map parameters for the dispersal simulation."},
+	{"set_dispersal_parameters", set_dispersal_parameters, METH_VARARGS,
+			"Sets the dispersal parameters for the dispersal simulation."},
 	{"test_mean_dispersal", test_mean_dispersal, METH_VARARGS,
-	 "Simulates the dispersal function on the provided map, recording the mean dispersal distance."},
+			"Simulates the dispersal function on the provided map, recording the mean dispersal distance."},
 	{"test_mean_distance_travelled", test_mean_distance_travelled, METH_VARARGS,
 	 "Simulates the dispersal function on the provided map,"
 			 " recording the mean distance travelled in the number of steps."},

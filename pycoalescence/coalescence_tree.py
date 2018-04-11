@@ -99,7 +99,7 @@ class CoalescenceTree(object):
 		self.equalised = False
 		self.is_setup_speciation = False
 		self.record_spatial = False
-		self.time_config_file = "null"
+		self.times = None
 		self.sample_file = "null"
 		self.record_fragments = False
 		self.speciation_simulator = None
@@ -357,7 +357,7 @@ class CoalescenceTree(object):
 								"fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, "
 								"sample_x_offset, sample_y_offset, pristine_coarse_map, "
 								" pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
-								" infinite_landscape,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
+								" landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
 								" FROM SIMULATION_PARAMETERS WHERE guild == ?", (guild,))
 		except sqlite3.OperationalError as e:
 			self.logger.error("Failure to get SIMULATION_PARAMETERS table from database with guild {}"
@@ -428,7 +428,7 @@ class CoalescenceTree(object):
 				# print(sql_fetch)
 				complete = bool(sql_fetch[0])
 				if sql_fetch[1] != "null":
-					self.time_config_file = str(os.path.abspath(sql_fetch[1]))
+					self.times = [0.0]
 				if not complete:
 					self.is_complete = False
 					raise IOError(filename + " is not a complete simulation. Please finish " \
@@ -445,7 +445,7 @@ class CoalescenceTree(object):
 			raise IOError("File " + filename + " does not exist.")
 
 	def set_speciation_params(self, record_spatial, record_fragments, speciation_rates, sample_file=None,
-							  time_config_file=None, protracted_speciation_min = None, protracted_speciation_max = None,
+							  times=None, protracted_speciation_min = None, protracted_speciation_max = None,
 							  metacommunity_size=None, metacommunity_speciation_rate=None):
 		"""
 
@@ -458,12 +458,14 @@ class CoalescenceTree(object):
 			calculated from squares of continuous habitat.
 		:param list speciation_rates: a list of speciation rates to apply
 		:param str sample_file: a sample tif or csv specifying the sampling mask
-		:param str time_config_file: a configuration file of temporal sampling points
+		:param list times: a list of times to apply (should have been run with the original simulation)
 		:param float protracted_speciation_min: the minimum number of generations required for speciation to occur
 		:param float protracted speciation_max: the maximum number of generations before speciation occurs
 		:param float metacommunity_size: the size of the metacommunity to apply
 		:param float metacommunity_speciation_rate: speciation rate for the metacommunity
 		"""
+		if self.is_setup_speciation:
+			self.logger.warning("Speciation parameters already set.")
 		if isinstance(record_fragments, bool):
 			if record_fragments:
 				record_fragments = "null"
@@ -498,26 +500,44 @@ class CoalescenceTree(object):
 		else:
 			self.protracted_speciation_min = 0.0
 			self.protracted_speciation_max = 0.0
-		if not self.is_setup_speciation:
-			self.record_spatial = record_spatial
-			self.record_fragments = record_fragments
-			if sample_file is None:
-				self.logger.info("No sample file provided, defaulting to null.")
-				self.sample_file = "null"
-			else:
-				self.sample_file = sample_file
-			if self.time_config_file is None:
-				if time_config_file is None:
-					self.logger.warning("No time config file provided, defaulting to null.")
-					self.time_config_file = "null"
-				else:
-					self.time_config_file = time_config_file
-			self.applied_speciation_rates_list = speciation_rates
+		self.record_spatial = record_spatial
+		self.record_fragments = record_fragments
+		if sample_file is None:
+			self.logger.info("No sample file provided, defaulting to null.")
+			self.sample_file = "null"
 		else:
-			self.logger.warning("Speciation parameters already set.")
+			self.sample_file = sample_file
+		if times is None:
+			self.logger.info("No times provided, defaulting to 0.0.")
+			times = [0.0]
+		if self.times is None:
+			self.times = times
+		else:
+			self.times.extend(times)
+		self.applied_speciation_rates_list = speciation_rates
+
 		if self.sample_file == "null" and self.record_fragments == "null":
 			raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
 							 "provide a samplemask or set record_fragments=False.")
+
+	def add_time(self, time):
+		"""
+		Adds the time to the list to be applied.
+
+		:param time: the time to be applied
+		"""
+		if self.times is None:
+			self.times = [0.0]
+		self.times.append(time)
+
+	def add_times(self, times):
+		"""
+		Adds the list of times to those to be applied.
+
+		:param times: list of times to be applied
+		"""
+		for each in times:
+			self.add_time(each)
 
 	def apply_speciation(self):
 		"""
@@ -526,8 +546,8 @@ class CoalescenceTree(object):
 		It will create additional fields and tables in the SQLite database which contains the requested data.
 		"""
 		# Check file exists
-		if self.time_config_file is None:
-			self.time_config_file = "null"
+		if self.times is None:
+			self.times = [0.0]
 		if not os.path.exists(self.file):
 			self.logger.warning(str("Check file existance for " + self.file +
 							  ". Potential lack of access (verify that definition is a relative path)."))
@@ -538,10 +558,9 @@ class CoalescenceTree(object):
 				self.apply_spec_module.set_logger(self.logger)
 				self.apply_spec_module.set_log_function(write_to_log)
 				self.apply_spec_module.apply(self.file, self.record_spatial, self.sample_file,
-											 self.time_config_file, self.record_fragments,
-											 self.applied_speciation_rates_list, self.protracted_speciation_min,
-											 self.protracted_speciation_max, self.metacommunity_size,
-											 self.metacommunity_speciation_rate)
+											self.record_fragments, self.applied_speciation_rates_list, self.times,
+											 self.protracted_speciation_min, self.protracted_speciation_max,
+											 self.metacommunity_size, self.metacommunity_speciation_rate)
 			except TypeError as te:
 				raise te
 			except Exception as e:
@@ -549,7 +568,7 @@ class CoalescenceTree(object):
 		else:
 			self.logger.warning("Using deprecated speciation application method.")
 			sim_list = [self.speciation_simulator, self.file, self.record_spatial, self.sample_file,
-						self.time_config_file, self.record_fragments]
+						self.times, self.record_fragments]
 			sim_list.extend([str(x) for x in self.applied_speciation_rates_list])
 			sim_list_str = [str(x) for x in sim_list]
 			try:
@@ -1546,7 +1565,7 @@ class CoalescenceTree(object):
 		:return: a dictionary mapping names to values for seed, job_type, output_dir, speciation_rate, sigma, L_value, deme,
 		sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_pristine, time_config,
 		coarse_map vars, fine map vars, sample_file, gridx, gridy, pristine coarse map, pristine fine map, sim_complete,
-		dispersal_method, m_probability, cutoff, infinite_landscape, protracted, min_speciation_gen, max_speciation_gen,
+		dispersal_method, m_probability, cutoff, landscape_type, protracted, min_speciation_gen, max_speciation_gen,
 		dispersal_map
 		"""
 		self._check_database()
@@ -1559,7 +1578,7 @@ class CoalescenceTree(object):
 									"fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, "
 									"sample_x_offset, sample_y_offset, pristine_coarse_map, "
 									" pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
-									" infinite_landscape,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
+									" landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
 									" FROM SIMULATION_PARAMETERS")
 			except sqlite3.OperationalError as e:
 				self.logger.error("Failure to get SIMULATION_PARAMETERS table from database. Check table exists.")

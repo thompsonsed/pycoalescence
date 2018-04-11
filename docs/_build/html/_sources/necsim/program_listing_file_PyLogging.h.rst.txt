@@ -17,12 +17,10 @@ Program Listing for File PyLogging.h
    #include <string>
    #include "necsim/LogFile.h"
    
-   extern PyObject * loggingmodule;
-   extern PyGILState_STATE gstate;
    extern bool log_set;
    extern bool logger_set;
    
-   static PyObject * call_logging = nullptr;
+   extern PyObject * call_logging;
    
    
    extern PyObject *logger;

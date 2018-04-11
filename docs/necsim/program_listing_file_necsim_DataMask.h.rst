@@ -15,7 +15,7 @@ Program Listing for File DataMask.h
    #ifndef SPECIATIONCOUNTER_DataMask_H
    #define SPECIATIONCOUNTER_DataMask_H
    
-   // Forward declaration of map
+   // Forward declaration of Landscape class
    class Landscape;
    
    #include <string>

@@ -42,8 +42,6 @@ Includes
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CustomExceptions.h``
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DataMask.h``
-
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DataPoint.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DispersalCoordinator.h``
@@ -69,8 +67,6 @@ Includes
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpatialTree.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpeciesList.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Step.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Tree.h``
 
@@ -153,15 +149,13 @@ Variables
 ---------
 
 
-- :ref:`variable_gstate`
+- :ref:`variable_call_logging`
 
 - :ref:`variable_log_set`
 
 - :ref:`variable_logger`
 
 - :ref:`variable_logger_set`
-
-- :ref:`variable_loggingmodule`
 
 - :ref:`variable_NECSimMethods`
 

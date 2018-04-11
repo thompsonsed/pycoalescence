@@ -247,7 +247,7 @@ Program Listing for File ConfigFileParser.cpp
        {
            if(config.section == sec)
            {
-               return (true);
+               return true;
            }
        }
        return false;
@@ -259,7 +259,7 @@ Program Listing for File ConfigFileParser.cpp
        {
            if(config.section == sec)
            {
-               return (config.val);
+               return config.val;
            }
        }
        throw ConfigException("Section not found in config file: " + sec);
@@ -275,7 +275,7 @@ Program Listing for File ConfigFileParser.cpp
                {
                    if(config.refs[j] == ref)
                    {
-                       return (config.val[j]);
+                       return config.val[j];
                    }
                }
            }
@@ -296,7 +296,7 @@ Program Listing for File ConfigFileParser.cpp
                {
                    if(config.refs[j] == ref)
                    {
-                       return (config.val[j]);
+                       return config.val[j];
                    }
                }
            }

@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="_py_imports_8h" kind="file" language="C++">
+    <compoundname>PyImports.h</compoundname>
+    <includes local="no">Python.h</includes>
+    <includes local="no">utility</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includedby refid="applyspecmodule_8cpp" local="yes">applyspecmodule.cpp</includedby>
+    <includedby refid="dispersalmodule_8cpp" local="yes">dispersalmodule.cpp</includedby>
+    <includedby refid="_py_imports_8cpp" local="yes">PyImports.cpp</includedby>
+    <incdepgraph>
+      <node id="1652">
+        <label>string</label>
+      </node>
+      <node id="1649">
+        <label>Python.h</label>
+      </node>
+      <node id="1651">
+        <label>vector</label>
+      </node>
+      <node id="1650">
+        <label>utility</label>
+      </node>
+      <node id="1648">
+        <label>PyImports.h</label>
+        <link refid="PyImports.h"/>
+        <childnode refid="1649" relation="include">
+        </childnode>
+        <childnode refid="1650" relation="include">
+        </childnode>
+        <childnode refid="1651" relation="include">
+        </childnode>
+        <childnode refid="1652" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_py_imports_8h_1a4938eb508ac5b2f1e03a13a3860689ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool importPyListToVectorString</definition>
+        <argsstring>(PyObject *list_input, vector&lt; string &gt; &amp;output, const string &amp;err_msg)</argsstring>
+        <name>importPyListToVectorString</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>list_input</declname>
+        </param>
+        <param>
+          <type>vector&lt; string &gt; &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>const string &amp;</type>
+          <declname>err_msg</declname>
+        </param>
+        <briefdescription>
+<para>Imports the provided input list to the output vector. Sets the python error message and returns false if one of the list elements is not a string type. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>list_input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a python list object to iterate over </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output vector of strings to push to </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>err_msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>error message to through if an element is not of float type </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if no error is thrown, false otherwise </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyImports.h" line="23" column="1" bodyfile="PyImports.cpp" bodystart="10" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="_py_imports_8h_1aff3fb1ca36eb470ac911c35916c0d905" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool importPyListToVectorULong</definition>
+        <argsstring>(PyObject *list_input, vector&lt; unsigned long &gt; &amp;output, const string &amp;err_msg)</argsstring>
+        <name>importPyListToVectorULong</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>list_input</declname>
+        </param>
+        <param>
+          <type>vector&lt; unsigned long &gt; &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>const string &amp;</type>
+          <declname>err_msg</declname>
+        </param>
+        <briefdescription>
+<para>Imports the provided input list to the output vector. Sets the python error message and returns false if one of the list elements is not of int type. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>list_input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a python list object to iterate over </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output vector of int to push to </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>err_msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>error message to through if an element is not of float type </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if no error is thrown, false otherwise </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyImports.h" line="33" column="1" bodyfile="PyImports.cpp" bodystart="36" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="_py_imports_8h_1a05fdbfcb6a0ea29a3242b796d654cc91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool importPyListToVectorDouble</definition>
+        <argsstring>(PyObject *list_input, vector&lt; double &gt; &amp;output, const string &amp;err_msg)</argsstring>
+        <name>importPyListToVectorDouble</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>list_input</declname>
+        </param>
+        <param>
+          <type>vector&lt; double &gt; &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>const string &amp;</type>
+          <declname>err_msg</declname>
+        </param>
+        <briefdescription>
+<para>Imports the provided input list to the output vector. Sets the python error message and returns false if one of the list elements is not a float type. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>list_input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a python list object to iterate over </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output vector of doubles to push to </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>err_msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>error message to through if an element is not of float type </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if no error is thrown, false otherwise </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyImports.h" line="44" column="1" bodyfile="PyImports.cpp" bodystart="55" bodyend="71"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>Sam<sp/>Thompson<sp/>on<sp/>02/04/2018.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PYIMPORTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PYIMPORTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Python.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorString(PyObject<sp/>*list_input,<sp/>vector&lt;string&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorULong(PyObject<sp/>*list_input,<sp/>vector&lt;unsigned<sp/>long&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorDouble(PyObject<sp/>*list_input,<sp/>vector&lt;double&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//SPECIATIONCOUNTER_PYIMPORTS_H</highlight></codeline>
+    </programlisting>
+    <location file="PyImports.h"/>
+  </compounddef>
+</doxygen>

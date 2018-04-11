@@ -205,7 +205,6 @@ class PatchedLandscape:
 		self.dispersal_map.data = np.cumsum(self.dispersal_map.data, axis=1)
 		for i in range(map_size):
 			if not np.isclose(self.dispersal_map.data[i, map_size-1], 1.0):
-				print(self.dispersal_map.data) # TODO remove this
 				raise ValueError("Dispersal map does not sum to 1 "
 								 "across rows: {} != {}.".format(self.dispersal_map.data[i, map_size-1], 1.0))
 		self.fine_map.create(self.fine_map.file_name, datatype=5)

@@ -154,7 +154,8 @@ This can cause complications for certain IDEs. If you encounter problems, it is 
 </div>
 <div class="section" id="compilation-options">
 <span id="sec-compilation-options"></span><h4>Compilation Options<a class="headerlink" href="#compilation-options" title="Permalink to this headline">¶</a></h4>
-<p>These are the possible flags which can be provided during installation as options in <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">[opts]</span></code>.</p>
+<p>These are the possible flags which can be provided during installation as options in <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">[opts]</span></code>. It is
+not usually expected that you need to provide any of these options.</p>
 <table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="20%" />
@@ -191,12 +192,12 @@ The recommended method is:</p>
 <ol class="arabic">
 <li><p class="first">Specify simulation parameters</p>
 <ul>
-<li><p class="first">Set simulation parameters using <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_simulation_params" title="pycoalescence.simulation.Simulation.set_simulation_params"><code class="xref py py-func docutils literal"><span class="pre">set_simulation_params()</span></code></a>
+<li><p class="first">Use <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_simulation_params" title="pycoalescence.simulation.Simulation.set_simulation_params"><code class="xref py py-func docutils literal"><span class="pre">set_simulation_params()</span></code></a>
 to set the job number, task number, output directory and other key simulation variables.</p>
 </li>
 <li><p class="first">Set the map variables by one of the following:</p>
 <ol class="loweralpha simple">
-<li><a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_map_parameters" title="pycoalescence.simulation.Simulation.set_map_parameters"><code class="xref py py-func docutils literal"><span class="pre">set_map_parameters()</span></code></a> to input file paths and dimensions</li>
+<li><code class="xref py py-func docutils literal"><span class="pre">set_map_parameters()</span></code> to input file paths and dimensions</li>
 <li><a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_map_files" title="pycoalescence.simulation.Simulation.set_map_files"><code class="xref py py-func docutils literal"><span class="pre">set_map_files()</span></code></a> to set the map file paths. This
 calls <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.detect_map_dimensions" title="pycoalescence.simulation.Simulation.detect_map_dimensions"><code class="xref py py-func docutils literal"><span class="pre">detect_map_dimensions()</span></code></a> to automatically
 detect file offsets and dimensions.</li>
@@ -273,7 +274,7 @@ If you require multiple map files at different points in time, you shall need to
 file to make these options accessible to the program.</p>
 <p>These configuration options appear in the main configuration file under various headings.</p>
 <ul class="simple">
-<li>First add the pristine map options using <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.add_pristine_map" title="pycoalescence.simulation.Simulation.add_pristine_map"><code class="xref py py-func docutils literal"><span class="pre">add_pristine_map()</span></code></a>
+<li>First add the pristine map options using <code class="xref py py-func docutils literal"><span class="pre">add_pristine_map()</span></code>
 This can be performed multiple times to add several maps.</li>
 <li>Add the options to the configuration file (<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.create_map_config" title="pycoalescence.simulation.Simulation.create_map_config"><code class="xref py py-func docutils literal"><span class="pre">create_map_config()</span></code></a>)</li>
 </ul>
@@ -292,7 +293,7 @@ This can be performed multiple times to add several maps.</li>
 <span class="n">c</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="c1"># set the main simulation parameters - use default values for other keyword arguments</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_simulation_params</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                        <span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># Optionally add a set of speciation rates to apply at the end of the simulation</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_speciation_rates</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
 <span class="c1"># set the map parameters - null means the map will be generated with 100% cover everywhere (no file input).</span>
@@ -313,8 +314,8 @@ inputted map files.</p>
 <span class="c1"># set the main simulation parameters</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_simulation_params</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                         <span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mf">0.1</span>
-                        <span class="n">max_time</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="n">m_prob</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dispersal_relative_cost</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                        <span class="n">min_num_species</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">forest_change_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                        <span class="n">max_time</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;fat-tailed&quot;</span><span class="p">,</span> <span class="n">m_prob</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">dispersal_relative_cost</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_num_species</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">forest_change_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
                         <span class="n">pristine_forest_time</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">time_config_file</span><span class="o">=</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">restrict_self</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                         <span class="n">infinite_landscape</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="c1"># Add a set of speciation rates to be applied at the end of the simulation</span>
@@ -430,13 +431,36 @@ dispersal (but lower than the normal-uniform dispersal kernel).</dd>
 <dt>Normal-uniform distribution</dt>
 <dd>This requires <span class="math">\(\sigma\)</span>, <span class="math">\(m\)</span> and <span class="math">\(c\)</span> . Here, we pick with probability <span class="math">\(1-m\)</span> from a normal
 distribution with standard deviation <span class="math">\(\sigma\)</span>, and probability <span class="math">\(m\)</span> from a uniform distribution. This
-uniform distribution picks a random distance equally between 0 and <span class="math">\(c\)</span>, the maximal dispersal distance. For
+uniform distribution picks a random distance uniformly between 0 and <span class="math">\(c\)</span>, the maximal dispersal distance. For
 very large <span class="math">\(c\)</span>, extremely long distance dispersal is possible.</dd>
 </dl>
 </li>
 </ul>
-<p><strong>pycoalescence</strong> also has the ability to simulate a dispersal kernel on a landscape. For more information about that
+<p>It is also possible to provide a dispersal probability map, which sets the probability of dispersing from one cell to
+another. The dispersal map should be dimensions <em>xy</em> by <em>xy</em> where <em>x</em> and <em>y</em> are the dimensions of the fine map. A
+dispersal map can be set by using
+<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_map_files" title="pycoalescence.simulation.Simulation.set_map_files"><code class="xref py py-func docutils literal"><span class="pre">set_map_files(dispersal_map=&quot;/path/to/dispersal.tif&quot;)</span></code></a>.</p>
+<p><strong>pycoalescence</strong> has the ability to simulate a dispersal kernel on a landscape. For more information about that
 process, see <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a></p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">In this scenario, it is not possible to use a coarse map, which should be &#8220;none&#8221;.</p>
+</div>
+</div>
+<div class="section" id="differing-reproductive-rates">
+<h4>Differing reproductive rates<a class="headerlink" href="#differing-reproductive-rates" title="Permalink to this headline">¶</a></h4>
+<p>Simulations can use varying reproductive rates across the landscape, but using
+<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_map_files" title="pycoalescence.simulation.Simulation.set_map_files"><code class="xref py py-func docutils literal"><span class="pre">set_map_files(reproduction_map=&quot;/path/to/rep.tif&quot;)</span></code></a>. In this
+scenario, all species have different per-capita reproduction rates across the landscape.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Density is already taken into account during simulations for reproduction rates, so the reproduction map
+should be solely for the <em>per-capita</em> differences in reproductive rate.</p>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">A reproduction map can only be used with a fine map, and coarse map should be set to &#8220;none&#8221;.</p>
+</div>
 </div>
 <div class="section" id="limitations-of-simulation-variables">
 <h4>Limitations of simulation variables<a class="headerlink" href="#limitations-of-simulation-variables" title="Permalink to this headline">¶</a></h4>
@@ -447,7 +471,7 @@ unnecessary bugs.</p>
 </div>
 <p>Certain simulation variables have limitations, depending on the method of setting up the simulation.</p>
 <ul>
-<li><p class="first">Map variables set up using <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_map_parameters" title="pycoalescence.simulation.Simulation.set_map_parameters"><code class="xref py py-func docutils literal"><span class="pre">set_map_parameters()</span></code></a></p>
+<li><p class="first">Map variables set up using <code class="xref py py-func docutils literal"><span class="pre">set_map_parameters()</span></code></p>
 <blockquote>
 <div><ul class="simple">
 <li>Sample map dimensions must be smaller than fine map dimensions.</li>
@@ -479,6 +503,10 @@ area to sample entirely over. Supplying &#8220;null&#8221; will therefore sample
 <p class="last">Scalings and offsets between maps should also work correctly, but if problems are encountered, try manually
 specifying offsets and dimensions to identify any problems.</p>
 </div>
+<ul class="simple">
+<li>Both the reproduction map and dispersal map (if provided) must match the dimensions of the fine map. No coarse map
+should be provided in either scenario.</li>
+</ul>
 </div></blockquote>
 </li>
 </ul>
@@ -504,12 +532,12 @@ following:</p>
 </li>
 <li><dl class="first docutils">
 <dt>&#8220;tiled_coarse&#8221;</dt>
-<dd>Tile the coarse map infinitely in all dimensions.</dd>
+<dd>Tile the coarse map infinitely in all dimensions. A coarse map must be provided.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt>&#8220;tiled_fine&#8221;</dt>
-<dd>Tile the fine map infinitely in all dimensions.</dd>
+<dd>Tile the fine map infinitely in all dimensions. No coarse map should be provided.</dd>
 </dl>
 </li>
 </ul>
@@ -626,9 +654,9 @@ as comparing simulated landscapes to real data and calculating goodness of fits.
 <p>The general procedure for using this module involves a few functions, all contained in the
 <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree" title="pycoalescence.coalescence_tree.CoalescenceTree"><code class="xref py py-class docutils literal"><span class="pre">CoalescenceTree</span> <span class="pre">class</span></code></a>.</p>
 <ul class="simple">
-<li><a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_database" title="pycoalescence.coalescence_tree.CoalescenceTree.set_database"><code class="xref py py-func docutils literal"><span class="pre">set_database()</span></code></a> generates the link to the SQL database, which
-should be an output from a <strong>necsim</strong> simulation (probably run using the
-<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation" title="pycoalescence.simulation.Simulation"><code class="xref py py-class docutils literal"><span class="pre">Simulation</span> <span class="pre">class</span></code></a>.</li>
+<li><a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_database" title="pycoalescence.coalescence_tree.CoalescenceTree.set_database"><code class="xref py py-func docutils literal"><span class="pre">set_database()</span></code></a> generates the link to the SQL
+database, which should be an output from a <strong>necsim</strong> simulation (run using the
+<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation" title="pycoalescence.simulation.Simulation"><code class="xref py py-class docutils literal"><span class="pre">Simulation</span> <span class="pre">class</span></code></a>).</li>
 <li><code class="xref py py-func docutils literal"><span class="pre">import_comparison_data()</span></code> reads an SQL database which
 contains real data to compare to the simulation output. The comparison data should contain the following tables:<ul>
 <li>BIODIVERSITY_ METRICS, containing <em>only</em> &#8220;metric&#8221;, &#8220;fragment&#8221;, &#8220;value&#8221; and &#8220;number_of_individuals&#8221; columns.
@@ -650,14 +678,14 @@ FRAGMENT_ABUNDANCES using <a class="reference internal" href="pycoalescence.html
 <div class="section" id="extended-features">
 <h3><a class="toc-backref" href="#id6">Extended Features</a><a class="headerlink" href="#extended-features" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Read tif files and perform a number of operations taking into account the spatial locations of the data in question.
+<li>Read tif files and perform a number of operations taking into account georeferencing of the data.
 Functionality is contained within the <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map" title="pycoalescence.map.Map"><code class="xref py py-class docutils literal"><span class="pre">Map</span> <span class="pre">class</span></code></a> (see <a class="reference internal" href="README_landscapes.html#map-reading"><span class="std std-ref">here</span></a>).</li>
 <li>Generate fragmented landscapes (see <a class="reference internal" href="README_landscapes.html#generate-landscapes"><span class="std std-ref">here</span></a>). This may be useful for generating example
 landscapes of a particular size with desired characteristics.</li>
 <li>Simulate a dispersal kernel on a landscape to obtain characteristics of the effective dispersal kernel. Currently only
 a single map is supported with &#8220;closed&#8221;, &#8220;infinite&#8221; or &#8220;tiled&#8221; landscape types (see <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>).</li>
 <li>Simulations can be merged into a single output, with each simulation occupying a separate guild (see
-<a class="reference internal" href="README_merger.html#merging-simulations"><span class="std std-ref">here</span></a>).</li>
+<a class="reference internal" href="README_merger.html#merging-simulations"><span class="std std-ref">here</span></a>). Analyses can then be performed on the combined data.</li>
 </ul>
 </div>
 <div class="section" id="testing-install">
@@ -766,6 +794,7 @@ details.</p>
 <li><a class="reference internal" href="#custom-configuration-files">Custom Configuration Files</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
 <li><a class="reference internal" href="#dispersal-kernels">Dispersal Kernels</a></li>
+<li><a class="reference internal" href="#differing-reproductive-rates">Differing reproductive rates</a></li>
 <li><a class="reference internal" href="#limitations-of-simulation-variables">Limitations of simulation variables</a></li>
 <li><a class="reference internal" href="#infinite-landscapes">Infinite Landscapes</a></li>
 <li><a class="reference internal" href="#optimising-simulations">Optimising Simulations</a></li>

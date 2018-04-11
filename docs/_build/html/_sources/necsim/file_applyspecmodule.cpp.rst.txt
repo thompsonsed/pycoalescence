@@ -41,6 +41,8 @@ Includes
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CPLCustomHandler.h``
 
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Cell.h``
+
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Community.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ConfigFileParser.h``
@@ -73,6 +75,8 @@ Includes
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/TreeNode.h``
 
+- ``PyImports.h`` (:ref:`file_PyImports.h`)
+
 - ``PyLogging.h`` (:ref:`file_PyLogging.h`)
 
 - ``Python.h``
@@ -90,6 +94,8 @@ Includes
 - ``climits``
 
 - ``cmath``
+
+- ``csignal``
 
 - ``cstdint``
 
@@ -115,8 +121,6 @@ Includes
 
 - ``set``
 
-- ``signal.h``
-
 - ``sqlite3.h``
 
 - ``sstream``
@@ -126,6 +130,8 @@ Includes
 - ``string``
 
 - ``unistd.h``
+
+- ``utility``
 
 - ``vector``
 
@@ -160,13 +166,11 @@ Variables
 
 - :ref:`variable_ApplySpecMethods`
 
-- :ref:`variable_gstate`
+- :ref:`variable_call_logging`
 
 - :ref:`variable_log_set`
 
 - :ref:`variable_logger`
 
 - :ref:`variable_logger_set`
-
-- :ref:`variable_loggingmodule`
 

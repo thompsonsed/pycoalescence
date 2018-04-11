@@ -72,14 +72,14 @@
 <span class="cp">#ifndef STEP_H</span>
 <span class="cp">#define STEP_H</span>
 
+<span class="cp">#include</span> <span class="cpf">&quot;Cell.h&quot;</span><span class="cp"></span>
+
 <span class="k">struct</span> <span class="n">Step</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">chosen</span><span class="p">,</span> <span class="n">coalchosen</span><span class="p">;</span>
     <span class="kt">long</span> <span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">coal</span><span class="p">,</span> <span class="n">bContinueSim</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">time_reference</span><span class="p">;</span>
-    <span class="kt">double</span> <span class="n">distance</span><span class="p">;</span>
-    <span class="kt">double</span> <span class="n">angle</span><span class="p">;</span>
 <span class="cp">#ifdef verbose</span>
     <span class="kt">long</span> <span class="n">number_printed</span><span class="p">;</span>
 <span class="cp">#endif</span>
@@ -95,11 +95,19 @@
         <span class="n">coal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">bContinueSim</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
         <span class="n">time_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
 <span class="cp">#ifdef verbose</span>
         <span class="n">number_printed</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="cp">#endif</span>
+    <span class="p">}</span>
+
+    <span class="n">Step</span><span class="p">(</span><span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span> <span class="n">cell</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">oldx</span> <span class="o">=</span> <span class="n">cell</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+        <span class="n">oldy</span> <span class="o">=</span> <span class="n">cell</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+        <span class="n">oldxwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">oldywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">coal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bContinueSim</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
 
 
@@ -112,8 +120,6 @@
         <span class="n">oldxwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">oldywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">coal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
     <span class="p">}</span>
 
 

@@ -1,8 +1,8 @@
 var struct_spec_sim_parameters =
 [
     [ "importTimeConfig", "struct_spec_sim_parameters.html#ae0196a50a551a821b75b6e92a35534a7", null ],
-    [ "setup", "struct_spec_sim_parameters.html#ad2b6362214ce80114e602ee04413fc56", null ],
-    [ "setup", "struct_spec_sim_parameters.html#affff445e6b2dc27c00dcdb6f0779fba2", null ],
+    [ "setup", "struct_spec_sim_parameters.html#a8dfb82b7d5e4927a81383f55c2bd8175", null ],
+    [ "setup", "struct_spec_sim_parameters.html#af203c1f89e195c31da558659ba890ce1", null ],
     [ "all_speciation_rates", "struct_spec_sim_parameters.html#af70bb0689f934fd5ec5ea1878a3e4011", null ],
     [ "all_times", "struct_spec_sim_parameters.html#a2a61028935128b94785b6faca0a5788f", null ],
     [ "bMultiRun", "struct_spec_sim_parameters.html#a7ca69d2db2aaf8cdcc62b1ec854f72bf", null ],

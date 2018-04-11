@@ -44,7 +44,7 @@ class TestSimulationNorm(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 										dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-										gen_since_pristine=2, time_config_file="null", dispersal_method="normal")
+										gen_since_pristine=2, dispersal_method="normal")
 		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.finalise_setup()
@@ -78,7 +78,7 @@ class TestSimulationNorm(unittest.TestCase):
 									 sample_x_offset=0, sample_y_offset=0,
 									 pristine_coarse_map='null', pristine_fine_map='null',
 									 sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='closed', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='closed', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key])
@@ -118,8 +118,8 @@ class TestSimulationInfLand(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_params(2, 2, "output", 0.1, 4, 4, 1, 1.0, 2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=2,
-										time_config_file="null", dispersal_method="normal", m_prob=1,
-										infinite_landscape=True)
+										dispersal_method="normal", m_prob=1,
+										landscape_type=True)
 		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.finalise_setup()
@@ -146,7 +146,7 @@ class TestSimulationInfLand(unittest.TestCase):
 									 sample_x_offset=0, sample_y_offset=0,
 									 pristine_coarse_map='null', pristine_fine_map='null',
 									 sim_complete=1, dispersal_method='normal', m_probability=1.0, cutoff=0.0,
-									 infinite_landscape='infinite', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='infinite', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key], msg="Error in {}".format(key))
@@ -177,22 +177,22 @@ class TestSimulationFatInf(unittest.TestCase):
 	"""
 
 	@classmethod
-	def setUpClass(self):
+	def setUpClass(cls):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		self.coal = Simulation()
-		self.tree = CoalescenceTree()
-		self.coal.set_simulation_params(1, 1, "output", 0.1, 4, 4, 1, 1.0, 2, dispersal_relative_cost=1,
-										min_num_species=1, habitat_change_rate=0, gen_since_pristine=2.0,
-										time_config_file="null", dispersal_method="fat-tail", infinite_landscape=True)
-		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "none", "none")
-		self.coal.set_speciation_rates([0.1, 0.2])
-		self.coal.finalise_setup()
-		self.coal.run_coalescence()
-		self.tree.set_database("output/SQL_data/data_1_1.db")
-		self.tree.calculate_octaves()
-		self.tree.calculate_richness()
+		cls.coal = Simulation()
+		cls.tree = CoalescenceTree()
+		cls.coal.set_simulation_params(1, 1, "output", 0.1, 4, 4, 1, 1.0, 2, dispersal_relative_cost=1,
+									   min_num_species=1, habitat_change_rate=0, gen_since_pristine=2.0,
+									   dispersal_method="fat-tail", landscape_type=True)
+		cls.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "none", "none")
+		cls.coal.set_speciation_rates([0.1, 0.2])
+		cls.coal.finalise_setup()
+		cls.coal.run_coalescence()
+		cls.tree.set_database("output/SQL_data/data_1_1.db")
+		cls.tree.calculate_octaves()
+		cls.tree.calculate_richness()
 
 	def testSimParamsStored(self):
 		"""
@@ -212,7 +212,7 @@ class TestSimulationFatInf(unittest.TestCase):
 									 sample_y_offset=0,
 									 pristine_coarse_map='none', pristine_fine_map='none',
 									 sim_complete=1, dispersal_method='fat-tail', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='infinite', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='infinite', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key])
@@ -252,7 +252,7 @@ class TestSimulationTif(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_params(3, 3, "output", 0.1, 4, 4, 1, 0.1, 2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0)
+										cutoff=0.0)
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
 		self.coal.detect_map_dimensions()
 		self.coal.set_speciation_rates([0.1, 0.2])
@@ -280,7 +280,7 @@ class TestSimulationTif(unittest.TestCase):
 									 sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
 									 pristine_coarse_map='none', pristine_fine_map='none',
 									 sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='closed', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='closed', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key], msg="Error in {}".format(key))
@@ -320,7 +320,7 @@ class TestSimulationTiledInfinite(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_params(1, 29, "output", 0.1, 4, 4, 1, 0.1, 2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0, infinite_landscape="tiled_fine")
+										cutoff=0.0, landscape_type="tiled_fine")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
 		self.coal.detect_map_dimensions()
 		# self.coal.set_map_parameters("null", 10, 10, "sample/PALSAR_CONGO_SAMPLE.tif", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1,"null", "null")
@@ -349,7 +349,7 @@ class TestSimulationTiledInfinite(unittest.TestCase):
 									 sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
 									 pristine_coarse_map='none', pristine_fine_map='none',
 									 sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='tiled_fine', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='tiled_fine', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key], msg="Error in {}".format(key))
@@ -390,14 +390,14 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
 		self.tree2 = CoalescenceTree()
 		self.coal.set_simulation_params(1, 30, "output", 0.1, 4, 4, 1, 0.1, 2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0, infinite_landscape="tiled_coarse")
+										cutoff=0.0, landscape_type="tiled_coarse")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal2 = Simulation()
 		self.coal2.set_simulation_params(seed=1, job_type=33, output_directory="output", min_speciation_rate=0.1,
 										 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", cutoff=0.0, infinite_landscape="closed")
+										 cutoff=0.0, landscape_type="closed")
 		self.coal2.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								 coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.set_speciation_rates([0.1, 0.2])
@@ -431,7 +431,7 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
 									 sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
 									 pristine_coarse_map='none', pristine_fine_map='none',
 									 sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='tiled_coarse', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='tiled_coarse', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key], msg="Error in {}".format(key))
@@ -479,7 +479,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		self.coal.set_simulation_params(seed=1, job_type=34, output_directory="output", min_speciation_rate=0.1,
 										sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0, infinite_landscape="closed")
+										cutoff=0.0, landscape_type="closed")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								reproduction_map="sample/SA_sample_reproduction.tif")
 		self.coal.set_speciation_rates([0.1, 0.2])
@@ -490,7 +490,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		self.coal2.set_simulation_params(seed=1, job_type=35, output_directory="output", min_speciation_rate=0.1,
 										 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", cutoff=0.0, infinite_landscape="closed")
+										 cutoff=0.0, landscape_type="closed")
 		self.coal2.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
 		self.coal2.set_speciation_rates([0.1, 0.2])
 		self.coal2.finalise_setup()
@@ -513,7 +513,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		c.set_simulation_params(seed=2, job_type=34, output_directory="output", min_speciation_rate=0.1,
 								sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null", cutoff=0.0, infinite_landscape="closed")
+								cutoff=0.0, landscape_type="closed")
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 						reproduction_map="sample/SA_sample_reproduction_invalid.tif")
 		c.finalise_setup()
@@ -537,7 +537,7 @@ class TestSimulationTifBytes(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_params(3, 4, "output", 0.1, 4, 4, 1, 1, 2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", cutoff=0.0)
+										cutoff=0.0)
 		self.coal.set_map_files("null", fine_file="sample/bytesample.tif")
 		self.coal.detect_map_dimensions()
 		self.coal.set_speciation_rates([0.1, 0.2])
@@ -584,7 +584,7 @@ class TestSimulationTifCoarse(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_params(4, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="fat-tail")
+										dispersal_method="fat-tail")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.detect_map_dimensions()
@@ -613,7 +613,7 @@ class TestSimulationTifCoarse(unittest.TestCase):
 									 sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
 									 pristine_coarse_map='none', pristine_fine_map='none',
 									 sim_complete=1, dispersal_method='fat-tail', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='closed', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='closed', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key],
@@ -713,7 +713,7 @@ class TestSimulationSampling(unittest.TestCase):
 		cls.coal.set_simulation_params(seed=6, job_type=8, output_directory="output", min_speciation_rate=0.5,
 									   sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
 									   min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-									   time_config_file="null", dispersal_method="normal")
+									   dispersal_method="normal")
 		# self.coal.set_simulation_params(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		cls.coal.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 							   coarse_file="sample/SA_sample_coarse.tif")
@@ -722,7 +722,7 @@ class TestSimulationSampling(unittest.TestCase):
 		cls.coal.run_coalescence()
 		cls.tree.set_database("output/SQL_data/data_8_6.db")
 		cls.tree.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-									   sample_file="null", time_config_file=cls.coal.time_config_file)
+									   sample_file="null", times=cls.coal.time_config_file)
 		# self.tree.apply_speciation()
 		cls.tree.calculate_octaves()
 		cls.tree.calculate_richness()
@@ -793,18 +793,16 @@ class TestCoalSampling3(unittest.TestCase):
 	def setUpClass(cls):
 		cls.coal = Simulation(logging_level=logging.CRITICAL)
 		cls.coal.set_simulation_params(seed=9, job_type=8, output_directory="output", min_speciation_rate=0.5,
-									   sigma=4, deme=10, sample_size=1, max_time=2, uses_spatial_sampling=True)
+									   sigma=4, deme=1, sample_size=0.1, max_time=2, uses_spatial_sampling=True)
 		cls.coal.set_map_files(sample_file="sample/null_sample.tif", fine_file="sample/SA_sample_coarse.tif")
 		cls.coal.grid.x_size = 2
 		cls.coal.grid.y_size = 2
 		cls.coal.sample_map.x_offset = 4
 		cls.coal.sample_map.y_offset = 4
 		cls.coal.grid.file_name = "set"
-		cls.coal.optimise_ram()
 		cls.coal.set_speciation_rates([0.5, 0.6])
 		cls.coal.finalise_setup()
-		# cls.coal.run_coalescence() TODO fix this
-		return
+		cls.coal.run_coalescence()
 		cls.tree = CoalescenceTree(cls.coal)
 		cls.tree.set_speciation_params(record_spatial=True, record_fragments="sample/FragmentsTest.csv",
 									   speciation_rates=[0.5, 0.6])
@@ -816,10 +814,9 @@ class TestCoalSampling3(unittest.TestCase):
 		"""
 		Tests that the number of individuals simulated is correct.
 		"""
-		self.fail("Functionality not yet implemented")
-		self.assertEqual(356, self.tree.get_number_individuals())
-		self.assertEqual(53, self.tree.get_number_individuals(fragment="fragment1"))
-		self.assertEqual(39, self.tree.get_number_individuals(fragment="fragment2"))
+		self.assertEqual(701, self.tree.get_number_individuals())
+		self.assertEqual(169, self.tree.get_number_individuals(fragment="fragment1"))
+		self.assertEqual(69, self.tree.get_number_individuals(fragment="fragment2"))
 
 
 class TestCoalSampling4(unittest.TestCase):
@@ -840,7 +837,6 @@ class TestCoalSampling4(unittest.TestCase):
 		cls.coal.sample_map.x_offset = 4
 		cls.coal.sample_map.y_offset = 4
 		cls.coal.grid.file_name = "set"
-		cls.coal.optimise_ram()
 		cls.coal.set_speciation_rates([0.5, 0.6])
 		cls.coal.finalise_setup()
 		cls.coal.run_coalescence()
@@ -920,7 +916,7 @@ class TestSimulationComplexRun(unittest.TestCase):
 										sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10,
 										dispersal_relative_cost=1.0,
 										min_num_species=1, habitat_change_rate=0.0, gen_since_pristine=200.0,
-										time_config_file="null", dispersal_method="normal", infinite_landscape=False)
+										dispersal_method="normal", landscape_type=False)
 		# self.coal.set_simulation_params(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
@@ -932,7 +928,7 @@ class TestSimulationComplexRun(unittest.TestCase):
 		self.coal.run_coalescence()
 		self.tree.set_database(self.coal)
 		self.tree.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-										sample_file="null", time_config_file=self.coal.time_config_file)
+										sample_file="null", times=[0.0, 0.5])
 		self.tree.apply_speciation()
 		self.tree.calculate_octaves()
 		self.tree.calculate_richness()
@@ -1013,7 +1009,7 @@ class TestSimulationComplexRun(unittest.TestCase):
 		actual_sim_parameters = dict(seed=6, job_type=6, output_dir='output', speciation_rate=0.5, sigma=4.0, tau=4.0,
 									 deme=1, sample_size=0.1, max_time=10.0, dispersal_relative_cost=1.0,
 									 min_num_species=1, habitat_change_rate=0.0, gen_since_pristine=200.0,
-									 time_config_file='output/timeconf_6_6.txt',
+									 time_config_file='set',
 									 coarse_map_file='sample/SA_sample_coarse.tif',
 									 coarse_map_x=35, coarse_map_y=41, coarse_map_x_offset=11, coarse_map_y_offset=14,
 									 coarse_map_scale=1.0, fine_map_file='sample/SA_sample_fine.tif', fine_map_x=13,
@@ -1021,7 +1017,7 @@ class TestSimulationComplexRun(unittest.TestCase):
 									 grid_x=13, grid_y=13, sample_x=13, sample_y=13, sample_x_offset=0,
 									 sample_y_offset=0, pristine_coarse_map='none', pristine_fine_map='none',
 									 sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
-									 infinite_landscape='closed', protracted=0, min_speciation_gen=0.0,
+									 landscape_type='closed', protracted=0, min_speciation_gen=0.0,
 									 max_speciation_gen=0.0, dispersal_map="none")
 		for key in simulation_parameters.keys():
 			self.assertEqual(simulation_parameters[key], actual_sim_parameters[key])
@@ -1067,7 +1063,7 @@ class TestSimulationComplexRun2(unittest.TestCase):
 		self.coal.set_simulation_params(seed=6, job_type=7, output_directory="output", min_speciation_rate=0.5,
 										sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="normal")
+										dispersal_method="normal")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.detect_map_dimensions()
@@ -1078,7 +1074,7 @@ class TestSimulationComplexRun2(unittest.TestCase):
 		self.coal.run_coalescence()
 		self.tree.set_database("output/SQL_data/data_7_6.db")
 		self.tree.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-										sample_file="null", time_config_file=self.coal.time_config_file)
+										sample_file="null", times=[0.0, 1.0])
 		self.tree.apply_speciation()
 		self.tree.calculate_octaves()
 		self.tree.calculate_richness()
@@ -1136,7 +1132,7 @@ class TestSimulationComplexRun3(unittest.TestCase):
 		self.coal.set_simulation_params(seed=6, job_type=13, output_directory="output", min_speciation_rate=0.5,
 										sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="normal")
+										dispersal_method="normal")
 		# self.coal.set_simulation_params(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
@@ -1147,7 +1143,7 @@ class TestSimulationComplexRun3(unittest.TestCase):
 		self.coal.run_coalescence()
 		self.tree.set_database(self.coal)
 		self.tree.set_speciation_params(record_spatial=True, record_fragments=False, speciation_rates=[0.6, 0.7],
-										sample_file="null", time_config_file=self.coal.time_config_file)
+										sample_file="null", times=[0.0, 1.0])
 		self.tree.apply_speciation()
 		self.tree.calculate_octaves()
 		self.tree.calculate_richness()
@@ -1191,18 +1187,17 @@ class TestSimulationComplexRun4(unittest.TestCase):
 		self.coal.set_simulation_params(seed=7, job_type=13, output_directory="output", min_speciation_rate=0.5,
 										sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="norm-uniform", m_prob=10 ** -8,
+										dispersal_method="norm-uniform", m_prob=10 ** -8,
 										cutoff=160)
 		# self.coal.set_simulation_params(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
-		self.coal.add_sample_time(0.0)
 		self.coal.set_speciation_rates([0.5])
 		self.coal.finalise_setup()
 		self.coal.run_coalescence()
 		self.tree.set_database(self.coal)
 		self.tree.set_speciation_params(record_spatial=True, record_fragments=False, speciation_rates=[0.6, 0.7],
-										sample_file="null", time_config_file=self.coal.time_config_file)
+										sample_file="null")
 		self.tree.apply_speciation()
 		self.tree.calculate_octaves()
 		self.tree.calculate_richness()
@@ -1282,7 +1277,7 @@ class TestSimulationApplySpeciation(unittest.TestCase):
 									   sigma=2 * (2 ** 0.5), tau=2, deme=1, sample_size=0.1, max_time=2,
 									   dispersal_relative_cost=1,
 									   min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-									   time_config_file="null")
+									   )
 		cls.coal.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 							   coarse_file="sample/SA_sample_coarse.tif")
 		cls.coal.finalise_setup()
@@ -1296,7 +1291,7 @@ class TestSimulationApplySpeciation(unittest.TestCase):
 		t = CoalescenceTree(self.coal)
 		with self.assertRaises(ValueError):
 			t.set_speciation_params(record_spatial="T", record_fragments="T", speciation_rates=[0.5, 0.7],
-									sample_file="null", time_config_file="null")
+									sample_file="null", times="null")
 
 	def testRaisesErrorWhenNoSampleMask(self):
 		"""
@@ -1305,19 +1300,19 @@ class TestSimulationApplySpeciation(unittest.TestCase):
 		t = CoalescenceTree(self.coal)
 		with self.assertRaises(ValueError):
 			t.set_speciation_params(record_spatial="T", record_fragments="T", speciation_rates=[0.5, 0.7],
-									sample_file="null", time_config_file="null")
+									sample_file="null", times="null")
 
 	def testRaisesErrorWhenSpecNotDouble(self):
 		t = CoalescenceTree(self.coal)
 		t.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=["notdouble"],
-								sample_file="null", time_config_file="null")
+								sample_file="null", times="null")
 		with self.assertRaises(TypeError):
 			t.apply_speciation()
 
 	def testRaisesErrorWhenSpecNotList(self):
 		t = CoalescenceTree(self.coal)
 		t.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates="string",
-								sample_file="null", time_config_file="null")
+								sample_file="null", times="null")
 		with self.assertRaises(TypeError):
 			t.apply_speciation()
 
@@ -1338,7 +1333,7 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
 										sigma=2.0, tau=1.0, deme=1, sample_size=0.1, max_time=2,
 										dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="fat-tail", infinite_landscape=True)
+										dispersal_method="fat-tail", landscape_type=True)
 		self.coal.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.detect_map_dimensions()
@@ -1348,8 +1343,8 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
 										 sigma=2.0, tau=-3.0, deme=1, sample_size=0.1, max_time=2,
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", dispersal_method="fat-tail-old",
-										 infinite_landscape=True)
+										 dispersal_method="fat-tail-old",
+										 landscape_type=True)
 		self.coal2.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 								 coarse_file="sample/SA_sample_coarse.tif")
 		self.coal2.detect_map_dimensions()
@@ -1359,7 +1354,7 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
 		self.tree1.calculate_richness()
 		self.tree2.set_database(self.coal2)
 		self.tree2.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1],
-										 sample_file="null", time_config_file="null")
+										 sample_file="null", times="null")
 		# self.tree2.apply_speciation()
 		self.tree2.calculate_richness()
 
@@ -1399,7 +1394,7 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 										sigma=2.0, tau=100000000000000000000000, deme=1, sample_size=0.1, max_time=4,
 										dispersal_relative_cost=1,
 										min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										time_config_file="null", dispersal_method="normal", infinite_landscape=True)
+										dispersal_method="normal", landscape_type=True)
 		self.coal.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.detect_map_dimensions()
@@ -1409,7 +1404,7 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 										 sigma=2, tau=-4, deme=1, sample_size=0.1, max_time=3,
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", dispersal_method="normal", infinite_landscape=True)
+										 dispersal_method="normal", landscape_type=True)
 		self.coal2.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 								 coarse_file="sample/SA_sample_coarse.tif")
 		self.coal2.detect_map_dimensions()
@@ -1418,12 +1413,12 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 		# self.coal.set_speciation_rates([0.5, 0.7])
 		self.tree1.set_database(self.coal)
 		self.tree1.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.01],
-										 sample_file="null", time_config_file="null")
+										 sample_file="null", times="null")
 		# self.tree1.apply_speciation()
 		self.tree1.calculate_richness()
 		self.tree2.set_database(self.coal2)
 		self.tree2.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.01],
-										 sample_file="null", time_config_file="null")
+										 sample_file="null", times="null")
 		# self.tree2.apply_speciation()
 		self.tree2.calculate_richness()
 
@@ -1507,25 +1502,25 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", dispersal_method="normal", protracted=True,
+										 dispersal_method="normal", protracted=True,
 										 min_speciation_gen=0, max_speciation_gen=2)
 		self.coal2.set_simulation_params(seed=1, job_type=20, output_directory="output", min_speciation_rate=0.5,
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", dispersal_method="normal", protracted=True,
+										 dispersal_method="normal", protracted=True,
 										 min_speciation_gen=10, max_speciation_gen=50)
 		self.coal3.set_simulation_params(seed=1, job_type=21, output_directory="output", min_speciation_rate=0.5,
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", dispersal_method="normal", protracted=True,
+										 dispersal_method="normal", protracted=True,
 										 min_speciation_gen=10, max_speciation_gen=20)
 		self.coal4.set_simulation_params(seed=1, job_type=22, output_directory="output", min_speciation_rate=0.5,
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-										 time_config_file="null", dispersal_method="normal", protracted=False)
+										 dispersal_method="normal", protracted=False)
 		# self.coal.set_simulation_params(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		self.coal1.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								 coarse_file="sample/SA_sample_coarse.tif")
@@ -1552,13 +1547,13 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
 		self.tree3.set_database(self.coal3)
 		self.tree4.set_database(self.coal4)
 		self.tree1.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-										 sample_file="null", time_config_file=self.coal1.time_config_file)
+										 sample_file="null")
 		self.tree2.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-										 sample_file="null", time_config_file=self.coal2.time_config_file)
+										 sample_file="null")
 		self.tree3.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-										 sample_file="null", time_config_file=self.coal3.time_config_file)
+										 sample_file="null")
 		self.tree4.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
-										 sample_file="null", time_config_file=self.coal4.time_config_file)
+										 sample_file="null")
 		self.tree1.apply_speciation()
 		self.tree2.apply_speciation()
 		self.tree3.apply_speciation()
@@ -1606,7 +1601,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		self.c.set_simulation_params(seed=1, job_type=32, output_directory="output", min_speciation_rate=0.5,
 									 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 									 min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-									 time_config_file="null")
+									 )
 		self.c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
 							 dispersal_map="sample/dispersal_fine.tif")
 		self.c.finalise_setup()
@@ -1633,7 +1628,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		c.set_simulation_params(seed=2, job_type=32, output_directory="output", min_speciation_rate=0.5,
 								sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null")
+								)
 		with self.assertRaises(TypeError):
 			c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
 							coarse_file="sample/SA_sample_coarse.tif", dispersal_map="sample/dispersal_fine.tif")
@@ -1647,7 +1642,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		c.set_simulation_params(seed=3, job_type=32, output_directory="output", min_speciation_rate=0.5,
 								sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null")
+								)
 		with self.assertRaises(ValueError):
 			c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 							dispersal_map="sample/dispersal_fine.tif")
@@ -1665,7 +1660,7 @@ class TestDetectRamUsage(unittest.TestCase):
 									sigma=2, tau=2, deme=1000, sample_size=0.01, max_time=100,
 									dispersal_relative_cost=1,
 									min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-									time_config_file="null", infinite_landscape=False)
+									landscape_type=False)
 		cls.c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 		cls.c.add_sample_time(1.0)
 		try:
@@ -1685,7 +1680,7 @@ class TestDetectRamUsage(unittest.TestCase):
 								sigma=2, tau=2, deme=100000000000, sample_size=0.1, max_time=10,
 								dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null")
+								)
 		c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 		with self.assertRaises(MemoryError):
 			c.optimise_ram(ram_limit=16)
@@ -1696,7 +1691,7 @@ class TestDetectRamUsage(unittest.TestCase):
 		"""
 		t = CoalescenceTree(self.c)
 		t.set_speciation_params(record_spatial="T", record_fragments="sample/FragmentsTest2.csv",
-								speciation_rates=[0.6, 0.7], sample_file="null", time_config_file="null")
+								speciation_rates=[0.6, 0.7], sample_file="null")
 		t.apply_speciation()
 		t.calculate_fragment_richness()
 		self.assertEqual(t.get_fragment_richness(fragment="fragment2", reference=3), 30)
@@ -1718,7 +1713,7 @@ class TestDetectRamUsage(unittest.TestCase):
 								  sigma=2, tau=2, deme=1, sample_size=0.01, max_time=100,
 								  dispersal_relative_cost=1,
 								  min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								  time_config_file="null", infinite_landscape=False)
+								  landscape_type=False)
 		sim.set_map_files(sample_file="null", fine_file="sample/SA_sample.tif")
 		sim.optimise_ram(ram_limit=10000)
 		self.assertEqual(sim.fine_map.x_size, sim.sample_map.x_size)
@@ -1747,7 +1742,7 @@ class TestDetectRamUsage(unittest.TestCase):
 		c.set_simulation_params(seed=1, job_type=37, output_directory="output", min_speciation_rate=0.95,
 								sigma=1, tau=2, deme=70000, sample_size=1, max_time=100, dispersal_relative_cost=1,
 								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null", infinite_landscape=False)
+								landscape_type=False)
 		c.set_map_parameters(sample_file="null", sample_x=2, sample_y=1, fine_file="null",
 							 fine_x=2, fine_y=1, fine_x_offset=0, fine_y_offset=0,
 							 coarse_file="none", coarse_x=2, coarse_y=1, coarse_x_offset=0, coarse_y_offset=0,
@@ -1762,8 +1757,7 @@ class TestDetectRamUsage(unittest.TestCase):
 		c.set_simulation_params(seed=1, job_type=36, output_directory="output", min_speciation_rate=0.5,
 								sigma=2, tau=2, deme=100000000000, sample_size=0.1, max_time=10,
 								dispersal_relative_cost=1,
-								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200,
-								time_config_file="null")
+								min_num_species=1, habitat_change_rate=0, gen_since_pristine=200)
 		c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 		c.set_optimised_solution(saved_state)
 		self.assertEqual(c.sample_map.x_offset, 630)
@@ -1785,7 +1779,7 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		"""
 		cls.c = Simulation()
 		cls.c.set_simulation_params(seed=1, job_type=43, output_directory="output", min_speciation_rate=0.5,
-									sigma=1, tau=2, deme=1, sample_size=1, max_time=100, infinite_landscape=False)
+									sigma=1, tau=2, deme=1, sample_size=1, max_time=100, landscape_type=False)
 		cls.c.set_map("null", 10, 10)
 		cls.c.finalise_setup()
 		cls.c.run_coalescence()
@@ -1794,7 +1788,7 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		cls.t1.apply_speciation()
 		cls.c2 = Simulation()
 		cls.c2.set_simulation_params(seed=1, job_type=44, output_directory="output", min_speciation_rate=0.5,
-									 sigma=1, tau=2, deme=1, sample_size=1, max_time=100, infinite_landscape=False)
+									 sigma=1, tau=2, deme=1, sample_size=1, max_time=100, landscape_type=False)
 		cls.c2.set_map("null", 10, 10)
 		cls.c2.finalise_setup()
 		cls.c2.run_coalescence()

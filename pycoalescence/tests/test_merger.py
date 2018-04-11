@@ -41,7 +41,7 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
 		"""
 		simulation_parameters = Merger()._read_simulation_parameters(input_simulation="sample/mergers/data_0_0.db")
 		expected_parameters = [6, 6, "output", 0.5, 4.0, 4.0, 1, 0.1, 10, 1.0, 1, 0.0, 200.0,
-							   "output/timeconf_6_6.txt", "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0,
+							   "set", "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0,
 							   "sample/SA_sample_fine.tif", 13, 13, 0, 0, "null", 13, 13, 13, 13, 0, 0, "none",
 							   "none", 1, "normal", 0.0, 0.0, 0, "closed", 0, 0.0, 0.0, "none"]
 		self.assertListEqual(simulation_parameters, expected_parameters)
@@ -193,11 +193,11 @@ class TestSimulationMerging(unittest.TestCase):
 		Tests that the simulation parameters are correctly calculated in the merged database.
 		"""
 		sim_pars = [[6, 6, "output", 0.5, 4.0, 4.0, 1, 0.1, 10, 1.0, 1, 0.0, 200.0,
-					 "output/timeconf_6_6.txt", "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0,
+					 "set", "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0,
 					 "sample/SA_sample_fine.tif", 13, 13, 0, 0, "null", 13, 13, 13, 13, 0, 0, "none", "none", 1,
 					 "normal", 0.0, 0.0, 0, "closed", 0, 0.0, 0.0,
 					 "none", 1, "sample/mergers/data_0_0.db"],
-					[6, 6, "output", 0.5, 4.0, 4.0, 2, 0.1, 10, 1.0, 1, 0.0, 200.0, "output/timeconf_6_6.txt",
+					[6, 6, "output", 0.5, 4.0, 4.0, 2, 0.1, 10, 1.0, 1, 0.0, 200.0, "set",
 					 "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0, "sample/SA_sample_fine.tif", 13, 13, 0, 0,
 					 "null", 13, 13, 13, 13, 0, 0, "none", "none", 1, "normal", 0.0, 0.0, 0, "closed", 0, 0.0, 0.0,
 					 "none", 2, "sample/mergers/data_1_1.db"]]
@@ -211,25 +211,25 @@ class TestSimulationMerging(unittest.TestCase):
 						'deme': 1, 'dispersal_map': 'none', 'dispersal_method': 'normal',
 						'dispersal_relative_cost': 1.0, 'fine_map_file': 'sample/SA_sample_fine.tif', 'fine_map_x': 13,
 						'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_pristine': 200.0,
-						'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'infinite_landscape': 'closed',
+						'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'landscape_type': 'closed',
 						'job_type': 6, 'm_probability': 0.0, 'max_speciation_gen': 0.0, 'max_time': 10,
 						'min_num_species': 1, 'min_speciation_gen': 0.0, 'output_dir': 'output',
 						'pristine_coarse_map': 'none', 'pristine_fine_map': 'none', 'protracted': 0,
 						'sample_file': 'null', 'sample_size': 0.1, 'sample_x': 13, 'sample_x_offset': 0, 'sample_y': 13,
 						'sample_y_offset': 0, 'seed': 6, 'sigma': 4.0, 'sim_complete': 1, 'speciation_rate': 0.5,
-						'tau': 4.0, 'time_config_file': 'output/timeconf_6_6.txt'}
+						'tau': 4.0, 'time_config_file': 'set'}
 		output_pars2 = {'coarse_map_file': 'sample/SA_sample_coarse.tif', 'coarse_map_scale': 1.0, 'coarse_map_x': 35,
 						'coarse_map_x_offset': 11, 'coarse_map_y': 41, 'coarse_map_y_offset': 14, 'cutoff': 0.0,
 						'deme': 2, 'dispersal_map': 'none', 'dispersal_method': 'normal',
 						'dispersal_relative_cost': 1.0, 'fine_map_file': 'sample/SA_sample_fine.tif', 'fine_map_x': 13,
 						'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_pristine': 200.0,
-						'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'infinite_landscape': 'closed',
+						'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'landscape_type': 'closed',
 						'job_type': 6, 'm_probability': 0.0, 'max_speciation_gen': 0.0, 'max_time': 10,
 						'min_num_species': 1, 'min_speciation_gen': 0.0, 'output_dir': 'output',
 						'pristine_coarse_map': 'none', 'pristine_fine_map': 'none', 'protracted': 0,
 						'sample_file': 'null', 'sample_size': 0.1, 'sample_x': 13, 'sample_x_offset': 0, 'sample_y': 13,
 						'sample_y_offset': 0, 'seed': 6, 'sigma': 4.0, 'sim_complete': 1, 'speciation_rate': 0.5,
-						'tau': 4.0, 'time_config_file': 'output/timeconf_6_6.txt'}
+						'tau': 4.0, 'time_config_file': 'set'}
 		sim_pars1 = self.merger.get_simulation_parameters(guild=1)
 		sim_pars2 = self.merger.get_simulation_parameters(guild=2)
 		self.assertEqual(output_pars1, sim_pars1)

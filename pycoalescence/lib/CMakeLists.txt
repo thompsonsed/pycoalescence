@@ -34,7 +34,7 @@ set(SOURCE_FILES
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
         necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp)
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
 
 #set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.62.0/include)
 #set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.62.0/lib)
@@ -64,7 +64,9 @@ set(SOURCE_FILES
         necsim/SimulateDispersal.h
         dispersalmodule.cpp
         dispersalmodule.h
-        necsim/Filesystem.cpp necsim/Filesystem.h necsim/SpatialTree.cpp necsim/SpatialTree.h necsim/Tree.cpp necsim/Tree.h)
+        necsim/Filesystem.cpp necsim/Filesystem.h necsim/SpatialTree.cpp necsim/SpatialTree.h necsim/Tree.cpp
+        necsim/Tree.h necsim/Landscape.cpp necsim/Landscape.h necsim/Map.h necsim/Map.cpp necsim/DataMask.cpp
+        necsim/DataMask.h necsim/SimParameters.h necsim/Cell.h)
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_package(PythonLibs REQUIRED)
 find_library(SQL_DIR sqlite3)
@@ -79,10 +81,43 @@ target_link_libraries(Dispersal ${PYTHON_LIBRARIES})
 target_link_libraries(Dispersal "${SQL_DIR}")
 target_link_libraries(Dispersal gdal)
 target_link_libraries(Dispersal ${Boost_LIBRARIES})
+
 project(applyspecmodule)
-set(SOURCE FILES applyspecmodule.cpp applyspecmodule.h necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/Metacommunity.h
-        necsim/Metacommunity.cpp necsim/Community.h necsim/Community.cpp)
-project(necsimmodule)
+set(SOURCE_FILES applyspecmodule.cpp applyspecmodule.h necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/Metacommunity.h
+        necsim/Metacommunity.cpp necsim/Community.h necsim/Community.cpp
+        PyLogging.h PyImports.cpp PyLogging.h
+        necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/SpeciesList.cpp necsim/SpatialTree.cpp necsim/SpatialTree.h
+        necsim/Tree.cpp necsim/Tree.h necsim/ProtractedSpatialTree.h
+        necsim/SpeciationCommands.cpp
+        necsim/SpeciationCommands.h
+        necsim/ConfigFileParser.cpp
+        necsim/ConfigFileParser.h
+        necsim/CustomExceptions.h
+        necsim/DataPoint.h
+        necsim/DispersalCoordinator.cpp
+        necsim/DispersalCoordinator.h
+        necsim/NRrand.h
+        necsim/LicenseHeader.h
+        necsim/Logging.h
+        necsim/Landscape.cpp
+        necsim/Landscape.h
+        necsim/Matrix.h
+        necsim/ProtractedTree.cpp
+        necsim/ProtractedTree.h
+        necsim/Setup.cpp
+        necsim/Setup.h
+        necsim/SpeciesList.h
+        necsim/Step.h
+        necsim/Community.cpp
+        necsim/Community.h
+        necsim/TreeNode.h necsim/ReproductionMap.cpp necsim/ReproductionMap.h
+        necsim/DataMask.h necsim/SimParameters.h necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h
+        necsim/DataMask.cpp
+        necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
+        necsim/Tree.cpp necsim/Tree.h
+        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
+
 find_package(PythonLibs REQUIRED)
 find_library(SQL_DIR sqlite3)
 #find_library(GDAL_DIR gdal)
@@ -93,14 +128,47 @@ add_library(applyspecmodule SHARED ${SOURCE_FILES})
 include_directories(${PYTHON_INCLUDE_DIRS})
 add_definitions(-Dwith_gdal)
 target_link_libraries(applyspecmodule ${PYTHON_LIBRARIES})
-    target_link_libraries(applyspecmodule "${SQL_DIR}")
+target_link_libraries(applyspecmodule "${SQL_DIR}")
 target_link_libraries(applyspecmodule gdal)
 target_link_libraries(applyspecmodule ${Boost_LIBRARIES})
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DDEBUG=1)
+endif()
+project(necsimmodule)
 set(SOURCE_FILES
         necsimmodule.cpp
-        necsimmodule.h
+        necsimmodule.h PyLogging.h
         necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/SpeciesList.cpp necsim/SpatialTree.cpp necsim/SpatialTree.h
-        necsim/Tree.cpp necsim/Tree.h necsim/ProtractedSpatialTree.h)
+        necsim/Tree.cpp necsim/Tree.h necsim/ProtractedSpatialTree.h
+        necsim/SpeciationCommands.cpp
+        necsim/SpeciationCommands.h
+        necsim/ConfigFileParser.cpp
+        necsim/ConfigFileParser.h
+        necsim/CustomExceptions.h
+        necsim/DataPoint.h
+        necsim/DispersalCoordinator.cpp
+        necsim/DispersalCoordinator.h
+        necsim/NRrand.h
+        necsim/LicenseHeader.h
+        necsim/Logging.h
+        necsim/Landscape.cpp
+        necsim/Landscape.h
+        necsim/Matrix.h
+        necsim/ProtractedTree.cpp
+        necsim/ProtractedTree.h
+        necsim/Setup.cpp
+        necsim/Setup.h
+        necsim/SpeciesList.h
+        necsim/Step.h
+        necsim/Community.cpp
+        necsim/Community.h
+        necsim/TreeNode.h necsim/ReproductionMap.cpp necsim/ReproductionMap.h
+        necsim/DataMask.h necsim/SimParameters.h necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h
+        necsim/DataMask.cpp
+        necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
+        necsim/Tree.cpp necsim/Tree.h
+        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_package(PythonLibs REQUIRED)
 find_library(SQL_DIR sqlite3)
@@ -108,17 +176,20 @@ find_library(SQL_DIR sqlite3)
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
-add_library(necsimmodule SHARED ${SOURCE_FILES})
 include_directories(${PYTHON_INCLUDE_DIRS})
 add_definitions(-Dwith_gdal)
+add_library(necsimmodule SHARED ${SOURCE_FILES})
 target_link_libraries(necsimmodule ${PYTHON_LIBRARIES})
 target_link_libraries(necsimmodule "${SQL_DIR}")
 target_link_libraries(necsimmodule gdal)
 target_link_libraries(necsimmodule ${Boost_LIBRARIES})
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DDEBUG=1)
+endif()
 project(SpeciationCounter)
 set(SOURCE_FILES
         SpeciationCounter.cpp
-        necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h necsim/DataMask.cpp necsim/SpecSimParameters.h)
+        necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h necsim/DataMask.cpp necsim/SpecSimParameters.h necsim/Cell.h)
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_library(SQL_DIR sqlite3)
 #find_library(GDAL_DIR gdal)

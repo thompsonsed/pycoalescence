@@ -84,7 +84,7 @@ void write_log(int level, char * message)
 		throw runtime_error(
 			"Logger object has not been set. Check set_logging_function() has been called in python");
 	}
-	if(logger == NULL)
+	if(logger == nullptr)
 	{
 		throw invalid_argument("Logger object has been deferenced, please report this bug!");
 	}

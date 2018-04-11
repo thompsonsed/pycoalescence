@@ -82,41 +82,26 @@
 <span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Map.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Landscape.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;DispersalCoordinator.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
-<span class="k">struct</span> <span class="n">Cell</span>
-<span class="p">{</span>
-    <span class="kt">long</span> <span class="n">x</span><span class="p">;</span>
-    <span class="kt">long</span> <span class="n">y</span><span class="p">;</span>
-    <span class="n">Cell</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Cell</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span>
-    <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-<span class="p">};</span>
+<span class="cp">#include</span> <span class="cpf">&quot;Cell.h&quot;</span><span class="cp"></span>
 
-<span class="kt">double</span> <span class="nf">distanceBetween</span><span class="p">(</span><span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c2</span><span class="p">);</span>
+<span class="kt">double</span> <span class="nf">distanceBetweenCells</span><span class="p">(</span><span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c2</span><span class="p">);</span>
 
 <span class="k">class</span> <span class="nc">SimulateDispersal</span>
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
     <span class="c1">// The density map object</span>
-    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">density_map</span><span class="p">;</span>
-    <span class="c1">// Set to true when the size of the density map has been set</span>
-    <span class="kt">bool</span> <span class="n">has_set_size</span><span class="p">;</span>
+    <span class="n">Landscape</span> <span class="n">density_landscape</span><span class="p">;</span>
+    <span class="c1">// Dispersal coordinator</span>
+    <span class="n">DispersalCoordinator</span> <span class="n">dispersal_coordinator</span><span class="p">{};</span>
+    <span class="c1">// Stores all key simulation parameters for the Landscape object</span>
+    <span class="n">SimParameters</span>  <span class="o">*</span> <span class="n">simParameters</span><span class="p">;</span>
     <span class="c1">// The random number generator object</span>
     <span class="n">NRrand</span> <span class="n">random</span><span class="p">;</span>
-    <span class="c1">// The map file path</span>
-    <span class="n">string</span> <span class="n">map_name</span><span class="p">;</span>
     <span class="c1">// The random number seed</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">;</span>
-    <span class="c1">// The dispersal method</span>
-    <span class="n">string</span> <span class="n">dispersal_method</span><span class="p">;</span>
-    <span class="c1">// The dispersal sigma value</span>
-    <span class="kt">double</span> <span class="n">sigma</span><span class="p">;</span>
-    <span class="c1">// The dispersal nu value (for fat-tailed dispersal kernels)</span>
-    <span class="kt">double</span> <span class="n">tau</span><span class="p">;</span>
-    <span class="c1">// The dispersal m_probability - chance of picking from a uniform distribution (for norm-uniform dispersal kernels)</span>
-    <span class="kt">double</span> <span class="n">m_prob</span><span class="p">;</span>
-    <span class="c1">// The maximum dispersal distance for the norm-uniform dispersal distance</span>
-    <span class="kt">double</span> <span class="n">cutoff</span><span class="p">;</span>
     <span class="c1">// The sqlite3 database object for storing outputs</span>
     <span class="n">sqlite3</span> <span class="o">*</span> <span class="n">database</span><span class="p">;</span>
     <span class="c1">// Vector for storing successful dispersal distances</span>
@@ -127,31 +112,23 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num_repeats</span><span class="p">;</span>
     <span class="c1">// The number of num_steps within each dispersal loop for the average distance travelled/</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num_steps</span><span class="p">;</span>
-    <span class="c1">// The maximal density value</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_density</span><span class="p">;</span>
+    <span class="c1">// generation counter</span>
+    <span class="kt">double</span> <span class="n">generation</span><span class="p">;</span>
     <span class="c1">// If true, sequentially selects dispersal probabilities, default is true</span>
     <span class="kt">bool</span> <span class="n">is_sequential</span><span class="p">;</span>
     <span class="c1">// Reference number for this set of parameters in the database output</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">parameter_reference</span><span class="p">;</span>
-    <span class="c1">// Function pointer for the landscape function</span>
-    <span class="k">typedef</span> <span class="nf">bool</span> <span class="p">(</span><span class="n">SimulateDispersal</span><span class="o">::*</span><span class="n">landscape_fptr</span><span class="p">)(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span>
-                                                      <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
-    <span class="n">landscape_fptr</span> <span class="n">getValFptr</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">SimulateDispersal</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">has_set_size</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">m_prob</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">cutoff</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">simParameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">num_repeats</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">max_density</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">is_sequential</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">parameter_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="o">~</span><span class="n">SimulateDispersal</span><span class="p">()</span>
@@ -161,20 +138,15 @@
 
     <span class="kt">void</span> <span class="n">setSequential</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bSequential</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">setSizes</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setSimulationParameters</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">sim_parameters</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">setSeed</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
         <span class="n">random</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
     <span class="p">}</span>
-
-    <span class="kt">void</span> <span class="nf">setDispersalParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">dispersal_method_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">sigma_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">tau_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">m_prob_in</span><span class="p">,</span>
-                                 <span class="kt">double</span> <span class="n">cutoff_in</span><span class="p">,</span> <span class="n">string</span> <span class="n">landscape_type</span><span class="p">);</span>
-
-    <span class="kt">void</span> <span class="nf">setLandscapeType</span><span class="p">(</span><span class="n">string</span> <span class="n">landscape_type</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setOutputDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">out_database</span><span class="p">);</span>
 
@@ -185,15 +157,7 @@
 
     <span class="k">const</span> <span class="n">Cell</span><span class="o">&amp;</span> <span class="n">getRandomCell</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">calculateNewPosition</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">start_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">getEndPointInfinite</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">getEndPointTiled</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">getEndPointClosed</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">getEndPoint</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="k">const</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">end_cell</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">getEndPoint</span><span class="p">(</span><span class="n">Cell</span> <span class="o">&amp;</span><span class="n">this_cell</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">runMeanDispersalDistance</span><span class="p">();</span>
 

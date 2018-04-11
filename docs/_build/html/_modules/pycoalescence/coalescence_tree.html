@@ -61,14 +61,14 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
-
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="kn">from</span> <span class="nn">sqlite_connection</span> <span class="kn">import</span> <span class="n">check_sql_table_exist</span>
 
 <span class="n">e_list</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">try</span><span class="p">:</span>
@@ -91,13 +91,13 @@
 	<span class="k">class</span> <span class="nc">ApplySpecError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 		<span class="k">pass</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span>
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">execute_log_info</span><span class="p">,</span> <span class="n">mod_directory</span><span class="p">,</span> <span class="n">create_logger</span><span class="p">,</span> <span class="n">write_to_log</span>
 <span class="kn">from</span> <span class="nn">.spatial_algorithms</span> <span class="kn">import</span> <span class="n">calculate_distance_between</span>
+<span class="kn">from</span> <span class="nn">.sqlite_connection</span> <span class="kn">import</span> <span class="n">check_sql_table_exist</span>
 <span class="kn">import</span> <span class="nn">pycoalescence</span>
+
 
 <span class="c1"># Reads the parameter descriptions from the json file.</span>
 <span class="k">try</span><span class="p">:</span>
@@ -154,7 +154,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">equalised</span> <span class="o">=</span> <span class="bp">False</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">is_setup_speciation</span> <span class="o">=</span> <span class="bp">False</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span> <span class="o">=</span> <span class="bp">False</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">=</span> <span class="bp">False</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">speciation_simulator</span> <span class="o">=</span> <span class="bp">None</span>
@@ -412,7 +412,7 @@
 								<span class="s2">&quot;fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, &quot;</span>
 								<span class="s2">&quot;sample_x_offset, sample_y_offset, pristine_coarse_map, &quot;</span>
 								<span class="s2">&quot; pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
-								<span class="s2">&quot; infinite_landscape,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
+								<span class="s2">&quot; landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
 								<span class="s2">&quot; FROM SIMULATION_PARAMETERS WHERE guild == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">guild</span><span class="p">,))</span>
 		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failure to get SIMULATION_PARAMETERS table from database with guild {}&quot;</span>
@@ -483,7 +483,7 @@
 				<span class="c1"># print(sql_fetch)</span>
 				<span class="n">complete</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">sql_fetch</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 				<span class="k">if</span> <span class="n">sql_fetch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
-					<span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sql_fetch</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
 				<span class="k">if</span> <span class="ow">not</span> <span class="n">complete</span><span class="p">:</span>
 					<span class="bp">self</span><span class="o">.</span><span class="n">is_complete</span> <span class="o">=</span> <span class="bp">False</span>
 					<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; is not a complete simulation. Please finish &quot;</span> \
@@ -500,7 +500,7 @@
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; does not exist.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.set_speciation_params"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params">[docs]</a>	<span class="k">def</span> <span class="nf">set_speciation_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record_spatial</span><span class="p">,</span> <span class="n">record_fragments</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-							  <span class="n">time_config_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+							  <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
 							  <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 
@@ -513,12 +513,14 @@
 <span class="sd">			calculated from squares of continuous habitat.</span>
 <span class="sd">		:param list speciation_rates: a list of speciation rates to apply</span>
 <span class="sd">		:param str sample_file: a sample tif or csv specifying the sampling mask</span>
-<span class="sd">		:param str time_config_file: a configuration file of temporal sampling points</span>
+<span class="sd">		:param list times: a list of times to apply (should have been run with the original simulation)</span>
 <span class="sd">		:param float protracted_speciation_min: the minimum number of generations required for speciation to occur</span>
 <span class="sd">		:param float protracted speciation_max: the maximum number of generations before speciation occurs</span>
 <span class="sd">		:param float metacommunity_size: the size of the metacommunity to apply</span>
 <span class="sd">		:param float metacommunity_speciation_rate: speciation rate for the metacommunity</span>
 <span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_speciation</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Speciation parameters already set.&quot;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
 			<span class="k">if</span> <span class="n">record_fragments</span><span class="p">:</span>
 				<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
@@ -553,26 +555,44 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_min</span> <span class="o">=</span> <span class="mf">0.0</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_max</span> <span class="o">=</span> <span class="mf">0.0</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_speciation</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span> <span class="o">=</span> <span class="n">record_spatial</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">=</span> <span class="n">record_fragments</span>
-			<span class="k">if</span> <span class="n">sample_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No sample file provided, defaulting to null.&quot;</span><span class="p">)</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="n">sample_file</span>
-			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">time_config_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-					<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No time config file provided, defaulting to null.&quot;</span><span class="p">)</span>
-					<span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="o">=</span> <span class="n">time_config_file</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span> <span class="o">=</span> <span class="n">speciation_rates</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span> <span class="o">=</span> <span class="n">record_spatial</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">=</span> <span class="n">record_fragments</span>
+		<span class="k">if</span> <span class="n">sample_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No sample file provided, defaulting to null.&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Speciation parameters already set.&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="n">sample_file</span>
+		<span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No times provided, defaulting to 0.0.&quot;</span><span class="p">)</span>
+			<span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">times</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span> <span class="o">=</span> <span class="n">speciation_rates</span>
+
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot specify a null samplemask and expect automatic fragment detection; &quot;</span>
 							 <span class="s2">&quot;provide a samplemask or set record_fragments=False.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoalescenceTree.add_time"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_time">[docs]</a>	<span class="k">def</span> <span class="nf">add_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the time to the list to be applied.</span>
+
+<span class="sd">		:param time: the time to be applied</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoalescenceTree.add_times"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_times">[docs]</a>	<span class="k">def</span> <span class="nf">add_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the list of times to those to be applied.</span>
+
+<span class="sd">		:param times: list of times to be applied</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">add_time</span><span class="p">(</span><span class="n">each</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.apply_speciation"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.apply_speciation">[docs]</a>	<span class="k">def</span> <span class="nf">apply_speciation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -581,8 +601,8 @@
 <span class="sd">		It will create additional fields and tables in the SQLite database which contains the requested data.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># Check file exists</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;Check file existance for &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">+</span>
 							  <span class="s2">&quot;. Potential lack of access (verify that definition is a relative path).&quot;</span><span class="p">))</span>
@@ -593,10 +613,9 @@
 				<span class="bp">self</span><span class="o">.</span><span class="n">apply_spec_module</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">apply_spec_module</span><span class="o">.</span><span class="n">set_log_function</span><span class="p">(</span><span class="n">write_to_log</span><span class="p">)</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">apply_spec_module</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span><span class="p">,</span>
-											 <span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">,</span>
-											 <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_min</span><span class="p">,</span>
-											 <span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span><span class="p">,</span>
-											 <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span><span class="p">)</span>
+											<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span>
+											 <span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_max</span><span class="p">,</span>
+											 <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span><span class="p">)</span>
 			<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">te</span><span class="p">:</span>
 				<span class="k">raise</span> <span class="n">te</span>
 			<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -604,7 +623,7 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Using deprecated speciation application method.&quot;</span><span class="p">)</span>
 			<span class="n">sim_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">speciation_simulator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span><span class="p">,</span>
-						<span class="bp">self</span><span class="o">.</span><span class="n">time_config_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">]</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">]</span>
 			<span class="n">sim_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">])</span>
 			<span class="n">sim_list_str</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sim_list</span><span class="p">]</span>
 			<span class="k">try</span><span class="p">:</span>
@@ -1601,7 +1620,7 @@
 <span class="sd">		:return: a dictionary mapping names to values for seed, job_type, output_dir, speciation_rate, sigma, L_value, deme,</span>
 <span class="sd">		sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_pristine, time_config,</span>
 <span class="sd">		coarse_map vars, fine map vars, sample_file, gridx, gridy, pristine coarse map, pristine fine map, sim_complete,</span>
-<span class="sd">		dispersal_method, m_probability, cutoff, infinite_landscape, protracted, min_speciation_gen, max_speciation_gen,</span>
+<span class="sd">		dispersal_method, m_probability, cutoff, landscape_type, protracted, min_speciation_gen, max_speciation_gen,</span>
 <span class="sd">		dispersal_map</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
@@ -1614,7 +1633,7 @@
 									<span class="s2">&quot;fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, &quot;</span>
 									<span class="s2">&quot;sample_x_offset, sample_y_offset, pristine_coarse_map, &quot;</span>
 									<span class="s2">&quot; pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
-									<span class="s2">&quot; infinite_landscape,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
+									<span class="s2">&quot; landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
 									<span class="s2">&quot; FROM SIMULATION_PARAMETERS&quot;</span><span class="p">)</span>
 			<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failure to get SIMULATION_PARAMETERS table from database. Check table exists.&quot;</span><span class="p">)</span>

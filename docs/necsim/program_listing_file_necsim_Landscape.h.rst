@@ -47,7 +47,7 @@ Program Listing for File Landscape.h
        // the pristine coarser map.
        Map<uint32_t> pristine_coarse_map;
        // for importing and storing the simulation set-up options.
-       SimParameters mapvars;
+       SimParameters * mapvars;
        // the minimum values for each dimension for offsetting.
        long fine_x_min{}, fine_y_min{}, coarse_x_min{}, coarse_y_min{};
        // the maximum values for each dimension for offsetting.
@@ -104,6 +104,7 @@ Program Listing for File Landscape.h
    public:
        Landscape()
        {
+           mapvars = nullptr;
            check_set_dim = false; // sets the check to false.
            is_pristine = false;
            current_map_time = 0;
@@ -120,7 +121,8 @@ Program Listing for File Landscape.h
    
        unsigned long getHabitatMax();
    
-       void setDims(SimParameters mapvarsin);
+       void setDims(SimParameters * mapvarsin);
+   
    
        bool checkMapExists();
    
@@ -210,7 +212,7 @@ Program Listing for File Landscape.h
    
        unsigned long getInitialCount(double dSample, DataMask &samplemask);
    
-       SimParameters getSimParameters();
+       SimParameters * getSimParameters();
    
        bool checkMap(const double &x, const double &y, const long &xwrap, const long &ywrap, const double generation);
    
@@ -223,7 +225,7 @@ Program Listing for File Landscape.h
    
        friend ostream &operator<<(ostream &os, const Landscape &r)
        {
-           os << r.mapvars << "\n" << r.fine_x_min << "\n" << r.fine_x_max << "\n" << r.coarse_x_min << "\n"
+           os << r.fine_x_min << "\n" << r.fine_x_max << "\n" << r.coarse_x_min << "\n"
               << r.coarse_x_max;
            os << "\n" << r.fine_y_min << "\n" << r.fine_y_max << "\n" << r.coarse_y_min << "\n" << r.coarse_y_max << "\n";
            os << r.fine_x_offset << "\n" << r.fine_y_offset << "\n" << r.coarse_x_offset << "\n" << r.coarse_y_offset
@@ -242,7 +244,7 @@ Program Listing for File Landscape.h
    
        friend istream &operator>>(istream &is, Landscape &r)
        {
-           is >> r.mapvars >> r.fine_x_min;
+           is >> r.fine_x_min;
            is >> r.fine_x_max >> r.coarse_x_min;
            is >> r.coarse_x_max >> r.fine_y_min >> r.fine_y_max;
            is >> r.coarse_y_min >> r.coarse_y_max;
@@ -256,7 +258,7 @@ Program Listing for File Landscape.h
            is >> r.fine_max >> r.coarse_max;
            is >> r.pristine_fine_max >> r.pristine_coarse_max;
            is >> r.habitat_max >> r.has_coarse >> r.has_pristine;
-           r.setLandscape(r.mapvars.landscape_type);
+           r.setLandscape(r.mapvars->landscape_type);
            r.calcFineMap();
            r.calcCoarseMap();
            r.calcPristineFineMap();

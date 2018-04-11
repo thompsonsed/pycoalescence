@@ -80,13 +80,9 @@ Variables
 
 - :ref:`variable_call_logging`
 
-- :ref:`variable_gstate`
-
 - :ref:`variable_log_set`
 
 - :ref:`variable_logger`
 
 - :ref:`variable_logger_set`
-
-- :ref:`variable_loggingmodule`
 

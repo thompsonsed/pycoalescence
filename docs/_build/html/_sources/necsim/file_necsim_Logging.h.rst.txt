@@ -88,6 +88,8 @@ Included By
 
 - :ref:`file_necsim_Setup.cpp`
 
+- :ref:`file_necsim_SimulateDispersal.cpp`
+
 - :ref:`file_necsim_Tree.cpp`
 
 - :ref:`file_necsim_TreeNode.cpp`

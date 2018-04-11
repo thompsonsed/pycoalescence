@@ -74,6 +74,7 @@ var annotated_dup =
     [ "SpatialTree", "class_spatial_tree.html", "class_spatial_tree" ],
     [ "SpeciationCommands", "class_speciation_commands.html", "class_speciation_commands" ],
     [ "SpeciesException", "struct_species_exception.html", "struct_species_exception" ],
+    [ "SpeciesGrid", "class_species_grid.html", "class_species_grid" ],
     [ "SpeciesList", "class_species_list.html", "class_species_list" ],
     [ "SpecSimParameters", "struct_spec_sim_parameters.html", "struct_spec_sim_parameters" ],
     [ "Step", "struct_step.html", "struct_step" ],

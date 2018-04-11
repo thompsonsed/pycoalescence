@@ -4,6 +4,7 @@ var struct_sim_parameters =
     [ "importParameters", "struct_sim_parameters.html#affb4a6133434c61c720b648012ccbcea", null ],
     [ "importParameters", "struct_sim_parameters.html#a2c587f1f41e13c51696ca24e5edadc96", null ],
     [ "importParameters", "struct_sim_parameters.html#a65833f22d1f30997727ed71e989af02e", null ],
+    [ "printSpatialVars", "struct_sim_parameters.html#a04636fc2b0899400011b54bb1f175eb0", null ],
     [ "printVars", "struct_sim_parameters.html#ac7072f58a9dccc718341d25a84148ffc", null ],
     [ "setDispersalParameters", "struct_sim_parameters.html#a74782aab11b1e07a507cc60bdec3bf95", null ],
     [ "setKeyParameters", "struct_sim_parameters.html#aa6684caccd53613a5d08ff4071d0edc9", null ],
@@ -59,6 +60,7 @@ var struct_sim_parameters =
     [ "tau", "struct_sim_parameters.html#a2e1055f1888b9be5eef4e62a191e1cd8", null ],
     [ "the_seed", "struct_sim_parameters.html#a689610f6fd7c87866ca950c8700b4943", null ],
     [ "the_task", "struct_sim_parameters.html#a219ea06b17e82f1512e0e8cdd9990ea7", null ],
+    [ "times", "struct_sim_parameters.html#a78f217a9db8c2f15bf5004ae30583a56", null ],
     [ "times_file", "struct_sim_parameters.html#aefc1652e914bfee5e6649dc96c1409e8", null ],
     [ "uses_spatial_sampling", "struct_sim_parameters.html#a5f05ff4f1197c72bf3151cf7f3dbfac8", null ]
 ];

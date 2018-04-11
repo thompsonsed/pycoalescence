@@ -48,9 +48,6 @@ Program Listing for File SpeciesList.cpp
    {
        if(list[index] == 0)
        {
-           cerr << "index: " << index << endl;
-           cerr << "list[index]: " <<list[index] << endl;
-           cerr << "list.maxsize(): " << maxsize << endl;
            throw runtime_error("ERROR_MOVE_027: List position to be replaced is zero. Check list assignment.");
        }
        list[index] = new_val;
@@ -60,9 +57,6 @@ Program Listing for File SpeciesList.cpp
    {
        if(list[index] != 0)
        {
-           cerr << "index: " << index << endl;
-           cerr << "list[index]: " <<list[index] << endl;
-           cerr << "list.maxsize(): " << maxsize << endl;
            throw runtime_error("ERROR_MOVE_027b: List position to be replaced is not zero. Check list assignment.");
        }
        list[index] = new_val;
@@ -83,7 +77,6 @@ Program Listing for File SpeciesList.cpp
    #ifdef DEBUG
        if(list_size + 1 > maxsize)
        {
-           cerr << "maxsize: " << maxsize << endl;
            throw out_of_range("Could not add species - no empty space");
        }
    #endif
@@ -107,7 +100,6 @@ Program Listing for File SpeciesList.cpp
                return i;
            }
        }
-       cerr << "maxsize: " << maxsize << endl;
        throw out_of_range("Could not add species - no empty space");
    }
    
@@ -177,8 +169,6 @@ Program Listing for File SpeciesList.cpp
    #ifdef DEBUG
        if(list.size() > maxsize)
            {
-               cerr << "list.size(): " << list.size() << endl;
-               cerr << "maxsize: " << maxsize << endl;
                throw out_of_range("List size not equal to maxsize");
            }
    #endif
@@ -203,7 +193,6 @@ Program Listing for File SpeciesList.cpp
            }
            catch(out_of_range &oor)
            {
-               cerr << oor.what() << endl;
                throw runtime_error("ERROR_MOVE_001b: Listpos outside maxsize.");
            }
        }

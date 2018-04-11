@@ -28,11 +28,10 @@ Program Listing for File necsimmodule.cpp
    
    
    using namespace std;
-   PyObject * loggingmodule;
-   PyGILState_STATE gstate;
    bool log_set = false;
    bool logger_set = false;
-   PyObject * logger;
+   PyObject * logger = nullptr;
+   PyObject * call_logging = nullptr;
    
    template<class T> static PyObject * run_simulation(PyObject * self, PyObject * args)
    {

@@ -97,6 +97,11 @@ Program Listing for File Map.h
            open(filename);
        }
    
+       bool isOpen()
+       {
+           return poDataset != nullptr;
+       }
+   
        void close()
        {
            if(poDataset)
@@ -234,12 +239,40 @@ Program Listing for File Map.h
            return false;
        }
    
+       bool openOffsetMap(Map &offset_map)
+       {
+           bool opened_here = false;
+           if(!offset_map.isOpen())
+           {
+               opened_here = true;
+               offset_map.open();
+           }
+           offset_map.getMetaData();
+           return opened_here;
+       }
+   
+       void closeOffsetMap(Map &offset_map, const bool &opened_here)
+       {
+           if(opened_here)
+           {
+               offset_map.close();
+           }
+       }
+   
        void calculateOffset(Map &offset_map, long &offset_x, long &offset_y)
        {
-           offset_map.open();
-           offset_map.getMetaData();
+           auto opened_here = openOffsetMap(offset_map);
            offset_x = static_cast<long>(round(offset_map.upper_left_x - upper_left_x / x_res));
            offset_y = static_cast<long>(round(offset_map.upper_left_y - upper_left_y / y_res));
+           closeOffsetMap(offset_map, opened_here);
+       }
+   
+       unsigned long roundedScale(Map &offset_map)
+       {
+           auto opened_here = openOffsetMap(offset_map);
+           double offset_scale = offset_map.x_res;
+           closeOffsetMap(offset_map, opened_here);
+           return static_cast<unsigned long>(floor(offset_map.x_res / x_res));
        }
    
        void internalImport()

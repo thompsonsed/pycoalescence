@@ -14,10 +14,17 @@ provided through the :class:`DispersalSimulation class <pycoalescence.dispersal_
 Generating landscapes
 ---------------------
 
+Fragmented Landscapes
+'''''''''''''''''''''
+
+For our purposes, we define fragmented landscapes as continuous, fully spatial landscapes of a particular size, with n
+individuals split across i equally (or as close to) sized fragments, which are evenly spaced across the landscape.
+**pycoalescence** provides the routines for generating these landscapes within
+:class:`FragmentedLandscape class <pycoalescence.fragments.FragmentedLandscape>`.
+
 The parameters for generating a fragmented landscape are the total landscape size, the habitat area within the landscape
 (i.e. the number of individuals) and the number of fragments to place. The habitat area cannot be more than 50% of the
-landscape size, as at this point fragments become non-distinct. The process is handled by the
-:class:`FragmentedLandscape class <pycoalescence.fragments.FragmentedLandscape>`. The process is:
+landscape size, as at this point fragments become non-distinct. The process is:
 
 .. code-block:: python
 
@@ -26,8 +33,24 @@ landscape size, as at this point fragments become non-distinct. The process is h
     f.generate()
 
 
-.. _`simulate_landscapes`:
+Patched Landscapes
+''''''''''''''''''
 
+We define patched landscapes as a number of interconnected patches, each containing a certain number of well-mixed
+individuals (the patch's density) and every patch is has some probability of dispersal to every other patch (which can
+be 0). Another imagination of this concept is of a series of connected islands, where each island is modelled
+non-spatially, and every island has a probability of dispersing to all other islands.
+**pycoalescence** provides the routines for generating these landscapes within
+:class:`PatchedLandscape class <pycoalescence.patched_landscape.PatchedLandscape>`.
+
+Creation of a patched landscape requires first defining all the patches that exist in the landscape, and then setting
+the dispersal probability between each island. If any dispersal probability is not set, it is assumed to be 0. The
+dispersal probability from one patch to itself must be provided (but can be 0). The probability values provided are then
+re-scaled to sum to 1, and re-generated as cumulative probabilities.
+
+
+
+.. _`simulate_landscapes`:
 Simulated landscapes
 --------------------
 

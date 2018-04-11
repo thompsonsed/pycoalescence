@@ -5,6 +5,7 @@ var searchData=
   ['parseconfig',['parseConfig',['../class_config_option.html#a45cdefa1516c378e5a90803d594ccd34',1,'ConfigOption']]],
   ['printendtimes',['printEndTimes',['../class_community.html#a36216913433e3e011ee2420e83e1fe4a',1,'Community']]],
   ['printsetup',['printSetup',['../class_tree.html#ab71da7797a6586ddd948661c34ce4788',1,'Tree']]],
+  ['printspatialvars',['printSpatialVars',['../struct_sim_parameters.html#a04636fc2b0899400011b54bb1f175eb0',1,'SimParameters']]],
   ['printvars',['printVars',['../class_landscape.html#a9b867a59c88f754bae6788451845b698',1,'Landscape::printVars()'],['../struct_sim_parameters.html#ac7072f58a9dccc718341d25a84148ffc',1,'SimParameters::printVars()']]],
   ['protractedspatialtree',['ProtractedSpatialTree',['../class_protracted_spatial_tree.html',1,'']]],
   ['protractedtree',['ProtractedTree',['../class_protracted_tree.html',1,'']]],

@@ -38,7 +38,11 @@ Includes
 --------
 
 
-- ``Map.h`` (:ref:`file_necsim_Map.h`)
+- ``Cell.h`` (:ref:`file_necsim_Cell.h`)
+
+- ``DispersalCoordinator.h`` (:ref:`file_necsim_DispersalCoordinator.h`)
+
+- ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
 
@@ -73,8 +77,6 @@ Classes
 -------
 
 
-- :ref:`class_Cell`
-
 - :ref:`class_SimulateDispersal`
 
 
@@ -82,7 +84,7 @@ Functions
 ---------
 
 
-- :ref:`function_distanceBetween`
+- :ref:`function_distanceBetweenCells`
 
 
 Defines

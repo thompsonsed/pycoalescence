@@ -48,7 +48,5 @@ Included By
 
 - :ref:`file_necsim_ReproductionMap.h`
 
-- :ref:`file_necsim_SimulateDispersal.h`
-
 
 

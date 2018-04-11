@@ -98,14 +98,13 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N17SimulateDispersal8setSizesEmm">
-<span id="SimulateDispersal::setSizes__unsigned-l.unsigned-l"></span><span class="target" id="necsimclass_simulate_dispersal_1ade30de5c9c7daebb6ccc4168fec3e813"></span>void <code class="descname">setSizes</code><span class="sig-paren">(</span>unsigned long <em>x</em>, unsigned long <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal8setSizesEmm" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Sets the sizes of the density map. </p>
+<dt id="_CPPv2N17SimulateDispersal23setSimulationParametersEP13SimParameters">
+<span id="SimulateDispersal::setSimulationParameters__SimParametersP"></span><span class="target" id="necsimclass_simulate_dispersal_1a777d7cab80b8543647970d6d64b797a9"></span>void <code class="descname">setSimulationParameters</code><span class="sig-paren">(</span><a class="reference internal" href="struct_SimParameters.html#_CPPv213SimParameters" title="SimParameters">SimParameters</a> *<em>sim_parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal23setSimulationParametersEP13SimParameters" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the pointer to the simulation parameters object. </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">x</span></code>: the x dimension (number of columns) in the density map </li>
-<li><code class="docutils literal"><span class="pre">y</span></code>: the y dimension (number of rows) in the density map </li>
+<li><code class="docutils literal"><span class="pre">sim_parameters</span></code>: pointer to the simulation parameters to use </li>
 </ul>
 </dd>
 </dl>
@@ -113,13 +112,22 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N17SimulateDispersal10importMapsE6string">
-<span id="SimulateDispersal::importMaps__string"></span><span class="target" id="necsimclass_simulate_dispersal_1a8c7c65b4788010f02213fba5c985f49a"></span>void <code class="descname">importMaps</code><span class="sig-paren">(</span>string <em>map_file</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal10importMapsE6string" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Import the map from the prescribed file. </p>
+<dt id="_CPPv2N17SimulateDispersal10importMapsEv">
+<span id="SimulateDispersal::importMaps"></span><span class="target" id="necsimclass_simulate_dispersal_1a275eef6872de493273fc047467935d7b"></span>void <code class="descname">importMaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal10importMapsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Import the maps from the prescribed files. </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">map_file</span></code>: the map file to import from </li>
+<li><code class="docutils literal"><span class="pre">fine_map_file</span></code>: path to the fine map file </li>
+<li><code class="docutils literal"><span class="pre">fine_map_x</span></code>: fine map x dimension </li>
+<li><code class="docutils literal"><span class="pre">fine_map_y</span></code>: fine map y dimension </li>
+<li><code class="docutils literal"><span class="pre">fine_map_x_offset</span></code>: fine map x offset </li>
+<li><code class="docutils literal"><span class="pre">fine_map_y_offset</span></code>: fine map y offset </li>
+<li><code class="docutils literal"><span class="pre">coarse_map_file</span></code>: file path to the coarse map file </li>
+<li><code class="docutils literal"><span class="pre">coarse_map_x</span></code>: coarse map x dimension </li>
+<li><code class="docutils literal"><span class="pre">coarse_map_y</span></code>: coarse map y dimension </li>
+<li><code class="docutils literal"><span class="pre">coarse_map_x_offset</span></code>: coarse map x offset </li>
+<li><code class="docutils literal"><span class="pre">coarse_map_y_offset</span></code>: coarse map y offset </li>
 </ul>
 </dd>
 </dl>
@@ -139,30 +147,6 @@
 </dl>
 </p>
 </dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N17SimulateDispersal22setDispersalParametersE6stringdddd6string">
-<span id="SimulateDispersal::setDispersalParameters__string.double.double.double.double.string"></span><span class="target" id="necsimclass_simulate_dispersal_1a93b3d450679b00c015f5e18d91f3a426"></span>void <code class="descname">setDispersalParameters</code><span class="sig-paren">(</span>string <em>dispersal_method_in</em>, double <em>sigma_in</em>, double <em>tau_in</em>, double <em>m_prob_in</em>, double <em>cutoff_in</em>, string <em>landscape_type</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal22setDispersalParametersE6stringdddd6string" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Sets the dispersal parameters. </p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">dispersal_method_in</span></code>: the dispersal method (e.g. &#8220;normal&#8221;) </li>
-<li><code class="docutils literal"><span class="pre">sigma_in</span></code>: the sigma value for normal and fat-tailed dispersals </li>
-<li><code class="docutils literal"><span class="pre">tau_in</span></code>: the nu value for fat-tailed dispersals </li>
-<li><code class="docutils literal"><span class="pre">m_prob_in</span></code>: the m_prob for norm-uniform dispersals </li>
-<li><code class="docutils literal"><span class="pre">cutoff_in</span></code>: the maximum dispersal distance for norm-uniform dispersal </li>
-<li><code class="docutils literal"><span class="pre">landscape_type</span></code>: string containing the landscape type (one of &#8220;closed&#8221;, &#8220;tiled&#8221; or &#8220;infinite&#8221;). </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N17SimulateDispersal16setLandscapeTypeE6string">
-<span id="SimulateDispersal::setLandscapeType__string"></span><span class="target" id="necsimclass_simulate_dispersal_1a627bcb0be7e7d6b0ef1dbd44b32a1909"></span>void <code class="descname">setLandscapeType</code><span class="sig-paren">(</span>string <em>landscape_type</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal16setLandscapeTypeE6string" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N17SimulateDispersal17setOutputDatabaseE6string">
@@ -224,96 +208,14 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N17SimulateDispersal20calculateNewPositionERKdRKdRK4CellR4Cell">
-<span id="SimulateDispersal::calculateNewPosition__doubleCR.doubleCR.CellCR.CellR"></span><span class="target" id="necsimclass_simulate_dispersal_1a75eeedf1627eb25945a2d8f5dd0a2379"></span>void <code class="descname">calculateNewPosition</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em>, <em class="property">const</em> double &amp;<em>angle</em>, <em class="property">const</em> <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>start_cell</em>, <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>end_cell</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal20calculateNewPositionERKdRKdRK4CellR4Cell" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Calculates the new position from the start cell based on the distance and angle moved. Stores the new x and y location in the end cell. </p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">dist</span></code>: the distance to move </li>
-<li><code class="docutils literal"><span class="pre">angle</span></code>: the direction from the start cell to move </li>
-<li><code class="docutils literal"><span class="pre">start_cell</span></code>: the cell containing the start x and y position </li>
-<li><code class="docutils literal"><span class="pre">end_cell</span></code>: the cell to contain the end x and y position </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N17SimulateDispersal19getEndPointInfiniteERKdRKdRK4CellR4Cell">
-<span id="SimulateDispersal::getEndPointInfinite__doubleCR.doubleCR.CellCR.CellR"></span><span class="target" id="necsimclass_simulate_dispersal_1acb12b6b2f113e58c62636b2b4456f4da"></span>bool <code class="descname">getEndPointInfinite</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em>, <em class="property">const</em> double &amp;<em>angle</em>, <em class="property">const</em> <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>this_cell</em>, <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>end_cell</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal19getEndPointInfiniteERKdRKdRK4CellR4Cell" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Checks the density is greater than 0 a given distance from the start point on an infinite null landscape. </p>
-<p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">dist</span></code>: the distance of dispersal </li>
-<li><code class="docutils literal"><span class="pre">angle</span></code>: the angle of dispersal </li>
-<li><code class="docutils literal"><span class="pre">this_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> containing the x and y coordinates of the starting position </li>
-<li><code class="docutils literal"><span class="pre">end_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> to store the end point in </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N17SimulateDispersal16getEndPointTiledERKdRKdRK4CellR4Cell">
-<span id="SimulateDispersal::getEndPointTiled__doubleCR.doubleCR.CellCR.CellR"></span><span class="target" id="necsimclass_simulate_dispersal_1a9694673493b261697020f42aa2fdf9e7"></span>bool <code class="descname">getEndPointTiled</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em>, <em class="property">const</em> double &amp;<em>angle</em>, <em class="property">const</em> <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>this_cell</em>, <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>end_cell</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal16getEndPointTiledERKdRKdRK4CellR4Cell" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Checks the density is greater than 0 a given distance from the start point on an infinite tiled landscape. </p>
-<p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">dist</span></code>: the distance of dispersal </li>
-<li><code class="docutils literal"><span class="pre">angle</span></code>: the angle of dispersal </li>
-<li><code class="docutils literal"><span class="pre">this_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> containing the x and y coordinates of the starting position </li>
-<li><code class="docutils literal"><span class="pre">end_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> to store the end point in</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N17SimulateDispersal17getEndPointClosedERKdRKdRK4CellR4Cell">
-<span id="SimulateDispersal::getEndPointClosed__doubleCR.doubleCR.CellCR.CellR"></span><span class="target" id="necsimclass_simulate_dispersal_1ab7fa3b37534cdd35871b30c7bb511351"></span>bool <code class="descname">getEndPointClosed</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em>, <em class="property">const</em> double &amp;<em>angle</em>, <em class="property">const</em> <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>this_cell</em>, <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>end_cell</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal17getEndPointClosedERKdRKdRK4CellR4Cell" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Checks the density a given distance from the start point on an closed landscape. </p>
-<p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">dist</span></code>: the distance of dispersal </li>
-<li><code class="docutils literal"><span class="pre">angle</span></code>: the angle of dispersal </li>
-<li><code class="docutils literal"><span class="pre">this_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> containing the x and y coordinates of the starting position </li>
-<li><code class="docutils literal"><span class="pre">end_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> to store the end point in</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N17SimulateDispersal11getEndPointERKdRKdRK4CellR4Cell">
-<span id="SimulateDispersal::getEndPoint__doubleCR.doubleCR.CellCR.CellR"></span><span class="target" id="necsimclass_simulate_dispersal_1a10a1dd769e993d018e7c7ae9208240ab"></span>bool <code class="descname">getEndPoint</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em>, <em class="property">const</em> double &amp;<em>angle</em>, <em class="property">const</em> <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>this_cell</em>, <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>end_cell</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal11getEndPointERKdRKdRK4CellR4Cell" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N17SimulateDispersal11getEndPointER4Cell">
+<span id="SimulateDispersal::getEndPoint__CellR"></span><span class="target" id="necsimclass_simulate_dispersal_1a5069adc35fba116716bebd288dd9e65f"></span>void <code class="descname">getEndPoint</code><span class="sig-paren">(</span><a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;<em>this_cell</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal11getEndPointER4Cell" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Checks the density a given distance from the start point, calling the relevant landscape function. </p>
 <p>This also takes into account the rejection sampling of density based on the maximal density value from the map.</p>
 <p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>true if the point has a density &gt; 0, otherwise generates a random number between 0 and the max size and if it is &gt; the density, return true, false otherwise. </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">dist</span></code>: the distance of dispersal </li>
-<li><code class="docutils literal"><span class="pre">angle</span></code>: the angle of dispersal </li>
 <li><code class="docutils literal"><span class="pre">this_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> containing the x and y coordinates of the starting position </li>
-<li><code class="docutils literal"><span class="pre">end_cell</span></code>: <a class="reference internal" href="class_Cell.html#necsimstruct_cell"><span class="std std-ref">Cell</span></a> to store the end point in</li>
 </ul>
 </dd>
 </dl>
@@ -386,23 +288,20 @@
 
 </div>
 <div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Protected Types</p>
-<dl class="type">
-<dt id="_CPPv2N17SimulateDispersal14landscape_fptrE">
-<span id="SimulateDispersal::landscape_fptr"></span><span class="target" id="necsimclass_simulate_dispersal_1a33cf29f05f05fbf3cd70f759e62f57f0"></span><em class="property">typedef </em>bool (<code class="descname">SimulateDispersal</code>::*<code class="descname">landscape_fptr</code>)<span class="sig-paren">(</span><em class="property">const</em> double &amp;dist, <em class="property">const</em> double &amp;angle, <em class="property">const</em> <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;this_cell, <a class="reference internal" href="class_Cell.html#_CPPv24Cell" title="Cell">Cell</a> &amp;end_cell<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N17SimulateDispersal14landscape_fptrE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-</div>
-<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Protected Attributes</p>
 <dl class="member">
-<dt id="_CPPv2N17SimulateDispersal11density_mapE">
-<span id="SimulateDispersal::density_map__Map:uint32_t:"></span><span class="target" id="necsimclass_simulate_dispersal_1a238dcc03606fc99a0e1cd80ff229c0bd"></span>Map&lt;uint32_t&gt; <code class="descname">density_map</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal11density_mapE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N17SimulateDispersal17density_landscapeE">
+<span id="SimulateDispersal::density_landscape__Landscape"></span><span class="target" id="necsimclass_simulate_dispersal_1a3538ef66eedcee56817aabb26a1d9d27"></span><a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a> <code class="descname">density_landscape</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal17density_landscapeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N17SimulateDispersal12has_set_sizeE">
-<span id="SimulateDispersal::has_set_size__b"></span><span class="target" id="necsimclass_simulate_dispersal_1aff72c923e8454470b2d4c8935061fb21"></span>bool <code class="descname">has_set_size</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal12has_set_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N17SimulateDispersal21dispersal_coordinatorE">
+<span id="SimulateDispersal::dispersal_coordinator__DispersalCoordinator"></span><span class="target" id="necsimclass_simulate_dispersal_1a55da369d57d854168ff6e851b0d7892a"></span><a class="reference internal" href="class_DispersalCoordinator.html#_CPPv220DispersalCoordinator" title="DispersalCoordinator">DispersalCoordinator</a> <code class="descname">dispersal_coordinator</code> = {}<a class="headerlink" href="#_CPPv2N17SimulateDispersal21dispersal_coordinatorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N17SimulateDispersal13simParametersE">
+<span id="SimulateDispersal::simParameters__SimParametersP"></span><span class="target" id="necsimclass_simulate_dispersal_1a6d11b4ed3e3942d2bb42e66116fffd2d"></span><a class="reference internal" href="struct_SimParameters.html#_CPPv213SimParameters" title="SimParameters">SimParameters</a> *<code class="descname">simParameters</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal13simParametersE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
@@ -411,38 +310,8 @@
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N17SimulateDispersal8map_nameE">
-<span id="SimulateDispersal::map_name__string"></span><span class="target" id="necsimclass_simulate_dispersal_1af1dc4cf60a69aafc2be4c80b0e9228c2"></span>string <code class="descname">map_name</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal8map_nameE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
 <dt id="_CPPv2N17SimulateDispersal4seedE">
 <span id="SimulateDispersal::seed__unsigned-l"></span><span class="target" id="necsimclass_simulate_dispersal_1af9ab2fa8b2c3e1bb1ba49b31679ae0d7"></span>unsigned long <code class="descname">seed</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal4seedE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N17SimulateDispersal16dispersal_methodE">
-<span id="SimulateDispersal::dispersal_method__string"></span><span class="target" id="necsimclass_simulate_dispersal_1aedabf3440f475bc15d4b95f9e8500d94"></span>string <code class="descname">dispersal_method</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal16dispersal_methodE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N17SimulateDispersal5sigmaE">
-<span id="SimulateDispersal::sigma__double"></span><span class="target" id="necsimclass_simulate_dispersal_1ad6d6ae35911ed2bd045bf8e5bb30b628"></span>double <code class="descname">sigma</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal5sigmaE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N17SimulateDispersal3tauE">
-<span id="SimulateDispersal::tau__double"></span><span class="target" id="necsimclass_simulate_dispersal_1aa195b7e1b697c93e85a923eea5fabccc"></span>double <code class="descname">tau</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal3tauE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N17SimulateDispersal6m_probE">
-<span id="SimulateDispersal::m_prob__double"></span><span class="target" id="necsimclass_simulate_dispersal_1ae4b679b39467170abf45845d4591e6db"></span>double <code class="descname">m_prob</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal6m_probE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N17SimulateDispersal6cutoffE">
-<span id="SimulateDispersal::cutoff__double"></span><span class="target" id="necsimclass_simulate_dispersal_1a532f1c5ba22d681c5761dcce4fc8555d"></span>double <code class="descname">cutoff</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal6cutoffE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
@@ -471,8 +340,8 @@
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N17SimulateDispersal11max_densityE">
-<span id="SimulateDispersal::max_density__unsigned-l"></span><span class="target" id="necsimclass_simulate_dispersal_1a0edc9ca52d14b3ea78c99c33b200447e"></span>unsigned long <code class="descname">max_density</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal11max_densityE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N17SimulateDispersal10generationE">
+<span id="SimulateDispersal::generation__double"></span><span class="target" id="necsimclass_simulate_dispersal_1ae9f8100eaf9faf01a482342f605a8091"></span>double <code class="descname">generation</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal10generationE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
@@ -483,11 +352,6 @@
 <dl class="member">
 <dt id="_CPPv2N17SimulateDispersal19parameter_referenceE">
 <span id="SimulateDispersal::parameter_reference__unsigned-l"></span><span class="target" id="necsimclass_simulate_dispersal_1a2d15ba06c50a249328f867a105848f72"></span>unsigned long <code class="descname">parameter_reference</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal19parameter_referenceE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N17SimulateDispersal10getValFptrE">
-<span id="SimulateDispersal::getValFptr__landscape_fptr"></span><span class="target" id="necsimclass_simulate_dispersal_1ae1f3a40b1805f024e41ec8df9c38c01e"></span><a class="reference internal" href="#_CPPv2N17SimulateDispersal14landscape_fptrE" title="SimulateDispersal::landscape_fptr">landscape_fptr</a> <code class="descname">getValFptr</code><a class="headerlink" href="#_CPPv2N17SimulateDispersal10getValFptrE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>

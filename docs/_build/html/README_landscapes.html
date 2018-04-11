@@ -70,18 +70,37 @@ provided through the <code class="xref py py-class docutils literal"><span class
 </div>
 <div class="section" id="generating-landscapes">
 <h2>Generating landscapes<a class="headerlink" href="#generating-landscapes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fragmented-landscapes">
+<h3>Fragmented Landscapes<a class="headerlink" href="#fragmented-landscapes" title="Permalink to this headline">¶</a></h3>
+<p>For our purposes, we define fragmented landscapes as continuous, fully spatial landscapes of a particular size, with n
+individuals split across i equally (or as close to) sized fragments, which are evenly spaced across the landscape.
+<strong>pycoalescence</strong> provides the routines for generating these landscapes within
+<a class="reference internal" href="pycoalescence.html#pycoalescence.fragments.FragmentedLandscape" title="pycoalescence.fragments.FragmentedLandscape"><code class="xref py py-class docutils literal"><span class="pre">FragmentedLandscape</span> <span class="pre">class</span></code></a>.</p>
 <p>The parameters for generating a fragmented landscape are the total landscape size, the habitat area within the landscape
 (i.e. the number of individuals) and the number of fragments to place. The habitat area cannot be more than 50% of the
-landscape size, as at this point fragments become non-distinct. The process is handled by the
-<a class="reference internal" href="pycoalescence.html#pycoalescence.fragments.FragmentedLandscape" title="pycoalescence.fragments.FragmentedLandscape"><code class="xref py py-class docutils literal"><span class="pre">FragmentedLandscape</span> <span class="pre">class</span></code></a>. The process is:</p>
+landscape size, as at this point fragments become non-distinct. The process is:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">FragmentedLandscape</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">FragmentedLandscape</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">number_fragments</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fragment.tif&quot;</span><span class="p">)</span>
 <span class="n">f</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="section" id="patched-landscapes">
+<h3>Patched Landscapes<a class="headerlink" href="#patched-landscapes" title="Permalink to this headline">¶</a></h3>
+<p>We define patched landscapes as a number of interconnected patches, each containing a certain number of well-mixed
+individuals (the patch&#8217;s density) and every patch is has some probability of dispersal to every other patch (which can
+be 0). Another imagination of this concept is of a series of connected islands, where each island is modelled
+non-spatially, and every island has a probability of dispersing to all other islands.
+<strong>pycoalescence</strong> provides the routines for generating these landscapes within
+<code class="xref py py-class docutils literal"><span class="pre">PatchedLandscape</span> <span class="pre">class</span></code>.</p>
+<p>Creation of a patched landscape requires first defining all the patches that exist in the landscape, and then setting
+the dispersal probability between each island. If any dispersal probability is not set, it is assumed to be 0. The
+dispersal probability from one patch to itself must be provided (but can be 0). The probability values provided are then
+re-scaled to sum to 1, and re-generated as cumulative probabilities.</p>
+</div>
+</div>
 <div class="section" id="simulated-landscapes">
-<span id="simulate-landscapes"></span><h2>Simulated landscapes<a class="headerlink" href="#simulated-landscapes" title="Permalink to this headline">¶</a></h2>
+<h2>Simulated landscapes<a class="headerlink" href="#simulated-landscapes" title="Permalink to this headline">¶</a></h2>
 <p>To simulate a dispersal kernel on a landscape, there are two processes; simulating a single step and simulating multiple
 steps. For a single step, the distance travelled is recorded into the output database. The mean, standard deviation and
 other metrics can be obtained from this. For multiple steps, the total distance travelled after n steps is recorded.
@@ -139,7 +158,11 @@ file can also be read into a numpy array using <a class="reference internal" hre
   <ul>
 <li><a class="reference internal" href="#">Simulating and generating landscapes</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
-<li><a class="reference internal" href="#generating-landscapes">Generating landscapes</a></li>
+<li><a class="reference internal" href="#generating-landscapes">Generating landscapes</a><ul>
+<li><a class="reference internal" href="#fragmented-landscapes">Fragmented Landscapes</a></li>
+<li><a class="reference internal" href="#patched-landscapes">Patched Landscapes</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#simulated-landscapes">Simulated landscapes</a></li>
 <li><a class="reference internal" href="#reading-and-writing-tif-files">Reading and writing tif files</a></li>
 </ul>

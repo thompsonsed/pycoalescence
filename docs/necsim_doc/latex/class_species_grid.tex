@@ -1,0 +1,314 @@
+\hypertarget{class_species_grid}{}\section{Species\+Grid Class Reference}
+\label{class_species_grid}\index{Species\+Grid@{Species\+Grid}}
+
+
+Inheritance diagram for Species\+Grid\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{class_species_grid__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Species\+Grid\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{class_species_grid__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}{set\+Size} (unsigned long rows, unsigned long cols)
+\begin{DoxyCompactList}\small\item\em Sets the matrix size. Similar concept to that for Rows. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}{get\+Cols} () const
+\begin{DoxyCompactList}\small\item\em Getter for the number of columns. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a442879db6473eeab202928dc47992206}{get\+Rows} () const
+\begin{DoxyCompactList}\small\item\em Getter for the number of rows. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ \hyperlink{class_species_list}{Species\+List} $>$ \& \hyperlink{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{operator\mbox{[}$\,$\mbox{]}} (unsigned long index)
+\begin{DoxyCompactList}\small\item\em Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{operator+} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the + operator. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{operator-\/} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/ operator. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{operator+=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the += operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{operator-\/=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/= operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{operator$\ast$} (const double s)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for scaling. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{operator$\ast$} (\hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_ae511e2f5874e7602fc968541efeefca1}{set\+Value} (const unsigned long \&x, const unsigned long \&y, const char $\ast$value)
+\begin{DoxyCompactList}\small\item\em Sets the value at the specified indices, including handling type conversion from char to the template class. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_matrix_a2476517be70c810ad586d0f0cf4ec121}{import} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a csv file. \end{DoxyCompactList}\item 
+bool \hyperlink{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}{import\+Csv} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a csv file using the fast-\/csv-\/parser method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long {\bfseries num\+Cols}\hypertarget{class_matrix_a341aaedcfaac978957087bd0467dc527}{}\label{class_matrix_a341aaedcfaac978957087bd0467dc527}
+
+\item 
+unsigned long {\bfseries num\+Rows}\hypertarget{class_matrix_ac1e96667d48c7845708f978ddd17475d}{}\label{class_matrix_ac1e96667d48c7845708f978ddd17475d}
+
+\item 
+\hyperlink{class_row}{Row}$<$ \hyperlink{class_species_list}{Species\+List} $>$ $\ast$ {\bfseries matrix}\hypertarget{class_matrix_a7a143ae112112155c9622ba17dc434c7}{}\label{class_matrix_a7a143ae112112155c9622ba17dc434c7}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\index{Species\+Grid@{Species\+Grid}!get\+Cols@{get\+Cols}}
+\index{get\+Cols@{get\+Cols}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{get\+Cols() const}{getCols() const}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::get\+Cols (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}{}\label{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}
+
+
+Getter for the number of columns. 
+
+\begin{DoxyReturn}{Returns}
+the number of columns. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!get\+Rows@{get\+Rows}}
+\index{get\+Rows@{get\+Rows}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{get\+Rows() const}{getRows() const}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::get\+Rows (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a442879db6473eeab202928dc47992206}{}\label{class_matrix_a442879db6473eeab202928dc47992206}
+
+
+Getter for the number of rows. 
+
+\begin{DoxyReturn}{Returns}
+the number of rows. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!import@{import}}
+\index{import@{import}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{import(const string \&filename)}{import(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::import (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a2476517be70c810ad586d0f0cf4ec121}{}\label{class_matrix_a2476517be70c810ad586d0f0cf4ec121}
+
+
+Imports the matrix from a csv file. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em runtime\+\_\+error} & if type detection for the filename fails. \\
+\hline
+\end{DoxyExceptions}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the file to import. \\
+\hline
+\end{DoxyParams}
+\index{Species\+Grid@{Species\+Grid}!import\+Csv@{import\+Csv}}
+\index{import\+Csv@{import\+Csv}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{import\+Csv(const string \&filename)}{importCsv(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::import\+Csv (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}{}\label{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}
+
+
+Imports the matrix from a csv file using the fast-\/csv-\/parser method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. Imports the matrix from a csv file using the standard, slower method. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000003}{Deprecated}]this function should not be used any more as it is much slower. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the csv can be imported. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const double s)}{operator*(const double s)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const double}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{}\label{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}
+
+
+Overloading the $\ast$ operator for scaling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the constant to scale the matrix by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the scaled matrix. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator$\ast$(\+Matrix \&m)}{operator*(Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Matrix}$<$ {\bf Species\+List} $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{}\label{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}
+
+
+Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to multiply with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product of each ith,jth value of the matrix. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!operator+@{operator+}}
+\index{operator+@{operator+}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator+(const Matrix \&m)}{operator+(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ {\bf Species\+List} $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{}\label{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}
+
+
+Overloading the + operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the sum of the two matrices. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator+=(const Matrix \&m)}{operator+=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Matrix}\& {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator+= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ {\bf Species\+List} $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{}\label{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}
+
+
+Overloading the += operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Species\+Grid@{Species\+Grid}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator-\/(const Matrix \&m)}{operator-(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ {\bf Species\+List} $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{}\label{class_matrix_a08e75978ea8288083ef36f53b4ac115d}
+
+
+Overloading the -\/ operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the subtraction of the two matrices. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator-\/=(const Matrix \&m)}{operator-=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Matrix}\& {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator-\/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ {\bf Species\+List} $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{}\label{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}
+
+
+Overloading the -\/= operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Species\+Grid@{Species\+Grid}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{operator[](unsigned long index)}{operator[](unsigned long index)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Row}$<${\bf Species\+List} $>$\& {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{}\label{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}
+
+
+Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & the row number to get the value from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix row object. 
+\end{DoxyReturn}
+\index{Species\+Grid@{Species\+Grid}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{set\+Size(unsigned long rows, unsigned long cols)}{setSize(unsigned long rows, unsigned long cols)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::set\+Size (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{rows, }
+\item[{unsigned long}]{cols}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}{}\label{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}
+
+
+Sets the matrix size. Similar concept to that for Rows. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & the number of rows. \\
+\hline
+{\em cols} & the number of columns. \\
+\hline
+\end{DoxyParams}
+\index{Species\+Grid@{Species\+Grid}!set\+Value@{set\+Value}}
+\index{set\+Value@{set\+Value}!Species\+Grid@{Species\+Grid}}
+\subsubsection[{\texorpdfstring{set\+Value(const unsigned long \&x, const unsigned long \&y, const char $\ast$value)}{setValue(const unsigned long &x, const unsigned long &y, const char *value)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Matrix}$<$ {\bf Species\+List}  $>$\+::set\+Value (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{x, }
+\item[{const unsigned long \&}]{y, }
+\item[{const char $\ast$}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ae511e2f5874e7602fc968541efeefca1}{}\label{class_matrix_ae511e2f5874e7602fc968541efeefca1}
+
+
+Sets the value at the specified indices, including handling type conversion from char to the template class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x index. \\
+\hline
+{\em y} & the y index. \\
+\hline
+{\em value} & the value to set \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+necsim/Species\+Grid.\+h\end{DoxyCompactItemize}

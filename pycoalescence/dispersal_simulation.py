@@ -13,6 +13,9 @@ import logging
 import os
 import sys
 from numpy import std
+
+from .landscape import Landscape
+
 necsim_import_success = False
 import_warnings = []
 try:
@@ -50,12 +53,12 @@ except ImportError as ie:
 from .system_operations import check_parent, write_to_log
 from .map import Map
 
-class DispersalSimulation(Map):
+class DispersalSimulation(Landscape):
 	"""
 	Simulates a dispersal kernel upon a tif file to calculate landscape-level dispersal metrics.
 	"""
 
-	def __init__(self, file=None, is_sample=None, logging_level=logging.WARNING, dispersal_db=None):
+	def __init__(self, file=None, logging_level=logging.WARNING, dispersal_db=None):
 		"""
 		Default initialiser for members of DispersalSimulation. Ensures that the database is
 
@@ -65,10 +68,28 @@ class DispersalSimulation(Map):
 		:param dispersal_db: path to a complete dispersal simulation database. Can also be a Map object containing the
 							 completed simulation
 		"""
-		super(DispersalSimulation, self).__init__(file, is_sample, logging_level)
+		Landscape.__init__(self)
+		self.logger = logging.Logger("dipersallogger")
+		self._create_logger(logging_level=logging_level)
 		self._db_conn = None
 		# The dispersal simulation data
 		self.dispersal_database = None
+		self.deme = 1
+		self.number_repeats = None
+		self.number_steps = None
+		self.seed = 1
+		self.dispersal_method = None
+		self.landscape_type = None
+		self.sigma = None
+		self.tau = None
+		self.m_prob = None
+		self.cutoff = None
+		self.sequential = None
+		self.dispersal_relative_cost = None
+		self.restrict_self = None
+		self.dispersal_file = None
+		if file:
+			self.set_map(file)
 		if isinstance(dispersal_db, DispersalSimulation):
 			self.dispersal_database = dispersal_db.dispersal_database
 		elif isinstance(dispersal_db, Map):
@@ -129,30 +150,68 @@ class DispersalSimulation(Map):
 												   " name='{}';".format(table_name)).fetchone() is not None
 		return existence
 
-	def _setup_dispersal(self, map_file=None):
+	def set_simulation_parameters(self, number_repeats, output_database="output.db", seed=1, dispersal_method="normal",
+								  landscape_type="closed", sigma=1, tau=1, m_prob=1, cutoff=100, sequential=False,
+								  dispersal_relative_cost=1, restrict_self=False, number_steps=1,
+								  dispersal_file="none"):
 		"""
-		Checks that the map file makes sense, and the map file exists.
+		Sets the simulation parameters for the dispersal simulations.
 
-		:param map_file:
-		:return:
+		:param int number_repeats: the number of times to iterate on the map
+		:param str output_database: the path to the output database
+		:param int seed: the random seed
+		:param str dispersal_method: the dispersal method to use ("normal", "fat-tailed" or "norm-uniform")
+		:param str landscape_type: the landscape type to use ("infinite", "tiled" or "closed")
+		:param float sigma: the sigma value to use for normal and norm-uniform dispersal
+		:param float tau: the tau value to use for fat-tailed dispersal
+		:param float m_prob: the m_prob to use for norm-uniform dispersal
+		:param float cutoff: the cutoff value to use for norm-uniform dispersal
+		:param bool sequential: if true, end locations of one dispersal event are used as the start for the next. Otherwise,
+		a new random cell is chosen
+		:param float dispersal_relative_cost: relative dispersal ability through non-habitat
+		:param bool restrict_self: if true, self-dispersal is not allowed
+		:param str dispersal_file: path to the dispersal map file, or none.
 		"""
-		self._close_database_connection()
-		if map_file is None:
-			if self.file_name is None:
-				raise ValueError("No map file set and none supplied to function.")
-		else:
-			self.file_name = map_file
-		# Now calculate dimensions if the map file is not null
-		if self.file_name != "null":
-			self.set_dimensions()
-		elif not self.dimensions_set:
-			raise ValueError("Null map dimensions must be set manually before attemting to simulate dispersal.")
-		# Check the map file exists and dimensions are correct
-		self.check_map()
+		self.number_repeats = number_repeats
+		if output_database != "output.db" or self.dispersal_database is None:
+			self.dispersal_database = output_database
+		self.seed = seed
+		self.dispersal_method = dispersal_method
+		self.landscape_type = landscape_type
+		self.sigma = sigma
+		self.tau = tau
+		self.m_prob = m_prob
+		self.cutoff = cutoff
+		self.sequential = sequential
+		self.dispersal_relative_cost = dispersal_relative_cost
+		self.restrict_self = restrict_self
+		self.number_steps = number_steps
+		self.dispersal_file = dispersal_file
 
-	def test_mean_distance_travelled(self, number_repeats, number_steps, output_database="output.db", map_file=None,
-									 seed=1, dispersal_method="normal", landscape_type="tiled", sigma=1, tau=1,
-									 m_prob=0.0, cutoff=100):
+
+
+	def complete_setup(self):
+		"""
+		Completes the setup for the dispersal simulation.
+		"""
+		if not self.is_setup_map:
+			raise RuntimeError("Maps have not been set up yet.")
+		Dispersal.set_logger(self.logger)
+		Dispersal.set_log_function(write_to_log)
+		Dispersal.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma, self.tau,
+										   self.m_prob, self.cutoff, self.dispersal_relative_cost, self.restrict_self)
+		Dispersal.set_map_parameters(self.deme, self.fine_map.file_name, self.fine_map.x_size, self.fine_map.y_size,
+									 self.fine_map.x_offset, self.fine_map.y_offset, self.sample_map.x_size,
+									 self.sample_map.y_size, self.coarse_map.file_name, self.coarse_map.x_size,
+									 self.coarse_map.y_size, self.coarse_map.x_offset, self.coarse_map.y_offset,
+									 self.landscape_type)
+		Dispersal.set_pristine_map_parameters(self.pristine_fine_list,
+											  [x for x in range(len(self.pristine_fine_list))],
+											  self.rates_list, self.times_list, self.pristine_coarse_list,
+											  [x for x in range(len(self.pristine_fine_list))],
+											  self.rates_list, self.times_list)
+
+	def test_mean_distance_travelled(self):
 		"""
 		Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled
 		after number_steps have been moved.
@@ -175,55 +234,37 @@ class DispersalSimulation(Map):
 		:param float cutoff: the cutoff value to use for norm-uniform dispersal
 		:return:
 		"""
-		self._setup_dispersal(map_file=map_file)
-		if output_database == "output.db" and self.dispersal_database is not None:
-			output_database = self.dispersal_database
+		self._close_database_connection()
 		# Delete the file if it exists, and recursively create the folder if it doesn't
-		check_parent(output_database)
+		check_parent(self.dispersal_database)
 		if necsim_import_success:
-			Dispersal.set_logger(self.logger)
-			Dispersal.set_log_function(write_to_log)
-			Dispersal.test_mean_distance_travelled(output_database, self.file_name, dispersal_method, landscape_type,
-												   sigma, tau, m_prob, cutoff, number_repeats, number_steps, seed,
-												   self.x_size, self.y_size)
-			self.dispersal_database = output_database
+			try:
+				self.complete_setup()
+				Dispersal.test_mean_distance_travelled(self.dispersal_database, self.number_repeats, self.number_steps,
+													   self.seed)
+			except Exception as e:
+				raise Dispersal.DispersalError(str(e))
 		else:
 			raise ImportError("Successful c++ module import required for testing dispersal functions.")
 
-	def test_mean_dispersal(self, number_repeats, output_database="output.db", map_file=None, seed=1,
-							dispersal_method="normal", landscape_type="tiled", sigma=1, tau=1, m_prob=0.0, cutoff=100,
-							sequential=False):
+
+	def test_mean_dispersal(self):
 		"""
 		Tests the dispersal kernel on the provided map, producing a database containing each dispersal distance for
 		analysis purposes.
 
 		.. note:: should be equivalent to :func:`~test_mean_distance_travelled` with number_steps = 1
 
-		:param int number_repeats: the number of times to iterate on the map
-		:param str output_database: the path to the output database
-		:param str map_file: the path to the map file to iterate on
-		:param int seed: the random seed
-		:param str dispersal_method: the dispersal method to use ("normal", "fat-tailed" or "norm-uniform")
-		:param str landscape_type: the landscape type to use ("infinite", "tiled" or "closed")
-		:param float sigma: the sigma value to use for normal and norm-uniform dispersal
-		:param float tau: the tau value to use for fat-tailed dispersal
-		:param float m_prob: the m_prob to use for norm-uniform dispersal
-		:param float cutoff: the cutoff value to use for norm-uniform dispersal
-		:param bool sequential: if true, end locations of one dispersal event are used as the start for the next. Otherwise,
-		a new random cell is chosen
 		"""
-		self._setup_dispersal(map_file=map_file)
-		if output_database == "output.db" and self.file_name is not None:
-			output_database = self.dispersal_database
+		self._close_database_connection()
 		# Delete the file if it exists, and recursively create the folder if it doesn't
-		check_parent(output_database)
+		check_parent(self.dispersal_database)
 		if necsim_import_success:
-			Dispersal.set_logger(self.logger)
-			Dispersal.set_log_function(write_to_log)
-			Dispersal.test_mean_dispersal(output_database, self.file_name, dispersal_method, landscape_type, sigma, tau,
-										  m_prob, cutoff, number_repeats, seed, self.x_size, self.y_size,
-										  int(sequential))
-			self.dispersal_database = output_database
+			try:
+				self.complete_setup()
+				Dispersal.test_mean_dispersal(self.dispersal_database, self.number_repeats, self.seed, self.sequential)
+			except Exception as e:
+				raise DispersalError(str(e))
 		else:
 			raise ImportError("Successful c++ module import required for testing dispersal functions.")
 
