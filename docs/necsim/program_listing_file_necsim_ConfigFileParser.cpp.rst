@@ -8,8 +8,8 @@ Program Listing for File ConfigFileParser.cpp
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    // 
    #include <boost/filesystem/operations.hpp>
    #include "ConfigFileParser.h"
@@ -25,7 +25,7 @@ Program Listing for File ConfigFileParser.cpp
        // check size is correct
        if(comargs.size() != argc)
        {
-           cerr << "ERROR_MAIN_010: Incorrect command line parsing." << endl;
+           writeError("ERROR_MAIN_010: Incorrect command line parsing.");
        }
    }
    

@@ -406,12 +406,12 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, &quot;</span>
-								<span class="s2">&quot;max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_pristine, &quot;</span>
+								<span class="s2">&quot;max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, &quot;</span>
 								<span class="s2">&quot;time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, &quot;</span>
 								<span class="s2">&quot;coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, &quot;</span>
 								<span class="s2">&quot;fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, &quot;</span>
-								<span class="s2">&quot;sample_x_offset, sample_y_offset, pristine_coarse_map, &quot;</span>
-								<span class="s2">&quot; pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
+								<span class="s2">&quot;sample_x_offset, sample_y_offset, historical_coarse_map, &quot;</span>
+								<span class="s2">&quot; historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
 								<span class="s2">&quot; landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
 								<span class="s2">&quot; FROM SIMULATION_PARAMETERS WHERE guild == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">guild</span><span class="p">,))</span>
 		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1618,8 +1618,8 @@
 <span class="sd">		Reads the simulation parameters from the database and returns them.</span>
 
 <span class="sd">		:return: a dictionary mapping names to values for seed, job_type, output_dir, speciation_rate, sigma, L_value, deme,</span>
-<span class="sd">		sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_pristine, time_config,</span>
-<span class="sd">		coarse_map vars, fine map vars, sample_file, gridx, gridy, pristine coarse map, pristine fine map, sim_complete,</span>
+<span class="sd">		sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_historical, time_config,</span>
+<span class="sd">		coarse_map vars, fine map vars, sample_file, gridx, gridy, historical coarse map, historical fine map, sim_complete,</span>
 <span class="sd">		dispersal_method, m_probability, cutoff, landscape_type, protracted, min_speciation_gen, max_speciation_gen,</span>
 <span class="sd">		dispersal_map</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -1627,12 +1627,12 @@
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">guild</span><span class="p">:</span>
 			<span class="k">try</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, &quot;</span>
-									<span class="s2">&quot;max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_pristine, &quot;</span>
+									<span class="s2">&quot;max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, &quot;</span>
 									<span class="s2">&quot;time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, &quot;</span>
 									<span class="s2">&quot;coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, &quot;</span>
 									<span class="s2">&quot;fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, &quot;</span>
-									<span class="s2">&quot;sample_x_offset, sample_y_offset, pristine_coarse_map, &quot;</span>
-									<span class="s2">&quot; pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
+									<span class="s2">&quot;sample_x_offset, sample_y_offset, historical_coarse_map, &quot;</span>
+									<span class="s2">&quot; historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
 									<span class="s2">&quot; landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
 									<span class="s2">&quot; FROM SIMULATION_PARAMETERS&quot;</span><span class="p">)</span>
 			<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>

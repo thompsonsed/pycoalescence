@@ -30,7 +30,7 @@ Detailed Description
 
 Generates a metacommunity using spatially-implicit neutral simulations, which is used to draw individuals from a community.
 Samuel Thompson
-BSD-3 Licence. Individuals will be drawn from the metacommunity for each speciation event, instead of creating a new species each time. The metacommunity itself is generated using spatially-implicit neutral simulations.
+MIT Licence. Individuals will be drawn from the metacommunity for each speciation event, instead of creating a new species each time. The metacommunity itself is generated using spatially-implicit neutral simulations.
 Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
 
 

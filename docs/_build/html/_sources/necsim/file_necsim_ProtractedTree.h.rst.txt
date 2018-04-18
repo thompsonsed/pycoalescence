@@ -30,7 +30,7 @@ Detailed Description
 
 Contains the :ref:`class_ProtractedTree` class for running simulations and outputting the phylogenetic trees using protracted speciation.
 Sam Thompson
-Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com BSD-3 Licence. 
+Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 
 

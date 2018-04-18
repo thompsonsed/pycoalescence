@@ -121,10 +121,6 @@ class Simulation(Landscape):
 		self.dispersal_relative_cost = 1  # the relative cost of moving through non-matrix
 		self.job_type = 0
 		self.min_num_species = 1
-
-		# amount of habitat change that occurs before pristine state (there will be a jump to pristine at the pristine time
-		self.habitat_change_rate = 0
-		self.time_since_pristine = 1  # The number of generations ago a habitat was pristine
 		self.tau = 0
 		self.time_config_file = ""
 		self.time_points = None
@@ -320,24 +316,24 @@ class Simulation(Landscape):
 					config.set("coarse_map", "x_off", 0)
 					config.set("coarse_map", "y_off", 0)
 					config.set("coarse_map", "scale", 1)
-				self.sort_pristine_maps()
-				if len(self.pristine_coarse_list) != 0 and len(self.pristine_fine_list) != 0:
+				self.sort_historical_maps()
+				if len(self.historical_coarse_list) != 0 and len(self.historical_fine_list) != 0:
 					for i, t in enumerate(self.times_list):
 						try:
-							tmp_fine = "pristine_fine" + str(i)
+							tmp_fine = "historical_fine" + str(i)
 							config.add_section(tmp_fine)
-							config.set(tmp_fine, "path", self.pristine_fine_list[i])
+							config.set(tmp_fine, "path", self.historical_fine_list[i])
 							config.set(tmp_fine, "number", str(i))
 							config.set(tmp_fine, "time", str(t))
 							config.set(tmp_fine, "rate", str(self.rates_list[i]))
-							tmp_coarse = "pristine_coarse" + str(i)
+							tmp_coarse = "historical_coarse" + str(i)
 							config.add_section(tmp_coarse)
-							config.set(tmp_coarse, "path", self.pristine_coarse_list[i])
+							config.set(tmp_coarse, "path", self.historical_coarse_list[i])
 							config.set(tmp_coarse, "number", str(i))
 							config.set(tmp_coarse, "time", str(t))
 							config.set(tmp_coarse, "rate", str(self.rates_list[i]))
 						except IndexError as ie:
-							self.logger.warning('Discrepancy between pristine file list, time list or rate list. Check inputs: ' +
+							self.logger.warning('Discrepancy between historical file list, time list or rate list. Check inputs: ' +
 										  ie.message)
 							break
 				if self.grid.file_name == "set":
@@ -445,7 +441,7 @@ class Simulation(Landscape):
 		self.set_simulation_params(seed=seed, job_type=task, output_directory=output, min_speciation_rate=alpha,
 								   sigma=sigma, tau=1, deme=1, sample_size=1.0, max_time=36000,
 								   dispersal_relative_cost=1,
-								   min_num_species=1, habitat_change_rate=0.0, gen_since_pristine=1)
+								   min_num_species=1, habitat_change_rate=0.0, gen_since_historical=1)
 		self.set_map_parameters("null", size, size, "null", size, size, 0, 0, "null", size, size, 0, 0, 1, "null",
 								"null")
 		self.set_speciation_rates([alpha])
@@ -497,8 +493,8 @@ class Simulation(Landscape):
 				pass
 			return t.is_protracted()
 
-	def set_map_files(self, sample_file, fine_file=None, coarse_file=None, pristine_fine_file=None,
-					  pristine_coarse_file=None, dispersal_map=None, reproduction_map=None):
+	def set_map_files(self, sample_file, fine_file=None, coarse_file=None, historical_fine_file=None,
+					  historical_coarse_file=None, dispersal_map=None, reproduction_map=None):
 		"""
 		Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
 		the specified dimensions.
@@ -506,7 +502,7 @@ class Simulation(Landscape):
 		If sample_file is "null", dimension values will remain at 0.
 		If coarse_file is "null", it will default to the size of fine_file with zero offset.
 		If the coarse file is "none", it will not be used.
-		If the pristine fine or coarse files are "none", they will not be used.
+		If the historical fine or coarse files are "none", they will not be used.
 
 		.. note:: the dispersal map should be of dimensions xy by xy where x, y are the fine map dimensions. Dispersal
 				  probabilities should sum to 1 across each row, and each row/column index represents dispersal from the
@@ -518,8 +514,8 @@ class Simulation(Landscape):
 		:param str sample_file: the sample map file. Provide "null" if on samplemask is required
 		:param str fine_file: the fine map file. Defaults to "null" if none provided
 		:param str coarse_file: the coarse map file. Defaults to "none" if none provided
-		:param str pristine_fine_file: the pristine fine map file. Defaults to "none" if none provided
-		:param str pristine_coarse_file: the pristine coarse map file. Defaults to "none" if none provided
+		:param str historical_fine_file: the historical fine map file. Defaults to "none" if none provided
+		:param str historical_coarse_file: the historical coarse map file. Defaults to "none" if none provided
 		:param str dispersal_map: the dispersal map for reading dispersal values. Default to "none" if none provided
 		:param str reproduction_map: a map of relative reproduction probabilities, at the scale of the fine map
 
@@ -535,7 +531,7 @@ class Simulation(Landscape):
 			self.reproduction_map.file_name = "none"
 		else:
 			self.reproduction_map.file_name = reproduction_map
-		Landscape.set_map_files(self, sample_file, fine_file, coarse_file, pristine_fine_file, pristine_coarse_file)
+		Landscape.set_map_files(self, sample_file, fine_file, coarse_file, historical_fine_file, historical_coarse_file)
 
 	def detect_map_dimensions(self):
 		"""
@@ -579,7 +575,7 @@ class Simulation(Landscape):
 	def set_simulation_params(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0, deme=1,
 							  sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
 							  dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.0,
-							  gen_since_pristine=1, restrict_self=False, landscape_type=False,
+							  gen_since_historical=1, restrict_self=False, landscape_type=False,
 							  protracted=False, min_speciation_gen=None, max_speciation_gen=None,
 							  spatial=True, uses_spatial_sampling=False, times=None):
 		"""
@@ -600,7 +596,7 @@ class Simulation(Landscape):
 		:param float dispersal_relative_cost: the relative cost of travelling through non-habitat (defaults to 1)
 		:param int min_num_species: the minimum number of species known to exist (defaults to 1
 		:param float habitat_change_rate: the rate of habitat change over time
-		:param float gen_since_pristine: the time in generations since a pristine state was achieved
+		:param float gen_since_historical: the time in generations since a historical state was achieved
 		:param bool restrict_self: if true, restricts dispersal from own cell
 		:param bool/str landscape_type: if false or "closed", restricts dispersal to the provided maps, otherwise
 		can be "infinite", or a tiled landscape using "tiled_coarse" or "tiled_fine".
@@ -626,7 +622,7 @@ class Simulation(Landscape):
 			self.dispersal_relative_cost = dispersal_relative_cost
 			self.min_num_species = min_num_species
 			self.habitat_change_rate = habitat_change_rate
-			self.time_since_pristine = gen_since_pristine
+			self.gen_since_historical = gen_since_historical
 			self.dispersal_method = dispersal_method
 			self.m_prob = m_prob
 			self.cutoff = cutoff
@@ -746,9 +742,9 @@ class Simulation(Landscape):
 		# First add the maps
 		if self.coarse_map.file_name not in [None, "none"]:
 			total_ram += self.coarse_map.x_size * self.coarse_map.y_size * 4
-		if self.pristine_fine_map_file not in [None, "none"] or len(self.pristine_fine_list) != 0:
+		if self.historical_fine_map_file not in [None, "none"] or len(self.historical_fine_list) != 0:
 			total_ram += self.fine_map.x_size * self.fine_map.y_size * 4
-		if self.pristine_coarse_map_file not in [None, "none"] or len(self.pristine_coarse_list) != 0:
+		if self.historical_coarse_map_file not in [None, "none"] or len(self.historical_coarse_list) != 0:
 			total_ram += self.coarse_map.x_size * self.coarse_map.y_size * 4
 		if self.reproduction_map.file_name not in [None, "none"]:
 			total_ram += self.reproduction_map.x_size * self.reproduction_map.y_size * 8
@@ -1044,10 +1040,11 @@ class Simulation(Landscape):
 		if self.dispersal_method is not None or self.landscape_type:
 			config_require = True
 		if config_require:
-			if self.pristine_fine_map_file is not None and self.pristine_fine_map_file != "":
-				self.add_pristine_map(self.pristine_fine_map_file, self.pristine_coarse_map_file,
-									  self.time_since_pristine, self.habitat_change_rate)
-		if (len(self.pristine_coarse_list) > 0) or config_require:
+			if self.historical_fine_map_file not in self.historical_fine_list and \
+					self.historical_fine_map_file not in [None, "", "none"]:
+				self.add_historical_map(self.historical_fine_map_file, self.historical_coarse_map_file,
+										self.gen_since_historical, self.habitat_change_rate)
+		if (len(self.historical_coarse_list) > 0) or config_require:
 			self.create_map_config()
 		if config_require:
 			self.is_full = False

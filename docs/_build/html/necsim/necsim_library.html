@@ -239,10 +239,10 @@ resolution of coarse map = 10 x resolution of fine map)</li>
 <li>lambda - the relative cost of moving through non-forest</li>
 <li>the_task - for referencing the specific task later on.</li>
 <li>the minimum number of species the system is known to contain.</li>
-<li>the pristine fine map file to use</li>
-<li>the pristine coarse map file to use</li>
-<li>the rate of forest change from pristine</li>
-<li>the time (in generations) since the pristine forest was seen.</li>
+<li>the historical fine map file to use</li>
+<li>the historical coarse map file to use</li>
+<li>the rate of forest change from historical</li>
+<li>the time (in generations) since the historical forest was seen.</li>
 <li>the dispersal tau value (the width of the fat-tailed kernel).</li>
 <li>the sample mask, with binary 1:0 values for areas that we want to
 sample from. If this is not provided then this will default to
@@ -331,26 +331,26 @@ times and at all scales. An example is given below.</p>
 <span class="n">y_off</span> <span class="o">=</span> <span class="mi">14</span>
 <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-<span class="p">[</span><span class="n">pristine_fine0</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_fine_pristine1</span><span class="o">.</span><span class="n">tif</span>
+<span class="p">[</span><span class="n">historical_fine0</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_fine_historical1</span><span class="o">.</span><span class="n">tif</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mf">0.5</span>
 
-<span class="p">[</span><span class="n">pristine_coarse0</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_coarse_pristine1</span><span class="o">.</span><span class="n">tif</span>
+<span class="p">[</span><span class="n">historical_coarse0</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_coarse_historical1</span><span class="o">.</span><span class="n">tif</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mf">0.5</span>
 
-<span class="p">[</span><span class="n">pristine_fine1</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_fine_pristine2</span><span class="o">.</span><span class="n">tif</span>
+<span class="p">[</span><span class="n">historical_fine1</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_fine_historical2</span><span class="o">.</span><span class="n">tif</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mf">0.7</span>
 
-<span class="p">[</span><span class="n">pristine_coarse1</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_coarse_pristine2</span><span class="o">.</span><span class="n">tif</span>
+<span class="p">[</span><span class="n">historical_coarse1</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">sample</span><span class="o">/</span><span class="n">SA_sample_coarse_historical2</span><span class="o">.</span><span class="n">tif</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mf">0.7</span>
@@ -358,7 +358,7 @@ times and at all scales. An example is given below.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The rates and times between the pairs of pristine fine maps and pristine coarse maps must match up. Without matching
+<p class="last">The rates and times between the pairs of historical fine maps and historical coarse maps must match up. Without matching
 values here, there could be undetermined errors, or coarse map values being ignored.</p>
 </div>
 <div class="admonition note">
@@ -619,7 +619,7 @@ Singapore</p>
 </div>
 <div class="section" id="licence">
 <h2>Licence<a class="headerlink" href="#licence" title="Permalink to this headline">¶</a></h2>
-<p>This project is released under BSD-3 See file
+<p>This project is released under MIT See file
 <strong>LICENSE.txt</strong> or go to
 <a class="reference external" href="https://opensource.org/licenses/BSD-3-Clause">here</a> for full license
 details.</p>
@@ -2348,6 +2348,14 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="function_set_historical_map_parameters.html">Function set_historical_map_parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_set_historical_map_parameters.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="function_set_log_function.html">Function set_log_function</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_set_log_function.html#function-documentation">Function Documentation</a></li>
 </ul>
@@ -2382,14 +2390,6 @@ details.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="function_set_map_parameters.html">Function set_map_parameters</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_set_map_parameters.html#function-documentation">Function Documentation</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="function_set_pristine_map_parameters.html">Function set_pristine_map_parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="function_set_pristine_map_parameters.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>

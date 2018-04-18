@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 James Rosindell
-The definitions for the constants defined here should not be altered. BSD-3 Licence. 
+The definitions for the constants defined here should not be altered. MIT Licence. 
 
 
 

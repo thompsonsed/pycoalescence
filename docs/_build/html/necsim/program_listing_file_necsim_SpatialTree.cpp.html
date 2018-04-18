@@ -66,8 +66,8 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_SpatialTree.cpp.html#file-necsim-spatialtree-cpp"><span class="std std-ref">File SpatialTree.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;SpatialTree.h&quot;</span><span class="cp"></span>
@@ -157,10 +157,10 @@
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;21: dispersal_relative_cost - the relative cost of moving through non-forest.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;22: the_task - for referencing the specific task later on.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;23: the minimum number of species the system is known to contain.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;24: the pristine fine map file to use.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;25: the pristine coarse map file to use.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;26: the rate of forest change from pristine.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;27: the time (in generations) since the pristine forest was seen.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;24: the historical fine map file to use.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;25: the historical coarse map file to use.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;26: the rate of forest change from historical.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;27: the time (in generations) since the historical forest was seen.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;28: the dispersal sigma value.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;29: the sample mask, with binary 1:0 values for areas that we want to sample from. If this is not provided then this will default to mapping the entire grid.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;30: a file containing a tab-separated list of sample points in time (in generations). If this is null then only the present day will be sampled.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
@@ -259,7 +259,7 @@
 
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Checking folder existance...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
-    <span class="kt">bool</span> <span class="n">bFineMap</span><span class="p">,</span> <span class="n">bCoarseMap</span><span class="p">,</span> <span class="n">bFineMapPristine</span><span class="p">,</span> <span class="n">bCoarseMapPristine</span><span class="p">,</span> <span class="n">bSampleMask</span><span class="p">,</span> <span class="n">bOutputFolder</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bFineMap</span><span class="p">,</span> <span class="n">bCoarseMap</span><span class="p">,</span> <span class="n">bFineMapHistorical</span><span class="p">,</span> <span class="n">bCoarseMapHistorical</span><span class="p">,</span> <span class="n">bSampleMask</span><span class="p">,</span> <span class="n">bOutputFolder</span><span class="p">;</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="n">bFineMap</span> <span class="o">=</span> <span class="n">doesExistNull</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_file</span><span class="p">);</span>
@@ -280,21 +280,21 @@
     <span class="p">}</span>
     <span class="k">try</span>
     <span class="p">{</span>
-        <span class="n">bFineMapPristine</span> <span class="o">=</span> <span class="n">doesExistNull</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">pristine_fine_map_file</span><span class="p">);</span>
+        <span class="n">bFineMapHistorical</span> <span class="o">=</span> <span class="n">doesExistNull</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">historical_fine_map_file</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span><span class="o">&amp;</span> <span class="n">fe</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">fe</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
-        <span class="n">bFineMapPristine</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bFineMapHistorical</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">try</span>
     <span class="p">{</span>
-        <span class="n">bCoarseMapPristine</span> <span class="o">=</span> <span class="n">doesExistNull</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">pristine_coarse_map_file</span><span class="p">);</span>
+        <span class="n">bCoarseMapHistorical</span> <span class="o">=</span> <span class="n">doesExistNull</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">historical_coarse_map_file</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span><span class="o">&amp;</span> <span class="n">fe</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">fe</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
-        <span class="n">bCoarseMapPristine</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">bCoarseMapHistorical</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">bOutputFolder</span> <span class="o">=</span> <span class="n">checkOutputDirectory</span><span class="p">();</span>
     <span class="k">try</span>
@@ -306,7 +306,7 @@
         <span class="n">writeError</span><span class="p">(</span><span class="n">fe</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="n">bSampleMask</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">bFineMap</span> <span class="o">&amp;&amp;</span> <span class="n">bCoarseMap</span> <span class="o">&amp;&amp;</span> <span class="n">bFineMapPristine</span> <span class="o">&amp;&amp;</span> <span class="n">bCoarseMapPristine</span> <span class="o">&amp;&amp;</span> <span class="n">bOutputFolder</span> <span class="o">&amp;&amp;</span> <span class="n">bSampleMask</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">bFineMap</span> <span class="o">&amp;&amp;</span> <span class="n">bCoarseMap</span> <span class="o">&amp;&amp;</span> <span class="n">bFineMapHistorical</span> <span class="o">&amp;&amp;</span> <span class="n">bCoarseMapHistorical</span> <span class="o">&amp;&amp;</span> <span class="n">bOutputFolder</span> <span class="o">&amp;&amp;</span> <span class="n">bSampleMask</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Checking folder existance...done!                                                                &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
@@ -327,11 +327,9 @@
         <span class="c1">// Set the variables equal to the value from the Mapvars object.</span>
         <span class="n">fine_map_input</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_file</span><span class="p">;</span>
         <span class="n">coarse_map_input</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">coarse_map_file</span><span class="p">;</span>
-        <span class="n">grid_x_size</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_x_size</span><span class="p">;</span>
-        <span class="n">grid_y_size</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span><span class="p">;</span>
-        <span class="c1">// pristine map information</span>
-        <span class="n">pristine_fine_map_input</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">pristine_fine_map_file</span><span class="p">;</span>
-        <span class="n">pristine_coarse_map_input</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">pristine_coarse_map_file</span><span class="p">;</span>
+        <span class="c1">// historical map information</span>
+        <span class="n">historical_fine_map_input</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">historical_fine_map_file</span><span class="p">;</span>
+        <span class="n">historical_coarse_map_input</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">historical_coarse_map_file</span><span class="p">;</span>
         <span class="n">desired_specnum</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">desired_specnum</span><span class="p">;</span>
         <span class="k">if</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
         <span class="p">{</span>
@@ -360,16 +358,16 @@
         <span class="p">{</span>
             <span class="c1">// Set the time variables</span>
             <span class="n">landscape</span><span class="p">.</span><span class="n">checkMapExists</span><span class="p">();</span>
-            <span class="c1">// landscape.setTimeVars(gen_since_pristine,habitat_change_rate);</span>
+            <span class="c1">// landscape.setTimeVars(gen_since_historical,habitat_change_rate);</span>
             <span class="c1">// Import the fine map</span>
             <span class="n">landscape</span><span class="p">.</span><span class="n">calcFineMap</span><span class="p">();</span>
             <span class="c1">// Import the coarse map</span>
             <span class="n">landscape</span><span class="p">.</span><span class="n">calcCoarseMap</span><span class="p">();</span>
             <span class="c1">// Calculate the offset for the extremeties of each map</span>
             <span class="n">landscape</span><span class="p">.</span><span class="n">calcOffset</span><span class="p">();</span>
-            <span class="c1">// Import the pristine maps;</span>
-            <span class="n">landscape</span><span class="p">.</span><span class="n">calcPristineFineMap</span><span class="p">();</span>
-            <span class="n">landscape</span><span class="p">.</span><span class="n">calcPristineCoarseMap</span><span class="p">();</span>
+            <span class="c1">// Import the historical maps;</span>
+            <span class="n">landscape</span><span class="p">.</span><span class="n">calcHistoricalFineMap</span><span class="p">();</span>
+            <span class="n">landscape</span><span class="p">.</span><span class="n">calcHistoricalCoarseMap</span><span class="p">();</span>
             <span class="c1">// Calculate the maximum values</span>
             <span class="n">landscape</span><span class="p">.</span><span class="n">recalculateHabitatMax</span><span class="p">();</span>
             <span class="n">importReproductionMap</span><span class="p">();</span>
@@ -499,7 +497,7 @@
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpatialTree</span><span class="o">::</span><span class="n">fillObjects</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">initial_count</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">active</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="n">grid</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">grid_y_size</span><span class="p">,</span> <span class="n">grid_x_size</span><span class="p">);</span>
+    <span class="n">grid</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_x_size</span><span class="p">);</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">number_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Setting up simulation...filling grid                           &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
@@ -671,7 +669,7 @@
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 <span class="c1">// Then the lineage exists in the main list;</span>
 <span class="c1">// debug (can be removed later)</span>
-<span class="cp">#ifdef pristine_mode</span>
+<span class="cp">#ifdef historical_mode</span>
         <span class="k">if</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getListpos</span><span class="p">())</span>
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
@@ -861,7 +859,7 @@
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_005: Grid index not set correctly for species. Check &quot;</span>
                                       <span class="s">&quot;move programming function.&quot;</span><span class="p">);</span>
             <span class="p">}</span>
-<span class="cp">#ifdef pristine_mode</span>
+<span class="cp">#ifdef historical_mode</span>
             <span class="k">if</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">getListsize</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">())</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
@@ -953,7 +951,7 @@
 <span class="c1">// Get the random reference from the match list.</span>
 <span class="c1">// If the movement is to an empty space, then we can update the chain to include the new</span>
 <span class="c1">// lineage.</span>
-<span class="cp">#ifdef pristine_mode</span>
+<span class="cp">#ifdef historical_mode</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">randwrap</span> <span class="o">&gt;</span> <span class="n">landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
                 <span class="p">{</span>
                     <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
@@ -991,7 +989,7 @@
                     <span class="p">}</span>
                 <span class="p">}</span>
             <span class="p">}</span>
-<span class="cp">#ifdef pristine_mode</span>
+<span class="cp">#ifdef historical_mode</span>
             <span class="k">if</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getListpos</span><span class="p">())</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
@@ -1261,8 +1259,8 @@
     <span class="k">return</span> <span class="n">iSpecies</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="cp">#ifdef pristine_mode</span>
-<span class="kt">void</span> <span class="n">SpatialTree</span><span class="o">::</span><span class="n">pristineStepChecks</span><span class="p">()</span>
+<span class="cp">#ifdef historical_mode</span>
+<span class="kt">void</span> <span class="n">SpatialTree</span><span class="o">::</span><span class="n">historicalStepChecks</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
@@ -1281,8 +1279,8 @@
     <span class="n">Tree</span><span class="o">::</span><span class="n">incrementGeneration</span><span class="p">();</span>
     <span class="n">landscape</span><span class="p">.</span><span class="n">updateMap</span><span class="p">(</span><span class="n">generation</span><span class="p">);</span>
     <span class="n">checkTimeUpdate</span><span class="p">();</span>
-    <span class="c1">// check if the map is pristine yet</span>
-    <span class="n">landscape</span><span class="p">.</span><span class="n">checkPristine</span><span class="p">(</span><span class="n">generation</span><span class="p">);</span>
+    <span class="c1">// check if the map is historical yet</span>
+    <span class="n">landscape</span><span class="p">.</span><span class="n">checkHistorical</span><span class="p">(</span><span class="n">generation</span><span class="p">);</span>
 
 <span class="p">}</span>
 <span class="cp">#ifdef DEBUG</span>
@@ -1313,8 +1311,8 @@
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getYpos</span><span class="p">();</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">=</span> <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getXwrap</span><span class="p">();</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">=</span> <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getYwrap</span><span class="p">();</span>
-<span class="cp">#ifdef pristine_mode</span>
-    <span class="n">pristineStepChecks</span><span class="p">();</span>
+<span class="cp">#ifdef historical_mode</span>
+    <span class="n">historicalStepChecks</span><span class="p">();</span>
 <span class="cp">#endif</span>
 <span class="p">}</span>
 
@@ -1397,7 +1395,7 @@
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">deme_sample</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">maxtime</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">dispersal_relative_cost</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">desired_specnum</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">habitat_change_rate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">gen_since_pristine</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times_file</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">gen_since_historical</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times_file</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">coarse_map_input</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">coarse_map_x_size</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">coarse_map_y_size</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">coarse_map_x_offset</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">coarse_map_y_offset</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">coarse_map_scale</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span><span class="p">;</span>
@@ -1408,7 +1406,7 @@
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_size</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_x_offset</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_offset</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &#39;&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">pristine_coarse_map_input</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span> <span class="o">+</span> <span class="n">pristine_fine_map_input</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">sim_complete</span><span class="p">);</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">historical_coarse_map_input</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span> <span class="o">+</span> <span class="n">historical_fine_map_input</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">sim_complete</span><span class="p">);</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;, &#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">dispersal_method</span> <span class="o">+</span> <span class="s">&quot;&#39;, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">boost</span><span class="o">::</span><span class="n">lexical_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">m_prob</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">cutoff</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
@@ -1479,7 +1477,7 @@
 
 <span class="kt">void</span> <span class="n">SpatialTree</span><span class="o">::</span><span class="n">loadGridSave</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">grid</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">);</span>
+    <span class="n">grid</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_x_size</span><span class="p">);</span>
     <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
     <span class="k">try</span>
     <span class="p">{</span>
@@ -1488,9 +1486,9 @@
         <span class="c1">// New method for re-creating grid data from active lineages</span>
         <span class="c1">// First initialise the empty grid object</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">grid_y_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">grid_x_size</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_x_size</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">].</span><span class="n">initialise</span><span class="p">(</span><span class="n">landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">));</span>
                 <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">].</span><span class="n">fillList</span><span class="p">();</span>
@@ -1815,7 +1813,7 @@
 <span class="kt">void</span> <span class="n">SpatialTree</span><span class="o">::</span><span class="n">runChecks</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">chosen</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">coalchosen</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="c1">// final checks</span>
-<span class="cp">#ifdef pristine_mode</span>
+<span class="cp">#ifdef historical_mode</span>
     <span class="k">if</span><span class="p">(</span><span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getListpos</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">grid</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getYpos</span><span class="p">()][</span><span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getXpos</span><span class="p">()].</span><span class="n">getMaxsize</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
        <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getNwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>

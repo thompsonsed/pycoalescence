@@ -39,7 +39,7 @@ Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
 Based heavily on code written by James Rosindell
 Contact: j.rosindell@imperial.ac.uk
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 

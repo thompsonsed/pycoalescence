@@ -8,8 +8,8 @@ Program Listing for File Map.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef MAP_H
    #define MAP_H
    #ifdef with_gdal
@@ -177,6 +177,16 @@ Program Listing for File Map.h
        }
    #endif //DEBUG
    
+       double getUpperLeftX()
+       {
+           return upper_left_x;
+       }
+   
+       double getUpperLeftY()
+       {
+           return upper_left_y;
+       }
+   
        void import(const string &filename) override
        {
            if(!importTif(filename))
@@ -247,6 +257,7 @@ Program Listing for File Map.h
                opened_here = true;
                offset_map.open();
            }
+           offset_map.getRasterBand();
            offset_map.getMetaData();
            return opened_here;
        }
@@ -262,15 +273,14 @@ Program Listing for File Map.h
        void calculateOffset(Map &offset_map, long &offset_x, long &offset_y)
        {
            auto opened_here = openOffsetMap(offset_map);
-           offset_x = static_cast<long>(round(offset_map.upper_left_x - upper_left_x / x_res));
-           offset_y = static_cast<long>(round(offset_map.upper_left_y - upper_left_y / y_res));
+           offset_x = static_cast<long>(round((upper_left_x - offset_map.upper_left_x) / x_res));
+           offset_y = static_cast<long>(round((offset_map.upper_left_y - upper_left_y )/ y_res));
            closeOffsetMap(offset_map, opened_here);
        }
    
        unsigned long roundedScale(Map &offset_map)
        {
            auto opened_here = openOffsetMap(offset_map);
-           double offset_scale = offset_map.x_res;
            closeOffsetMap(offset_map, opened_here);
            return static_cast<unsigned long>(floor(offset_map.x_res / x_res));
        }
@@ -387,12 +397,12 @@ Program Listing for File Map.h
            }
        }
    
-       friend ostream &operator>>(ostream& os, const Map &m)
+       friend ostream &operator>>(ostream &os, const Map &m)
        {
            return Matrix<T>::writeOut(os, m);
        }
    
-       friend istream &operator<<(istream& is, Map &m)
+       friend istream &operator<<(istream &is, Map &m)
        {
            return Matrix<T>::readIn(is, m);
        }
@@ -455,8 +465,6 @@ Program Listing for File Map.h
        dt = GDT_UInt32;
        defaultImport();
    }
-   
-   
    
    template<>
    inline void Map<float>::internalImport()

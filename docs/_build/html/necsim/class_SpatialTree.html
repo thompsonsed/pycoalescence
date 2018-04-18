@@ -372,12 +372,22 @@
 <dt id="_CPPv2N11SpatialTree12loadGridSaveEv">
 <span id="SpatialTree::loadGridSave"></span><span class="target" id="necsimclass_spatial_tree_1a6e3cfc1c0371d90ceaa7a463470de798"></span>void <code class="descname">loadGridSave</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpatialTree12loadGridSaveEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Loads the grid from the save file into memory. </p>
+<p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>Requires that both the simulation parameters and the maps have already been loaded. </dd>
+</dl>
+</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N11SpatialTree11loadMapSaveEv">
 <span id="SpatialTree::loadMapSave"></span><span class="target" id="necsimclass_spatial_tree_1a585861bbad04528d2cabf7b1604a40dc"></span>void <code class="descname">loadMapSave</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpatialTree11loadMapSaveEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Loads the map from the save file into memory. </p>
+<p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>Requires that the simulation parameters have already been loaded. </dd>
+</dl>
+</p>
 </dd></dl>
 
 <dl class="function">
@@ -918,6 +928,12 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N4Tree15openSQLDatabaseEv">
+<span id="Tree::openSQLDatabase"></span><span class="target" id="necsimclass_tree_1a9e240bbfc3139b290a0dead741f560bf"></span>void <code class="descname">openSQLDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree15openSQLDatabaseEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Opens a connection to the in-memory database, or the on-disk database, depending on the compilation options. </p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N4Tree9sqlCreateEv">
 <span id="Tree::sqlCreate"></span><span class="target" id="necsimclass_tree_1ae784a6ed362f6c5263ee797759f715b6"></span>void <code class="descname">sqlCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree9sqlCreateEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Generates the SQL database file from the full simulation data. This allows for greater analysis of the data after completion of the simulation. </p>
@@ -1068,23 +1084,13 @@
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N11SpatialTree23pristine_fine_map_inputE">
-<span id="SpatialTree::pristine_fine_map_input__string"></span><span class="target" id="necsimclass_spatial_tree_1a0b6a624a8d0a434131f3ec5e2581d8b6"></span>string <code class="descname">pristine_fine_map_input</code><a class="headerlink" href="#_CPPv2N11SpatialTree23pristine_fine_map_inputE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N11SpatialTree25historical_fine_map_inputE">
+<span id="SpatialTree::historical_fine_map_input__string"></span><span class="target" id="necsimclass_spatial_tree_1ac49970522839ed06459949caca57fa1d"></span>string <code class="descname">historical_fine_map_input</code><a class="headerlink" href="#_CPPv2N11SpatialTree25historical_fine_map_inputE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N11SpatialTree25pristine_coarse_map_inputE">
-<span id="SpatialTree::pristine_coarse_map_input__string"></span><span class="target" id="necsimclass_spatial_tree_1abf4a4019079d23e4489420fc14f0e461"></span>string <code class="descname">pristine_coarse_map_input</code><a class="headerlink" href="#_CPPv2N11SpatialTree25pristine_coarse_map_inputE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N11SpatialTree11grid_x_sizeE">
-<span id="SpatialTree::grid_x_size__unsigned-l"></span><span class="target" id="necsimclass_spatial_tree_1aa4c60d73794de44877b9ed66b73b4ed8"></span>unsigned long <code class="descname">grid_x_size</code><a class="headerlink" href="#_CPPv2N11SpatialTree11grid_x_sizeE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv2N11SpatialTree11grid_y_sizeE">
-<span id="SpatialTree::grid_y_size__unsigned-l"></span><span class="target" id="necsimclass_spatial_tree_1a03c67ea3848796e91a3b45afc9e99365"></span>unsigned long <code class="descname">grid_y_size</code><a class="headerlink" href="#_CPPv2N11SpatialTree11grid_y_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N11SpatialTree27historical_coarse_map_inputE">
+<span id="SpatialTree::historical_coarse_map_input__string"></span><span class="target" id="necsimclass_spatial_tree_1a54279132ba3e8bc3455488bb3b16e8f8"></span>string <code class="descname">historical_coarse_map_input</code><a class="headerlink" href="#_CPPv2N11SpatialTree27historical_coarse_map_inputE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
@@ -1283,8 +1289,8 @@
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N4Tree10sqloutnameE">
-<span id="Tree::sqloutname__string"></span><span class="target" id="necsimclass_tree_1ade2744c2510a6e8ae791ca7189f483bb"></span>string <code class="descname">sqloutname</code><a class="headerlink" href="#_CPPv2N4Tree10sqloutnameE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N4Tree19sql_output_databaseE">
+<span id="Tree::sql_output_database__string"></span><span class="target" id="necsimclass_tree_1a80d3e92108eb472df49640a661ef4f7d"></span>string <code class="descname">sql_output_database</code><a class="headerlink" href="#_CPPv2N4Tree19sql_output_databaseE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">

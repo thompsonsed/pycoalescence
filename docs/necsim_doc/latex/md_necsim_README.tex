@@ -1,4 +1,4 @@
-Version\+: 1.\+0 This project is released under B\+S\+D-\/3 See file {\bfseries L\+I\+C\+E\+N\+S\+E.\+txt} or go to \href{https://opensource.org/licenses/BSD-3-Clause}{\tt here} for full license details.
+Version\+: 1.\+0 This project is released under M\+IT licence See file {\bfseries L\+I\+C\+E\+N\+S\+E.\+txt} or go to \href{https://opensource.org/licenses/MIT}{\tt here} for full license details.
 
 \subsection*{C\+O\+N\+T\+E\+N\+TS}
 
@@ -64,7 +64,7 @@ The command line options to be specified are\+:
 
 In this set up, the map config file contains a file on each line, with tab separation between the different variables. The \char`\"{}ref\char`\"{} flag contains the object type, followed by all other parameters. An example is given below.
 
-ref=sample\+\_\+grid path=/path/to/file x=100 y=200 mask=/path/to/mask ref=fine\+\_\+map path=/path/to/file x=100 y=200 x\+\_\+off=10 y\+\_\+off=20 ref=pristine\+\_\+fine path=/path/to/file number=n rate=r time=g
+ref=sample\+\_\+grid path=/path/to/file x=100 y=200 mask=/path/to/mask ref=fine\+\_\+map path=/path/to/file x=100 y=200 x\+\_\+off=10 y\+\_\+off=20 ref=historical\+\_\+fine path=/path/to/file number=n rate=r time=g
 
 Alternatively, by specifying the -\/f flag, (full mode) as the first argument, the program can read in extended command line arguments, which are as followed.
 
@@ -93,10 +93,10 @@ Alternatively, by specifying the -\/f flag, (full mode) as the first argument, t
 \item lambda -\/ the relative cost of moving through non-\/forest
 \item the\+\_\+task -\/ for referencing the specific task later on.
 \item the minimum number of species the system is known to contain.
-\item the pristine fine map file to use
-\item the pristine coarse map file to use
-\item the rate of forest change from pristine
-\item the time (in generations) since the pristine forest was seen.
+\item the historical fine map file to use
+\item the historical coarse map file to use
+\item the rate of forest change from historical
+\item the time (in generations) since the historical forest was seen.
 \item the dispersal tau value (the width of the kernel.
 \item the sample mask, with binary 1\+:0 values for areas that we want to sample from. If this is not provided then this will default to mapping the whole area.
 \item the link to the file containing every generation that the list should be expanded. This should be in the format of a list.
@@ -130,8 +130,8 @@ The program also accepts a config file, specified by running {\ttfamily ./necsim
 21 lambda = 1
 22 job\_num = i
 23 est\_spec = i
-24 pristine\_fine\_source = /path/to/pristine/fine.csv
-25 pristine\_coarse\_source = /path/to/pristine/coarse.csv
+24 historical\_fine\_source = /path/to/historical/fine.csv
+25 historical\_coarse\_source = /path/to/historical/coarse.csv
 26 forest\_change = d
 27 time\_since = f
 28 dispersal = f

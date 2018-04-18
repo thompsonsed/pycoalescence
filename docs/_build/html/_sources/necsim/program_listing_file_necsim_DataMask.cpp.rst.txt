@@ -8,9 +8,11 @@ Program Listing for File DataMask.cpp
 
 .. code-block:: cpp
 
+   
    #include "DataMask.h"
    #include "Landscape.h"
    #include "Logging.h"
+   
    
    DataMask::DataMask()
    {
@@ -65,6 +67,8 @@ Program Listing for File DataMask.cpp
    {
        sample_mask.setSize(mask_y_dim, mask_x_dim);
        sample_mask.import(inputfile);
+       mask_x_dim = sample_mask.getCols();
+       mask_y_dim = sample_mask.getRows();
        sample_mask.close();
        getProportionfptr = &DataMask::getBoolProportion;
    
@@ -83,6 +87,8 @@ Program Listing for File DataMask.cpp
    #endif // DEBUG
                sample_mask_exact.setSize(mask_y_dim, mask_x_dim);
                sample_mask_exact.import(inputfile);
+               mask_x_dim = sample_mask_exact.getCols();
+               mask_y_dim = sample_mask_exact.getRows();
                sample_mask_exact.close();
                getProportionfptr = &DataMask::getSampleProportion;
            }

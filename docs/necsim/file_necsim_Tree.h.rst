@@ -31,7 +31,7 @@ Detailed Description
 Main simulation class for performing a non-spatial neutral simulation and generating the phylogenetic tree of the individuals.
 Samuel Thompson 
 24/03/17
-BSD-3 Licence.
+MIT Licence.
 
 
 

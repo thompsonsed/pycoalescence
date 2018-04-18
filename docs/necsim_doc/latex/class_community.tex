@@ -72,8 +72,12 @@ void \hyperlink{class_community_a527f03120e4cb211e466cab7e405ba9a}{internal\+Opt
 \begin{DoxyCompactList}\small\item\em Internally sets the file referencing, data import and sql connection flags to true, for allowing checks to pass from internal object creation (so no external files are needed) \end{DoxyCompactList}\item 
 void \hyperlink{class_community_a85db7255d3a1d53509ed2800fc24de31}{import\+Data} (string inputfile)
 \begin{DoxyCompactList}\small\item\em Imports the data from the desired S\+QL database object into the array. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_a1cbe1518ba094d2f813550fd46a1f464}{set\+Sim\+Parameters} (const \hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$sim\+\_\+parameters)
+\begin{DoxyCompactList}\small\item\em Sets the simulation parameters from a \hyperlink{struct_sim_parameters}{Sim\+Parameters} object. \end{DoxyCompactList}\item 
 void \hyperlink{class_community_a548d36e99e592f0bfc09c8315b27f8bb}{import\+Sim\+Parameters} (string file)
 \begin{DoxyCompactList}\small\item\em Imports the simulation parameters by reading the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table in the provided file. This imports the grid\+\_\+x\+\_\+size, grid\+\_\+y\+\_\+size (which should also be the sample map dimensions) and the minimum speciation rate. \end{DoxyCompactList}\item 
+bool \hyperlink{class_community_a88a36fd7a14c3e88af377891e01bba21}{is\+Set\+Database} ()
+\begin{DoxyCompactList}\small\item\em Gets if the database has been set yet. \end{DoxyCompactList}\item 
 void \hyperlink{class_community_a8ac0ce642595283f342c2f1841f4c20f}{get\+Max\+Species\+Abundances\+ID} ()
 \begin{DoxyCompactList}\small\item\em Gets the maximum species abundance ID from the database and stores it in the max\+\_\+species\+\_\+id variable. \end{DoxyCompactList}\item 
 \hyperlink{class_row}{Row}$<$ unsigned long $>$ $\ast$ \hyperlink{class_community_a51d90183f6a26e7d192abfd748945f2b}{get\+Cumulative\+Abundances} ()
@@ -160,10 +164,10 @@ void \hyperlink{class_community_aee7488d02cccb897ed1d561e242391df}{do\+Applicati
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-bool {\bfseries b\+Mem}\hypertarget{class_community_ad5344789223153c3756dbad28948410b}{}\label{class_community_ad5344789223153c3756dbad28948410b}
+bool {\bfseries in\+\_\+mem}\hypertarget{class_community_abc144eeba19574b6b46df384a61acc6f}{}\label{class_community_abc144eeba19574b6b46df384a61acc6f}
 
 \item 
-bool {\bfseries b\+File\+Set}\hypertarget{class_community_a82d7b635a6d81a0036238d02c5833e6d}{}\label{class_community_a82d7b635a6d81a0036238d02c5833e6d}
+bool {\bfseries database\+\_\+set}\hypertarget{class_community_a7e00bcb1c5a24280346df94853e2919b}{}\label{class_community_a7e00bcb1c5a24280346df94853e2919b}
 
 \item 
 sqlite3 $\ast$ {\bfseries database}\hypertarget{class_community_a382c0e6e90ca8055d3192bfe2af4d741}{}\label{class_community_a382c0e6e90ca8055d3192bfe2af4d741}
@@ -184,10 +188,10 @@ bool {\bfseries b\+Sql\+Connection}\hypertarget{class_community_aa9fe335ff9e94c6
 unsigned long {\bfseries i\+Species}\hypertarget{class_community_a094f10ce5bbbcab19bccda352f545aad}{}\label{class_community_a094f10ce5bbbcab19bccda352f545aad}
 
 \item 
-bool {\bfseries b\+Sample}\hypertarget{class_community_a40b8a468ecba59b2cb2c04750208495f}{}\label{class_community_a40b8a468ecba59b2cb2c04750208495f}
+bool {\bfseries has\+\_\+imported\+\_\+samplemask}\hypertarget{class_community_a6c3c70184f586330635a4123699f586f}{}\label{class_community_a6c3c70184f586330635a4123699f586f}
 
 \item 
-bool {\bfseries b\+Data\+Import}\hypertarget{class_community_ab6496c803e44395f4490f6301fc15a13}{}\label{class_community_ab6496c803e44395f4490f6301fc15a13}
+bool {\bfseries has\+\_\+imported\+\_\+data}\hypertarget{class_community_a0371c39658281c8956c29c6b2d564b79}{}\label{class_community_a0371c39658281c8956c29c6b2d564b79}
 
 \item 
 \hyperlink{class_samplematrix}{Samplematrix} {\bfseries samplemask}\hypertarget{class_community_ac7434119a77086e3b38a4a94c8fbff01}{}\label{class_community_ac7434119a77086e3b38a4a94c8fbff01}
@@ -782,6 +786,20 @@ If b\+Data\+Import has already been set, no operation is performed.
 {\em file} & the sqlite database simulation output which will be used for coalescence tree generation. \\
 \hline
 \end{DoxyParams}
+\index{Community@{Community}!is\+Set\+Database@{is\+Set\+Database}}
+\index{is\+Set\+Database@{is\+Set\+Database}!Community@{Community}}
+\subsubsection[{\texorpdfstring{is\+Set\+Database()}{isSetDatabase()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Community\+::is\+Set\+Database (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_community_a88a36fd7a14c3e88af377891e01bba21}{}\label{class_community_a88a36fd7a14c3e88af377891e01bba21}
+
+
+Gets if the database has been set yet. 
+
+\begin{DoxyReturn}{Returns}
+true if the database is already set 
+\end{DoxyReturn}
 \index{Community@{Community}!open\+Sql\+Connection@{open\+Sql\+Connection}}
 \index{open\+Sql\+Connection@{open\+Sql\+Connection}!Community@{Community}}
 \subsubsection[{\texorpdfstring{open\+Sql\+Connection(string inputfile)}{openSqlConnection(string inputfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::open\+Sql\+Connection (
@@ -916,6 +934,22 @@ This overloaded version is for setting protracted parameters before a full simul
 {\em max\+\_\+speciation\+\_\+gen\+\_\+in} & the maximum number of generations a lineage can exist for before speciating \\
 \hline
 {\em min\+\_\+speciation\+\_\+gen\+\_\+in} & the minimum number of generations a lineage must exist before speciating. \\
+\hline
+\end{DoxyParams}
+\index{Community@{Community}!set\+Sim\+Parameters@{set\+Sim\+Parameters}}
+\index{set\+Sim\+Parameters@{set\+Sim\+Parameters}!Community@{Community}}
+\subsubsection[{\texorpdfstring{set\+Sim\+Parameters(const Sim\+Parameters $\ast$sim\+\_\+parameters)}{setSimParameters(const SimParameters *sim_parameters)}}]{\setlength{\rightskip}{0pt plus 5cm}void Community\+::set\+Sim\+Parameters (
+\begin{DoxyParamCaption}
+\item[{const {\bf Sim\+Parameters} $\ast$}]{sim\+\_\+parameters}
+\end{DoxyParamCaption}
+)}\hypertarget{class_community_a1cbe1518ba094d2f813550fd46a1f464}{}\label{class_community_a1cbe1518ba094d2f813550fd46a1f464}
+
+
+Sets the simulation parameters from a \hyperlink{struct_sim_parameters}{Sim\+Parameters} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sim\+\_\+parameters} & pointer to the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object to set from \\
 \hline
 \end{DoxyParams}
 

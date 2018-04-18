@@ -1,10 +1,10 @@
-// This file is part of NECSim project which is released under BSD-3 license.
-// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details
+// This file is part of NECSim project which is released under MIT license.
+// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
 /**
  * @author Samuel Thompson
  * @file dispersalmodule.cpp
  * @brief Contains the functions for testing dispersal methods using efficient c++ routines.
- * @copyright <a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3 Licence.</a>
+ * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 
 #ifndef PYTHON_COMPILE
@@ -58,19 +58,19 @@ PyObject *set_map_parameters(PyObject *self, PyObject *args)
 }
 
 /**
- * @brief Sets the pristine map parameters.
+ * @brief Sets the historical map parameters.
  * @param self the python self object
  * @param args arguments to parse, should be lists of the fine and coarse map parameters
  * @return pointer to the python object
  */
-static PyObject * set_pristine_map_parameters(PyObject * self, PyObject * args)
+static PyObject * set_historical_map_parameters(PyObject * self, PyObject * args)
 {
 	vector<string> path_fine;
 	vector<unsigned long> number_fine;
 	vector<double> rate_fine;
 	vector<double> time_fine;
 	vector<string> path_coarse;
-	vector<double> number_coarse;
+	vector<unsigned long> number_coarse;
 	vector<double> rate_coarse;
 	vector<double> time_coarse;
 	PyObject * p_path_fine;
@@ -95,46 +95,11 @@ static PyObject * set_pristine_map_parameters(PyObject * self, PyObject * args)
 		importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats.");
 		importPyListToVectorDouble(p_time_fine, time_fine, "Fine map times must be floats.");
 		importPyListToVectorString(p_path_coarse, path_coarse, "Coarse map paths must be strings.");
-		importPyListToVectorULong(p_number_fine, number_fine, "Coarse map numbers must be integers.");
+		importPyListToVectorULong(p_number_coarse, number_coarse, "Coarse map numbers must be integers.");
 		importPyListToVectorDouble(p_rate_coarse, rate_coarse, "Coarse map rates must be floats.");
 		importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats.");
-		globalSimParameters.habitat_change_rate = 0.0;
-		if(!rate_fine.empty())
-		{
-			globalSimParameters.habitat_change_rate = rate_fine[0];
-		}
-		globalSimParameters.gen_since_pristine = 0.0;
-		if(!time_fine.empty())
-		{
-			globalSimParameters.gen_since_pristine = time_fine[0];
-		}
-		if(time_fine.size() != rate_fine.size() || rate_fine.size() != number_fine.size() ||
-		   number_fine.size() != time_fine.size())
-		{
-			PyErr_SetString(DispersalError, "Lengths of fine map lists must be the same.");
-			return nullptr;
-		}
-		if(time_coarse.size() != rate_coarse.size() || rate_coarse.size() != number_coarse.size() ||
-		   number_coarse.size() != time_coarse.size())
-		{
-			throw runtime_error("Lengths of coarse map lists must be the same.");
-		}
-		for(unsigned long i = 0; i < time_fine.size(); i ++)
-		{
-			string tmp = "pristine_fine" + to_string(number_fine[i]);
-			globalSimParameters.configs.setSectionOption(tmp, "path", path_fine[i]);
-			globalSimParameters.configs.setSectionOption(tmp, "number", to_string(number_fine[i]));
-			globalSimParameters.configs.setSectionOption(tmp, "time", to_string(time_fine[i]));
-			globalSimParameters.configs.setSectionOption(tmp, "rate", to_string(rate_fine[i]));
-		}
-		for(unsigned long i = 0; i < time_coarse.size(); i ++)
-		{
-			string tmp = "pristine_coarse" + to_string(number_fine[i]);
-			globalSimParameters.configs.setSectionOption(tmp, "path", path_coarse[i]);
-			globalSimParameters.configs.setSectionOption(tmp, "number", to_string(number_coarse[i]));
-			globalSimParameters.configs.setSectionOption(tmp, "time", to_string(time_coarse[i]));
-			globalSimParameters.configs.setSectionOption(tmp, "rate", to_string(rate_coarse[i]));
-		}
+		globalSimParameters.setHistoricalMapParameters(path_fine, number_fine, rate_fine, time_fine, path_coarse,
+												  number_coarse, rate_coarse, time_coarse);
 		Py_DECREF(logger);
 
 	}
@@ -279,8 +244,8 @@ static PyMethodDef DispersalMethods[] =
 {
 	{"set_map_parameters", set_map_parameters, METH_VARARGS,
 			"Sets the map parameters for the dispersal simulation."},
-	{"set_pristine_map_parameters", set_pristine_map_parameters, METH_VARARGS,
-			"Sets the pristine map parameters for the dispersal simulation."},
+	{"set_historical_map_parameters", set_historical_map_parameters, METH_VARARGS,
+			"Sets the historical map parameters for the dispersal simulation."},
 	{"set_dispersal_parameters", set_dispersal_parameters, METH_VARARGS,
 			"Sets the dispersal parameters for the dispersal simulation."},
 	{"test_mean_dispersal", test_mean_dispersal, METH_VARARGS,

@@ -8,8 +8,8 @@ Program Listing for File Community.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef TREELIST
    #define TREELIST
    
@@ -163,16 +163,16 @@ Program Listing for File Community.h
    class Community
    {
    protected:
-       bool bMem; // boolean for whether the database is in memory or not.
-       bool bFileSet; // boolean for whether the database has been set already.
+       bool in_mem; // boolean for whether the database is in memory or not.
+       bool database_set; // boolean for whether the database has been set already.
        sqlite3 *database; // stores the in-memory database connection.
        sqlite3 *outdatabase; // stores the file database connection
        bool bSqlConnection; // true if the data connection has been established.
        Row<TreeNode> *nodes; // in older versions this was called list. Changed to avoid confusion with the built-in class.
        Row<unsigned long> row_out;
        unsigned long iSpecies;
-       bool bSample; // checks whether the samplemask has already been imported.
-       bool bDataImport; // checks whether the main sim data has been imported.
+       bool has_imported_samplemask; // checks whether the samplemask has already been imported.
+       bool has_imported_data; // checks whether the main sim data has been imported.
        Samplematrix samplemask; // the samplemask object for defining the areas we want to sample from.
        vector<Fragment> fragments; // a vector of fragments for storing each fragment's coordinates.
        CommunityParameters *current_community_parameters;
@@ -195,12 +195,12 @@ Program Listing for File Community.h
    
        Community(Row<TreeNode> *r) : nodes(r)
        {
-           bMem = false;
+           in_mem = false;
            iSpecies = 0;
-           bSample = false;
+           has_imported_samplemask = false;
            bSqlConnection = false;
-           bFileSet = false;
-           bDataImport = false;
+           database_set = false;
+           has_imported_data = false;
            min_speciation_gen = 0.0;
            max_speciation_gen = 0.0;
            applied_max_speciation_gen = 0.0;
@@ -213,12 +213,12 @@ Program Listing for File Community.h
    
        Community()
        {
-           bMem = false;
+           in_mem = false;
            iSpecies = 0;
-           bSample = false;
+           has_imported_samplemask = false;
            bSqlConnection = false;
-           bFileSet = false;
-           bDataImport = false;
+           database_set = false;
+           has_imported_data = false;
            min_speciation_gen = 0.0;
            max_speciation_gen = 0.0;
            applied_max_speciation_gen = 0.0;
@@ -262,7 +262,11 @@ Program Listing for File Community.h
    
        void importData(string inputfile);
    
+       void setSimParameters(const SimParameters * sim_parameters);
+   
        void importSimParameters(string file);
+   
+       bool isSetDatabase();
    
        void getMaxSpeciesAbundancesID();
    

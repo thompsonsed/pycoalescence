@@ -176,10 +176,10 @@ are as followed.
 21. lambda - the relative cost of moving through non-forest
 22. the\_task - for referencing the specific task later on.
 23. the minimum number of species the system is known to contain.
-24. the pristine fine map file to use
-25. the pristine coarse map file to use
-26. the rate of forest change from pristine
-27. the time (in generations) since the pristine forest was seen.
+24. the historical fine map file to use
+25. the historical coarse map file to use
+26. the rate of forest change from historical
+27. the time (in generations) since the historical forest was seen.
 28. the dispersal tau value (the width of the fat-tailed kernel).
 29. the sample mask, with binary 1:0 values for areas that we want to
     sample from. If this is not provided then this will default to
@@ -273,26 +273,26 @@ times and at all scales. An example is given below.
     y_off = 14
     scale = 1.0
 
-    [pristine_fine0]
-    path = sample/SA_sample_fine_pristine1.tif
+    [historical_fine0]
+    path = sample/SA_sample_fine_historical1.tif
     number = 0
     time = 1
     rate = 0.5
 
-    [pristine_coarse0]
-    path = sample/SA_sample_coarse_pristine1.tif
+    [historical_coarse0]
+    path = sample/SA_sample_coarse_historical1.tif
     number = 0
     time = 1
     rate = 0.5
 
-    [pristine_fine1]
-    path = sample/SA_sample_fine_pristine2.tif
+    [historical_fine1]
+    path = sample/SA_sample_fine_historical2.tif
     number = 1
     time = 4
     rate = 0.7
 
-    [pristine_coarse1]
-    path = sample/SA_sample_coarse_pristine2.tif
+    [historical_coarse1]
+    path = sample/SA_sample_coarse_historical2.tif
     number = 1
     time = 4
     rate = 0.7
@@ -300,7 +300,7 @@ times and at all scales. An example is given below.
 
 
 .. note::
-   The rates and times between the pairs of pristine fine maps and pristine coarse maps must match up. Without matching
+   The rates and times between the pairs of historical fine maps and historical coarse maps must match up. Without matching
    values here, there could be undetermined errors, or coarse map values being ignored.
 
 .. note::
@@ -559,7 +559,7 @@ Institution: Imperial College London
 
 Licence
 -------
-This project is released under BSD-3 See file
+This project is released under MIT See file
 **LICENSE.txt** or go to
 `here <https://opensource.org/licenses/BSD-3-Clause>`__ for full license
 details.

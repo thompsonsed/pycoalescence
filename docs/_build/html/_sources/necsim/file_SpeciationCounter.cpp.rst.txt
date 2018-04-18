@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 31/08/16
-BSD-3 Licence. Requires command line parameters and generates a data object from them. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
+MIT Licence. Requires command line parameters and generates a data object from them. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
 
 
 

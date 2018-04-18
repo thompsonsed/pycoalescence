@@ -8,8 +8,8 @@ Program Listing for File Tree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef TREE_H
    #define TREE_H
@@ -96,7 +96,7 @@ Program Listing for File Tree.h
        // Create the step object that will be retained for the whole simulation.
        // Does not need saving on simulation pause.
        Step this_step;
-       string sqloutname;
+       string sql_output_database;
        // If true, means the command-line imports were under the (deprecated) fullmode.
        bool bFullmode;
        // If true, the simulation is to be resumed.
@@ -122,7 +122,7 @@ Program Listing for File Tree.h
            the_seed = -10;
            // set this equal to true if you want to log every 5 seconds to a logfile.
            the_task = -1;
-           sqloutname = "null";
+           sql_output_database = "null";
            sim_complete = false;
            time_taken = 0;  // the time taken starts at 0, unless imported from file.
            maxtime = 0;
@@ -275,6 +275,7 @@ Program Listing for File Tree.h
    
        void writeTimes();
    
+       void openSQLDatabase();
    
        void sqlCreate();
    

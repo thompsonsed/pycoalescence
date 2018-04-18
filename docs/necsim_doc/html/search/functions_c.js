@@ -1,6 +1,7 @@
 var searchData=
 [
   ['opensqlconnection',['openSqlConnection',['../class_community.html#a389c35f39ed73eb1e5dc1476c220c140',1,'Community']]],
+  ['opensqldatabase',['openSQLDatabase',['../class_tree.html#a9e240bbfc3139b290a0dead741f560bf',1,'Tree']]],
   ['operator_2a',['operator*',['../class_matrix.html#ac4e94b307c56a15fb47a9255855f94a9',1,'Matrix::operator*(const double s)'],['../class_matrix.html#ac396cdd2d98e1b4d99f7e17c1c26b1ec',1,'Matrix::operator*(Matrix &amp;m)']]],
   ['operator_2b',['operator+',['../class_matrix.html#a311f3649e41cb4a3155f3f71a65829cb',1,'Matrix']]],
   ['operator_2b_3d',['operator+=',['../class_matrix.html#a480a72298ae1fc8443b0edfaa66d7c46',1,'Matrix']]],

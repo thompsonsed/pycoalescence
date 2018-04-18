@@ -48,16 +48,16 @@
     <member refid="struct_communities_array_1a53d5250849767365e4d50751c3583309" kind="function"><name>hasPair</name></member>
   </compound>
   <compound refid="class_community" kind="class"><name>Community</name>
-    <member refid="class_community_1ad5344789223153c3756dbad28948410b" kind="variable"><name>bMem</name></member>
-    <member refid="class_community_1a82d7b635a6d81a0036238d02c5833e6d" kind="variable"><name>bFileSet</name></member>
+    <member refid="class_community_1abc144eeba19574b6b46df384a61acc6f" kind="variable"><name>in_mem</name></member>
+    <member refid="class_community_1a7e00bcb1c5a24280346df94853e2919b" kind="variable"><name>database_set</name></member>
     <member refid="class_community_1a382c0e6e90ca8055d3192bfe2af4d741" kind="variable"><name>database</name></member>
     <member refid="class_community_1a884634e98e0aacb082968664acd5a32e" kind="variable"><name>outdatabase</name></member>
     <member refid="class_community_1aa9fe335ff9e94c626d1e0d41ff145524" kind="variable"><name>bSqlConnection</name></member>
     <member refid="class_community_1aa1309616989642b98c15e6e2ed25b379" kind="variable"><name>nodes</name></member>
     <member refid="class_community_1a06e5a133792f29fa17a1b0664d650541" kind="variable"><name>row_out</name></member>
     <member refid="class_community_1a094f10ce5bbbcab19bccda352f545aad" kind="variable"><name>iSpecies</name></member>
-    <member refid="class_community_1a40b8a468ecba59b2cb2c04750208495f" kind="variable"><name>bSample</name></member>
-    <member refid="class_community_1ab6496c803e44395f4490f6301fc15a13" kind="variable"><name>bDataImport</name></member>
+    <member refid="class_community_1a6c3c70184f586330635a4123699f586f" kind="variable"><name>has_imported_samplemask</name></member>
+    <member refid="class_community_1a0371c39658281c8956c29c6b2d564b79" kind="variable"><name>has_imported_data</name></member>
     <member refid="class_community_1ac7434119a77086e3b38a4a94c8fbff01" kind="variable"><name>samplemask</name></member>
     <member refid="class_community_1a8a17909b92a0cec3b63cec41e92796cb" kind="variable"><name>fragments</name></member>
     <member refid="class_community_1a77e925f82bee5441d8ec45406066dcfb" kind="variable"><name>current_community_parameters</name></member>
@@ -97,7 +97,9 @@
     <member refid="class_community_1acba6b894e62ad4ecccbcf86f064ebc46" kind="function"><name>setInternalDatabase</name></member>
     <member refid="class_community_1a527f03120e4cb211e466cab7e405ba9a" kind="function"><name>internalOption</name></member>
     <member refid="class_community_1a85db7255d3a1d53509ed2800fc24de31" kind="function"><name>importData</name></member>
+    <member refid="class_community_1a1cbe1518ba094d2f813550fd46a1f464" kind="function"><name>setSimParameters</name></member>
     <member refid="class_community_1a548d36e99e592f0bfc09c8315b27f8bb" kind="function"><name>importSimParameters</name></member>
+    <member refid="class_community_1a88a36fd7a14c3e88af377891e01bba21" kind="function"><name>isSetDatabase</name></member>
     <member refid="class_community_1a8ac0ce642595283f342c2f1841f4c20f" kind="function"><name>getMaxSpeciesAbundancesID</name></member>
     <member refid="class_community_1a51d90183f6a26e7d192abfd748945f2b" kind="function"><name>getCumulativeAbundances</name></member>
     <member refid="class_community_1a63fd8d32af6d52d009d1fd54098e4594" kind="function"><name>getRowOut</name></member>
@@ -402,9 +404,9 @@
   <compound refid="class_landscape" kind="class"><name>Landscape</name>
     <member refid="class_landscape_1a0458438a91632e19343e3cf8c2d994f1" kind="typedef"><name>fptr</name></member>
     <member refid="class_landscape_1a8947e46b9be54b42a93fb0792d4a9ed4" kind="variable"><name>fine_map</name></member>
-    <member refid="class_landscape_1a7e2e62cbb3abfde813d7e4f07a79d44f" kind="variable"><name>pristine_fine_map</name></member>
+    <member refid="class_landscape_1a5e34fe2e75c3b84657a4edc75f9fcdec" kind="variable"><name>historical_fine_map</name></member>
     <member refid="class_landscape_1a58c8bb6432b578dac46bdbdba9e759c9" kind="variable"><name>coarse_map</name></member>
-    <member refid="class_landscape_1aa1d40884f7423c474afae4e39b850387" kind="variable"><name>pristine_coarse_map</name></member>
+    <member refid="class_landscape_1a5ac41db1c48869d974c97393eb548dd8" kind="variable"><name>historical_coarse_map</name></member>
     <member refid="class_landscape_1aa3de03e94cea3c560df40bfa78b79f54" kind="variable"><name>mapvars</name></member>
     <member refid="class_landscape_1a95634ae0e15826160ad5c58a4093130d" kind="variable"><name>fine_x_min</name></member>
     <member refid="class_landscape_1a90e7fe904c80133338ac19aa13534ef9" kind="variable"><name>fine_y_min</name></member>
@@ -426,15 +428,15 @@
     <member refid="class_landscape_1ab8bab4e21c685214909cbbc4778fabd6" kind="variable"><name>dispersal_relative_cost</name></member>
     <member refid="class_landscape_1a6a3b5496ba13ddaba8940bc16cbf38e9" kind="variable"><name>update_time</name></member>
     <member refid="class_landscape_1af58f378233b6143a4b38987573a2ea98" kind="variable"><name>habitat_change_rate</name></member>
-    <member refid="class_landscape_1a5b8b74a728b52d46fdb2c120351f5100" kind="variable"><name>gen_since_pristine</name></member>
+    <member refid="class_landscape_1a780302ea1b4320e137c31e766bb8a1ae" kind="variable"><name>gen_since_historical</name></member>
     <member refid="class_landscape_1addbe4d0513a863384085e839d47d78ad" kind="variable"><name>current_map_time</name></member>
-    <member refid="class_landscape_1a96d7b521dddccd6239b6ea81d21e10ea" kind="variable"><name>is_pristine</name></member>
-    <member refid="class_landscape_1ac75b3fb928b0974e0f351bc57112899e" kind="variable"><name>has_pristine</name></member>
+    <member refid="class_landscape_1a6d45f993b8d922286b349bcd0a679843" kind="variable"><name>is_historical</name></member>
+    <member refid="class_landscape_1a7c92406ace422080c978fbf6c2b8d4ab" kind="variable"><name>has_historical</name></member>
     <member refid="class_landscape_1ae0f64209a3747b1f023da89254683490" kind="variable"><name>habitat_max</name></member>
     <member refid="class_landscape_1a5b36f28911c3b7484b89d357b85849a9" kind="variable"><name>fine_max</name></member>
     <member refid="class_landscape_1a4ce133d5e07e46f127bfa4f47597dcec" kind="variable"><name>coarse_max</name></member>
-    <member refid="class_landscape_1a4353a23f1a363ef200b89a3100612cb5" kind="variable"><name>pristine_fine_max</name></member>
-    <member refid="class_landscape_1ad7326e82982ff2397b3a7fc90f945d62" kind="variable"><name>pristine_coarse_max</name></member>
+    <member refid="class_landscape_1a86e67628c5ad3426f1f258e35ab5e4df" kind="variable"><name>historical_fine_max</name></member>
+    <member refid="class_landscape_1aa79ae2cca59b135591c3cb978f14ee2a" kind="variable"><name>historical_coarse_max</name></member>
     <member refid="class_landscape_1a2bed03fc250afab4f9341da6f1f6c0da" kind="variable"><name>landscape_type</name></member>
     <member refid="class_landscape_1a7e16bed309816971071c17ad0ebf94e5" kind="variable"><name>NextMap</name></member>
     <member refid="class_landscape_1a0389b53426acd490ec77f94d9897f130" kind="variable"><name>has_coarse</name></member>
@@ -442,24 +444,27 @@
     <member refid="class_landscape_1a3cca2f0650d5979668f2a22753f965b9" kind="variable"><name>getValFunc</name></member>
     <member refid="class_landscape_1a0a54d8aabc38c0a5aa27ccace3f91915" kind="function"><name>Landscape</name></member>
     <member refid="class_landscape_1a99fac44043825a97e2e7fbc71caeb8e2" kind="function"><name>getHabitatMax</name></member>
+    <member refid="class_landscape_1ad8e9a0520be7426592aa1d8c91227f3e" kind="function"><name>hasHistorical</name></member>
     <member refid="class_landscape_1acc47e50bdad6af7f2bbed57db73f6730" kind="function"><name>setDims</name></member>
     <member refid="class_landscape_1ab7d8cd906a44c24a7f120362563d1217" kind="function"><name>checkMapExists</name></member>
     <member refid="class_landscape_1ad500af94a2afd577e682b3c042cab217" kind="function"><name>calcFineMap</name></member>
-    <member refid="class_landscape_1a43ef527fd2272381ba20c6f6d8e471bd" kind="function"><name>calcPristineFineMap</name></member>
+    <member refid="class_landscape_1aa1861f8971b5dad0904284f8d873da3a" kind="function"><name>calcHistoricalFineMap</name></member>
     <member refid="class_landscape_1a2b34dcd828e0006dde9e60315cbddac8" kind="function"><name>calcCoarseMap</name></member>
-    <member refid="class_landscape_1a4dec3f0568fd393b197c7c42878744b0" kind="function"><name>calcPristineCoarseMap</name></member>
-    <member refid="class_landscape_1aecca7c3f17087922283f63ce6148ddb4" kind="function"><name>setTimeVars</name></member>
+    <member refid="class_landscape_1a2ac3d30b203ecb73d0b2a126a4ed8acf" kind="function"><name>calcHistoricalCoarseMap</name></member>
+    <member refid="class_landscape_1ac8aa9b3c8003cbc52c929e7532c0b0aa" kind="function"><name>setTimeVars</name></member>
     <member refid="class_landscape_1ae4d6050ab25b5c0dca01446b0e59bfb1" kind="function"><name>calcOffset</name></member>
     <member refid="class_landscape_1a998dcf0659841398c2eb336c91ecdfba" kind="function"><name>checkAllDimensionsZero</name></member>
     <member refid="class_landscape_1a67fc255ef73d331034f2a626117035e8" kind="function"><name>calculateOffsetsFromMaps</name></member>
     <member refid="class_landscape_1a739549f09fbfbc36674e1a27ad8e9363" kind="function"><name>calculateOffsetsFromParameters</name></member>
     <member refid="class_landscape_1a9181afc2546082c9d4798e16e033b0f1" kind="function"><name>validateMaps</name></member>
     <member refid="class_landscape_1aa96c5208ad89b2e620b52f80b0937dff" kind="function"><name>updateMap</name></member>
-    <member refid="class_landscape_1a264624ebb17fe757f4e7c9e082592b79" kind="function"><name>isPristine</name></member>
-    <member refid="class_landscape_1a04efbb8d2470b1c4990694f0b92e3476" kind="function"><name>setPristine</name></member>
-    <member refid="class_landscape_1af76f7e71318f9ef5cac060de7351fdbc" kind="function"><name>getPristine</name></member>
+    <member refid="class_landscape_1a1669ae6563ef5ed11ce1da30fb28214b" kind="function"><name>doUpdate</name></member>
+    <member refid="class_landscape_1a03e35a3a42e40a683be01e75413d30d2" kind="function"><name>resetHistorical</name></member>
+    <member refid="class_landscape_1ab302f8a4ae779d20df94cb2525187cac" kind="function"><name>isHistorical</name></member>
+    <member refid="class_landscape_1a7b1c5459e1ecf8d11c1dd12299a53c61" kind="function"><name>setHistorical</name></member>
+    <member refid="class_landscape_1a6b15e6748d7d776deaa489e618750983" kind="function"><name>getHistorical</name></member>
     <member refid="class_landscape_1a5dec397270e8278478f807660e43d565" kind="function"><name>getLandscapeType</name></member>
-    <member refid="class_landscape_1a5131b05f34a66951d63ec575a4aedb82" kind="function"><name>checkPristine</name></member>
+    <member refid="class_landscape_1ae4a7ae12f299407d5c379fd20ed2ccbc" kind="function"><name>checkHistorical</name></member>
     <member refid="class_landscape_1a63150f634d7936439bc5a1d20b84a7b2" kind="function"><name>setLandscape</name></member>
     <member refid="class_landscape_1a06dbce690810d8d771490c310cb96310" kind="function"><name>getVal</name></member>
     <member refid="class_landscape_1aa98fad5a154486dbb0bca6056e19399c" kind="function"><name>getValCoarse</name></member>
@@ -580,16 +585,16 @@
     <member refid="class_metacommunity_1ae9ef6b36732d3269baef697b5341c0b9" kind="variable"><name>metacommunity_cumulative_abundances</name></member>
     <member refid="class_metacommunity_1aa47b2ff3f6944143f8e734d0988d2ff3" kind="variable"><name>random</name></member>
     <member refid="class_metacommunity_1a85e91103025feb641bf0df9d02152b99" kind="variable"><name>metacommunity_tree</name></member>
-    <member refid="class_community_1ad5344789223153c3756dbad28948410b" kind="variable"><name>bMem</name></member>
-    <member refid="class_community_1a82d7b635a6d81a0036238d02c5833e6d" kind="variable"><name>bFileSet</name></member>
+    <member refid="class_community_1abc144eeba19574b6b46df384a61acc6f" kind="variable"><name>in_mem</name></member>
+    <member refid="class_community_1a7e00bcb1c5a24280346df94853e2919b" kind="variable"><name>database_set</name></member>
     <member refid="class_community_1a382c0e6e90ca8055d3192bfe2af4d741" kind="variable"><name>database</name></member>
     <member refid="class_community_1a884634e98e0aacb082968664acd5a32e" kind="variable"><name>outdatabase</name></member>
     <member refid="class_community_1aa9fe335ff9e94c626d1e0d41ff145524" kind="variable"><name>bSqlConnection</name></member>
     <member refid="class_community_1aa1309616989642b98c15e6e2ed25b379" kind="variable"><name>nodes</name></member>
     <member refid="class_community_1a06e5a133792f29fa17a1b0664d650541" kind="variable"><name>row_out</name></member>
     <member refid="class_community_1a094f10ce5bbbcab19bccda352f545aad" kind="variable"><name>iSpecies</name></member>
-    <member refid="class_community_1a40b8a468ecba59b2cb2c04750208495f" kind="variable"><name>bSample</name></member>
-    <member refid="class_community_1ab6496c803e44395f4490f6301fc15a13" kind="variable"><name>bDataImport</name></member>
+    <member refid="class_community_1a6c3c70184f586330635a4123699f586f" kind="variable"><name>has_imported_samplemask</name></member>
+    <member refid="class_community_1a0371c39658281c8956c29c6b2d564b79" kind="variable"><name>has_imported_data</name></member>
     <member refid="class_community_1ac7434119a77086e3b38a4a94c8fbff01" kind="variable"><name>samplemask</name></member>
     <member refid="class_community_1a8a17909b92a0cec3b63cec41e92796cb" kind="variable"><name>fragments</name></member>
     <member refid="class_community_1a77e925f82bee5441d8ec45406066dcfb" kind="variable"><name>current_community_parameters</name></member>
@@ -633,7 +638,9 @@
     <member refid="class_community_1acba6b894e62ad4ecccbcf86f064ebc46" kind="function"><name>setInternalDatabase</name></member>
     <member refid="class_community_1a527f03120e4cb211e466cab7e405ba9a" kind="function"><name>internalOption</name></member>
     <member refid="class_community_1a85db7255d3a1d53509ed2800fc24de31" kind="function"><name>importData</name></member>
+    <member refid="class_community_1a1cbe1518ba094d2f813550fd46a1f464" kind="function"><name>setSimParameters</name></member>
     <member refid="class_community_1a548d36e99e592f0bfc09c8315b27f8bb" kind="function"><name>importSimParameters</name></member>
+    <member refid="class_community_1a88a36fd7a14c3e88af377891e01bba21" kind="function"><name>isSetDatabase</name></member>
     <member refid="class_community_1a8ac0ce642595283f342c2f1841f4c20f" kind="function"><name>getMaxSpeciesAbundancesID</name></member>
     <member refid="class_community_1a51d90183f6a26e7d192abfd748945f2b" kind="function"><name>getCumulativeAbundances</name></member>
     <member refid="class_community_1a63fd8d32af6d52d009d1fd54098e4594" kind="function"><name>getRowOut</name></member>
@@ -770,10 +777,8 @@
     <member refid="class_spatial_tree_1aee26e469bc42c208feb98f6320bd9d0c" kind="variable"><name>rep_map</name></member>
     <member refid="class_spatial_tree_1a44fdea35be7d4496248ee27c1457ad6a" kind="variable"><name>fine_map_input</name></member>
     <member refid="class_spatial_tree_1a464b674dbf6f2968497f698ad9a16433" kind="variable"><name>coarse_map_input</name></member>
-    <member refid="class_spatial_tree_1a0b6a624a8d0a434131f3ec5e2581d8b6" kind="variable"><name>pristine_fine_map_input</name></member>
-    <member refid="class_spatial_tree_1abf4a4019079d23e4489420fc14f0e461" kind="variable"><name>pristine_coarse_map_input</name></member>
-    <member refid="class_spatial_tree_1aa4c60d73794de44877b9ed66b73b4ed8" kind="variable"><name>grid_x_size</name></member>
-    <member refid="class_spatial_tree_1a03c67ea3848796e91a3b45afc9e99365" kind="variable"><name>grid_y_size</name></member>
+    <member refid="class_spatial_tree_1ac49970522839ed06459949caca57fa1d" kind="variable"><name>historical_fine_map_input</name></member>
+    <member refid="class_spatial_tree_1a54279132ba3e8bc3455488bb3b16e8f8" kind="variable"><name>historical_coarse_map_input</name></member>
     <member refid="class_spatial_tree_1abce7e0ce105b3f401b8dce770a20f8a2" kind="variable"><name>landscape</name></member>
     <member refid="class_spatial_tree_1a199167b149b25c506fdaeb660d595658" kind="variable"><name>grid</name></member>
     <member refid="class_spatial_tree_1a694c7eb6c70687ea87e49066a8957877" kind="variable"><name>desired_specnum</name></member>
@@ -813,7 +818,7 @@
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1afd585c8a4bdb86461780418f7b886abd" kind="variable"><name>outdatabase</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
-    <member refid="class_tree_1ade2744c2510a6e8ae791ca7189f483bb" kind="variable"><name>sqloutname</name></member>
+    <member refid="class_tree_1a80d3e92108eb472df49640a661ef4f7d" kind="variable"><name>sql_output_database</name></member>
     <member refid="class_tree_1a9379466b9fc0f25bd28543743000e700" kind="variable"><name>bFullmode</name></member>
     <member refid="class_tree_1ac9cbd7d17fb511c1fcc70c765f6440b0" kind="variable"><name>bResume</name></member>
     <member refid="class_tree_1a6c8c76aec6a9faef9c38f4f275b0793d" kind="variable"><name>bConfig</name></member>
@@ -896,6 +901,7 @@
     <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
     <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
+    <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
     <member refid="class_tree_1a199f47b62b9b10917ff8b89d20c543a7" kind="function"><name>sqlCreateSimulationParameters</name></member>
     <member refid="class_tree_1aa8bb5d93c7992404ede0a49bb69ccd1f" kind="function"><name>protractedVarsToString</name></member>
@@ -981,6 +987,7 @@
     <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
     <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
+    <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
     <member refid="class_tree_1a199f47b62b9b10917ff8b89d20c543a7" kind="function"><name>sqlCreateSimulationParameters</name></member>
     <member refid="class_tree_1aed6504b4f759fb31fdeb61cd03b2b3f9" kind="function"><name>simulationParametersSqlInsertion</name></member>
@@ -1032,7 +1039,7 @@
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1afd585c8a4bdb86461780418f7b886abd" kind="variable"><name>outdatabase</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
-    <member refid="class_tree_1ade2744c2510a6e8ae791ca7189f483bb" kind="variable"><name>sqloutname</name></member>
+    <member refid="class_tree_1a80d3e92108eb472df49640a661ef4f7d" kind="variable"><name>sql_output_database</name></member>
     <member refid="class_tree_1a9379466b9fc0f25bd28543743000e700" kind="variable"><name>bFullmode</name></member>
     <member refid="class_tree_1ac9cbd7d17fb511c1fcc70c765f6440b0" kind="variable"><name>bResume</name></member>
     <member refid="class_tree_1a6c8c76aec6a9faef9c38f4f275b0793d" kind="variable"><name>bConfig</name></member>
@@ -1130,8 +1137,8 @@
     <member refid="struct_sim_parameters_1a24483485b1127d7c4a91f02bd56a130e" kind="variable"><name>fine_map_file</name></member>
     <member refid="struct_sim_parameters_1a03831d4d7590072a153620fdedd7e2fd" kind="variable"><name>coarse_map_file</name></member>
     <member refid="struct_sim_parameters_1afc36bb2fbfc7ebf5e84149be5be87c1e" kind="variable"><name>output_directory</name></member>
-    <member refid="struct_sim_parameters_1a9977f435af14f8b9e8db4430151b3c04" kind="variable"><name>pristine_fine_map_file</name></member>
-    <member refid="struct_sim_parameters_1aad8b8c7b53f58ea05ef75fedafff4314" kind="variable"><name>pristine_coarse_map_file</name></member>
+    <member refid="struct_sim_parameters_1a0904ed1272de111c9e80c22dcdb2e039" kind="variable"><name>historical_fine_map_file</name></member>
+    <member refid="struct_sim_parameters_1a621bfeaf44861f6b88d4117bc7da5a2b" kind="variable"><name>historical_coarse_map_file</name></member>
     <member refid="struct_sim_parameters_1ac5298525ed1d094d1668bc78491b0c69" kind="variable"><name>sample_mask_file</name></member>
     <member refid="struct_sim_parameters_1a219ea06b17e82f1512e0e8cdd9990ea7" kind="variable"><name>the_task</name></member>
     <member refid="struct_sim_parameters_1a689610f6fd7c87866ca950c8700b4943" kind="variable"><name>the_seed</name></member>
@@ -1157,7 +1164,7 @@
     <member refid="struct_sim_parameters_1af0edb212b87212a38a68bf287316ccba" kind="variable"><name>spec</name></member>
     <member refid="struct_sim_parameters_1a6292e5891ccbf9c188c45688d8d43b6b" kind="variable"><name>sigma</name></member>
     <member refid="struct_sim_parameters_1a17f737b3df0bc13f924b0a9e71d062f8" kind="variable"><name>max_time</name></member>
-    <member refid="struct_sim_parameters_1a00fc006df97967c8f80812d2d519e8f5" kind="variable"><name>gen_since_pristine</name></member>
+    <member refid="struct_sim_parameters_1a176377d5954b76ef8fa4dd247d822bfd" kind="variable"><name>gen_since_historical</name></member>
     <member refid="struct_sim_parameters_1a91166734e5a125ee5f07051bc5b3fdb2" kind="variable"><name>habitat_change_rate</name></member>
     <member refid="struct_sim_parameters_1a2e1055f1888b9be5eef4e62a191e1cd8" kind="variable"><name>tau</name></member>
     <member refid="struct_sim_parameters_1a6fe66a71f2ed472b63bd7c59900ce0e3" kind="variable"><name>dispersal_method</name></member>
@@ -1167,7 +1174,7 @@
     <member refid="struct_sim_parameters_1aefc1652e914bfee5e6649dc96c1409e8" kind="variable"><name>times_file</name></member>
     <member refid="struct_sim_parameters_1a78f217a9db8c2f15bf5004ae30583a56" kind="variable"><name>times</name></member>
     <member refid="struct_sim_parameters_1a8fd9196201c4e49d844f8a028936926f" kind="variable"><name>configs</name></member>
-    <member refid="struct_sim_parameters_1abbd71e2d44f7e7e6c70cba317c00b8dc" kind="variable"><name>is_pristine</name></member>
+    <member refid="struct_sim_parameters_1ada62f1a4b83ff49f4a4e87724f031c4e" kind="variable"><name>is_historical</name></member>
     <member refid="struct_sim_parameters_1a5f05ff4f1197c72bf3151cf7f3dbfac8" kind="variable"><name>uses_spatial_sampling</name></member>
     <member refid="struct_sim_parameters_1a5c324616c8e08b4af3407d0a8f7b24bb" kind="variable"><name>landscape_type</name></member>
     <member refid="struct_sim_parameters_1a6472949dd3ecea1e089582ea8da3eac6" kind="variable"><name>is_protracted</name></member>
@@ -1182,9 +1189,10 @@
     <member refid="struct_sim_parameters_1aa6684caccd53613a5d08ff4071d0edc9" kind="function"><name>setKeyParameters</name></member>
     <member refid="struct_sim_parameters_1a6753a70e7b9183c97fb1b304b089968d" kind="function"><name>setSpeciationParameters</name></member>
     <member refid="struct_sim_parameters_1a74782aab11b1e07a507cc60bdec3bf95" kind="function"><name>setDispersalParameters</name></member>
-    <member refid="struct_sim_parameters_1a117bb284f7bd540e0301e7985d08614a" kind="function"><name>setPristineMapParameters</name></member>
+    <member refid="struct_sim_parameters_1afae472eb2788205a8587db87778f0333" kind="function"><name>setHistoricalMapParameters</name></member>
+    <member refid="struct_sim_parameters_1ae86196bee7f469e308d23e7dbbf7320c" kind="function"><name>setHistoricalMapParameters</name></member>
     <member refid="struct_sim_parameters_1a4073ee2bf48a25eebdc0439e3b8625e7" kind="function"><name>setMapParameters</name></member>
-    <member refid="struct_sim_parameters_1a35fef102ce86c4158d2ae0e19ad0a85e" kind="function"><name>setPristine</name></member>
+    <member refid="struct_sim_parameters_1adae32b41ebc9b9bd0ae89ceb039430b4" kind="function"><name>setHistorical</name></member>
     <member refid="struct_sim_parameters_1ac7072f58a9dccc718341d25a84148ffc" kind="function"><name>printVars</name></member>
     <member refid="struct_sim_parameters_1a04636fc2b0899400011b54bb1f175eb0" kind="function"><name>printSpatialVars</name></member>
     <member refid="struct_sim_parameters_1a8a245d9aef5595c7d3b4e29e3b1a2ef2" kind="function"><name>setMetacommunityParameters</name></member>
@@ -1237,10 +1245,8 @@
     <member refid="class_spatial_tree_1aee26e469bc42c208feb98f6320bd9d0c" kind="variable"><name>rep_map</name></member>
     <member refid="class_spatial_tree_1a44fdea35be7d4496248ee27c1457ad6a" kind="variable"><name>fine_map_input</name></member>
     <member refid="class_spatial_tree_1a464b674dbf6f2968497f698ad9a16433" kind="variable"><name>coarse_map_input</name></member>
-    <member refid="class_spatial_tree_1a0b6a624a8d0a434131f3ec5e2581d8b6" kind="variable"><name>pristine_fine_map_input</name></member>
-    <member refid="class_spatial_tree_1abf4a4019079d23e4489420fc14f0e461" kind="variable"><name>pristine_coarse_map_input</name></member>
-    <member refid="class_spatial_tree_1aa4c60d73794de44877b9ed66b73b4ed8" kind="variable"><name>grid_x_size</name></member>
-    <member refid="class_spatial_tree_1a03c67ea3848796e91a3b45afc9e99365" kind="variable"><name>grid_y_size</name></member>
+    <member refid="class_spatial_tree_1ac49970522839ed06459949caca57fa1d" kind="variable"><name>historical_fine_map_input</name></member>
+    <member refid="class_spatial_tree_1a54279132ba3e8bc3455488bb3b16e8f8" kind="variable"><name>historical_coarse_map_input</name></member>
     <member refid="class_spatial_tree_1abce7e0ce105b3f401b8dce770a20f8a2" kind="variable"><name>landscape</name></member>
     <member refid="class_spatial_tree_1a199167b149b25c506fdaeb660d595658" kind="variable"><name>grid</name></member>
     <member refid="class_spatial_tree_1a694c7eb6c70687ea87e49066a8957877" kind="variable"><name>desired_specnum</name></member>
@@ -1280,7 +1286,7 @@
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1afd585c8a4bdb86461780418f7b886abd" kind="variable"><name>outdatabase</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
-    <member refid="class_tree_1ade2744c2510a6e8ae791ca7189f483bb" kind="variable"><name>sqloutname</name></member>
+    <member refid="class_tree_1a80d3e92108eb472df49640a661ef4f7d" kind="variable"><name>sql_output_database</name></member>
     <member refid="class_tree_1a9379466b9fc0f25bd28543743000e700" kind="variable"><name>bFullmode</name></member>
     <member refid="class_tree_1ac9cbd7d17fb511c1fcc70c765f6440b0" kind="variable"><name>bResume</name></member>
     <member refid="class_tree_1a6c8c76aec6a9faef9c38f4f275b0793d" kind="variable"><name>bConfig</name></member>
@@ -1365,6 +1371,7 @@
     <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
     <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
+    <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
     <member refid="class_tree_1a199f47b62b9b10917ff8b89d20c543a7" kind="function"><name>sqlCreateSimulationParameters</name></member>
     <member refid="class_tree_1aa8bb5d93c7992404ede0a49bb69ccd1f" kind="function"><name>protractedVarsToString</name></member>
@@ -1423,7 +1430,7 @@
     <member refid="class_species_list_1ab36fdc058217514e66e6152479dfab8d" kind="function"><name>initialise</name></member>
     <member refid="class_species_list_1a8532bddc8397cf50531639c50cccbef3" kind="function"><name>setMaxsize</name></member>
     <member refid="class_species_list_1a98f19fa65ed7cbe4536342ce2dff2b7b" kind="function"><name>setSpecies</name></member>
-    <member refid="class_species_list_1ae4b1baaacea721479c8585d36b475c96" kind="function"><name>setSpeciesEmpty</name></member>
+    <member refid="class_species_list_1a49854bb6392a5898fc277f4d2cf1f385" kind="function"><name>setSpeciesEmpty</name></member>
     <member refid="class_species_list_1a627f9d95948f4a2cb6cfb3d8b8f9f2ea" kind="function"><name>setNext</name></member>
     <member refid="class_species_list_1ad3f8f91e3983b8829c0b405013b2709e" kind="function"><name>setNwrap</name></member>
     <member refid="class_species_list_1a4a54fa9e6c07f8d75d9cddbf9a04da19" kind="function"><name>addSpecies</name></member>
@@ -1460,6 +1467,7 @@
     <member refid="struct_spec_sim_parameters_1a8dfb82b7d5e4927a81383f55c2bd8175" kind="function"><name>setup</name></member>
     <member refid="struct_spec_sim_parameters_1af203c1f89e195c31da558659ba890ce1" kind="function"><name>setup</name></member>
     <member refid="struct_spec_sim_parameters_1ae0196a50a551a821b75b6e92a35534a7" kind="function"><name>importTimeConfig</name></member>
+    <member refid="struct_spec_sim_parameters_1a10aac8e7ab592f53b071287e60483b88" kind="function"><name>wipe</name></member>
   </compound>
   <compound refid="struct_step" kind="class"><name>Step</name>
     <member refid="struct_step_1a03a0984250a050752ff20129ff457510" kind="variable"><name>chosen</name></member>
@@ -1542,7 +1550,7 @@
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1afd585c8a4bdb86461780418f7b886abd" kind="variable"><name>outdatabase</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
-    <member refid="class_tree_1ade2744c2510a6e8ae791ca7189f483bb" kind="variable"><name>sqloutname</name></member>
+    <member refid="class_tree_1a80d3e92108eb472df49640a661ef4f7d" kind="variable"><name>sql_output_database</name></member>
     <member refid="class_tree_1a9379466b9fc0f25bd28543743000e700" kind="variable"><name>bFullmode</name></member>
     <member refid="class_tree_1ac9cbd7d17fb511c1fcc70c765f6440b0" kind="variable"><name>bResume</name></member>
     <member refid="class_tree_1a6c8c76aec6a9faef9c38f4f275b0793d" kind="variable"><name>bConfig</name></member>
@@ -1607,6 +1615,7 @@
     <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
     <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
+    <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
     <member refid="class_tree_1a199f47b62b9b10917ff8b89d20c543a7" kind="function"><name>sqlCreateSimulationParameters</name></member>
     <member refid="class_tree_1aed6504b4f759fb31fdeb61cd03b2b3f9" kind="function"><name>simulationParametersSqlInsertion</name></member>
@@ -1808,10 +1817,10 @@
     <member refid="_filesystem_8h_1a9e12562fb15ce7c6462457551d293d66" kind="function"><name>getCsvLineAndSplitIntoTokens</name></member>
   </compound>
   <compound refid="_landscape_8cpp" kind="file"><name>Landscape.cpp</name>
-    <member refid="_landscape_8cpp_1a64e031a7b65b4869e4c9abb5bbeeb278" kind="function"><name>importToMapAndRound</name></member>
+    <member refid="_landscape_8cpp_1af9dd6730e5b65df4e5941800e8177ba0" kind="function"><name>importToMapAndRound</name></member>
   </compound>
   <compound refid="_landscape_8h" kind="file"><name>Landscape.h</name>
-    <member refid="_landscape_8h_1a64e031a7b65b4869e4c9abb5bbeeb278" kind="function"><name>importToMapAndRound</name></member>
+    <member refid="_landscape_8h_1af9dd6730e5b65df4e5941800e8177ba0" kind="function"><name>importToMapAndRound</name></member>
   </compound>
   <compound refid="_license_header_8h" kind="file"><name>LicenseHeader.h</name>
   </compound>
@@ -1970,7 +1979,7 @@
     <member refid="dispersalmodule_8cpp_1a27e6b7d818da9e2c744cc78674ad8425" kind="variable"><name>globalSimParameters</name></member>
     <member refid="dispersalmodule_8cpp_1ad75d4d9be16e89b765a6da9ff97771ab" kind="variable"><name>DispersalMethods</name></member>
     <member refid="dispersalmodule_8cpp_1a7b870ab259dc2fe3d3aa0696ce27051f" kind="function"><name>set_map_parameters</name></member>
-    <member refid="dispersalmodule_8cpp_1ac76c7645b1e2dd97ffbff541c96e1af0" kind="function"><name>set_pristine_map_parameters</name></member>
+    <member refid="dispersalmodule_8cpp_1a032f4c52071ce05ef47c59c5b44d2e80" kind="function"><name>set_historical_map_parameters</name></member>
     <member refid="dispersalmodule_8cpp_1a2efe7828d2bc92e98266d52754e226c5" kind="function"><name>set_dispersal_parameters</name></member>
     <member refid="dispersalmodule_8cpp_1ac1c2ae4efa5e4b392a6419dc2d45da5c" kind="function"><name>test_mean_dispersal</name></member>
     <member refid="dispersalmodule_8cpp_1a799195d68161d7f6981800dd7ea2b70a" kind="function"><name>test_mean_distance_travelled</name></member>

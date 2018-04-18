@@ -8,8 +8,8 @@ Program Listing for File SimulateDispersal.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #include "SimulateDispersal.h"
    #include "Logging.h"
@@ -50,8 +50,8 @@ Program Listing for File SimulateDispersal.cpp
        density_landscape.calcFineMap();
        density_landscape.calcCoarseMap();
        density_landscape.calcOffset();
-       density_landscape.calcPristineFineMap();
-       density_landscape.calcPristineCoarseMap();
+       density_landscape.calcHistoricalFineMap();
+       density_landscape.calcHistoricalCoarseMap();
        density_landscape.setLandscape(simParameters->landscape_type);
        density_landscape.recalculateHabitatMax();
    //  if(fine_map_file != "null")

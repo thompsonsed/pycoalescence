@@ -65,7 +65,7 @@ set(SOURCE_FILES
         dispersalmodule.cpp
         dispersalmodule.h
         necsim/Filesystem.cpp necsim/Filesystem.h necsim/SpatialTree.cpp necsim/SpatialTree.h necsim/Tree.cpp
-        necsim/Tree.h necsim/Landscape.cpp necsim/Landscape.h necsim/Map.h necsim/Map.cpp necsim/DataMask.cpp
+        necsim/Tree.h necsim/Landscape.cpp necsim/Landscape.h necsim/Map.h necsim/DataMask.cpp
         necsim/DataMask.h necsim/SimParameters.h necsim/Cell.h)
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_package(PythonLibs REQUIRED)

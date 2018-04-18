@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -97,9 +97,9 @@ Functions
 
 - :ref:`function_set_dispersal_parameters`
 
-- :ref:`function_set_map_parameters`
+- :ref:`function_set_historical_map_parameters`
 
-- :ref:`function_set_pristine_map_parameters`
+- :ref:`function_set_map_parameters`
 
 - :ref:`function_test_mean_dispersal`
 

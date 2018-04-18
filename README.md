@@ -85,5 +85,5 @@ Contact: samuelthompson14@imperial.ac.uk - thompsonsed@gmail.com
 Institution: Imperial College London and National University of Singapore
 
 Version: 1.0.1
-This project is released under BSD-3 
-See file **LICENSE.txt** or go to [here](https://opensource.org/licenses/BSD-3-Clause) for full license details.
+This project is released under MIT 
+See file **LICENSE.txt** or go to [here](https://opensource.org/licenses/MIT) for full license details.

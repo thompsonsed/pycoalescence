@@ -351,12 +351,12 @@ class CoalescenceTree(object):
 		self._check_database()
 		try:
 			self.cursor.execute("SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
-								"max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_pristine, "
+								"max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, "
 								"time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
 								"coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, "
 								"fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, "
-								"sample_x_offset, sample_y_offset, pristine_coarse_map, "
-								" pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
+								"sample_x_offset, sample_y_offset, historical_coarse_map, "
+								" historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
 								" landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
 								" FROM SIMULATION_PARAMETERS WHERE guild == ?", (guild,))
 		except sqlite3.OperationalError as e:
@@ -1563,8 +1563,8 @@ class CoalescenceTree(object):
 		Reads the simulation parameters from the database and returns them.
 
 		:return: a dictionary mapping names to values for seed, job_type, output_dir, speciation_rate, sigma, L_value, deme,
-		sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_pristine, time_config,
-		coarse_map vars, fine map vars, sample_file, gridx, gridy, pristine coarse map, pristine fine map, sim_complete,
+		sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_historical, time_config,
+		coarse_map vars, fine map vars, sample_file, gridx, gridy, historical coarse map, historical fine map, sim_complete,
 		dispersal_method, m_probability, cutoff, landscape_type, protracted, min_speciation_gen, max_speciation_gen,
 		dispersal_map
 		"""
@@ -1572,12 +1572,12 @@ class CoalescenceTree(object):
 		if not guild:
 			try:
 				self.cursor.execute("SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
-									"max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_pristine, "
+									"max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, "
 									"time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
 									"coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, "
 									"fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, "
-									"sample_x_offset, sample_y_offset, pristine_coarse_map, "
-									" pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
+									"sample_x_offset, sample_y_offset, historical_coarse_map, "
+									" historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
 									" landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
 									" FROM SIMULATION_PARAMETERS")
 			except sqlite3.OperationalError as e:

@@ -1,10 +1,10 @@
-//This file is part of NECSim project which is released under BSD-3 license.
-//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+//This file is part of NECSim project which is released under MIT license.
+//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
 /**
  * @author Sam Thompson
  * @file PyLogging.cpp
  * @brief Routines for writing to python logging module.
- * @copyright <a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3 Licence.</a>
+ * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 #ifndef PYTHON_COMPILE
 #define PYTHON_COMPILE

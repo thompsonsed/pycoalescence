@@ -70,6 +70,7 @@
 <span class="cp">#include</span> <span class="cpf">&quot;Landscape.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
 
+
 <span class="n">DataMask</span><span class="o">::</span><span class="n">DataMask</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
@@ -123,6 +124,8 @@
 <span class="p">{</span>
     <span class="n">sample_mask</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">mask_y_dim</span><span class="p">,</span> <span class="n">mask_x_dim</span><span class="p">);</span>
     <span class="n">sample_mask</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">inputfile</span><span class="p">);</span>
+    <span class="n">mask_x_dim</span> <span class="o">=</span> <span class="n">sample_mask</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+    <span class="n">mask_y_dim</span> <span class="o">=</span> <span class="n">sample_mask</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span>
     <span class="n">sample_mask</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
     <span class="n">getProportionfptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DataMask</span><span class="o">::</span><span class="n">getBoolProportion</span><span class="p">;</span>
 
@@ -141,6 +144,8 @@
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
             <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">mask_y_dim</span><span class="p">,</span> <span class="n">mask_x_dim</span><span class="p">);</span>
             <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">inputfile</span><span class="p">);</span>
+            <span class="n">mask_x_dim</span> <span class="o">=</span> <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span>
+            <span class="n">mask_y_dim</span> <span class="o">=</span> <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span>
             <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
             <span class="n">getProportionfptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DataMask</span><span class="o">::</span><span class="n">getSampleProportion</span><span class="p">;</span>
         <span class="p">}</span>

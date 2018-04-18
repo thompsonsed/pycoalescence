@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Sam Thompson
-Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com BSD-3 Licence. 
+Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 
 
@@ -39,6 +39,8 @@ Includes
 
 
 - ``ConfigFileParser.h`` (:ref:`file_necsim_ConfigFileParser.h`)
+
+- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
 
 - ``Logging.h`` (:ref:`file_necsim_Logging.h`)
 

@@ -108,11 +108,11 @@
         </inbodydescription>
         <location file="necsim/Metacommunity.h" line="48" column="1" bodyfile="necsim/Metacommunity.h" bodystart="48" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_community_1ad5344789223153c3756dbad28948410b" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="class_community_1abc144eeba19574b6b46df384a61acc6f" prot="protected" static="no" mutable="no">
         <type>bool</type>
-        <definition>bool Community::bMem</definition>
+        <definition>bool Community::in_mem</definition>
         <argsstring></argsstring>
-        <name>bMem</name>
+        <name>in_mem</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -121,11 +121,11 @@
         </inbodydescription>
         <location file="necsim/Community.h" line="376" column="1" bodyfile="necsim/Community.h" bodystart="376" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_community_1a82d7b635a6d81a0036238d02c5833e6d" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="class_community_1a7e00bcb1c5a24280346df94853e2919b" prot="protected" static="no" mutable="no">
         <type>bool</type>
-        <definition>bool Community::bFileSet</definition>
+        <definition>bool Community::database_set</definition>
         <argsstring></argsstring>
-        <name>bFileSet</name>
+        <name>database_set</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -212,11 +212,11 @@
         </inbodydescription>
         <location file="necsim/Community.h" line="383" column="1" bodyfile="necsim/Community.h" bodystart="383" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_community_1a40b8a468ecba59b2cb2c04750208495f" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="class_community_1a6c3c70184f586330635a4123699f586f" prot="protected" static="no" mutable="no">
         <type>bool</type>
-        <definition>bool Community::bSample</definition>
+        <definition>bool Community::has_imported_samplemask</definition>
         <argsstring></argsstring>
-        <name>bSample</name>
+        <name>has_imported_samplemask</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -225,11 +225,11 @@
         </inbodydescription>
         <location file="necsim/Community.h" line="384" column="1" bodyfile="necsim/Community.h" bodystart="384" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_community_1ab6496c803e44395f4490f6301fc15a13" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="class_community_1a0371c39658281c8956c29c6b2d564b79" prot="protected" static="no" mutable="no">
         <type>bool</type>
-        <definition>bool Community::bDataImport</definition>
+        <definition>bool Community::has_imported_data</definition>
         <argsstring></argsstring>
-        <name>bDataImport</name>
+        <name>has_imported_data</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -919,7 +919,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="548" column="1" bodyfile="necsim/Community.cpp" bodystart="716" bodyend="722"/>
+        <location file="necsim/Community.h" line="548" column="1" bodyfile="necsim/Community.cpp" bodystart="716" bodyend="725"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a527f03120e4cb211e466cab7e405ba9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -932,7 +932,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="554" column="1" bodyfile="necsim/Community.cpp" bodystart="724" bodyend="729"/>
+        <location file="necsim/Community.h" line="554" column="1" bodyfile="necsim/Community.cpp" bodystart="727" bodyend="733"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a85db7255d3a1d53509ed2800fc24de31" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -959,7 +959,32 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="563" column="1" bodyfile="necsim/Community.cpp" bodystart="731" bodyend="834"/>
+        <location file="necsim/Community.h" line="563" column="1" bodyfile="necsim/Community.cpp" bodystart="735" bodyend="838"/>
+      </memberdef>
+      <memberdef kind="function" id="class_community_1a1cbe1518ba094d2f813550fd46a1f464" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Community::setSimParameters</definition>
+        <argsstring>(const SimParameters *sim_parameters)</argsstring>
+        <name>setSimParameters</name>
+        <param>
+          <type>const <ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> *</type>
+          <declname>sim_parameters</declname>
+        </param>
+        <briefdescription>
+<para>Sets the simulation parameters from a <ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> object. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sim_parameters</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to the <ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> object to set from </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Community.h" line="569" column="1" bodyfile="necsim/Community.cpp" bodystart="1639" bodyend="1666"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a548d36e99e592f0bfc09c8315b27f8bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -986,7 +1011,21 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="576" column="1" bodyfile="necsim/Community.cpp" bodystart="1635" bodyend="1707"/>
+        <location file="necsim/Community.h" line="582" column="1" bodyfile="necsim/Community.cpp" bodystart="1668" bodyend="1740"/>
+      </memberdef>
+      <memberdef kind="function" id="class_community_1a88a36fd7a14c3e88af377891e01bba21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Community::isSetDatabase</definition>
+        <argsstring>()</argsstring>
+        <name>isSetDatabase</name>
+        <briefdescription>
+<para>Gets if the database has been set yet. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the database is already set </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Community.h" line="588" column="1" bodyfile="necsim/Community.cpp" bodystart="1742" bodyend="1745"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a8ac0ce642595283f342c2f1841f4c20f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1000,7 +1039,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="582" column="1" bodyfile="necsim/Community.cpp" bodystart="836" bodyend="854"/>
+        <location file="necsim/Community.h" line="594" column="1" bodyfile="necsim/Community.cpp" bodystart="840" bodyend="858"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a51d90183f6a26e7d192abfd748945f2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="class_row" kindref="compound">Row</ref>&lt; unsigned long &gt; *</type>
@@ -1014,7 +1053,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="591" column="1" bodyfile="necsim/Community.cpp" bodystart="856" bodyend="865"/>
+        <location file="necsim/Community.h" line="603" column="1" bodyfile="necsim/Community.cpp" bodystart="860" bodyend="869"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a63fd8d32af6d52d009d1fd54098e4594" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="class_row" kindref="compound">Row</ref>&lt; unsigned long &gt;</type>
@@ -1030,7 +1069,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="600" column="1" bodyfile="necsim/Community.cpp" bodystart="867" bodyend="870"/>
+        <location file="necsim/Community.h" line="612" column="1" bodyfile="necsim/Community.cpp" bodystart="871" bodyend="874"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a8523432488d6586521c5994cad4215d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -1044,7 +1083,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="606" column="1" bodyfile="necsim/Community.cpp" bodystart="872" bodyend="875"/>
+        <location file="necsim/Community.h" line="618" column="1" bodyfile="necsim/Community.cpp" bodystart="876" bodyend="879"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1af6fe28e1047ed5b56fde833e4b2b30de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1058,7 +1097,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="612" column="1" bodyfile="necsim/Community.cpp" bodystart="896" bodyend="914"/>
+        <location file="necsim/Community.h" line="624" column="1" bodyfile="necsim/Community.cpp" bodystart="900" bodyend="918"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a04d65ed53ea9e2cb6ce02dddccf3d33e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1072,7 +1111,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="619" column="1" bodyfile="necsim/Community.cpp" bodystart="876" bodyend="894"/>
+        <location file="necsim/Community.h" line="631" column="1" bodyfile="necsim/Community.cpp" bodystart="880" bodyend="898"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1aa5643c34557be54ea2674e78a1e0c53a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1097,7 +1136,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="625" column="1" bodyfile="necsim/Community.cpp" bodystart="1709" bodyend="1721"/>
+        <location file="necsim/Community.h" line="637" column="1" bodyfile="necsim/Community.cpp" bodystart="1747" bodyend="1759"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a3833e048848d21bc0292c05e86b7d5ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1133,7 +1172,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="636" column="1" bodyfile="necsim/Community.cpp" bodystart="1723" bodyend="1739"/>
+        <location file="necsim/Community.h" line="648" column="1" bodyfile="necsim/Community.cpp" bodystart="1761" bodyend="1777"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a132137f2a27a6fad21ada4c94726480a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1154,7 +1193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="638" column="1" bodyfile="necsim/Community.cpp" bodystart="1741" bodyend="1747"/>
+        <location file="necsim/Community.h" line="650" column="1" bodyfile="necsim/Community.cpp" bodystart="1779" bodyend="1785"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a649afbf07398a1717ad49cb22bb744ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1179,7 +1218,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="645" column="1" bodyfile="necsim/Community.cpp" bodystart="1749" bodyend="1752"/>
+        <location file="necsim/Community.h" line="657" column="1" bodyfile="necsim/Community.cpp" bodystart="1787" bodyend="1790"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1ad6e92dafaf00fd65cc29ca436dc61a2e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1192,7 +1231,7 @@
 <para>The new SPECIES_ABUNDANCES table contains the species abundance distribution for the whole samplemask. A similar tabe FRAGMENT_ABUNDANCES is generated by <ref refid="class_community_1ad6515ff43ea8189a1acdcccfe893bbba" kindref="member">createFragmentDatabase()</ref> if specified via the command line parameters. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="655" column="1" bodyfile="necsim/Community.cpp" bodystart="916" bodyend="933"/>
+        <location file="necsim/Community.h" line="667" column="1" bodyfile="necsim/Community.cpp" bodystart="920" bodyend="937"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a078a9a1210d6b7e8f6f378891f7e8b86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1205,7 +1244,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="661" column="1" bodyfile="necsim/Community.cpp" bodystart="935" bodyend="960"/>
+        <location file="necsim/Community.h" line="673" column="1" bodyfile="necsim/Community.cpp" bodystart="939" bodyend="964"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a8cb8044c6b2e290e7933cbc78d7019be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1218,7 +1257,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="666" column="1" bodyfile="necsim/Community.cpp" bodystart="962" bodyend="1046"/>
+        <location file="necsim/Community.h" line="678" column="1" bodyfile="necsim/Community.cpp" bodystart="966" bodyend="1050"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a7a1c541651f7b2326db2334233072d04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -1288,7 +1327,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="677" column="1" bodyfile="necsim/Community.cpp" bodystart="1048" bodyend="1080"/>
+        <location file="necsim/Community.h" line="689" column="1" bodyfile="necsim/Community.cpp" bodystart="1052" bodyend="1084"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a28f6996de89e7596da6777cc55e9861d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1357,7 +1396,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="690" column="1" bodyfile="necsim/Community.cpp" bodystart="1873" bodyend="1900"/>
+        <location file="necsim/Community.h" line="702" column="1" bodyfile="necsim/Community.cpp" bodystart="1911" bodyend="1938"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1ad6515ff43ea8189a1acdcccfe893bbba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1382,7 +1421,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="699" column="1" bodyfile="necsim/Community.cpp" bodystart="1082" bodyend="1147"/>
+        <location file="necsim/Community.h" line="711" column="1" bodyfile="necsim/Community.cpp" bodystart="1086" bodyend="1151"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a280850bd6077692755cc419028aa5d67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1403,7 +1442,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="707" column="1" bodyfile="necsim/Community.cpp" bodystart="1149" bodyend="1211"/>
+        <location file="necsim/Community.h" line="719" column="1" bodyfile="necsim/Community.cpp" bodystart="1153" bodyend="1215"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a23b9398df3a63c75d01e3ed3982432c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -1417,7 +1456,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="713" column="1" bodyfile="necsim/Community.cpp" bodystart="1213" bodyend="1231"/>
+        <location file="necsim/Community.h" line="725" column="1" bodyfile="necsim/Community.cpp" bodystart="1217" bodyend="1235"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a5b2236c98b613c0ec96998bd932101f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -1431,7 +1470,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="719" column="1" bodyfile="necsim/Community.cpp" bodystart="1233" bodyend="1251"/>
+        <location file="necsim/Community.h" line="731" column="1" bodyfile="necsim/Community.cpp" bodystart="1237" bodyend="1255"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a08be240fddc6ea481014567276a84dd0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1444,7 +1483,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="726" column="1" bodyfile="necsim/Community.cpp" bodystart="1253" bodyend="1336"/>
+        <location file="necsim/Community.h" line="738" column="1" bodyfile="necsim/Community.cpp" bodystart="1257" bodyend="1340"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1ac9433a0c34911ec1128b5459f61488fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1469,7 +1508,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="734" column="1" bodyfile="necsim/Community.cpp" bodystart="1338" bodyend="1592"/>
+        <location file="necsim/Community.h" line="746" column="1" bodyfile="necsim/Community.cpp" bodystart="1342" bodyend="1596"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a706aba5b07c98849cb2b4b0318488f99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1482,7 +1521,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="739" column="1" bodyfile="necsim/Community.cpp" bodystart="1594" bodyend="1633"/>
+        <location file="necsim/Community.h" line="751" column="1" bodyfile="necsim/Community.cpp" bodystart="1598" bodyend="1637"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a24c425f32b1e3b10227e2d04cbacfe31" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1495,7 +1534,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="744" column="1" bodyfile="necsim/Community.cpp" bodystart="1755" bodyend="1871"/>
+        <location file="necsim/Community.h" line="756" column="1" bodyfile="necsim/Community.cpp" bodystart="1793" bodyend="1909"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1aed61108d8c4fd42d39a9112c5062cad4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>vector&lt; unsigned long &gt;</type>
@@ -1509,7 +1548,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="750" column="1" bodyfile="necsim/Community.cpp" bodystart="1902" bodyend="1949"/>
+        <location file="necsim/Community.h" line="762" column="1" bodyfile="necsim/Community.cpp" bodystart="1940" bodyend="1987"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a257e8e3dce33b235985ed9d167817a89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>vector&lt; unsigned long &gt;</type>
@@ -1523,7 +1562,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="756" column="1" bodyfile="necsim/Community.cpp" bodystart="1951" bodyend="1999"/>
+        <location file="necsim/Community.h" line="768" column="1" bodyfile="necsim/Community.cpp" bodystart="1989" bodyend="2037"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1afbc8709084a00a7450e3a168cb016db9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1536,7 +1575,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="761" column="1" bodyfile="necsim/Community.cpp" bodystart="2001" bodyend="2076"/>
+        <location file="necsim/Community.h" line="773" column="1" bodyfile="necsim/Community.cpp" bodystart="2039" bodyend="2114"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1ac900c23ffe2572504fca11f20b7ba8cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1549,7 +1588,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="766" column="1" bodyfile="necsim/Community.cpp" bodystart="2078" bodyend="2161"/>
+        <location file="necsim/Community.h" line="778" column="1" bodyfile="necsim/Community.cpp" bodystart="2116" bodyend="2199"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1af3f5939bfb59fdf3b7d7b5f3699bd225" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1562,7 +1601,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="772" column="1" bodyfile="necsim/Community.cpp" bodystart="2163" bodyend="2189"/>
+        <location file="necsim/Community.h" line="784" column="1" bodyfile="necsim/Community.cpp" bodystart="2201" bodyend="2227"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1adcfc04e92cbb597682dcc1f2913d6668" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1575,7 +1614,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="777" column="1" bodyfile="necsim/Community.cpp" bodystart="2192" bodyend="2220"/>
+        <location file="necsim/Community.h" line="789" column="1" bodyfile="necsim/Community.cpp" bodystart="2230" bodyend="2258"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1adfa9a1c84bb326092805614ad195fcdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1588,7 +1627,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="782" column="1" bodyfile="necsim/Community.cpp" bodystart="2222" bodyend="2261"/>
+        <location file="necsim/Community.h" line="794" column="1" bodyfile="necsim/Community.cpp" bodystart="2260" bodyend="2299"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1ad2483623c7ad7a11564fc49305204585" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1609,7 +1648,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="788" column="1" bodyfile="necsim/Community.cpp" bodystart="2263" bodyend="2269"/>
+        <location file="necsim/Community.h" line="800" column="1" bodyfile="necsim/Community.cpp" bodystart="2301" bodyend="2307"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a36216913433e3e011ee2420e83e1fe4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1645,7 +1684,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="795" column="1" bodyfile="necsim/Community.cpp" bodystart="2271" bodyend="2280"/>
+        <location file="necsim/Community.h" line="807" column="1" bodyfile="necsim/Community.cpp" bodystart="2309" bodyend="2318"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a8ce443a30731d2249852d2b615f4a29a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1670,7 +1709,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="808" column="1" bodyfile="necsim/Community.cpp" bodystart="2294" bodyend="2298"/>
+        <location file="necsim/Community.h" line="820" column="1" bodyfile="necsim/Community.cpp" bodystart="2332" bodyend="2336"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1a7289dd39ee9b69ca314e1752a7b45701" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1706,7 +1745,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="815" column="1" bodyfile="necsim/Community.cpp" bodystart="2300" bodyend="2316"/>
+        <location file="necsim/Community.h" line="827" column="1" bodyfile="necsim/Community.cpp" bodystart="2338" bodyend="2354"/>
       </memberdef>
       <memberdef kind="function" id="class_community_1aee7488d02cccb897ed1d561e242391df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1742,7 +1781,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="823" column="1" bodyfile="necsim/Community.cpp" bodystart="2318" bodyend="2323"/>
+        <location file="necsim/Community.h" line="835" column="1" bodyfile="necsim/Community.cpp" bodystart="2356" bodyend="2361"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -1861,7 +1900,7 @@
         <childnode refid="820" relation="usage">
           <edgelabel>times_file</edgelabel>
           <edgelabel>pause_sim_directory</edgelabel>
-          <edgelabel>sqloutname</edgelabel>
+          <edgelabel>sql_output_database</edgelabel>
           <edgelabel>out_directory</edgelabel>
         </childnode>
         <childnode refid="834" relation="usage">
@@ -1913,9 +1952,9 @@
           <edgelabel>fine_map_file</edgelabel>
           <edgelabel>dispersal_method</edgelabel>
           <edgelabel>dispersal_file</edgelabel>
-          <edgelabel>pristine_fine_map_file</edgelabel>
+          <edgelabel>historical_fine_map_file</edgelabel>
+          <edgelabel>historical_coarse_map_file</edgelabel>
           <edgelabel>output_directory</edgelabel>
-          <edgelabel>pristine_coarse_map_file</edgelabel>
           <edgelabel>coarse_map_file</edgelabel>
           <edgelabel>...</edgelabel>
         </childnode>
@@ -1977,10 +2016,6 @@
       <member refid="class_community_1aa5e9946a354a46d675e015d803cc7fa1" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>applied_min_speciation_gen</name></member>
       <member refid="class_metacommunity_1adf30667aa617bc969706eab2facd5482" prot="public" virt="virtual"><scope>Metacommunity</scope><name>apply</name></member>
       <member refid="class_community_1a706aba5b07c98849cb2b4b0318488f99" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>applyFragments</name></member>
-      <member refid="class_community_1ab6496c803e44395f4490f6301fc15a13" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>bDataImport</name></member>
-      <member refid="class_community_1a82d7b635a6d81a0036238d02c5833e6d" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>bFileSet</name></member>
-      <member refid="class_community_1ad5344789223153c3756dbad28948410b" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>bMem</name></member>
-      <member refid="class_community_1a40b8a468ecba59b2cb2c04750208495f" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>bSample</name></member>
       <member refid="class_community_1aa9fe335ff9e94c626d1e0d41ff145524" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>bSqlConnection</name></member>
       <member refid="class_community_1ac9433a0c34911ec1128b5459f61488fc" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>calcFragments</name></member>
       <member refid="class_community_1a241f69d1f69e61fc53c112fd874bf3ba" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>calcSpecies</name></member>
@@ -1999,6 +2034,7 @@
       <member refid="class_metacommunity_1a2557f1dc48f4a7aba97431ac8a8c7dbd" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>createMetacommunityNSENeutralModel</name></member>
       <member refid="class_community_1a77e925f82bee5441d8ec45406066dcfb" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>current_community_parameters</name></member>
       <member refid="class_community_1a382c0e6e90ca8055d3192bfe2af4d741" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>database</name></member>
+      <member refid="class_community_1a7e00bcb1c5a24280346df94853e2919b" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>database_set</name></member>
       <member refid="class_community_1a579c5f423fc2461838a80baf6b396310" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>detectDimensions</name></member>
       <member refid="class_community_1a8ce443a30731d2249852d2b615f4a29a" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>doApplication</name></member>
       <member refid="class_community_1a7289dd39ee9b69ca314e1752a7b45701" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>doApplication</name></member>
@@ -2018,12 +2054,16 @@
       <member refid="class_community_1a257e8e3dce33b235985ed9d167817a89" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>getUniqueMetacommunityRefs</name></member>
       <member refid="class_community_1a383dba82c8c76bf5c130c2bf4ac057e5" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>grid_x_size</name></member>
       <member refid="class_community_1a308d12fa4ef95015860d4181b075c93f" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>grid_y_size</name></member>
+      <member refid="class_community_1a0371c39658281c8956c29c6b2d564b79" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>has_imported_data</name></member>
+      <member refid="class_community_1a6c3c70184f586330635a4123699f586f" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>has_imported_samplemask</name></member>
       <member refid="class_community_1a045f762ca30c3a20e8ef5911a4982160" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>hasImportedData</name></member>
       <member refid="class_community_1a85db7255d3a1d53509ed2800fc24de31" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>importData</name></member>
       <member refid="class_community_1a01a137383e1e23f2191d63f16513a00a" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>importSamplemask</name></member>
       <member refid="class_community_1a548d36e99e592f0bfc09c8315b27f8bb" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>importSimParameters</name></member>
+      <member refid="class_community_1abc144eeba19574b6b46df384a61acc6f" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>in_mem</name></member>
       <member refid="class_community_1a527f03120e4cb211e466cab7e405ba9a" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>internalOption</name></member>
       <member refid="class_community_1a094f10ce5bbbcab19bccda352f545aad" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>iSpecies</name></member>
+      <member refid="class_community_1a88a36fd7a14c3e88af377891e01bba21" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>isSetDatabase</name></member>
       <member refid="class_community_1a5de3afc536570241b82489d1b9c87d03" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>max_fragment_id</name></member>
       <member refid="class_community_1ae503af91bc33ed302a363098a3b49a61" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>max_locations_id</name></member>
       <member refid="class_community_1aeff6623b51fdd177e87b6eebfba27080" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>max_speciation_gen</name></member>
@@ -2062,6 +2102,7 @@
       <member refid="class_community_1a649afbf07398a1717ad49cb22bb744ff" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>setProtracted</name></member>
       <member refid="class_community_1aa5643c34557be54ea2674e78a1e0c53a" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>setProtractedParameters</name></member>
       <member refid="class_community_1a3833e048848d21bc0292c05e86b7d5ce" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>setProtractedParameters</name></member>
+      <member refid="class_community_1a1cbe1518ba094d2f813550fd46a1f464" prot="public" virt="non-virtual"><scope>Metacommunity</scope><name>setSimParameters</name></member>
       <member refid="class_community_1a45df8aefb9914e7c8f3133143069ca35" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>spec_sim_parameters</name></member>
       <member refid="class_metacommunity_1aad4378b40264345fc6f5116aedc58c26" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>speciation_rate</name></member>
       <member refid="class_metacommunity_1a094dfd2d0bb737a1f5bd06ceb3c6da1f" prot="protected" virt="non-virtual"><scope>Metacommunity</scope><name>task</name></member>

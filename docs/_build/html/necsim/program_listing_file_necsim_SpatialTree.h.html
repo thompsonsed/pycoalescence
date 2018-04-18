@@ -66,8 +66,8 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_SpatialTree.h.html#file-necsim-spatialtree-h"><span class="std std-ref">File SpatialTree.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 <span class="c1">//</span>
 <span class="cp">#ifndef SPATIALTREE_H</span>
 <span class="cp">#define SPATIALTREE_H</span>
@@ -129,9 +129,7 @@
     <span class="c1">// A list of new variables which will contain the relevant information for maps and grids.</span>
     <span class="c1">//  strings containing the file names to be imported.</span>
     <span class="n">string</span> <span class="n">fine_map_input</span><span class="p">,</span> <span class="n">coarse_map_input</span><span class="p">;</span>
-    <span class="n">string</span> <span class="n">pristine_fine_map_input</span><span class="p">,</span> <span class="n">pristine_coarse_map_input</span><span class="p">;</span>
-    <span class="c1">// the variables for the grid containing the initial individuals.</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">historical_fine_map_input</span><span class="p">,</span> <span class="n">historical_coarse_map_input</span><span class="p">;</span>
     <span class="c1">// Landscape object containing both the coarse and fine maps for checking whether or not there is habitat at a</span>
     <span class="c1">// particular location.</span>
     <span class="n">Landscape</span> <span class="n">landscape</span><span class="p">;</span>
@@ -144,8 +142,6 @@
     <span class="n">SpatialTree</span><span class="p">()</span> <span class="o">:</span> <span class="n">Tree</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">outdatabase</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">grid_x_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">grid_y_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">desired_specnum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -195,9 +191,9 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">estSpecnum</span><span class="p">();</span>
 
-<span class="cp">#ifdef pristine_mode</span>
+<span class="cp">#ifdef historical_mode</span>
 
-    <span class="kt">void</span> <span class="nf">pristineStepChecks</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">historicalStepChecks</span><span class="p">();</span>
 <span class="cp">#endif</span>
 
 

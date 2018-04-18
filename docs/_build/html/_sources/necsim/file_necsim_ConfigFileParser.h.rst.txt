@@ -28,9 +28,8 @@ Definition (``necsim/ConfigFileParser.h``)
 Detailed Description
 --------------------
 
-Sam Thompson 
-31/08/2016
-Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com BSD-3 Licence. 
+Sam Thompson
+Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 
 

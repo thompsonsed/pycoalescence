@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -47,6 +47,8 @@ Includes
 Included By
 -----------
 
+
+- :ref:`file_necsim_SimParameters.h`
 
 - :ref:`file_necsim_ConfigFileParser.cpp`
 

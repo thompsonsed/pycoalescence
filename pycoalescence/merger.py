@@ -96,14 +96,14 @@ class Merger(CoalescenceTree):
 					 "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT " \
 					 "NULL, deme INT NOT NULL, sample_size DOUBLE NOT NULL, max_time INT NOT NULL, " \
 					 "dispersal_relative_cost DOUBLE NOT NULL, min_num_species INT NOT NULL, " \
-					 "habitat_change_rate DOUBLE NOT NULL, gen_since_pristine DOUBLE NOT NULL, " \
+					 "habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, " \
 					 "time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, " \
 					 "coarse_map_y INT NOT NULL, coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, " \
 					 "coarse_map_scale DOUBLE NOT NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL, " \
 					 "fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, " \
 					 "sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, " \
 					 "sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, " \
-					 "pristine_coarse_map TEXT NOT NULL, pristine_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
+					 "historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
 					 "dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, " \
 					 "restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, " \
 					 "min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, " \

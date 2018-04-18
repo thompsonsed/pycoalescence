@@ -7,6 +7,7 @@ var searchData=
   ['rejectionsamplenull',['rejectionSampleNull',['../class_reproduction_map.html#a80dfa3194b7acabd813d9ae6b4ae3671',1,'ReproductionMap']]],
   ['removefragment',['removeFragment',['../class_samplematrix.html#a9b796f2279f1716c2a555ff3d641ea0b',1,'Samplematrix']]],
   ['removeoldposition',['removeOldPosition',['../class_spatial_tree.html#ae694bde4ab31b51c13c4a96f9a86a8ba',1,'SpatialTree::removeOldPosition()'],['../class_tree.html#ad74c05729c9e5235ab0fa6e34260093a',1,'Tree::removeOldPosition()']]],
+  ['resethistorical',['resetHistorical',['../class_landscape.html#a03e35a3a42e40a683be01e75413d30d2',1,'Landscape']]],
   ['resetspecies',['resetSpecies',['../class_tree_node.html#a715869c786bb0442d56994de11571605',1,'TreeNode']]],
   ['resettree',['resetTree',['../class_community.html#abd099aacb5332a9b89b3421e01269d24',1,'Community']]],
   ['resize',['resize',['../class_row.html#aac3e65388e6ce2a003be1a1b460fab53',1,'Row']]],

@@ -205,10 +205,10 @@ class DispersalSimulation(Landscape):
 									 self.sample_map.y_size, self.coarse_map.file_name, self.coarse_map.x_size,
 									 self.coarse_map.y_size, self.coarse_map.x_offset, self.coarse_map.y_offset,
 									 self.landscape_type)
-		Dispersal.set_pristine_map_parameters(self.pristine_fine_list,
-											  [x for x in range(len(self.pristine_fine_list))],
-											  self.rates_list, self.times_list, self.pristine_coarse_list,
-											  [x for x in range(len(self.pristine_fine_list))],
+		Dispersal.set_historical_map_parameters(self.historical_fine_list,
+											  [x for x in range(len(self.historical_fine_list))],
+											  self.rates_list, self.times_list, self.historical_coarse_list,
+											  [x for x in range(len(self.historical_fine_list))],
 											  self.rates_list, self.times_list)
 
 	def test_mean_distance_travelled(self):

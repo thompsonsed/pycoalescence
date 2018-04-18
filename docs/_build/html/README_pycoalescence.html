@@ -274,7 +274,7 @@ If you require multiple map files at different points in time, you shall need to
 file to make these options accessible to the program.</p>
 <p>These configuration options appear in the main configuration file under various headings.</p>
 <ul class="simple">
-<li>First add the pristine map options using <code class="xref py py-func docutils literal"><span class="pre">add_pristine_map()</span></code>
+<li>First add the historical map options using <code class="xref py py-func docutils literal"><span class="pre">add_historical_map()</span></code>
 This can be performed multiple times to add several maps.</li>
 <li>Add the options to the configuration file (<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.create_map_config" title="pycoalescence.simulation.Simulation.create_map_config"><code class="xref py py-func docutils literal"><span class="pre">create_map_config()</span></code></a>)</li>
 </ul>
@@ -301,7 +301,7 @@ This can be performed multiple times to add several maps.</li>
                      <span class="n">fine_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">fine_x</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">fine_y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">fine_x_offset</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fine_y_offset</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
                      <span class="n">coarse_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">coarse_x</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">coarse_y</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
                      <span class="n">coarse_x_offset</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">coarse_y_offset</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">coarse_scale</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                     <span class="n">pristine_fine_map</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">pristine_coarse_map</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">)</span>
+                     <span class="n">historical_fine_map</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">historical_coarse_map</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span><span class="p">)</span>
 <span class="c1"># complete setup and run simulation</span>
 <span class="n">c</span><span class="o">.</span><span class="n">finalise_setup</span><span class="p">()</span>
 <span class="n">c</span><span class="o">.</span><span class="n">run_coalescence</span><span class="p">()</span>
@@ -316,7 +316,7 @@ inputted map files.</p>
                         <span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mf">0.1</span>
                         <span class="n">max_time</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;fat-tailed&quot;</span><span class="p">,</span> <span class="n">m_prob</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                         <span class="n">dispersal_relative_cost</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_num_species</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">forest_change_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                        <span class="n">pristine_forest_time</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">time_config_file</span><span class="o">=</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">restrict_self</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">historical_forest_time</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">time_config_file</span><span class="o">=</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">restrict_self</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                         <span class="n">infinite_landscape</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="c1"># Add a set of speciation rates to be applied at the end of the simulation</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_speciation_rates</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
@@ -325,8 +325,8 @@ inputted map files.</p>
 <span class="c1"># add sample times</span>
 <span class="n">c</span><span class="o">.</span><span class="n">add_sample_time</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">add_sample_time</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="c1"># add pristine maps</span>
-<span class="n">c</span><span class="o">.</span><span class="n">add_pristine_map</span><span class="p">(</span><span class="n">fine_map</span><span class="o">=</span><span class="s2">&quot;path/to/pristinefine1.tif&quot;</span><span class="p">,</span> <span class="n">coarse_map</span><span class="o">=</span><span class="s2">&quot;path/to/pristinecoarse1.tif&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1"># add historical maps</span>
+<span class="n">c</span><span class="o">.</span><span class="n">add_historical_map</span><span class="p">(</span><span class="n">fine_map</span><span class="o">=</span><span class="s2">&quot;path/to/historicalfine1.tif&quot;</span><span class="p">,</span> <span class="n">coarse_map</span><span class="o">=</span><span class="s2">&quot;path/to/historicalcoarse1.tif&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="c1"># create configuration files, run the checks and finalise the simulation</span>
 <span class="n">c</span><span class="o">.</span><span class="n">finalise_setup</span><span class="p">()</span>
 <span class="c1"># run the simulation</span>
@@ -360,25 +360,25 @@ inputted map files.</p>
 <span class="n">y_off</span> <span class="o">=</span> <span class="mi">7200</span>
 <span class="n">scale</span> <span class="o">=</span> <span class="mf">10.0</span>
 
-<span class="p">[</span><span class="n">pristine_fine0</span><span class="p">]</span>
+<span class="p">[</span><span class="n">historical_fine0</span><span class="p">]</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">none</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="p">[</span><span class="n">pristine_coarse0</span><span class="p">]</span>
+<span class="p">[</span><span class="n">historical_coarse0</span><span class="p">]</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">none</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="p">[</span><span class="n">pristine_fine1</span><span class="p">]</span>
+<span class="p">[</span><span class="n">historical_fine1</span><span class="p">]</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">none</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">rate</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="p">[</span><span class="n">pristine_coarse1</span><span class="p">]</span>
+<span class="p">[</span><span class="n">historical_coarse1</span><span class="p">]</span>
 <span class="n">path</span> <span class="o">=</span> <span class="n">none</span>
 <span class="n">number</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">time</span> <span class="o">=</span> <span class="mi">200</span>
@@ -476,7 +476,7 @@ unnecessary bugs.</p>
 <div><ul class="simple">
 <li>Sample map dimensions must be smaller than fine map dimensions.</li>
 <li>Fine map dimensions must be smaller than coarse map dimensions (supplied at the resolution of the fine map files).</li>
-<li>Dimensions of pristine fine and coarse maps must match their respective current map dimensions.</li>
+<li>Dimensions of historical fine and coarse maps must match their respective current map dimensions.</li>
 <li>All offsets must maintain the smaller map within the larger map</li>
 <li>If any files are supplied as &#8216;null&#8217;, map sizes must still be provided. This is important for sample map size, but
 should be corrected in a future update for coarse map files.</li>
@@ -527,7 +527,7 @@ following:</p>
 </li>
 <li><dl class="first docutils">
 <dt>&#8220;infinite&#8221;</dt>
-<dd>Run with a pristine infinite landscape outside of the coares map boundaries.</dd>
+<dd>Run with a historical infinite landscape outside of the coares map boundaries.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">

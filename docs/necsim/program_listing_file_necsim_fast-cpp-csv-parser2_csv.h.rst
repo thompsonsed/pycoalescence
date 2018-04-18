@@ -9,7 +9,7 @@ Program Listing for File csv.h
 .. code-block:: cpp
 
    // Copyright: (2012-2015) Ben Strasser <code@ben-strasser.net>
-   // License: BSD-3
+   // License: MIT
    //
    // All rights reserved.
    //

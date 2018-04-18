@@ -171,7 +171,7 @@ files, which as default are mainconf_*job_num*_*seed*.txt and the other as timec
 
    These configuration options appear in the main configuration file under various headings.
 
-   - First add the pristine map options using :func:`add_pristine_map() <pycoalescence.simulation.Simulation.add_pristine_map>`
+   - First add the historical map options using :func:`add_historical_map() <pycoalescence.simulation.Simulation.add_historical_map>`
      This can be performed multiple times to add several maps.
    - Add the options to the configuration file (:func:`create_map_config() <pycoalescence.simulation.Simulation.create_map_config>`)
 
@@ -200,7 +200,7 @@ A simple simulation
                          fine_file = "null", fine_x = 200, fine_y = 200, fine_x_offset = 50, fine_y_offset = 50,
                          coarse_file = "null", coarse_x = 1000, coarse_y = 1000,
                          coarse_x_offset = 100, coarse_y_offset = 100, coarse_scale = 10,
-                         pristine_fine_map = "null", pristine_coarse_map = "null")
+                         historical_fine_map = "null", historical_coarse_map = "null")
     # complete setup and run simulation
     c.finalise_setup()
     c.run_coalescence()
@@ -217,7 +217,7 @@ inputted map files.
                             sigma=4, tau=4, deme=1, sample_size=0.1
                             max_time=100, dispersal_method="fat-tailed", m_prob=0.0, cutoff=0,
                             dispersal_relative_cost=1, min_num_species=1, forest_change_rate=0.2,
-                            pristine_forest_time=200, time_config_file="null", restrict_self=False,
+                            historical_forest_time=200, time_config_file="null", restrict_self=False,
                             infinite_landscape=False)
     # Add a set of speciation rates to be applied at the end of the simulation
     c.set_speciation_rates([0.2, 0.3, 0.4])
@@ -226,8 +226,8 @@ inputted map files.
     # add sample times
     c.add_sample_time(0.0)
     c.add_sample_time(1.0)
-    # add pristine maps
-    c.add_pristine_map(fine_map="path/to/pristinefine1.tif", coarse_map="path/to/pristinecoarse1.tif", time=1, rate=0.5)
+    # add historical maps
+    c.add_historical_map(fine_map="path/to/historicalfine1.tif", coarse_map="path/to/historicalcoarse1.tif", time=1, rate=0.5)
     # create configuration files, run the checks and finalise the simulation
     c.finalise_setup()
     # run the simulation
@@ -261,25 +261,25 @@ Example configuration file
     y_off = 7200
     scale = 10.0
 
-    [pristine_fine0]
+    [historical_fine0]
     path = none
     number = 0
     time = 200
     rate = 0
 
-    [pristine_coarse0]
+    [historical_coarse0]
     path = none
     number = 0
     time = 200
     rate = 0
 
-    [pristine_fine1]
+    [historical_fine1]
     path = none
     number = 1
     time = 200
     rate = 0
 
-    [pristine_coarse1]
+    [historical_coarse1]
     path = none
     number = 1
     time = 200
@@ -365,7 +365,7 @@ Certain simulation variables have limitations, depending on the method of settin
 
     - Sample map dimensions must be smaller than fine map dimensions.
     - Fine map dimensions must be smaller than coarse map dimensions (supplied at the resolution of the fine map files).
-    - Dimensions of pristine fine and coarse maps must match their respective current map dimensions.
+    - Dimensions of historical fine and coarse maps must match their respective current map dimensions.
     - All offsets must maintain the smaller map within the larger map
     - If any files are supplied as 'null', map sizes must still be provided. This is important for sample map size, but
       should be corrected in a future update for coarse map files.
@@ -405,7 +405,7 @@ following:
     Run without infinite landscapes, with closed boundaries to the coarse map.
 
 - "infinite"
-    Run with a pristine infinite landscape outside of the coares map boundaries.
+    Run with a historical infinite landscape outside of the coares map boundaries.
 
 - "tiled_coarse"
     Tile the coarse map infinitely in all dimensions. A coarse map must be provided.

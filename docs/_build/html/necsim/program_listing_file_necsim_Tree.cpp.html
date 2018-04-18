@@ -66,8 +66,8 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Tree.cpp.html#file-necsim-tree-cpp"><span class="std std-ref">File Tree.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;Tree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
@@ -286,25 +286,22 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">setTimes</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">uses_temporal_sampling</span><span class="p">)</span>
+    <span class="c1">// Import the time sample points</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reference_times</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
     <span class="p">{</span>
-        <span class="c1">// Import the time sample points</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Reference times have already been set.&quot;</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;set&quot;</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">uses_temporal_sampling</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-            <span class="n">reference_times</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times</span><span class="p">;</span>
-            <span class="n">sort</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">reference_times</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
-        <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
-            <span class="n">reference_times</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-            <span class="n">reference_times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
-        <span class="p">}</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Reference times have already been set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;set&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">uses_temporal_sampling</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">reference_times</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times</span><span class="p">;</span>
+        <span class="n">sort</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">reference_times</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">reference_times</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">reference_times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -927,11 +924,11 @@
 <span class="p">{</span>
 <span class="cp">#ifdef sql_ram</span>
     <span class="c1">// open connection to the database file</span>
-    <span class="n">remove</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sqloutname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....     &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sql_output_database</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....     &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">,</span> <span class="n">outdatabase</span><span class="p">);</span>
+    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">,</span> <span class="n">outdatabase</span><span class="p">);</span>
     <span class="c1">// create the backup object to write data to the file from memory.</span>
     <span class="n">sqlite3_backup</span><span class="o">*</span> <span class="n">backupdb</span><span class="p">;</span>
     <span class="n">backupdb</span> <span class="o">=</span> <span class="n">sqlite3_backup_init</span><span class="p">(</span><span class="n">outdatabase</span><span class="p">,</span> <span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="s">&quot;main&quot;</span><span class="p">);</span>
@@ -962,7 +959,7 @@
     <span class="p">}</span>
     <span class="n">sqlite3_backup_finish</span><span class="p">(</span><span class="n">backupdb</span><span class="p">);</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sqloutname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....  done!              &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sql_output_database</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....  done!              &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="cp">#endif</span>
 <span class="p">}</span>
@@ -1084,6 +1081,18 @@
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="p">}</span>
 
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">openSQLDatabase</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">database</span><span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#ifdef sql_ram</span>
+        <span class="n">sqlite3_open</span><span class="p">(</span><span class="s">&quot;:memory:&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef sql_ram</span>
+        <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">,</span> <span class="n">database</span><span class="p">);</span>
+<span class="cp">#endif</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">sqlCreate</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1094,19 +1103,19 @@
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
     <span class="c1">// Create the folder if it doesn&#39;t exist</span>
-    <span class="n">sqloutname</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
+    <span class="n">sql_output_database</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
     <span class="n">string</span> <span class="n">sqlfolder</span> <span class="o">=</span> <span class="n">out_directory</span> <span class="o">+</span> <span class="s">&quot;/SQL_data/&quot;</span><span class="p">;</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="n">createParent</span><span class="p">(</span><span class="n">sqlfolder</span><span class="p">);</span>
-        <span class="n">sqloutname</span> <span class="o">+=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/SQL_data/data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
+        <span class="n">sql_output_database</span> <span class="o">+=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/SQL_data/data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span> <span class="o">&amp;</span><span class="n">fe</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeWarning</span><span class="p">(</span><span class="n">fe</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
-        <span class="n">sqloutname</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
+        <span class="n">sql_output_database</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="n">remove</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Generating species list....              &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
@@ -1116,12 +1125,7 @@
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="c1">// Open a SQL database in memory. This will be written to disk later.</span>
 <span class="c1">// A check here can be done to write to disc directly instead to massively reduce RAM consumption</span>
-<span class="cp">#ifdef sql_ram</span>
-    <span class="n">sqlite3_open</span><span class="p">(</span><span class="s">&quot;:memory:&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="cp">#ifndef sql_ram</span>
-    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">,</span> <span class="n">database</span><span class="p">);</span>
-<span class="cp">#endif</span>
+    <span class="n">openSQLDatabase</span><span class="p">();</span>
     <span class="c1">// Create the command to be executed by adding to the string.</span>
     <span class="n">string</span> <span class="n">all_commands</span><span class="p">;</span>
     <span class="n">all_commands</span> <span class="o">=</span>
@@ -1138,8 +1142,8 @@
         <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
         <span class="c1">// delete any old database files - this is risky, but there isn&#39;t a better way of ensuring that the file</span>
         <span class="c1">// actually gets created.</span>
-        <span class="n">remove</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-        <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
+        <span class="n">remove</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
         <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">all_commands</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
         <span class="p">{</span>
@@ -1237,7 +1241,7 @@
             <span class="s">&quot;NULL, deme INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;sample_size DOUBLE NOT NULL, max_time INT NOT NULL, dispersal_relative_cost DOUBLE NOT NULL, &quot;</span>
             <span class="s">&quot;min_num_species &quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;INT NOT NULL, habitat_change_rate DOUBLE NOT NULL, gen_since_pristine DOUBLE NOT NULL, &quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;INT NOT NULL, habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, &quot;</span>
             <span class="s">&quot;coarse_map_y INT NOT NULL,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, coarse_map_scale DOUBLE NOT &quot;</span>
@@ -1245,7 +1249,7 @@
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, &quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;pristine_coarse_map TEXT NOT NULL, pristine_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, &quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, dispersal_map TEXT NOT NULL);&quot;</span><span class="p">;</span>
@@ -1281,7 +1285,7 @@
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">deme_sample</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">maxtime</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">habitat_change_rate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">gen_since_pristine</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times_file</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">gen_since_historical</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times_file</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;none&#39;, 0, 0, 0, 0, 0, &#39;null&#39;, 0, 0, 0, 0, &#39;none&#39;, 1, 1, 1, 1, 0, 0, &#39;none&#39;, &#39;none&#39;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">sim_complete</span><span class="p">);</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;, &#39;none&#39;, 0.0, 0, 0, &#39;none&#39;, &quot;</span><span class="p">;</span>
@@ -1381,7 +1385,7 @@
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">endactive</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">startendactive</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">maxsimsize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">steps</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">generation</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">maxtime</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">deme_sample</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">spec</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">deme</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">sqloutname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">NR</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sim_parameters</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">sql_output_database</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">NR</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sim_parameters</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="c1">// now output the protracted speciation variables (there should be two of these).</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">getProtractedVariables</span><span class="p">();</span>
         <span class="n">out</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
@@ -1507,7 +1511,7 @@
         <span class="n">has_imported_vars</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">deme_sample</span> <span class="o">&gt;&gt;</span> <span class="n">spec</span> <span class="o">&gt;&gt;</span> <span class="n">deme</span><span class="p">;</span>
         <span class="n">in1</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span>
-        <span class="n">getline</span><span class="p">(</span><span class="n">in1</span><span class="p">,</span> <span class="n">sqloutname</span><span class="p">);</span>
+        <span class="n">getline</span><span class="p">(</span><span class="n">in1</span><span class="p">,</span> <span class="n">sql_output_database</span><span class="p">);</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">NR</span><span class="p">;</span>
         <span class="n">in1</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">sim_parameters</span><span class="p">;</span>
@@ -1566,20 +1570,16 @@
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadDataSave</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
-    <span class="c1">// Input the data object</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Loading data from temp file...data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="n">ifstream</span> <span class="n">in4</span><span class="p">;</span>
-        <span class="c1">//      sprintf(file_to_open,&quot;%s/Pause/Data_%i_data.csv&quot;,out_directory,int(the_task));</span>
         <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_sim_directory</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span>
                        <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
         <span class="n">in4</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">);</span>
         <span class="n">in4</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
-        <span class="c1">//          os &lt;&lt; data[0] &lt;&lt; endl;</span>
-        <span class="c1">//          os &lt;&lt; data[1] &lt;&lt; endl;</span>
         <span class="n">in4</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>

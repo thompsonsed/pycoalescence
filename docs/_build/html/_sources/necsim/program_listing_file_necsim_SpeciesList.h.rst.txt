@@ -8,17 +8,15 @@ Program Listing for File SpeciesList.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
     #ifndef SPECIESLIST
     #define SPECIESLIST
    
-   
-   using namespace std;
    #include "Matrix.h"
    #include "NRrand.h"
-   
+   using namespace std;
    class SpeciesList
    {
    private:
@@ -44,7 +42,7 @@ Program Listing for File SpeciesList.h
        
        void setSpecies(unsigned long index, unsigned long new_val);
        
-       void setSpeciesEmpty(int index, unsigned long new_val);
+       void setSpeciesEmpty(unsigned long index, unsigned long new_val);
        
        void setNext(unsigned long n);
        

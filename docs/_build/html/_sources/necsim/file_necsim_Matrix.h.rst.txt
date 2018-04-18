@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence.
+MIT Licence.
 Code supplied by James Rosindell with large usage of  href = "http://www.devarticles.com/c/a/Cplusplus/Operator-Overloading-in-C-plus/1"> this website , and modified and updated by Samuel Thompson. There are two distinct classes, :ref:`template_class_Row` and :ref:`template_class_Matrix`. Most operations are low-level, but some higher level functions remain, such as importCsv().
 Contact: thompsonsed@gmail.com 
 

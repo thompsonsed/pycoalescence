@@ -883,6 +883,11 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_set_historical_map_parameters.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_set_log_function.rst
 
 .. toctree::
@@ -904,11 +909,6 @@ Functions
    :maxdepth: 5
 
    function_set_map_parameters.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_set_pristine_map_parameters.rst
 
 .. toctree::
    :maxdepth: 5

@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 31/08/16
-BSD-3 Licence. 
+MIT Licence. 
 
 
 

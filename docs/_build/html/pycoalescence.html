@@ -726,8 +726,8 @@ will be above 0 for any simulation.</p>
 </tr>
 </tbody>
 </table>
-<p>sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_pristine, time_config,
-coarse_map vars, fine map vars, sample_file, gridx, gridy, pristine coarse map, pristine fine map, sim_complete,
+<p>sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_historical, time_config,
+coarse_map vars, fine map vars, sample_file, gridx, gridy, historical coarse map, historical fine map, sim_complete,
 dispersal_method, m_probability, cutoff, landscape_type, protracted, min_speciation_gen, max_speciation_gen,
 dispersal_map</p>
 </dd></dl>
@@ -1577,13 +1577,13 @@ the simulation does not complete in this time).</p>
 
 <dl class="method">
 <dt id="pycoalescence.simulation.Simulation.set_map_files">
-<code class="descname">set_map_files</code><span class="sig-paren">(</span><em>sample_file</em>, <em>fine_file=None</em>, <em>coarse_file=None</em>, <em>pristine_fine_file=None</em>, <em>pristine_coarse_file=None</em>, <em>dispersal_map=None</em>, <em>reproduction_map=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_map_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_map_files" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_map_files</code><span class="sig-paren">(</span><em>sample_file</em>, <em>fine_file=None</em>, <em>coarse_file=None</em>, <em>historical_fine_file=None</em>, <em>historical_coarse_file=None</em>, <em>dispersal_map=None</em>, <em>reproduction_map=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_map_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_map_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
 the specified dimensions.</p>
 <p>If sample_file is &#8220;null&#8221;, dimension values will remain at 0.
 If coarse_file is &#8220;null&#8221;, it will default to the size of fine_file with zero offset.
 If the coarse file is &#8220;none&#8221;, it will not be used.
-If the pristine fine or coarse files are &#8220;none&#8221;, they will not be used.</p>
+If the historical fine or coarse files are &#8220;none&#8221;, they will not be used.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">the dispersal map should be of dimensions xy by xy where x, y are the fine map dimensions. Dispersal
@@ -1601,8 +1601,8 @@ generating these landscapes.</p>
 <li><strong>sample_file</strong> (<em>str</em>) &#8211; the sample map file. Provide &#8220;null&#8221; if on samplemask is required</li>
 <li><strong>fine_file</strong> (<em>str</em>) &#8211; the fine map file. Defaults to &#8220;null&#8221; if none provided</li>
 <li><strong>coarse_file</strong> (<em>str</em>) &#8211; the coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
-<li><strong>pristine_fine_file</strong> (<em>str</em>) &#8211; the pristine fine map file. Defaults to &#8220;none&#8221; if none provided</li>
-<li><strong>pristine_coarse_file</strong> (<em>str</em>) &#8211; the pristine coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_fine_file</strong> (<em>str</em>) &#8211; the historical fine map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_coarse_file</strong> (<em>str</em>) &#8211; the historical coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
 <li><strong>dispersal_map</strong> (<em>str</em>) &#8211; the dispersal map for reading dispersal values. Default to &#8220;none&#8221; if none provided</li>
 <li><strong>reproduction_map</strong> (<em>str</em>) &#8211; a map of relative reproduction probabilities, at the scale of the fine map</li>
 </ul>
@@ -1637,7 +1637,7 @@ This should contain the grid_x_size, grid_y_size, grid_file_name, sample_x_offse
 
 <dl class="method">
 <dt id="pycoalescence.simulation.Simulation.set_simulation_params">
-<code class="descname">set_simulation_params</code><span class="sig-paren">(</span><em>seed</em>, <em>job_type</em>, <em>output_directory</em>, <em>min_speciation_rate</em>, <em>sigma=1.0</em>, <em>tau=1.0</em>, <em>deme=1</em>, <em>sample_size=1.0</em>, <em>max_time=3600</em>, <em>dispersal_method=None</em>, <em>m_prob=0.0</em>, <em>cutoff=0</em>, <em>dispersal_relative_cost=1</em>, <em>min_num_species=1</em>, <em>habitat_change_rate=0.0</em>, <em>gen_since_pristine=1</em>, <em>restrict_self=False</em>, <em>landscape_type=False</em>, <em>protracted=False</em>, <em>min_speciation_gen=None</em>, <em>max_speciation_gen=None</em>, <em>spatial=True</em>, <em>uses_spatial_sampling=False</em>, <em>times=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_simulation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_simulation_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_simulation_params</code><span class="sig-paren">(</span><em>seed</em>, <em>job_type</em>, <em>output_directory</em>, <em>min_speciation_rate</em>, <em>sigma=1.0</em>, <em>tau=1.0</em>, <em>deme=1</em>, <em>sample_size=1.0</em>, <em>max_time=3600</em>, <em>dispersal_method=None</em>, <em>m_prob=0.0</em>, <em>cutoff=0</em>, <em>dispersal_relative_cost=1</em>, <em>min_num_species=1</em>, <em>habitat_change_rate=0.0</em>, <em>gen_since_historical=1</em>, <em>restrict_self=False</em>, <em>landscape_type=False</em>, <em>protracted=False</em>, <em>min_speciation_gen=None</em>, <em>max_speciation_gen=None</em>, <em>spatial=True</em>, <em>uses_spatial_sampling=False</em>, <em>times=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_simulation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_simulation_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set all the simulation parameters apart from the map objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1659,7 +1659,7 @@ This should contain the grid_x_size, grid_y_size, grid_file_name, sample_x_offse
 <li><strong>dispersal_relative_cost</strong> (<em>float</em>) &#8211; the relative cost of travelling through non-habitat (defaults to 1)</li>
 <li><strong>min_num_species</strong> (<em>int</em>) &#8211; the minimum number of species known to exist (defaults to 1</li>
 <li><strong>habitat_change_rate</strong> (<em>float</em>) &#8211; the rate of habitat change over time</li>
-<li><strong>gen_since_pristine</strong> (<em>float</em>) &#8211; the time in generations since a pristine state was achieved</li>
+<li><strong>gen_since_historical</strong> (<em>float</em>) &#8211; the time in generations since a historical state was achieved</li>
 <li><strong>restrict_self</strong> (<em>bool</em>) &#8211; if true, restricts dispersal from own cell</li>
 <li><strong>landscape_type</strong> (<em>bool/str</em>) &#8211; if false or &#8220;closed&#8221;, restricts dispersal to the provided maps, otherwise</li>
 </ul>
@@ -1718,8 +1718,7 @@ individuals between fragments. Requires scipy and matplotlib.</p>
 <dl class="class">
 <dt id="pycoalescence.fragments.Fragment">
 <em class="property">class </em><code class="descname">Fragment</code><span class="sig-paren">(</span><em>x=None</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragments.html#Fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.Fragment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Simple class containing the centres of fragments for a fragmented landscape</p>
+<dd><p>Simple class containing the centres of fragments for a fragmented landscape</p>
 <dl class="method">
 <dt id="pycoalescence.fragments.Fragment.place_on_grid">
 <code class="descname">place_on_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragments.html#Fragment.place_on_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.Fragment.place_on_grid" title="Permalink to this definition">¶</a></dt>
@@ -1760,8 +1759,7 @@ individuals between fragments. Requires scipy and matplotlib.</p>
 <dl class="class">
 <dt id="pycoalescence.fragments.FragmentedLandscape">
 <em class="property">class </em><code class="descname">FragmentedLandscape</code><span class="sig-paren">(</span><em>number_fragments=None</em>, <em>size=None</em>, <em>total=None</em>, <em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragments.html#FragmentedLandscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragments.FragmentedLandscape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Contains hexagonal packing algorithms for spacing clumps evenly on the landscape. Includes a LLoyd&#8217;s smoothing
+<dd><p>Contains hexagonal packing algorithms for spacing clumps evenly on the landscape. Includes a LLoyd&#8217;s smoothing
 algorithm for better spacing of fragments.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

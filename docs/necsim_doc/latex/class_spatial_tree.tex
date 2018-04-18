@@ -90,11 +90,9 @@ void \hyperlink{class_spatial_tree_a51b4c8703d179cc4a4c861f8b36b4a9b}{dump\+Map}
 \begin{DoxyCompactList}\small\item\em Saves the map object to file. \end{DoxyCompactList}\item 
 void \hyperlink{class_spatial_tree_ad578ceeaf0ab3f4a2e39eb907881c11f}{sim\+Resume} () override
 \begin{DoxyCompactList}\small\item\em Resumes the simulation from a previous state. \end{DoxyCompactList}\item 
-void \hyperlink{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}{load\+Grid\+Save} ()\hypertarget{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}{}\label{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}
-
+void \hyperlink{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}{load\+Grid\+Save} ()
 \begin{DoxyCompactList}\small\item\em Loads the grid from the save file into memory. \end{DoxyCompactList}\item 
-void \hyperlink{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}{load\+Map\+Save} ()\hypertarget{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}{}\label{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}
-
+void \hyperlink{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}{load\+Map\+Save} ()
 \begin{DoxyCompactList}\small\item\em Loads the map from the save file into memory. \end{DoxyCompactList}\item 
 void \hyperlink{class_spatial_tree_a0eb6f50f218289c79770b203d3eeaada}{verify\+Reproduction\+Map} ()\hypertarget{class_spatial_tree_a0eb6f50f218289c79770b203d3eeaada}{}\label{class_spatial_tree_a0eb6f50f218289c79770b203d3eeaada}
 
@@ -203,6 +201,9 @@ unsigned long \hyperlink{class_tree_a2d2065bbebee8b55270d2691d40cd974}{sort\+Dat
 void \hyperlink{class_tree_ab8785fc9e27868a56335048321c13290}{write\+Times} ()\hypertarget{class_tree_ab8785fc9e27868a56335048321c13290}{}\label{class_tree_ab8785fc9e27868a56335048321c13290}
 
 \begin{DoxyCompactList}\small\item\em Writes the times to the terminal for simulation information. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a9e240bbfc3139b290a0dead741f560bf}{open\+S\+Q\+L\+Database} ()\hypertarget{class_tree_a9e240bbfc3139b290a0dead741f560bf}{}\label{class_tree_a9e240bbfc3139b290a0dead741f560bf}
+
+\begin{DoxyCompactList}\small\item\em Opens a connection to the in-\/memory database, or the on-\/disk database, depending on the compilation options. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_ae784a6ed362f6c5263ee797759f715b6}{sql\+Create} ()\hypertarget{class_tree_ae784a6ed362f6c5263ee797759f715b6}{}\label{class_tree_ae784a6ed362f6c5263ee797759f715b6}
 
 \begin{DoxyCompactList}\small\item\em Generates the S\+QL database file from the full simulation data. This allows for greater analysis of the data after completion of the simulation. \end{DoxyCompactList}\item 
@@ -255,16 +256,10 @@ string {\bfseries fine\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a44fd
 string {\bfseries coarse\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a464b674dbf6f2968497f698ad9a16433}{}\label{class_spatial_tree_a464b674dbf6f2968497f698ad9a16433}
 
 \item 
-string {\bfseries pristine\+\_\+fine\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a0b6a624a8d0a434131f3ec5e2581d8b6}{}\label{class_spatial_tree_a0b6a624a8d0a434131f3ec5e2581d8b6}
+string {\bfseries historical\+\_\+fine\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_ac49970522839ed06459949caca57fa1d}{}\label{class_spatial_tree_ac49970522839ed06459949caca57fa1d}
 
 \item 
-string {\bfseries pristine\+\_\+coarse\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_abf4a4019079d23e4489420fc14f0e461}{}\label{class_spatial_tree_abf4a4019079d23e4489420fc14f0e461}
-
-\item 
-unsigned long {\bfseries grid\+\_\+x\+\_\+size}\hypertarget{class_spatial_tree_aa4c60d73794de44877b9ed66b73b4ed8}{}\label{class_spatial_tree_aa4c60d73794de44877b9ed66b73b4ed8}
-
-\item 
-unsigned long {\bfseries grid\+\_\+y\+\_\+size}\hypertarget{class_spatial_tree_a03c67ea3848796e91a3b45afc9e99365}{}\label{class_spatial_tree_a03c67ea3848796e91a3b45afc9e99365}
+string {\bfseries historical\+\_\+coarse\+\_\+map\+\_\+input}\hypertarget{class_spatial_tree_a54279132ba3e8bc3455488bb3b16e8f8}{}\label{class_spatial_tree_a54279132ba3e8bc3455488bb3b16e8f8}
 
 \item 
 \hyperlink{class_landscape}{Landscape} {\bfseries landscape}\hypertarget{class_spatial_tree_abce7e0ce105b3f401b8dce770a20f8a2}{}\label{class_spatial_tree_abce7e0ce105b3f401b8dce770a20f8a2}
@@ -384,7 +379,7 @@ sqlite3 $\ast$ {\bfseries outdatabase}\hypertarget{class_tree_afd585c8a4bdb86461
 \hyperlink{struct_step}{Step} {\bfseries this\+\_\+step}\hypertarget{class_tree_af7de4d4f04360edcbe2a20db882b1f87}{}\label{class_tree_af7de4d4f04360edcbe2a20db882b1f87}
 
 \item 
-string {\bfseries sqloutname}\hypertarget{class_tree_ade2744c2510a6e8ae791ca7189f483bb}{}\label{class_tree_ade2744c2510a6e8ae791ca7189f483bb}
+string {\bfseries sql\+\_\+output\+\_\+database}\hypertarget{class_tree_a80d3e92108eb472df49640a661ef4f7d}{}\label{class_tree_a80d3e92108eb472df49640a661ef4f7d}
 
 \item 
 bool {\bfseries b\+Fullmode}\hypertarget{class_tree_a9379466b9fc0f25bd28543743000e700}{}\label{class_tree_a9379466b9fc0f25bd28543743000e700}
@@ -1147,6 +1142,34 @@ Intended for usage with metacommunity application. No output directory is expect
 {\em sim\+\_\+parameters\+\_\+in} & the simulation parameters to set up the simulation with \\
 \hline
 \end{DoxyParams}
+\index{Spatial\+Tree@{Spatial\+Tree}!load\+Grid\+Save@{load\+Grid\+Save}}
+\index{load\+Grid\+Save@{load\+Grid\+Save}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{load\+Grid\+Save()}{loadGridSave()}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::load\+Grid\+Save (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}{}\label{class_spatial_tree_a6e3cfc1c0371d90ceaa7a463470de798}
+
+
+Loads the grid from the save file into memory. 
+
+\begin{DoxyNote}{Note}
+Requires that both the simulation parameters and the maps have already been loaded. 
+\end{DoxyNote}
+\index{Spatial\+Tree@{Spatial\+Tree}!load\+Map\+Save@{load\+Map\+Save}}
+\index{load\+Map\+Save@{load\+Map\+Save}!Spatial\+Tree@{Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{load\+Map\+Save()}{loadMapSave()}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::load\+Map\+Save (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}{}\label{class_spatial_tree_a585861bbad04528d2cabf7b1604a40dc}
+
+
+Loads the map from the save file into memory. 
+
+\begin{DoxyNote}{Note}
+Requires that the simulation parameters have already been loaded. 
+\end{DoxyNote}
 \index{Spatial\+Tree@{Spatial\+Tree}!make\+Tip@{make\+Tip}}
 \index{make\+Tip@{make\+Tip}!Spatial\+Tree@{Spatial\+Tree}}
 \subsubsection[{\texorpdfstring{make\+Tip(const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in)}{makeTip(const unsigned long &tmp_active, const double &generation_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::make\+Tip (
@@ -1391,7 +1414,7 @@ This is not the main set-\/up routine, which creates the permanent data structur
 Contains the setup routines for a spatial landscape. It also checks for paused simulations and imports data if necessary from paused files. \hyperlink{class_spatial_tree_ab9603c25cd1c8466d1e4bfa3f73f191f}{import\+Maps()} is called for importing the map files. 
 
 \begin{DoxyRefDesc}{Bug}
-\item[\hyperlink{bug__bug000003}{Bug}]For values of dispersal, forest transform rate and time since pristine (and any other double values), they will not be correctly outputted to the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table if the value is smaller than 10e-\/6. The solution is to implement string output mechanisms using boost\+::lexical\+\_\+cast(), but this has so far only been deemed necessary for the speciation rate (which is intrinsically very small).\end{DoxyRefDesc}
+\item[\hyperlink{bug__bug000003}{Bug}]For values of dispersal, forest transform rate and time since historical (and any other double values), they will not be correctly outputted to the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table if the value is smaller than 10e-\/6. The solution is to implement string output mechanisms using boost\+::lexical\+\_\+cast(), but this has so far only been deemed necessary for the speciation rate (which is intrinsically very small).\end{DoxyRefDesc}
 
 
 Reimplemented from \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{Tree}.

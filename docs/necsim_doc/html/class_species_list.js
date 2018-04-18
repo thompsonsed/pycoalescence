@@ -21,7 +21,7 @@ var class_species_list =
     [ "setNext", "class_species_list.html#a627f9d95948f4a2cb6cfb3d8b8f9f2ea", null ],
     [ "setNwrap", "class_species_list.html#ad3f8f91e3983b8829c0b405013b2709e", null ],
     [ "setSpecies", "class_species_list.html#a98f19fa65ed7cbe4536342ce2dff2b7b", null ],
-    [ "setSpeciesEmpty", "class_species_list.html#ae4b1baaacea721479c8585d36b475c96", null ],
+    [ "setSpeciesEmpty", "class_species_list.html#a49854bb6392a5898fc277f4d2cf1f385", null ],
     [ "wipeList", "class_species_list.html#acd0fd4ab7517523f04d8c37bb918d390", null ],
     [ "operator<<", "class_species_list.html#a307fffef634cd0a4615794ef7498cd4a", null ],
     [ "operator>>", "class_species_list.html#a2d74faa6012ce148a9f437249390c294", null ]

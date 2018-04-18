@@ -8,8 +8,8 @@ Program Listing for File SpatialTree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    //
    #ifndef SPATIALTREE_H
    #define SPATIALTREE_H
@@ -71,9 +71,7 @@ Program Listing for File SpatialTree.h
        // A list of new variables which will contain the relevant information for maps and grids.
        //  strings containing the file names to be imported.
        string fine_map_input, coarse_map_input;
-       string pristine_fine_map_input, pristine_coarse_map_input;
-       // the variables for the grid containing the initial individuals.
-       unsigned long grid_x_size, grid_y_size;
+       string historical_fine_map_input, historical_coarse_map_input;
        // Landscape object containing both the coarse and fine maps for checking whether or not there is habitat at a
        // particular location.
        Landscape landscape;
@@ -86,8 +84,6 @@ Program Listing for File SpatialTree.h
        SpatialTree() : Tree()
        {
            outdatabase = nullptr;
-           grid_x_size = 0;
-           grid_y_size = 0;
            desired_specnum = 1;
        }
    
@@ -137,9 +133,9 @@ Program Listing for File SpatialTree.h
    
        unsigned long estSpecnum();
    
-   #ifdef pristine_mode
+   #ifdef historical_mode
    
-       void pristineStepChecks();
+       void historicalStepChecks();
    #endif
    
    

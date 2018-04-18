@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. For use with completed simulations from NECSim, using the SpeciationCounter program. Individuals will be drawn from the metacommunity for each speciation event, instead of creating a new species each time.
+MIT Licence. For use with completed simulations from NECSim, using the SpeciationCounter program. Individuals will be drawn from the metacommunity for each speciation event, instead of creating a new species each time.
 Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
 
 

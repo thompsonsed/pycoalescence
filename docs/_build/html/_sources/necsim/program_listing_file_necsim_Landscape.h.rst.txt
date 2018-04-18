@@ -8,8 +8,8 @@ Program Listing for File Landscape.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef LANDSCAPE_H
    #define LANDSCAPE_H
    
@@ -28,24 +28,24 @@ Program Listing for File Landscape.h
    
    using namespace std;
    
-   uint32_t importToMapAndRound(string map_file, Map<uint32_t> &matrix_in, unsigned long matrix_x,
-                                unsigned long matrix_y, unsigned long scalar);
+   uint32_t importToMapAndRound(string map_file, Map<uint32_t> &map_in, unsigned long map_x,
+                                unsigned long map_y, unsigned long scalar);
    
    class Landscape
    {
    protected:
        // The map files which are read in (or generated if running with "null" as the map file".
-       // Pristine maps are meant for before any deforestation occured, whereas the other maps are intended for modern day maps.
-       // A linear transformation from modern to pristine maps is used, approaching the habitat_change_rate variable times the difference between the pristine and modern maps.
-       // Once the gen_since_pristine number of generations has been reached, the map will jump to the pristine condition.
+       // historical maps are meant for before any deforestation occured, whereas the other maps are intended for modern day maps.
+       // A linear transformation from modern to historical maps is used, approaching the habitat_change_rate variable times the difference between the historical and modern maps.
+       // Once the gen_since_historical number of generations has been reached, the map will jump to the historical condition.
        // the finer grid for the area around the sample area.
        Map<uint32_t> fine_map;
-       // the pristine finer map.
-       Map<uint32_t> pristine_fine_map;
+       // the historical finer map.
+       Map<uint32_t> historical_fine_map;
        // the coarser grid for the wider zone.
        Map<uint32_t> coarse_map;
-       // the pristine coarser map.
-       Map<uint32_t> pristine_coarse_map;
+       // the historical coarser map.
+       Map<uint32_t> historical_coarse_map;
        // for importing and storing the simulation set-up options.
        SimParameters * mapvars;
        // the minimum values for each dimension for offsetting.
@@ -67,27 +67,27 @@ Program Listing for File Landscape.h
        double dispersal_relative_cost{};
        // the last time the map was updated, in generations.
        double update_time{};
-       // the rate at which the habitat transforms from the modern forest map to the pristine habitat map.
-       // A value of 1 will give a smooth curve from the present day to pristine habitat.
+       // the rate at which the habitat transforms from the modern forest map to the historical habitat map.
+       // A value of 1 will give a smooth curve from the present day to historical habitat.
        double habitat_change_rate{};
-       // the number of generations at which point the habitat becomes entirely pristine.
-       double gen_since_pristine{};
+       // the number of generations at which point the habitat becomes entirely historical.
+       double gen_since_historical{};
        // the time the current map was updated.
        double current_map_time;
-       // checks whether the simulation has already been set to the pristine state.
-       bool is_pristine;
-       // flag of whether the simulation has a pristine state or not.
-       bool has_pristine;
+       // checks whether the simulation has already been set to the historical state.
+       bool is_historical;
+       // flag of whether the simulation has a historical state or not.
+       bool has_historical;
        // the maximum value for habitat
        unsigned long habitat_max;
        // the maximum value on the fine map file
        unsigned long fine_max;
        // the maximum value on the coarse map file
        unsigned long coarse_max;
-       // the maximum value on the pristine fine map file
-       unsigned long pristine_fine_max;
-       // the maximum value on the pristine coarse map file
-       unsigned long pristine_coarse_max;
+       // the maximum value on the historical fine map file
+       unsigned long historical_fine_max;
+       // the maximum value on the historical coarse map file
+       unsigned long historical_coarse_max;
        // if true, dispersal is possible from anywhere, only the fine map spatial structure is preserved
        string landscape_type;
        string NextMap;
@@ -106,21 +106,22 @@ Program Listing for File Landscape.h
        {
            mapvars = nullptr;
            check_set_dim = false; // sets the check to false.
-           is_pristine = false;
+           is_historical = false;
            current_map_time = 0;
            habitat_max = 1;
            getValFunc = nullptr;
            has_coarse = false;
-           has_pristine = false;
+           has_historical = false;
            landscape_type = "closed";
            fine_max = 0;
            coarse_max = 0;
-           pristine_fine_max = 0;
-           pristine_coarse_max = 0;
+           historical_fine_max = 0;
+           historical_coarse_max = 0;
        }
    
        unsigned long getHabitatMax();
    
+       bool hasHistorical();
        void setDims(SimParameters * mapvarsin);
    
    
@@ -128,13 +129,13 @@ Program Listing for File Landscape.h
    
        void calcFineMap();
    
-       void calcPristineFineMap();
+       void calcHistoricalFineMap();
    
        void calcCoarseMap();
    
-       void calcPristineCoarseMap();
+       void calcHistoricalCoarseMap();
    
-       void setTimeVars(double gen_since_pristine_in, double habitat_change_rate_in);
+       void setTimeVars(double gen_since_historical_in, double habitat_change_rate_in);
    
        void calcOffset();
    
@@ -148,23 +149,26 @@ Program Listing for File Landscape.h
    
        void updateMap(double generation);
    
-       bool isPristine()
+       void doUpdate();
+       void resetHistorical();
+   
+       bool isHistorical()
        {
-           if(has_pristine)
+           if(has_historical)
            {
-               return is_pristine;
+               return is_historical;
            }
            return true;
        }
    
-       void setPristine(const bool &bPristinein)
+       void setHistorical(const bool &historical_in)
        {
-           is_pristine = bPristinein;
+           is_historical = historical_in;
        }
    
-       double getPristine()
+       double getHistorical()
        {
-           return gen_since_pristine;
+           return gen_since_historical;
        }
    
        string getLandscapeType()
@@ -172,13 +176,13 @@ Program Listing for File Landscape.h
            return landscape_type;
        }
    
-       void checkPristine(double generation)
+       void checkHistorical(double generation)
        {
-           if(has_pristine)
+           if(has_historical)
            {
-               if(generation >= gen_since_pristine)
+               if(generation >= gen_since_historical)
                {
-                   is_pristine = true;
+                   is_historical = true;
                }
            }
        }
@@ -232,13 +236,13 @@ Program Listing for File Landscape.h
               << "\n";
            os << r.scale << "\n" << r.x_dim << "\n" << r.y_dim << "\n" << r.deme << "\n" << r.check_set_dim << "\n"
               << r.dispersal_relative_cost << "\n";
-           os << r.update_time << "\n" << r.habitat_change_rate << "\n" << r.gen_since_pristine << "\n"
+           os << r.update_time << "\n" << r.habitat_change_rate << "\n" << r.gen_since_historical << "\n"
               << r.current_map_time << "\n"
-              << r.is_pristine << "\n";
+              << r.is_historical << "\n";
            os << r.NextMap << "\n" << r.nUpdate << "\n" << r.landscape_type << "\n" << r.fine_max << "\n"
               << r.coarse_max << "\n";
-           os << r.pristine_fine_max << "\n" << r.pristine_coarse_max << "\n" << r.habitat_max << "\n"
-              << r.has_coarse << "\n" << r.has_pristine << "\n";
+           os << r.historical_fine_max << "\n" << r.historical_coarse_max << "\n" << r.habitat_max << "\n"
+              << r.has_coarse << "\n" << r.has_historical << "\n";
            return os;
        }
    
@@ -251,18 +255,18 @@ Program Listing for File Landscape.h
            is >> r.fine_x_offset >> r.fine_y_offset >> r.coarse_x_offset >> r.coarse_y_offset >> r.scale >> r.x_dim
               >> r.y_dim
               >> r.deme >> r.check_set_dim >> r.dispersal_relative_cost;
-           is >> r.update_time >> r.habitat_change_rate >> r.gen_since_pristine >> r.current_map_time >> r.is_pristine;
+           is >> r.update_time >> r.habitat_change_rate >> r.gen_since_historical >> r.current_map_time >> r.is_historical;
            getline(is, r.NextMap);
            is >> r.nUpdate;
            is >> r.landscape_type;
            is >> r.fine_max >> r.coarse_max;
-           is >> r.pristine_fine_max >> r.pristine_coarse_max;
-           is >> r.habitat_max >> r.has_coarse >> r.has_pristine;
+           is >> r.historical_fine_max >> r.historical_coarse_max;
+           is >> r.habitat_max >> r.has_coarse >> r.has_historical;
            r.setLandscape(r.mapvars->landscape_type);
            r.calcFineMap();
            r.calcCoarseMap();
-           r.calcPristineFineMap();
-           r.calcPristineCoarseMap();
+           r.calcHistoricalFineMap();
+           r.calcHistoricalCoarseMap();
            r.recalculateHabitatMax();
            return is;
        }

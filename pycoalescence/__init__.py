@@ -22,6 +22,6 @@ except ImportError as ie:
 __author__ = "Samuel Thompson"
 __copyright__ = "Copyright 2016, pycoalescence"
 __credits__ = ["Samuel Thompson"]
-__license__ = "BSD-3"
+__license__ = "MIT"
 __maintainer__ = "Samuel Thompson"
 __email__ = "thompsonsed@gmail.com"

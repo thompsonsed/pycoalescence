@@ -22,6 +22,7 @@ var searchData=
   ['initiateresume',['initiateResume',['../class_tree.html#a8cfe5d30d53d702f18cd67981e2c9acb',1,'Tree']]],
   ['internaloption',['internalOption',['../class_community.html#a527f03120e4cb211e466cab7e405ba9a',1,'Community']]],
   ['internalsetup',['internalSetup',['../class_tree.html#a62db83e47e5850c6a83793829b22b68b',1,'Tree']]],
-  ['ispristine',['isPristine',['../class_landscape.html#a264624ebb17fe757f4e7c9e082592b79',1,'Landscape']]],
+  ['ishistorical',['isHistorical',['../class_landscape.html#ab302f8a4ae779d20df94cb2525187cac',1,'Landscape']]],
+  ['issetdatabase',['isSetDatabase',['../class_community.html#a88a36fd7a14c3e88af377891e01bba21',1,'Community']]],
   ['istip',['isTip',['../class_tree_node.html#a469a21919177bd1161f9bfa3c13bd148',1,'TreeNode']]]
 ];

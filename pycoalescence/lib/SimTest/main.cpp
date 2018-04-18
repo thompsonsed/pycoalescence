@@ -217,11 +217,11 @@ SUITE(MapSuite)
 			mvars.deme = 10;
 			mvars.deme_sample = 1;
 			mvars.dispersal_relative_cost = 1;
-			mvars.pristinecoarsemapfile = "null";
-			mvars.pristinefinemapfile = "null";
+			mvars.historicalcoarsemapfile = "null";
+			mvars.historicalfinemapfile = "null";
 			mvars.coarsemapfile  = "null";
 			mvars.finemapfile = "null";
-			mvars.pristinefinemapfile = "null";
+			mvars.historicalfinemapfile = "null";
 			mvars.varcoarsemapscale = 10;
 			mvars.varcoarsemapxoffset = 0;
 			mvars.varcoarsemapyoffset = 0;
@@ -253,8 +253,8 @@ SUITE(MapSuite)
 			m.setDims(mvars);
 			m.calcFineMap();
 			m.calcCoarseMap();
-			m.calcPristineCoarseMap();
-			m.calcPristineFineMap();
+			m.calcHistoricalCoarseMap();
+			m.calcHistoricalFineMap();
 			m.calcOffset();
 			
 		}
