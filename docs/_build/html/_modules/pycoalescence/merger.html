@@ -1,0 +1,1001 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pycoalescence.merger &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycoalescence.merger</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains the :py:class:`~Merger` class for combining simulation outputs into a single simulation, merging the</span>
+<span class="sd">various biodiversity tables into one.</span>
+
+<span class="sd">Metrics are also calculated for the entire system, with a guild reference of 0.</span>
+
+<span class="sd">All standard routines provided in :py:class:`~PyCoalescence.coal_analyse.Tree` can then be performed on the combined</span>
+<span class="sd">database.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+	<span class="c1"># Python 3 compatibility</span>
+	<span class="kn">import</span> <span class="nn">sqlite</span> <span class="kn">as</span> <span class="nn">sqlite3</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">isclose</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">isclose</span>
+
+<span class="kn">from</span> <span class="nn">.coalescence_tree</span> <span class="kn">import</span> <span class="n">CoalescenceTree</span>
+<span class="kn">from</span> <span class="nn">.sqlite_connection</span> <span class="kn">import</span> <span class="n">check_sql_table_exist</span><span class="p">,</span> <span class="n">fetch_table_from_sql</span><span class="p">,</span> <span class="n">sql_get_max_from_column</span>
+<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">cantor_pairing</span><span class="p">,</span> <span class="n">check_parent</span>
+
+
+<div class="viewcode-block" id="Merger"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.merger.Merger">[docs]</a><span class="k">class</span> <span class="nc">Merger</span><span class="p">(</span><span class="n">CoalescenceTree</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Merges simulation outputs into a single database. Inherits from :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to</span>
+<span class="sd">	provide all routines in the same object.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">log_output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">(</span><span class="n">Merger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">logging_level</span><span class="p">,</span> <span class="n">log_output</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_list_parent_counter</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">parameters_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">guild</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">simulation_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_locations</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_abundances</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_abundances</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">max_species_id</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">max_locations_id</span> <span class="o">=</span> <span class="mi">0</span>
+
+	<span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Closes the connection to the database.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="Merger.set_database"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.merger.Merger.set_database">[docs]</a>	<span class="k">def</span> <span class="nf">set_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sets the output database for the merged simulations</span>
+
+<span class="sd">		Assumes no database currently exists, and will create one.</span>
+
+<span class="sd">		:raises IOError: if the output database already exists</span>
+<span class="sd">		:param filename: the filename to output merged simulations into</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database already exists at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">filename</span>
+		<span class="n">check_parent</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+				<span class="k">pass</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="bp">None</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Error opening SQLite database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_simulation_parameters</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_species_list</span><span class="p">()</span></div>
+
+	<span class="k">def</span> <span class="nf">_create_simulation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the SIMULATION_PARAMETERS table in the database.</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a SIMULATION_PARAMETERS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE SIMULATION_PARAMETERS (seed INT not null, job_type INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT &quot;</span> \
+					 <span class="s2">&quot;NULL, deme INT NOT NULL, sample_size DOUBLE NOT NULL, max_time INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;dispersal_relative_cost DOUBLE NOT NULL, min_num_species INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;coarse_map_y INT NOT NULL, coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;coarse_map_scale DOUBLE NOT NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;dispersal_map TEXT NOT NULL, guild INT PRIMARY KEY NOT NULL, filename TEXT NOT NULL);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SIMULATION_PARAMETERS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_community_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the COMMUNITY_PARAMETERS table in the database.</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a COMMUNITY_PARAMETERS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS COMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; speciation_rate DOUBLE NOT NULL, time DOUBLE NOT NULL, fragments INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;metacommunity_reference INT);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create COMMUNITY_PARAMETERS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_metacommunity_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the METACOMMUNITY_PARAMETERS table in the database.</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a METACOMMUNITY_PARAMETERS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS METACOMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create COMMUNITY_PARAMETERS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_species_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the SPECIES_LIST table in the database.</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a SPECIES_LIST table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;xval INT NOT NULL, yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;speciated INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;gen_added DOUBLE NOT NULL, guild INT NOT NULL);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_LIST table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_species_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the SPECIES_LOCATIONS table in the database.</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a SPECIES_LOCATIONS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS SPECIES_LOCATIONS (ID int PRIMARY KEY NOT NULL, species_id INT &quot;</span> \
+					 <span class="s2">&quot;NOT NULL, x INT NOT NULL, y INT NOT NULL, community_reference INT NOT NULL, guild INT NOT NULL);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_LOCATIONS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_species_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the SPECIES_ABUNDANCES table in the database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a SPECIES_ABUNDANCES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS SPECIES_ABUNDANCES{} (ID int PRIMARY KEY NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;species_id INT NOT NULL, no_individuals INT NOT NULL, community_reference INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;guild INT NOT NULL);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_fragment_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the FRAGMENT_ABUNDANCES table in the database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a FRAGMENT_ABUNDANCES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS FRAGMENT_ABUNDANCES{} (ID int PRIMARY KEY NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; fragment TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;no_individuals INT NOT NULL, community_reference int NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; guild INT NOT NULL);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_species_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the SPECIES_OCTAVES table in the database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a SPECIES_OCTAVES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS SPECIES_OCTAVES{} (ID int PRIMARY KEY NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; fragment TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;no_individuals INT NOT NULL, community_reference int NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; guild INT NOT NULL);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the FRAGMENT_OCTAVES table in the database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a FRAGMENT_OCTAVES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional1</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS&quot;</span>
+			<span class="n">additional2</span> <span class="o">=</span> <span class="s2">&quot;, guild INT NOT NULL&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+			<span class="n">additional2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS FRAGMENT_OCTAVES{} (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL, &quot;</span> \
+					 <span class="s2">&quot;octave INT NOT NULL, richness INT NOT NULL{});&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional1</span><span class="p">,</span> <span class="n">additional2</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the SPECIES_RICHNESS table in the database.</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a SPECIES_RICHNESS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional1</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS&quot;</span>
+			<span class="n">additional2</span> <span class="o">=</span> <span class="s2">&quot;, guild INT NOT NULL&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+			<span class="n">additional2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS SPECIES_RICHNESS{} (ref INT PRIMARY KEY NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; community_reference INT NOT NULL, richness INT NOT NULL{})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional1</span><span class="p">,</span> <span class="n">additional2</span><span class="p">)</span>
+
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SPECIES_RICHNESS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_create_fragment_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the FRAGMENT_RICHNESS table in the database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+<span class="sd">		:raises IOError: if the database has not been successfully created</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot create a FRAGMENT_RICHNESS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional1</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS&quot;</span>
+			<span class="n">additional2</span> <span class="o">=</span> <span class="s2">&quot;, guild INT NOT NULL&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+			<span class="n">additional2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE FRAGMENT_RICHNESS{} (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL,&quot;</span> \
+					 <span class="s2">&quot; community_reference INT NOT NULL,  richness INT NOT NULL{})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional1</span><span class="p">,</span> <span class="n">additional2</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_sql</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create FRAGMENT_RICHNESS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+
+	<span class="k">def</span> <span class="nf">_read_simulation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the simulation parameters from the input file and returns a list containing these parameters</span>
+
+<span class="sd">		:param input_simulation: the simulation to read the simulation parameters from</span>
+
+<span class="sd">		:return: list containing the simulation parameters from the input file</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">output</span> <span class="o">=</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;SIMULATION_PARAMETERS&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">44</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;SIMULATION_PARAMETERS table does not contain 44 columns, contains {}.&quot;</span>
+						  <span class="s2">&quot; Check database.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+		<span class="k">return</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">_add_simulation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters_list</span><span class="p">,</span> <span class="n">guild</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the provided parameters to the output statement for SIMULATION_PARAMETERS with the provided guild reference.</span>
+<span class="sd">		:param list parameters_list: a list containing the SIMULATION_PARAMETERS outputs.</span>
+<span class="sd">		:param int guild: the guild reference number for</span>
+<span class="sd">		:param str filename: the simulation file associated with these parameters</span>
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">parameters_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">guild</span><span class="p">,</span> <span class="n">filename</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">parameters_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">parameters_list</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_write_simulation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the parameters_list object to the output database.</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to SPECIES_PARAMETERS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO SIMULATION_PARAMETERS VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,&quot;</span> \
+					 <span class="s2">&quot;?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters_list</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create SIMULATION_PARAMETERS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_species_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the SPECIES_LIST table from the input simulation</span>
+<span class="sd">		:param input_simulation: the completed simulation to read the SPECIES_LIST object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;SPECIES_LIST&quot;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_add_species_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_list</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the species_list object with the provided list of species and guild reference.</span>
+<span class="sd">		:param species_list: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">species_list</span><span class="p">):</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="n">row</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_list_parent_counter</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_list_parent_counter</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_list</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">species_list</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_species_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the species_list object to the output database.</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to SPECIES_LIST table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO SPECIES_LIST VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_list</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into SPECIES_LIST table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_species_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the SPECIES_LOCATIONS table from the input simulation</span>
+<span class="sd">		:param input_simulation: the completed simulation to read the SPECIES_LIST object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;SPECIES_LOCATIONS&quot;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_add_species_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_locations</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the species_locations object with the provided list of species and guild reference.</span>
+<span class="sd">		:param species_list: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">tmp_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_locations_id</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">species_locations</span><span class="p">:</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">max_locations_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_locations_id</span><span class="p">)</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">tmp_max</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_locations</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">species_locations</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_species_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the species_locations object to the output database.</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to SPECIES_LIST table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO SPECIES_LOCATIONS VALUES (?,?,?,?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_locations</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into SPECIES_LIST table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_species_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the SPECIES_ABUNDANCES table from the input simulation.</span>
+
+<span class="sd">		:param input_simulation: the completed simulation to read the SPECIES_ABUNDANCES object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;SPECIES_ABUNDANCES&quot;</span><span class="p">)</span>
+
+
+	<span class="k">def</span> <span class="nf">_add_species_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_abundances</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the species_abundances object with the provided list of species and guild reference.</span>
+
+<span class="sd">		:param species_abundances: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">tmp_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_species_id</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">species_abundances</span><span class="p">:</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">max_species_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_species_id</span><span class="p">)</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">tmp_max</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_abundances</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">species_abundances</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_species_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the species_list object to the output database.</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to SPECIES_ABUNDANCES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO SPECIES_ABUNDANCES VALUES (?,?,?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_abundances</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into SPECIES_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_fragment_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the FRAGMENT_ABUNDANCES table from the input simulation</span>
+<span class="sd">		:param input_simulation: the completed simulation to read the FRAGMENT_ABUNDANCES object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;FRAGMENT_ABUNDANCES&quot;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_add_fragment_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment_abundances</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the fragment_abundances object with the provided list of species and guild reference.</span>
+<span class="sd">		:param fragment_abundances: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fragment_abundances</span><span class="p">:</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_abundances</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fragment_abundances</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_fragment_abundances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the fragment_abundances object to the output database.</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to FRAGMENT_ABUNDANCES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO FRAGMENT_ABUNDANCES VALUES (?,?,?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_abundances</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into FRAGMENT_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the SPECIES_RICHNESS table from the input simulation</span>
+
+<span class="sd">		:param input_simulation: the completed simulation to read the SPECIES_RICHNESS object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;SPECIES_RICHNESS&quot;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_add_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_richness</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the species_richness object with the provided list of species and guild reference.</span>
+<span class="sd">		:param species_richness: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">species_richness</span><span class="p">:</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">species_richness</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the species_richness object to the output database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to SPECIES_RICHNESS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS VALUES (?,?,&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot; VALUES (?,&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO SPECIES_RICHNESS{} ?,?);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into SPECIES_RICHNESS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_fragment_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the FRAGMENT_RICHNESS table from the input simulation</span>
+
+<span class="sd">		:param input_simulation: the completed simulation to read the FRAGMENT_RICHNESS object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;FRAGMENT_RICHNESS&quot;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_add_fragment_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment_richness</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the species_richness object with the provided list of species and guild reference.</span>
+<span class="sd">		:param fragment_richness: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fragment_richness</span><span class="p">:</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fragment_richness</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_fragment_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the fragment_richness object to the output database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to FRAGMENT_RICHNESS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS VALUES (?,&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot; VALUES (&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO FRAGMENT_RICHNESS{} ?,?,?,?);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into FRAGMENT_RICHNESS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_read_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Reads the FRAGMENT_ABUNDANCES table from the input simulation</span>
+
+<span class="sd">		:param input_simulation: the completed simulation to read the FRAGMENT_ABUNDANCES object from.</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">)</span>
+			<span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ref, fragment, octave, richness FROM FRAGMENT_OCTAVES&quot;</span><span class="p">)</span>
+			<span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
+			<span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="n">db</span> <span class="o">=</span> <span class="bp">None</span>
+			<span class="k">return</span> <span class="n">out</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot fetch FRAGMENT_OCTAVES from database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+
+	<span class="k">def</span> <span class="nf">_add_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment_octaves</span><span class="p">,</span> <span class="n">guild</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds to the fragment_octaves object with the provided list of species and guild reference.</span>
+<span class="sd">		:param fragment_octaves: the list of lists of species information to append</span>
+<span class="sd">		:param guild: the guild to append to each species row.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fragment_octaves</span><span class="p">:</span>
+			<span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cantor_pairing</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">guild</span><span class="p">)</span>
+			<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fragment_octaves</span><span class="p">])</span>
+
+	<span class="k">def</span> <span class="nf">_write_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out the fragment_octaves object to the output database.</span>
+
+<span class="sd">		:param guilds: if true, creates a separate table for individual guilds, rather than for the whole community</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to FRAGMENT_ABUNDANCES table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">guilds</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot;_GUILDS VALUES (?,&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">additional</span> <span class="o">=</span> <span class="s2">&quot; VALUES (&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO FRAGMENT_OCTAVES{} ?,?,?,?);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into FRAGMENT_ABUNDANCES table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_add_community_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the community parameters to the internal object, checking to ensure that no repeat references exist with</span>
+<span class="sd">		different parameters.</span>
+
+<span class="sd">		:param input_simulation: completed simulation to obtain community references from</span>
+
+<span class="sd">		:raises ValueError: if there is a parameter mismatch between the references</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">community_parameters</span> <span class="o">=</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;COMMUNITY_PARAMETERS&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">metacommunity_reference</span> <span class="ow">in</span> <span class="n">community_parameters</span><span class="p">:</span>
+				<span class="n">subsetted_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span> <span class="k">if</span>
+									<span class="n">isclose</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">isclose</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">0.00001</span><span class="p">)</span> <span class="ow">and</span>
+									<span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span>
+				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsetted_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">subsetted_params</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reference</span><span class="p">:</span>
+						<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter mismatch in references for speciation rate = {} and&quot;</span>
+										 <span class="s2">&quot; time = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">))</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Parameter set for reference of {} &quot;</span>
+										<span class="s2">&quot;does not exist in all simulations.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">community_parameters</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">metacommunity_reference</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="p">:</span>
+				<span class="n">subsetted_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">community_parameters</span> <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span>
+									<span class="n">isclose</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">0.00001</span><span class="p">)</span> <span class="ow">and</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span>
+				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsetted_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Parameter set for reference of {} &quot;</span>
+									  <span class="s2">&quot;does not exist in all simulations.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">community_parameters</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">community_parameters</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_write_community_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Outputs the community parameters into the database</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to COMMUNITY_PARAMETERS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO COMMUNITY_PARAMETERS VALUES (?,?,?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into COMMUNITY_PARAMETERS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_add_metacommunity_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the metacommunity parameters to the internal object, checking to ensure that no repeat references exist</span>
+<span class="sd">		with different parameters.</span>
+
+<span class="sd">		:param input_simulation: completed simulation to obtain metacommunity references from</span>
+
+<span class="sd">		:raises ValueError: if there is a parameter mismatch between the references</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">metacommunity_parameters</span> <span class="o">=</span> <span class="n">fetch_table_from_sql</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="s2">&quot;METACOMMUNITY_PARAMETERS&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span> <span class="ow">in</span> <span class="n">metacommunity_parameters</span><span class="p">:</span>
+				<span class="n">subsetted_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span> <span class="k">if</span>
+									<span class="n">isclose</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">metacommunity_size</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsetted_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">subsetted_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reference</span><span class="p">:</span>
+						<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter mismatch in metacommunity references for speciation rate = {} and&quot;</span>
+										 <span class="s2">&quot; size = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">))</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Parameter set for metacommunity reference of {} &quot;</span>
+									  <span class="s2">&quot;does not exist in all simulations.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">metacommunity_parameters</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span><span class="p">:</span>
+				<span class="n">subsetted_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">metacommunity_parameters</span> <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span>
+									<span class="n">metacommunity_size</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsetted_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Parameter set for metacommunity reference of {} &quot;</span>
+									  <span class="s2">&quot;does not exist in all simulations.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">metacommunity_parameters</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">metacommunity_parameters</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_write_metacommunity_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot insert to METACOMMUNITY_PARAMETERS table as the database has not been created.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+		<span class="n">create_sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO METACOMMUNITY_PARAMETERS VALUES (?,?,?);&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">create_sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">soe</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not insert into METACOMMUNITY_PARAMETERS table in database {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">soe</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Merger.add_simulation"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.merger.Merger.add_simulation">[docs]</a>	<span class="k">def</span> <span class="nf">add_simulation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_simulation</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds a simulation to the list of merged simulations.</span>
+
+<span class="sd">		This also calls the relevant merges for the tables that exist in the provided database.</span>
+
+<span class="sd">		:param input_simulation: either the path to the input simulation, a Coalescence class object, or a CoalescenceTree object</span>
+<span class="sd">			which contains the completed simulation.</span>
+<span class="sd">		:return: None</span>
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">,</span> <span class="n">CoalescenceTree</span><span class="p">):</span>
+			<span class="n">t</span> <span class="o">=</span> <span class="n">input_simulation</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">t</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">input_simulation</span><span class="p">)</span>
+		<span class="n">simulation_path</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">file</span>
+		<span class="c1"># Ensure that any open sql connections are closed</span>
+		<span class="k">del</span> <span class="n">t</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">guild</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="c1"># First add the parameters (which might throw some simple errors)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_add_simulation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_simulation_parameters</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">,</span> <span class="n">simulation_path</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;COMMUNITY_PARAMETERS&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_community_parameters</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_community_parameters</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;METACOMMUNITY_PARAMETERS&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_metacommunity_parameters</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_metacommunity_parameters</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">)</span>
+		<span class="c1"># Now the longer routines</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_add_species_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_species_list</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;SPECIES_ABUNDANCES&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_species_abundances</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_species_abundances</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_species_abundances</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;FRAGMENT_ABUNDANCES&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_fragment_abundances</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_fragment_abundances</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_fragment_abundances</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;SPECIES_RICHNESS&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_species_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_species_richness</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;FRAGMENT_RICHNESS&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_fragment_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_fragment_richness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_fragment_richness</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">,</span> <span class="s2">&quot;FRAGMENT_OCTAVES&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_fragment_octaves</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_add_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_fragment_octaves</span><span class="p">(</span><span class="n">simulation_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">guild</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Merger.add_simulations"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.merger.Merger.add_simulations">[docs]</a>	<span class="k">def</span> <span class="nf">add_simulations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation_list</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		A convenience function that adds each simulation from the list of simulations provided and then writes to the</span>
+<span class="sd">		database.</span>
+
+<span class="sd">		:param simulation_list: list of paths to completed simulations</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">simulation_list</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">add_simulation</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Merger.write"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.merger.Merger.write">[docs]</a>	<span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes out all stored simulation parameters to the output database and wipes the in-memory objects.</span>
+
+<span class="sd">		This should be called after all simulation have been added, or when RAM usage gets too large for large</span>
+<span class="sd">		simulations</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_write_simulation_parameters</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">community_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_community_parameters</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_metacommunity_parameters</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_write_species_list</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_abundances</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_species_abundances</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_abundances</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_fragment_abundances</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_species_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_create_combined_species_richness</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_fragment_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_write_fragment_octaves</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">_create_combined_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Combines the species richness guilds so that richness values are for all guilds.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No species richnesses are detected. Add simulations before combining richness.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_species_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+		<span class="n">out_richness</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">references</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span><span class="p">])</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+			<span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">reference</span><span class="p">])</span>
+			<span class="n">out_richness</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">total</span><span class="p">])</span>
+			<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">species_richness</span> <span class="o">=</span> <span class="n">out_richness</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_write_species_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_create_combined_fragment_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Combines the fragment richness guilds so that richness values are for all guilds in each fragment.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No fragment richnesses are detected. Add simulations before combining richness.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_fragment_richness</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+		<span class="n">out_richness</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">fragments</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span><span class="p">])</span>
+		<span class="n">references</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span><span class="p">])</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+				<span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">fragment</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">reference</span><span class="p">])</span>
+				<span class="n">out_richness</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">total</span><span class="p">])</span>
+				<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_richness</span> <span class="o">=</span> <span class="n">out_richness</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_write_fragment_richness</span><span class="p">(</span><span class="n">guild</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_create_combined_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Combines the fragment octaves guilds so that octaves values are for all guilds in each fragment.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No fragment octaves are detected. Add simulations before creating combined octaves&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_fragment_octaves</span><span class="p">(</span><span class="n">guilds</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+		<span class="n">octaves</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">fragments</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span><span class="p">])</span>
+		<span class="n">references</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span><span class="p">])</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+				<span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">fragment</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">reference</span><span class="p">])</span>
+				<span class="n">octaves</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">total</span><span class="p">])</span>
+				<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_octaves</span> <span class="o">=</span> <span class="n">octaves</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_write_fragment_octaves</span><span class="p">(</span><span class="n">guild</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

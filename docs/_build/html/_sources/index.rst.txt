@@ -33,6 +33,11 @@ analysing models.
     
     README_landscapes
 
+.. toctree::
+    :maxdepth: 2
+
+    README_merger
+
 Code Documentation
 ==================
 

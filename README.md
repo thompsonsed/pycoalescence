@@ -1,4 +1,4 @@
-# Basic pycoalescence overview
+# pycoalescence overview
 *A python package for coalescence-based spatially-explicit neutral ecology simulations*
 
 

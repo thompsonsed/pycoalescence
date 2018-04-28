@@ -106,8 +106,8 @@ bool \hyperlink{class_landscape_a24de83f1e8f762b9640cdba35793a404}{check\+Map} (
 \begin{DoxyCompactList}\small\item\em Checks whether the point is habitat or non-\/habitat. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_a0545765b734539f622804bb3aa72e38c}{check\+Fine} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
 \begin{DoxyCompactList}\small\item\em Checks whether the point comes from the fine grid. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_af5ba56f29b355c5dd7226231144d147e}{convert\+Coordinates} (double \&x, double \&y, long \&xwrap, long \&ywrap)
-\begin{DoxyCompactList}\small\item\em Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}{fix\+Grid\+Coordinates} (double \&x, double \&y, long \&xwrap, long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal} (const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)
 \begin{DoxyCompactList}\small\item\em The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn\textquotesingle{}t need to perform all the checks until the edge of the fine grid. \end{DoxyCompactList}\item 
 string \hyperlink{class_landscape_a9b867a59c88f754bae6788451845b698}{print\+Vars} ()
@@ -386,31 +386,6 @@ Checks that the map files exist (or are none/null).
 \begin{DoxyReturn}{Returns}
 true if all the paths exist in configs 
 \end{DoxyReturn}
-\index{Landscape@{Landscape}!convert\+Coordinates@{convert\+Coordinates}}
-\index{convert\+Coordinates@{convert\+Coordinates}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{convert\+Coordinates(double \&x, double \&y, long \&xwrap, long \&ywrap)}{convertCoordinates(double &x, double &y, long &xwrap, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::convert\+Coordinates (
-\begin{DoxyParamCaption}
-\item[{double \&}]{x, }
-\item[{double \&}]{y, }
-\item[{long \&}]{xwrap, }
-\item[{long \&}]{ywrap}
-\end{DoxyParamCaption}
-)}\hypertarget{class_landscape_af5ba56f29b355c5dd7226231144d147e}{}\label{class_landscape_af5ba56f29b355c5dd7226231144d147e}
-
-
-Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position. \\
-\hline
-{\em y} & the y position. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension. \\
-\hline
-\end{DoxyParams}
 \index{Landscape@{Landscape}!convert\+Fine\+To\+Sample@{convert\+Fine\+To\+Sample}}
 \index{convert\+Fine\+To\+Sample@{convert\+Fine\+To\+Sample}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{convert\+Fine\+To\+Sample(long \&x, long \&xwrap, long \&y, long \&ywrap)}{convertFineToSample(long &x, long &xwrap, long &y, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::convert\+Fine\+To\+Sample (
@@ -494,6 +469,31 @@ Updates the historical map configuration.
 
 \begin{DoxyParams}{Parameters}
 {\em generation} & the current generation timer \\
+\hline
+\end{DoxyParams}
+\index{Landscape@{Landscape}!fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}}
+\index{fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{fix\+Grid\+Coordinates(double \&x, double \&y, long \&xwrap, long \&ywrap)}{fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::fix\+Grid\+Coordinates (
+\begin{DoxyParamCaption}
+\item[{double \&}]{x, }
+\item[{double \&}]{y, }
+\item[{long \&}]{xwrap, }
+\item[{long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}{}\label{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}
+
+
+Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position. \\
+\hline
+{\em y} & the y position. \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension. \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension. \\
 \hline
 \end{DoxyParams}
 \index{Landscape@{Landscape}!get\+Habitat\+Max@{get\+Habitat\+Max}}

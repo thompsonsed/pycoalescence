@@ -181,12 +181,12 @@ class Landscape:
 		This is intended to be run after set_map_files()
 
 		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but
-		not a coarse map.
+						   not a coarse map.
 
 		:raises IOError: if one of the required maps does not exist
 
 		:raises ValueError: if the dimensions of the dispersal map do not make sense when used with the fine map
-		provided
+							provided
 
 		:return: None
 		"""

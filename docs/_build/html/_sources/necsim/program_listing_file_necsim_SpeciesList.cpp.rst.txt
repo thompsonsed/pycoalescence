@@ -236,12 +236,12 @@ Program Listing for File SpeciesList.cpp
        return nwrap;
    }
    
-   unsigned long SpeciesList::getListsize()
+   unsigned long SpeciesList::getListSize()
    {
        return list_size;
    }
    
-   unsigned long SpeciesList::getMaxsize()
+   unsigned long SpeciesList::getMaxSize()
    {
        return maxsize;
    }

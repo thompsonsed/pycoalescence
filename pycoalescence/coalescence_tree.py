@@ -926,6 +926,8 @@ class CoalescenceTree(object):
 		:param str filename: the file containing the comparison biodiversity metrics.
 		:param bool ignore_mismatch: set to true to ignore abundance mismatches between the comparison and simulated data.
 		"""
+		if not os.path.exists(filename):
+			raise IOError("Comparison database does not exist at {}.".format(filename))
 		conn = sqlite3.connect(filename)
 		tmp_cursor = conn.cursor()
 		if self.comparison_file is not None:
@@ -2059,7 +2061,7 @@ def collate_fits(file_dir, filename="Collated_fits.db"):
 def scale_simulation_fit(simulated_value, actual_value, number_individuals, total_individuals):
 	"""
 	Calculates goodness of fit for the provided values, and scales based on the total number of individuals that exist.
-	The calculation is 1 - (|x - y|/max(x, y)) * n/n_tot for x, y simulated and actual values, n, n_tot for metric and total
+	The calculation is 1 - (abs(x - y)/max(x, y)) * n/n_tot for x, y simulated and actual values, n, n_tot for metric and total
 	number of individuals.
 
 	:param simulated_value: the simulated value of the metric

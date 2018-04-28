@@ -222,7 +222,7 @@ Program Listing for File Landscape.h
    
        bool checkFine(const double &x, const double &y, const long &xwrap, const long &ywrap);
    
-       void convertCoordinates(double &x, double &y, long &xwrap, long &ywrap);
+       void fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap);
    
        unsigned long runDispersal(const double &dist, const double &angle, long &startx, long &starty, long &startxwrap,
                                   long &startywrap, bool &disp_comp, const double &generation);

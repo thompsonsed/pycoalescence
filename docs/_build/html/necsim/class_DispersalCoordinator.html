@@ -162,6 +162,62 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator12fixDispersalEv">
+<span id="DispersalCoordinator::fixDispersal"></span><span class="target" id="necsimclass_dispersal_coordinator_1a588b959feff178953c37bfeae7aa8529"></span>void <code class="descname">fixDispersal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator12fixDispersalEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fixes the dispersal map by generating cumulative probability distributions across each row. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator15fixDispersalRowEm">
+<span id="DispersalCoordinator::fixDispersalRow__unsigned-l"></span><span class="target" id="necsimclass_dispersal_coordinator_1a7fc1c7f99cb2ac16ae97c78876eb69ab"></span>void <code class="descname">fixDispersalRow</code><span class="sig-paren">(</span>unsigned long <em>row</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator15fixDispersalRowEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sums probabilities across the given row and divides by the total probability, so that the cumulative probabilities sum to one. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">row</span></code>: the row index to check over </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator17checkDispersalRowEm">
+<span id="DispersalCoordinator::checkDispersalRow__unsigned-l"></span><span class="target" id="necsimclass_dispersal_coordinator_1a8e3c496ef1ad36844368bc9d2dd68757"></span>bool <code class="descname">checkDispersalRow</code><span class="sig-paren">(</span>unsigned long <em>row</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator17checkDispersalRowEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks if the provided row index requires re-scaling to a cumulative probability in the dispersal map. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if re-scaling of the row is required </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">row</span></code>: the row index to check </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator18verifyDispersalMapEv">
+<span id="DispersalCoordinator::verifyDispersalMap"></span><span class="target" id="necsimclass_dispersal_coordinator_1a5f6d3782cf8b528d591d17c77072924a"></span>void <code class="descname">verifyDispersalMap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator18verifyDispersalMapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks that the dispersal map makes sense with dispersal to and from only cells which have a non-zero density. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator22assertReferenceMatchesEm">
+<span id="DispersalCoordinator::assertReferenceMatches__unsigned-l"></span><span class="target" id="necsimclass_dispersal_coordinator_1a210c821cc36e08829fbfbfe640a5ccb2"></span>void <code class="descname">assertReferenceMatches</code><span class="sig-paren">(</span>unsigned long <em>expected</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator22assertReferenceMatchesEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Asserts that the cell reference is correct for the provided coordinates. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">expected</span></code>: the expected cell reference. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N20DispersalCoordinator24disperseNullDispersalMapER4Step">
 <span id="DispersalCoordinator::disperseNullDispersalMap__StepR"></span><span class="target" id="necsimclass_dispersal_coordinator_1a4bac3aeedb3ceb40601c3db951032d0e"></span>void <code class="descname">disperseNullDispersalMap</code><span class="sig-paren">(</span><a class="reference internal" href="class_Step.html#_CPPv24Step" title="Step">Step</a> &amp;<em>this_step</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator24disperseNullDispersalMapER4Step" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Picks a random cell from the whole map and stores the value in the step object. </p>
@@ -362,8 +418,8 @@
 <dd></dd></dl>
 
 <dl class="member">
-<dt id="_CPPv2N20DispersalCoordinator11habitat_mapE">
-<span id="DispersalCoordinator::habitat_map__LandscapeP"></span><span class="target" id="necsimclass_dispersal_coordinator_1a3eb82a6bacdb78297e37ba8cbef10a28"></span><a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a> *<code class="descname">habitat_map</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator11habitat_mapE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N20DispersalCoordinator9landscapeE">
+<span id="DispersalCoordinator::landscape__LandscapeP"></span><span class="target" id="necsimclass_dispersal_coordinator_1a316f067e84937650316f47b219e2cb76"></span><a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a> *<code class="descname">landscape</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator9landscapeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
@@ -456,7 +512,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
+        &#169; Copyright Copyright 2016, pycoalescence.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>

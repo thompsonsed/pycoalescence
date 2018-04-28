@@ -29,10 +29,13 @@ except ImportError:
 	# Python 2 compatibility
 	def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
 		"""
-		:param a: value 1
-		:param b: value 2
-		:param rel_tol: percentage relative to larger value
-		:param abs_tol: absolute value for similarity
+		Checks if the two floats are close.
+
+		:param float a: value 1
+		:param float b: value 2
+		:param float rel_tol: percentage relative to larger value
+		:param float abs_tol: absolute value for similarity
+
 		:return: true for significantly different a and b, false otherwise
 		"""
 		return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
@@ -44,6 +47,7 @@ def check_parent(file_path):
 	.. note:: if file_path is a directory, it will be created
 
 	:param file_path: the file or directory to check if the parent exists
+
 	:rtype None
 	"""
 	if file_path:
@@ -79,6 +83,7 @@ def execute(cmd, silent=False, **kwargs):
 
 	:param cmd: the command to execute using subprocess.Popen()
 	:param silent: if true, does not log any warnings
+
 	:return a line from the execution output
 	"""
 	popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -111,6 +116,7 @@ def execute_log_info(cmd, **kwargs):
 
 	:param cmd: the command to execute using subprocess.Popen()
 	:param kwargs: keyword arguments to be passed to subprocess.Popen()
+
 	:return: None
 	"""
 	for line in execute(cmd, **kwargs):
@@ -124,6 +130,7 @@ def execute_silent(cmd, **kwargs):
 
 	:param cmd: the command to execute using subprocess.Popen()
 	:param kwargs: keyword arguments to be passed to subprocess.Popen()
+
 	:return: None
 	"""
 	for _ in execute(cmd, silent=True, **kwargs):
@@ -200,6 +207,7 @@ def elegant_pairing(x1, x2):
 
 	:param x1: the first number
 	:param x2: the second number
+
 	:return: a unique reference combining the two integers.
 	"""
 	if x1 > x2:
@@ -221,6 +229,7 @@ def cantor_pairing(x1, x2):
 
 	:param x1: the first number
 	:param x2: the second number
+
 	:return: a unique reference combining the two integers
 	"""
 	return ((x1 + x2) * (x1 + x2 + 1)/2) + x2

@@ -31,7 +31,6 @@
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="necsim module" href="necsim/necsim.html" />
     <link rel="prev" title="Modules" href="modules.html" /> 
   </head>
   <body role="document">
@@ -44,9 +43,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="necsim/necsim.html" title="necsim module"
-             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="Modules"
              accesskey="P">previous</a> |</li>
@@ -67,14 +63,650 @@ and performing basic analysis of the simulation outputs. The program requires ne
 <div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="batch-process-module">
-<h3>batch_process module<a class="headerlink" href="#batch-process-module" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="key-submodules">
+<h2>Key submodules<a class="headerlink" href="#key-submodules" title="Permalink to this headline">¶</a></h2>
+<p>These are the most important modules for running and analysing spatially-explicit neutral models, and are most likely
+to be used directly.</p>
+<div class="section" id="simulation-module">
+<h3>simulation module<a class="headerlink" href="#simulation-module" title="Permalink to this headline">¶</a></h3>
+<p>Run spatially-explicit neutral simulations on provided landscapes with support for a wide range of scenarios and
+parameters. Detailed <a class="reference internal" href="README_pycoalescence.html#performing-simulations"><span class="std std-ref">here</span></a>.</p>
+<span class="target" id="module-pycoalescence.simulation"></span><p>Contains the Simulation class as part of the pycoalescence package.</p>
+<p>Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.</p>
+<dl class="class">
+<dt id="pycoalescence.simulation.Simulation">
+<em class="property">class </em><code class="descname">Simulation</code><span class="sig-paren">(</span><em>logging_level=30</em>, <em>log_output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycoalescence.landscape.Landscape" title="pycoalescence.landscape.Landscape"><code class="xref py py-class docutils literal"><span class="pre">pycoalescence.landscape.Landscape</span></code></a></p>
+<p>A class containing routines to set up and run simulations, including detecting map dimensions from tif files.</p>
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.add_sample_time">
+<code class="descname">add_sample_time</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.add_sample_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.add_sample_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an extra sample time to the list of times.</p>
+<p>This allows for multiple temporal sample points from within the same simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> &#8211; the sample time to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.calculate_sql_database">
+<code class="descname">calculate_sql_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.calculate_sql_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.calculate_sql_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the output database location to self.output_database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.check_maps">
+<code class="descname">check_maps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_maps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_maps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the maps all exist and that the file structure makes sense.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>TypeError</strong> &#8211; if a dispersal map or reproduction map is specified, we must have a fine map specified, but
+not a coarse map.</li>
+<li><strong>IOError</strong> &#8211; if one of the required maps does not exist</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.check_sample_map_equals_sample_grid">
+<code class="descname">check_sample_map_equals_sample_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_sample_map_equals_sample_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_sample_map_equals_sample_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the grid and sample map are the same size and offset (in which case, future operations can be
+simplified).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true if the grid and sample map dimensions and offsets are equal</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.check_simulation_params">
+<code class="descname">check_simulation_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_simulation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_simulation_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that simulation parameters have been correctly set and the program is ready for running.
+Note that these checks have not been fully tested and are probably unnecessary in a large number of cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.check_sql_database">
+<code class="descname">check_sql_database</code><span class="sig-paren">(</span><em>expected=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_sql_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_sql_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether the output database exists. If the existance does not match the expected variable, raises an
+error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>FileExistsError</strong> &#8211; if the file already exists when it&#8217;s not expected to</li>
+<li><strong>FileNotExistsError</strong> &#8211; if the file does not exist when we expect it to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>expected</strong> &#8211; boolean for expected existance of the output file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.count_individuals">
+<code class="descname">count_individuals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.count_individuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.count_individuals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the number of individuals to be simulated. This may be inaccurate if using multiple time points and
+historical maps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a count of the number of individuals to be simulated</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.create_config">
+<code class="descname">create_config</code><span class="sig-paren">(</span><em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.create_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.create_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the output config files. This version creates the concise version of the config file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> (<em>str</em>) &#8211; the file to generate the config option. Must be a path to a .txt file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.create_map_config">
+<code class="descname">create_map_config</code><span class="sig-paren">(</span><em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.create_map_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.create_map_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the map config file from reading the spatial structure of each of the provided files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> (<em>str</em>) &#8211; the file to output configuration data to (the map config file)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.create_temporal_sampling_config">
+<code class="descname">create_temporal_sampling_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.create_temporal_sampling_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.create_temporal_sampling_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the time-sampling config file.</p>
+<p>Function is called automatically when creating a config file, and should not be manually called.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.detect_map_dimensions">
+<code class="descname">detect_map_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.detect_map_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.detect_map_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects all the map dimensions for the provided files (where possible) and sets the respective values.
+This is intended to be run after set_map_files()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>TypeError</strong> &#8211; if a dispersal map or reproduction map is specified, we must have a fine map specified, but</td>
+</tr>
+</tbody>
+</table>
+<p>not a coarse map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>IOError</strong> &#8211; if one of the required maps does not exist</li>
+<li><strong>ValueError</strong> &#8211; if the dimensions of the dispersal map do not make sense when used with the fine map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>provided</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.estimate_ram_usage">
+<code class="descname">estimate_ram_usage</code><span class="sig-paren">(</span><em>grid_individuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.estimate_ram_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.estimate_ram_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the RAM usage for the program with the current parameters.</p>
+<p>Note this estimates the upper bound of memory usage and is likely inaccurate, especially for simulations with
+multiple time sampling points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>grid_individuals</strong> &#8211; the number of individuals existing on the grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the estimated RAM usage in bytes</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.finalise_setup">
+<code class="descname">finalise_setup</code><span class="sig-paren">(</span><em>config_default=True</em>, <em>expected=False</em>, <em>ignore_errors=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.finalise_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.finalise_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs all setup routines to provide a complete simulation. Should be called immediately before run_coalescence()
+to ensure the simulation setup is complete.
+Calls check_simulation_params, generate_command() and run_checks()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>config_default</strong> &#8211; set to false if want config file to only be created if necessary. Defaults to True</li>
+<li><strong>ignore_errors</strong> &#8211; if true, any FileNotFoundError and FileExistsError raised by checking the output database</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>are ignored
+:param expected: set to true if we expect the output file to exist</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.get_average_density">
+<code class="descname">get_average_density</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_average_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_average_density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the average density across the fine map, subsetted for the sample grid.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.get_optimised_solution">
+<code class="descname">get_optimised_solution</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_optimised_solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_optimised_solution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the optimised solution as a dictionary containing the important optimised variables.
+This can be read back in with set_optimised_solution</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict containing the important optimised variables</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.get_protracted">
+<code class="descname">get_protracted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_protracted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_protracted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets whether the simulation pointed to by this object is a protracted simulation or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.get_richness">
+<code class="descname">get_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_richness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls coal_analyse.get_richness() with the supplied variables.</p>
+<p>Requires successful import of coal_analyse and sqlite3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>speciation_rate</strong> &#8211; the speciation rate to extract system richness from.</li>
+<li><strong>time</strong> &#8211; the time to extract system richness from</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the species richness.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.grid_density_actual">
+<code class="descname">grid_density_actual</code><span class="sig-paren">(</span><em>x_off</em>, <em>y_off</em>, <em>x_dim</em>, <em>y_dim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.grid_density_actual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.grid_density_actual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the density total for a subset of the grid by sampling from the fine map.</p>
+<p>Note that for large maps this can take a very long time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x_off</strong> &#8211; the x offset of the grid map subset</li>
+<li><strong>y_off</strong> &#8211; the y offset of the grid map subset</li>
+<li><strong>x_dim</strong> &#8211; the x dimension of the grid map subset</li>
+<li><strong>y_dim</strong> &#8211; the y dimension of the grid map subset</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the total individuals that exist in the subset.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.grid_density_estimate">
+<code class="descname">grid_density_estimate</code><span class="sig-paren">(</span><em>x_off</em>, <em>y_off</em>, <em>x_dim</em>, <em>y_dim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.grid_density_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.grid_density_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the density total for a subset of the grid by sampling from the fine map</p>
+<p>Note that this function is an approximation (based on the average density of the fine map) and does not produce
+a perfect value. This is done for performance reasons. The actual value can be obtained with
+grid_density_actual().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x_off</strong> &#8211; the x offset of the grid map subset</li>
+<li><strong>y_off</strong> &#8211; the y offset of the grid map subset</li>
+<li><strong>x_dim</strong> &#8211; the x dimension of the grid map subset</li>
+<li><strong>y_dim</strong> &#8211; the y dimension of the grid map subset</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an estimate of the total individuals that exist in the subset.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.import_fine_map_array">
+<code class="descname">import_fine_map_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.import_fine_map_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.import_fine_map_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports the fine map array to the in-memory object, subsetted to the same size as the sample grid.
+:rtype: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.import_sample_map_array">
+<code class="descname">import_sample_map_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.import_sample_map_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.import_sample_map_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports the sample map array to the in-memory object.
+:rtype: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.load_config">
+<code class="descname">load_config</code><span class="sig-paren">(</span><em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.load_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.load_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the config file by reading the lines in order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_file</strong> (<em>str</em>) &#8211; the config file to read in.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.optimise_ram">
+<code class="descname">optimise_ram</code><span class="sig-paren">(</span><em>ram_limit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.optimise_ram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.optimise_ram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimises the maps for a specific RAM usage.</p>
+<p>If ram_limit is None, this function does nothing.</p>
+<p>:note Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.</p>
+<dl class="docutils">
+<dt>:note Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as</dt>
+<dd>a maximum size.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ram_limit</strong> &#8211; the desired amount of RAM to limit to, in GB</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>MemoryError</strong> &#8211; if the desired simulation cannot be compressed into available RAM</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.persistent_ram_usage">
+<code class="descname">persistent_ram_usage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.persistent_ram_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.persistent_ram_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the persistent RAM usage which cannot be optimised by the program for a particular set of maps
+:return: the total persistent RAM usage in bytes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.resume_coalescence">
+<code class="descname">resume_coalescence</code><span class="sig-paren">(</span><em>pause_directory</em>, <em>seed</em>, <em>job_type</em>, <em>max_time</em>, <em>out_directory=None</em>, <em>protracted=None</em>, <em>spatial=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.resume_coalescence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.resume_coalescence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resumes the simulation from the specified directory, looking for the simulation with the specified seed and task
+referencing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pause_directory</strong> &#8211; the directory to search for the paused simulation</li>
+<li><strong>seed</strong> &#8211; the seed of the paused simulation</li>
+<li><strong>job_type</strong> &#8211; the task of the paused simulation</li>
+<li><strong>max_time</strong> &#8211; the maximum time to run simulations for</li>
+<li><strong>out_directory</strong> &#8211; optionally provide an alternative output location. Defaults to same location as</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>pause_directory
+:param bool protracted: protractedness of the simulation
+:param bool spatial: if the simulation is to be run with spatial complexity</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.run_checks">
+<code class="descname">run_checks</code><span class="sig-paren">(</span><em>expected=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.run_checks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.run_checks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the simulation is correctly set up and that all the required files exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expected</strong> &#8211; set to true if we expect the output file to already exist</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>RuntimeError</strong> &#8211; if previous set-up routines are not complete</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.run_coalescence">
+<code class="descname">run_coalescence</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.run_coalescence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.run_coalescence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to run the simulation with the given simulation set-up.
+This is the main routine performing the actual simulation which will take a considerable amount of time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.run_simple">
+<code class="descname">run_simple</code><span class="sig-paren">(</span><em>seed</em>, <em>task</em>, <em>output</em>, <em>alpha</em>, <em>sigma</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.run_simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.run_simple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a simple coalescence simulation on a square infinite landscape with the provided parameters.
+This requires a separate compilation of the inf_land version of the coalescence simulator.</p>
+<p>Note that this function returns richness=0 for failure to read from the file. It is assumed that there will
+be at least one species in the simulation.</p>
+<p>Note that the maximum time for this function is set as 10 hours (36000 seconds) and will raise an exception if
+the simulation does not complete in this time).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>RuntimeError</strong> &#8211; if the simulation didn&#8217;t complete in time.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seed</strong> &#8211; the simulation seed</li>
+<li><strong>task</strong> &#8211; the task (for file naming)</li>
+<li><strong>output</strong> &#8211; the output directory</li>
+<li><strong>alpha</strong> &#8211; the speciation rate</li>
+<li><strong>sigma</strong> &#8211; the normal distribution sigma value for dispersal</li>
+<li><strong>size</strong> &#8211; the size of the world (so there will be size^2 individuals simulated)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the species richness in the simulation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.set_config_file">
+<code class="descname">set_config_file</code><span class="sig-paren">(</span><em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_config_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_config_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the config file to the output, over-writing any existing config file that has been stored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> &#8211; path to config file to output to</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.set_map_files">
+<code class="descname">set_map_files</code><span class="sig-paren">(</span><em>sample_file</em>, <em>fine_file=None</em>, <em>coarse_file=None</em>, <em>historical_fine_file=None</em>, <em>historical_coarse_file=None</em>, <em>dispersal_map=None</em>, <em>reproduction_map=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_map_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_map_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
+the specified dimensions.</p>
+<p>If sample_file is &#8220;null&#8221;, dimension values will remain at 0.
+If coarse_file is &#8220;null&#8221;, it will default to the size of fine_file with zero offset.
+If the coarse file is &#8220;none&#8221;, it will not be used.
+If the historical fine or coarse files are &#8220;none&#8221;, they will not be used.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the dispersal map should be of dimensions xy by xy where x, y are the fine map dimensions. Dispersal
+probabilities should sum to 1 across each row, and each row/column index represents dispersal from the
+row index to the column index according to index = x+(y*xdim), where x,y are the coordinates of the
+cell and xdim is the x dimension of the fine map. See the
+<a class="reference internal" href="#pycoalescence.patched_landscape.PatchedLandscape" title="pycoalescence.patched_landscape.PatchedLandscape"><code class="xref py py-class docutils literal"><span class="pre">PatchedLandscape</span> <span class="pre">class</span></code></a> for routines for
+generating these landscapes.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sample_file</strong> (<em>str</em>) &#8211; the sample map file. Provide &#8220;null&#8221; if on samplemask is required</li>
+<li><strong>fine_file</strong> (<em>str</em>) &#8211; the fine map file. Defaults to &#8220;null&#8221; if none provided</li>
+<li><strong>coarse_file</strong> (<em>str</em>) &#8211; the coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_fine_file</strong> (<em>str</em>) &#8211; the historical fine map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_coarse_file</strong> (<em>str</em>) &#8211; the historical coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>dispersal_map</strong> (<em>str</em>) &#8211; the dispersal map for reading dispersal values. Default to &#8220;none&#8221; if none provided</li>
+<li><strong>reproduction_map</strong> (<em>str</em>) &#8211; a map of relative reproduction probabilities, at the scale of the fine map</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.set_optimised_solution">
+<code class="descname">set_optimised_solution</code><span class="sig-paren">(</span><em>dict_in</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_optimised_solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_optimised_solution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the optimised RAM solution from the variables in the provided dictionary.
+This should contain the grid_x_size, grid_y_size, grid_file_name, sample_x_offset and sample_y_offset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_in</strong> (<em>dict</em>) &#8211; the dictionary containing the optimised RAM solution variables</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.set_simulation_params">
+<code class="descname">set_simulation_params</code><span class="sig-paren">(</span><em>seed</em>, <em>job_type</em>, <em>output_directory</em>, <em>min_speciation_rate</em>, <em>sigma=1.0</em>, <em>tau=1.0</em>, <em>deme=1</em>, <em>sample_size=1.0</em>, <em>max_time=3600</em>, <em>dispersal_method=None</em>, <em>m_prob=0.0</em>, <em>cutoff=0</em>, <em>dispersal_relative_cost=1</em>, <em>min_num_species=1</em>, <em>habitat_change_rate=0.0</em>, <em>gen_since_historical=1</em>, <em>restrict_self=False</em>, <em>landscape_type=False</em>, <em>protracted=False</em>, <em>min_speciation_gen=None</em>, <em>max_speciation_gen=None</em>, <em>spatial=True</em>, <em>uses_spatial_sampling=False</em>, <em>times=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_simulation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_simulation_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all the simulation parameters apart from the map objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>seed</strong> (<em>int</em>) &#8211; the unique job number for this simulation set</li>
+<li><strong>job_type</strong> (<em>int</em>) &#8211; the job type (used for easy file identification after simulations are complete)</li>
+<li><strong>output_directory</strong> (<em>str</em>) &#8211; the output directory to store the SQL database</li>
+<li><strong>min_speciation_rate</strong> (<em>float</em>) &#8211; the minimum speciation rate to simulate</li>
+<li><strong>sigma</strong> (<em>float</em>) &#8211; the dispersal sigma value</li>
+<li><strong>tau</strong> (<em>float</em>) &#8211; the fat-tailed dispersal tau value</li>
+<li><strong>deme</strong> (<em>int</em>) &#8211; the deme size (in individuals per cell)</li>
+<li><strong>sample_size</strong> (<em>float</em>) &#8211; the sample size of the deme (decimal 0-1)</li>
+<li><strong>max_time</strong> (<em>float</em>) &#8211; the maximum allowed simulation time (in seconds)</li>
+<li><strong>dispersal_method</strong> (<em>str</em>) &#8211; the dispersal kernel method. Should be one of [normal, fat-tail, norm-uniform]</li>
+<li><strong>m_prob</strong> (<em>float</em>) &#8211; the probability of drawing from the uniform dispersal. Only relevant for uniform dispersals</li>
+<li><strong>cutoff</strong> (<em>float</em>) &#8211; the maximum value for the uniform dispersal. Only relevant for uniform dispersals.</li>
+<li><strong>dispersal_relative_cost</strong> (<em>float</em>) &#8211; the relative cost of travelling through non-habitat (defaults to 1)</li>
+<li><strong>min_num_species</strong> (<em>int</em>) &#8211; the minimum number of species known to exist (defaults to 1</li>
+<li><strong>habitat_change_rate</strong> (<em>float</em>) &#8211; the rate of habitat change over time</li>
+<li><strong>gen_since_historical</strong> (<em>float</em>) &#8211; the time in generations since a historical state was achieved</li>
+<li><strong>restrict_self</strong> (<em>bool</em>) &#8211; if true, restricts dispersal from own cell</li>
+<li><strong>landscape_type</strong> (<em>bool/str</em>) &#8211; if false or &#8220;closed&#8221;, restricts dispersal to the provided maps, otherwise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>can be &#8220;infinite&#8221;, or a tiled landscape using &#8220;tiled_coarse&#8221; or &#8220;tiled_fine&#8221;.
+:param bool protracted: if true, uses protracted speciation application
+:param float min_speciation_gen: the minimum amount of time a lineage must exist before speciation occurs.
+:param float max_speciation_gen: the maximum amount of time a lineage can exist before speciating.
+:param bool spatial: if true, means that the simulation is spatial
+:param bool uses_spatial_sampling: if true, the sample mask is interpreted as a proportional sampling mask,</p>
+<blockquote>
+<div>where the number of individuals sampled in the cell is equal to the
+density * deme_sample * cell sampling proportion</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>times</strong> (<em>list</em>) &#8211; list of temporal sampling points to apply (in generations)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.set_speciation_rates">
+<code class="descname">set_speciation_rates</code><span class="sig-paren">(</span><em>speciation_rates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_speciation_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_speciation_rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add speciation rates for analysis at the end of the simulation. This is optional</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>speciation_rates</strong> (<em>list</em>) &#8211; a list of speciation rates to apply at the end of the simulation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.simulation.Simulation.setup_necsim">
+<code class="descname">setup_necsim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.setup_necsim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.setup_necsim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the logging function and the logger object for the necsim object. Enforcing this function is always called
+ensures no seg faults occur.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="coalescence-tree-module">
 <h3>coalescence_tree module<a class="headerlink" href="#coalescence-tree-module" title="Permalink to this headline">¶</a></h3>
-<p>Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
+<p>Generate the coalescence tree and acquire a number of biodiversity metrics for different parameter sets. Can also be
+used to compare against a comparison simulation object. Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
 <span class="target" id="module-pycoalescence.coalescence_tree"></span><p>Contains basic analyses for the output of a pycoalescence simulation.</p>
 <dl class="class">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree">
@@ -1053,7 +1685,7 @@ and one for fragment octaves fits.</p>
 <dt id="pycoalescence.coalescence_tree.scale_simulation_fit">
 <code class="descname">scale_simulation_fit</code><span class="sig-paren">(</span><em>simulated_value</em>, <em>actual_value</em>, <em>number_individuals</em>, <em>total_individuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#scale_simulation_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.scale_simulation_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates goodness of fit for the provided values, and scales based on the total number of individuals that exist.
-The calculation is 1 - (<a href="#id1"><span class="problematic" id="id2">|x - y|</span></a>/max(x, y)) * n/n_tot for x, y simulated and actual values, n, n_tot for metric and total
+The calculation is 1 - (abs(x - y)/max(x, y)) * n/n_tot for x, y simulated and actual values, n, n_tot for metric and total
 number of individuals.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1075,53 +1707,71 @@ number of individuals.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="simulation-module">
-<h3>simulation module<a class="headerlink" href="#simulation-module" title="Permalink to this headline">¶</a></h3>
-<p>Detailed <a class="reference internal" href="README_pycoalescence.html#performing-simulations"><span class="std std-ref">here</span></a>.</p>
-<span class="target" id="module-pycoalescence.simulation"></span><p>Contains the Simulation class as part of the pycoalescence package.</p>
-<p>Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.</p>
+</div>
+<div class="section" id="additional-submodules">
+<h2>Additional submodules<a class="headerlink" href="#additional-submodules" title="Permalink to this headline">¶</a></h2>
+<p>All additional modules which are required for package functionality, but are unlikely to be used directly.</p>
+<div class="section" id="dispersal-simulation-module">
+<h3>dispersal_simulation module<a class="headerlink" href="#dispersal-simulation-module" title="Permalink to this headline">¶</a></h3>
+<p>Simulate dispersal kernels on landscapes. Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
+<span class="target" id="module-pycoalescence.dispersal_simulation"></span><p>Contains routines for simulating a dispersal kernel on a map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">input:</th><td class="field-body"><ul class="first simple">
+<li>Map file to simulate on</li>
+<li>Set of dispersal pararameters, including the dispersal kernel, number of repetitions and landscape properties</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">output:</th><td class="field-body"><ul class="first last simple">
+<li>Database containing each distance travelled so that metrics can be calculated.</li>
+<li>A table is created for mean dispersal distance over a single step or for mean distance travelled.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
-<dt id="pycoalescence.simulation.Simulation">
-<em class="property">class </em><code class="descname">Simulation</code><span class="sig-paren">(</span><em>logging_level=30</em>, <em>log_output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pycoalescence.landscape.Landscape</span></code></p>
-<p>A class containing routines to set up and run simulations, including detecting map dimensions from tif files.</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation">
+<em class="property">class </em><code class="descname">DispersalSimulation</code><span class="sig-paren">(</span><em>file=None</em>, <em>logging_level=30</em>, <em>dispersal_db=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycoalescence.landscape.Landscape" title="pycoalescence.landscape.Landscape"><code class="xref py py-class docutils literal"><span class="pre">pycoalescence.landscape.Landscape</span></code></a></p>
+<p>Simulates a dispersal kernel upon a tif file to calculate landscape-level dispersal metrics.</p>
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.add_sample_time">
-<code class="descname">add_sample_time</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.add_sample_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.add_sample_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds an extra sample time to the list of times.</p>
-<p>This allows for multiple temporal sample points from within the same simulation.</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.complete_setup">
+<code class="descname">complete_setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.complete_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.complete_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Completes the setup for the dispersal simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters">
+<code class="descname">get_database_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_database_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the dispersal simulation parameters from the dispersal_db
+:return: the dispersal simulation parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_dispersal">
+<code class="descname">get_mean_dispersal</code><span class="sig-paren">(</span><em>database=None</em>, <em>parameter_reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_mean_dispersal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_dispersal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the mean dispersal for the map if test_mean_dispersal has already been run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> &#8211; the sample time to add</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">ValueError if dispersal_database is None and so test_mean_dispersal() has not been run</p>
+</td>
 </tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.calculate_sql_database">
-<code class="descname">calculate_sql_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.calculate_sql_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.calculate_sql_database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves the output database location to self.output_database.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.check_maps">
-<code class="descname">check_maps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_maps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_maps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks that the maps all exist and that the file structure makes sense.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
-<li><strong>TypeError</strong> &#8211; if a dispersal map or reproduction map is specified, we must have a fine map specified, but
-not a coarse map.</li>
-<li><strong>IOError</strong> &#8211; if one of the required maps does not exist</li>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">IOError if the output database does not exist</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> (<em>str</em>) &#8211; the database to open</li>
+<li><strong>parameter_reference</strong> (<em>int</em>) &#8211; the parameter reference to use (or 1 for default parameter reference).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">mean dispersal from the database</p>
 </td>
 </tr>
 </tbody>
@@ -1129,48 +1779,26 @@ not a coarse map.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.check_sample_map_equals_sample_grid">
-<code class="descname">check_sample_map_equals_sample_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_sample_map_equals_sample_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_sample_map_equals_sample_grid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks if the grid and sample map are the same size and offset (in which case, future operations can be
-simplified).</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_distance_travelled">
+<code class="descname">get_mean_distance_travelled</code><span class="sig-paren">(</span><em>database=None</em>, <em>parameter_reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_mean_distance_travelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_distance_travelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the mean dispersal for the map if test_mean_dispersal has already been run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true if the grid and sample map dimensions and offsets are equal</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">ValueError if dispersal_database is None and so test_average_dispersal() has not been run</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">IOError if the output database does not exist</p>
+</td>
 </tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.check_simulation_params">
-<code class="descname">check_simulation_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_simulation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_simulation_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks that simulation parameters have been correctly set and the program is ready for running.
-Note that these checks have not been fully tested and are probably unnecessary in a large number of cases.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.check_sql_database">
-<code class="descname">check_sql_database</code><span class="sig-paren">(</span><em>expected=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.check_sql_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.check_sql_database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks whether the output database exists. If the existance does not match the expected variable, raises an
-error.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
-<li><strong>FileExistsError</strong> &#8211; if the file already exists when it&#8217;s not expected to</li>
-<li><strong>FileNotExistsError</strong> &#8211; if the file does not exist when we expect it to</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> (<em>str</em>) &#8211; the database to open</li>
+<li><strong>parameter_reference</strong> (<em>int</em>) &#8211; the parameter reference to use (or 1 for default parameter reference).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>expected</strong> &#8211; boolean for expected existance of the output file</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">mean of dispersal from the database</p>
 </td>
 </tr>
 </tbody>
@@ -1178,533 +1806,135 @@ error.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.count_individuals">
-<code class="descname">count_individuals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.count_individuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.count_individuals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the number of individuals to be simulated. This may be inaccurate if using multiple time points and
-historical maps.</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.get_stdev_dispersal">
+<code class="descname">get_stdev_dispersal</code><span class="sig-paren">(</span><em>database=None</em>, <em>parameter_reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_stdev_dispersal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_stdev_dispersal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the standard deviation of dispersal for the map if test_mean_dispersal has already been run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a count of the number of individuals to be simulated</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">ValueError if dispersal_database is None and so test_average_dispersal() has not been run</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">IOError if the output database does not exist</p>
+</td>
 </tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.create_config">
-<code class="descname">create_config</code><span class="sig-paren">(</span><em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.create_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.create_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the output config files. This version creates the concise version of the config file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> (<em>str</em>) &#8211; the file to generate the config option. Must be a path to a .txt file.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.create_map_config">
-<code class="descname">create_map_config</code><span class="sig-paren">(</span><em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.create_map_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.create_map_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the map config file from reading the spatial structure of each of the provided files.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> (<em>str</em>) &#8211; the file to output configuration data to (the map config file)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.create_temporal_sampling_config">
-<code class="descname">create_temporal_sampling_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.create_temporal_sampling_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.create_temporal_sampling_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the time-sampling config file.</p>
-<p>Function is called automatically when creating a config file, and should not be manually called.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.detect_map_dimensions">
-<code class="descname">detect_map_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.detect_map_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.detect_map_dimensions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Detects all the map dimensions for the provided files (where possible) and sets the respective values.
-This is intended to be run after set_map_files()</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>TypeError</strong> &#8211; if a dispersal map or reproduction map is specified, we must have a fine map specified, but</td>
-</tr>
-</tbody>
-</table>
-<p>not a coarse map.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><strong>IOError</strong> &#8211; if one of the required maps does not exist</li>
-<li><strong>ValueError</strong> &#8211; if the dimensions of the dispersal map do not make sense when used with the fine map</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> (<em>str</em>) &#8211; the database to open</li>
+<li><strong>parameter_reference</strong> (<em>int</em>) &#8211; the parameter reference to use (or 1 for default parameter reference).</li>
 </ul>
 </td>
 </tr>
-</tbody>
-</table>
-<p>provided</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">standard deviation of dispersal from the database</p>
+</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.estimate_ram_usage">
-<code class="descname">estimate_ram_usage</code><span class="sig-paren">(</span><em>grid_individuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.estimate_ram_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.estimate_ram_usage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the RAM usage for the program with the current parameters.</p>
-<p>Note this estimates the upper bound of memory usage and is likely inaccurate, especially for simulations with
-multiple time sampling points.</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.get_stdev_distance_travelled">
+<code class="descname">get_stdev_distance_travelled</code><span class="sig-paren">(</span><em>database=None</em>, <em>parameter_reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_stdev_distance_travelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_stdev_distance_travelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the standard deviation of the  distance travelled for the map if test_mean_distance_travelled has already
+been run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>grid_individuals</strong> &#8211; the number of individuals existing on the grid</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">ValueError if dispersal_database is None and so test_average_dispersal() has not been run</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the estimated RAM usage in bytes</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">IOError if the output database does not exist</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> (<em>str</em>) &#8211; the database to open</li>
+<li><strong>parameter_reference</strong> (<em>int</em>) &#8211; the parameter reference to use (or 1 for default parameter reference).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">standard deviation of dispersal from the database</p>
+</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.finalise_setup">
-<code class="descname">finalise_setup</code><span class="sig-paren">(</span><em>config_default=True</em>, <em>expected=False</em>, <em>ignore_errors=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.finalise_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.finalise_setup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs all setup routines to provide a complete simulation. Should be called immediately before run_coalescence()
-to ensure the simulation setup is complete.
-Calls check_simulation_params, generate_command() and run_checks()</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.set_simulation_parameters">
+<code class="descname">set_simulation_parameters</code><span class="sig-paren">(</span><em>number_repeats</em>, <em>output_database='output.db'</em>, <em>seed=1</em>, <em>dispersal_method='normal'</em>, <em>landscape_type='closed'</em>, <em>sigma=1</em>, <em>tau=1</em>, <em>m_prob=1</em>, <em>cutoff=100</em>, <em>sequential=False</em>, <em>dispersal_relative_cost=1</em>, <em>restrict_self=False</em>, <em>number_steps=1</em>, <em>dispersal_file='none'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.set_simulation_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.set_simulation_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the simulation parameters for the dispersal simulations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>config_default</strong> &#8211; set to false if want config file to only be created if necessary. Defaults to True</li>
-<li><strong>ignore_errors</strong> &#8211; if true, any FileNotFoundError and FileExistsError raised by checking the output database</li>
+<li><strong>number_repeats</strong> (<em>int</em>) &#8211; the number of times to iterate on the map</li>
+<li><strong>output_database</strong> (<em>str</em>) &#8211; the path to the output database</li>
+<li><strong>seed</strong> (<em>int</em>) &#8211; the random seed</li>
+<li><strong>dispersal_method</strong> (<em>str</em>) &#8211; the dispersal method to use (&#8220;normal&#8221;, &#8220;fat-tailed&#8221; or &#8220;norm-uniform&#8221;)</li>
+<li><strong>landscape_type</strong> (<em>str</em>) &#8211; the landscape type to use (&#8220;infinite&#8221;, &#8220;tiled&#8221; or &#8220;closed&#8221;)</li>
+<li><strong>sigma</strong> (<em>float</em>) &#8211; the sigma value to use for normal and norm-uniform dispersal</li>
+<li><strong>tau</strong> (<em>float</em>) &#8211; the tau value to use for fat-tailed dispersal</li>
+<li><strong>m_prob</strong> (<em>float</em>) &#8211; the m_prob to use for norm-uniform dispersal</li>
+<li><strong>cutoff</strong> (<em>float</em>) &#8211; the cutoff value to use for norm-uniform dispersal</li>
+<li><strong>sequential</strong> (<em>bool</em>) &#8211; if true, end locations of one dispersal event are used as the start for the next. Otherwise,</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p>are ignored
-:param expected: set to true if we expect the output file to exist</p>
+<p>a new random cell is chosen
+:param float dispersal_relative_cost: relative dispersal ability through non-habitat
+:param bool restrict_self: if true, self-dispersal is not allowed
+:param str dispersal_file: path to the dispersal map file, or none.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.get_average_density">
-<code class="descname">get_average_density</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_average_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_average_density" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the average density across the fine map, subsetted for the sample grid.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.get_optimised_solution">
-<code class="descname">get_optimised_solution</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_optimised_solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_optimised_solution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the optimised solution as a dictionary containing the important optimised variables.
-This can be read back in with set_optimised_solution</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict containing the important optimised variables</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.get_protracted">
-<code class="descname">get_protracted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_protracted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_protracted" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets whether the simulation pointed to by this object is a protracted simulation or not.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.get_richness">
-<code class="descname">get_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_richness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls coal_analyse.get_richness() with the supplied variables.</p>
-<p>Requires successful import of coal_analyse and sqlite3.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>speciation_rate</strong> &#8211; the speciation rate to extract system richness from.</li>
-<li><strong>time</strong> &#8211; the time to extract system richness from</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the species richness.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.grid_density_actual">
-<code class="descname">grid_density_actual</code><span class="sig-paren">(</span><em>x_off</em>, <em>y_off</em>, <em>x_dim</em>, <em>y_dim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.grid_density_actual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.grid_density_actual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Counts the density total for a subset of the grid by sampling from the fine map.</p>
-<p>Note that for large maps this can take a very long time.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x_off</strong> &#8211; the x offset of the grid map subset</li>
-<li><strong>y_off</strong> &#8211; the y offset of the grid map subset</li>
-<li><strong>x_dim</strong> &#8211; the x dimension of the grid map subset</li>
-<li><strong>y_dim</strong> &#8211; the y dimension of the grid map subset</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the total individuals that exist in the subset.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.grid_density_estimate">
-<code class="descname">grid_density_estimate</code><span class="sig-paren">(</span><em>x_off</em>, <em>y_off</em>, <em>x_dim</em>, <em>y_dim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.grid_density_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.grid_density_estimate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Counts the density total for a subset of the grid by sampling from the fine map</p>
-<p>Note that this function is an approximation (based on the average density of the fine map) and does not produce
-a perfect value. This is done for performance reasons. The actual value can be obtained with
-grid_density_actual().</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x_off</strong> &#8211; the x offset of the grid map subset</li>
-<li><strong>y_off</strong> &#8211; the y offset of the grid map subset</li>
-<li><strong>x_dim</strong> &#8211; the x dimension of the grid map subset</li>
-<li><strong>y_dim</strong> &#8211; the y dimension of the grid map subset</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an estimate of the total individuals that exist in the subset.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.import_fine_map_array">
-<code class="descname">import_fine_map_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.import_fine_map_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.import_fine_map_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Imports the fine map array to the in-memory object, subsetted to the same size as the sample grid.
-:rtype: None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.import_sample_map_array">
-<code class="descname">import_sample_map_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.import_sample_map_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.import_sample_map_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Imports the sample map array to the in-memory object.
-:rtype: None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.load_config">
-<code class="descname">load_config</code><span class="sig-paren">(</span><em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.load_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.load_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads the config file by reading the lines in order.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_file</strong> (<em>str</em>) &#8211; the config file to read in.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.optimise_ram">
-<code class="descname">optimise_ram</code><span class="sig-paren">(</span><em>ram_limit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.optimise_ram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.optimise_ram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Optimises the maps for a specific RAM usage.</p>
-<p>If ram_limit is None, this function does nothing.</p>
-<p>:note Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.</p>
-<dl class="docutils">
-<dt>:note Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as</dt>
-<dd>a maximum size.</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ram_limit</strong> &#8211; the desired amount of RAM to limit to, in GB</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>MemoryError</strong> &#8211; if the desired simulation cannot be compressed into available RAM</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.persistent_ram_usage">
-<code class="descname">persistent_ram_usage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.persistent_ram_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.persistent_ram_usage" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the persistent RAM usage which cannot be optimised by the program for a particular set of maps
-:return: the total persistent RAM usage in bytes</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.resume_coalescence">
-<code class="descname">resume_coalescence</code><span class="sig-paren">(</span><em>pause_directory</em>, <em>seed</em>, <em>job_type</em>, <em>max_time</em>, <em>out_directory=None</em>, <em>protracted=None</em>, <em>spatial=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.resume_coalescence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.resume_coalescence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resumes the simulation from the specified directory, looking for the simulation with the specified seed and task
-referencing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pause_directory</strong> &#8211; the directory to search for the paused simulation</li>
-<li><strong>seed</strong> &#8211; the seed of the paused simulation</li>
-<li><strong>job_type</strong> &#8211; the task of the paused simulation</li>
-<li><strong>max_time</strong> &#8211; the maximum time to run simulations for</li>
-<li><strong>out_directory</strong> &#8211; optionally provide an alternative output location. Defaults to same location as</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>pause_directory
-:param bool protracted: protractedness of the simulation
-:param bool spatial: if the simulation is to be run with spatial complexity</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.run_checks">
-<code class="descname">run_checks</code><span class="sig-paren">(</span><em>expected=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.run_checks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.run_checks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the simulation is correctly set up and that all the required files exist.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expected</strong> &#8211; set to true if we expect the output file to already exist</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>RuntimeError</strong> &#8211; if previous set-up routines are not complete</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.run_coalescence">
-<code class="descname">run_coalescence</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.run_coalescence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.run_coalescence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempt to run the simulation with the given simulation set-up.
-This is the main routine performing the actual simulation which will take a considerable amount of time.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.run_simple">
-<code class="descname">run_simple</code><span class="sig-paren">(</span><em>seed</em>, <em>task</em>, <em>output</em>, <em>alpha</em>, <em>sigma</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.run_simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.run_simple" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs a simple coalescence simulation on a square infinite landscape with the provided parameters.
-This requires a separate compilation of the inf_land version of the coalescence simulator.</p>
-<p>Note that this function returns richness=0 for failure to read from the file. It is assumed that there will
-be at least one species in the simulation.</p>
-<p>Note that the maximum time for this function is set as 10 hours (36000 seconds) and will raise an exception if
-the simulation does not complete in this time).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>RuntimeError</strong> &#8211; if the simulation didn&#8217;t complete in time.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>seed</strong> &#8211; the simulation seed</li>
-<li><strong>task</strong> &#8211; the task (for file naming)</li>
-<li><strong>output</strong> &#8211; the output directory</li>
-<li><strong>alpha</strong> &#8211; the speciation rate</li>
-<li><strong>sigma</strong> &#8211; the normal distribution sigma value for dispersal</li>
-<li><strong>size</strong> &#8211; the size of the world (so there will be size^2 individuals simulated)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the species richness in the simulation</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.set_config_file">
-<code class="descname">set_config_file</code><span class="sig-paren">(</span><em>output_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_config_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_config_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the config file to the output, over-writing any existing config file that has been stored.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_file</strong> &#8211; path to config file to output to</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.set_map_files">
-<code class="descname">set_map_files</code><span class="sig-paren">(</span><em>sample_file</em>, <em>fine_file=None</em>, <em>coarse_file=None</em>, <em>historical_fine_file=None</em>, <em>historical_coarse_file=None</em>, <em>dispersal_map=None</em>, <em>reproduction_map=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_map_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_map_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
-the specified dimensions.</p>
-<p>If sample_file is &#8220;null&#8221;, dimension values will remain at 0.
-If coarse_file is &#8220;null&#8221;, it will default to the size of fine_file with zero offset.
-If the coarse file is &#8220;none&#8221;, it will not be used.
-If the historical fine or coarse files are &#8220;none&#8221;, they will not be used.</p>
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_dispersal">
+<code class="descname">test_mean_dispersal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.test_mean_dispersal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_dispersal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the dispersal kernel on the provided map, producing a database containing each dispersal distance for
+analysis purposes.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">the dispersal map should be of dimensions xy by xy where x, y are the fine map dimensions. Dispersal
-probabilities should sum to 1 across each row, and each row/column index represents dispersal from the
-row index to the column index according to index = x+(y*xdim), where x,y are the coordinates of the
-cell and xdim is the x dimension of the fine map. See the
-<code class="xref py py-class docutils literal"><span class="pre">PatchedLandscape</span> <span class="pre">class</span></code> for routines for
-generating these landscapes.</p>
+<p class="last">should be equivalent to <a class="reference internal" href="#pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_distance_travelled" title="pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_distance_travelled"><code class="xref py py-func docutils literal"><span class="pre">test_mean_distance_travelled()</span></code></a> with number_steps = 1</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_distance_travelled">
+<code class="descname">test_mean_distance_travelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.test_mean_distance_travelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_distance_travelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled
+after number_steps have been moved.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">mean distance travelled with number_steps=1 should be equivalent to running
+<a class="reference internal" href="#pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_dispersal" title="pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_dispersal"><code class="xref py py-func docutils literal"><span class="pre">test_mean_dispersal()</span></code></a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sample_file</strong> (<em>str</em>) &#8211; the sample map file. Provide &#8220;null&#8221; if on samplemask is required</li>
-<li><strong>fine_file</strong> (<em>str</em>) &#8211; the fine map file. Defaults to &#8220;null&#8221; if none provided</li>
-<li><strong>coarse_file</strong> (<em>str</em>) &#8211; the coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
-<li><strong>historical_fine_file</strong> (<em>str</em>) &#8211; the historical fine map file. Defaults to &#8220;none&#8221; if none provided</li>
-<li><strong>historical_coarse_file</strong> (<em>str</em>) &#8211; the historical coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
-<li><strong>dispersal_map</strong> (<em>str</em>) &#8211; the dispersal map for reading dispersal values. Default to &#8220;none&#8221; if none provided</li>
-<li><strong>reproduction_map</strong> (<em>str</em>) &#8211; a map of relative reproduction probabilities, at the scale of the fine map</li>
+<li><strong>number_repeats</strong> (<em>int</em>) &#8211; the number of times to iterate on the map</li>
+<li><strong>number_steps</strong> (<em>int</em>) &#8211; the number of steps to take each time before recording the distance travelled</li>
+<li><strong>output_database</strong> (<em>str</em>) &#8211; the path to the output database</li>
+<li><strong>map_file</strong> (<em>str</em>) &#8211; the path to the map file to iterate on</li>
+<li><strong>seed</strong> (<em>int</em>) &#8211; the random seed</li>
+<li><strong>dispersal_method</strong> (<em>str</em>) &#8211; the dispersal method to use (&#8220;normal&#8221;, &#8220;fat-tailed&#8221; or &#8220;norm-uniform&#8221;)</li>
+<li><strong>landscape_type</strong> (<em>str</em>) &#8211; the landscape type to use (&#8220;infinite&#8221;, &#8220;tiled&#8221; or &#8220;closed&#8221;)</li>
+<li><strong>sigma</strong> (<em>float</em>) &#8211; the sigma value to use for normal and norm-uniform dispersal</li>
+<li><strong>tau</strong> (<em>float</em>) &#8211; the tau value to use for fat-tailed dispersal</li>
+<li><strong>m_prob</strong> (<em>float</em>) &#8211; the m_prob to use for norm-uniform dispersal</li>
+<li><strong>cutoff</strong> (<em>float</em>) &#8211; the cutoff value to use for norm-uniform dispersal</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.set_optimised_solution">
-<code class="descname">set_optimised_solution</code><span class="sig-paren">(</span><em>dict_in</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_optimised_solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_optimised_solution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the optimised RAM solution from the variables in the provided dictionary.
-This should contain the grid_x_size, grid_y_size, grid_file_name, sample_x_offset and sample_y_offset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_in</strong> (<em>dict</em>) &#8211; the dictionary containing the optimised RAM solution variables</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.set_simulation_params">
-<code class="descname">set_simulation_params</code><span class="sig-paren">(</span><em>seed</em>, <em>job_type</em>, <em>output_directory</em>, <em>min_speciation_rate</em>, <em>sigma=1.0</em>, <em>tau=1.0</em>, <em>deme=1</em>, <em>sample_size=1.0</em>, <em>max_time=3600</em>, <em>dispersal_method=None</em>, <em>m_prob=0.0</em>, <em>cutoff=0</em>, <em>dispersal_relative_cost=1</em>, <em>min_num_species=1</em>, <em>habitat_change_rate=0.0</em>, <em>gen_since_historical=1</em>, <em>restrict_self=False</em>, <em>landscape_type=False</em>, <em>protracted=False</em>, <em>min_speciation_gen=None</em>, <em>max_speciation_gen=None</em>, <em>spatial=True</em>, <em>uses_spatial_sampling=False</em>, <em>times=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_simulation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_simulation_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set all the simulation parameters apart from the map objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>seed</strong> (<em>int</em>) &#8211; the unique job number for this simulation set</li>
-<li><strong>job_type</strong> (<em>int</em>) &#8211; the job type (used for easy file identification after simulations are complete)</li>
-<li><strong>output_directory</strong> (<em>str</em>) &#8211; the output directory to store the SQL database</li>
-<li><strong>min_speciation_rate</strong> (<em>float</em>) &#8211; the minimum speciation rate to simulate</li>
-<li><strong>sigma</strong> (<em>float</em>) &#8211; the dispersal sigma value</li>
-<li><strong>tau</strong> (<em>float</em>) &#8211; the fat-tailed dispersal tau value</li>
-<li><strong>deme</strong> (<em>int</em>) &#8211; the deme size (in individuals per cell)</li>
-<li><strong>sample_size</strong> (<em>float</em>) &#8211; the sample size of the deme (decimal 0-1)</li>
-<li><strong>max_time</strong> (<em>float</em>) &#8211; the maximum allowed simulation time (in seconds)</li>
-<li><strong>dispersal_method</strong> (<em>str</em>) &#8211; the dispersal kernel method. Should be one of [normal, fat-tail, norm-uniform]</li>
-<li><strong>m_prob</strong> (<em>float</em>) &#8211; the probability of drawing from the uniform dispersal. Only relevant for uniform dispersals</li>
-<li><strong>cutoff</strong> (<em>float</em>) &#8211; the maximum value for the uniform dispersal. Only relevant for uniform dispersals.</li>
-<li><strong>dispersal_relative_cost</strong> (<em>float</em>) &#8211; the relative cost of travelling through non-habitat (defaults to 1)</li>
-<li><strong>min_num_species</strong> (<em>int</em>) &#8211; the minimum number of species known to exist (defaults to 1</li>
-<li><strong>habitat_change_rate</strong> (<em>float</em>) &#8211; the rate of habitat change over time</li>
-<li><strong>gen_since_historical</strong> (<em>float</em>) &#8211; the time in generations since a historical state was achieved</li>
-<li><strong>restrict_self</strong> (<em>bool</em>) &#8211; if true, restricts dispersal from own cell</li>
-<li><strong>landscape_type</strong> (<em>bool/str</em>) &#8211; if false or &#8220;closed&#8221;, restricts dispersal to the provided maps, otherwise</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>can be &#8220;infinite&#8221;, or a tiled landscape using &#8220;tiled_coarse&#8221; or &#8220;tiled_fine&#8221;.
-:param bool protracted: if true, uses protracted speciation application
-:param float min_speciation_gen: the minimum amount of time a lineage must exist before speciation occurs.
-:param float max_speciation_gen: the maximum amount of time a lineage can exist before speciating.
-:param bool spatial: if true, means that the simulation is spatial
-:param bool uses_spatial_sampling: if true, the sample mask is interpreted as a proportional sampling mask,</p>
-<blockquote>
-<div>where the number of individuals sampled in the cell is equal to the
-density * deme_sample * cell sampling proportion</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>times</strong> (<em>list</em>) &#8211; list of temporal sampling points to apply (in generations)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.set_speciation_rates">
-<code class="descname">set_speciation_rates</code><span class="sig-paren">(</span><em>speciation_rates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_speciation_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_speciation_rates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add speciation rates for analysis at the end of the simulation. This is optional</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>speciation_rates</strong> (<em>list</em>) &#8211; a list of speciation rates to apply at the end of the simulation</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.setup_necsim">
-<code class="descname">setup_necsim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.setup_necsim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.setup_necsim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the logging function and the logger object for the necsim object. Enforcing this function is always called
-ensures no seg faults occur.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1712,7 +1942,7 @@ ensures no seg faults occur.</p>
 </div>
 <div class="section" id="fragments-module">
 <h3>fragments module<a class="headerlink" href="#fragments-module" title="Permalink to this headline">¶</a></h3>
-<p>Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
+<p>Generate fragmented landscapes with specific properties. Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
 <span class="target" id="module-pycoalescence.fragments"></span><p>Contains the FragmentedLandscape class for creating a fragmented landscape using hexagonal packing and an even spread of
 individuals between fragments. Requires scipy and matplotlib.</p>
 <dl class="class">
@@ -1921,9 +2151,293 @@ hexagonal packing algorithm to increase the equality of the spacing.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="fragments-config-module">
+<h3>fragments config module<a class="headerlink" href="#fragments-config-module" title="Permalink to this headline">¶</a></h3>
+<p>Generate the csv files detailing the locations of sample fragments within the landscape.</p>
+<span class="target" id="module-pycoalescence.fragment_config"></span><p>Generate the fragment config files from a supplied shapefile and a raster file to offset from.</p>
+<p>The function <a class="reference internal" href="#pycoalescence.fragment_config.generate_fragment_csv" title="pycoalescence.fragment_config.generate_fragment_csv"><code class="xref py py-func docutils literal"><span class="pre">generate_fragment_csv()</span></code></a> contains the full pipeline to generate the fragment csv.</p>
+<dl class="class">
+<dt id="pycoalescence.fragment_config.FragmentConfigHandler">
+<em class="property">class </em><code class="descname">FragmentConfigHandler</code><a class="reference internal" href="_modules/pycoalescence/fragment_config.html#FragmentConfigHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragment_config.FragmentConfigHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class containing the routines for calculating the offsets from a config file.</p>
+<dl class="method">
+<dt id="pycoalescence.fragment_config.FragmentConfigHandler.generate_config">
+<code class="descname">generate_config</code><span class="sig-paren">(</span><em>input_shapefile</em>, <em>input_raster</em>, <em>field_name='fragment'</em>, <em>field_area='area'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragment_config.html#FragmentConfigHandler.generate_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragment_config.FragmentConfigHandler.generate_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the config file from the shapefile containing the fragments, writing the coordinates of the extent of
+each fragment to the output csv. The coordinates are calculated from their relevant position on the input
+raster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>input_shapefile</strong> (<em>str</em>) &#8211; shapefile containing the fragments in a &#8220;fragments&#8221; field, with each defined as a
+polygon.</li>
+<li><strong>input_raster</strong> (<em>str</em>) &#8211; the raster to calculate the coordinates from</li>
+<li><strong>field_name</strong> (<em>str</em>) &#8211; optionally provide a field to extract fragment names from</li>
+<li><strong>field_area</strong> (<em>str</em>) &#8211; optionally provide a field to extract fragment areas from (the number of individuals that
+exist in the fragment.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.fragment_config.FragmentConfigHandler.write_csv">
+<code class="descname">write_csv</code><span class="sig-paren">(</span><em>output_csv</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragment_config.html#FragmentConfigHandler.write_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragment_config.FragmentConfigHandler.write_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the fragments to the output csv.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_csv</strong> (<em>str</em>) &#8211; the csv to write the output to</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.fragment_config.generate_fragment_csv">
+<code class="descname">generate_fragment_csv</code><span class="sig-paren">(</span><em>input_shapefile</em>, <em>input_raster</em>, <em>output_csv</em>, <em>field_name='fragment'</em>, <em>field_area='area'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/fragment_config.html#generate_fragment_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.fragment_config.generate_fragment_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the fragment csv from the provided shapefile and raster file. Coordinates for outputted to the csv are
+calculated from the extent of each polygon in the shapefile as their relative position on the input raster.</p>
+<p>The fragment extents are used solely, so overlapping extents of fragments results in individuals in those areas
+appearing in both fragments. Therefore, rectangular fragments alone should be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>input_shapefile</strong> &#8211; the shapefile containing polygons defining fragments. Should contain fields of field_name
+and field_area</li>
+<li><strong>input_raster</strong> &#8211; raster file to calculate the relative coordinates on</li>
+<li><strong>output_csv</strong> &#8211; output csv to create</li>
+<li><strong>field_name</strong> &#8211; name of the field in the shapefile to acquire fragment names from</li>
+<li><strong>field_area</strong> &#8211; name of the field in the shapefile to acquire the number of individuals from</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="helper-file">
+<h3>helper file<a class="headerlink" href="#helper-file" title="Permalink to this headline">¶</a></h3>
+<p>Convert older simulation parameters to new simulation parameters. Should not be required by most users.</p>
+<span class="target" id="module-pycoalescence.helper"></span><p>Routines for assisting in porting older outputs of simulations to updated naming convention.</p>
+<dl class="function">
+<dt id="pycoalescence.helper.update_parameter_names">
+<code class="descname">update_parameter_names</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/helper.html#update_parameter_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.helper.update_parameter_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alters the parameters names of SIMULATION_PARAMETERS in the database so that it matches the
+updated naming convention.</p>
+<p>Provided for back-compatibility with older simulations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> &#8211; the database path to alter the names of</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p>:rtype None</p>
+</dd></dl>
+
+</div>
+<div class="section" id="hpc-setup-file">
+<h3>hpc_setup file<a class="headerlink" href="#hpc-setup-file" title="Permalink to this headline">¶</a></h3>
+<p>Compile <strong>necsim</strong> with a number of optimisations for running on high-performance computing systems.</p>
+<span class="target" id="module-pycoalescence.hpc_setup"></span><p>Sets up pycoalescence for usage on HPC systems, including providing intel compiler flags for optimisation, and specific
+verbose patterns to add support for certain types of file systems.</p>
+<dl class="function">
+<dt id="pycoalescence.hpc_setup.build_hpc">
+<code class="descname">build_hpc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/hpc_setup.html#build_hpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.hpc_setup.build_hpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles NECSim with the <code class="docutils literal"><span class="pre">--with-hpc</span></code> and <code class="docutils literal"><span class="pre">--with-verbose</span></code> flags, which adds extra support for intel compilers
+and provides a selection of optimisation flags for high-performance systems.
+:return:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="landscape-file">
+<h3>landscape file<a class="headerlink" href="#landscape-file" title="Permalink to this headline">¶</a></h3>
+<p>Generate landscapes and check map file combinations.</p>
+<span class="target" id="module-pycoalescence.landscape"></span><p>Contains the landscape class for performing the key operations on a landscape object</p>
+<dl class="class">
+<dt id="pycoalescence.landscape.Landscape">
+<em class="property">class </em><code class="descname">Landscape</code><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains routines for calculating offsets and dimensions of a selection of tif files making up a landscape.</p>
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.add_historical_map">
+<code class="descname">add_historical_map</code><span class="sig-paren">(</span><em>fine_map</em>, <em>coarse_map</em>, <em>time</em>, <em>rate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.add_historical_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.add_historical_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an extra map to the list of historical maps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fine_map</strong> &#8211; the historical fine map file to add</li>
+<li><strong>coarse_map</strong> &#8211; the historical coarse map file to add</li>
+<li><strong>time</strong> &#8211; the time to add (when the map is accurate)</li>
+<li><strong>rate</strong> &#8211; the rate to add (the rate of habitat change at this time)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.check_maps">
+<code class="descname">check_maps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.check_maps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.check_maps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the maps all exist and that the file structure makes sense.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>TypeError</strong> &#8211; if a dispersal map or reproduction map is specified, we must have a fine map specified, but
+not a coarse map.</li>
+<li><strong>IOError</strong> &#8211; if one of the required maps does not exist</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.detect_map_dimensions">
+<code class="descname">detect_map_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.detect_map_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.detect_map_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects all the map dimensions for the provided files (where possible) and sets the respective values.
+This is intended to be run after set_map_files()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>TypeError</strong> &#8211; if a dispersal map or reproduction map is specified, we must have a fine map specified, but
+not a coarse map.</li>
+<li><strong>IOError</strong> &#8211; if one of the required maps does not exist</li>
+<li><strong>ValueError</strong> &#8211; if the dimensions of the dispersal map do not make sense when used with the fine map
+provided</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.set_map">
+<code class="descname">set_map</code><span class="sig-paren">(</span><em>map_file</em>, <em>x_size=None</em>, <em>y_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.set_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.set_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quick function for setting a single map file for both the sample map and fine map, of dimensions x and y.
+Sets the sample file to &#8220;null&#8221; and coarse file and historical files to &#8220;none&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>map_file</strong> (<em>str</em>) &#8211; path to the map file</li>
+<li><strong>x_size</strong> (<em>int</em>) &#8211; the x dimension, or None to detect automatically from the &#8221;.tif&#8221; file</li>
+<li><strong>y_size</strong> (<em>int</em>) &#8211; the y dimension, or None to detect automatically from the &#8221;.tif&#8221; file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.set_map_files">
+<code class="descname">set_map_files</code><span class="sig-paren">(</span><em>sample_file</em>, <em>fine_file=None</em>, <em>coarse_file=None</em>, <em>historical_fine_file=None</em>, <em>historical_coarse_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.set_map_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.set_map_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
+the specified dimensions.</p>
+<p>If sample_file is &#8220;null&#8221;, dimension values will remain at 0.
+If coarse_file is &#8220;null&#8221;, it will default to the size of fine_file with zero offset.
+If the coarse file is &#8220;none&#8221;, it will not be used.
+If the historical fine or coarse files are &#8220;none&#8221;, they will not be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sample_file</strong> (<em>str</em>) &#8211; the sample map file. Provide &#8220;null&#8221; if on samplemask is required</li>
+<li><strong>fine_file</strong> (<em>str</em>) &#8211; the fine map file. Defaults to &#8220;null&#8221; if none provided</li>
+<li><strong>coarse_file</strong> (<em>str</em>) &#8211; the coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_fine_file</strong> (<em>str</em>) &#8211; the historical fine map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_coarse_file</strong> (<em>str</em>) &#8211; the historical coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.set_map_parameters">
+<code class="descname">set_map_parameters</code><span class="sig-paren">(</span><em>sample_file</em>, <em>sample_x</em>, <em>sample_y</em>, <em>fine_file</em>, <em>fine_x</em>, <em>fine_y</em>, <em>fine_x_offset</em>, <em>fine_y_offset</em>, <em>coarse_file</em>, <em>coarse_x</em>, <em>coarse_y</em>, <em>coarse_x_offset</em>, <em>coarse_y_offset</em>, <em>coarse_scale</em>, <em>historical_fine_map</em>, <em>historical_coarse_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.set_map_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.set_map_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the map objects with the required parameters. This is required for csv file usage.</p>
+<p>Note that this function is not recommended for tif file usage, as it is much simpler to call set_map_files() and
+which should automatically calculate map offsets, scaling and dimensions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sample_file</strong> &#8211; the sample file to use, which should contain a boolean mask of where to sample</li>
+<li><strong>sample_x</strong> &#8211; the x dimension of the sample file</li>
+<li><strong>sample_y</strong> &#8211; the y dimension of the sample file</li>
+<li><strong>fine_file</strong> &#8211; the fine map file to use (must be equal to or larger than the sample file)</li>
+<li><strong>fine_x</strong> &#8211; the x dimension of the fine map file</li>
+<li><strong>fine_y</strong> &#8211; the y dimension of the fine map file</li>
+<li><strong>fine_x_offset</strong> &#8211; the x offset of the fine map file</li>
+<li><strong>fine_y_offset</strong> &#8211; the y offset of the fine map file</li>
+<li><strong>coarse_file</strong> &#8211; the coarse map file to use (must be equal to or larger than fine map file)</li>
+<li><strong>coarse_x</strong> &#8211; the x dimension of the coarse map file</li>
+<li><strong>coarse_y</strong> &#8211; the y dimension of the coarse map file</li>
+<li><strong>coarse_x_offset</strong> &#8211; the x offset of the coarse map file at the resolution of the fine map</li>
+<li><strong>coarse_y_offset</strong> &#8211; the y offset of the coarse map file at the resoultion of the fine map</li>
+<li><strong>coarse_scale</strong> &#8211; the relative scale of the coarse map compared to the fine map (must match x and y scaling)</li>
+<li><strong>historical_fine_map</strong> &#8211; the historical fine map file to use (must have dimensions equal to fine map)</li>
+<li><strong>historical_coarse_map</strong> &#8211; the historical coarse map file to use (must have dimensions equal to coarse map)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.landscape.Landscape.sort_historical_maps">
+<code class="descname">sort_historical_maps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape.sort_historical_maps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape.sort_historical_maps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts the historical maps by time.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="map-module">
 <h3>map module<a class="headerlink" href="#map-module" title="Permalink to this headline">¶</a></h3>
-<p>Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
+<p>Open tif files and detect properties and data contained using gdal. Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
 <span class="target" id="module-pycoalescence.map"></span><p>Contains the Map class as part of the PyCoalescence Project.</p>
 <p>Operations involve simulating dispersal kernels on maps, detecting map file dimensions and obtaining offsets between
 maps.</p>
@@ -2393,9 +2907,277 @@ Intended for writing changes to the same file the data was read from.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-pycoalescence.setup">
-<span id="setup-file"></span><h3>setup file<a class="headerlink" href="#module-pycoalescence.setup" title="Permalink to this headline">¶</a></h3>
-<p>Sets up the NECSim executables. It configures the install by detecting system components and compiles the <code class="docutils literal"><span class="pre">c++</span></code> files,
+<div class="section" id="merger-module">
+<h3>merger module<a class="headerlink" href="#merger-module" title="Permalink to this headline">¶</a></h3>
+<p>Combine simulation outputs from separate guilds. Detailed <a class="reference internal" href="README_merger.html#merging-simulations"><span class="std std-ref">here</span></a>.</p>
+<span class="target" id="module-pycoalescence.merger"></span><p>Contains the <a class="reference internal" href="#pycoalescence.merger.Merger" title="pycoalescence.merger.Merger"><code class="xref py py-class docutils literal"><span class="pre">Merger</span></code></a> class for combining simulation outputs into a single simulation, merging the
+various biodiversity tables into one.</p>
+<p>Metrics are also calculated for the entire system, with a guild reference of 0.</p>
+<p>All standard routines provided in <code class="xref py py-class docutils literal"><span class="pre">Tree</span></code> can then be performed on the combined
+database.</p>
+<dl class="class">
+<dt id="pycoalescence.merger.Merger">
+<em class="property">class </em><code class="descname">Merger</code><span class="sig-paren">(</span><em>database=None</em>, <em>logging_level=30</em>, <em>log_output=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/merger.html#Merger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.merger.Merger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycoalescence.coalescence_tree.CoalescenceTree" title="pycoalescence.coalescence_tree.CoalescenceTree"><code class="xref py py-class docutils literal"><span class="pre">pycoalescence.coalescence_tree.CoalescenceTree</span></code></a></p>
+<p>Merges simulation outputs into a single database. Inherits from <code class="xref py py-class docutils literal"><span class="pre">CoalescenceTree</span></code> to
+provide all routines in the same object.</p>
+<dl class="method">
+<dt id="pycoalescence.merger.Merger.add_simulation">
+<code class="descname">add_simulation</code><span class="sig-paren">(</span><em>input_simulation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/merger.html#Merger.add_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.merger.Merger.add_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a simulation to the list of merged simulations.</p>
+<p>This also calls the relevant merges for the tables that exist in the provided database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_simulation</strong> &#8211; either the path to the input simulation, a Coalescence class object, or a CoalescenceTree object
+which contains the completed simulation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.merger.Merger.add_simulations">
+<code class="descname">add_simulations</code><span class="sig-paren">(</span><em>simulation_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/merger.html#Merger.add_simulations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.merger.Merger.add_simulations" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience function that adds each simulation from the list of simulations provided and then writes to the
+database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>simulation_list</strong> &#8211; list of paths to completed simulations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.merger.Merger.set_database">
+<code class="descname">set_database</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/merger.html#Merger.set_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.merger.Merger.set_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the output database for the merged simulations</p>
+<p>Assumes no database currently exists, and will create one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>IOError</strong> &#8211; if the output database already exists</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; the filename to output merged simulations into</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.merger.Merger.write">
+<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/merger.html#Merger.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.merger.Merger.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes out all stored simulation parameters to the output database and wipes the in-memory objects.</p>
+<p>This should be called after all simulation have been added, or when RAM usage gets too large for large
+simulations</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="patched-landscape-module">
+<h3>patched_landscape module<a class="headerlink" href="#patched-landscape-module" title="Permalink to this headline">¶</a></h3>
+<p>Generate landscapes of interconnected patches for simulating within a spatially-explicit neutral model.
+Detailed <a class="reference internal" href="README_landscapes.html#generate-landscapes"><span class="std std-ref">here</span></a>.</p>
+<span class="target" id="module-pycoalescence.patched_landscape"></span><p>Contains routines for generating patched landscapes by defining dispersal probabilities between different patches.</p>
+<p>Each patch will be contain n individuals simulated non-spatially.</p>
+<dl class="class">
+<dt id="pycoalescence.patched_landscape.Patch">
+<em class="property">class </em><code class="descname">Patch</code><span class="sig-paren">(</span><em>id</em>, <em>density</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#Patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.Patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Contains a single patch, to which the probability of dispersal to every other patch can be added.</p>
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.Patch.add_patch">
+<code class="descname">add_patch</code><span class="sig-paren">(</span><em>patch</em>, <em>probability</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#Patch.add_patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.Patch.add_patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds dispersal from this patch to another patch object with a set probability. The patch should not already
+have been added.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The probabilities can be relative, as they can be re-scaled to sum to 1 using
+<a class="reference internal" href="#pycoalescence.patched_landscape.Patch.re_scale_probabilities" title="pycoalescence.patched_landscape.Patch.re_scale_probabilities"><code class="xref py py-func docutils literal"><span class="pre">re_scale_probabilities()</span></code></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>KeyError</strong> &#8211; if the patch already exists in the dispersal probabilities.</li>
+<li><strong>ValueError</strong> &#8211; if the dispersal probability is less than 0.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>patch</strong> &#8211; the patch id to disperse to</li>
+<li><strong>probability</strong> &#8211; the probability of dispersal</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.Patch.re_scale_probabilities">
+<code class="descname">re_scale_probabilities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#Patch.re_scale_probabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.Patch.re_scale_probabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-scales the probabilities so that they sum to 1. Also checks to make sure dispersal from within this patch
+is defined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValueError</strong> &#8211; if the self dispersal probability has not been defined, or the dispersal probabilities do
+not sum to &gt; 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycoalescence.patched_landscape.PatchedLandscape">
+<em class="property">class </em><code class="descname">PatchedLandscape</code><span class="sig-paren">(</span><em>output_fine_map</em>, <em>output_dispersal_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#PatchedLandscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.PatchedLandscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Landscape made up of a list of patches with dispersal probabilities to each other.</p>
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.PatchedLandscape.add_dispersal">
+<code class="descname">add_dispersal</code><span class="sig-paren">(</span><em>source_patch</em>, <em>target_patch</em>, <em>dispersal_probability</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#PatchedLandscape.add_dispersal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.PatchedLandscape.add_dispersal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a dispersal probability from the source patch to the target patch.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Both the source and target patch should already have been added using <a class="reference internal" href="#pycoalescence.patched_landscape.PatchedLandscape.add_patch" title="pycoalescence.patched_landscape.PatchedLandscape.add_patch"><code class="xref py py-func docutils literal"><span class="pre">add_patch()</span></code></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source_patch</strong> &#8211; the id of the source patch</li>
+<li><strong>target_patch</strong> &#8211; the id of the target patch</li>
+<li><strong>dispersal_probability</strong> &#8211; the probability of dispersal from source to target</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.PatchedLandscape.add_patch">
+<code class="descname">add_patch</code><span class="sig-paren">(</span><em>id</em>, <em>density</em>, <em>self_dispersal</em>, <em>dispersal_probabilities=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#PatchedLandscape.add_patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.PatchedLandscape.add_patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a patch with the given parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> &#8211; the unique reference for the patch</li>
+<li><strong>density</strong> &#8211; the number of individuals that exist in the patch</li>
+<li><strong>self_dispersal</strong> &#8211; the relative probability of dispersal from within the same patch</li>
+<li><strong>dispersal_probabilities</strong> &#8211; dictionary containing all other patches and their relative dispersal
+probabilities</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.PatchedLandscape.generate_files">
+<code class="descname">generate_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#PatchedLandscape.generate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.PatchedLandscape.generate_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-scales the dispersal probabilities and generates the patches landscape files. These include the fine map file
+containing the densities and the dispersal probability map.</p>
+<p>The fine map file will be dimensions 1xN where N is the number of patches in the landscape.
+The dispersal probability map will be dimensions NxN, where dispersal occurs from the y index cell to the x
+index cell. Dispersal probabilities are stored as cumulative probabilities.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.PatchedLandscape.generate_from_matrix">
+<code class="descname">generate_from_matrix</code><span class="sig-paren">(</span><em>density_matrix</em>, <em>dispersal_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#PatchedLandscape.generate_from_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.PatchedLandscape.generate_from_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the patched landscape from the input matrix and writes out to the files.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Uses a slightly inefficient method of generating the full patched landscape, and then writing back out
+to the map files so that full error-checking is included. A more efficient implementation is possible
+by simply writing the matrix to file using the <a class="reference internal" href="#pycoalescence.map.Map" title="pycoalescence.map.Map"><code class="xref py py-class docutils literal"><span class="pre">Map</span> <span class="pre">class</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The generated density map will have dimensions 1 by xy (where x, y are the dimensions of the original
+density matrix. However, the dispersal matrix should still be compatible with the original density
+matrix as a x by y tif file.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>density_matrix</strong> &#8211; a numpy matrix containing the density probabilities</li>
+<li><strong>dispersal_matrix</strong> &#8211; a numpy matrix containing the dispersal probabilities</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.patched_landscape.PatchedLandscape.has_patch">
+<code class="descname">has_patch</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#PatchedLandscape.has_patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.PatchedLandscape.has_patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the patches object already contains a patch with the provided id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> &#8211; id to check for in patches</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if the patch already exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.patched_landscape.convert_index_to_x_y">
+<code class="descname">convert_index_to_x_y</code><span class="sig-paren">(</span><em>index</em>, <em>dim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/patched_landscape.html#convert_index_to_x_y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.patched_landscape.convert_index_to_x_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an index to an x, y coordinate.</p>
+<p>Used when mapping from 1-D space to 2-D space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>index</strong> &#8211; the index to convert from</li>
+<li><strong>dim</strong> &#8211; the x dimension of the matrix</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-file">
+<h3>setup file<a class="headerlink" href="#setup-file" title="Permalink to this headline">¶</a></h3>
+<p>Compile <strong>necsim</strong> with default or provided compilation options.</p>
+<span class="target" id="module-pycoalescence.setup"></span><p>Sets up the NECSim executables. It configures the install by detecting system components and compiles the <code class="docutils literal"><span class="pre">c++</span></code> files,
 if possible. Command line flags can be provided (see <a class="reference internal" href="README_pycoalescence.html#sec-compilation-options"><span class="std std-ref">Compilation Options</span></a> for more
 information) to modify the install.</p>
 <dl class="function">
@@ -2564,16 +3346,527 @@ be created using create_default_depend()</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-pycoalescence.hpc_setup">
-<span id="hpc-setup-file"></span><h3>hpc_setup file<a class="headerlink" href="#module-pycoalescence.hpc_setup" title="Permalink to this headline">¶</a></h3>
-<p>Sets up pycoalescence for usage on HPC systems, including providing intel compiler flags for optimisation, and specific
-verbose patterns to add support for certain types of file systems.</p>
+<div class="section" id="spatial-algorithms-file">
+<h3>spatial_algorithms file<a class="headerlink" href="#spatial-algorithms-file" title="Permalink to this headline">¶</a></h3>
+<p>Simple spatial algorithms required for package functionality.</p>
+<span class="target" id="module-pycoalescence.spatial_algorithms"></span><p>Contains the routines for generating Voronoi diagrams and spacing points on a landscape using Lloyd&#8217;s algorithm.</p>
 <dl class="function">
-<dt id="pycoalescence.hpc_setup.build_hpc">
-<code class="descname">build_hpc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/hpc_setup.html#build_hpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.hpc_setup.build_hpc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compiles NECSim with the <code class="docutils literal"><span class="pre">--with-hpc</span></code> and <code class="docutils literal"><span class="pre">--with-verbose</span></code> flags, which adds extra support for intel compilers
-and provides a selection of optimisation flags for high-performance systems.
-:return:</p>
+<dt id="pycoalescence.spatial_algorithms.archimedes_spiral">
+<code class="descname">archimedes_spiral</code><span class="sig-paren">(</span><em>centre_x</em>, <em>centre_y</em>, <em>radius</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#archimedes_spiral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.archimedes_spiral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the x, y coordinates on a spiral, given a radius and theta</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>centre_x</strong> (<em>int</em>) &#8211; the x coordinate of the centre of the spiral</li>
+<li><strong>centre_y</strong> (<em>int</em>) &#8211; the y coordinate of the centre of the spiral</li>
+<li><strong>radius</strong> (<em>float</em>) &#8211; the distance from the centre of the spiral</li>
+<li><strong>theta</strong> (<em>float</em>) &#8211; the angle of rotation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of x and y coordinates</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:rtype tuple</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.spatial_algorithms.calculate_centre_of_mass">
+<code class="descname">calculate_centre_of_mass</code><span class="sig-paren">(</span><em>points_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#calculate_centre_of_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.calculate_centre_of_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the centre of mass for the non-intersecting polygon defined by points_list.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the centre of mass will be incorrect for intersecting polygons.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">it is assumed that points_list defines, in order, the vertices of the polygon. The last
+point is assumed to connect to the first point.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points_list</strong> &#8211; a list of x, y points defining the non-intersecting polygon</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the x,y centre of mass</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.spatial_algorithms.calculate_distance_between">
+<code class="descname">calculate_distance_between</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#calculate_distance_between"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.calculate_distance_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distance between the points (x1, y1) and (x2, y2)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Returns the absolute value</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x1</strong> &#8211; x coordinate of the first point</li>
+<li><strong>y1</strong> &#8211; y coordinate of the first point</li>
+<li><strong>x2</strong> &#8211; x coordinate of the second point</li>
+<li><strong>y2</strong> &#8211; y coordinate of the second point</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the absolute distance between the points</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.spatial_algorithms.convert_coordinates">
+<code class="descname">convert_coordinates</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>input_srs</em>, <em>output_srs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#convert_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.convert_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the coordinates from the input srs to the output srs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; the x coordinate to transform</li>
+<li><strong>y</strong> &#8211; the y coordinate to transform</li>
+<li><strong>input_srs</strong> &#8211; the input srs to transform from</li>
+<li><strong>output_srs</strong> &#8211; the output srs to transform to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">transformed [x, y] coordinates</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.spatial_algorithms.lloyds_algorithm">
+<code class="descname">lloyds_algorithm</code><span class="sig-paren">(</span><em>points_list</em>, <em>maxima</em>, <em>n=7</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#lloyds_algorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.lloyds_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equally spaces the points in the given landscape defined by (0, x_max), (0, y_max) using Lloyd&#8217;s algorithm.</p>
+<p>Algorthim is:</p>
+<ul class="simple">
+<li>Reflect the points at x=0, x=x_max, y=0 and y=y_max to make boundaries of the Voronoi diagram on the original</li>
+</ul>
+<blockquote>
+<div>set of points have finite edges</div></blockquote>
+<ul class="simple">
+<li>Define the Voronoi diagram separating the points</li>
+<li>Find the centres of the regions of the voronoi diagram for our original set of points</li>
+<li>Move the our points to the centres of their voronoi regions</li>
+<li>Repeat n times (for convergence)</li>
+<li>Edits the points_list to contain the equally-spaced points</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">all points are assumed to be in the range x in (0, x_max) and y in (0, y_max)</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>points_list</strong> &#8211; a list of points to be equally spaced in the landscape</li>
+<li><strong>maxima</strong> &#8211; the maximum size of the landscape to space out within</li>
+<li><strong>n</strong> &#8211; the number of iterations to perform Lloyd&#8217;s algorthim for.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:return list containing the new point centres.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.spatial_algorithms.reflect_dimensions">
+<code class="descname">reflect_dimensions</code><span class="sig-paren">(</span><em>points</em>, <em>maximums</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#reflect_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.reflect_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reflects the provided points across x=0, y=0, x=x_max and y=y_max (essentially tiling the
+polygon 4 times, around the original polygon).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>list</em>) &#8211; a list of 2-d points to reflect</li>
+<li><strong>maximums</strong> (<em>tuple</em>) &#8211; tuple containing the x and y maximums</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a list of reflected points</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="sqlite-connection-file">
+<h3>sqlite_connection file<a class="headerlink" href="#sqlite-connection-file" title="Permalink to this headline">¶</a></h3>
+<p>Safely open, close and fetch data from an sqlite connection.</p>
+<span class="target" id="module-pycoalescence.sqlite_connection"></span><p>Contains a basic class with context management for opening sql connections, plus basic functionality for detecting
+existance and structure of databases.</p>
+<dl class="class">
+<dt id="pycoalescence.sqlite_connection.SQLiteConnection">
+<em class="property">class </em><code class="descname">SQLiteConnection</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/sqlite_connection.html#SQLiteConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.sqlite_connection.SQLiteConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing context management for opening sqlite3 connections. The file name provided can either be a string
+containing the path to the file, or an sqlite3.Connection object, which will NOT be closed on destruction. This
+provides two points of entry to the system with the same interface.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.sqlite_connection.check_sql_column_exists">
+<code class="descname">check_sql_column_exists</code><span class="sig-paren">(</span><em>database</em>, <em>table_name</em>, <em>column_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/sqlite_connection.html#check_sql_column_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.sqlite_connection.check_sql_column_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the column exists in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> &#8211; the database to check existence in</li>
+<li><strong>table_name</strong> &#8211; the table name to check within</li>
+<li><strong>column_name</strong> &#8211; the column name to check for</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the column exists.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.sqlite_connection.check_sql_table_exist">
+<code class="descname">check_sql_table_exist</code><span class="sig-paren">(</span><em>database</em>, <em>table_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/sqlite_connection.html#check_sql_table_exist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.sqlite_connection.check_sql_table_exist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the supplied table exists in the supplied database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> &#8211; the database to check existence in</li>
+<li><strong>table_name</strong> &#8211; the table name to check for</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">boolean of whether the table exists</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.sqlite_connection.fetch_table_from_sql">
+<code class="descname">fetch_table_from_sql</code><span class="sig-paren">(</span><em>database</em>, <em>table_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/sqlite_connection.html#fetch_table_from_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.sqlite_connection.fetch_table_from_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the data contained by the provided table in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>sqlite3.OperationalError</strong> &#8211; if the table is not contained in the database (protects SQL injections).</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> &#8211; the database to obtain from</li>
+<li><strong>table_name</strong> &#8211; the table name to fetch data from</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a list of lists, containing all data within the provided table in the database</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.sqlite_connection.sql_get_max_from_column">
+<code class="descname">sql_get_max_from_column</code><span class="sig-paren">(</span><em>database</em>, <em>table_name</em>, <em>column_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/sqlite_connection.html#sql_get_max_from_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.sqlite_connection.sql_get_max_from_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum value from the specified column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database</strong> &#8211; the database to fetch from</li>
+<li><strong>table_name</strong> &#8211; the table name to attain</li>
+<li><strong>column_name</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="system-operations-file">
+<h3>system_operations file<a class="headerlink" href="#system-operations-file" title="Permalink to this headline">¶</a></h3>
+<p>Basic system-level operations required for package functionality.</p>
+<span class="target" id="module-pycoalescence.system_operations"></span><p>Contains the general purpose operations that will be used by multiple modules, including calling subprocess properly,
+logging methods and file management.</p>
+<p>The functions are contained here as they are required by many different modules. Note that logging will not raise an
+exception if there has been no call to set_logging_method()</p>
+<dl class="function">
+<dt id="pycoalescence.system_operations.cantor_pairing">
+<code class="descname">cantor_pairing</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#cantor_pairing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.cantor_pairing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a unique integer from the two provided positive integers.</p>
+<p>Maps ZxZ -&gt; N, so only relevant for positive numbers.
+For any A and B, generates C such that no D and E produce C unless D=A and B=E.</p>
+<p>Assigns consecutive numbers to points along diagonals of a plane</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x1</strong> &#8211; the first number</li>
+<li><strong>x2</strong> &#8211; the second number</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a unique reference combining the two integers</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.check_file_exists">
+<code class="descname">check_file_exists</code><span class="sig-paren">(</span><em>file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#check_file_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.check_file_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the specified filename exists, if it is not &#8220;null&#8221; or &#8220;none&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> &#8211; file path to check for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">IOError if no file exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.check_parent">
+<code class="descname">check_parent</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#check_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.check_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the parent file exists, and creates it if it doesn&#8217;t.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">if file_path is a directory, it will be created</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> &#8211; the file or directory to check if the parent exists</td>
+</tr>
+</tbody>
+</table>
+<p>:rtype None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.create_logger">
+<code class="descname">create_logger</code><span class="sig-paren">(</span><em>logger</em>, <em>file=None</em>, <em>logging_level=30</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#create_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.create_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a logger object to be assigned to NECSim sims and dispersal tests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>logger</strong> &#8211; the logger to alter</li>
+<li><strong>file</strong> &#8211; the file to write out to, defaults to None, writing to terminal</li>
+<li><strong>logging_level</strong> &#8211; the logging level to write out at (defaults to INFO)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.elegant_pairing">
+<code class="descname">elegant_pairing</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#elegant_pairing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.elegant_pairing" title="Permalink to this definition">¶</a></dt>
+<dd><p>A more elegant version of cantor pairing, which allows for storing of a greater number of digits without
+experiencing integer overflow issues.</p>
+<p>Cantor pairing assigns consecutive numbers to points along diagonals of a plane</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x1</strong> &#8211; the first number</li>
+<li><strong>x2</strong> &#8211; the second number</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a unique reference combining the two integers.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>cmd</em>, <em>silent=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the command using subprocess and yields the running output for printing to terminal. Any errors produced by
+subprocess call will be redirected to logging.warning() after the subprocess call is complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cmd</strong> &#8211; the command to execute using subprocess.Popen()</li>
+<li><strong>silent</strong> &#8211; if true, does not log any warnings</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:return a line from the execution output</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.execute_log_info">
+<code class="descname">execute_log_info</code><span class="sig-paren">(</span><em>cmd</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#execute_log_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.execute_log_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls execute() with the supplied command and keyword arguments, and redirects stdout to the logging object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cmd</strong> &#8211; the command to execute using subprocess.Popen()</li>
+<li><strong>kwargs</strong> &#8211; keyword arguments to be passed to subprocess.Popen()</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.execute_silent">
+<code class="descname">execute_silent</code><span class="sig-paren">(</span><em>cmd</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#execute_silent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.execute_silent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls execute() silently with the supplied command and keyword arguments.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If this function fails, no error will be thrown due to its silent nature, unless a full failure occurs.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cmd</strong> &#8211; the command to execute using subprocess.Popen()</li>
+<li><strong>kwargs</strong> &#8211; keyword arguments to be passed to subprocess.Popen()</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.isclose">
+<code class="descname">isclose</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>rel_tol=1e-09</em>, <em>abs_tol=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#isclose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.isclose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the two floats are close.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<em>float</em>) &#8211; value 1</li>
+<li><strong>b</strong> (<em>float</em>) &#8211; value 2</li>
+<li><strong>rel_tol</strong> (<em>float</em>) &#8211; percentage relative to larger value</li>
+<li><strong>abs_tol</strong> (<em>float</em>) &#8211; absolute value for similarity</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true for significantly different a and b, false otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.set_logging_method">
+<code class="descname">set_logging_method</code><span class="sig-paren">(</span><em>logging_level=20</em>, <em>output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#set_logging_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.set_logging_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates the logging process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>logging_level</strong> &#8211; the detail in logging output: can be one
+of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logging.CRITICAL</li>
+<li><strong>output</strong> &#8211; the output logfile (or None to redirect to terminal via stdout)</li>
+<li><strong>kwargs</strong> &#8211; additional arguments to pass to the logging.basicConfig() call</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.system_operations.write_to_log">
+<code class="descname">write_to_log</code><span class="sig-paren">(</span><em>i</em>, <em>message</em>, <em>logger</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#write_to_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.write_to_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the message to the provided logger, at the provided level.</p>
+<p>This is used by NECSim to access to logging module more easily.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>i</strong> (<em>int</em>) &#8211; the level to log at (10: debug, 20: info, 30: warning, 40: error, 50: critical)</li>
+<li><strong>message</strong> (<em>str</em>) &#8211; the message to write to the logger.</li>
+<li><strong>logger</strong> (<em>logging.Logger</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -2593,14 +3886,25 @@ and provides a selection of optimisation flags for high-performance systems.
   <ul>
 <li><a class="reference internal" href="#">pycoalescence package</a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a><ul>
-<li><a class="reference internal" href="#batch-process-module">batch_process module</a></li>
-<li><a class="reference internal" href="#coalescence-tree-module">coalescence_tree module</a></li>
+<li><a class="reference internal" href="#key-submodules">Key submodules</a><ul>
 <li><a class="reference internal" href="#simulation-module">simulation module</a></li>
+<li><a class="reference internal" href="#coalescence-tree-module">coalescence_tree module</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#additional-submodules">Additional submodules</a><ul>
+<li><a class="reference internal" href="#dispersal-simulation-module">dispersal_simulation module</a></li>
 <li><a class="reference internal" href="#fragments-module">fragments module</a></li>
+<li><a class="reference internal" href="#fragments-config-module">fragments config module</a></li>
+<li><a class="reference internal" href="#helper-file">helper file</a></li>
+<li><a class="reference internal" href="#hpc-setup-file">hpc_setup file</a></li>
+<li><a class="reference internal" href="#landscape-file">landscape file</a></li>
 <li><a class="reference internal" href="#map-module">map module</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.setup">setup file</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.hpc_setup">hpc_setup file</a></li>
+<li><a class="reference internal" href="#merger-module">merger module</a></li>
+<li><a class="reference internal" href="#patched-landscape-module">patched_landscape module</a></li>
+<li><a class="reference internal" href="#setup-file">setup file</a></li>
+<li><a class="reference internal" href="#spatial-algorithms-file">spatial_algorithms file</a></li>
+<li><a class="reference internal" href="#sqlite-connection-file">sqlite_connection file</a></li>
+<li><a class="reference internal" href="#system-operations-file">system_operations file</a></li>
 </ul>
 </li>
 </ul>
@@ -2610,9 +3914,6 @@ and provides a selection of optimisation flags for high-performance systems.
   <h4>Previous topic</h4>
   <p class="topless"><a href="modules.html"
                         title="previous chapter">Modules</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="necsim/necsim.html"
-                        title="next chapter">necsim module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -2644,9 +3945,6 @@ and provides a selection of optimisation flags for high-performance systems.
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="necsim/necsim.html" title="necsim module"
-             >next</a> |</li>
-        <li class="right" >
           <a href="modules.html" title="Modules"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
@@ -2654,7 +3952,7 @@ and provides a selection of optimisation flags for high-performance systems.
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
+        &#169; Copyright Copyright 2016, pycoalescence.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>

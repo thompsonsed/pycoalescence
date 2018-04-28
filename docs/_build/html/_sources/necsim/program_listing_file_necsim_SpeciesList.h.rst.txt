@@ -70,9 +70,9 @@ Program Listing for File SpeciesList.h
        
        unsigned long getNwrap();
        
-       unsigned long getListsize();
+       unsigned long getListSize();
        
-       unsigned long getMaxsize();
+       unsigned long getMaxSize();
        
        void wipeList();
        

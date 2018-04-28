@@ -32,6 +32,18 @@ void \hyperlink{class_dispersal_coordinator_ab0face98d80793e7f4a8ad1bf4dfe3f1}{s
 \begin{DoxyCompactList}\small\item\em Sets the dispersal method and parameters. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_a8504699586755df070b44da71ea346a5}{set\+Dispersal} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$sim\+Parameters)
 \begin{DoxyCompactList}\small\item\em Sets the dispersal parameters from the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a588b959feff178953c37bfeae7aa8529}{fix\+Dispersal} ()\hypertarget{class_dispersal_coordinator_a588b959feff178953c37bfeae7aa8529}{}\label{class_dispersal_coordinator_a588b959feff178953c37bfeae7aa8529}
+
+\begin{DoxyCompactList}\small\item\em Fixes the dispersal map by generating cumulative probability distributions across each row. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a7fc1c7f99cb2ac16ae97c78876eb69ab}{fix\+Dispersal\+Row} (unsigned long row)
+\begin{DoxyCompactList}\small\item\em Sums probabilities across the given row and divides by the total probability, so that the cumulative probabilities sum to one. \end{DoxyCompactList}\item 
+bool \hyperlink{class_dispersal_coordinator_a8e3c496ef1ad36844368bc9d2dd68757}{check\+Dispersal\+Row} (unsigned long row)
+\begin{DoxyCompactList}\small\item\em Checks if the provided row index requires re-\/scaling to a cumulative probability in the dispersal map. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a5f6d3782cf8b528d591d17c77072924a}{verify\+Dispersal\+Map} ()\hypertarget{class_dispersal_coordinator_a5f6d3782cf8b528d591d17c77072924a}{}\label{class_dispersal_coordinator_a5f6d3782cf8b528d591d17c77072924a}
+
+\begin{DoxyCompactList}\small\item\em Checks that the dispersal map makes sense with dispersal to and from only cells which have a non-\/zero density. \end{DoxyCompactList}\item 
+void \hyperlink{class_dispersal_coordinator_a210c821cc36e08829fbfbfe640a5ccb2}{assert\+Reference\+Matches} (unsigned long expected)
+\begin{DoxyCompactList}\small\item\em Asserts that the cell reference is correct for the provided coordinates. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_a4bac3aeedb3ceb40601c3db951032d0e}{disperse\+Null\+Dispersal\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
 \begin{DoxyCompactList}\small\item\em Picks a random cell from the whole map and stores the value in the step object. \end{DoxyCompactList}\item 
 void \hyperlink{class_dispersal_coordinator_a6605069356e02d1c130b6d68e5d08483}{disperse\+Dispersal\+Map} (\hyperlink{struct_step}{Step} \&this\+\_\+step)
@@ -70,7 +82,7 @@ Map$<$ double $>$ {\bfseries dispersal\+\_\+prob\+\_\+map}\hypertarget{class_dis
 \hyperlink{class_n_rrand}{N\+Rrand} $\ast$ {\bfseries NR}\hypertarget{class_dispersal_coordinator_ac4c17447257ed00e1b5610e0e35a5443}{}\label{class_dispersal_coordinator_ac4c17447257ed00e1b5610e0e35a5443}
 
 \item 
-\hyperlink{class_landscape}{Landscape} $\ast$ {\bfseries habitat\+\_\+map}\hypertarget{class_dispersal_coordinator_a3eb82a6bacdb78297e37ba8cbef10a28}{}\label{class_dispersal_coordinator_a3eb82a6bacdb78297e37ba8cbef10a28}
+\hyperlink{class_landscape}{Landscape} $\ast$ {\bfseries landscape}\hypertarget{class_dispersal_coordinator_a316f067e84937650316f47b219e2cb76}{}\label{class_dispersal_coordinator_a316f067e84937650316f47b219e2cb76}
 
 \item 
 double $\ast$ {\bfseries generation}\hypertarget{class_dispersal_coordinator_ae3f83d100dad7c60137edf42b3c199c1}{}\label{class_dispersal_coordinator_ae3f83d100dad7c60137edf42b3c199c1}
@@ -95,6 +107,22 @@ It requires linking to a density map, random number generator and a generation c
 Note that no element of this object is recorded during a paused simulation, as all objects pointed to are stored elsewhere and behaviours are recalculated upon simulation resume. 
 
 \subsection{Member Function Documentation}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!assert\+Reference\+Matches@{assert\+Reference\+Matches}}
+\index{assert\+Reference\+Matches@{assert\+Reference\+Matches}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{assert\+Reference\+Matches(unsigned long expected)}{assertReferenceMatches(unsigned long expected)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::assert\+Reference\+Matches (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{expected}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a210c821cc36e08829fbfbfe640a5ccb2}{}\label{class_dispersal_coordinator_a210c821cc36e08829fbfbfe640a5ccb2}
+
+
+Asserts that the cell reference is correct for the provided coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em expected} & the expected cell reference. \\
+\hline
+\end{DoxyParams}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!calculate\+Cell\+Coordinates@{calculate\+Cell\+Coordinates}}
 \index{calculate\+Cell\+Coordinates@{calculate\+Cell\+Coordinates}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
 \subsubsection[{\texorpdfstring{calculate\+Cell\+Coordinates(\+Step \&this\+\_\+step, const unsigned long \&col\+\_\+ref)}{calculateCellCoordinates(Step &this_step, const unsigned long &col_ref)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::calculate\+Cell\+Coordinates (
@@ -134,6 +162,25 @@ The formula for this calculation is x + (y $\ast$ xdim) where xdim is the x dime
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 the cell reference from the dispersal\+\_\+prob\+\_\+map which corresponds to the required cell 
+\end{DoxyReturn}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!check\+Dispersal\+Row@{check\+Dispersal\+Row}}
+\index{check\+Dispersal\+Row@{check\+Dispersal\+Row}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{check\+Dispersal\+Row(unsigned long row)}{checkDispersalRow(unsigned long row)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Dispersal\+Coordinator\+::check\+Dispersal\+Row (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{row}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a8e3c496ef1ad36844368bc9d2dd68757}{}\label{class_dispersal_coordinator_a8e3c496ef1ad36844368bc9d2dd68757}
+
+
+Checks if the provided row index requires re-\/scaling to a cumulative probability in the dispersal map. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & the row index to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if re-\/scaling of the row is required 
 \end{DoxyReturn}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!check\+End\+Point@{check\+End\+Point}}
 \index{check\+End\+Point@{check\+End\+Point}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
@@ -326,6 +373,22 @@ Picks a random cell from the whole map and stores the value in the step object.
 
 \begin{DoxyParams}{Parameters}
 {\em this\+\_\+step} & the step object to store end points in \\
+\hline
+\end{DoxyParams}
+\index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!fix\+Dispersal\+Row@{fix\+Dispersal\+Row}}
+\index{fix\+Dispersal\+Row@{fix\+Dispersal\+Row}!Dispersal\+Coordinator@{Dispersal\+Coordinator}}
+\subsubsection[{\texorpdfstring{fix\+Dispersal\+Row(unsigned long row)}{fixDispersalRow(unsigned long row)}}]{\setlength{\rightskip}{0pt plus 5cm}void Dispersal\+Coordinator\+::fix\+Dispersal\+Row (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{row}
+\end{DoxyParamCaption}
+)}\hypertarget{class_dispersal_coordinator_a7fc1c7f99cb2ac16ae97c78876eb69ab}{}\label{class_dispersal_coordinator_a7fc1c7f99cb2ac16ae97c78876eb69ab}
+
+
+Sums probabilities across the given row and divides by the total probability, so that the cumulative probabilities sum to one. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & the row index to check over \\
 \hline
 \end{DoxyParams}
 \index{Dispersal\+Coordinator@{Dispersal\+Coordinator}!set\+Dispersal@{set\+Dispersal}}

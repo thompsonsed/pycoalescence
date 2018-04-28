@@ -258,9 +258,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>getLandscapeType</b
 <tr class="memitem:a0545765b734539f622804bb3aa72e38c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a0545765b734539f622804bb3aa72e38c">checkFine</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap)</td></tr>
 <tr class="memdesc:a0545765b734539f622804bb3aa72e38c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the point comes from the fine grid.  <a href="#a0545765b734539f622804bb3aa72e38c">More...</a><br /></td></tr>
 <tr class="separator:a0545765b734539f622804bb3aa72e38c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5ba56f29b355c5dd7226231144d147e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#af5ba56f29b355c5dd7226231144d147e">convertCoordinates</a> (double &amp;x, double &amp;y, long &amp;xwrap, long &amp;ywrap)</td></tr>
-<tr class="memdesc:af5ba56f29b355c5dd7226231144d147e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently.  <a href="#af5ba56f29b355c5dd7226231144d147e">More...</a><br /></td></tr>
-<tr class="separator:af5ba56f29b355c5dd7226231144d147e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aa0fca1b87ab838ebab933ef6daf4a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a5aa0fca1b87ab838ebab933ef6daf4a2">fixGridCoordinates</a> (double &amp;x, double &amp;y, long &amp;xwrap, long &amp;ywrap)</td></tr>
+<tr class="memdesc:a5aa0fca1b87ab838ebab933ef6daf4a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently.  <a href="#a5aa0fca1b87ab838ebab933ef6daf4a2">More...</a><br /></td></tr>
+<tr class="separator:a5aa0fca1b87ab838ebab933ef6daf4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedc33de89997456d53cceb3e4e424e64"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#aedc33de89997456d53cceb3e4e424e64">runDispersal</a> (const double &amp;dist, const double &amp;angle, long &amp;startx, long &amp;starty, long &amp;startxwrap, long &amp;startywrap, bool &amp;disp_comp, const double &amp;generation)</td></tr>
 <tr class="memdesc:aedc33de89997456d53cceb3e4e424e64"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn't need to perform all the checks until the edge of the fine grid.  <a href="#aedc33de89997456d53cceb3e4e424e64">More...</a><br /></td></tr>
 <tr class="separator:aedc33de89997456d53cceb3e4e424e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -627,55 +627,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af5ba56f29b355c5dd7226231144d147e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Landscape::convertCoordinates </td>
-          <td>(</td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long &amp;&#160;</td>
-          <td class="paramname"><em>xwrap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long &amp;&#160;</td>
-          <td class="paramname"><em>ywrap</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td>the x position. </td></tr>
-    <tr><td class="paramname">y</td><td>the y position. </td></tr>
-    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension. </td></tr>
-    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a33e5909b7d430caf0f4fb909ba3e0499"></a>
 <div class="memitem">
 <div class="memproto">
@@ -814,6 +765,55 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">generation</td><td>the current generation timer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5aa0fca1b87ab838ebab933ef6daf4a2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Landscape::fixGridCoordinates </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long &amp;&#160;</td>
+          <td class="paramname"><em>xwrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long &amp;&#160;</td>
+          <td class="paramname"><em>ywrap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the x position. </td></tr>
+    <tr><td class="paramname">y</td><td>the y position. </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension. </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension. </td></tr>
   </table>
   </dd>
 </dl>

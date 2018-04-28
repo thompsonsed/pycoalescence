@@ -1606,7 +1606,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		"""
 		Tests that running a simulation with a dispersal map produces the expected output.
 		"""
-		self.assertEqual(self.c.get_richness(1), 869)
+		self.assertEqual(self.c.get_richness(1), 737)
 
 	def testDispersalParamStorage(self):
 		"""
@@ -1641,6 +1641,88 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		with self.assertRaises(ValueError):
 			c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 							dispersal_map="sample/dispersal_fine.tif")
+
+class TestSimulationDispersalMapsSumming(unittest.TestCase):
+	"""
+	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
+	intended, including modifying the dispersal map to cumulative probabilities.
+	"""
+
+	@classmethod
+	def setUpClass(cls):
+		"""
+		Sets up the objects for running coalescence simulations on dispersal maps.
+		"""
+		cls.c = Simulation(logging_level=logging.CRITICAL)
+		cls.c.set_simulation_params(seed=2, job_type=32, output_directory="output", min_speciation_rate=0.5,
+									sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+									)
+		cls.c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
+							dispersal_map="sample/dispersal_fine_cumulative.tif")
+		cls.c.finalise_setup()
+		cls.c.run_coalescence()
+
+	def testDispersalSimulation(self):
+		"""
+		Tests that running a simulation with a dispersal map produces the expected output.
+		"""
+		self.assertEqual(self.c.get_richness(1), 1167)
+
+	def testDispersalParamStorage(self):
+		"""
+		Tests that the dispersal parameters are stored correctly
+		"""
+		t = CoalescenceTree(self.c)
+		self.assertEqual(t.get_simulation_parameters()['dispersal_map'], "sample/dispersal_fine_cumulative.tif")
+
+	def testRaisesErrorValueMismatch(self):
+		"""
+		Tests that an error is raised when dispersal is possible to a cell with 0 density.
+		"""
+		c = Simulation(logging_level=logging.CRITICAL)
+		c.set_simulation_params(seed=4, job_type=32, output_directory="output", min_speciation_rate=0.5,
+								sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+								min_num_species=1, habitat_change_rate=0, gen_since_historical=200)
+		c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse_zeros.tif",
+						dispersal_map="sample/dispersal_fine_cumulative.tif")
+		c.finalise_setup()
+		with self.assertRaises(NECSimError):
+			c.run_coalescence()
+
+class TestSimulationDispersalMapsNoData(unittest.TestCase):
+	"""
+	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
+	intended, including modifying the dispersal map to cumulative probabilities.
+	"""
+
+	@classmethod
+	def setUpClass(cls):
+		"""
+		Sets up the objects for running coalescence simulations on dispersal maps.
+		"""
+		cls.c = Simulation(logging_level=logging.CRITICAL)
+		cls.c.set_simulation_params(seed=3, job_type=32, output_directory="output", min_speciation_rate=0.5,
+									sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+									)
+		cls.c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
+							dispersal_map="sample/dispersal_fine_nodata.tif")
+		cls.c.finalise_setup()
+		cls.c.run_coalescence()
+
+	def testDispersalSimulation(self):
+		"""
+		Tests that running a simulation with a dispersal map produces the expected output.
+		"""
+		self.assertEqual(self.c.get_richness(1), 730)
+
+	def testDispersalParamStorage(self):
+		"""
+		Tests that the dispersal parameters are stored correctly
+		"""
+		t = CoalescenceTree(self.c)
+		self.assertEqual(t.get_simulation_parameters()['dispersal_map'], "sample/dispersal_fine_nodata.tif")
 
 
 class TestDetectRamUsage(unittest.TestCase):

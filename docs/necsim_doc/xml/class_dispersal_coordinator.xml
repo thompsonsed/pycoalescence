@@ -58,11 +58,11 @@
         </inbodydescription>
         <location file="necsim/DispersalCoordinator.h" line="49" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="49" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_dispersal_coordinator_1a3eb82a6bacdb78297e37ba8cbef10a28" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="class_dispersal_coordinator_1a316f067e84937650316f47b219e2cb76" prot="protected" static="no" mutable="no">
         <type><ref refid="class_landscape" kindref="compound">Landscape</ref> *</type>
-        <definition>Landscape* DispersalCoordinator::habitat_map</definition>
+        <definition>Landscape* DispersalCoordinator::landscape</definition>
         <argsstring></argsstring>
-        <name>habitat_map</name>
+        <name>landscape</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -323,7 +323,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="102" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="48" bodyend="87"/>
+        <location file="necsim/DispersalCoordinator.h" line="102" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="48" bodyend="88"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a8504699586755df070b44da71ea346a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -348,7 +348,109 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="111" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="89" bodyend="98"/>
+        <location file="necsim/DispersalCoordinator.h" line="111" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="91" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a588b959feff178953c37bfeae7aa8529" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::fixDispersal</definition>
+        <argsstring>()</argsstring>
+        <name>fixDispersal</name>
+        <briefdescription>
+<para>Fixes the dispersal map by generating cumulative probability distributions across each row. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="116" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="102" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a7fc1c7f99cb2ac16ae97c78876eb69ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::fixDispersalRow</definition>
+        <argsstring>(unsigned long row)</argsstring>
+        <name>fixDispersalRow</name>
+        <param>
+          <type>unsigned long</type>
+          <declname>row</declname>
+        </param>
+        <briefdescription>
+<para>Sums probabilities across the given row and divides by the total probability, so that the cumulative probabilities sum to one. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row index to check over </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="123" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="110" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a8e3c496ef1ad36844368bc9d2dd68757" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DispersalCoordinator::checkDispersalRow</definition>
+        <argsstring>(unsigned long row)</argsstring>
+        <name>checkDispersalRow</name>
+        <param>
+          <type>unsigned long</type>
+          <declname>row</declname>
+        </param>
+        <briefdescription>
+<para>Checks if the provided row index requires re-scaling to a cumulative probability in the dispersal map. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row index to check </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if re-scaling of the row is required </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="130" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="138" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a5f6d3782cf8b528d591d17c77072924a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::verifyDispersalMap</definition>
+        <argsstring>()</argsstring>
+        <name>verifyDispersalMap</name>
+        <briefdescription>
+<para>Checks that the dispersal map makes sense with dispersal to and from only cells which have a non-zero density. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="136" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="154" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dispersal_coordinator_1a210c821cc36e08829fbfbfe640a5ccb2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DispersalCoordinator::assertReferenceMatches</definition>
+        <argsstring>(unsigned long expected)</argsstring>
+        <name>assertReferenceMatches</name>
+        <param>
+          <type>unsigned long</type>
+          <declname>expected</declname>
+        </param>
+        <briefdescription>
+<para>Asserts that the cell reference is correct for the provided coordinates. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>expected</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the expected cell reference. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/DispersalCoordinator.h" line="143" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="232" bodyend="249"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a4bac3aeedb3ceb40601c3db951032d0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -373,7 +475,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="116" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="100" bodyend="105"/>
+        <location file="necsim/DispersalCoordinator.h" line="149" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="251" bodyend="256"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a6605069356e02d1c130b6d68e5d08483" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -398,7 +500,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="122" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="107" bodyend="131"/>
+        <location file="necsim/DispersalCoordinator.h" line="155" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="258" bodyend="291"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1af2a3792c5e0bea86fa044c4cd3e5146c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -434,7 +536,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="132" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="133" bodyend="142"/>
+        <location file="necsim/DispersalCoordinator.h" line="165" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="293" bodyend="302"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a737c7f1a06650b467d06a91c0474fb79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -460,7 +562,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="143" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="144" bodyend="149"/>
+        <location file="necsim/DispersalCoordinator.h" line="176" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="304" bodyend="309"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a79b6018cda012a59f7b80de40b394a6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -485,7 +587,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="149" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="151" bodyend="193"/>
+        <location file="necsim/DispersalCoordinator.h" line="182" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="311" bodyend="353"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1ae72980ec66825c641545675037885248" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -510,7 +612,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="155" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="195" bodyend="205"/>
+        <location file="necsim/DispersalCoordinator.h" line="188" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="355" bodyend="365"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a46fe28ad569bda217e168b33216a888b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -624,7 +726,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="170" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="208" bodyend="213"/>
+        <location file="necsim/DispersalCoordinator.h" line="203" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="368" bodyend="373"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a72d8a718590c6dde6f0e8d1ac991d99d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -738,7 +840,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="187" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="215" bodyend="229"/>
+        <location file="necsim/DispersalCoordinator.h" line="220" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="375" bodyend="389"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a055c62c70087ab163bede5c4c4a8be33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -852,7 +954,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="204" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="231" bodyend="239"/>
+        <location file="necsim/DispersalCoordinator.h" line="237" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="391" bodyend="399"/>
       </memberdef>
       <memberdef kind="function" id="class_dispersal_coordinator_1a08e7c2e1882bd2f83ffd33eed2491fa0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -877,7 +979,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DispersalCoordinator.h" line="212" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="241" bodyend="244"/>
+        <location file="necsim/DispersalCoordinator.h" line="245" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="401" bodyend="404"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -941,7 +1043,7 @@
         <label>DispersalCoordinator</label>
         <link refid="class_dispersal_coordinator"/>
         <childnode refid="659" relation="usage">
-          <edgelabel>habitat_map</edgelabel>
+          <edgelabel>landscape</edgelabel>
         </childnode>
         <childnode refid="665" relation="usage">
           <edgelabel>doDispersal</edgelabel>
@@ -956,10 +1058,12 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="necsim/DispersalCoordinator.h" line="38" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="37" bodyend="214"/>
+    <location file="necsim/DispersalCoordinator.h" line="38" column="1" bodyfile="necsim/DispersalCoordinator.h" bodystart="37" bodyend="247"/>
     <listofallmembers>
+      <member refid="class_dispersal_coordinator_1a210c821cc36e08829fbfbfe640a5ccb2" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>assertReferenceMatches</name></member>
       <member refid="class_dispersal_coordinator_1af2a3792c5e0bea86fa044c4cd3e5146c" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>calculateCellCoordinates</name></member>
       <member refid="class_dispersal_coordinator_1a737c7f1a06650b467d06a91c0474fb79" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>calculateCellReference</name></member>
+      <member refid="class_dispersal_coordinator_1a8e3c496ef1ad36844368bc9d2dd68757" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkDispersalRow</name></member>
       <member refid="class_dispersal_coordinator_1a46fe28ad569bda217e168b33216a888b" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPoint</name></member>
       <member refid="class_dispersal_coordinator_1a72d8a718590c6dde6f0e8d1ac991d99d" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPointDensity</name></member>
       <member refid="class_dispersal_coordinator_1a1612005c176cd769797a4d4e459e2dec" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>checkEndPointFptr</name></member>
@@ -973,8 +1077,10 @@
       <member refid="class_dispersal_coordinator_1a4bac3aeedb3ceb40601c3db951032d0e" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>disperseNullDispersalMap</name></member>
       <member refid="class_dispersal_coordinator_1a93262d2bb612108bfcdc56c1ba11bad1" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>doDispersal</name></member>
       <member refid="class_dispersal_coordinator_1a6f3d41e77253cb394c63253431decd36" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>end_fptr</name></member>
+      <member refid="class_dispersal_coordinator_1a588b959feff178953c37bfeae7aa8529" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>fixDispersal</name></member>
+      <member refid="class_dispersal_coordinator_1a7fc1c7f99cb2ac16ae97c78876eb69ab" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>fixDispersalRow</name></member>
       <member refid="class_dispersal_coordinator_1ae3f83d100dad7c60137edf42b3c199c1" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>generation</name></member>
-      <member refid="class_dispersal_coordinator_1a3eb82a6bacdb78297e37ba8cbef10a28" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>habitat_map</name></member>
+      <member refid="class_dispersal_coordinator_1a316f067e84937650316f47b219e2cb76" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>landscape</name></member>
       <member refid="class_dispersal_coordinator_1ac4c17447257ed00e1b5610e0e35a5443" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>NR</name></member>
       <member refid="class_dispersal_coordinator_1ab0face98d80793e7f4a8ad1bf4dfe3f1" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setDispersal</name></member>
       <member refid="class_dispersal_coordinator_1a8504699586755df070b44da71ea346a5" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setDispersal</name></member>
@@ -982,6 +1088,7 @@
       <member refid="class_dispersal_coordinator_1aad9a57afe4629674c958e4d0de4d2451" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setGenerationPtr</name></member>
       <member refid="class_dispersal_coordinator_1a0db146f56de14e0b4a095526a7b6c779" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setHabitatMap</name></member>
       <member refid="class_dispersal_coordinator_1a3cfdb18edbf4dd1c45d0cf6af47f91fe" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setRandomNumber</name></member>
+      <member refid="class_dispersal_coordinator_1a5f6d3782cf8b528d591d17c77072924a" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>verifyDispersalMap</name></member>
       <member refid="class_dispersal_coordinator_1a66668e6ceec55afa61c1e99719bc6146" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>xdim</name></member>
       <member refid="class_dispersal_coordinator_1a34be74448be124dcc46fc041e585cef5" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>~DispersalCoordinator</name></member>
     </listofallmembers>

@@ -696,9 +696,9 @@ Program Listing for File Landscape.cpp
    
    void Landscape::convertFineToSample(long & x, long & xwrap, long &y, long &ywrap)
    {
-       auto tmpx = double(x);
-       auto tmpy = double(y);
-       convertCoordinates(tmpx, tmpy, xwrap, ywrap);
+       auto tmpx = double(x - fine_x_offset);
+       auto tmpy = double(y - fine_y_offset);
+       fixGridCoordinates(tmpx, tmpy, xwrap, ywrap);
        x = static_cast<long>(floor(tmpx));
        y = static_cast<long>(floor(tmpy));
    }
@@ -759,7 +759,7 @@ Program Listing for File Landscape.cpp
        return !(tmpx < fine_x_min || tmpx >= fine_x_max || tmpy < fine_y_min || tmpy >= fine_y_max);
    }
    
-   void Landscape::convertCoordinates(double& x, double& y, long& xwrap, long& ywrap)
+   void Landscape::fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap)
    {
        xwrap += floor(x / x_dim);
        ywrap += floor(y / y_dim);
@@ -941,7 +941,7 @@ Program Listing for File Landscape.cpp
            long newxwrap, newywrap;
            newxwrap = 0;
            newywrap = 0;
-           convertCoordinates(newx, newy, newxwrap, newywrap);
+           fixGridCoordinates(newx, newy, newxwrap, newywrap);
    #ifdef DEBUG
            if(!checkMap(newx, newy, newxwrap, newywrap, generation))
            {

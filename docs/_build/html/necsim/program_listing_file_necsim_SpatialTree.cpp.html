@@ -466,6 +466,7 @@
                                         <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_x_size</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_y_size</span><span class="p">,</span>
                                         <span class="n">sim_parameters</span><span class="p">.</span><span class="n">m_prob</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sigma</span><span class="p">,</span>
                                         <span class="n">sim_parameters</span><span class="p">.</span><span class="n">tau</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">restrict_self</span><span class="p">);</span>
+    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">verifyDispersalMap</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SpatialTree</span><span class="o">::</span><span class="n">setup</span><span class="p">()</span>
@@ -485,8 +486,8 @@
         <span class="n">setParameters</span><span class="p">();</span>
         <span class="n">setInitialValues</span><span class="p">();</span>
         <span class="n">importMaps</span><span class="p">();</span>
-        <span class="n">setupDispersalCoordinator</span><span class="p">();</span>
         <span class="n">landscape</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">landscape_type</span><span class="p">);</span>
+        <span class="n">setupDispersalCoordinator</span><span class="p">();</span>
 <span class="cp">#ifdef DEBUG</span>
         <span class="n">landscape</span><span class="p">.</span><span class="n">validateMaps</span><span class="p">();</span>
 <span class="cp">#endif</span>
@@ -515,11 +516,10 @@
 
                 <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
                 <span class="n">y</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
-
                 <span class="n">x_wrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
                 <span class="n">y_wrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
                 <span class="n">samplegrid</span><span class="p">.</span><span class="n">recalculate_coordinates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_wrap</span><span class="p">,</span> <span class="n">y_wrap</span><span class="p">);</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">x_wrap</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y_wrap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getListSize</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="p">{</span>
                     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">stored_next</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getNext</span><span class="p">();</span>
                     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">stored_nwrap</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getNwrap</span><span class="p">();</span>
@@ -527,12 +527,15 @@
                     <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">fillList</span><span class="p">();</span>
                     <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">setNwrap</span><span class="p">(</span><span class="n">stored_nwrap</span><span class="p">);</span>
                     <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">setNext</span><span class="p">(</span><span class="n">stored_next</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">x_wrap</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y_wrap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
                     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sample_amount</span> <span class="o">=</span> <span class="n">getIndividualsSampled</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
                     <span class="k">if</span><span class="p">(</span><span class="n">sample_amount</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="p">{</span>
                         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">sample_amount</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
                         <span class="p">{</span>
-                            <span class="k">if</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">())</span>
+                            <span class="k">if</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getMaxSize</span><span class="p">())</span>
                             <span class="p">{</span>
                                 <span class="k">break</span><span class="p">;</span>
                             <span class="p">}</span>
@@ -595,6 +598,7 @@
                         <span class="p">}</span>
                     <span class="p">}</span>
                 <span class="p">}</span>
+
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">if</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">uses_spatial_sampling</span><span class="p">)</span>
@@ -830,7 +834,7 @@
         <span class="c1">// then the procedure is relatively simple.</span>
         <span class="c1">// check for coalescence</span>
         <span class="c1">// check if the grid needs to be updated.</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">()</span> <span class="o">!=</span> <span class="n">landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">getMaxSize</span><span class="p">()</span> <span class="o">!=</span> <span class="n">landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
         <span class="p">{</span>
             <span class="n">grid</span><span class="p">[</span><span class="n">oldy</span><span class="p">][</span><span class="n">oldx</span><span class="p">].</span><span class="n">setMaxsize</span><span class="p">(</span><span class="n">landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation</span><span class="p">));</span>
         <span class="p">}</span>
@@ -1561,7 +1565,12 @@
             <span class="p">{</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">rep_map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">landscape</span><span class="p">.</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="p">{</span>
-                    <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Reproduction map is zero where density is non-zero. &quot;</span>
+                    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Location: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reproduction value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rep_map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Density: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="p">.</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                    <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Reproduction map is zero where density is non-zero. &quot;</span>
                                                  <span class="s">&quot;This will cause an infinite loop.&quot;</span><span class="p">);</span>
                 <span class="p">}</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="p">.</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">rep_map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">)</span>
@@ -1570,6 +1579,9 @@
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Reproduction map validation complete.&quot;</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -1613,11 +1625,11 @@
     <span class="k">if</span><span class="p">(</span><span class="n">xwrap</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">ywrap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ref</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">map_cover</span> <span class="o">&gt;=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">())</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">map_cover</span> <span class="o">&gt;=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getMaxSize</span><span class="p">())</span>
         <span class="p">{</span>
             <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">changePercentCover</span><span class="p">(</span><span class="n">map_cover</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">while</span><span class="p">(</span><span class="n">ref</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getMaxsize</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">num_to_add</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">ref</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getMaxSize</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">num_to_add</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">tmp_active</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">].</span><span class="n">getSpecies</span><span class="p">(</span><span class="n">ref</span><span class="p">);</span>
             <span class="k">if</span><span class="p">(</span><span class="n">tmp_active</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
@@ -1968,7 +1980,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
+        &#169; Copyright Copyright 2016, pycoalescence.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>

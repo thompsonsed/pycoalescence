@@ -11,5 +11,6 @@ var searchData=
   ['applyfromcomargs',['applyFromComargs',['../class_speciation_commands.html#a2ac0cf0a39c9c88b76d88c1d5d65f01a',1,'SpeciationCommands']]],
   ['applymultiplerates',['applyMultipleRates',['../class_tree.html#acfc7efdec999f6dbf2ac089514d22091',1,'Tree']]],
   ['applyspecrate',['applySpecRate',['../class_protracted_tree.html#a56a3631e65bb91d04ba4626c4c1ea79a',1,'ProtractedTree::applySpecRate()'],['../class_tree.html#aa6349a32b3fcfb82a5f8311b11db3982',1,'Tree::applySpecRate(long double sr, double t)'],['../class_tree.html#ab699328f13b22f48faa63a5638e907db',1,'Tree::applySpecRate(long double sr)']]],
-  ['applyspecrateinternal',['applySpecRateInternal',['../class_tree.html#ac89abe0404d05d0363258b72cb80700b',1,'Tree']]]
+  ['applyspecrateinternal',['applySpecRateInternal',['../class_tree.html#ac89abe0404d05d0363258b72cb80700b',1,'Tree']]],
+  ['assertreferencematches',['assertReferenceMatches',['../class_dispersal_coordinator.html#a210c821cc36e08829fbfbfe640a5ccb2',1,'DispersalCoordinator']]]
 ];

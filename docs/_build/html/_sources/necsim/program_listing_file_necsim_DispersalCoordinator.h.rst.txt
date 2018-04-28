@@ -39,8 +39,8 @@ Program Listing for File DispersalCoordinator.h
        // across the program.
        
        NRrand * NR;
-       // Pointer to the habitat map object for getting density values.
-       Landscape * habitat_map;
+       // Pointer to the landscape object for getting density values.
+       Landscape * landscape;
        // Pointer to the generation counter for the simulation
        double * generation;
        
@@ -74,6 +74,18 @@ Program Listing for File DispersalCoordinator.h
                          const double &sigmain, const double &tauin, const bool &restrict_self);
    
        void setDispersal(SimParameters * simParameters);
+   
+       void fixDispersal();
+   
+       void fixDispersalRow(unsigned long row);
+   
+       bool checkDispersalRow(unsigned long row);
+   
+       void verifyDispersalMap();
+   
+   //#ifdef DEBUG
+       void assertReferenceMatches(unsigned long expected);
+   //#endif // DEBUG
        void disperseNullDispersalMap(Step &this_step);
        
        void disperseDispersalMap(Step &this_step);

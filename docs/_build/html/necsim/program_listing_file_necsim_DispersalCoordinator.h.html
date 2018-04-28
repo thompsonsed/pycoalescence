@@ -97,8 +97,8 @@
     <span class="c1">// across the program.</span>
 
     <span class="n">NRrand</span> <span class="o">*</span> <span class="n">NR</span><span class="p">;</span>
-    <span class="c1">// Pointer to the habitat map object for getting density values.</span>
-    <span class="n">Landscape</span> <span class="o">*</span> <span class="n">habitat_map</span><span class="p">;</span>
+    <span class="c1">// Pointer to the landscape object for getting density values.</span>
+    <span class="n">Landscape</span> <span class="o">*</span> <span class="n">landscape</span><span class="p">;</span>
     <span class="c1">// Pointer to the generation counter for the simulation</span>
     <span class="kt">double</span> <span class="o">*</span> <span class="n">generation</span><span class="p">;</span>
 
@@ -132,6 +132,18 @@
                       <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">tauin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">simParameters</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">fixDispersal</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">fixDispersalRow</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">checkDispersalRow</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">verifyDispersalMap</span><span class="p">();</span>
+
+<span class="c1">//#ifdef DEBUG</span>
+    <span class="kt">void</span> <span class="nf">assertReferenceMatches</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">expected</span><span class="p">);</span>
+<span class="c1">//#endif // DEBUG</span>
     <span class="kt">void</span> <span class="nf">disperseNullDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">disperseDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">);</span>
@@ -223,7 +235,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
+        &#169; Copyright Copyright 2016, pycoalescence.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>

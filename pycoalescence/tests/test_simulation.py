@@ -549,3 +549,4 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		self.assertEqual(2627, self.base_sim.get_richness())
 		self.assertEqual(2520, self.hist_sim2.get_richness())
 		self.assertEqual(2434, self.hist_sim.get_richness())
+

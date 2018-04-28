@@ -131,12 +131,20 @@ Program Listing for File Map.h
        {
            try
            {
-               noDataValue = poBand->GetNoDataValue();
+               int pbSuccess;
+               noDataValue = poBand->GetNoDataValue(&pbSuccess);
+               if(!pbSuccess)
+               {
+                   noDataValue = 0.0;
+               }
            }
            catch(out_of_range &out_of_range1)
            {
-               noDataValue = 0;
+               noDataValue = 0.0;
            }
+           stringstream ss;
+           ss << "No data value is: " << noDataValue << endl;
+           writeInfo(ss.str());
            // Check sizes match
            dt = poBand->GetRasterDataType();
            double geoTransform[6];

@@ -106,8 +106,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pycoalescence'
-copyright = u'2016, Samuel Thompson'
-author = u'Samuel Thompson'
+copyright = pycoalescence.__copyright__
+author = pycoalescence.__author__
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

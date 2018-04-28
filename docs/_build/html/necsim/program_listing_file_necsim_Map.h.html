@@ -189,12 +189,20 @@
     <span class="p">{</span>
         <span class="k">try</span>
         <span class="p">{</span>
-            <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetNoDataValue</span><span class="p">();</span>
+            <span class="kt">int</span> <span class="n">pbSuccess</span><span class="p">;</span>
+            <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetNoDataValue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pbSuccess</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">pbSuccess</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">noDataValue</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="n">out_of_range</span> <span class="o">&amp;</span><span class="n">out_of_range1</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">noDataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">noDataValue</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
         <span class="p">}</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No data value is: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">noDataValue</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="c1">// Check sizes match</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetRasterDataType</span><span class="p">();</span>
         <span class="kt">double</span> <span class="n">geoTransform</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
@@ -601,7 +609,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
+        &#169; Copyright Copyright 2016, pycoalescence.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>

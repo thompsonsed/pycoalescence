@@ -55,7 +55,7 @@ coal: start_msg NECSim end_msg
 # python shared object files
 necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandler.o)
 
-dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o Landscape.o Datamask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o)
+dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o Landscape.o DataMask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o)
 
 applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandler.o PyImports.o)
 

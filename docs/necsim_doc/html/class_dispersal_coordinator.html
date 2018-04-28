@@ -132,8 +132,8 @@ Collaboration diagram for DispersalCoordinator:</div>
 <area shape="rect" id="node5" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m..." alt="" coords="178,341,292,366"/>
 <area shape="rect" id="node4" title="STL class. " alt="" coords="308,5,434,44"/>
 <area shape="rect" id="node6" href="class_config_option.html" title="Config option class to store and import options from a file. " alt="" coords="5,93,104,119"/>
-<area shape="rect" id="node8" href="struct_step.html" title="Stores the elements associated with a single step in a coalescence simulation. " alt="" coords="403,428,451,453"/>
-<area shape="rect" id="node9" href="class_n_rrand.html" title="Contains the functions for random number generation. " alt="" coords="499,428,566,453"/>
+<area shape="rect" id="node8" href="struct_step.html" title="Stores the elements associated with a single step in a coalescence simulation. " alt="" coords="389,428,438,453"/>
+<area shape="rect" id="node9" href="class_n_rrand.html" title="Contains the functions for random number generation. " alt="" coords="485,428,553,453"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -154,6 +154,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8504699586755df070b44da71ea346a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a8504699586755df070b44da71ea346a5">setDispersal</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> *simParameters)</td></tr>
 <tr class="memdesc:a8504699586755df070b44da71ea346a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the dispersal parameters from the <a class="el" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m...">SimParameters</a> object.  <a href="#a8504699586755df070b44da71ea346a5">More...</a><br /></td></tr>
 <tr class="separator:a8504699586755df070b44da71ea346a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a588b959feff178953c37bfeae7aa8529"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a588b959feff178953c37bfeae7aa8529"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a588b959feff178953c37bfeae7aa8529">fixDispersal</a> ()</td></tr>
+<tr class="memdesc:a588b959feff178953c37bfeae7aa8529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixes the dispersal map by generating cumulative probability distributions across each row. <br /></td></tr>
+<tr class="separator:a588b959feff178953c37bfeae7aa8529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fc1c7f99cb2ac16ae97c78876eb69ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a7fc1c7f99cb2ac16ae97c78876eb69ab">fixDispersalRow</a> (unsigned long row)</td></tr>
+<tr class="memdesc:a7fc1c7f99cb2ac16ae97c78876eb69ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums probabilities across the given row and divides by the total probability, so that the cumulative probabilities sum to one.  <a href="#a7fc1c7f99cb2ac16ae97c78876eb69ab">More...</a><br /></td></tr>
+<tr class="separator:a7fc1c7f99cb2ac16ae97c78876eb69ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e3c496ef1ad36844368bc9d2dd68757"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a8e3c496ef1ad36844368bc9d2dd68757">checkDispersalRow</a> (unsigned long row)</td></tr>
+<tr class="memdesc:a8e3c496ef1ad36844368bc9d2dd68757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided row index requires re-scaling to a cumulative probability in the dispersal map.  <a href="#a8e3c496ef1ad36844368bc9d2dd68757">More...</a><br /></td></tr>
+<tr class="separator:a8e3c496ef1ad36844368bc9d2dd68757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f6d3782cf8b528d591d17c77072924a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f6d3782cf8b528d591d17c77072924a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a5f6d3782cf8b528d591d17c77072924a">verifyDispersalMap</a> ()</td></tr>
+<tr class="memdesc:a5f6d3782cf8b528d591d17c77072924a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the dispersal map makes sense with dispersal to and from only cells which have a non-zero density. <br /></td></tr>
+<tr class="separator:a5f6d3782cf8b528d591d17c77072924a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a210c821cc36e08829fbfbfe640a5ccb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a210c821cc36e08829fbfbfe640a5ccb2">assertReferenceMatches</a> (unsigned long expected)</td></tr>
+<tr class="memdesc:a210c821cc36e08829fbfbfe640a5ccb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asserts that the cell reference is correct for the provided coordinates.  <a href="#a210c821cc36e08829fbfbfe640a5ccb2">More...</a><br /></td></tr>
+<tr class="separator:a210c821cc36e08829fbfbfe640a5ccb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bac3aeedb3ceb40601c3db951032d0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dispersal_coordinator.html#a4bac3aeedb3ceb40601c3db951032d0e">disperseNullDispersalMap</a> (<a class="el" href="struct_step.html">Step</a> &amp;this_step)</td></tr>
 <tr class="memdesc:a4bac3aeedb3ceb40601c3db951032d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Picks a random cell from the whole map and stores the value in the step object.  <a href="#a4bac3aeedb3ceb40601c3db951032d0e">More...</a><br /></td></tr>
 <tr class="separator:a4bac3aeedb3ceb40601c3db951032d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,9 +219,9 @@ Map&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>disper
 <tr class="memitem:ac4c17447257ed00e1b5610e0e35a5443"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4c17447257ed00e1b5610e0e35a5443"></a>
 <a class="el" href="class_n_rrand.html">NRrand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>NR</b></td></tr>
 <tr class="separator:ac4c17447257ed00e1b5610e0e35a5443"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3eb82a6bacdb78297e37ba8cbef10a28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eb82a6bacdb78297e37ba8cbef10a28"></a>
-<a class="el" href="class_landscape.html">Landscape</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>habitat_map</b></td></tr>
-<tr class="separator:a3eb82a6bacdb78297e37ba8cbef10a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a316f067e84937650316f47b219e2cb76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a316f067e84937650316f47b219e2cb76"></a>
+<a class="el" href="class_landscape.html">Landscape</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>landscape</b></td></tr>
+<tr class="separator:a316f067e84937650316f47b219e2cb76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3f83d100dad7c60137edf42b3c199c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3f83d100dad7c60137edf42b3c199c1"></a>
 double *&#160;</td><td class="memItemRight" valign="bottom"><b>generation</b></td></tr>
 <tr class="separator:ae3f83d100dad7c60137edf42b3c199c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,6 +240,30 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>xdim</b></td
 <p>It requires linking to a density map, random number generator and a generation counter from the <a class="el" href="class_tree.html">Tree</a> class.</p>
 <p>Note that no element of this object is recorded during a paused simulation, as all objects pointed to are stored elsewhere and behaviours are recalculated upon simulation resume. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a210c821cc36e08829fbfbfe640a5ccb2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DispersalCoordinator::assertReferenceMatches </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>expected</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Asserts that the cell reference is correct for the provided coordinates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">expected</td><td>the expected cell reference. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="af2a3792c5e0bea86fa044c4cd3e5146c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -281,6 +322,31 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>xdim</b></td
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the cell reference from the dispersal_prob_map which corresponds to the required cell </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8e3c496ef1ad36844368bc9d2dd68757"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DispersalCoordinator::checkDispersalRow </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>row</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the provided row index requires re-scaling to a cumulative probability in the dispersal map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>the row index to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if re-scaling of the row is required </dd></dl>
 
 </div>
 </div>
@@ -629,6 +695,30 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>xdim</b></td
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">this_step</td><td>the step object to store end points in </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7fc1c7f99cb2ac16ae97c78876eb69ab"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DispersalCoordinator::fixDispersalRow </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>row</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sums probabilities across the given row and divides by the total probability, so that the cumulative probabilities sum to one. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>the row index to check over </td></tr>
   </table>
   </dd>
 </dl>

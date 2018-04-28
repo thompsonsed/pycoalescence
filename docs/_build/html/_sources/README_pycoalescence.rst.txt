@@ -113,7 +113,7 @@ The recommended method is:
      to set the job number, task number, output directory and other key simulation variables.
    - Set the map variables by one of the following:
 
-     a. :func:`set_map_parameters() <pycoalescence.simulation.Simulation.set_map_parameters>` to input file paths and dimensions
+     a. :func:`set_map_parameters() <pycoalescence.landscape.Landscape.set_map_parameters>` to input file paths and dimensions
      b. :func:`set_map_files() <pycoalescence.simulation.Simulation.set_map_files>` to set the map file paths. This
         calls :func:`detect_map_dimensions() <pycoalescence.simulation.Simulation.detect_map_dimensions>` to automatically
         detect file offsets and dimensions.
@@ -145,16 +145,18 @@ Custom Configuration Files
 ''''''''''''''''''''''''''
 Although not recommended for most use-cases, it is possible to manually create a configuration file, instead of relying on
 :func:`finalise_setup() <pycoalescence.simulation.Simulation.finalise_setup>` to do it for you. This may be useful if
-you want to store the setup file in a particular place. The process is outlined below. There are two general configuration
-files, which as default are mainconf_*job_num*_*seed*.txt and the other as timeconf_*job_num*_*seed*.txt.
+you want to store the setup file in a particular place. The process is outlined below. The configuration
+file is as default stored in mainconf_*job_num*_*seed*.txt.
 
 #. Add a temporal sampling configuration file
-   If you require sampling at points other than the present day, these can be specified in another configuration file.
+
+   If you require sampling at points other than the present day, these can be specified within the configuration file.
 
    - Add temporal sampling points using :func:`add_sample_time() <pycoalescence.simulation.Simulation.add_sample_time>`
      Multiple sample points can be added.
    - Create the temporal sampling config file (:func:`create_temporal_sampling_config() <pycoalescence.simulation.Simulation.create_temporal_sampling_config>`)
 #. Generate the main config file
+
    Run :func:`create_config() <pycoalescence.simulation.Simulation.create_config>` to generate the main config file.
 
    .. note:: If you wish to use multiple map files or multiple temporal samples and wish to use a main config file as well,
@@ -166,12 +168,13 @@ files, which as default are mainconf_*job_num*_*seed*.txt and the other as timec
    .. warning:: It is possible to use temporal config files without using a main config file. However,
       if you want map or main options in config file, you **must** use all config options (main config and temporal config).
 #. Add map configuration options
+
    If you require multiple map files at different points in time, you shall need to create a configuration (.txt or .cfg)
    file to make these options accessible to the program.
 
    These configuration options appear in the main configuration file under various headings.
 
-   - First add the historical map options using :func:`add_historical_map() <pycoalescence.simulation.Simulation.add_historical_map>`
+   - First add the historical map options using :func:`add_historical_map() <pycoalescence.landscape.Landscape.add_historical_map>`
      This can be performed multiple times to add several maps.
    - Add the options to the configuration file (:func:`create_map_config() <pycoalescence.simulation.Simulation.create_map_config>`)
 
@@ -216,9 +219,9 @@ inputted map files.
     c.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
                             sigma=4, tau=4, deme=1, sample_size=0.1
                             max_time=100, dispersal_method="fat-tailed", m_prob=0.0, cutoff=0,
-                            dispersal_relative_cost=1, min_num_species=1, forest_change_rate=0.2,
-                            historical_forest_time=200, time_config_file="null", restrict_self=False,
-                            infinite_landscape=False)
+                            dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.2,
+                            gen_since_historical=200, time_config_file="null", restrict_self=False,
+                            landscape_type=False)
     # Add a set of speciation rates to be applied at the end of the simulation
     c.set_speciation_rates([0.2, 0.3, 0.4])
     # set the map files
@@ -290,7 +293,7 @@ Example configuration file
     m_probability = 1e-10
     cutoff = 0
     restrict_self = 0
-    infinite_landscape = 0
+    landscape_type = 0
 
     [main]
     seed = 1
@@ -361,7 +364,7 @@ Limitations of simulation variables
 
 Certain simulation variables have limitations, depending on the method of setting up the simulation.
 
-- Map variables set up using :func:`set_map_parameters() <pycoalescence.simulation.Simulation.set_map_parameters>`
+- Map variables set up using :func:`set_map_parameters() <pycoalescence.landscape.Landscape.set_map_parameters>`
 
     - Sample map dimensions must be smaller than fine map dimensions.
     - Fine map dimensions must be smaller than coarse map dimensions (supplied at the resolution of the fine map files).
@@ -397,7 +400,7 @@ and y dimensions) and purple arrows indicate the offsets for the coarse map.
 Infinite Landscapes
 '''''''''''''''''''
 
-Simulations can also be run on infinite landscapes. Set ``infinite_landscapes=opt`` in
+Simulations can also be run on infinite landscapes. Set ``landscape_types=opt`` in
 :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>` where *opt* is one of the
 following:
 
@@ -461,7 +464,7 @@ rates is provided within the :class:`CoalescenceTree class<pycoalescence.coalesc
 The two functions for this routine are
 
 -  :func:`set_speciation_params() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>` which takes as
- arguments
+   arguments
 
    -  the SQL database file containing a finished simulation
    -  T/F of recording full spatial data
@@ -522,7 +525,7 @@ of having to generate these manually. These include
 Extended analysis
 ~~~~~~~~~~~~~~~~~
 
-The :py:mod:`coal_analyse <pycoalescence.coal_analyse>` module can be used for more extensive simulation analysis, such
+The :py:mod:`coalescence_tree <pycoalescence.coalescence_tree>` module can be used for more extensive simulation analysis, such
 as comparing simulated landscapes to real data and calculating goodness of fits.
 
 The general procedure for using this module involves a few functions, all contained in the
@@ -531,8 +534,9 @@ The general procedure for using this module involves a few functions, all contai
 - :func:`set_database() <pycoalescence.coalescence_tree.CoalescenceTree.set_database>` generates the link to the SQL
   database, which should be an output from a **necsim** simulation (run using the
   :class:`Simulation class <pycoalescence.simulation.Simulation>`).
-- :func:`import_comparison_data() <pycoalescence.coalescence_tree.import_comparison_data>` reads an SQL database which
-  contains real data to compare to the simulation output. The comparison data should contain the following tables:
+- :func:`import_comparison_data() <pycoalescence.coalescence_tree.CoalescenceTree.import_comparison_data>` reads an
+  SQL database which contains real data to compare to the simulation output. The comparison data should contain the
+  following tables:
 
   - BIODIVERSITY\_ METRICS, containing *only* "metric", "fragment", "value" and "number_of_individuals" columns.
     The metric can be "fragment_richness" or any other metric created by your own functions which exists also in

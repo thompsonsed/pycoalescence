@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycoalescence.dispersal_simulation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains routines for simulating a dispersal kernel on a map.</span>
+
+<span class="sd">:input:</span>
+<span class="sd">	- Map file to simulate on</span>
+<span class="sd">	- Set of dispersal pararameters, including the dispersal kernel, number of repetitions and landscape properties</span>
+
+<span class="sd">:output:</span>
+<span class="sd">	- Database containing each distance travelled so that metrics can be calculated.</span>
+<span class="sd">	- A table is created for mean dispersal distance over a single step or for mean distance travelled.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">std</span>
+
+<span class="kn">from</span> <span class="nn">.landscape</span> <span class="kn">import</span> <span class="n">Landscape</span>
+
+<span class="n">necsim_import_success</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">import_warnings</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="c1"># Python 2</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">from</span> <span class="nn">build</span> <span class="kn">import</span> <span class="n">Dispersal</span>
+	<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ime</span><span class="p">:</span>
+		<span class="n">import_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ime</span><span class="p">)</span>
+		<span class="kn">from</span> <span class="nn">.build</span> <span class="kn">import</span> <span class="n">Dispersal</span>
+	<span class="n">DispersalError</span> <span class="o">=</span> <span class="n">Dispersal</span><span class="o">.</span><span class="n">DispersalError</span>
+	<span class="n">necsim_import_success</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+		<span class="s2">&quot;Could not import dispersal shared objects. Check compilation has been successfully completed under &quot;</span>
+		<span class="s2">&quot;same python version.&quot;</span><span class="p">)</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ie</span><span class="p">))</span>
+	<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">import_warnings</span><span class="p">:</span>
+		<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
+	<span class="n">necsim_import_success</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+	<span class="k">class</span> <span class="nc">DispersalError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+		<span class="k">pass</span>
+
+<span class="k">try</span><span class="p">:</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span> <span class="nn">sqlite3</span>
+	<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+		<span class="c1"># Python 3 compatibility</span>
+		<span class="kn">import</span> <span class="nn">sqlite</span> <span class="kn">as</span> <span class="nn">sqlite3</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
+	<span class="n">sqlite3</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Problem importing sqlite module &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ie</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">check_parent</span><span class="p">,</span> <span class="n">write_to_log</span>
+<span class="kn">from</span> <span class="nn">.map</span> <span class="kn">import</span> <span class="n">Map</span>
+
+<div class="viewcode-block" id="DispersalSimulation"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation">[docs]</a><span class="k">class</span> <span class="nc">DispersalSimulation</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Simulates a dispersal kernel upon a tif file to calculate landscape-level dispersal metrics.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">dispersal_db</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Default initialiser for members of DispersalSimulation. Ensures that the database is</span>
+
+<span class="sd">		:param file: sets the filename for reading tif files.</span>
+<span class="sd">		:param is_sample: sets the sample mask to true, if it is a sampled file</span>
+<span class="sd">		:param logging_level: the level of logging to output during dispersal simulations</span>
+<span class="sd">		:param dispersal_db: path to a complete dispersal simulation database. Can also be a Map object containing the</span>
+<span class="sd">							 completed simulation</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">Landscape</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;dipersallogger&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="n">logging_level</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="c1"># The dispersal simulation data</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">deme</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_method</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">m_prob</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequential</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_relative_cost</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">restrict_self</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_file</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="k">if</span> <span class="nb">file</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">set_map</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dispersal_db</span><span class="p">,</span> <span class="n">DispersalSimulation</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">dispersal_db</span><span class="o">.</span><span class="n">dispersal_database</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dispersal_db</span><span class="p">,</span> <span class="n">Map</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">dispersal_db</span><span class="o">.</span><span class="n">file_name</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">dispersal_db</span>
+
+	<span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Safely destroys the connection to the database, if it exists.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_close_database_connection</span><span class="p">()</span>
+
+	<span class="k">def</span> <span class="nf">_open_database_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Opens the connection to the database, raising the appropriate errors if the database does not exist</span>
+<span class="sd">		Should have a matching call to _close_database_connection() for safely destroying the connection to the database</span>
+<span class="sd">		file.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">database</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">return</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">database</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dispersal database is not set, run test_average_dispersal() first or set dispersal_db.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Dispersal database does not exist: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
+		<span class="c1"># Open the SQLite connection</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="o">=</span> <span class="bp">None</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Error opening SQLite database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_close_database_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Safely closes the database connection</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="o">=</span> <span class="bp">None</span>
+			<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="o">=</span> <span class="bp">None</span>
+				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not close database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_check_table_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;DISPERSAL_DISTANCES&quot;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the dispersal distances table exits, and returns true/false.</span>
+
+<span class="sd">		:param database: the database to open</span>
+
+<span class="sd">		:return: true if the DISPERSAL_DISTANCES table exists in the output database</span>
+<span class="sd">		:rtype bool</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+		<span class="n">existence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39; AND&quot;</span>
+												   <span class="s2">&quot; name=&#39;{}&#39;;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+		<span class="k">return</span> <span class="n">existence</span>
+
+<div class="viewcode-block" id="DispersalSimulation.set_simulation_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.set_simulation_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">set_simulation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_repeats</span><span class="p">,</span> <span class="n">output_database</span><span class="o">=</span><span class="s2">&quot;output.db&quot;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+								  <span class="n">landscape_type</span><span class="o">=</span><span class="s2">&quot;closed&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m_prob</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sequential</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+								  <span class="n">dispersal_relative_cost</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">restrict_self</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">number_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+								  <span class="n">dispersal_file</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sets the simulation parameters for the dispersal simulations.</span>
+
+<span class="sd">		:param int number_repeats: the number of times to iterate on the map</span>
+<span class="sd">		:param str output_database: the path to the output database</span>
+<span class="sd">		:param int seed: the random seed</span>
+<span class="sd">		:param str dispersal_method: the dispersal method to use (&quot;normal&quot;, &quot;fat-tailed&quot; or &quot;norm-uniform&quot;)</span>
+<span class="sd">		:param str landscape_type: the landscape type to use (&quot;infinite&quot;, &quot;tiled&quot; or &quot;closed&quot;)</span>
+<span class="sd">		:param float sigma: the sigma value to use for normal and norm-uniform dispersal</span>
+<span class="sd">		:param float tau: the tau value to use for fat-tailed dispersal</span>
+<span class="sd">		:param float m_prob: the m_prob to use for norm-uniform dispersal</span>
+<span class="sd">		:param float cutoff: the cutoff value to use for norm-uniform dispersal</span>
+<span class="sd">		:param bool sequential: if true, end locations of one dispersal event are used as the start for the next. Otherwise,</span>
+<span class="sd">		a new random cell is chosen</span>
+<span class="sd">		:param float dispersal_relative_cost: relative dispersal ability through non-habitat</span>
+<span class="sd">		:param bool restrict_self: if true, self-dispersal is not allowed</span>
+<span class="sd">		:param str dispersal_file: path to the dispersal map file, or none.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span> <span class="o">=</span> <span class="n">number_repeats</span>
+		<span class="k">if</span> <span class="n">output_database</span> <span class="o">!=</span> <span class="s2">&quot;output.db&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">output_database</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_method</span> <span class="o">=</span> <span class="n">dispersal_method</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="n">landscape_type</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">m_prob</span> <span class="o">=</span> <span class="n">m_prob</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="n">cutoff</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sequential</span> <span class="o">=</span> <span class="n">sequential</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_relative_cost</span> <span class="o">=</span> <span class="n">dispersal_relative_cost</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">restrict_self</span> <span class="o">=</span> <span class="n">restrict_self</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="n">number_steps</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_file</span> <span class="o">=</span> <span class="n">dispersal_file</span></div>
+
+
+
+<div class="viewcode-block" id="DispersalSimulation.complete_setup"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.complete_setup">[docs]</a>	<span class="k">def</span> <span class="nf">complete_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Completes the setup for the dispersal simulation.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Maps have not been set up yet.&quot;</span><span class="p">)</span>
+		<span class="n">Dispersal</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
+		<span class="n">Dispersal</span><span class="o">.</span><span class="n">set_log_function</span><span class="p">(</span><span class="n">write_to_log</span><span class="p">)</span>
+		<span class="n">Dispersal</span><span class="o">.</span><span class="n">set_dispersal_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span>
+										   <span class="bp">self</span><span class="o">.</span><span class="n">m_prob</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_relative_cost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">restrict_self</span><span class="p">)</span>
+		<span class="n">Dispersal</span><span class="o">.</span><span class="n">set_map_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deme</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
+									 <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
+									 <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
+									 <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span>
+									 <span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span><span class="p">)</span>
+		<span class="n">Dispersal</span><span class="o">.</span><span class="n">set_historical_map_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">,</span>
+											  <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
+											  <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">,</span>
+											  <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
+											  <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.test_mean_distance_travelled"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_distance_travelled">[docs]</a>	<span class="k">def</span> <span class="nf">test_mean_distance_travelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled</span>
+<span class="sd">		after number_steps have been moved.</span>
+
+<span class="sd">		.. note::</span>
+
+<span class="sd">				mean distance travelled with number_steps=1 should be equivalent to running</span>
+<span class="sd">				:func:`~test_mean_dispersal`</span>
+
+<span class="sd">		:param int number_repeats: the number of times to iterate on the map</span>
+<span class="sd">		:param int number_steps: the number of steps to take each time before recording the distance travelled</span>
+<span class="sd">		:param str output_database: the path to the output database</span>
+<span class="sd">		:param str map_file: the path to the map file to iterate on</span>
+<span class="sd">		:param int seed: the random seed</span>
+<span class="sd">		:param str dispersal_method: the dispersal method to use (&quot;normal&quot;, &quot;fat-tailed&quot; or &quot;norm-uniform&quot;)</span>
+<span class="sd">		:param str landscape_type: the landscape type to use (&quot;infinite&quot;, &quot;tiled&quot; or &quot;closed&quot;)</span>
+<span class="sd">		:param float sigma: the sigma value to use for normal and norm-uniform dispersal</span>
+<span class="sd">		:param float tau: the tau value to use for fat-tailed dispersal</span>
+<span class="sd">		:param float m_prob: the m_prob to use for norm-uniform dispersal</span>
+<span class="sd">		:param float cutoff: the cutoff value to use for norm-uniform dispersal</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_close_database_connection</span><span class="p">()</span>
+		<span class="c1"># Delete the file if it exists, and recursively create the folder if it doesn&#39;t</span>
+		<span class="n">check_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">necsim_import_success</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">complete_setup</span><span class="p">()</span>
+				<span class="n">Dispersal</span><span class="o">.</span><span class="n">test_mean_distance_travelled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span><span class="p">,</span>
+													   <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">Dispersal</span><span class="o">.</span><span class="n">DispersalError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Successful c++ module import required for testing dispersal functions.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DispersalSimulation.test_mean_dispersal"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.test_mean_dispersal">[docs]</a>	<span class="k">def</span> <span class="nf">test_mean_dispersal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Tests the dispersal kernel on the provided map, producing a database containing each dispersal distance for</span>
+<span class="sd">		analysis purposes.</span>
+
+<span class="sd">		.. note:: should be equivalent to :func:`~test_mean_distance_travelled` with number_steps = 1</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_close_database_connection</span><span class="p">()</span>
+		<span class="c1"># Delete the file if it exists, and recursively create the folder if it doesn&#39;t</span>
+		<span class="n">check_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">necsim_import_success</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">complete_setup</span><span class="p">()</span>
+				<span class="n">Dispersal</span><span class="o">.</span><span class="n">test_mean_dispersal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequential</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">DispersalError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Successful c++ module import required for testing dispersal functions.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.get_mean_dispersal"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_dispersal">[docs]</a>	<span class="k">def</span> <span class="nf">get_mean_dispersal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parameter_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the mean dispersal for the map if test_mean_dispersal has already been run.</span>
+
+<span class="sd">		:raises: ValueError if dispersal_database is None and so test_mean_dispersal() has not been run</span>
+<span class="sd">		:raises: IOError if the output database does not exist</span>
+
+<span class="sd">		:param str database: the database to open</span>
+<span class="sd">		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).</span>
+<span class="sd">		:return: mean dispersal from the database</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_table_exists</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;DISPERSAL_DISTANCES&quot;</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database {} does not have a DISPERSAL_DISTANCES table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">sql_fetch</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?&quot;</span><span class="p">,</span>
+									   <span class="p">(</span><span class="n">parameter_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">sql_fetch</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not get mean distance for &quot;</span>
+								 <span class="s2">&quot;parameter reference of {} from {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parameter_reference</span><span class="p">,</span>
+																			 <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get average distance from database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">sql_fetch</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.get_mean_distance_travelled"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_distance_travelled">[docs]</a>	<span class="k">def</span> <span class="nf">get_mean_distance_travelled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parameter_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the mean dispersal for the map if test_mean_dispersal has already been run.</span>
+
+<span class="sd">		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run</span>
+<span class="sd">		:raises: IOError if the output database does not exist</span>
+
+<span class="sd">		:param str database: the database to open</span>
+<span class="sd">		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).</span>
+<span class="sd">		:return: mean of dispersal from the database</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_table_exists</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;DISTANCES_TRAVELLED&quot;</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database {} does not have a DISTANCES_TRAVELLED table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">sql_fetch</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?&quot;</span><span class="p">,</span>
+									   <span class="p">(</span><span class="n">parameter_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get average distance from database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">sql_fetch</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.get_stdev_dispersal"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_stdev_dispersal">[docs]</a>	<span class="k">def</span> <span class="nf">get_stdev_dispersal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parameter_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the standard deviation of dispersal for the map if test_mean_dispersal has already been run.</span>
+
+<span class="sd">		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run</span>
+<span class="sd">		:raises: IOError if the output database does not exist</span>
+
+<span class="sd">		:param str database: the database to open</span>
+<span class="sd">		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).</span>
+<span class="sd">		:return: standard deviation of dispersal from the database</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_table_exists</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;DISPERSAL_DISTANCES&quot;</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database {} does not have a DISPERSAL_DISTANCES table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">sql_fetch</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT distance FROM DISPERSAL_DISTANCES &quot;</span>
+													  <span class="s2">&quot;WHERE parameter_reference = ?&quot;</span><span class="p">,</span>
+													  <span class="p">(</span><span class="n">parameter_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sql_fetch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No distances in DISPERSAL_DISTANCES, cannot find standard deviation.&quot;</span><span class="p">)</span>
+			<span class="n">stdev_distance</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">sql_fetch</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get average distance from database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">stdev_distance</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.get_stdev_distance_travelled"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_stdev_distance_travelled">[docs]</a>	<span class="k">def</span> <span class="nf">get_stdev_distance_travelled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parameter_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the standard deviation of the  distance travelled for the map if test_mean_distance_travelled has already</span>
+<span class="sd">		been run.</span>
+
+<span class="sd">		:raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run</span>
+<span class="sd">		:raises: IOError if the output database does not exist</span>
+
+<span class="sd">		:param str database: the database to open</span>
+<span class="sd">		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).</span>
+
+<span class="sd">		:return: standard deviation of dispersal from the database</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_table_exists</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;DISTANCES_TRAVELLED&quot;</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database {} does not have a DISTANCES_TRAVELLED table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">sql_fetch</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT distance FROM DISTANCES_TRAVELLED&quot;</span>
+													  <span class="s2">&quot; WHERE parameter_reference = ?&quot;</span><span class="p">,</span>
+													  <span class="p">(</span><span class="n">parameter_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sql_fetch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No distances in DISTANCES_TRAVELLED, cannot find standard deviation.&quot;</span><span class="p">)</span>
+			<span class="n">stdev_distance</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">sql_fetch</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get average distance from database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">stdev_distance</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.get_database_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">get_database_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the dispersal simulation parameters from the dispersal_db</span>
+<span class="sd">		:return: the dispersal simulation parameters</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">()</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ref, simulation_type, sigma, tau, m_prob, cutoff, dispersal_method, map_file, seed,&quot;</span>
+						   <span class="s2">&quot; number_steps, number_repeats FROM PARAMETERS&quot;</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get dispersal simulation parameters from database: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+		<span class="n">main_dict</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+			<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">each</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+					<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
+						<span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">each</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+			<span class="n">main_dict</span><span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">column_names</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+		<span class="c1"># Now convert it into a dictionary</span>
+		<span class="k">return</span> <span class="n">main_dict</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

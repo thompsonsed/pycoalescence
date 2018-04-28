@@ -458,12 +458,12 @@ handling.
    -  Contains the random number generator, as written by James
       Rosindell (j.rosindell@imperial.ac.uk).
 
--  The :cpp:class:`Map` class
+-  The :cpp:class:`Landscape` class
 
    -  Contains the routines for importing and calling values from the
       map objects.
-   -  The :cpp:func:`getVal() <Map::getVal()>` and :cpp:func:`runDispersal() <Map::runDispersal()>` functions can be modified
-      to produce altered dispersal behaviour, or alterations to the
+   -  The :cpp:func:`getVal() <Landscape::getVal()>` and :cpp:func:`runDispersal() <Landscape::runDispersal()>`
+      functions can be modified to produce altered dispersal behaviour, or alterations to the
       structure of the :cpp:class:`Row`
 
 -  The :cpp:class:`Matrix` and :cpp:class:`Row` classes
@@ -486,11 +486,13 @@ handling.
       a config file, providing an alternative way of setting up
       simulations.
 
--  The :cpp:class:`TreeList` class
+-  The :cpp:class:`Community` class
 
    -  Provides the routines for applying different speciation rates to a
       phylogenetic tree, to be used either immediately after simulation
       within **necsim**, or at a later time using SpeciationCounter_
+   -  Use to generate a community of individuals for a particular set of parameters, providing options for generating
+      species identities, species abundance distributions and species locations.
 
 Known Bugs
 ----------

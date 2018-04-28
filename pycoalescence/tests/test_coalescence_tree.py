@@ -171,6 +171,11 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		cls.test.clear_calculations()
 		# pass
 
+	def testComparisonDataNoExistError(self):
+		c = CoalescenceTree("sample/sample.db")
+		with self.assertRaises(IOError):
+			c.import_comparison_data("sample/doesnotexist.db")
+
 	def testFragmentOctaves(self):
 		num = self.test.cursor.execute(
 			"SELECT richness FROM FRAGMENT_OCTAVES WHERE fragment == 'P09' AND octave == 0"
@@ -278,6 +283,7 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		self.test.calculate_goodness_of_fit()
 		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.3014, places=3)
+		random.seed(2)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
 
