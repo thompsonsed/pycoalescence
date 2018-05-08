@@ -33,22 +33,24 @@ class Landscape:
 		self.historical_coarse_list = []
 		self.times_list = []
 		self.rates_list = []
+		self.logging_level = 10
 		self.logger = logging.Logger("landscapelogger")
 		self.landscape_type = False
 
-	def _create_logger(self, file=None, logging_level=None):
+	def _create_logger(self, file=None, logging_level=None, **kwargs):
 		"""
 		Creates the logger for use with NECSim simulation. Note you can supply your own logger by over-riding
 		self.logger. This function should only be run during self.__init__()
 
 		:param file: file to write output to. If None, outputs to terminal
 		:param logging_level: the logging level to use (defaults to INFO)
+		:param kwargs: additional keyword arguments to write out to
 
 		:return: None
 		"""
 		if logging_level is None:
 			logging_level = self.logging_level
-		self.logger = create_logger(self.logger, file, logging_level)
+		self.logger = create_logger(self.logger, file, logging_level, **kwargs)
 
 	def add_historical_map(self, fine_map, coarse_map, time, rate):
 		"""

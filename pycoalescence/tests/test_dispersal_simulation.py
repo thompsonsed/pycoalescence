@@ -187,6 +187,18 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertAlmostEqual(4.1790454325780342, self.m.get_stdev_distance_travelled(parameter_reference=4))
 		self.assertAlmostEqual(10.155370019080506, self.m.get_stdev_distance_travelled(parameter_reference=5))
 
+	def testDatabaseReferences(self):
+		"""
+		Tests that the database parameters are stored and returned correctly.
+		"""
+		self.assertEqual( [x for x in range(1, 7)], self.m.get_database_references())
+		self.assertEqual(self.m.get_database_parameters()[1], {"simulation_type" : "DISPERSAL_DISTANCES", "sigma" : 2,
+															   "tau" : 1, "m_prob" : 1.0, "cutoff" : 100,
+															   "dispersal_method" : "normal",
+															   "map_file" : "sample/SA_sample_fine.tif",
+															   "seed" : 2, "number_steps" : 0,
+															   "number_repeats" : 100})
+
 	def testDispersalMapReading(self):
 		"""
 		Tests that dispersal simulations are correctly read from a completed simulation
