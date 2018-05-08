@@ -186,11 +186,20 @@ class Map(object):
 				self.band_number = 1
 		else:
 			self.band_number = band_no
+<<<<<<< HEAD
 		ds = self.get_database()
 		no_data = ds.GetRasterBand(self.band_number).GetNoDataValue()
 		return no_data
 
 	def map_exists(self, file=None):
+=======
+		check_file_exists(self.file_name)
+		ds = gdal.Open(self.file_name)
+		no_data = ds.GetRasterBand(self.band_number).GetNoDataValue()
+		return no_data
+
+	def output_exists(self, file=None):
+>>>>>>> develop
 		"""
 		Checks if the output (or provided file) exists.
 
@@ -235,16 +244,29 @@ class Map(object):
 		"""
 		Create the file output and writes the data to the output.
 
+<<<<<<< HEAD
 		:param str file: the output file to create
 		:param int bands: optionally provide a number of bands to create
 		:param tuple geotransform: optionally provide a geotransform to set for the raster - defaults to (0, 1, 0, 0, 0, -1)
 		:param string projection: optionally provide a projection to set for the raster, in WKT format
+=======
+		:param file: the output file to create
+		:param bands: optionally provide a number of bands to create
+		:param geotransform: optionally provide a geotransform to set for the raster - defaults to (0, 1, 0, 0, 0, -1)
+		:param projection: optionally provide a projection to set for the raster
+>>>>>>> develop
 		"""
 		if self.data is None:
 			raise ValueError("Data is None for writing to file.")
 		if geotransform is None:
+<<<<<<< HEAD
 			geotransform = (0, 1, 0, 0, 0, -1)
 		if self.map_exists(file):
+=======
+			# TODO write a test for this
+			geotransform = (0, 1, 0, 0, 0, -1)
+		if self.output_exists(file):
+>>>>>>> develop
 			raise IOError("File already exists at {}.".format(file))
 		check_parent(self.file_name)
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.file_name,
@@ -434,7 +456,18 @@ class Map(object):
 
 		:return: a numpy array containing the subsetted data
 		"""
+<<<<<<< HEAD
 		ds = self.get_database()
+=======
+		if gdal is None:
+			raise ImportError("Gdal module not imported correctly: cannot read tif files")
+		if ".tif" not in self.file_name:
+			raise IOError("tif file not detected - dimensions cannot be read: " + self.file_name)
+		if not self.output_exists():
+			raise IOError(
+				"File " + str(self.file_name) + " does not exist or is not accessible. Check read/write access.")
+		ds = gdal.Open(self.file_name)
+>>>>>>> develop
 		x, y = self.get_x_y()
 		if not 0 <= x_size +x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
 			raise ValueError("Requested x, y subset of [{}:{}, {}:{}]"

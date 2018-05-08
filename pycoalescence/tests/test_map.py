@@ -355,6 +355,7 @@ class TestMap(unittest.TestCase):
 		"""
 		Tests that the create function works properly with setting a geotransform.
 		"""
+<<<<<<< HEAD
 		m = Map()
 		np.random.seed(1)
 		m.data= np.random.rand(10, 10)
@@ -366,6 +367,9 @@ class TestMap(unittest.TestCase):
 		m2.open()
 		self.assertEqual((10, 10), m2.data.shape)
 		self.assertAlmostEqual(48.58779, np.sum(m2.data), places=5)
+=======
+		m =
+>>>>>>> develop
 
 	def testDataTypeFetch(self):
 		"""
