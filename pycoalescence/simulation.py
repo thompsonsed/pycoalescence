@@ -103,9 +103,10 @@ class Simulation(Landscape):
 		Landscape.__init__(self)
 		self._fine_map_sum_res = None
 		self.count_total = None
-		self.logging_level = logging_level
-		self.logger = logging.Logger("necsimlogger")
-		self._create_logger(file=log_output)
+		# Create the logging object and pass on the required arguments for its creation
+		passedKwards = {k : v for k, v in kwargs.items() if "stream" not in k}
+		self.logger = logging.Logger("necsimlogger", **passedKwards)
+		self._create_logger(file=log_output, logging_level=logging_level, **kwargs)
 		self.output_directory = ""
 		self.pause_directory = ""
 		self.full_config_file = None

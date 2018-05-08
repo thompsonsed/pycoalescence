@@ -281,9 +281,9 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		Tests that the goodness-of-fit calculations are correctly performed.
 		"""
+		random.seed(2)
 		self.test.calculate_goodness_of_fit()
 		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.3014, places=3)
-		random.seed(2)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
 

@@ -8,6 +8,11 @@ import unittest
 import os
 import warnings
 
+try:
+    from cStringIO import StringIO # Python 2 string support
+except ImportError:
+    from io import StringIO
+
 from pycoalescence import Simulation
 from pycoalescence.simulation import NECSimError
 from pycoalescence.tests.setup import setUpAll, tearDownAll
@@ -360,6 +365,67 @@ class TestSimulationSetMaps(unittest.TestCase):
 		self.assertListEqual(expected_times, s.times_list)
 		self.assertListEqual(expected_rates, s.rates_list)
 
+class TestLoggingOutputsCorrectly(unittest.TestCase):
+	"""
+	Tests that logging outputs as expected.
+	"""
+	def testOutputStreamerInfo(self):
+		"""
+		Tests that info output streaming works as intended.
+		"""
+		log_stream = StringIO()
+		with open("reference/log_12_2.txt", "r") as content_file:
+			expected_log = content_file.read().replace('\r', '').replace('\n', '')
+		s = Simulation(logging_level=logging.INFO, stream=log_stream)
+		s.set_simulation_params(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_map("null", 10, 10)
+		s.finalise_setup()
+		s.run_coalescence()
+		self.assertEqual(expected_log, log_stream.getvalue().replace('\r', '').replace('\n', ''))
+
+	def testOutputStreamerWarning(self):
+		"""
+		Tests that info output streaming works as intended.
+		"""
+		log_stream = StringIO()
+		s = Simulation(logging_level=logging.WARNING, stream=log_stream)
+		s.set_simulation_params(seed=3, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_map("null", 10, 10)
+		s.finalise_setup()
+		s.run_coalescence()
+		self.assertEqual("", log_stream.getvalue())
+
+	def testOutputStreamerCritical(self):
+		"""
+		Tests that info output streaming works as intended.
+		"""
+		log_stream = StringIO()
+		s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
+		s.set_simulation_params(seed=4, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_map("null", 10, 10)
+		s.finalise_setup()
+		s.run_coalescence()
+		self.assertEqual("", log_stream.getvalue())
+
+class TestInitialCountSuccess(unittest.TestCase):
+	"""
+	Tests that the initial count is correct
+	"""
+	def testInitialCountNoCritical(self):
+		"""
+		Tests that the initial count is successful by catching the output of the critical logging.
+		"""
+		log_stream = StringIO()
+		s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
+		s.set_simulation_params(seed = 5, job_type = 12, output_directory="output", min_speciation_rate=0.1)
+		s.set_map_files(sample_file="null", fine_file="sample/large_fine.tif")
+		s.sample_map.x_size = 10
+		s.sample_map.y_size = 10
+		s.fine_map.x_offset = 100
+		s.fine_map.y_offset = 120
+		s.finalise_setup()
+		s.run_coalescence()
+		self.assertEqual("", log_stream.getvalue())
 
 class TestSimulationDimensionsAndOffsets(unittest.TestCase):
 	"""

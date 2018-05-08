@@ -354,6 +354,7 @@ class DispersalSimulation(Landscape):
 		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
 
 		:return: standard deviation of dispersal from the database
+		:rtype: float
 		"""
 		if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
 			raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
@@ -374,6 +375,7 @@ class DispersalSimulation(Landscape):
 		"""
 		Gets the dispersal simulation parameters from the dispersal_db
 		:return: the dispersal simulation parameters
+		:rtype: dict
 		"""
 		self._open_database_connection()
 		try:
@@ -386,6 +388,7 @@ class DispersalSimulation(Landscape):
 		main_dict = {}
 		for row in cursor.fetchall():
 			values = [x for x in row]
+			# python 2.x support
 			if sys.version_info[0] != 3:
 				for i, each in enumerate(values):
 					if isinstance(each, unicode):
@@ -393,3 +396,17 @@ class DispersalSimulation(Landscape):
 			main_dict[values[0]] = dict(zip(column_names[1:], values[1:]))
 		# Now convert it into a dictionary
 		return main_dict
+
+	def get_database_references(self):
+		"""
+		Gets the references from the database.
+		:return: a list of references from the database
+		:rtype: list
+		"""
+		self._open_database_connection()
+		try:
+			cursor = self._db_conn.cursor()
+			cursor.execute("SELECT DISTINCT(ref) FROM PARAMETERS")
+		except sqlite3.OperationalError as e:
+			raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
+		return [x[0] for x in cursor.fetchall()]
