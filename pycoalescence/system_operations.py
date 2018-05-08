@@ -176,19 +176,20 @@ def write_to_log(i, message, logger):
 	logger.log(level=i, msg=message)
 
 
-def create_logger(logger, file = None, logging_level=logging.WARNING):
+def create_logger(logger, file = None, logging_level=logging.WARNING, **kwargs):
 	"""
 	Creates a logger object to be assigned to NECSim sims and dispersal tests.
 
 	:param logger: the logger to alter
 	:param file: the file to write out to, defaults to None, writing to terminal
 	:param logging_level: the logging level to write out at (defaults to INFO)
+	:param kwargs: optionally provide additional arguments for logging to
 
 	:return:
 	"""
 	formatter = logging.Formatter('%(message)s')
 	if file is None:
-		sh = logging.StreamHandler()
+		sh = logging.StreamHandler(kwargs.get("stream", None))
 	else:
 		sh = logging.FileHandler(file)
 	sh.setLevel(logging_level)
