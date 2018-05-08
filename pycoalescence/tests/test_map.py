@@ -346,6 +346,16 @@ class TestMap(unittest.TestCase):
 		m.data = np.zeros(shape=(10, 10))
 		m.create(output_file)
 		self.assertTrue(os.path.exists(output_file))
+		m2 = Map(output_file)
+		m2.open()
+		self.assertEqual((10, 10), m2.data.shape)
+		self.assertEqual(0, np.sum(m2.data))
+
+	def testCreateWithGeotransform(self):
+		"""
+		Tests that the create function works properly with setting a geotransform.
+		"""
+		m =
 
 	def testDataTypeFetch(self):
 		"""
@@ -452,6 +462,18 @@ class TestMapReprojection(unittest.TestCase):
 			self.assertAlmostEqual(each, dims[i+6])
 		self.assertAlmostEqual(dims[4], 0.5*dims_2[4])
 		self.assertAlmostEqual(dims[5], 0.5*dims_2[5])
+
+	def testNoData(self):
+		"""
+		Tests that no data values are correctly read from tif files.
+		"""
+		m = Map("sample/large_mask.tif")
+		self.assertEqual(-99.0, m.get_no_data())
+		self.assertEqual(-99.0, m.get_no_data(1))
+		m2 = Map("sample/bytesample.tif")
+		self.assertIsNone(m2.get_no_data())
+		m3 = Map("sample/example_historical_fine.tif")
+		self.assertAlmostEqual(-3.4028234663852886e+38, m3.get_no_data(), places=7)
 
 class MapAssignment(unittest.TestCase):
 	"""
@@ -577,7 +599,17 @@ class TestSubsettingMaps(unittest.TestCase):
 		cls.m = Map("sample/SA_sample_fine.tif")
 
 	def testSubsetting(self):
+		"""
+		Tests the basic subsetting functionality works as intended.
+		:return:
+		"""
 		arr = self.m.get_subset(x_offset=0, y_offset=0, x_size=13, y_size=13)
+		with self.assertRaises(ValueError):
+			self.m.get_subset(-1, -1, 13, 13)
+		with self.assertRaises(ValueError):
+			self.m.get_subset(0, 0, 14, 14)
+		with self.assertRaises(ValueError):
+			self.m.get_subset(14, 14, 1, 1)
 		self.assertEqual(arr[0, 0], 231)
 		self.assertEqual(arr[1, 0], 296)
 		self.assertEqual(arr[0, 1], 303)
@@ -587,6 +619,10 @@ class TestSubsettingMaps(unittest.TestCase):
 		self.assertEqual(arr2[0, 1], 286)
 
 	def testCachedSubsetting(self):
+		"""
+		Tests that the cached subsetting functionality works as intended.
+		:return:
+		"""
 		arr = self.m.get_cached_subset(x_offset=0, y_offset=0, x_size=13, y_size=13)
 		self.assertEqual(arr[0, 0], 231)
 		self.assertEqual(arr[1, 0], 296)
@@ -595,3 +631,11 @@ class TestSubsettingMaps(unittest.TestCase):
 		self.assertEqual(arr2[0, 0], 288)
 		self.assertEqual(arr2[1, 0], 263)
 		self.assertEqual(arr2[0, 1], 286)
+
+	def testSubsettingNoData(self):
+		"""
+		Tests that the correct array is returned when using a no data value.
+		"""
+		m = Map("sample/large_mask.tif")
+		self.assertEqual(-243335289.0, np.sum(m.get_subset(0, 0, 1818, 1695)))
+		self.assertEqual(375, np.sum(m.get_subset(0, 0, 1818, 1695, 0)))

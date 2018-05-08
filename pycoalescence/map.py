@@ -21,6 +21,7 @@ except AttributeError:
 	NumberTypes = (int, float)
 try:
 	from osgeo import gdal, ogr, osr
+
 	default_val = gdal.GDT_Float32
 except ImportError as ie:
 	default_val = 6
@@ -71,7 +72,6 @@ class Map(object):
 		self.logger = logging.Logger("maplogger")
 		self._create_logger()
 
-
 	def __del__(self):
 		"""
 		Overriding the destructor for proper destruction of the logger object
@@ -118,12 +118,12 @@ class Map(object):
 	def get_dtype(self, band_no=None):
 		"""
 		Gets the data type of the provided band number
+
 		:param band_no: band number to obtain the data type of
 
 		:rtype: int
 		:return: the gdal data type number in the raster file
 		"""
-		ds = gdal.Open(self.file_name)
 		if band_no is None:
 			if self.band_number is None:
 				self.band_number = 1
@@ -134,6 +134,26 @@ class Map(object):
 		data_type = ds.GetRasterBand(self.band_number).DataType
 		ds = None
 		return data_type
+
+	def get_no_data(self, band_no=None):
+		"""
+		Gets the no data value for the tif map.
+
+		:param band_no: the band number to obtain the no data value from
+
+		:return: the no data value
+
+		:rtype: float
+		"""
+		if band_no is None:
+			if self.band_number is None:
+				self.band_number = 1
+		else:
+			self.band_number = band_no
+		check_file_exists(self.file_name)
+		ds = gdal.Open(self.file_name)
+		no_data = ds.GetRasterBand(self.band_number).GetNoDataValue()
+		return no_data
 
 	def output_exists(self, file=None):
 		"""
@@ -176,16 +196,20 @@ class Map(object):
 		ds.FlushCache()
 		ds = None
 
-	def create(self, file, bands=1, datatype=gdal.GDT_Byte):
+	def create(self, file, bands=1, datatype=gdal.GDT_Byte, geotransform=None, projection=None):
 		"""
 		Create the file output and writes the data to the output.
 
 		:param file: the output file to create
 		:param bands: optionally provide a number of bands to create
+		:param geotransform: optionally provide a geotransform to set for the raster - defaults to (0, 1, 0, 0, 0, -1)
+		:param projection: optionally provide a projection to set for the raster
 		"""
 		if self.data is None:
 			raise ValueError("Data is None for writing to file.")
-		geotransform = (0, 1, 0, 0, 0, -1)
+		if geotransform is None:
+			# TODO write a test for this
+			geotransform = (0, 1, 0, 0, 0, -1)
 		if self.output_exists(file):
 			raise IOError("File already exists at {}.".format(file))
 		check_parent(self.file_name)
@@ -195,6 +219,8 @@ class Map(object):
 		if not output_raster:
 			raise IOError("Could not create tif file at {}.".format(self.file_name))
 		output_raster.SetGeoTransform(geotransform)
+		if projection:
+			output_raster.SetProjection(projection)
 		out_band = output_raster.GetRasterBand(1)
 		out_band.WriteArray(self.data)
 		out_band.FlushCache()
@@ -326,7 +352,11 @@ class Map(object):
 
 	def get_projection(self):
 		"""
-		Gets the projection of the map
+		Gets the projection of the map.
+
+		:return: the projection object of the map in WKT format
+
+		:rtype: str
 		"""
 		if not self.output_exists():
 			raise IOError("Output file {} does not exist for fetching projection.".format(self.file_name))
@@ -357,7 +387,7 @@ class Map(object):
 			self.open()
 		return self.data[y_offset:(y_offset + y_size), x_offset:(x_offset + x_size)]
 
-	def get_subset(self, x_offset, y_offset, x_size, y_size):
+	def get_subset(self, x_offset, y_offset, x_size, y_size, no_data_value=None):
 		"""
 		Gets a subset of the map file
 
@@ -365,6 +395,8 @@ class Map(object):
 		:param y_offset: the y offset from the top left corner of the map
 		:param x_size: the x size of the subset to obtain
 		:param y_size: the y size of the subset to obtain
+		:param no_data_value: optionally provide a value to replace all no data values with.
+
 		:return: a numpy array containing the subsetted data
 		"""
 		if gdal is None:
@@ -375,8 +407,16 @@ class Map(object):
 			raise IOError(
 				"File " + str(self.file_name) + " does not exist or is not accessible. Check read/write access.")
 		ds = gdal.Open(self.file_name)
-		to_return = np.array(ds.GetRasterBand(1).ReadAsArray(x_offset, y_offset, x_size, y_size))
+		x, y = self.get_x_y()
+		if not 0 <= x_size +x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
+			raise ValueError("Requested x, y subset of [{}:{}, {}:{}]"
+							 " not with array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
+																			 y_offset, y_offset + y_size,
+																			 x, y))
+		to_return = np.array(ds.GetRasterBand(1).ReadAsArray(x_offset, y_offset, x_size, y_size), dtype=np.float)
 		ds = None
+		if no_data_value is not None:
+			to_return[to_return == self.get_no_data()] = no_data_value
 		return to_return
 
 	def convert_lat_long(self, lat, long):
@@ -441,7 +481,7 @@ class Map(object):
 		try:
 			if offset.get_projection() != self.get_projection():
 				self.logger.error("Projection of {} does not match projection of {}.\n".format(self.file_name,
-																							 offset.file_name))
+																							   offset.file_name))
 				self.logger.error("{} = {}.\n".format(self.file_name, self.get_projection()))
 				self.logger.error("{} = {}.\n".format(self.file_name, offset.get_projection()))
 				raise TypeError("Projections and spatial reference systems of two maps do not match.")
@@ -587,8 +627,8 @@ class Map(object):
 		if output_srs and output_srs != source_srs:
 			x_min, y_min = convert_coordinates(x_min, y_min, source_srs, output_srs)
 			x_max, y_max = convert_coordinates(x_max, y_max, source_srs, output_srs)
-		x_dim = int(math.ceil((x_max - x_min) / self.x_res) + (2*x_buffer))
-		y_dim = int(math.ceil((y_max - y_min) / self.y_res) + (2*y_buffer))
+		x_dim = int(math.ceil((x_max - x_min) / self.x_res) + (2 * x_buffer))
+		y_dim = int(math.ceil((y_max - y_min) / self.y_res) + (2 * y_buffer))
 		target_ds = gdal.GetDriverByName('GTiff').Create(self.file_name, x_dim,
 														 y_dim, 1, data_type)
 		if target_ds is None:
@@ -605,7 +645,7 @@ class Map(object):
 				# Source has no projection (needs GDAL >= 1.7.0 to work)
 				target_ds.SetProjection('LOCAL_CS["arbitrary"]')
 		target_ds.SetGeoTransform((
-			x_min-(self.x_res * x_buffer), self.x_res, 0,
+			x_min - (self.x_res * x_buffer), self.x_res, 0,
 			y_max + (self.y_res * y_buffer), 0, -self.y_res,
 		))
 		# Rasterize
