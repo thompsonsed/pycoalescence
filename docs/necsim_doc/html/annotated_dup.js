@@ -56,6 +56,7 @@ var annotated_dup =
     [ "FatalException", "struct_fatal_exception.html", "struct_fatal_exception" ],
     [ "Fragment", "struct_fragment.html", "struct_fragment" ],
     [ "Landscape", "class_landscape.html", "class_landscape" ],
+    [ "LandscapeMetricsCalculator", "class_landscape_metrics_calculator.html", "class_landscape_metrics_calculator" ],
     [ "LogFile", "class_log_file.html", "class_log_file" ],
     [ "Matrix", "class_matrix.html", "class_matrix" ],
     [ "MetacommunitiesArray", "struct_metacommunities_array.html", "struct_metacommunities_array" ],

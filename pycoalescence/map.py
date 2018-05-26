@@ -1,8 +1,5 @@
 """
-Contains the Map class as part of the PyCoalescence Project.
-
-Operations involve simulating dispersal kernels on maps, detecting map file dimensions and obtaining offsets between
-maps.
+Open tif files and detect properties and data using gdal. Detailed :ref:`here <Simulate_landscapes>`.
 """
 import logging
 import math
@@ -34,12 +31,9 @@ except ImportError as ie:
 from .system_operations import check_file_exists, create_logger, check_parent, isclose
 
 
-
-
-
 class Map(object):
 	"""
-	A class for the map object, containing the file name and the variables associated with this map object.
+	Contains the file name and the variables associated with this map object.
 
 	The internal array of the tif file is stored in self.data, and band 1 of the file can be opened by using
 	open()
@@ -436,7 +430,7 @@ class Map(object):
 		"""
 		ds = self.get_database()
 		x, y = self.get_x_y()
-		if not 0 <= x_size +x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
+		if not 0 <= x_size + x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
 			raise ValueError("Requested x, y subset of [{}:{}, {}:{}]"
 							 " not with array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
 																			 y_offset, y_offset + y_size,
@@ -590,8 +584,8 @@ class Map(object):
 				return False
 		return True
 
-	def rasterise(self, shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, field=None,
-				  burn_val=[1], data_type=default_val, attribute_filter=None,
+	def rasterise(self, shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, geo_transform=None,
+				  field=None, burn_val=[1], data_type=default_val, attribute_filter=None,
 				  x_buffer=1, y_buffer=1, **kwargs):
 		"""
 		Rasterises the provided shape file to produce the output raster.
@@ -600,11 +594,15 @@ class Map(object):
 
 		If a field is provided, the value in that field will become the value in the raster.
 
+		If a geo_transform is provided, it overrides the x_res, y_res, x_buffer and y_buffer.
+
 		:param shape_file: path to the .shp vector file to rasterise, or an ogr.DataSource object contain the shape file
 		:param raster_file: path to the output raster file (should not already exist)
 		:param x_res: the x resolution of the output raster
 		:param y_res: the y resolution of the output raster
 		:param output_srs: optionally define the output projection of the raster file
+		:param geo_transform: optionally define the geotransform of the raster file (cannot use resolution or buffer
+							  arguments with this option)
 		:param field: the field to set as raster values
 		:param burn_val: the r,g,b value to use if there is no field for the location
 		:param data_type: the gdal type for output data
@@ -626,14 +624,20 @@ class Map(object):
 		if x_res is not None and y_res is not None:
 			self.x_res = x_res
 			self.y_res = y_res
-		if self.x_res is None or self.y_res is None or self.x_res == 0 or self.y_res == 0:
-			raise ValueError("Must provide both an x and y resolution.")
-		# Only continue if the input file is a valid shape file and it exists.
+			if geo_transform:
+				raise ValueError("Cannot provide both an x,y resolution and a geotransform.")
+		if geo_transform is None and (self.x_res is None or self.y_res is None or self.x_res == 0 or self.y_res == 0):
+			raise ValueError("Must provide both an x and y resolution, or a geo-transform.")
+		if geo_transform is not None:
+			self.x_res = geo_transform[1]
+			self.y_res = -geo_transform[5]
+			x_buffer = 0.5
+			y_buffer = 0.5
 		if not isinstance(shape_file, ogr.DataSource):
 			if not os.path.exists(shape_file):
 				raise IOError("Shape file does not exist at {}".format(shape_file))
 			if not shape_file.endswith('.shp'):
-				raise ValueError("Provided shape file is not .shp file: ".format(shape_file))
+				raise ValueError("Provided shape file is not .shp file: {}".format(shape_file))
 			orig_data_src = ogr.Open(shape_file)
 		else:
 			orig_data_src = shape_file
@@ -642,7 +646,6 @@ class Map(object):
 				output_srs = osr.SpatialReference(wkt=output_srs)
 		if isinstance(burn_val, int) or isinstance(burn_val, float):
 			burn_val = [burn_val]
-		# Open the vector file
 
 		# Make a copy of the layer's data source because we'll need to
 		# modify its attributes table
@@ -657,6 +660,10 @@ class Map(object):
 			x_max, y_max = convert_coordinates(x_max, y_max, source_srs, output_srs)
 		x_dim = int(math.ceil((x_max - x_min) / self.x_res) + (2 * x_buffer))
 		y_dim = int(math.ceil((y_max - y_min) / self.y_res) + (2 * y_buffer))
+		if "width" in kwargs:
+			x_dim = kwargs["width"]
+		if "height" in kwargs:
+			y_dim = kwargs["height"]
 		target_ds = gdal.GetDriverByName('GTiff').Create(self.file_name, x_dim,
 														 y_dim, 1, data_type)
 		if target_ds is None:
@@ -672,11 +679,11 @@ class Map(object):
 			else:
 				# Source has no projection (needs GDAL >= 1.7.0 to work)
 				target_ds.SetProjection('LOCAL_CS["arbitrary"]')
-		target_ds.SetGeoTransform((
-			x_min - (self.x_res * x_buffer), self.x_res, 0,
-			y_max + (self.y_res * y_buffer), 0, -self.y_res,
-		))
-		# Rasterize
+		if geo_transform is None:
+			geo_transform = (x_min - (self.x_res * x_buffer), self.x_res, 0,
+							 y_max + (self.y_res * y_buffer), 0, -self.y_res)
+		target_ds.SetGeoTransform(geo_transform)
+		# Generate the keyword arguments to pass to RasterizeLayer
 		opts = []
 		kw = {}
 		if "allTouched" not in kwargs:
@@ -706,7 +713,7 @@ class Map(object):
 				  dest_file is not None
 
 		:param source_projection: provide a source projection to reproject from
-		:param dest_projection: the destination file projection, cannot be None
+		:param dest_projection: the destination file projection, can only be None if rescaling
 		:param source_file: optionally provide a file name to reproject. Defaults to self.file_name
 		:param dest_file: the destination file to output to (if None, overwrites original file)
 		:param x_scalar: multiplier to change the x resolution by, defaults to 1
@@ -743,10 +750,21 @@ class Map(object):
 			if os.path.exists(dest_file):
 				raise IOError("Destination file already exists at {}.".format(dest_file))
 			dest = gdal.GetDriverByName('GTiff').Create(dest_file, dst_xsize, dst_ysize, 1, data_type)
+		if dest is None:
+			if dest_file is None:
+				raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize,
+																									 dst_ysize))
+			raise IOError("Could not create a file at {} of dimensions {}, {}.".format(dest_file,
+																					   dst_xsize, dst_ysize))
 		dest.SetProjection(dest_projection.ExportToWkt())
 		dest.SetGeoTransform(dst_gt)
-		gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
-				  warpMemoryLimit=warp_memory_limit)
+		try:
+			gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
+					  warpMemoryLimit=warp_memory_limit)
+		except AttributeError as ae:
+			self.logger.critical("Cannot find the gdal.Warp functionality - it is possible this function is not "
+								 "provided by your version of gdal, or that your gdal installation is incomplete.")
+			raise ae
 		dest.FlushCache()
 		if dest_file is None:
 			os.remove(self.file_name)

@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File LandscapeMetricsCalculator.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File LandscapeMetricsCalculator.h" href="file_LandscapeMetricsCalculator.h.html" />
+    <link rel="prev" title="File LandscapeMetricsCalculator.cpp" href="file_LandscapeMetricsCalculator.cpp.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_LandscapeMetricsCalculator.h.html" title="File LandscapeMetricsCalculator.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_LandscapeMetricsCalculator.cpp.html" title="File LandscapeMetricsCalculator.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_LandscapeMetricsCalculator.cpp.html" accesskey="U">File LandscapeMetricsCalculator.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-landscapemetricscalculator-cpp">
+<span id="program-listing-file-landscapemetricscalculator-cpp"></span><h1>Program Listing for File LandscapeMetricsCalculator.cpp<a class="headerlink" href="#program-listing-for-file-landscapemetricscalculator-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_LandscapeMetricsCalculator.cpp.html#file-landscapemetricscalculator-cpp"><span class="std std-ref">File LandscapeMetricsCalculator.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
+<span class="cp">#include</span> <span class="cpf">&quot;LandscapeMetricsCalculator.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">double</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">calculateMNN</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">distances</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">getRows</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">getCols</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">distances</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">findNearestNeighbourDistance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">distances</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;No cells found on map. Cannot calculate distances.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">accumulate</span><span class="p">(</span><span class="n">distances</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">distances</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mf">0.0</span><span class="p">)</span><span class="o">/</span><span class="n">distances</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">checkMinDistance</span><span class="p">(</span><span class="n">Cell</span> <span class="o">&amp;</span><span class="n">home_cell</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Cell</span> <span class="n">this_cell</span><span class="p">{};</span>
+    <span class="n">this_cell</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">this_cell</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">this_cell</span> <span class="o">!=</span> <span class="n">home_cell</span> <span class="o">&amp;&amp;</span> <span class="n">matrix</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">distanceBetweenCells</span><span class="p">(</span><span class="n">home_cell</span><span class="p">,</span> <span class="n">this_cell</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">distance</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">min_distance</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">min_distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">findNearestNeighbourDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">row</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">col</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">long</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getRows</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="kt">long</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="kt">long</span> <span class="n">left</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">col</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="kt">long</span> <span class="n">right</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">col</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+    <span class="kt">long</span> <span class="n">x</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="n">lower</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">min_distance</span> <span class="o">=</span> <span class="n">getRows</span><span class="p">()</span> <span class="o">*</span> <span class="n">getCols</span><span class="p">();</span>
+    <span class="n">Cell</span> <span class="n">home_cell</span><span class="p">{};</span>
+    <span class="n">home_cell</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">col</span><span class="p">;</span>
+    <span class="n">home_cell</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">row</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">lower</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">min_distance_possible</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">right</span><span class="o">-</span><span class="n">left</span><span class="p">,</span> <span class="n">upper</span><span class="o">-</span><span class="n">lower</span><span class="p">);</span>
+        <span class="c1">// Four dimensions to check in</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">x</span> <span class="o">++</span><span class="p">;</span>
+            <span class="n">checkMinDistance</span><span class="p">(</span><span class="n">home_cell</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">y</span> <span class="o">++</span><span class="p">;</span>
+            <span class="n">checkMinDistance</span><span class="p">(</span><span class="n">home_cell</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">left</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">x</span> <span class="o">--</span><span class="p">;</span>
+            <span class="n">checkMinDistance</span><span class="p">(</span><span class="n">home_cell</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">y</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">y</span> <span class="o">--</span><span class="p">;</span>
+            <span class="n">checkMinDistance</span><span class="p">(</span><span class="n">home_cell</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// Expand the grid by 1 in all dimensions.</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">lower</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">lower</span> <span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">upper</span> <span class="o">&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getRows</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">upper</span> <span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">left</span> <span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">right</span> <span class="o">&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getCols</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">right</span> <span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">left</span> <span class="o">&gt;=</span> <span class="n">getCols</span><span class="p">()</span> <span class="o">||</span>
+                <span class="n">right</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">right</span> <span class="o">&gt;=</span> <span class="n">getCols</span><span class="p">()</span> <span class="o">||</span>
+                <span class="n">lower</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">lower</span> <span class="o">&gt;=</span> <span class="n">getRows</span><span class="p">()</span> <span class="o">||</span>
+                <span class="n">upper</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">upper</span> <span class="o">&gt;=</span> <span class="n">getRows</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Bounds out of range. Please report this bug.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;t, b, l, r: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">upper</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">lower</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">right</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+<span class="cp">#endif</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">min_distance</span> <span class="o">&lt;</span> <span class="n">min_distance_possible</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">min_distance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">createCellList</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">getRows</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">getCols</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">Cell</span> <span class="n">cell</span><span class="p">;</span>
+                <span class="n">cell</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+                <span class="n">cell</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="n">all_cells</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">cell</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Detected &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; cells&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="c1">// TODO remove when confirmed working</span>
+<span class="c1">//double LandscapeMetricsCalculator::findNearestNeighbours()</span>
+<span class="c1">//{</span>
+<span class="c1">//  createCellList();</span>
+<span class="c1">//  vector&lt;double&gt; all_distances;</span>
+<span class="c1">//  double auto_min = getCols() * getRows();</span>
+<span class="c1">//  if(auto_min &lt; 1.0)</span>
+<span class="c1">//  {</span>
+<span class="c1">//      throw FatalException(&quot;Map size &lt; 1, check your files.&quot;);</span>
+<span class="c1">//  }</span>
+<span class="c1">//  for(unsigned long i = 0; i &lt; all_cells.size(); i++)</span>
+<span class="c1">//  {</span>
+<span class="c1">//      double min_distance = auto_min;</span>
+<span class="c1">//      for(unsigned long j = 0; j &lt; all_cells.size(); j++)</span>
+<span class="c1">//      {</span>
+<span class="c1">//          if(j != i)</span>
+<span class="c1">//          {</span>
+<span class="c1">//              auto distance = distanceBetweenCells(all_cells[i], all_cells[j]);</span>
+<span class="c1">//              if(distance &lt; min_distance)</span>
+<span class="c1">//              {</span>
+<span class="c1">//                  min_distance = distance;</span>
+<span class="c1">//              }</span>
+<span class="c1">//          }</span>
+<span class="c1">//      }</span>
+<span class="c1">//      all_distances.emplace_back(min_distance);</span>
+<span class="c1">//  }</span>
+<span class="c1">//  if(all_distances.empty())</span>
+<span class="c1">//  {</span>
+<span class="c1">//      throw FatalException(&quot;No cells detected on map. Cannot calculate nearest-neighbours.&quot;);</span>
+<span class="c1">//  }</span>
+<span class="c1">//  return accumulate(all_distances.begin(), all_distances.end(), 0.0) / all_distances.size();</span>
+<span class="c1">//}</span>
+
+<span class="kt">double</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">calculateClumpiness</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">createCellList</span><span class="p">();</span>
+    <span class="kt">double</span> <span class="n">P</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="o">/</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getCols</span><span class="p">()</span> <span class="o">*</span> <span class="n">getRows</span><span class="p">());</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">totalAdj</span> <span class="o">=</span> <span class="n">calculateNoAdjacencies</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">totalNonAdj</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">-</span> <span class="n">totalAdj</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">minPerimeter</span> <span class="o">=</span> <span class="n">calculateMinPerimeter</span><span class="p">();</span>
+    <span class="kt">double</span> <span class="n">G</span> <span class="o">=</span> <span class="n">totalAdj</span> <span class="o">/</span> <span class="p">(</span><span class="n">totalAdj</span> <span class="o">+</span> <span class="n">totalNonAdj</span> <span class="o">-</span> <span class="n">minPerimeter</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">G</span> <span class="o">&lt;</span> <span class="n">P</span> <span class="o">&amp;&amp;</span> <span class="n">P</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">G</span> <span class="o">-</span> <span class="n">P</span><span class="p">)</span><span class="o">/</span><span class="n">P</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">G</span> <span class="o">-</span> <span class="n">P</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">P</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">calculateNoAdjacencies</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">totalAdj</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">home_cell</span> <span class="p">:</span> <span class="n">all_cells</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">==</span><span class="mi">0</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">Cell</span> <span class="n">this_cell</span><span class="p">;</span>
+                    <span class="n">this_cell</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">home_cell</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+                    <span class="n">this_cell</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">home_cell</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">this_cell</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">this_cell</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getCols</span><span class="p">())</span> <span class="o">&amp;&amp;</span>
+                       <span class="n">this_cell</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">this_cell</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">getRows</span><span class="p">()))</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">this_cell</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">this_cell</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">totalAdj</span> <span class="o">++</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">totalAdj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">calculateMinPerimeter</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Based on http://www.umass.edu/landeco/research/fragstats/documents/Metrics/</span>
+    <span class="c1">// Contagion%20-%20Interspersion%20Metrics/Metrics/C115%20-%20CLUMPY.htm</span>
+    <span class="kt">double</span> <span class="n">largestIntegerSquare</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="mf">0.5</span><span class="p">));</span>
+    <span class="kt">double</span> <span class="n">m</span> <span class="o">=</span> <span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="n">pow</span><span class="p">(</span><span class="n">largestIntegerSquare</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">largestIntegerSquare</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">largestIntegerSquare</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+            <span class="n">all_cells</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">largestIntegerSquare</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">largestIntegerSquare</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">largestIntegerSquare</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">largestIntegerSquare</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_LandscapeMetricsCalculator.cpp.html"
+                        title="previous chapter">File LandscapeMetricsCalculator.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_LandscapeMetricsCalculator.h.html"
+                        title="next chapter">File LandscapeMetricsCalculator.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_LandscapeMetricsCalculator.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_LandscapeMetricsCalculator.h.html" title="File LandscapeMetricsCalculator.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_LandscapeMetricsCalculator.cpp.html" title="File LandscapeMetricsCalculator.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_LandscapeMetricsCalculator.cpp.html" >File LandscapeMetricsCalculator.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

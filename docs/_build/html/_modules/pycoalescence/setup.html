@@ -54,9 +54,12 @@
             
   <h1>Source code for pycoalescence.setup</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Sets up the NECSim executables. It configures the install by detecting system components and compiles the ``c++`` files,</span>
-<span class="sd">if possible. Command line flags can be provided (see :ref:`Compilation Options &lt;sec Compilation Options&gt;` for more</span>
-<span class="sd">information) to modify the install.</span>
+<span class="sd">Compile **necsim** with default or provided compilation options. It is required that this file is run (or the library</span>
+<span class="sd">compiled manually) before using **pycoalescence**.</span>
+
+<span class="sd">Running this file from the command line with ``python setup.py`` configures the install by detecting system components</span>
+<span class="sd">and compiles the ``c++`` files, if possible. Command line flags can be provided to setup.py to modify the install</span>
+<span class="sd">(see :ref:`Compilation Options &lt;sec Compilation Options&gt;` for more information).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span>  <span class="c1"># Only Python 2.x</span>
@@ -77,7 +80,6 @@
 <span class="k">try</span><span class="p">:</span>
 	<span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span>
 	<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">execute_log_info</span><span class="p">,</span> <span class="n">set_logging_method</span><span class="p">,</span> <span class="n">mod_directory</span><span class="p">,</span> <span class="n">execute_silent</span>
-
 <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">SystemError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 	<span class="kn">from</span> <span class="nn">future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span>
 	<span class="kn">from</span> <span class="nn">system_operations</span> <span class="kn">import</span> <span class="n">execute_log_info</span><span class="p">,</span> <span class="n">set_logging_method</span><span class="p">,</span> <span class="n">mod_directory</span><span class="p">,</span> <span class="n">execute_silent</span>
@@ -96,6 +98,7 @@
 		<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Using default dependencies instead.&quot;</span><span class="p">)</span>
 		<span class="n">use_default_depends</span><span class="p">()</span></div>
 
+
 <div class="viewcode-block" id="create_default_depend"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.create_default_depend">[docs]</a><span class="k">def</span> <span class="nf">create_default_depend</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Runs the default makedepend command, outputting dependencies to lib/depends_default.</span>
@@ -107,6 +110,7 @@
 					   <span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;lib/&quot;</span><span class="p">))</span>
 	<span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">)</span> <span class="k">as</span> <span class="n">rte</span><span class="p">:</span>
 		<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not execute makedepend: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rte</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="use_default_depends"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.use_default_depends">[docs]</a><span class="k">def</span> <span class="nf">use_default_depends</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -131,8 +135,6 @@
 			<span class="n">f_out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
 
 
-
-
 <div class="viewcode-block" id="do_compile"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.do_compile">[docs]</a><span class="k">def</span> <span class="nf">do_compile</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been</span>
@@ -153,14 +155,15 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;C++ library does not exist! Check relative file path&quot;</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="move_shared_object_file"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.move_shared_object_file">[docs]</a><span class="k">def</span> <span class="nf">move_shared_object_file</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Moves the shared object (.so) file to the build directory.</span>
 <span class="sd">	:return:</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">directory</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;build&quot;</span><span class="p">)</span>
-	<span class="n">dirv</span> <span class="o">=</span> <span class="s1">&#39;sharedpy&#39;</span><span class="o">+</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;necsimmodule.so&quot;</span><span class="p">,</span> <span class="s2">&quot;dispersalmodule.so&quot;</span><span class="p">,</span> <span class="s2">&quot;applyspecmodule.so&quot;</span><span class="p">]:</span>
+	<span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;build&quot;</span><span class="p">)</span>
+	<span class="n">dirv</span> <span class="o">=</span> <span class="s1">&#39;sharedpy&#39;</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;necsimmodule.so&quot;</span><span class="p">,</span> <span class="s2">&quot;dispersalmodule.so&quot;</span><span class="p">,</span> <span class="s2">&quot;applyspecmodule.so&quot;</span><span class="p">,</span> <span class="s2">&quot;meandispersalmodule.so&quot;</span><span class="p">]:</span>
 		<span class="n">src</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;lib&quot;</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
 		<span class="n">version_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">dirv</span><span class="p">)</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
@@ -175,6 +178,7 @@
 		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
 			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
 		<span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="get_build_dir"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.get_build_dir">[docs]</a><span class="k">def</span> <span class="nf">get_build_dir</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -227,7 +231,7 @@
 	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;lib/configure&quot;</span><span class="p">)):</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-				<span class="n">execute_log_info</span><span class="p">([</span><span class="s2">&quot;./configure&quot;</span><span class="p">,</span> <span class="s2">&quot;--with-verbose&quot;</span><span class="p">,</span> <span class="s2">&quot;BUILDDIR={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_build_dir</span><span class="p">()),</span>  <span class="s2">&quot;OBJDIR=obj&quot;</span><span class="p">],</span>
+				<span class="n">execute_log_info</span><span class="p">([</span><span class="s2">&quot;./configure&quot;</span><span class="p">,</span> <span class="s2">&quot;--with-verbose&quot;</span><span class="p">,</span> <span class="s2">&quot;BUILDDIR={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_build_dir</span><span class="p">()),</span> <span class="s2">&quot;OBJDIR=obj&quot;</span><span class="p">],</span>
 								 <span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;lib/&quot;</span><span class="p">))</span>
 			<span class="k">else</span><span class="p">:</span>
 				<span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;./configure&quot;</span><span class="p">]</span>
@@ -252,7 +256,7 @@
 		<span class="n">execute_log_info</span><span class="p">([</span><span class="s2">&quot;autoconf&quot;</span><span class="p">],</span> <span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;lib/&quot;</span><span class="p">))</span>
 	<span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">,</span> <span class="n">FileNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">cpe</span><span class="p">:</span>
 		<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Could not run autoconf function to generate configure executable. &quot;</span>
-					  <span class="s2">&quot;Please run this functionality manually if installation fails.&quot;</span><span class="p">)</span>
+						<span class="s2">&quot;Please run this functionality manually if installation fails.&quot;</span><span class="p">)</span>
 		<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cpe</span><span class="p">))</span></div>
 
 
@@ -267,6 +271,7 @@
 		<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">cpe</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
 		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Make file has not been generated. Cannot clean.&quot;</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="get_compilation_flags"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.get_compilation_flags">[docs]</a><span class="k">def</span> <span class="nf">get_compilation_flags</span><span class="p">(</span><span class="n">display_warnings</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Generates the compilation flags for passing to ./configure.</span>
@@ -276,11 +281,11 @@
 <span class="sd">	:rtype: list</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Get the relevant flags that python was originally compiled with, to be passed to the c++ code.</span>
-	<span class="n">include</span> <span class="o">=</span>  <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;CPPFLAGS=-I&quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_python_inc</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+	<span class="n">include</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;CPPFLAGS=-I&quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_python_inc</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 	<span class="n">cflags</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;CFLAGS&#39;</span><span class="p">)</span>
-	<span class="n">cflags</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;-arch \b[^ ]*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cflags</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="c1"># remove any architecture flags</span>
+	<span class="n">cflags</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;-arch \b[^ ]*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cflags</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># remove any architecture flags</span>
 	<span class="n">pylib</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;-L&quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_python_lib</span><span class="p">(</span><span class="n">standard_lib</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">+</span>
-			  <span class="s2">&quot; -L&quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;DESTDIRS&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; -L&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+				<span class="s2">&quot; -L&quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;DESTDIRS&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; -L&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 	<span class="n">lib</span> <span class="o">=</span> <span class="s2">&quot;LIBS=-lpython&quot;</span>
 	<span class="n">ldflags</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;-arch \b[^ ]*[\ ]*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s2">&quot;LDFLAGS&quot;</span><span class="p">))</span>
 	<span class="n">ldflags</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;LDFLAGS=&quot;</span> <span class="o">+</span> <span class="n">ldflags</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
@@ -297,11 +302,11 @@
 	<span class="c1"># Make sure that the linker directs to the correct python library (such as -lpython3.5m)</span>
 	<span class="c1"># Eventually this will also detect if the install is for an anaconda distribution.</span>
 	<span class="k">if</span> <span class="s1">&#39;conda&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span> <span class="ow">and</span> <span class="s1">&#39;Continuum&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
-		<span class="n">lib</span> <span class="o">+=</span>  <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+		<span class="n">lib</span> <span class="o">+=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 		<span class="k">if</span> <span class="s1">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;LIBRARY&#39;</span><span class="p">):</span>
 			<span class="n">lib</span> <span class="o">+=</span> <span class="s1">&#39;m&#39;</span>
 	<span class="k">else</span><span class="p">:</span>
-		<span class="n">cflags</span> <span class="o">+=</span> <span class="s2">&quot; -DANACONDA&quot;</span> <span class="c1"># TODO fix anaconda installation</span>
+		<span class="n">cflags</span> <span class="o">+=</span> <span class="s2">&quot; -DANACONDA&quot;</span>  <span class="c1"># TODO fix anaconda installation</span>
 	<span class="n">ldflags</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">pylib</span>
 	<span class="n">pylib</span> <span class="o">=</span> <span class="s2">&quot;PYTHON_LIB=&quot;</span> <span class="o">+</span> <span class="n">pylib</span>
 	<span class="n">call</span> <span class="o">=</span> <span class="p">[</span><span class="n">include</span> <span class="o">+</span> <span class="n">cflags</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ldflags</span><span class="p">,</span> <span class="n">pylib</span><span class="p">,</span> <span class="n">platform_so</span><span class="p">]</span>
@@ -310,6 +315,7 @@
 	<span class="k">if</span> <span class="ow">not</span> <span class="n">display_warnings</span><span class="p">:</span>
 		<span class="n">call</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;-Wstrict-prototypes|-Wno-unused-result|-Wunused-variable|-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">call</span><span class="p">]</span>
 	<span class="k">return</span> <span class="n">call</span></div>
+
 
 <div class="viewcode-block" id="run_configure"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.run_configure">[docs]</a><span class="k">def</span> <span class="nf">run_configure</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">],</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">display_warnings</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -325,7 +331,7 @@
 	<span class="n">autoconf</span><span class="p">()</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 		<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No compile options provided, using defaults.&quot;</span><span class="p">)</span>
-		<span class="n">call</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--with-verbose&quot;</span><span class="p">,</span>  <span class="s2">&quot;OBJDIR=obj&quot;</span><span class="p">,</span> <span class="s2">&quot;BUILDDIR={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_build_dir</span><span class="p">())])</span>
+		<span class="n">call</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--with-verbose&quot;</span><span class="p">,</span> <span class="s2">&quot;OBJDIR=obj&quot;</span><span class="p">,</span> <span class="s2">&quot;BUILDDIR={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_build_dir</span><span class="p">())])</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">if</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;--h&quot;</span> <span class="ow">or</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-h&quot;</span> <span class="ow">or</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-help&quot;</span> <span class="ow">or</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;--help&quot;</span><span class="p">:</span>
 			<span class="n">execute_log_info</span><span class="p">([</span><span class="s2">&quot;./configure&quot;</span><span class="p">,</span> <span class="s2">&quot;--help&quot;</span><span class="p">],</span> <span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;lib/&quot;</span><span class="p">))</span>
@@ -337,7 +343,8 @@
 	<span class="n">configure</span><span class="p">(</span><span class="n">opts</span><span class="o">=</span><span class="n">call</span><span class="p">)</span>
 	<span class="n">clean</span><span class="p">()</span></div>
 
-		<span class="c1"># move_executable()</span>
+
+<span class="c1"># move_executable()</span>
 
 <div class="viewcode-block" id="backup_makefile"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.backup_makefile">[docs]</a><span class="k">def</span> <span class="nf">backup_makefile</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -353,6 +360,7 @@
 		<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
 	<span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="copy_makefile"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.copy_makefile">[docs]</a><span class="k">def</span> <span class="nf">copy_makefile</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Copies the backup makefile to the main directory, if it exists.</span>
@@ -365,6 +373,7 @@
 	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
 		<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
 	<span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="configure_and_compile"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.setup.configure_and_compile">[docs]</a><span class="k">def</span> <span class="nf">configure_and_compile</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">],</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -382,6 +391,7 @@
 	<span class="c1"># move_executable()</span>
 	<span class="n">backup_makefile</span><span class="p">()</span></div>
 
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 	<span class="n">fail</span> <span class="o">=</span> <span class="bp">True</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -391,7 +401,7 @@
 			<span class="n">do_compile</span><span class="p">()</span>
 			<span class="c1"># move_shared_object_file()</span>
 			<span class="c1"># move_executable()</span>
-			<span class="n">fail</span><span class="o">=</span> <span class="bp">False</span>
+			<span class="n">fail</span> <span class="o">=</span> <span class="bp">False</span>
 	<span class="k">if</span> <span class="n">fail</span><span class="p">:</span>
 		<span class="n">configure_and_compile</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
 </pre></div>

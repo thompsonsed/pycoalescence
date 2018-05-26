@@ -1,20 +1,22 @@
 """
-Sets up the NECSim executables. It configures the install by detecting system components and compiles the ``c++`` files,
-if possible. Command line flags can be provided (see :ref:`Compilation Options <sec Compilation Options>` for more
-information) to modify the install.
+Compile **necsim** with default or provided compilation options. It is required that this file is run (or the library
+compiled manually) before using **pycoalescence**.
+
+Running this file from the command line with ``python setup.py`` configures the install by detecting system components
+and compiles the ``c++`` files, if possible. Command line flags can be provided to setup.py to modify the install
+(see :ref:`Compilation Options <sec Compilation Options>` for more information).
 """
 
 from __future__ import print_function, absolute_import, division  # Only Python 2.x
 
 import logging
+import os
 import platform
+import re
+import shutil
 import subprocess
 import sys
 import time
-
-import os
-import re
-import shutil
 from distutils import sysconfig
 
 # Import system operations for subprocess executation and log file handling
@@ -22,7 +24,6 @@ from distutils import sysconfig
 try:
 	from .future_except import FileNotFoundError
 	from .system_operations import execute_log_info, set_logging_method, mod_directory, execute_silent
-
 except (ImportError, SystemError, ValueError):
 	from future_except import FileNotFoundError
 	from system_operations import execute_log_info, set_logging_method, mod_directory, execute_silent
@@ -41,6 +42,7 @@ def make_depend():
 		logging.error("Using default dependencies instead.")
 		use_default_depends()
 
+
 def create_default_depend():
 	"""
 	Runs the default makedepend command, outputting dependencies to lib/depends_default.
@@ -52,6 +54,7 @@ def create_default_depend():
 					   cwd=os.path.join(mod_directory, "lib/"))
 	except (RuntimeError, subprocess.CalledProcessError) as rte:
 		logging.error("Could not execute makedepend: " + str(rte))
+
 
 def use_default_depends():
 	"""
@@ -76,8 +79,6 @@ def use_default_depends():
 			f_out.write(line)
 
 
-
-
 def do_compile():
 	"""
 	Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been
@@ -98,14 +99,15 @@ def do_compile():
 	else:
 		raise IOError("C++ library does not exist! Check relative file path")
 
+
 def move_shared_object_file():
 	"""
 	Moves the shared object (.so) file to the build directory.
 	:return:
 	"""
-	directory=os.path.join(mod_directory, "build")
-	dirv = 'sharedpy'+sys.version[0]
-	for file in ["necsimmodule.so", "dispersalmodule.so", "applyspecmodule.so"]:
+	directory = os.path.join(mod_directory, "build")
+	dirv = 'sharedpy' + sys.version[0]
+	for file in ["necsimmodule.so", "dispersalmodule.so", "applyspecmodule.so", "meandispersalmodule.so"]:
 		src = os.path.join(mod_directory, "lib", file)
 		version_dir = os.path.join(directory, dirv)
 		if not os.path.exists(src):
@@ -120,6 +122,7 @@ def move_shared_object_file():
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copy(src, dst)
+
 
 def get_build_dir():
 	"""
@@ -172,7 +175,7 @@ def configure(opts=None):
 	if os.path.exists(os.path.join(mod_directory, "lib/configure")):
 		try:
 			if opts is None:
-				execute_log_info(["./configure", "--with-verbose", "BUILDDIR={}".format(get_build_dir()),  "OBJDIR=obj"],
+				execute_log_info(["./configure", "--with-verbose", "BUILDDIR={}".format(get_build_dir()), "OBJDIR=obj"],
 								 cwd=os.path.join(mod_directory, "lib/"))
 			else:
 				command = ["./configure"]
@@ -197,7 +200,7 @@ def autoconf():
 		execute_log_info(["autoconf"], cwd=os.path.join(mod_directory, "lib/"))
 	except (RuntimeError, subprocess.CalledProcessError, FileNotFoundError) as cpe:
 		logging.warning("Could not run autoconf function to generate configure executable. "
-					  "Please run this functionality manually if installation fails.")
+						"Please run this functionality manually if installation fails.")
 		logging.warning(str(cpe))
 
 
@@ -212,6 +215,7 @@ def clean():
 		logging.warning(cpe.message)
 		raise RuntimeError("Make file has not been generated. Cannot clean.")
 
+
 def get_compilation_flags(display_warnings=False):
 	"""
 	Generates the compilation flags for passing to ./configure.
@@ -221,11 +225,11 @@ def get_compilation_flags(display_warnings=False):
 	:rtype: list
 	"""
 	# Get the relevant flags that python was originally compiled with, to be passed to the c++ code.
-	include =  str("CPPFLAGS=-I" + sysconfig.get_python_inc()).replace("\n", "")
+	include = str("CPPFLAGS=-I" + sysconfig.get_python_inc()).replace("\n", "")
 	cflags = " " + sysconfig.get_config_var('CFLAGS')
-	cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "") # remove any architecture flags
+	cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
 	pylib = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
-			  " -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
+				" -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
 	lib = "LIBS=-lpython"
 	ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS"))
 	ldflags = str("LDFLAGS=" + ldflags).replace("\n", " ")
@@ -242,11 +246,11 @@ def get_compilation_flags(display_warnings=False):
 	# Make sure that the linker directs to the correct python library (such as -lpython3.5m)
 	# Eventually this will also detect if the install is for an anaconda distribution.
 	if 'conda' not in sys.version and 'Continuum' not in sys.version:
-		lib +=  sys.version[0:3]
+		lib += sys.version[0:3]
 		if 'm' in sysconfig.get_config_var('LIBRARY'):
 			lib += 'm'
 	else:
-		cflags += " -DANACONDA" # TODO fix anaconda installation
+		cflags += " -DANACONDA"  # TODO fix anaconda installation
 	ldflags += " " + pylib
 	pylib = "PYTHON_LIB=" + pylib
 	call = [include + cflags, lib, ldflags, pylib, platform_so]
@@ -255,6 +259,7 @@ def get_compilation_flags(display_warnings=False):
 	if not display_warnings:
 		call = [re.sub('-Wstrict-prototypes|-Wno-unused-result|-Wunused-variable|-Wall', '', x) for x in call]
 	return call
+
 
 def run_configure(argv=[None], logging_level=logging.INFO, display_warnings=False):
 	"""
@@ -270,7 +275,7 @@ def run_configure(argv=[None], logging_level=logging.INFO, display_warnings=Fals
 	autoconf()
 	if len(argv) == 1:
 		logging.info("No compile options provided, using defaults.")
-		call.extend(["--with-verbose",  "OBJDIR=obj", "BUILDDIR={}".format(get_build_dir())])
+		call.extend(["--with-verbose", "OBJDIR=obj", "BUILDDIR={}".format(get_build_dir())])
 	else:
 		if argv[1] == "--h" or argv[1] == "-h" or argv[1] == "-help" or argv[1] == "--help":
 			execute_log_info(["./configure", "--help"], cwd=os.path.join(mod_directory, "lib/"))
@@ -282,7 +287,8 @@ def run_configure(argv=[None], logging_level=logging.INFO, display_warnings=Fals
 	configure(opts=call)
 	clean()
 
-		# move_executable()
+
+# move_executable()
 
 def backup_makefile():
 	"""
@@ -298,6 +304,7 @@ def backup_makefile():
 		os.remove(dst)
 	shutil.copy2(src, dst)
 
+
 def copy_makefile():
 	"""
 	Copies the backup makefile to the main directory, if it exists.
@@ -310,6 +317,7 @@ def copy_makefile():
 	if os.path.exists(dst):
 		os.remove(dst)
 	shutil.copy2(src, dst)
+
 
 def configure_and_compile(argv=[None], logging_level=logging.INFO):
 	"""
@@ -327,6 +335,7 @@ def configure_and_compile(argv=[None], logging_level=logging.INFO):
 	# move_executable()
 	backup_makefile()
 
+
 if __name__ == "__main__":
 	fail = True
 	if len(sys.argv) > 1:
@@ -336,6 +345,6 @@ if __name__ == "__main__":
 			do_compile()
 			# move_shared_object_file()
 			# move_executable()
-			fail= False
+			fail = False
 	if fail:
 		configure_and_compile(sys.argv)

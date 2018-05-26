@@ -54,9 +54,22 @@
             
   <h1>Source code for pycoalescence.simulation</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Contains the Simulation class as part of the pycoalescence package.</span>
+<span class="sd">Run spatially-explicit neutral simulations on provided landscapes with support for a wide range of scenarios and</span>
+<span class="sd">parameters. Detailed :ref:`here &lt;performing_simulations&gt;`.</span>
 
-<span class="sd">Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.</span>
+<span class="sd">The main class is :class:`.Simulation`, which contains routines for setting up and running simulations, plus basic tree</span>
+<span class="sd">generation after simulations have been completed.</span>
+
+<span class="sd">:input:</span>
+<span class="sd">	- Simulation parameters (such as dispersal kernel, speciation rate)</span>
+<span class="sd">	- Map files representing density over space</span>
+<span class="sd">	- [optional] map files representing relative reproductive ability</span>
+<span class="sd">	- [optional] map files representing dispersal potential</span>
+<span class="sd">	- [optional] historical density map files</span>
+
+<span class="sd">:output:</span>
+<span class="sd">	- Database containing generated coalescence tree, simulation parameters and basic biodiversity metrics.</span>
+<span class="sd">	- If the simulation does not complete, will instead generate a set of Dump_*.csv files for resuming simulations</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
@@ -158,9 +171,10 @@
 		<span class="n">Landscape</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_fine_map_sum_res</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">count_total</span> <span class="o">=</span> <span class="bp">None</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span> <span class="o">=</span> <span class="n">logging_level</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;necsimlogger&quot;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">log_output</span><span class="p">)</span>
+		<span class="c1"># Create the logging object and pass on the required arguments for its creation</span>
+		<span class="n">passedKwards</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="s2">&quot;stream&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span><span class="p">}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;necsimlogger&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">passedKwards</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">log_output</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging_level</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">pause_directory</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">full_config_file</span> <span class="o">=</span> <span class="bp">None</span>
@@ -594,12 +608,12 @@
 <span class="sd">		This is intended to be run after set_map_files()</span>
 
 <span class="sd">		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but</span>
-<span class="sd">		not a coarse map.</span>
+<span class="sd">						   not a coarse map.</span>
 
 <span class="sd">		:raises IOError: if one of the required maps does not exist</span>
 <span class="sd">		</span>
 <span class="sd">		:raises ValueError: if the dimensions of the dispersal map do not make sense when used with the fine map</span>
-<span class="sd">		provided</span>
+<span class="sd">							provided</span>
 
 <span class="sd">		:return: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -654,14 +668,14 @@
 <span class="sd">		:param float gen_since_historical: the time in generations since a historical state was achieved</span>
 <span class="sd">		:param bool restrict_self: if true, restricts dispersal from own cell</span>
 <span class="sd">		:param bool/str landscape_type: if false or &quot;closed&quot;, restricts dispersal to the provided maps, otherwise</span>
-<span class="sd">		can be &quot;infinite&quot;, or a tiled landscape using &quot;tiled_coarse&quot; or &quot;tiled_fine&quot;.</span>
+<span class="sd">										can be &quot;infinite&quot;, or a tiled landscape using &quot;tiled_coarse&quot; or &quot;tiled_fine&quot;.</span>
 <span class="sd">		:param bool protracted: if true, uses protracted speciation application</span>
 <span class="sd">		:param float min_speciation_gen: the minimum amount of time a lineage must exist before speciation occurs.</span>
 <span class="sd">		:param float max_speciation_gen: the maximum amount of time a lineage can exist before speciating.</span>
 <span class="sd">		:param bool spatial: if true, means that the simulation is spatial</span>
 <span class="sd">		:param bool uses_spatial_sampling: if true, the sample mask is interpreted as a proportional sampling mask,</span>
-<span class="sd">			where the number of individuals sampled in the cell is equal to the</span>
-<span class="sd">			density * deme_sample * cell sampling proportion</span>
+<span class="sd">										   where the number of individuals sampled in the cell is equal to the</span>
+<span class="sd">										   density * deme_sample * cell sampling proportion</span>
 <span class="sd">		:param list times: list of temporal sampling points to apply (in generations)</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_param</span><span class="p">:</span>
@@ -857,6 +871,7 @@
 <div class="viewcode-block" id="Simulation.import_fine_map_array"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.simulation.Simulation.import_fine_map_array">[docs]</a>	<span class="k">def</span> <span class="nf">import_fine_map_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Imports the fine map array to the in-memory object, subsetted to the same size as the sample grid.</span>
+
 <span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map_array</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -870,6 +885,7 @@
 <div class="viewcode-block" id="Simulation.import_sample_map_array"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.simulation.Simulation.import_sample_map_array">[docs]</a>	<span class="k">def</span> <span class="nf">import_sample_map_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Imports the sample map array to the in-memory object.</span>
+
 <span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map_array</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -881,9 +897,9 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Counts the density total for a subset of the grid by sampling from the fine map</span>
 
-<span class="sd">		Note that this function is an approximation (based on the average density of the fine map) and does not produce</span>
-<span class="sd">		a perfect value. This is done for performance reasons. The actual value can be obtained with</span>
-<span class="sd">		grid_density_actual().</span>
+<span class="sd">		:note: This is an approximation (based on the average density of the fine map) and does not produce</span>
+<span class="sd">		       a perfect value. This is done for performance reasons. The actual value can be obtained with</span>
+<span class="sd">		       grid_density_actual().</span>
 
 <span class="sd">		:param x_off: the x offset of the grid map subset</span>
 <span class="sd">		:param y_off: the y offset of the grid map subset</span>
@@ -891,6 +907,7 @@
 <span class="sd">		:param y_dim: the y dimension of the grid map subset</span>
 
 <span class="sd">		:return: an estimate of the total individuals that exist in the subset.</span>
+
 <span class="sd">		:rtype: int</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">import_fine_map_array</span><span class="p">()</span>
@@ -914,6 +931,7 @@
 <span class="sd">		:param y_dim: the y dimension of the grid map subset</span>
 
 <span class="sd">		:return: the total individuals that exist in the subset.</span>
+
 <span class="sd">		:rtype: int</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">import_fine_map_array</span><span class="p">()</span>
@@ -954,10 +972,10 @@
 
 <span class="sd">		If ram_limit is None, this function does nothing.</span>
 
-<span class="sd">		:note Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.</span>
+<span class="sd">		:note: Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.</span>
 
-<span class="sd">		:note Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as</span>
-<span class="sd">			  a maximum size.</span>
+<span class="sd">		:note: Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as</span>
+<span class="sd">			   a maximum size.</span>
 
 <span class="sd">		:param ram_limit: the desired amount of RAM to limit to, in GB</span>
 
@@ -1076,7 +1094,7 @@
 
 <span class="sd">		:param config_default: set to false if want config file to only be created if necessary. Defaults to True</span>
 <span class="sd">		:param ignore_errors: if true, any FileNotFoundError and FileExistsError raised by checking the output database</span>
-<span class="sd">		are ignored</span>
+<span class="sd">							  are ignored</span>
 <span class="sd">		:param expected: set to true if we expect the output file to exist</span>
 
 <span class="sd">		&quot;&quot;&quot;</span>

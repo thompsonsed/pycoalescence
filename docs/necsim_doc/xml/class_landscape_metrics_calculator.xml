@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_landscape_metrics_calculator" kind="class" language="C++" prot="public">
+    <compoundname>LandscapeMetricsCalculator</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Map&lt; double &gt;</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_landscape_metrics_calculator_1af663b7cd7f64e71a6c7a6fed6c7bd695" prot="private" static="no" mutable="no">
+        <type>vector&lt; <ref refid="struct_cell" kindref="compound">Cell</ref> &gt;</type>
+        <definition>vector&lt;Cell&gt; LandscapeMetricsCalculator::all_cells</definition>
+        <argsstring></argsstring>
+        <name>all_cells</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="22" column="1" bodyfile="LandscapeMetricsCalculator.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1a34f344e3282eead2091fe8ccb32e6d48" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double LandscapeMetricsCalculator::calculateMNN</definition>
+        <argsstring>()</argsstring>
+        <name>calculateMNN</name>
+        <briefdescription>
+<para>Calculates the mean distance between nearest neighbours on a Map. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the mean distance between every cell and its nearest neighbour </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="29" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="13" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1a16bde8469f437abc21602eedb979e5e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LandscapeMetricsCalculator::checkMinDistance</definition>
+        <argsstring>(Cell &amp;home_cell, const long &amp;x, const long &amp;y, double &amp;min_distance)</argsstring>
+        <name>checkMinDistance</name>
+        <param>
+          <type><ref refid="struct_cell" kindref="compound">Cell</ref> &amp;</type>
+          <declname>home_cell</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>min_distance</declname>
+        </param>
+        <briefdescription>
+<para>Checks if the minimum distance between cells is a new minimum. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>home_cell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the cell to check the distance from </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the x coordinate of the new location </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the y coordinate of the new location </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>min_distance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the previous minimum distance </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="38" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="33" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1a9dd4cde4aad066b3b204553718a63a98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double LandscapeMetricsCalculator::findNearestNeighbourDistance</definition>
+        <argsstring>(const long &amp;row, const long &amp;col)</argsstring>
+        <name>findNearestNeighbourDistance</name>
+        <param>
+          <type>const long &amp;</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>const long &amp;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+<para>Determines the distance to the nearest neighbour of a cell. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para></para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="46" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="48" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1a084eea2435b7d15049873ae4613b0307" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LandscapeMetricsCalculator::createCellList</definition>
+        <argsstring>()</argsstring>
+        <name>createCellList</name>
+        <briefdescription>
+<para>Creates a list containing all habitat cells in the landscape. List is stored in all_cells. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="52" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="123" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1aff48704d3a9e02da4914ac2b08c5f79b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double LandscapeMetricsCalculator::calculateClumpiness</definition>
+        <argsstring>()</argsstring>
+        <name>calculateClumpiness</name>
+        <briefdescription>
+<para>Calculates the clumpiness metric, which measures the degree to which the focal habitat is aggregated or clumped given its total area. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the clumpiness metric </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="59" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="176" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1ae477e368c4f13042cf2f9a47e62d60ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned long</type>
+        <definition>unsigned long LandscapeMetricsCalculator::calculateNoAdjacencies</definition>
+        <argsstring>()</argsstring>
+        <name>calculateNoAdjacencies</name>
+        <briefdescription>
+<para>Calculates the number of adjacencies in the landscape. </para>        </briefdescription>
+        <detaileddescription>
+<para>Adjacencies are habitat cells that are directly next to each other. Note that this uses the &quot;double=count&quot; method. <simplesect kind="return"><para>the number of adjacent cells in the landscape. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="68" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="194" bodyend="221"/>
+      </memberdef>
+      <memberdef kind="function" id="class_landscape_metrics_calculator_1a1ba606d6fb687aceaf4a8e31e8f17273" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double LandscapeMetricsCalculator::calculateMinPerimeter</definition>
+        <argsstring>()</argsstring>
+        <name>calculateMinPerimeter</name>
+        <briefdescription>
+<para>Calculates the minimum bounding perimeter for square cells on a landscape. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the minimum bounding perimeter for cells on a landscape </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="LandscapeMetricsCalculator.h" line="74" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="223" bodyend="242"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="790">
+        <label>LandscapeMetricsCalculator</label>
+        <link refid="class_landscape_metrics_calculator"/>
+        <childnode refid="791" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="791">
+        <label>Map&lt; double &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="792">
+        <label>LandscapeMetricsCalculator</label>
+        <link refid="class_landscape_metrics_calculator"/>
+        <childnode refid="793" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="793">
+        <label>Map&lt; double &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="LandscapeMetricsCalculator.h" line="21" column="1" bodyfile="LandscapeMetricsCalculator.h" bodystart="20" bodyend="76"/>
+    <listofallmembers>
+      <member refid="class_landscape_metrics_calculator_1af663b7cd7f64e71a6c7a6fed6c7bd695" prot="private" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>all_cells</name></member>
+      <member refid="class_landscape_metrics_calculator_1aff48704d3a9e02da4914ac2b08c5f79b" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateClumpiness</name></member>
+      <member refid="class_landscape_metrics_calculator_1a1ba606d6fb687aceaf4a8e31e8f17273" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateMinPerimeter</name></member>
+      <member refid="class_landscape_metrics_calculator_1a34f344e3282eead2091fe8ccb32e6d48" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateMNN</name></member>
+      <member refid="class_landscape_metrics_calculator_1ae477e368c4f13042cf2f9a47e62d60ae" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateNoAdjacencies</name></member>
+      <member refid="class_landscape_metrics_calculator_1a16bde8469f437abc21602eedb979e5e3" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>checkMinDistance</name></member>
+      <member refid="class_landscape_metrics_calculator_1a084eea2435b7d15049873ae4613b0307" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>createCellList</name></member>
+      <member refid="class_landscape_metrics_calculator_1a9dd4cde4aad066b3b204553718a63a98" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>findNearestNeighbourDistance</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -54,9 +54,19 @@
             
   <h1>Source code for pycoalescence.coalescence_tree</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Contains basic analyses for the output of a pycoalescence simulation.</span>
+<span class="sd">Generate the coalescence tree and acquire a number of biodiversity metrics for different parameter sets. Can also be</span>
+<span class="sd">used to compare against a comparison simulation object. Detailed :ref:`here &lt;Simulate_landscapes&gt;`.</span>
+
+<span class="sd">:input:</span>
+<span class="sd">	- Completed simulation database from :class:`.Simulation`</span>
+<span class="sd">	- Parameters and operations to apply</span>
+
+<span class="sd">:output:</span>
+<span class="sd">	- A variety of biodiversity metrics, including species richness and abundance distributions, locations of each</span>
+<span class="sd">	  species, alpha and beta diversity, plus equivalent fragment biodiversity metrics.</span>
+<span class="sd">	- Modifies the simulation database in place.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
@@ -68,7 +78,6 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-
 
 <span class="n">e_list</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">try</span><span class="p">:</span>
@@ -87,17 +96,16 @@
 	<span class="n">applyspecmodule</span> <span class="o">=</span> <span class="bp">None</span>
 	<span class="n">applyspec_import</span> <span class="o">=</span> <span class="bp">False</span>
 
+
 	<span class="c1"># Empty class for exception handling</span>
 	<span class="k">class</span> <span class="nc">ApplySpecError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 		<span class="k">pass</span>
-
 
 <span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span>
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">execute_log_info</span><span class="p">,</span> <span class="n">mod_directory</span><span class="p">,</span> <span class="n">create_logger</span><span class="p">,</span> <span class="n">write_to_log</span>
 <span class="kn">from</span> <span class="nn">.spatial_algorithms</span> <span class="kn">import</span> <span class="n">calculate_distance_between</span>
 <span class="kn">from</span> <span class="nn">.sqlite_connection</span> <span class="kn">import</span> <span class="n">check_sql_table_exist</span>
 <span class="kn">import</span> <span class="nn">pycoalescence</span>
-
 
 <span class="c1"># Reads the parameter descriptions from the json file.</span>
 <span class="k">try</span><span class="p">:</span>
@@ -363,8 +371,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">_adjust_fragment_abundances</span><span class="p">()</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">_adjust_species_abundances</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS SPECIES_RICHNESS&quot;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">calculate_richness</span><span class="p">()</span>
-
+		<span class="bp">self</span><span class="o">.</span><span class="n">calculate_richness</span><span class="p">(</span><span class="n">output_metrics</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">_check_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -419,7 +426,7 @@
 							  <span class="s2">&quot;. Check table exists.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">guild</span><span class="p">))</span>
 			<span class="k">raise</span> <span class="n">e</span>
 		<span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No simulation parameters exist for guild {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">guild</span><span class="p">))</span>
 		<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
 		<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">out</span><span class="p">]</span>
@@ -500,7 +507,7 @@
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; does not exist.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.set_speciation_params"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params">[docs]</a>	<span class="k">def</span> <span class="nf">set_speciation_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record_spatial</span><span class="p">,</span> <span class="n">record_fragments</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-							  <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+							  <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 							  <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 
@@ -605,7 +612,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;Check file existance for &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">+</span>
-							  <span class="s2">&quot;. Potential lack of access (verify that definition is a relative path).&quot;</span><span class="p">))</span>
+									<span class="s2">&quot;. Potential lack of access (verify that definition is a relative path).&quot;</span><span class="p">))</span>
 		<span class="c1"># Convert fragment file to null if it is true</span>
 		<span class="c1"># Log warning if sample file is null and record fragments is true</span>
 		<span class="k">if</span> <span class="n">applyspec_import</span><span class="p">:</span>
@@ -613,7 +620,7 @@
 				<span class="bp">self</span><span class="o">.</span><span class="n">apply_spec_module</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">apply_spec_module</span><span class="o">.</span><span class="n">set_log_function</span><span class="p">(</span><span class="n">write_to_log</span><span class="p">)</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">apply_spec_module</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span><span class="p">,</span>
-											<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span>
+											 <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span>
 											 <span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_speciation_max</span><span class="p">,</span>
 											 <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span><span class="p">)</span>
 			<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">te</span><span class="p">:</span>
@@ -630,7 +637,7 @@
 				<span class="n">execute_log_info</span><span class="p">(</span><span class="n">sim_list_str</span><span class="p">)</span>
 			<span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">cpe</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;CalledProcessError while applying speciation rates: &quot;</span> <span class="o">+</span>
-							  <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sim_list_str</span><span class="p">]))</span>
+									<span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sim_list_str</span><span class="p">]))</span>
 				<span class="k">raise</span> <span class="n">cpe</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.get_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_richness">[docs]</a>	<span class="k">def</span> <span class="nf">get_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -689,13 +696,14 @@
 				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Cannot get a count from a fragment without calculating fragment abundances.&quot;</span><span class="p">)</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">community_reference</span><span class="p">:</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference))&quot;</span>
-										   <span class="s2">&quot; FROM FRAGMENT_ABUNDANCES WHERE fragment == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="p">))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+										   <span class="s2">&quot; FROM FRAGMENT_ABUNDANCES WHERE fragment == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">fragment</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="k">else</span><span class="p">:</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(no_individuals) FROM FRAGMENT_ABUNDANCES &quot;</span>
 										   <span class="s2">&quot;WHERE community_reference==?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">community_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;SPECIES_ABUNDANCES&quot;</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No species abundances table to fetch data from. Ensure your simulation is complete.&quot;</span><span class="p">)</span>
+				<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+					<span class="s2">&quot;No species abundances table to fetch data from. Ensure your simulation is complete.&quot;</span><span class="p">)</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">community_reference</span><span class="p">:</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference)) &quot;</span>
 										   <span class="s2">&quot;FROM SPECIES_ABUNDANCES&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
@@ -726,11 +734,13 @@
 				<span class="k">return</span> <span class="mi">0</span>
 			<span class="k">return</span> <span class="n">maxval</span></div>
 
-<div class="viewcode-block" id="CoalescenceTree.calculate_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.calculate_richness">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoalescenceTree.calculate_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.calculate_richness">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_metrics</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Calculates the landscape richness from across all fragments and stores result in a new table in</span>
 <span class="sd">		SPECIES_RICHNESS</span>
 <span class="sd">		Stores a separate result for each speciation rate and time.</span>
+
+<span class="sd">		:param bool output_metrics: output to the BIODIVERSITY_METRICS table</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="n">spec_abundances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT species_id, community_reference, no_individuals FROM &quot;</span>
@@ -754,13 +764,14 @@
 			<span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">ref</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">select</span><span class="p">)])</span>
 			<span class="n">ref</span> <span class="o">+=</span> <span class="mi">1</span>
 		<span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_biodiversity_table_exists</span><span class="p">()</span>
-		<span class="n">bio_output</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-			<span class="n">ref</span> <span class="o">+=</span> <span class="mi">1</span>
-			<span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span><span class="n">ref</span><span class="p">,</span> <span class="s2">&quot;fragment_richness&quot;</span><span class="p">,</span> <span class="s2">&quot;whole&quot;</span><span class="p">]</span>
-			<span class="n">tmp</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
-			<span class="n">bio_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)&quot;</span><span class="p">,</span> <span class="n">bio_output</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">output_metrics</span><span class="p">:</span>
+			<span class="n">bio_output</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+				<span class="n">ref</span> <span class="o">+=</span> <span class="mi">1</span>
+				<span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span><span class="n">ref</span><span class="p">,</span> <span class="s2">&quot;fragment_richness&quot;</span><span class="p">,</span> <span class="s2">&quot;whole&quot;</span><span class="p">]</span>
+				<span class="n">tmp</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+				<span class="n">bio_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)&quot;</span><span class="p">,</span> <span class="n">bio_output</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO SPECIES_RICHNESS VALUES(?,?,?)&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
@@ -885,7 +896,7 @@
 				<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
 				<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">all_fragments</span><span class="p">:</span>
 					<span class="n">total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fragment_richness</span><span class="p">(</span><span class="n">fragment</span><span class="o">=</span><span class="n">fragment</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)</span>
-				<span class="n">alpha</span> <span class="o">=</span> <span class="n">total</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">all_fragments</span><span class="p">)</span>
+				<span class="n">alpha</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_fragments</span><span class="p">)</span>
 				<span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">reference</span><span class="p">,</span> <span class="n">alpha</span><span class="p">])</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO ALPHA_DIVERSITY VALUES(?,?)&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 			<span class="c1"># Now also insert into BIODIVERSITY metrics</span>
@@ -918,7 +929,7 @@
 			<span class="n">all_community_references</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">()</span>
 			<span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
 			<span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">all_community_references</span><span class="p">:</span>
-				<span class="n">beta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_landscape_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_alpha_diversity</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+				<span class="n">beta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_landscape_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_alpha_diversity</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
 				<span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">reference</span><span class="p">,</span> <span class="n">beta</span><span class="p">])</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO BETA_DIVERSITY VALUES(?,?)&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 			<span class="c1"># Now also insert into BIODIVERSITY metrics</span>
@@ -981,6 +992,8 @@
 <span class="sd">		:param str filename: the file containing the comparison biodiversity metrics.</span>
 <span class="sd">		:param bool ignore_mismatch: set to true to ignore abundance mismatches between the comparison and simulated data.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Comparison database does not exist at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
 		<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 		<span class="n">tmp_cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -1075,7 +1088,7 @@
 							<span class="n">octaves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_octave</span><span class="p">)</span>
 							<span class="n">octaves</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
 							<span class="n">ref</span> <span class="o">+=</span> <span class="mi">1</span>
-					<span class="c1"># print(len(self.comparison_octaves)-1)</span>
+				<span class="c1"># print(len(self.comparison_octaves)-1)</span>
 				<span class="n">octaves</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[]]</span>
 				<span class="n">octaves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 				<span class="n">octaves</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1094,7 +1107,7 @@
 						<span class="n">octaves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_octave</span><span class="p">)</span>
 						<span class="n">octaves</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
 						<span class="n">ref</span> <span class="o">+=</span> <span class="mi">1</span>
-				<span class="c1"># now sort the list</span>
+			<span class="c1"># now sort the list</span>
 			<span class="c1"># If we want to store the comparison octaves, overwrite the original FRAGMENT_OCTAVES table (if it exists</span>
 			<span class="c1"># with the new calculated data</span>
 			<span class="k">if</span> <span class="n">store</span><span class="p">:</span>
@@ -1254,7 +1267,7 @@
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;FRAGMENT_ABUNDANCES&quot;</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Fragment abundances have not been calculated; cannot obtain fragment list.&quot;</span><span class="p">)</span>
 		<span class="n">fetch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE &quot;</span>
-									<span class="s2">&quot;community_reference == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">community_reference</span><span class="p">,</span> <span class="p">))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+									<span class="s2">&quot;community_reference == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">community_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fetch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">(</span><span class="s2">&quot;No fragments exist in FRAGMENT_ABUNDANCES.&quot;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fetch</span><span class="p">]</span></div>
@@ -1461,6 +1474,7 @@
 						<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">select_metrics</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 							<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not find metric for metric, {}, fragment = {}&quot;</span>
 											 <span class="s2">&quot; and community_reference = {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">ref</span><span class="p">))</span>
+						<span class="k">print</span><span class="p">(</span><span class="n">select_metrics</span><span class="p">)</span>
 						<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Achieved multiple matches for biodiversity metrics&quot;</span>
 										 <span class="s2">&quot; for fragment {} and community reference = {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">ref</span><span class="p">))</span>
 					<span class="k">if</span> <span class="n">category</span> <span class="o">!=</span> <span class="s2">&quot;fragment_octaves&quot;</span><span class="p">:</span>
@@ -1470,7 +1484,7 @@
 											<span class="s2">&quot; WHERE metric == ? AND fragment == ? AND community_reference == ?&quot;</span><span class="p">,</span>
 											<span class="p">(</span><span class="n">sim_val</span><span class="p">,</span> <span class="n">actual_val</span><span class="p">,</span> <span class="n">scaled_fit</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">ref</span><span class="p">))</span>
 					<span class="k">else</span><span class="p">:</span>
-						<span class="n">scaled_fit</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">select_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">no_ind</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">total_ind</span><span class="p">)</span>
+						<span class="n">scaled_fit</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">select_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">no_ind</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_ind</span><span class="p">)</span>
 					<span class="n">ref_dict</span><span class="p">[</span><span class="n">ref</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scaled_fit</span><span class="p">)</span>
 			<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;goodness_of_fit_{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
 			<span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">ref_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -1512,7 +1526,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="k">if</span> <span class="n">community_reference</span><span class="p">:</span>
 			<span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT species_id, x, y&quot;</span>
-													 <span class="s2">&quot; FROM SPECIES_LOCATIONS WHERE community_reference==?&quot;</span><span class="p">,</span>
+														 <span class="s2">&quot; FROM SPECIES_LOCATIONS WHERE community_reference==?&quot;</span><span class="p">,</span>
 														 <span class="p">(</span><span class="n">community_reference</span><span class="p">,))]</span>
 		<span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT species_id, x, y, community_reference&quot;</span>
 													 <span class="s2">&quot; FROM SPECIES_LOCATIONS&quot;</span><span class="p">)]</span></div>
@@ -1531,7 +1545,7 @@
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Biodiversity table does not contain any values.&quot;</span><span class="p">)</span>
 		<span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
 			<span class="s2">&quot;SELECT value FROM BIODIVERSITY_METRICS WHERE fragment==&#39;whole&#39; AND metric==&#39;goodness_of_fit&#39; AND &quot;</span>
-			<span class="s2">&quot;community_reference == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="p">))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+			<span class="s2">&quot;community_reference == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Biodiversity table does not contain goodness-of-fit values.&quot;</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
@@ -1570,7 +1584,6 @@
 <span class="sd">		:rtype: float</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_goodness_of_fit_metric</span><span class="p">(</span><span class="s2">&quot;fragment_richness&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="CoalescenceTree.get_goodness_of_fit_fragment_octaves"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_goodness_of_fit_fragment_octaves">[docs]</a>	<span class="k">def</span> <span class="nf">get_goodness_of_fit_fragment_octaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -1626,15 +1639,16 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">guild</span><span class="p">:</span>
 			<span class="k">try</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, &quot;</span>
-									<span class="s2">&quot;max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, &quot;</span>
-									<span class="s2">&quot;time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, &quot;</span>
-									<span class="s2">&quot;coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, &quot;</span>
-									<span class="s2">&quot;fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, &quot;</span>
-									<span class="s2">&quot;sample_x_offset, sample_y_offset, historical_coarse_map, &quot;</span>
-									<span class="s2">&quot; historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
-									<span class="s2">&quot; landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
-									<span class="s2">&quot; FROM SIMULATION_PARAMETERS&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+					<span class="s2">&quot;SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, &quot;</span>
+					<span class="s2">&quot;max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, &quot;</span>
+					<span class="s2">&quot;time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, &quot;</span>
+					<span class="s2">&quot;coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, &quot;</span>
+					<span class="s2">&quot;fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, &quot;</span>
+					<span class="s2">&quot;sample_x_offset, sample_y_offset, historical_coarse_map, &quot;</span>
+					<span class="s2">&quot; historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,&quot;</span>
+					<span class="s2">&quot; landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map&quot;</span>
+					<span class="s2">&quot; FROM SIMULATION_PARAMETERS&quot;</span><span class="p">)</span>
 			<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failure to get SIMULATION_PARAMETERS table from database. Check table exists.&quot;</span><span class="p">)</span>
 				<span class="k">raise</span> <span class="n">e</span>
@@ -1648,8 +1662,6 @@
 			<span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">column_names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sim_parameters_guild</span><span class="p">(</span><span class="n">guild</span><span class="o">=</span><span class="n">guild</span><span class="p">)</span></div>
-
-
 
 <div class="viewcode-block" id="CoalescenceTree.get_community_references"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_community_references">[docs]</a>	<span class="k">def</span> <span class="nf">get_community_references</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -1948,7 +1960,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="n">species_locations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT species_id, x, y, community_reference FROM &quot;</span>
-											  <span class="s2">&quot;SPECIES_LOCATIONS&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+												<span class="s2">&quot;SPECIES_LOCATIONS&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 		<span class="n">tmp_create</span> <span class="o">=</span> <span class="s2">&quot;CREATE TABLE SPECIES_DISTANCE_SIMILARITY (ref INT PRIMARY KEY NOT NULL, distance INT NOT NULL,&quot;</span> \
 					 <span class="s2">&quot; no_individuals INT NOT NULL, community_reference INT NOT NULL)&quot;</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;SPECIES_DISTANCE_SIMILARITY&quot;</span><span class="p">):</span>
@@ -1985,7 +1997,7 @@
 			<span class="k">for</span> <span class="n">species_id</span><span class="p">,</span> <span class="n">locations</span> <span class="ow">in</span> <span class="n">species_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 				<span class="n">total_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
 				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">location</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">locations</span><span class="p">):</span>
-					<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_length</span><span class="p">):</span>
+					<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">total_length</span><span class="p">):</span>
 						<span class="n">distance</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">calculate_distance_between</span><span class="p">(</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
 																  <span class="n">locations</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">locations</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
 						<span class="n">sum_distances</span><span class="p">[</span><span class="n">distance</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -1999,10 +2011,10 @@
 				<span class="n">number_all</span> <span class="o">+=</span> <span class="n">item</span>
 			<span class="k">if</span> <span class="n">number_all</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No distances found for {} - likely no species exist with more than one&quot;</span>
-									<span class="s2">&quot; location.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+								 <span class="s2">&quot; location.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
 				<span class="n">mean</span> <span class="o">=</span> <span class="mi">0</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="n">mean</span> <span class="o">=</span> <span class="n">total_sim</span><span class="o">/</span><span class="n">number_all</span>
+				<span class="n">mean</span> <span class="o">=</span> <span class="n">total_sim</span><span class="o">/</span> <span class="n">number_all</span>
 			<span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">reference</span><span class="p">,</span> <span class="n">mean</span><span class="p">])</span>
 		<span class="n">sql_output</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
@@ -2033,6 +2045,7 @@
 		<span class="n">sql_fetch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT distance, no_individuals FROM SPECIES_DISTANCE_SIMILARITY &quot;</span>
 										<span class="s2">&quot;WHERE community_reference == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">community_reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 		<span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sql_fetch</span><span class="p">]</span></div></div>
+
 
 <div class="viewcode-block" id="collate_fits"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.collate_fits">[docs]</a><span class="k">def</span> <span class="nf">collate_fits</span><span class="p">(</span><span class="n">file_dir</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;Collated_fits.db&quot;</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -2111,6 +2124,7 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Specified file directory &quot;</span> <span class="o">+</span> <span class="n">file_dir</span> <span class="o">+</span> <span class="s2">&quot; does not exist&quot;</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="scale_simulation_fit"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.scale_simulation_fit">[docs]</a><span class="k">def</span> <span class="nf">scale_simulation_fit</span><span class="p">(</span><span class="n">simulated_value</span><span class="p">,</span> <span class="n">actual_value</span><span class="p">,</span> <span class="n">number_individuals</span><span class="p">,</span> <span class="n">total_individuals</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculates goodness of fit for the provided values, and scales based on the total number of individuals that exist.</span>
@@ -2123,8 +2137,8 @@
 <span class="sd">	:param total_individuals: the total number of individuals across all sites for this metric</span>
 <span class="sd">	:return: the scaled fit value</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">simulated_value</span> <span class="o">-</span><span class="n">actual_value</span><span class="p">))</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">simulated_value</span><span class="p">,</span> <span class="n">actual_value</span><span class="p">))</span> <span class="o">*</span>\
-		   <span class="n">number_individuals</span><span class="o">/</span><span class="n">total_individuals</span></div>
+	<span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">simulated_value</span> <span class="o">-</span> <span class="n">actual_value</span><span class="p">))</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">simulated_value</span><span class="p">,</span> <span class="n">actual_value</span><span class="p">))</span> <span class="o">*</span> \
+		   <span class="n">number_individuals</span> <span class="o">/</span> <span class="n">total_individuals</span></div>
 </pre></div>
 
           </div>

@@ -14,6 +14,7 @@ Subdirectories
 Files
 -----
 
+- :ref:`file_necsim_Cell.cpp`
 - :ref:`file_necsim_Cell.h`
 - :ref:`file_necsim_Community.cpp`
 - :ref:`file_necsim_Community.h`

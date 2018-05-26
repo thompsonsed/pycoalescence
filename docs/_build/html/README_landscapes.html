@@ -143,6 +143,49 @@ file can also be read into a numpy array using <a class="reference internal" hre
 <p class="last">All processing is done using the gdal module.</p>
 </div>
 </div>
+<div class="section" id="obtaining-landscape-metrics">
+<h2>Obtaining landscape metrics<a class="headerlink" href="#obtaining-landscape-metrics" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="pycoalescence.html#pycoalescence.landscape_metrics.LandscapeMetrics" title="pycoalescence.landscape_metrics.LandscapeMetrics"><code class="xref py py-class docutils literal"><span class="pre">LandscapeMetrics</span></code></a> contains methods for calculating some
+landscape metrics on a map file. This is a work in progress, and additional metrics may be added later.</p>
+<p>MNN here refers to the mean distance from each cell to its nearest neighbouring habitat cell. The distance can be
+calculated for a landscape using the following:</p>
+<div class="code python highlight-py"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span> <span class="o">=</span> <span class="n">LandscapeMetrics</span><span class="p">(</span><span class="s2">&quot;map_file.tif&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span><span class="o">.</span><span class="n">get_mnn</span><span class="p">()</span>
+<span class="mf">1.50</span>
+</pre></div>
+</div>
+<p>The clumpiness metric is a measure of the proportional deviation of proportion of like adjacencies involving the
+corresponding class from that expected under a spatially random distribution. It produces a <span class="math">\(\text{CLUMPY}\)</span> value,
+where <span class="math">\(-1 &lt;= \text{CLUMPY} &lt;= 1\)</span>. -1 represents a perfectly disaggregated landscape. 1 represents a perfectly
+aggregated landscape. 0 represents a random landscape. The formula outlined below works where there are <span class="math">\(k\)</span>
+patches; in our scenario there <span class="math">\(k=2\)</span> as we have just habitat or non-habitat.</p>
+<p>We have:</p>
+<blockquote>
+<div><ul class="simple">
+<li><span class="math">\(g_ii\)</span>, the number of adjacencies between pixels of patch type <span class="math">\(i\)</span> using the the double count method.</li>
+<li><span class="math">\(g_ik\)</span>, the number of adjacencies between pixels of patches <span class="math">\(i\)</span> and <span class="math">\(j\)</span></li>
+<li><span class="math">\(\text{min}e_i\)</span>, the minimum perimeter (in cell surfaces) for a maximally-clumped class <span class="math">\(i\)</span></li>
+<li><span class="math">\(P_i\)</span>, the proportion of the landscape occupied by class <span class="math">\(i\)</span>.</li>
+</ul>
+</div></blockquote>
+<p>Given</p>
+<div class="math">
+\[G_i = (\frac{g_{ii}}{(\sum_{k=1}^{n} g_{ik}) - \text{min} e_i}\]</div>
+<p>then</p>
+<div class="math">
+\[\begin{split}\text{CLUMPY} = \begin{cases}
+  \frac{G_i - P_i}{P_i}, &amp; \text{if}\ G_i &lt; P_i\ \&amp;\ P_i &lt; 0.5 \\
+  \frac{G_i - P_i}{1-P_i}, &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+<p>The <span class="math">\(\text{CLUMPY}\)</span> metric can be calculated similarly as</p>
+<div class="code python highlight-py"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span> <span class="o">=</span> <span class="n">LandscapeMetrics</span><span class="p">(</span><span class="s2">&quot;map_file.tif&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span><span class="o">.</span><span class="n">get_clumpiness</span><span class="p">()</span>
+<span class="mf">0.8</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -165,6 +208,7 @@ file can also be read into a numpy array using <a class="reference internal" hre
 </li>
 <li><a class="reference internal" href="#simulated-landscapes">Simulated landscapes</a></li>
 <li><a class="reference internal" href="#reading-and-writing-tif-files">Reading and writing tif files</a></li>
+<li><a class="reference internal" href="#obtaining-landscape-metrics">Obtaining landscape metrics</a></li>
 </ul>
 </li>
 </ul>

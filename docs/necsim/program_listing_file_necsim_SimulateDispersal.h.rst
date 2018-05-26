@@ -29,7 +29,6 @@ Program Listing for File SimulateDispersal.h
    #include "NRrand.h"
    #include "Cell.h"
    
-   double distanceBetweenCells(Cell &c1, Cell &c2);
    
    class SimulateDispersal
    {

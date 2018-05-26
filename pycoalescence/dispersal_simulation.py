@@ -1,5 +1,5 @@
 """
-Contains routines for simulating a dispersal kernel on a map.
+Simulate dispersal kernels on landscapes. Detailed :ref:`here <Simulate_landscapes>`.
 
 :input:
 	- Map file to simulate on

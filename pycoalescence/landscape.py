@@ -1,5 +1,5 @@
 """
-Contains the landscape class for performing the key operations on a landscape object
+Generate landscapes and check map file combinations.
 """
 import logging
 
@@ -11,7 +11,7 @@ from .map import Map
 
 class Landscape:
 	"""
-	Contains routines for calculating offsets and dimensions of a selection of tif files making up a landscape.
+	Calculates offsets and dimensions of a selection of tif files making up a landscape.
 	"""
 
 	def __init__(self):

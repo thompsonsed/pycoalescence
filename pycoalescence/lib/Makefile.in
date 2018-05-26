@@ -21,7 +21,7 @@ ACLOCAL_AMFLAGS = -I m4 --install
 
 complete: all NECSim SpeciationCounter end_msg
 
-all: start_msg obj_dir build_dir $(BUILDDIR)/necsimmodule.so $(BUILDDIR)/applyspecmodule.so $(BUILDDIR)/dispersalmodule.so end_msg
+all: start_msg obj_dir build_dir $(BUILDDIR)/necsimmodule.so $(BUILDDIR)/applyspecmodule.so $(BUILDDIR)/dispersalmodule.so $(BUILDDIR)/landscapemetricsmodule.so end_msg
 
 obj_dir:
 	mkdir -p $(OBJDIR)
@@ -32,12 +32,12 @@ build_dir:
 spec: start_msg_spec SpeciationCounter end_msg
 
 # The old compilation methods for executables - now deprecated
-SpeciationCounter: SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o
+SpeciationCounter: SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o DataMask.o SimParameters.o ConfigFileParser.o
 	$(CXX) -o SpeciationCounter SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o CPLCustomHandler.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 # NECSim compilation
-NECSim: main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o
-	$(CXX) -o NECSim main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
+NECSim: main.o Tree.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
+	$(CXX) -o NECSim main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 start_msg: 
 	@echo "-----------------------------------------------"
@@ -53,11 +53,13 @@ end_msg:
 coal: start_msg NECSim end_msg
 
 # python shared object files
-necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandler.o)
+necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandler.o Cell.o DoubleComparison.o)
 
-dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o Landscape.o DataMask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o)
+dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandler.o Landscape.o DataMask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o Cell.o DoubleComparison.o)
 
-applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandler.o PyImports.o)
+applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandler.o PyImports.o Cell.o DoubleComparison.o)
+
+landscape_metrics_objects = $(addprefix $(OBJDIR)/, LandscapeMetricsCalculator.o PyLogging.o CPLCustomHandler.o Cell.o)
 
 $(BUILDDIR)/necsimmodule.so: $(necsim_objects)
 
@@ -65,12 +67,15 @@ $(BUILDDIR)/dispersalmodule.so: $(dispersal_objects)
 
 $(BUILDDIR)/applyspecmodule.so: $(applyspec_objects)
 
+$(BUILDDIR)/landscapemetricsmodule.so: $(landscape_metrics_objects)
+
 
 # now every other object files
 
 # Calculate dependencies
 depend:
-	makedepend *.cpp necsim/*.cpp -f Makefile -p $(OBJDIR)/
+	@echo "----------Updating dependencies------"
+	makedepend *.cpp necsim/*.cpp -f Makefile -p $(OBJDIR)/ -Y
 
 ## Clean up
 clean:

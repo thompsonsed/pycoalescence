@@ -24,6 +24,7 @@ Program Listing for File Map.h
    #include "Matrix.h"
    #include "Logging.h"
    #include "CustomExceptions.h"
+   #include "CPLCustomHandler.h"
    
    using namespace std;
    #ifdef DEBUG

@@ -1,7 +1,20 @@
 """
-Contains the Simulation class as part of the pycoalescence package.
+Run spatially-explicit neutral simulations on provided landscapes with support for a wide range of scenarios and
+parameters. Detailed :ref:`here <performing_simulations>`.
 
-Operations involve setting up and running simulations, plus basic tree generation after simulations have been completed.
+The main class is :class:`.Simulation`, which contains routines for setting up and running simulations, plus basic tree
+generation after simulations have been completed.
+
+:input:
+	- Simulation parameters (such as dispersal kernel, speciation rate)
+	- Map files representing density over space
+	- [optional] map files representing relative reproductive ability
+	- [optional] map files representing dispersal potential
+	- [optional] historical density map files
+
+:output:
+	- Database containing generated coalescence tree, simulation parameters and basic biodiversity metrics.
+	- If the simulation does not complete, will instead generate a set of Dump_*.csv files for resuming simulations
 """
 from __future__ import absolute_import
 from __future__ import print_function
@@ -540,12 +553,12 @@ class Simulation(Landscape):
 		This is intended to be run after set_map_files()
 
 		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but
-		not a coarse map.
+						   not a coarse map.
 
 		:raises IOError: if one of the required maps does not exist
 		
 		:raises ValueError: if the dimensions of the dispersal map do not make sense when used with the fine map
-		provided
+							provided
 
 		:return: None
 		"""
@@ -600,14 +613,14 @@ class Simulation(Landscape):
 		:param float gen_since_historical: the time in generations since a historical state was achieved
 		:param bool restrict_self: if true, restricts dispersal from own cell
 		:param bool/str landscape_type: if false or "closed", restricts dispersal to the provided maps, otherwise
-		can be "infinite", or a tiled landscape using "tiled_coarse" or "tiled_fine".
+										can be "infinite", or a tiled landscape using "tiled_coarse" or "tiled_fine".
 		:param bool protracted: if true, uses protracted speciation application
 		:param float min_speciation_gen: the minimum amount of time a lineage must exist before speciation occurs.
 		:param float max_speciation_gen: the maximum amount of time a lineage can exist before speciating.
 		:param bool spatial: if true, means that the simulation is spatial
 		:param bool uses_spatial_sampling: if true, the sample mask is interpreted as a proportional sampling mask,
-			where the number of individuals sampled in the cell is equal to the
-			density * deme_sample * cell sampling proportion
+										   where the number of individuals sampled in the cell is equal to the
+										   density * deme_sample * cell sampling proportion
 		:param list times: list of temporal sampling points to apply (in generations)
 		"""
 		if not self.is_setup_param:
@@ -803,6 +816,7 @@ class Simulation(Landscape):
 	def import_fine_map_array(self):
 		"""
 		Imports the fine map array to the in-memory object, subsetted to the same size as the sample grid.
+
 		:rtype: None
 		"""
 		if self.fine_map_array is None:
@@ -816,6 +830,7 @@ class Simulation(Landscape):
 	def import_sample_map_array(self):
 		"""
 		Imports the sample map array to the in-memory object.
+
 		:rtype: None
 		"""
 		if self.sample_map_array is None:
@@ -827,9 +842,9 @@ class Simulation(Landscape):
 		"""
 		Counts the density total for a subset of the grid by sampling from the fine map
 
-		Note that this function is an approximation (based on the average density of the fine map) and does not produce
-		a perfect value. This is done for performance reasons. The actual value can be obtained with
-		grid_density_actual().
+		:note: This is an approximation (based on the average density of the fine map) and does not produce
+		       a perfect value. This is done for performance reasons. The actual value can be obtained with
+		       grid_density_actual().
 
 		:param x_off: the x offset of the grid map subset
 		:param y_off: the y offset of the grid map subset
@@ -837,6 +852,7 @@ class Simulation(Landscape):
 		:param y_dim: the y dimension of the grid map subset
 
 		:return: an estimate of the total individuals that exist in the subset.
+
 		:rtype: int
 		"""
 		self.import_fine_map_array()
@@ -860,6 +876,7 @@ class Simulation(Landscape):
 		:param y_dim: the y dimension of the grid map subset
 
 		:return: the total individuals that exist in the subset.
+
 		:rtype: int
 		"""
 		self.import_fine_map_array()
@@ -900,10 +917,10 @@ class Simulation(Landscape):
 
 		If ram_limit is None, this function does nothing.
 
-		:note Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.
+		:note: Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.
 
-		:note Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as
-			  a maximum size.
+		:note: Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as
+			   a maximum size.
 
 		:param ram_limit: the desired amount of RAM to limit to, in GB
 
@@ -1022,7 +1039,7 @@ class Simulation(Landscape):
 
 		:param config_default: set to false if want config file to only be created if necessary. Defaults to True
 		:param ignore_errors: if true, any FileNotFoundError and FileExistsError raised by checking the output database
-		are ignored
+							  are ignored
 		:param expected: set to true if we expect the output file to exist
 
 		"""

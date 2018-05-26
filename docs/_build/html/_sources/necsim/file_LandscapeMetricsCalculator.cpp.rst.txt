@@ -1,0 +1,46 @@
+
+
+.. _file_LandscapeMetricsCalculator.cpp:
+
+File LandscapeMetricsCalculator.cpp
+===================================
+
+
+
+Contains the :ref:`class_LandscapeMetricsCalculator` class for calculating landscape metrics. 
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``LandscapeMetricsCalculator.cpp``)
+-----------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_LandscapeMetricsCalculator.cpp.rst
+
+
+
+Detailed Description
+--------------------
+
+Samuel Thompson
+MIT Licence. 
+
+
+
+
+Includes
+--------
+
+
+- ``LandscapeMetricsCalculator.h`` (:ref:`file_LandscapeMetricsCalculator.h`)
+
+
+
+
+

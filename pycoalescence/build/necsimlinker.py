@@ -19,17 +19,21 @@ if modfolder is 'sharedpy3':
 		from sharedpy3 import necsimmodule
 		from sharedpy3 import dispersalmodule as Dispersal
 		from sharedpy3 import applyspecmodule
+		from sharedpy3 import landscapemetricsmodule as LandscapeMetricsLib
 	except ImportError:
 		from .sharedpy3 import necsimmodule
 		from .sharedpy3 import dispersalmodule as Dispersal
 		from .sharedpy3 import applyspecmodule
+		from .sharedpy3 import landscapemetricsmodule as LandscapeMetricsLib
 elif modfolder is 'sharedpy2':
 	try:
 		from .sharedpy2 import necsimmodule
 		from .sharedpy2 import dispersalmodule as Dispersal
 		from .sharedpy2 import applyspecmodule
+		from .sharedpy2 import landscapemetricsmodule as LandscapeMetricsLib
 	except ImportError:
 		from sharedpy2 import necsimmodule
 		from sharedpy2 import dispersalmodule as Dispersal
 		from sharedpy2 import applyspecmodule
+		from sharedpy2 import landscapemetricsmodule as LandscapeMetricsLib
 

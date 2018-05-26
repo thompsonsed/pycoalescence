@@ -54,6 +54,8 @@ Included By
 
 - :ref:`file_dispersalmodule.cpp`
 
+- :ref:`file_landscapemetricsmodule.cpp`
+
 - :ref:`file_necsimmodule.cpp`
 
 - :ref:`file_PyLogging.cpp`

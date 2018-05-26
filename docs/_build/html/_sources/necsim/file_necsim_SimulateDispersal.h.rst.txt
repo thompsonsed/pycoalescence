@@ -80,13 +80,6 @@ Classes
 - :ref:`class_SimulateDispersal`
 
 
-Functions
----------
-
-
-- :ref:`function_distanceBetweenCells`
-
-
 Defines
 -------
 

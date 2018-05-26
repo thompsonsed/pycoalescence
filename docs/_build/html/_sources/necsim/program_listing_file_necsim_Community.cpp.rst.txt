@@ -327,10 +327,10 @@ Program Listing for File Community.cpp
        if(!has_imported_samplemask)
        {
            stringstream os;
+           samplemask.importBooleanMask(grid_x_size, grid_y_size, samplemask_x_size, samplemask_y_size,
+                                        samplemask_x_offset, samplemask_y_offset, sSamplemask);
            if(sSamplemask != "null")
            {
-               samplemask.importBooleanMask(grid_x_size, grid_y_size, samplemask_x_size, samplemask_y_size,
-                                            samplemask_x_offset, samplemask_y_offset, sSamplemask);
                unsigned long total = 0;
                for(unsigned long i = 0; i < samplemask.sample_mask.getCols(); i++)
                {
@@ -346,8 +346,7 @@ Program Listing for File Community.cpp
            }
            else
            {
-               samplemask.importBooleanMask(grid_x_size, grid_y_size, samplemask_x_size, samplemask_y_size,
-                                            samplemask_x_offset, samplemask_y_offset, sSamplemask);
+   
    #ifdef DEBUG
                os << "Sampling all areas." << endl;
    #endif

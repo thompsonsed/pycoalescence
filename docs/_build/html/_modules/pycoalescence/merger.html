@@ -54,18 +54,20 @@
             
   <h1>Source code for pycoalescence.merger</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Contains the :py:class:`~Merger` class for combining simulation outputs into a single simulation, merging the</span>
-<span class="sd">various biodiversity tables into one.</span>
+<span class="sd">Combine simulation outputs from separate guilds. Detailed :ref:`here &lt;merging_simulations&gt;`.</span>
+
+<span class="sd">:py:class:`~Merger` will output a single database file, merging the various biodiversity tables into one.</span>
 
 <span class="sd">Metrics are also calculated for the entire system, with a guild reference of 0.</span>
 
-<span class="sd">All standard routines provided in :py:class:`~PyCoalescence.coal_analyse.Tree` can then be performed on the combined</span>
-<span class="sd">database.</span>
+<span class="sd">All standard routines provided in :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` can then be performed on the</span>
+<span class="sd">combined database.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="k">try</span><span class="p">:</span>
 	<span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -77,14 +79,14 @@
 	<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">isclose</span>
 
 <span class="kn">from</span> <span class="nn">.coalescence_tree</span> <span class="kn">import</span> <span class="n">CoalescenceTree</span>
-<span class="kn">from</span> <span class="nn">.sqlite_connection</span> <span class="kn">import</span> <span class="n">check_sql_table_exist</span><span class="p">,</span> <span class="n">fetch_table_from_sql</span><span class="p">,</span> <span class="n">sql_get_max_from_column</span>
+<span class="kn">from</span> <span class="nn">.sqlite_connection</span> <span class="kn">import</span> <span class="n">check_sql_table_exist</span><span class="p">,</span> <span class="n">fetch_table_from_sql</span>
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">cantor_pairing</span><span class="p">,</span> <span class="n">check_parent</span>
 
 
 <div class="viewcode-block" id="Merger"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.merger.Merger">[docs]</a><span class="k">class</span> <span class="nc">Merger</span><span class="p">(</span><span class="n">CoalescenceTree</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Merges simulation outputs into a single database. Inherits from :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to</span>
-<span class="sd">	provide all routines in the same object.</span>
+<span class="sd">	Merges simulation outputs into a single database. Inherits from</span>
+<span class="sd">	:py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to provide all routines in the same object.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">log_output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="nb">super</span><span class="p">(</span><span class="n">Merger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">logging_level</span><span class="p">,</span> <span class="n">log_output</span><span class="p">)</span>
@@ -119,8 +121,10 @@
 <span class="sd">		Assumes no database currently exists, and will create one.</span>
 
 <span class="sd">		:raises IOError: if the output database already exists</span>
+
 <span class="sd">		:param filename: the filename to output merged simulations into</span>
-<span class="sd">		:return:</span>
+
+<span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database already exists at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>

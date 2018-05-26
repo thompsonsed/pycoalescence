@@ -54,8 +54,8 @@
             
   <h1>Source code for pycoalescence.system_operations</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Contains the general purpose operations that will be used by multiple modules, including calling subprocess properly,</span>
-<span class="sd">logging methods and file management.</span>
+<span class="sd">Basic system-level operations required for package functionality, including subprocess calls, logging methods and file</span>
+<span class="sd">management.</span>
 
 <span class="sd">The functions are contained here as they are required by many different modules. Note that logging will not raise an</span>
 <span class="sd">exception if there has been no call to set_logging_method()</span>
@@ -103,7 +103,7 @@
 
 <span class="sd">	:param file_path: the file or directory to check if the parent exists</span>
 
-<span class="sd">	:rtype None</span>
+<span class="sd">	:rtype: None</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="n">file_path</span><span class="p">:</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
@@ -231,19 +231,20 @@
 	<span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_logger"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.create_logger">[docs]</a><span class="k">def</span> <span class="nf">create_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">):</span>
+<div class="viewcode-block" id="create_logger"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.create_logger">[docs]</a><span class="k">def</span> <span class="nf">create_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Creates a logger object to be assigned to NECSim sims and dispersal tests.</span>
 
 <span class="sd">	:param logger: the logger to alter</span>
 <span class="sd">	:param file: the file to write out to, defaults to None, writing to terminal</span>
 <span class="sd">	:param logging_level: the logging level to write out at (defaults to INFO)</span>
+<span class="sd">	:param kwargs: optionally provide additional arguments for logging to</span>
 
 <span class="sd">	:return:</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-		<span class="n">sh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+		<span class="n">sh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stream&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">sh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
 	<span class="n">sh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging_level</span><span class="p">)</span>

@@ -515,6 +515,8 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		c.finalise_setup()
 		with self.assertRaises(NECSimError):
 			c.run_coalescence()
+
+
 # pass
 
 
@@ -777,6 +779,7 @@ class TestCoalSampling2(unittest.TestCase):
 				t.set_speciation_params(record_spatial=False, record_fragments=fragment_file,
 										speciation_rates=[0.5, 0.6])
 				t.apply_speciation()
+
 
 class TestCoalSampling3(unittest.TestCase):
 	"""
@@ -1581,6 +1584,316 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
 		self.assertGreaterEqual(self.tree1.get_richness(), self.tree4.get_richness())
 
 
+class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
+	"""
+	Tests that the protracted speciation is properly applied, post-simulation.
+	"""
+	@classmethod
+	def setUpClass(cls):
+		"""
+		Runs the test simulation to test for speciation application.
+		"""
+		cls.sim = Simulation()
+		cls.sim.set_simulation_params(seed=1, job_type=23, output_directory="output", min_speciation_rate=0.1,
+									  sigma=2, tau=2, deme=1, sample_size=1.0, max_time=10,
+									  dispersal_relative_cost=1,
+									  min_num_species=1, dispersal_method="normal", protracted=True,
+									  min_speciation_gen=50, max_speciation_gen=2000)
+		cls.sim.set_map("null", 10, 10)
+		cls.sim.finalise_setup()
+		cls.sim.run_coalescence()
+		cls.c = CoalescenceTree(cls.sim, logging_level=60)
+		cls.c.wipe_data()
+		for p_min, p_max in [(50, 100), (25, 100), (50, 200), (0.0, 2000)]:
+			cls.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+										protracted_speciation_min=p_min, protracted_speciation_max=p_max)
+			cls.c.apply_speciation()
+
+	def testOutOfRangeParameterRaisesErrors(self):
+		"""
+		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
+		errors.
+		"""
+		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+									 protracted_speciation_min=70, protracted_speciation_max=2000)
+		with self.assertRaises(ApplySpecError):
+			self.c.apply_speciation()
+		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+									 protracted_speciation_min=50, protracted_speciation_max=2100)
+		with self.assertRaises(ApplySpecError):
+			self.c.apply_speciation()
+
+	def testProtractedPostApplicationSanityChecks(self):
+		"""
+		Runs some sanity checks to ensure that the post-application of protracted speciation is as expected.
+		"""
+		self.assertLess(self.c.get_richness(1), self.c.get_richness(3))
+		self.assertLess(self.c.get_richness(2), self.c.get_richness(4))
+		self.assertLess(self.c.get_richness(5), self.c.get_richness(3))
+		self.assertLess(self.c.get_richness(6), self.c.get_richness(4))
+		self.assertEqual(5, self.c.get_richness(1))
+		self.assertEqual(5, self.c.get_richness(2))
+		self.assertEqual(7, self.c.get_richness(3))
+		self.assertEqual(7, self.c.get_richness(4))
+		self.assertEqual(5, self.c.get_richness(5))
+		self.assertEqual(5, self.c.get_richness(6))
+		self.assertEqual(22, self.c.get_richness(7))
+		self.assertEqual(30, self.c.get_richness(8))
+
+	def testProtractedCommunityParametersStored(self):
+		"""
+		Tests that the protracted community parameters are stored and returned correctly.
+		"""
+		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8], self.c.get_community_references())
+		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 100))
+		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 100))
+		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 25, 100))
+		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 25, 100))
+		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 200))
+		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 200))
+		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 0.0, 2000))
+		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 0.0, 2000))
+		ed1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 100}
+		ed2 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 100}
+		ed3 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 25, "max_speciation_gen": 100}
+		ed4 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 25, "max_speciation_gen": 100}
+		ed5 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 200}
+		ed6 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 200}
+		ed7 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 0.0, "max_speciation_gen": 2000}
+		ed8 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 0.0, "max_speciation_gen": 2000}
+		com1_dict = self.c.get_community_parameters(1)
+		com2_dict = self.c.get_community_parameters(2)
+		com3_dict = self.c.get_community_parameters(3)
+		com4_dict = self.c.get_community_parameters(4)
+		com5_dict = self.c.get_community_parameters(5)
+		com6_dict = self.c.get_community_parameters(6)
+		com7_dict = self.c.get_community_parameters(7)
+		com8_dict = self.c.get_community_parameters(8)
+		self.assertEqual(ed1, com1_dict)
+		self.assertEqual(ed2, com2_dict)
+		self.assertEqual(ed3, com3_dict)
+		self.assertEqual(ed4, com4_dict)
+		self.assertEqual(ed5, com5_dict)
+		self.assertEqual(ed6, com6_dict)
+		self.assertEqual(ed7, com7_dict)
+		self.assertEqual(ed8, com8_dict)
+
+
+class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
+	"""
+	Repeat of the above tests for multiple application method.
+	Tests that the protracted speciation is properly applied, post-simulation.
+	"""
+	@classmethod
+	def setUpClass(cls):
+		"""
+		Runs the test simulation to test for speciation application.
+		"""
+		cls.sim = Simulation()
+		cls.sim.set_simulation_params(seed=1, job_type=24, output_directory="output", min_speciation_rate=0.1,
+									  sigma=2, tau=2, deme=1, sample_size=1.0, max_time=10,
+									  dispersal_relative_cost=1, min_num_species=1, dispersal_method="normal",
+									  protracted=True, min_speciation_gen=50, max_speciation_gen=2000)
+		cls.sim.set_map("null", 10, 10)
+		cls.sim.finalise_setup()
+		cls.sim.run_coalescence()
+		cls.c = CoalescenceTree(cls.sim, logging_level=60)
+		cls.c.wipe_data()
+		cls.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2])
+		cls.c.add_multiple_protracted_parameters(speciation_gens=[(50, 100), (25, 100), (50, 200), (0.0, 2000)])
+		cls.c.apply_speciation()
+
+	def testOutOfRangeParameterRaisesErrors(self):
+		"""
+		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
+		errors.
+		"""
+		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+									 protracted_speciation_min=70, protracted_speciation_max=2000)
+		with self.assertRaises(ApplySpecError):
+			self.c.apply_speciation()
+		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+									 protracted_speciation_min=50, protracted_speciation_max=2100)
+		with self.assertRaises(ApplySpecError):
+			self.c.apply_speciation()
+
+	def testProtractedPostApplicationSanityChecks(self):
+		"""
+		Runs some sanity checks to ensure that the post-application of protracted speciation is as expected.
+		"""
+		self.assertLess(self.c.get_richness(1), self.c.get_richness(3))
+		self.assertLess(self.c.get_richness(2), self.c.get_richness(4))
+		self.assertLess(self.c.get_richness(5), self.c.get_richness(3))
+		self.assertLess(self.c.get_richness(6), self.c.get_richness(4))
+		self.assertEqual(5, self.c.get_richness(1))
+		self.assertEqual(5, self.c.get_richness(2))
+		self.assertEqual(7, self.c.get_richness(3))
+		self.assertEqual(7, self.c.get_richness(4))
+		self.assertEqual(5, self.c.get_richness(5))
+		self.assertEqual(5, self.c.get_richness(6))
+		self.assertEqual(22, self.c.get_richness(7))
+		self.assertEqual(30, self.c.get_richness(8))
+
+	def testProtractedCommunityParametersStored(self):
+		"""
+		Tests that the protracted community parameters are stored and returned correctly.
+		"""
+		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8], self.c.get_community_references())
+		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 100))
+		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 100))
+		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 25, 100))
+		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 25, 100))
+		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 200))
+		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 200))
+		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 0.0, 2000))
+		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 0.0, 2000))
+		ed1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 100}
+		ed2 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 100}
+		ed3 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 25, "max_speciation_gen": 100}
+		ed4 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 25, "max_speciation_gen": 100}
+		ed5 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 200}
+		ed6 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 200}
+		ed7 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 0.0, "max_speciation_gen": 2000}
+		ed8 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 0.0, "max_speciation_gen": 2000}
+		com1_dict = self.c.get_community_parameters(1)
+		com2_dict = self.c.get_community_parameters(2)
+		com3_dict = self.c.get_community_parameters(3)
+		com4_dict = self.c.get_community_parameters(4)
+		com5_dict = self.c.get_community_parameters(5)
+		com6_dict = self.c.get_community_parameters(6)
+		com7_dict = self.c.get_community_parameters(7)
+		com8_dict = self.c.get_community_parameters(8)
+		self.assertEqual(ed1, com1_dict)
+		self.assertEqual(ed2, com2_dict)
+		self.assertEqual(ed3, com3_dict)
+		self.assertEqual(ed4, com4_dict)
+		self.assertEqual(ed5, com5_dict)
+		self.assertEqual(ed6, com6_dict)
+		self.assertEqual(ed7, com7_dict)
+		self.assertEqual(ed8, com8_dict)
+
+class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
+	"""
+	Repeat of the above tests for multiple application method.
+	Tests that the protracted speciation is properly applied, post-simulation.
+	"""
+	@classmethod
+	def setUpClass(cls):
+		"""
+		Runs the test simulation to test for speciation application.
+		"""
+		cls.sim = Simulation()
+		cls.sim.set_simulation_params(seed=1, job_type=25, output_directory="output", min_speciation_rate=0.1,
+									  sigma=2, tau=2, deme=1, sample_size=1.0, max_time=10,
+									  dispersal_relative_cost=1,
+									  min_num_species=1, dispersal_method="normal", protracted=True,
+									  min_speciation_gen=50, max_speciation_gen=2000)
+		cls.sim.set_map("null", 10, 10)
+		cls.sim.finalise_setup()
+		cls.sim.run_coalescence()
+		cls.c = CoalescenceTree(cls.sim, logging_level=60)
+		cls.c.wipe_data()
+		cls.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2])
+		min_speciation_gens = [50, 25, 50, 0]
+		max_speciation_gens = [100, 100, 200, 2000]
+		cls.c.add_multiple_protracted_parameters(min_speciation_gens=min_speciation_gens,
+												 max_speciation_gens=max_speciation_gens)
+		cls.c.apply_speciation()
+
+	def testOutOfRangeParameterRaisesErrors(self):
+		"""
+		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
+		errors.
+		"""
+		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+									 protracted_speciation_min=70, protracted_speciation_max=2000)
+		with self.assertRaises(ApplySpecError):
+			self.c.apply_speciation()
+		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+									 protracted_speciation_min=50, protracted_speciation_max=2100)
+		with self.assertRaises(ApplySpecError):
+			self.c.apply_speciation()
+
+	def testProtractedPostApplicationSanityChecks(self):
+		"""
+		Runs some sanity checks to ensure that the post-application of protracted speciation is as expected.
+		"""
+		self.assertLess(self.c.get_richness(1), self.c.get_richness(3))
+		self.assertLess(self.c.get_richness(2), self.c.get_richness(4))
+		self.assertLess(self.c.get_richness(5), self.c.get_richness(3))
+		self.assertLess(self.c.get_richness(6), self.c.get_richness(4))
+		self.assertEqual(5, self.c.get_richness(1))
+		self.assertEqual(5, self.c.get_richness(2))
+		self.assertEqual(7, self.c.get_richness(3))
+		self.assertEqual(7, self.c.get_richness(4))
+		self.assertEqual(5, self.c.get_richness(5))
+		self.assertEqual(5, self.c.get_richness(6))
+		self.assertEqual(22, self.c.get_richness(7))
+		self.assertEqual(30, self.c.get_richness(8))
+
+	def testProtractedCommunityParametersStored(self):
+		"""
+		Tests that the protracted community parameters are stored and returned correctly.
+		"""
+		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8], self.c.get_community_references())
+		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 100))
+		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 100))
+		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 25, 100))
+		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 25, 100))
+		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 200))
+		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 200))
+		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 0.0, 2000))
+		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 0.0, 2000))
+		ed1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 100}
+		ed2 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 100}
+		ed3 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 25, "max_speciation_gen": 100}
+		ed4 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 25, "max_speciation_gen": 100}
+		ed5 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 200}
+		ed6 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 50, "max_speciation_gen": 200}
+		ed7 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 0.0, "max_speciation_gen": 2000}
+		ed8 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
+			   "min_speciation_gen": 0.0, "max_speciation_gen": 2000}
+		com1_dict = self.c.get_community_parameters(1)
+		com2_dict = self.c.get_community_parameters(2)
+		com3_dict = self.c.get_community_parameters(3)
+		com4_dict = self.c.get_community_parameters(4)
+		com5_dict = self.c.get_community_parameters(5)
+		com6_dict = self.c.get_community_parameters(6)
+		com7_dict = self.c.get_community_parameters(7)
+		com8_dict = self.c.get_community_parameters(8)
+		self.assertEqual(ed1, com1_dict)
+		self.assertEqual(ed2, com2_dict)
+		self.assertEqual(ed3, com3_dict)
+		self.assertEqual(ed4, com4_dict)
+		self.assertEqual(ed5, com5_dict)
+		self.assertEqual(ed6, com6_dict)
+		self.assertEqual(ed7, com7_dict)
+		self.assertEqual(ed8, com8_dict)
+
+
 class TestSimulationDispersalMaps(unittest.TestCase):
 	"""
 	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
@@ -1642,6 +1955,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 			c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 							dispersal_map="sample/dispersal_fine.tif")
 
+
 class TestSimulationDispersalMapsSumming(unittest.TestCase):
 	"""
 	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
@@ -1689,6 +2003,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
 		c.finalise_setup()
 		with self.assertRaises(NECSimError):
 			c.run_coalescence()
+
 
 class TestSimulationDispersalMapsNoData(unittest.TestCase):
 	"""
@@ -1745,8 +2060,9 @@ class TestDetectRamUsage(unittest.TestCase):
 			cls.c.finalise_setup()
 			cls.c.run_coalescence()
 		except MemoryError as me:
-			cls.fail(msg="Cannot run a larger scale simulation. This should require around 500MB of RAM. If your computer"
-						  "does not have these requirements, ignore this failure: {}".format(me))
+			cls.fail(
+				msg="Cannot run a larger scale simulation. This should require around 500MB of RAM. If your computer"
+					"does not have these requirements, ignore this failure: {}".format(me))
 
 	def testExcessiveRamUsage(self):
 		"""

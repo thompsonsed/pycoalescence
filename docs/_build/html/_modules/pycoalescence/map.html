@@ -54,10 +54,7 @@
             
   <h1>Source code for pycoalescence.map</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Contains the Map class as part of the PyCoalescence Project.</span>
-
-<span class="sd">Operations involve simulating dispersal kernels on maps, detecting map file dimensions and obtaining offsets between</span>
-<span class="sd">maps.</span>
+<span class="sd">Open tif files and detect properties and data using gdal. Detailed :ref:`here &lt;Simulate_landscapes&gt;`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -76,6 +73,7 @@
 	<span class="n">NumberTypes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
 	<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">ogr</span><span class="p">,</span> <span class="n">osr</span>
+
 	<span class="n">default_val</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Float32</span>
 <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
 	<span class="n">default_val</span> <span class="o">=</span> <span class="mi">6</span>
@@ -90,7 +88,7 @@
 
 <div class="viewcode-block" id="Map"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map">[docs]</a><span class="k">class</span> <span class="nc">Map</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A class for the map object, containing the file name and the variables associated with this map object.</span>
+<span class="sd">	Contains the file name and the variables associated with this map object.</span>
 
 <span class="sd">	The internal array of the tif file is stored in self.data, and band 1 of the file can be opened by using</span>
 <span class="sd">	open()</span>
@@ -126,7 +124,6 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;maplogger&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">()</span>
 
-
 	<span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Overriding the destructor for proper destruction of the logger object</span>
@@ -152,6 +149,20 @@
 				<span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">memo</span><span class="p">))</span>
 		<span class="k">return</span> <span class="n">result</span>
 
+	<span class="k">def</span> <span class="nf">_create_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the logger for use with dispersal tests. Note you can supply your own logger by over-riding</span>
+<span class="sd">		self.logger. This function should only be run during self.__init__()</span>
+
+<span class="sd">		:param file: file to write output to. If None, outputs to terminal</span>
+<span class="sd">		:param logging_level: the logging level to use (defaults to INFO)</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">logging_level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">logging_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">create_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">logging_level</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Map.open"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.open">[docs]</a>	<span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">band_no</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Reads the raster file from memory into the data object.</span>
@@ -162,35 +173,73 @@
 
 <span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
-			<span class="n">check_file_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="nb">file</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="o">=</span> <span class="n">band_no</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">band_number</span><span class="p">)</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(),</span>
 							 <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span></div>
 
+<div class="viewcode-block" id="Map.get_database"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_database">[docs]</a>	<span class="k">def</span> <span class="nf">get_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the dataset from the file.</span>
+
+<span class="sd">		:param file: path to the file to open</span>
+
+<span class="sd">		:raises ImportError: if the gdal module has not been imported correctly</span>
+<span class="sd">		:raises IOError: if the supplied filename is not a tif</span>
+<span class="sd">		:raises IOError: if the map does not exist</span>
+
+<span class="sd">		:return: an opened dataset object</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File {} does not exist or is not accessible.&quot;</span>
+						  <span class="s2">&quot; Check read/write access.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
+		<span class="k">if</span> <span class="s2">&quot;.tif&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File {} is not a tif file.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Gdal could not open the file {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">ds</span></div>
+
 <div class="viewcode-block" id="Map.get_dtype"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_dtype">[docs]</a>	<span class="k">def</span> <span class="nf">get_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">band_no</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Gets the data type of the provided band number</span>
+
 <span class="sd">		:param band_no: band number to obtain the data type of</span>
 
 <span class="sd">		:rtype: int</span>
 <span class="sd">		:return: the gdal data type number in the raster file</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">band_no</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="o">=</span> <span class="mi">1</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="o">=</span> <span class="n">band_no</span>
-		<span class="n">check_file_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">()</span>
 		<span class="n">data_type</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">band_number</span><span class="p">)</span><span class="o">.</span><span class="n">DataType</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="k">return</span> <span class="n">data_type</span></div>
 
-<div class="viewcode-block" id="Map.output_exists"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.output_exists">[docs]</a>	<span class="k">def</span> <span class="nf">output_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Map.get_no_data"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_no_data">[docs]</a>	<span class="k">def</span> <span class="nf">get_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">band_no</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the no data value for the tif map.</span>
+
+<span class="sd">		:param band_no: the band number to obtain the no data value from</span>
+
+<span class="sd">		:return: the no data value</span>
+
+<span class="sd">		:rtype: float</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">band_no</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="o">=</span> <span class="n">band_no</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">()</span>
+		<span class="n">no_data</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">band_number</span><span class="p">)</span><span class="o">.</span><span class="n">GetNoDataValue</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">no_data</span></div>
+
+<div class="viewcode-block" id="Map.map_exists"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.map_exists">[docs]</a>	<span class="k">def</span> <span class="nf">map_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Checks if the output (or provided file) exists.</span>
 
@@ -220,7 +269,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">band_no</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">band_number</span> <span class="o">=</span> <span class="n">band_no</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File {} does not exist for writing.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GA_Update</span><span class="p">)</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">ds</span><span class="p">:</span>
@@ -231,17 +280,20 @@
 		<span class="n">ds</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span></div>
 
-<div class="viewcode-block" id="Map.create"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.create">[docs]</a>	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Byte</span><span class="p">):</span>
+<div class="viewcode-block" id="Map.create"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.create">[docs]</a>	<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Byte</span><span class="p">,</span> <span class="n">geotransform</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Create the file output and writes the data to the output.</span>
 
-<span class="sd">		:param file: the output file to create</span>
-<span class="sd">		:param bands: optionally provide a number of bands to create</span>
+<span class="sd">		:param str file: the output file to create</span>
+<span class="sd">		:param int bands: optionally provide a number of bands to create</span>
+<span class="sd">		:param tuple geotransform: optionally provide a geotransform to set for the raster - defaults to (0, 1, 0, 0, 0, -1)</span>
+<span class="sd">		:param string projection: optionally provide a projection to set for the raster, in WKT format</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Data is None for writing to file.&quot;</span><span class="p">)</span>
-		<span class="n">geotransform</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">geotransform</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">geotransform</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File already exists at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">file</span><span class="p">))</span>
 		<span class="n">check_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 		<span class="n">output_raster</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s1">&#39;GTiff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span>
@@ -250,6 +302,8 @@
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">output_raster</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not create tif file at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
 		<span class="n">output_raster</span><span class="o">.</span><span class="n">SetGeoTransform</span><span class="p">(</span><span class="n">geotransform</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">projection</span><span class="p">:</span>
+			<span class="n">output_raster</span><span class="o">.</span><span class="n">SetProjection</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
 		<span class="n">out_band</span> <span class="o">=</span> <span class="n">output_raster</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 		<span class="n">out_band</span><span class="o">.</span><span class="n">WriteArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 		<span class="n">out_band</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>
@@ -265,11 +319,9 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">src_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="n">src_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">src_file</span><span class="p">):</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File does not exist at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">src_file</span><span class="p">))</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">(</span><span class="n">dst_file</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_exists</span><span class="p">(</span><span class="n">dst_file</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File already exists at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dst_file</span><span class="p">))</span>
-		<span class="n">src_ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">src_file</span><span class="p">)</span>
+		<span class="n">src_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">(</span><span class="n">src_file</span><span class="p">)</span>
 		<span class="n">driver</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;GTiff&quot;</span><span class="p">)</span>
 		<span class="n">dst_ds</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">CreateCopy</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="n">src_ds</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 		<span class="c1"># Once we&#39;re done, close properly the dataset</span>
@@ -287,6 +339,7 @@
 
 <span class="sd">		:return: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dimensions_set</span> <span class="o">=</span> <span class="bp">False</span>
 		<span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -335,13 +388,11 @@
 		<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="n">NumberTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="n">NumberTypes</span><span class="p">)</span> <span class="ow">and</span>
 				<span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">NumberTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="n">NumberTypes</span><span class="p">)</span> <span class="ow">and</span>
 				<span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">,</span> <span class="n">NumberTypes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_res</span><span class="p">,</span> <span class="n">NumberTypes</span><span class="p">)):</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-				<span class="s2">&quot;values not set as numbers in &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_size</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_size</span><span class="p">)</span> <span class="o">+</span>
-				<span class="s2">&quot; | &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_offset</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_offset</span><span class="p">)</span> <span class="o">+</span>
-				<span class="s2">&quot; | &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_res</span><span class="p">))</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Values not set as numbers in {}: &quot;</span>
+							 <span class="s2">&quot;{}, {} | {}, {} | {}, {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
+																<span class="bp">self</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_res</span><span class="p">))</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions_set</span><span class="p">:</span>
-			<span class="n">err</span> <span class="o">=</span> <span class="s2">&quot;Dimensions for map file &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; not set.&quot;</span>
-			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Dimensions for map file {} not set.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
 		<span class="n">check_file_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Map.read_dimensions"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.read_dimensions">[docs]</a>	<span class="k">def</span> <span class="nf">read_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -350,21 +401,34 @@
 
 <span class="sd">		:return: a list containing [0] x, [1] y, [2] upper left x, [3] upper left y, [4] x resolution, [5] y resolution</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">gdal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Gdal module not imported correctly: cannot read tif files&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="s2">&quot;.tif&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;tif file not detected - dimensions cannot be read: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">():</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-				<span class="s2">&quot;File &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; does not exist or is not accessible. Check read/write access.&quot;</span><span class="p">)</span>
-		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Gdal could not open the file {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
+		<span class="n">ulx</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">xskew</span><span class="p">,</span> <span class="n">uly</span><span class="p">,</span> <span class="n">yskew</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_geo_transform</span><span class="p">()</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_x_y</span><span class="p">()</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">yres</span><span class="p">,</span> <span class="n">ulx</span><span class="p">,</span> <span class="n">uly</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Map.get_x_y"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_x_y">[docs]</a>	<span class="k">def</span> <span class="nf">get_x_y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Simply returns the x and y dimension of the file.</span>
+
+<span class="sd">		:return: the x and y dimensions</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions_set</span><span class="p">:</span>
+			<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_size</span><span class="p">]</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">()</span>
 		<span class="n">x</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">RasterXSize</span>
 		<span class="n">y</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">RasterYSize</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Map.get_geo_transform"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_geo_transform">[docs]</a>	<span class="k">def</span> <span class="nf">get_geo_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the geotransform of the file.</span>
+
+<span class="sd">		:return: list containing the geotransform parameters</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">()</span>
 		<span class="n">ulx</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">xskew</span><span class="p">,</span> <span class="n">uly</span><span class="p">,</span> <span class="n">yskew</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span>
-		<span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">yres</span><span class="p">,</span> <span class="n">ulx</span><span class="p">,</span> <span class="n">uly</span><span class="p">]</span></div>
+		<span class="k">return</span> <span class="p">[</span><span class="n">ulx</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">xskew</span><span class="p">,</span> <span class="n">uly</span><span class="p">,</span> <span class="n">yskew</span><span class="p">,</span> <span class="n">yres</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Map.get_dimensions"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_dimensions">[docs]</a>	<span class="k">def</span> <span class="nf">get_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -381,11 +445,13 @@
 
 <div class="viewcode-block" id="Map.get_projection"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_projection">[docs]</a>	<span class="k">def</span> <span class="nf">get_projection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Gets the projection of the map</span>
+<span class="sd">		Gets the projection of the map.</span>
+
+<span class="sd">		:return: the projection object of the map in WKT format</span>
+
+<span class="sd">		:rtype: str</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">():</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Output file {} does not exist for fetching projection.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
-		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">()</span>
 		<span class="n">sr</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">()</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="k">return</span> <span class="n">sr</span></div>
@@ -401,18 +467,11 @@
 <span class="sd">		:param y_size: the y size of the subset to obtain</span>
 <span class="sd">		:return: a numpy array containing the subsetted data</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">gdal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Gdal module not imported correctly: cannot read tif files&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="s2">&quot;.tif&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;tif file not detected - dimensions cannot be read: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">():</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-				<span class="s2">&quot;File &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; does not exist or is not accessible. Check read/write access.&quot;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">y_offset</span><span class="p">:(</span><span class="n">y_offset</span> <span class="o">+</span> <span class="n">y_size</span><span class="p">),</span> <span class="n">x_offset</span><span class="p">:(</span><span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_size</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="Map.get_subset"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_subset">[docs]</a>	<span class="k">def</span> <span class="nf">get_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">,</span> <span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">):</span>
+<div class="viewcode-block" id="Map.get_subset"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_subset">[docs]</a>	<span class="k">def</span> <span class="nf">get_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">,</span> <span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">no_data_value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Gets a subset of the map file</span>
 
@@ -420,18 +479,21 @@
 <span class="sd">		:param y_offset: the y offset from the top left corner of the map</span>
 <span class="sd">		:param x_size: the x size of the subset to obtain</span>
 <span class="sd">		:param y_size: the y size of the subset to obtain</span>
+<span class="sd">		:param no_data_value: optionally provide a value to replace all no data values with.</span>
+
 <span class="sd">		:return: a numpy array containing the subsetted data</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">gdal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Gdal module not imported correctly: cannot read tif files&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="s2">&quot;.tif&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;tif file not detected - dimensions cannot be read: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">():</span>
-			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-				<span class="s2">&quot;File &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; does not exist or is not accessible. Check read/write access.&quot;</span><span class="p">)</span>
-		<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-		<span class="n">to_return</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">,</span> <span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+		<span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_database</span><span class="p">()</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_x_y</span><span class="p">()</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x_size</span> <span class="o">+</span> <span class="n">x_offset</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y_size</span> <span class="o">+</span> <span class="n">y_offset</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="ow">or</span> <span class="n">x_offset</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">y_offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Requested x, y subset of [{}:{}, {}:{}]&quot;</span>
+							 <span class="s2">&quot; not with array of dimensions ({}, {})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">x_size</span><span class="p">,</span>
+																			 <span class="n">y_offset</span><span class="p">,</span> <span class="n">y_offset</span> <span class="o">+</span> <span class="n">y_size</span><span class="p">,</span>
+																			 <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+		<span class="n">to_return</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">,</span> <span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
 		<span class="n">ds</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="k">if</span> <span class="n">no_data_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">to_return</span><span class="p">[</span><span class="n">to_return</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_data</span><span class="p">()]</span> <span class="o">=</span> <span class="n">no_data_value</span>
 		<span class="k">return</span> <span class="n">to_return</span></div>
 
 <div class="viewcode-block" id="Map.convert_lat_long"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.convert_lat_long">[docs]</a>	<span class="k">def</span> <span class="nf">convert_lat_long</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="nb">long</span><span class="p">):</span>
@@ -496,7 +558,7 @@
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">if</span> <span class="n">offset</span><span class="o">.</span><span class="n">get_projection</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_projection</span><span class="p">():</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Projection of {} does not match projection of {}.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span>
-																							 <span class="n">offset</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
+																							   <span class="n">offset</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;{} = {}.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_projection</span><span class="p">()))</span>
 				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;{} = {}.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">offset</span><span class="o">.</span><span class="n">get_projection</span><span class="p">()))</span>
 				<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Projections and spatial reference systems of two maps do not match.&quot;</span><span class="p">)</span>
@@ -607,7 +669,7 @@
 
 <span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_exists</span><span class="p">(</span><span class="n">raster_file</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_exists</span><span class="p">(</span><span class="n">raster_file</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File already exists at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>
 		<span class="n">check_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">x_res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">y_res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -642,8 +704,8 @@
 		<span class="k">if</span> <span class="n">output_srs</span> <span class="ow">and</span> <span class="n">output_srs</span> <span class="o">!=</span> <span class="n">source_srs</span><span class="p">:</span>
 			<span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span> <span class="o">=</span> <span class="n">convert_coordinates</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">source_srs</span><span class="p">,</span> <span class="n">output_srs</span><span class="p">)</span>
 			<span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">convert_coordinates</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">source_srs</span><span class="p">,</span> <span class="n">output_srs</span><span class="p">)</span>
-		<span class="n">x_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x_buffer</span><span class="p">))</span>
-		<span class="n">y_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_res</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">y_buffer</span><span class="p">))</span>
+		<span class="n">x_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x_buffer</span><span class="p">))</span>
+		<span class="n">y_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_res</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y_buffer</span><span class="p">))</span>
 		<span class="n">target_ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s1">&#39;GTiff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">,</span>
 														 <span class="n">y_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">target_ds</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -660,7 +722,7 @@
 				<span class="c1"># Source has no projection (needs GDAL &gt;= 1.7.0 to work)</span>
 				<span class="n">target_ds</span><span class="o">.</span><span class="n">SetProjection</span><span class="p">(</span><span class="s1">&#39;LOCAL_CS[&quot;arbitrary&quot;]&#39;</span><span class="p">)</span>
 		<span class="n">target_ds</span><span class="o">.</span><span class="n">SetGeoTransform</span><span class="p">((</span>
-			<span class="n">x_min</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_res</span> <span class="o">*</span> <span class="n">x_buffer</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="n">x_min</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_res</span> <span class="o">*</span> <span class="n">x_buffer</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_res</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
 			<span class="n">y_max</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_res</span> <span class="o">*</span> <span class="n">y_buffer</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y_res</span><span class="p">,</span>
 		<span class="p">))</span>
 		<span class="c1"># Rasterize</span>
@@ -732,8 +794,13 @@
 			<span class="n">dest</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s1">&#39;GTiff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">dest_file</span><span class="p">,</span> <span class="n">dst_xsize</span><span class="p">,</span> <span class="n">dst_ysize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
 		<span class="n">dest</span><span class="o">.</span><span class="n">SetProjection</span><span class="p">(</span><span class="n">dest_projection</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">())</span>
 		<span class="n">dest</span><span class="o">.</span><span class="n">SetGeoTransform</span><span class="p">(</span><span class="n">dst_gt</span><span class="p">)</span>
-		<span class="n">gdal</span><span class="o">.</span><span class="n">Warp</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">source_ds</span><span class="p">,</span> <span class="n">outputType</span><span class="o">=</span><span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Int16</span><span class="p">,</span> <span class="n">resampleAlg</span><span class="o">=</span><span class="n">resample_algorithm</span><span class="p">,</span>
-				  <span class="n">warpMemoryLimit</span><span class="o">=</span><span class="n">warp_memory_limit</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">gdal</span><span class="o">.</span><span class="n">Warp</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">source_ds</span><span class="p">,</span> <span class="n">outputType</span><span class="o">=</span><span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Int16</span><span class="p">,</span> <span class="n">resampleAlg</span><span class="o">=</span><span class="n">resample_algorithm</span><span class="p">,</span>
+					  <span class="n">warpMemoryLimit</span><span class="o">=</span><span class="n">warp_memory_limit</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">ae</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Cannot find the gdal.Warp functionality - it is possible this function is not &quot;</span>
+								 <span class="s2">&quot;provided by your version of gdal, or that your gdal installation is incomplete.&quot;</span><span class="p">)</span>
+			<span class="k">raise</span> <span class="n">ae</span>
 		<span class="n">dest</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>
 		<span class="k">if</span> <span class="n">dest_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
@@ -741,31 +808,7 @@
 			<span class="n">dst_ds</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">CreateCopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 			<span class="n">dst_ds</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>
 			<span class="n">dst_ds</span> <span class="o">=</span> <span class="bp">None</span>
-		<span class="n">dest</span> <span class="o">=</span> <span class="bp">None</span></div>
-
-<div class="viewcode-block" id="Map.get_x_y"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.map.Map.get_x_y">[docs]</a>	<span class="k">def</span> <span class="nf">get_x_y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Simply returns the x and y dimension of the file.</span>
-
-<span class="sd">		:return: the x and y dimensions</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions_set</span><span class="p">:</span>
-			<span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_size</span><span class="p">]</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_dimensions</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span></div>
-
-	<span class="k">def</span> <span class="nf">_create_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Creates the logger for use with dispersal tests. Note you can supply your own logger by over-riding</span>
-<span class="sd">		self.logger. This function should only be run during self.__init__()</span>
-
-<span class="sd">		:param file: file to write output to. If None, outputs to terminal</span>
-<span class="sd">		:param logging_level: the logging level to use (defaults to INFO)</span>
-
-<span class="sd">		:return: None</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">logging_level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="n">logging_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">create_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">logging_level</span><span class="p">)</span></div>
+		<span class="n">dest</span> <span class="o">=</span> <span class="bp">None</span></div></div>
 </pre></div>
 
           </div>

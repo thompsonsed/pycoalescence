@@ -1,16 +1,18 @@
 """
-Contains the :py:class:`~Merger` class for combining simulation outputs into a single simulation, merging the
-various biodiversity tables into one.
+Combine simulation outputs from separate guilds. Detailed :ref:`here <merging_simulations>`.
+
+:py:class:`~Merger` will output a single database file, merging the various biodiversity tables into one.
 
 Metrics are also calculated for the entire system, with a guild reference of 0.
 
-All standard routines provided in :py:class:`~PyCoalescence.coal_analyse.Tree` can then be performed on the combined
-database.
+All standard routines provided in :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` can then be performed on the
+combined database.
 """
 from __future__ import absolute_import
-import os
 
 import logging
+import os
+
 try:
 	import sqlite3
 except ImportError:
@@ -22,14 +24,14 @@ except ImportError:
 	from .system_operations import isclose
 
 from .coalescence_tree import CoalescenceTree
-from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, sql_get_max_from_column
+from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql
 from .system_operations import cantor_pairing, check_parent
 
 
 class Merger(CoalescenceTree):
 	"""
-	Merges simulation outputs into a single database. Inherits from :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to
-	provide all routines in the same object.
+	Merges simulation outputs into a single database. Inherits from
+	:py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to provide all routines in the same object.
 	"""
 	def __init__(self, database=None, logging_level=logging.WARNING, log_output=None):
 		super(Merger, self).__init__(database, logging_level, log_output)
@@ -64,8 +66,10 @@ class Merger(CoalescenceTree):
 		Assumes no database currently exists, and will create one.
 
 		:raises IOError: if the output database already exists
+
 		:param filename: the filename to output merged simulations into
-		:return:
+
+		:rtype: None
 		"""
 		if os.path.exists(filename):
 			raise IOError("Database already exists at {}".format(filename))

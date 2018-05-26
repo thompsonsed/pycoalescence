@@ -50,6 +50,9 @@ var hierarchy =
     [ "Landscape", "class_landscape.html", null ],
     [ "io::LineReader", "classio_1_1_line_reader.html", null ],
     [ "LogFile", "class_log_file.html", null ],
+    [ "Map", null, [
+      [ "LandscapeMetricsCalculator", "class_landscape_metrics_calculator.html", null ]
+    ] ],
     [ "Matrix< T >", "class_matrix.html", null ],
     [ "Matrix< SpeciesList >", "class_matrix.html", [
       [ "SpeciesGrid", "class_species_grid.html", null ]

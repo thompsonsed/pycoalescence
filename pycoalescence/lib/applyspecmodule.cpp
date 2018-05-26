@@ -44,14 +44,14 @@ PyObject * call_logging = nullptr;
  * @param times vector of times to apply
  * @param fragment_file path to fragment list, or "T" for fragment detection, or "null"
  * @param speciation_rates speciation rates to apply
- * @param min_speciation_gen minimum speciation rate for protracted simulations
- * @param max_speciation_gen maximum speciation rate for protracted simulations
+ * @param min_speciation_gen minimum speciation rates for protracted simulations
+ * @param max_speciation_gen maximum speciation rates for protracted simulations
  * @param metacommunity_size size of the metacommunity to apply
  * @param metacommunity_speciation_rate speciation rate to use in metacommunity generation
  */
 template<class T> void createCommunity(string database_str, bool use_spatial, string sample_file,
 									   vector<double> &times, string fragment_file, vector<double> &speciation_rates,
-									   double min_speciation_gen, double max_speciation_gen,
+									   vector<double> &min_speciation_gen, vector<double> &max_speciation_gen,
 									   unsigned long metacommunity_size, double metacommunity_speciation_rate)
 {
 	T community;
@@ -68,16 +68,16 @@ static PyObject * apply(PyObject * self, PyObject * args)
 	int record_spatial;
 	char * sample_file;
 	char * fragment_file;
-	double min_spec_gen = 0.0;
-	double max_spec_gen = 0.0;
 	unsigned long metacommunity_size = 0;
 	double metacommunity_speciation_rate = 0.0;
 	PyObject *list_speciation_rates;
 	PyObject *list_times;
-	if (!PyArg_ParseTuple(args, "sissO!O!|ddkd", &database, &record_spatial, &sample_file,
-						  &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times,
-						  &min_spec_gen,
-						  &max_spec_gen, &metacommunity_size, &metacommunity_speciation_rate))
+	PyObject *list_min_spec_gen = nullptr;
+	PyObject *list_max_spec_gen = nullptr;
+	if (!PyArg_ParseTuple(args, "sissO!O!|O!O!kd", &database, &record_spatial, &sample_file,
+						  &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times, &PyList_Type,
+						  &list_min_spec_gen, &PyList_Type,
+						  &list_max_spec_gen, &metacommunity_size, &metacommunity_speciation_rate))
 	{
 		return NULL;
 	}
@@ -91,15 +91,7 @@ static PyObject * apply(PyObject * self, PyObject * args)
 		writeLog(10, "Metacommunity size: " + to_string(metacommunity_size));
 	}
 #endif // DEBUG
-	if(max_spec_gen > 0.0 && min_spec_gen >= max_spec_gen)
-	{
-		PyErr_SetString(PyExc_TypeError, "Minimum protracted speciation generation must be less than maximum.");
-	}
-	else
-	{
-		min_spec_gen=0.0;
-		max_spec_gen=0.0;
-	}
+
 	// Convert all our variables to the relevant form
 	string database_str = database;
 	auto use_spatial = static_cast<bool>(record_spatial);
@@ -107,6 +99,8 @@ static PyObject * apply(PyObject * self, PyObject * args)
 	string fragment_file_str = fragment_file;
 	vector<double> spec_rates;
 	vector<double> times;
+	vector<double> min_spec_gen;
+	vector<double> max_spec_gen;
 	if(!importPyListToVectorDouble(list_speciation_rates, spec_rates, "Speciation rates must be floats."))
 	{
 		return NULL;
@@ -114,6 +108,24 @@ static PyObject * apply(PyObject * self, PyObject * args)
 	if(!importPyListToVectorDouble(list_times, times, "Times must be floats."))
 	{
 		return NULL;
+	}
+	if(!list_min_spec_gen || !list_max_spec_gen)
+	{
+		min_spec_gen.push_back(0.0);
+		max_spec_gen.push_back(0.0);
+	}
+	else
+	{
+		if(!importPyListToVectorDouble(list_min_spec_gen, min_spec_gen,
+									   "Minimum protracted generations must be floats."))
+		{
+			return NULL;
+		}
+		if(!importPyListToVectorDouble(list_max_spec_gen, max_spec_gen,
+									   "Maximum protracted generations must be floats."))
+		{
+			return NULL;
+		}
 	}
 	// Now run the actual simulation
 	try

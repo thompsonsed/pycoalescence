@@ -1,5 +1,21 @@
 var NAVTREEINDEX6 =
 {
+"structio_1_1error_1_1integer__overflow.html":[5,0,0,1,7],
+"structio_1_1error_1_1integer__overflow.html#a2a8144d3591a4bb618368ca7261befef":[5,0,0,1,7,2],
+"structio_1_1error_1_1integer__overflow.html#a391298c37172bcdb83aeb3daf65d5a0e":[5,0,0,1,7,9],
+"structio_1_1error_1_1integer__overflow.html#a5fa7e6154c54a7d020f329c1816ab746":[5,0,0,1,7,0],
+"structio_1_1error_1_1integer__overflow.html#a8587779769fbfb40155abb362137a523":[5,0,0,1,7,6],
+"structio_1_1error_1_1integer__overflow.html#a8e38f86a7afea1f0c6e6cac0c548d6f2":[5,0,0,1,7,8],
+"structio_1_1error_1_1integer__overflow.html#aa92778a81778abc676ec6ee9952bba8c":[5,0,0,1,7,3],
+"structio_1_1error_1_1integer__overflow.html#ac957d5590a8b95517b74eb5bf373a424":[5,0,0,1,7,10],
+"structio_1_1error_1_1integer__overflow.html#ad99d4a2459e51ce2c24707569c4a0df6":[5,0,0,1,7,5],
+"structio_1_1error_1_1integer__overflow.html#ae7375310dc02425cb3cc4115b3ac8d6a":[5,0,0,1,7,1],
+"structio_1_1error_1_1integer__overflow.html#ae765de62778c989d4658b4efe2995390":[5,0,0,1,7,4],
+"structio_1_1error_1_1integer__overflow.html#af40ba00f1f035d363b099baf1f724323":[5,0,0,1,7,7],
+"structio_1_1error_1_1integer__underflow.html":[5,0,0,1,8],
+"structio_1_1error_1_1integer__underflow.html#a2a8144d3591a4bb618368ca7261befef":[5,0,0,1,8,2],
+"structio_1_1error_1_1integer__underflow.html#a391298c37172bcdb83aeb3daf65d5a0e":[5,0,0,1,8,9],
+"structio_1_1error_1_1integer__underflow.html#a8587779769fbfb40155abb362137a523":[5,0,0,1,8,6],
 "structio_1_1error_1_1integer__underflow.html#a8e38f86a7afea1f0c6e6cac0c548d6f2":[5,0,0,1,8,8],
 "structio_1_1error_1_1integer__underflow.html#aa92778a81778abc676ec6ee9952bba8c":[5,0,0,1,8,3],
 "structio_1_1error_1_1integer__underflow.html#ac957d5590a8b95517b74eb5bf373a424":[5,0,0,1,8,10],
@@ -92,6 +108,6 @@ var NAVTREEINDEX6 =
 "structio_1_1single__line__comment.html":[5,0,0,12],
 "structio_1_1throw__on__overflow.html":[5,0,0,13],
 "structio_1_1trim__chars.html":[5,0,0,14],
-"structmodule__state.html":[5,0,18],
-"structmodule__state.html#a6593da300121fe46fad3e7280053fab8":[5,0,18,0]
+"structmodule__state.html":[5,0,19],
+"structmodule__state.html#a6593da300121fe46fad3e7280053fab8":[5,0,19,0]
 };

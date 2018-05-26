@@ -3,7 +3,7 @@
 Define DISPERSAL_IMPORT
 =======================
 
-- Defined in :ref:`file_dispersalmodule.h`
+- Defined in :ref:`file_landscapemetricsmodule.h`
 
 
 Define Documentation

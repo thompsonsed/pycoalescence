@@ -54,7 +54,7 @@
             
   <h1>Source code for pycoalescence.dispersal_simulation</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Contains routines for simulating a dispersal kernel on a map.</span>
+<span class="sd">Simulate dispersal kernels on landscapes. Detailed :ref:`here &lt;Simulate_landscapes&gt;`.</span>
 
 <span class="sd">:input:</span>
 <span class="sd">	- Map file to simulate on</span>
@@ -409,6 +409,7 @@
 <span class="sd">		:param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).</span>
 
 <span class="sd">		:return: standard deviation of dispersal from the database</span>
+<span class="sd">		:rtype: float</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_table_exists</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;DISTANCES_TRAVELLED&quot;</span><span class="p">):</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database {} does not have a DISTANCES_TRAVELLED table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
@@ -429,6 +430,7 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Gets the dispersal simulation parameters from the dispersal_db</span>
 <span class="sd">		:return: the dispersal simulation parameters</span>
+<span class="sd">		:rtype: dict</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">()</span>
 		<span class="k">try</span><span class="p">:</span>
@@ -441,13 +443,28 @@
 		<span class="n">main_dict</span> <span class="o">=</span> <span class="p">{}</span>
 		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
 			<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+			<span class="c1"># python 2.x support</span>
 			<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
 				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">each</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
 					<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
 						<span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">each</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
 			<span class="n">main_dict</span><span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">column_names</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
 		<span class="c1"># Now convert it into a dictionary</span>
-		<span class="k">return</span> <span class="n">main_dict</span></div></div>
+		<span class="k">return</span> <span class="n">main_dict</span></div>
+
+<div class="viewcode-block" id="DispersalSimulation.get_database_references"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_references">[docs]</a>	<span class="k">def</span> <span class="nf">get_database_references</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Gets the references from the database.</span>
+<span class="sd">		:return: a list of references from the database</span>
+<span class="sd">		:rtype: list</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">()</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+			<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT DISTINCT(ref) FROM PARAMETERS&quot;</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get dispersal simulation parameters from database: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span></div></div>
 </pre></div>
 
           </div>

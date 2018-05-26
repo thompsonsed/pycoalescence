@@ -40,7 +40,7 @@ def generate_fragment_csv(input_shapefile, input_raster, output_csv, field_name=
 
 class FragmentConfigHandler(object):
 	"""
-	Class containing the routines for calculating the offsets from a config file.
+	Contains routines for calculating the offsets from a config file.
 	"""
 
 	def __init__(self):

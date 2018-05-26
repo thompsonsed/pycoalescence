@@ -1,5 +1,7 @@
 """
-Contains the routines for generating Voronoi diagrams and spacing points on a landscape using Lloyd's algorithm.
+Simple spatial algorithms required for package functionality.
+
+Algorithms include generation of Voronoi diagrams and spacing points on a landscape using Lloyd's algorithm.
 """
 from __future__ import absolute_import
 
@@ -135,7 +137,7 @@ def archimedes_spiral(centre_x, centre_y, radius, theta):
 	:param float theta: the angle of rotation
 
 	:return: tuple of x and y coordinates
-	:rtype tuple
+	:rtype: tuple
 	"""
 	return int(math.floor(radius * math.cos(theta) + centre_x)),\
 		   int(math.floor(radius * math.sin(theta) + centre_y))

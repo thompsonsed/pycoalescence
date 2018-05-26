@@ -54,10 +54,3 @@ Includes
 
 
 
-
-Functions
----------
-
-
-- :ref:`function_distanceBetweenCells`
-

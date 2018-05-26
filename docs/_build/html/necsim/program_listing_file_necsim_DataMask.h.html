@@ -107,14 +107,17 @@
 
     <span class="kt">bool</span> <span class="nf">getDefault</span><span class="p">();</span>
 
-    <span class="kt">bool</span> <span class="nf">setup</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">sample_mask_file</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_in</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_in</span><span class="p">,</span>
-               <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">mask_x_in</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">mask_y_in</span><span class="p">,</span>
-               <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_offset_in</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_offset_in</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">sim_parameters</span><span class="p">);</span>
 
+    <span class="kt">bool</span> <span class="nf">checkCanUseDefault</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">sim_parameters</span><span class="p">);</span>
     <span class="kt">void</span> <span class="nf">importBooleanMask</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xdim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ydim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask_xdim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask_ydim</span><span class="p">,</span>
-                           <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xoffset</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">yoffset</span><span class="p">,</span> <span class="n">string</span> <span class="n">inputfile</span><span class="p">);</span>
+                           <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xoffset</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">yoffset</span><span class="p">,</span> <span class="n">string</span> <span class="n">inputfile_in</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">doImport</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">completeBoolImport</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setupNull</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">mapvarin</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">importSampleMask</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">mapvarin</span><span class="p">);</span>
 

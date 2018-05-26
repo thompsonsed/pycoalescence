@@ -208,7 +208,7 @@ A simple simulation
     c.finalise_setup()
     c.run_coalescence()
 
-A more complex example using config files, multiple temporal sampling points and detection of map dimensions from the
+A more complex example using multiple temporal sampling points and detection of map dimensions from the
 inputted map files.
 
 .. code-block:: python

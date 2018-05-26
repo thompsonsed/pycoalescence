@@ -88,7 +88,7 @@ class TestSystemOperations(unittest.TestCase):
 		with open(file_name, 'r') as f:
 			s = f.readline()
 			self.assertTrue("test output" in s)
-		handlers = logger.handlers.copy()
+		handlers = logger.handlers[:]
 		for handler in handlers:
 			handler.close()
 			logger.removeHandler(handler)

@@ -385,10 +385,10 @@
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">has_imported_samplemask</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">samplemask</span><span class="p">.</span><span class="n">importBooleanMask</span><span class="p">(</span><span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">,</span> <span class="n">samplemask_x_size</span><span class="p">,</span> <span class="n">samplemask_y_size</span><span class="p">,</span>
+                                     <span class="n">samplemask_x_offset</span><span class="p">,</span> <span class="n">samplemask_y_offset</span><span class="p">,</span> <span class="n">sSamplemask</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">sSamplemask</span> <span class="o">!=</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">samplemask</span><span class="p">.</span><span class="n">importBooleanMask</span><span class="p">(</span><span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">,</span> <span class="n">samplemask_x_size</span><span class="p">,</span> <span class="n">samplemask_y_size</span><span class="p">,</span>
-                                         <span class="n">samplemask_x_offset</span><span class="p">,</span> <span class="n">samplemask_y_offset</span><span class="p">,</span> <span class="n">sSamplemask</span><span class="p">);</span>
             <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
             <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">samplemask</span><span class="p">.</span><span class="n">sample_mask</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
             <span class="p">{</span>
@@ -404,8 +404,7 @@
         <span class="p">}</span>
         <span class="k">else</span>
         <span class="p">{</span>
-            <span class="n">samplemask</span><span class="p">.</span><span class="n">importBooleanMask</span><span class="p">(</span><span class="n">grid_x_size</span><span class="p">,</span> <span class="n">grid_y_size</span><span class="p">,</span> <span class="n">samplemask_x_size</span><span class="p">,</span> <span class="n">samplemask_y_size</span><span class="p">,</span>
-                                         <span class="n">samplemask_x_offset</span><span class="p">,</span> <span class="n">samplemask_y_offset</span><span class="p">,</span> <span class="n">sSamplemask</span><span class="p">);</span>
+
 <span class="cp">#ifdef DEBUG</span>
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Sampling all areas.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="cp">#endif</span>

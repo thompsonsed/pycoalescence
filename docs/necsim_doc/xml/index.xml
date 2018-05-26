@@ -39,6 +39,8 @@
     <member refid="struct_cell_1a20ccaf4c7a18ce06930f961ed4fe3851" kind="variable"><name>x</name></member>
     <member refid="struct_cell_1a05aaf17f035c254584190b8ada505efc" kind="variable"><name>y</name></member>
     <member refid="struct_cell_1ac1f905d4cd626cc32963ab7a6f76634e" kind="function"><name>operator=</name></member>
+    <member refid="struct_cell_1abd251051519de0c0b3f2cdace1a2c684" kind="function"><name>operator==</name></member>
+    <member refid="struct_cell_1ac3b83bb33eb11dd036a4acecc7fa62d0" kind="function"><name>operator!=</name></member>
   </compound>
   <compound refid="struct_communities_array" kind="class"><name>CommunitiesArray</name>
     <member refid="struct_communities_array_1addd27a8197dd835e55c529294ecae398" kind="variable"><name>calc_array</name></member>
@@ -216,9 +218,12 @@
     <member refid="class_data_mask_1ae89a953b8200f027d44dc74fa748852b" kind="function"><name>DataMask</name></member>
     <member refid="class_data_mask_1aa45741c95c5ab3881d6606c0ad5b6560" kind="function"><name>~DataMask</name></member>
     <member refid="class_data_mask_1a093364b6da9442f7c4945b5a06cfe3af" kind="function"><name>getDefault</name></member>
-    <member refid="class_data_mask_1a73922a90e7f491ec3dcf90fdd400fdf8" kind="function"><name>setup</name></member>
-    <member refid="class_data_mask_1a819eacf6968b0384a0221599dac09122" kind="function"><name>importBooleanMask</name></member>
+    <member refid="class_data_mask_1ab6a4e6f63856f96805ddc79022c47104" kind="function"><name>setup</name></member>
+    <member refid="class_data_mask_1ae5bf5df7975431338e3ea757e6f2fac9" kind="function"><name>checkCanUseDefault</name></member>
+    <member refid="class_data_mask_1aac63b47c3688db359760f6134d30f239" kind="function"><name>importBooleanMask</name></member>
     <member refid="class_data_mask_1a85f7b85bb4ac54aa884a8a06f1d35d1b" kind="function"><name>doImport</name></member>
+    <member refid="class_data_mask_1a09a24a15ad49851e8f344150a9109dd2" kind="function"><name>completeBoolImport</name></member>
+    <member refid="class_data_mask_1a8a1071a51c4114cda3f73eeb98992fb4" kind="function"><name>setupNull</name></member>
     <member refid="class_data_mask_1ac756e21b1c8d9412d565fb020eec9a06" kind="function"><name>importSampleMask</name></member>
     <member refid="class_data_mask_1ace6578db5b096b0c24112cc438cfa90d" kind="function"><name>getVal</name></member>
     <member refid="class_data_mask_1af7a7cb35d309d37f42c7a3720a02b400" kind="function"><name>getNullProportion</name></member>
@@ -492,6 +497,16 @@
     <member refid="class_landscape_1abaf14ac4da88cd26f6593bdaa88d999f" kind="function"><name>recalculateHabitatMax</name></member>
     <member refid="class_landscape_1a1c309185f0c3a601f27c932f1f2fa886" kind="friend"><name>operator&lt;&lt;</name></member>
     <member refid="class_landscape_1a8b9beb241ad534346dc98d24f6bb9279" kind="friend"><name>operator&gt;&gt;</name></member>
+  </compound>
+  <compound refid="class_landscape_metrics_calculator" kind="class"><name>LandscapeMetricsCalculator</name>
+    <member refid="class_landscape_metrics_calculator_1af663b7cd7f64e71a6c7a6fed6c7bd695" kind="variable"><name>all_cells</name></member>
+    <member refid="class_landscape_metrics_calculator_1a34f344e3282eead2091fe8ccb32e6d48" kind="function"><name>calculateMNN</name></member>
+    <member refid="class_landscape_metrics_calculator_1a16bde8469f437abc21602eedb979e5e3" kind="function"><name>checkMinDistance</name></member>
+    <member refid="class_landscape_metrics_calculator_1a9dd4cde4aad066b3b204553718a63a98" kind="function"><name>findNearestNeighbourDistance</name></member>
+    <member refid="class_landscape_metrics_calculator_1a084eea2435b7d15049873ae4613b0307" kind="function"><name>createCellList</name></member>
+    <member refid="class_landscape_metrics_calculator_1aff48704d3a9e02da4914ac2b08c5f79b" kind="function"><name>calculateClumpiness</name></member>
+    <member refid="class_landscape_metrics_calculator_1ae477e368c4f13042cf2f9a47e62d60ae" kind="function"><name>calculateNoAdjacencies</name></member>
+    <member refid="class_landscape_metrics_calculator_1a1ba606d6fb687aceaf4a8e31e8f17273" kind="function"><name>calculateMinPerimeter</name></member>
   </compound>
   <compound refid="structio_1_1error_1_1line__length__limit__exceeded" kind="struct"><name>io::error::line_length_limit_exceeded</name>
     <member refid="structio_1_1error_1_1line__length__limit__exceeded_1aa7c12639e9f39f04ff1c8a53e8e41a06" kind="function"><name>format_error_message</name></member>
@@ -1100,9 +1115,12 @@
     <member refid="class_samplematrix_1adbc1732a726c387965f63d4484bd4c25" kind="function"><name>setFragment</name></member>
     <member refid="class_samplematrix_1a9b796f2279f1716c2a555ff3d641ea0b" kind="function"><name>removeFragment</name></member>
     <member refid="class_data_mask_1a093364b6da9442f7c4945b5a06cfe3af" kind="function"><name>getDefault</name></member>
-    <member refid="class_data_mask_1a73922a90e7f491ec3dcf90fdd400fdf8" kind="function"><name>setup</name></member>
-    <member refid="class_data_mask_1a819eacf6968b0384a0221599dac09122" kind="function"><name>importBooleanMask</name></member>
+    <member refid="class_data_mask_1ab6a4e6f63856f96805ddc79022c47104" kind="function"><name>setup</name></member>
+    <member refid="class_data_mask_1ae5bf5df7975431338e3ea757e6f2fac9" kind="function"><name>checkCanUseDefault</name></member>
+    <member refid="class_data_mask_1aac63b47c3688db359760f6134d30f239" kind="function"><name>importBooleanMask</name></member>
     <member refid="class_data_mask_1a85f7b85bb4ac54aa884a8a06f1d35d1b" kind="function"><name>doImport</name></member>
+    <member refid="class_data_mask_1a09a24a15ad49851e8f344150a9109dd2" kind="function"><name>completeBoolImport</name></member>
+    <member refid="class_data_mask_1a8a1071a51c4114cda3f73eeb98992fb4" kind="function"><name>setupNull</name></member>
     <member refid="class_data_mask_1ac756e21b1c8d9412d565fb020eec9a06" kind="function"><name>importSampleMask</name></member>
     <member refid="class_data_mask_1ace6578db5b096b0c24112cc438cfa90d" kind="function"><name>getVal</name></member>
     <member refid="class_data_mask_1af7a7cb35d309d37f42c7a3720a02b400" kind="function"><name>getNullProportion</name></member>
@@ -1755,7 +1773,11 @@
   </compound>
   <compound refid="namespacestd" kind="namespace"><name>std</name>
   </compound>
+  <compound refid="_cell_8cpp" kind="file"><name>Cell.cpp</name>
+    <member refid="_cell_8cpp_1a48edc8f7abe3fe6291412caa2cd65392" kind="function"><name>distanceBetweenCells</name></member>
+  </compound>
   <compound refid="_cell_8h" kind="file"><name>Cell.h</name>
+    <member refid="_cell_8h_1a48edc8f7abe3fe6291412caa2cd65392" kind="function"><name>distanceBetweenCells</name></member>
   </compound>
   <compound refid="_community_8cpp" kind="file"><name>Community.cpp</name>
     <member refid="_community_8cpp_1ac0d535bc74d14e6a7c851f1242548dc0" kind="function"><name>checkSpeciation</name></member>
@@ -1910,11 +1932,9 @@
   <compound refid="_sim_parameters_8h" kind="file"><name>SimParameters.h</name>
   </compound>
   <compound refid="_simulate_dispersal_8cpp" kind="file"><name>SimulateDispersal.cpp</name>
-    <member refid="_simulate_dispersal_8cpp_1a48edc8f7abe3fe6291412caa2cd65392" kind="function"><name>distanceBetweenCells</name></member>
   </compound>
   <compound refid="_simulate_dispersal_8h" kind="file"><name>SimulateDispersal.h</name>
     <member refid="_simulate_dispersal_8h_1a9302692bd9a9cf56478cbae301f04d53" kind="define"><name>PYTHON_COMPILE</name></member>
-    <member refid="_simulate_dispersal_8h_1a48edc8f7abe3fe6291412caa2cd65392" kind="function"><name>distanceBetweenCells</name></member>
   </compound>
   <compound refid="_simulation_templates_8h" kind="file"><name>SimulationTemplates.h</name>
     <member refid="_simulation_templates_8h_1a5a0913fcc8a0d06bb3543bae060e94d2" kind="function"><name>getConfigFileFromCmdArgs</name></member>
@@ -1997,6 +2017,30 @@
     <member refid="dispersalmodule_8h_1adb5f4e26ed08b1f5e57d51f452404533" kind="variable"><name>_state</name></member>
     <member refid="dispersalmodule_8h_1a7e2e32e4fb16f13333729815a5194f89" kind="variable"><name>DispersalError</name></member>
     <member refid="dispersalmodule_8h_1a6bb4c0faf0e3fd0b77bbad879dfec993" kind="function"><name>initdispersalmodule</name></member>
+  </compound>
+  <compound refid="_landscape_metrics_calculator_8cpp" kind="file"><name>LandscapeMetricsCalculator.cpp</name>
+  </compound>
+  <compound refid="_landscape_metrics_calculator_8h" kind="file"><name>LandscapeMetricsCalculator.h</name>
+  </compound>
+  <compound refid="landscapemetricsmodule_8cpp" kind="file"><name>landscapemetricsmodule.cpp</name>
+    <member refid="landscapemetricsmodule_8cpp_1a9302692bd9a9cf56478cbae301f04d53" kind="define"><name>PYTHON_COMPILE</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1a3d94077229c2876134769daeeb28fa8a" kind="define"><name>INITERROR</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1a304b2017ec52852821aced29cb2fe2ed" kind="variable"><name>log_set</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1a08d9fbb3de64e2e37d485a6fb7c413c9" kind="variable"><name>logger_set</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1ac5c8cc1b55a6d2753d51817bd568aada" kind="variable"><name>logger</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1ae0822a71c8f520b72eee4e308ca8f3d5" kind="variable"><name>call_logging</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1ab56581b363ebc4af31d583025ea54e37" kind="variable"><name>LandscapeMetricsMethods</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1ae46ca2d84d7ec45707522d5ea00002f5" kind="function"><name>calc_mean_distance</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1ae2f0a05f14e97156649d3242021c3576" kind="function"><name>calc_clumpiness</name></member>
+    <member refid="landscapemetricsmodule_8cpp_1ab88e279427e5e16aecc5adbc700426c1" kind="function"><name>initlandscapemetricsmodule</name></member>
+  </compound>
+  <compound refid="landscapemetricsmodule_8h" kind="file"><name>landscapemetricsmodule.h</name>
+    <member refid="landscapemetricsmodule_8h_1a11c30aa5aed370a0aa25f1f735501459" kind="define"><name>DISPERSAL_IMPORT</name></member>
+    <member refid="landscapemetricsmodule_8h_1a6d1f389576656b98c42c69f7cf1d55c0" kind="define"><name>GETSTATE</name></member>
+    <member refid="landscapemetricsmodule_8h_1a3d94077229c2876134769daeeb28fa8a" kind="define"><name>INITERROR</name></member>
+    <member refid="landscapemetricsmodule_8h_1adb5f4e26ed08b1f5e57d51f452404533" kind="variable"><name>_state</name></member>
+    <member refid="landscapemetricsmodule_8h_1a406f9e2dd04a0689a1f29dfacd0b8b3f" kind="variable"><name>LandscapeMetricsError</name></member>
+    <member refid="landscapemetricsmodule_8h_1a3b138dfe133ffeb526f3bc65b10deee5" kind="function"><name>initmeandistancemodule</name></member>
   </compound>
   <compound refid="necsimmodule_8cpp" kind="file"><name>necsimmodule.cpp</name>
     <member refid="necsimmodule_8cpp_1a9302692bd9a9cf56478cbae301f04d53" kind="define"><name>PYTHON_COMPILE</name></member>

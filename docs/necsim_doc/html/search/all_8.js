@@ -3,7 +3,7 @@ var searchData=
   ['i0',['i0',['../class_n_rrand.html#abb6db53dd1fdd9388b39e5dcd26c13ac',1,'NRrand']]],
   ['ignore_5foverflow',['ignore_overflow',['../structio_1_1ignore__overflow.html',1,'io']]],
   ['import',['import',['../class_matrix.html#a2476517be70c810ad586d0f0cf4ec121',1,'Matrix::import()'],['../class_reproduction_map.html#a144d2f39ff2e978acd9d2ebcb6f8dc97',1,'ReproductionMap::import()']]],
-  ['importbooleanmask',['importBooleanMask',['../class_data_mask.html#a819eacf6968b0384a0221599dac09122',1,'DataMask']]],
+  ['importbooleanmask',['importBooleanMask',['../class_data_mask.html#aac63b47c3688db359760f6134d30f239',1,'DataMask']]],
   ['importconfig',['importConfig',['../class_config_option.html#afbd1ed9d006c8ff48d90e63a57f55e2a',1,'ConfigOption']]],
   ['importcsv',['importCsv',['../class_matrix.html#a0a5d9135e9807b81ddc3cf05e777a902',1,'Matrix']]],
   ['importdata',['importData',['../class_community.html#a85db7255d3a1d53509ed2800fc24de31',1,'Community']]],

@@ -157,21 +157,13 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N8DataMask5setupERK6stringRKmRKmRKmRKmRKmRKm">
-<span id="DataMask::setup__stringCR.unsigned-lCR.unsigned-lCR.unsigned-lCR.unsigned-lCR.unsigned-lCR.unsigned-lCR"></span><span class="target" id="necsimclass_data_mask_1a73922a90e7f491ec3dcf90fdd400fdf8"></span>bool <code class="descname">setup</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>sample_mask_file</em>, <em class="property">const</em> unsigned long &amp;<em>x_in</em>, <em class="property">const</em> unsigned long &amp;<em>y_in</em>, <em class="property">const</em> unsigned long &amp;<em>mask_x_in</em>, <em class="property">const</em> unsigned long &amp;<em>mask_y_in</em>, <em class="property">const</em> unsigned long &amp;<em>x_offset_in</em>, <em class="property">const</em> unsigned long &amp;<em>y_offset_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask5setupERK6stringRKmRKmRKmRKmRKmRKm" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N8DataMask5setupERK13SimParameters">
+<span id="DataMask::setup__SimParametersCR"></span><span class="target" id="necsimclass_data_mask_1ab6a4e6f63856f96805ddc79022c47104"></span>void <code class="descname">setup</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="struct_SimParameters.html#_CPPv213SimParameters" title="SimParameters">SimParameters</a> &amp;<em>sim_parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask5setupERK13SimParameters" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates. </p>
 <p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>true if using a &#8220;null&#8221; samplemask </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">sample_mask_file</span></code>: the file to import the samplemask from (or &#8220;null&#8221;) </li>
-<li><code class="docutils literal"><span class="pre">x_in</span></code>: x dimension of the grid </li>
-<li><code class="docutils literal"><span class="pre">y_in</span></code>: y dimension of the grid </li>
-<li><code class="docutils literal"><span class="pre">mask_x_in</span></code>: x dimension of the sample mask </li>
-<li><code class="docutils literal"><span class="pre">mask_y_in</span></code>: y dimension of the sample mask </li>
-<li><code class="docutils literal"><span class="pre">x_offset_in</span></code>: x offset of the sample mask from the grid </li>
-<li><code class="docutils literal"><span class="pre">y_offset_in</span></code>: y offset of the sample mask from the grid </li>
+<li><code class="docutils literal"><span class="pre">sim_parameters</span></code>: Simulation parameter to set the data mask from </li>
 </ul>
 </dd>
 </dl>
@@ -179,9 +171,14 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N8DataMask18checkCanUseDefaultERK13SimParameters">
+<span id="DataMask::checkCanUseDefault__SimParametersCR"></span><span class="target" id="necsimclass_data_mask_1ae5bf5df7975431338e3ea757e6f2fac9"></span>bool <code class="descname">checkCanUseDefault</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="struct_SimParameters.html#_CPPv213SimParameters" title="SimParameters">SimParameters</a> &amp;<em>sim_parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask18checkCanUseDefaultERK13SimParameters" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N8DataMask17importBooleanMaskEmmmmmm6string">
-<span id="DataMask::importBooleanMask__unsigned-l.unsigned-l.unsigned-l.unsigned-l.unsigned-l.unsigned-l.string"></span><span class="target" id="necsimclass_data_mask_1a819eacf6968b0384a0221599dac09122"></span>void <code class="descname">importBooleanMask</code><span class="sig-paren">(</span>unsigned long <em>xdim</em>, unsigned long <em>ydim</em>, unsigned long <em>mask_xdim</em>, unsigned long <em>mask_ydim</em>, unsigned long <em>xoffset</em>, unsigned long <em>yoffset</em>, string <em>inputfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask17importBooleanMaskEmmmmmm6string" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. </p>
+<span id="DataMask::importBooleanMask__unsigned-l.unsigned-l.unsigned-l.unsigned-l.unsigned-l.unsigned-l.string"></span><span class="target" id="necsimclass_data_mask_1aac63b47c3688db359760f6134d30f239"></span>void <code class="descname">importBooleanMask</code><span class="sig-paren">(</span>unsigned long <em>xdim</em>, unsigned long <em>ydim</em>, unsigned long <em>mask_xdim</em>, unsigned long <em>mask_ydim</em>, unsigned long <em>xoffset</em>, unsigned long <em>yoffset</em>, string <em>inputfile_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask17importBooleanMaskEmmmmmm6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. Should only be called if the import is actually required (i.e. the map is not null or none). </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
@@ -191,7 +188,7 @@
 <li><code class="docutils literal"><span class="pre">mask_ydim</span></code>: the y dimension of the sample map file </li>
 <li><code class="docutils literal"><span class="pre">xoffset</span></code>: the x offset of the grid area from the sample map file </li>
 <li><code class="docutils literal"><span class="pre">yoffset</span></code>: the y offset of the grid area from the sample map file </li>
-<li><code class="docutils literal"><span class="pre">inputfile</span></code>: the path to the sample map file </li>
+<li><code class="docutils literal"><span class="pre">inputfile_in</span></code>: the path to the sample map file </li>
 </ul>
 </dd>
 </dl>
@@ -202,6 +199,18 @@
 <dt id="_CPPv2N8DataMask8doImportEv">
 <span id="DataMask::doImport"></span><span class="target" id="necsimclass_data_mask_1a85f7b85bb4ac54aa884a8a06f1d35d1b"></span>void <code class="descname">doImport</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask8doImportEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Imports the boolean map object. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8DataMask18completeBoolImportEv">
+<span id="DataMask::completeBoolImport"></span><span class="target" id="necsimclass_data_mask_1a09a24a15ad49851e8f344150a9109dd2"></span>void <code class="descname">completeBoolImport</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask18completeBoolImportEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the map dimensions and the getVal function pointer. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N8DataMask9setupNullER13SimParameters">
+<span id="DataMask::setupNull__SimParametersR"></span><span class="target" id="necsimclass_data_mask_1a8a1071a51c4114cda3f73eeb98992fb4"></span>void <code class="descname">setupNull</code><span class="sig-paren">(</span><a class="reference internal" href="struct_SimParameters.html#_CPPv213SimParameters" title="SimParameters">SimParameters</a> &amp;<em>mapvarin</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N8DataMask9setupNullER13SimParameters" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets up the null sampling map. </p>
 </dd></dl>
 
 <dl class="function">

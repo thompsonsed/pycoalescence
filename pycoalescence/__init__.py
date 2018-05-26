@@ -12,6 +12,7 @@ from pycoalescence.setup import configure_and_compile as setup
 from pycoalescence.system_operations import set_logging_method
 from pycoalescence.merger import Merger
 from pycoalescence.dispersal_simulation import DispersalSimulation
+from pycoalescence.landscape_metrics import LandscapeMetrics
 # Support for no scipy installed
 try:
 	from pycoalescence.fragments import FragmentedLandscape

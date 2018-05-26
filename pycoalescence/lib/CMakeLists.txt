@@ -34,7 +34,7 @@ set(SOURCE_FILES
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
         necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h necsim/DoubleComparison.h necsim/DoubleComparison.cpp)
 
 #set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.62.0/include)
 #set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.62.0/lib)
@@ -66,7 +66,7 @@ set(SOURCE_FILES
         dispersalmodule.h
         necsim/Filesystem.cpp necsim/Filesystem.h necsim/SpatialTree.cpp necsim/SpatialTree.h necsim/Tree.cpp
         necsim/Tree.h necsim/Landscape.cpp necsim/Landscape.h necsim/Map.h necsim/DataMask.cpp
-        necsim/DataMask.h necsim/SimParameters.h necsim/Cell.h)
+        necsim/DataMask.h necsim/SimParameters.h necsim/Cell.h necsim/Cell.cpp)
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_package(PythonLibs REQUIRED)
 find_library(SQL_DIR sqlite3)
@@ -116,7 +116,7 @@ set(SOURCE_FILES applyspecmodule.cpp applyspecmodule.h necsim/Filesystem.cpp nec
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
         necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h necsim/Cell.cpp)
 
 find_package(PythonLibs REQUIRED)
 find_library(SQL_DIR sqlite3)
@@ -168,7 +168,7 @@ set(SOURCE_FILES
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
         necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
+        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h necsim/Cell.cpp)
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_package(PythonLibs REQUIRED)
 find_library(SQL_DIR sqlite3)
@@ -203,6 +203,35 @@ target_link_libraries(SpeciationCounter ${PYTHON_LIBRARIES})
 target_link_libraries(SpeciationCounter "${SQL_DIR}")
 target_link_libraries(SpeciationCounter gdal)
 target_link_libraries(SpeciationCounter ${Boost_LIBRARIES})
+
+cmake_minimum_required(VERSION 3.10)
+project(meandistancemodule)
+
+set(CMAKE_CXX_STANDARD 17)
+
+set(SOURCE_FILES
+        landscapemetricsmodule.cpp landscapemetricsmodule.h LandscapeMetricsCalculator.cpp
+        LandscapeMetricsCalculator.h necsim/Map.h necsim/Cell.h PyLogging.cpp necsim/Logging.h PyLogging.h
+        necsim/CPLCustomHandler.cpp necsim/CPLCustomHandler.h necsim/Cell.cpp)
+
+add_definitions(-Dwith_gdal)
+find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
+find_package(PythonLibs REQUIRED)
+find_library(SQL_DIR sqlite3)
+#find_library(GDAL_DIR gdal)
+include_directories(${Boost_INCLUDE_DIR})
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
+include_directories(${PYTHON_INCLUDE_DIRS})
+add_library(meandistancemodule SHARED ${SOURCE_FILES})
+target_link_libraries(meandistancemodule ${PYTHON_LIBRARIES})
+target_link_libraries(meandistancemodule "${SQL_DIR}")
+target_link_libraries(meandistancemodule gdal)
+target_link_libraries(meandistancemodule ${Boost_LIBRARIES})
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DDEBUG=1)
+endif()
+#target_link_libraries(meandistancemodule python)
 
 
 

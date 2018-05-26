@@ -630,7 +630,7 @@
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">initial_count</span> <span class="o">&gt;</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">number_start</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">writeWarning</span><span class="p">(</span><span class="s">&quot;Data usage higher than neccessary - check allocation of individuals to the grid.&quot;</span><span class="p">);</span>
+            <span class="n">writeCritical</span><span class="p">(</span><span class="s">&quot;Data usage higher than neccessary - check allocation of individuals to the grid.&quot;</span><span class="p">);</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Initial count: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">initial_count</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  Number counted: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">number_start</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeWarning</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
@@ -1559,6 +1559,7 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">reproduction_file</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span> <span class="o">||</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">reproduction_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">))</span>
     <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">has_printed</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_y_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_x_size</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
@@ -1573,10 +1574,26 @@
                     <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Reproduction map is zero where density is non-zero. &quot;</span>
                                                  <span class="s">&quot;This will cause an infinite loop.&quot;</span><span class="p">);</span>
                 <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="p">.</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">rep_map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">)</span>
                 <span class="p">{</span>
-                    <span class="n">writeCritical</span><span class="p">(</span><span class="s">&quot;Density is zero where reproduction map is non-zero. This is likely incorrect.&quot;</span><span class="p">);</span>
+                    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Density is zero where reproduction map is non-zero for &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Density: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="p">.</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reproduction map: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rep_map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;This is likely incorrect.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">writeCritical</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
                 <span class="p">}</span>
+<span class="cp">#else </span><span class="c1">// NDEBUG</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">has_printed</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="p">.</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">rep_map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">has_printed</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                        <span class="n">writeCritical</span><span class="p">(</span><span class="s">&quot;Density is zero where reproduction map is non-zero. This is likely incorrect.&quot;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
             <span class="p">}</span>
         <span class="p">}</span>
 <span class="cp">#ifdef DEBUG</span>

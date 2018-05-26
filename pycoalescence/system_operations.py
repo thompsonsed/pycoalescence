@@ -1,6 +1,6 @@
 """
-Contains the general purpose operations that will be used by multiple modules, including calling subprocess properly,
-logging methods and file management.
+Basic system-level operations required for package functionality, including subprocess calls, logging methods and file
+management.
 
 The functions are contained here as they are required by many different modules. Note that logging will not raise an
 exception if there has been no call to set_logging_method()
@@ -48,7 +48,7 @@ def check_parent(file_path):
 
 	:param file_path: the file or directory to check if the parent exists
 
-	:rtype None
+	:rtype: None
 	"""
 	if file_path:
 		if not os.path.exists(file_path):

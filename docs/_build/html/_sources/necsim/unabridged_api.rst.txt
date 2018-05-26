@@ -314,6 +314,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_LandscapeMetricsCalculator.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_LogFile.rst
 
 .. toctree::
@@ -409,6 +414,16 @@ Functions
    :maxdepth: 5
 
    function_apply.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_calc_clumpiness.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_calc_mean_distance.rst
 
 .. toctree::
    :maxdepth: 5
@@ -614,6 +629,16 @@ Functions
    :maxdepth: 5
 
    function_initdispersalmodule.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_initlandscapemetricsmodule.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_initmeandistancemodule.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1022,6 +1047,11 @@ Variables
 .. toctree::
    :maxdepth: 5
 
+   variable__state.rst
+
+.. toctree::
+   :maxdepth: 5
+
    variable_AM.rst
 
 .. toctree::
@@ -1033,6 +1063,11 @@ Variables
    :maxdepth: 5
 
    variable_ApplySpecMethods.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_call_logging.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1157,7 +1192,12 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable_log_name.rst
+   variable_LandscapeMetricsError.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_LandscapeMetricsMethods.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1167,6 +1207,16 @@ Variables
 .. toctree::
    :maxdepth: 5
 
+   variable_log_name.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_log_set.rst
+
+.. toctree::
+   :maxdepth: 5
+
    variable_log_set.rst
 
 .. toctree::
@@ -1203,6 +1253,16 @@ Variables
    :maxdepth: 5
 
    variable_logger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_logger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_logger_set.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1271,6 +1331,16 @@ Defines
 .. toctree::
    :maxdepth: 5
 
+   define_DISPERSAL_IMPORT.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define_GETSTATE.rst
+
+.. toctree::
+   :maxdepth: 5
+
    define_GETSTATE.rst
 
 .. toctree::
@@ -1282,6 +1352,16 @@ Defines
    :maxdepth: 5
 
    define_GETSTATE.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define_INITERROR.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define_INITERROR.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1322,6 +1402,11 @@ Defines
    :maxdepth: 5
 
    define_null.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define_PYTHON_COMPILE.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1399,6 +1484,11 @@ Files
    :maxdepth: 5
 
    file_applyspecmodule.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_Cell.cpp.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1504,6 +1594,26 @@ Files
    :maxdepth: 5
 
    file_necsim_Landscape.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_LandscapeMetricsCalculator.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_LandscapeMetricsCalculator.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_landscapemetricsmodule.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_landscapemetricsmodule.h.rst
 
 .. toctree::
    :maxdepth: 5

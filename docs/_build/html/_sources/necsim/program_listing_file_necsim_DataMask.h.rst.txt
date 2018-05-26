@@ -49,14 +49,17 @@ Program Listing for File DataMask.h
    
        bool getDefault();
    
-       bool setup(const string &sample_mask_file, const unsigned long &x_in, const unsigned long &y_in,
-                  const unsigned long &mask_x_in, const unsigned long &mask_y_in,
-                  const unsigned long &x_offset_in, const unsigned long &y_offset_in);
+       void setup(const SimParameters &sim_parameters);
    
+       bool checkCanUseDefault(const SimParameters &sim_parameters);
        void importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim,
-                              unsigned long xoffset, unsigned long yoffset, string inputfile);
+                              unsigned long xoffset, unsigned long yoffset, string inputfile_in);
    
        void doImport();
+   
+       void completeBoolImport();
+   
+       void setupNull(SimParameters &mapvarin);
    
        void importSampleMask(SimParameters &mapvarin);
    
