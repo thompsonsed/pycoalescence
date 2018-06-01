@@ -66,9 +66,13 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Matrix.h.html#file-necsim-matrix-h"><span class="std std-ref">File Matrix.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#ifndef MATRIX</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
+
+<span class="cp">#ifndef MATRIX</span>
 <span class="cp">#define MATRIX</span>
 <span class="cp">#define null 0</span>
+
 <span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
@@ -120,7 +124,6 @@
         <span class="c1">// Change to standard copy</span>
         <span class="n">copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">.</span><span class="n">row</span><span class="p">[</span><span class="n">numCols</span><span class="p">],</span> <span class="n">row</span><span class="p">);</span>
     <span class="p">}</span>
-
 
     <span class="kt">void</span> <span class="n">setSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">)</span>
     <span class="p">{</span>
@@ -209,7 +212,6 @@
     <span class="p">}</span>
 <span class="p">};</span>
 
-
 <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Matrix</span>
 <span class="p">{</span>
@@ -220,7 +222,6 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numCols</span><span class="p">{},</span> <span class="n">numRows</span><span class="p">{};</span>
     <span class="c1">// a matrix is an array of rows</span>
     <span class="n">Row</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">matrix</span><span class="p">;</span>
-
 <span class="k">public</span><span class="o">:</span>
 
     <span class="k">explicit</span> <span class="n">Matrix</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">rows</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">:</span> <span class="n">matrix</span><span class="p">(</span><span class="n">null</span><span class="p">)</span>
@@ -298,7 +299,6 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
     <span class="p">}</span>
-
 
     <span class="k">const</span> <span class="n">Matrix</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
@@ -391,7 +391,6 @@
         <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
     <span class="p">}</span>
 
-
     <span class="n">Matrix</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">-=</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newnumcols</span><span class="p">,</span> <span class="n">newnumrows</span><span class="p">;</span>
@@ -434,7 +433,6 @@
         <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
     <span class="p">}</span>
 
-
     <span class="k">const</span> <span class="n">Matrix</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newnumcols</span><span class="p">;</span>
@@ -461,7 +459,7 @@
         <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="k">friend</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="n">writeOut</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="n">writeOut</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
@@ -474,7 +472,7 @@
         <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="k">friend</span> <span class="n">istream</span><span class="o">&amp;</span> <span class="n">readIn</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span> <span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">friend</span> <span class="n">istream</span> <span class="o">&amp;</span><span class="n">readIn</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">Matrix</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">char</span> <span class="n">delim</span><span class="p">;</span>
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">.</span><span class="n">numRows</span><span class="p">;</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span>
@@ -631,7 +629,6 @@
 
 <span class="cp">#endif </span><span class="c1">// use_csv</span>
 <span class="p">};</span>
-
 
 <span class="cp">#endif </span><span class="c1">// MATRIX</span>
 </pre></div>

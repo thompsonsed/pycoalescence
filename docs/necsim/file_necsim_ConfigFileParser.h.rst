@@ -68,6 +68,8 @@ Included By
 
 - :ref:`file_necsim_SimParameters.h`
 
+- :ref:`file_necsim_SpecSimParameters.h`
+
 - :ref:`file_necsim_ConfigFileParser.cpp`
 
 

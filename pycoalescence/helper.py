@@ -1,5 +1,5 @@
 """
-Routines for assisting in porting older outputs of simulations to updated naming convention.
+Port older simulation outputs to the updated naming conventions. Should not be required by most users.
 """
 
 import sqlite3
@@ -18,7 +18,7 @@ def update_parameter_names(database):
 
 	:return: None
 
-	:rtype None
+	:rtype: None
 	"""
 	try:
 		db = sqlite3.connect(database)

@@ -109,10 +109,6 @@ Program Listing for File Tree.h
        bool bIsProtracted;
        // variable for storing the paused sim location if files have been moved during paused/resumed simulations!
        string pause_sim_directory;
-   #ifdef DEBUG
-       // For debugging purposes
-       unsigned long count_dispersal_fails, count_density_fails;
-   #endif
    public:
        Tree() : community(&data), this_step()
        {
@@ -162,8 +158,12 @@ Program Listing for File Tree.h
        }
    
    
-       virtual void importSimulationVariables(const string &configfile);
+       void importSimulationVariables(const string &configfile);
    
+       void importSimulationVariables(ConfigOption config);
+       virtual void runFileChecks();
+   
+       void wipeSimulationVariables();
        void internalSetup(const SimParameters &sim_parameters_in);
    
        bool checkOutputDirectory();
@@ -201,6 +201,7 @@ Program Listing for File Tree.h
    
        void determineSpeciationRates();
    
+       void addSpeciationRates(vector<long double> spec_rates_in);
        void generateObjects();
    
        virtual unsigned long fillObjects(const unsigned long &initial_count);

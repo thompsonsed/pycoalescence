@@ -50,6 +50,14 @@ Included By
 -----------
 
 
+- :ref:`file_CCommunity.h`
+
+- :ref:`file_CLandscapeMetricsCalculator.h`
+
+- :ref:`file_CSimulateDispersal.h`
+
+- :ref:`file_CSimulation.h`
+
 - :ref:`file_necsimmodule.cpp`
 
 

@@ -70,39 +70,40 @@
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;SimulateDispersal.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Community.h&quot;</span><span class="cp"></span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp"></span>
 
-<span class="kt">double</span> <span class="nf">distanceBetweenCells</span><span class="p">(</span><span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span> <span class="n">Cell</span> <span class="o">&amp;</span><span class="n">c2</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="n">pow</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">c1</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">c2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">c1</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">c2</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">);</span>
-<span class="p">}</span>
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setSequential</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bSequential</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">is_sequential</span> <span class="o">=</span> <span class="n">bSequential</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setSimulationParameters</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">sim_parameters</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setSimulationParameters</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">sim_parameters</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">print</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Setting simulation parameters...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">print</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;********************************</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Setting simulation parameters...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
     <span class="n">simParameters</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">;</span>
-    <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">printSpatialVars</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">print</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">printSpatialVars</span><span class="p">();</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">importMaps</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Starting map import...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">simParameters</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">simParameters</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulation parameters have not been set.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="o">&amp;</span><span class="n">random</span><span class="p">);</span>
-    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">generation</span><span class="p">);</span>
-    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">simParameters</span><span class="p">);</span>
+    <span class="n">setDispersalParameters</span><span class="p">();</span>
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">setDims</span><span class="p">(</span><span class="n">simParameters</span><span class="p">);</span>
     <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setHabitatMap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">density_landscape</span><span class="p">);</span>
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcFineMap</span><span class="p">();</span>
@@ -112,37 +113,14 @@
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcHistoricalCoarseMap</span><span class="p">();</span>
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">landscape_type</span><span class="p">);</span>
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">recalculateHabitatMax</span><span class="p">();</span>
-<span class="c1">//  if(fine_map_file != &quot;null&quot;)</span>
-<span class="c1">//  {</span>
-<span class="c1">//      density_landscape.import(fine_map_file);</span>
-<span class="c1">//      // Now loop over the density map to find the maximum value</span>
-<span class="c1">//      for(unsigned long i = 0; i &lt; density_landscape.getRows(); i ++)</span>
-<span class="c1">//      {</span>
-<span class="c1">//          for(unsigned long j = 0; j &lt; density_landscape.getCols(); j ++)</span>
-<span class="c1">//          {</span>
-<span class="c1">//              if(density_landscape[i][j] &gt; max_density)</span>
-<span class="c1">//              {</span>
-<span class="c1">//                  max_density = density_landscape[i][j];</span>
-<span class="c1">//              }</span>
-<span class="c1">//          }</span>
-<span class="c1">//      }</span>
-<span class="c1">//      density_landscape.close();</span>
-<span class="c1">//      if(max_density &lt; 1)</span>
-<span class="c1">//      {</span>
-<span class="c1">//          throw FatalException(&quot;Maximum density on density map is less than 1. Please check your maps.&quot;);</span>
-<span class="c1">//      }</span>
-<span class="c1">//  }</span>
-<span class="c1">//  else</span>
-<span class="c1">//  {</span>
-<span class="c1">//      for(unsigned long i = 0; i &lt; density_landscape.getRows(); i ++)</span>
-<span class="c1">//      {</span>
-<span class="c1">//          for(unsigned long j = 0; j &lt; density_landscape.getCols(); j ++)</span>
-<span class="c1">//          {</span>
-<span class="c1">//              density_landscape[i][j] = 1;</span>
-<span class="c1">//          }</span>
-<span class="c1">//      }</span>
-<span class="c1">//      max_density = 1;</span>
-<span class="c1">//      }</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setDispersalParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="o">&amp;</span><span class="n">random</span><span class="p">);</span>
+    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">generation</span><span class="p">);</span>
+    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">simParameters</span><span class="p">);</span>
+
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setOutputDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">out_database</span><span class="p">)</span>

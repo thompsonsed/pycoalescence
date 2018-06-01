@@ -32,10 +32,9 @@ The important set up functions are:
   `set_map_files`. `set_map_parameters()` can also be used to customise parameters, instead of detecting from the
   provided tif files.
 * `set_speciation_rates()` takes a list of speciation rates to apply at the end of the simulation. This is optional.
-* `finalise_setup()` creates the configuration file and performs a variety of basic checks.
-* `run_coalescence()` starts the simulation. This stage can take an extremely long time (up to tens of hours) depending
-  on the size of the simulation and the dispersal variables. Upon completion, an SQL file will have been created
-  containing the coalescence tree.
+* `run()` checks and  starts the simulation, writing to the output database upon successful completion.
+  This stage can take an extremely long time (up to tens of hours) depending on the size of the simulation and the 
+  dispersal variables. Upon completion, an SQL file will have been created containing the coalescence tree.
 
 The CoalescenceTree class also contains some basic analysis abilities, such as applying additional speciation rates
 post-simulation, or calculating species abundances for fragments within the main simulation.
@@ -50,7 +49,7 @@ The basic procedure for this procedure is
     * list of speciation rates to apply
 	* [optional] a sample file to specify certain cells to sample from
 	* [optional] a config file containing the temporal sampling points desired.
-* `apply_speciation()` performs the analysis. This can be extremely RAM and time-intensive for large simulations. 
+* `apply()` performs the analysis. This can be extremely RAM and time-intensive for large simulations. 
   The calculations will be stored in extra tables within the same SQL file as originally specified.
 
 

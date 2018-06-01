@@ -20,6 +20,19 @@ Program Listing for File Cell.h
        long y;
        Cell &operator=(Cell const& c)
        = default;
+   
+       bool operator==(Cell const&c)
+       {
+           return x == c.x && y == c.y;
+       }
+   
+       bool operator!=(Cell const&c)
+       {
+           return !(this->operator==(c));
+       }
    };
+   
+   
+   double distanceBetweenCells(Cell &c1, Cell &c2);
    
    #endif // CELL_H

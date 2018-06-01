@@ -40,23 +40,26 @@ Program Listing for File DataMask.h
        typedef double (DataMask::*fptr)(const long &x, const long &y, const long &xwrap, const long &ywrap);
        fptr getProportionfptr;
    public:
-       Map<bool> sample_mask; 
-       // Stores the exact values from the input tif file.
-       Map<double> sample_mask_exact; 
+       Map<bool> sample_mask;
+       Map<double> sample_mask_exact;
+   
        DataMask();
    
        ~DataMask() = default;
    
        bool getDefault();
    
-       bool setup(const string &sample_mask_file, const unsigned long &x_in, const unsigned long &y_in,
-                  const unsigned long &mask_x_in, const unsigned long &mask_y_in,
-                  const unsigned long &x_offset_in, const unsigned long &y_offset_in);
+       void setup(const SimParameters &sim_parameters);
    
+       bool checkCanUseDefault(const SimParameters &sim_parameters);
        void importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim,
-                              unsigned long xoffset, unsigned long yoffset, string inputfile);
+                              unsigned long xoffset, unsigned long yoffset, string inputfile_in);
    
        void doImport();
+   
+       void completeBoolImport();
+   
+       void setupNull(SimParameters &mapvarin);
    
        void importSampleMask(SimParameters &mapvarin);
    

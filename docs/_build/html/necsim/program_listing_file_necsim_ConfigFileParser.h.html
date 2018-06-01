@@ -100,7 +100,7 @@
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">val</span><span class="p">;</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">refs</span><span class="p">;</span>
 
-    <span class="n">SectionOption</span><span class="p">()</span>
+    <span class="n">SectionOption</span><span class="p">()</span> <span class="o">:</span> <span class="n">val</span><span class="p">(),</span> <span class="n">refs</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">section</span> <span class="o">=</span> <span class="s">&quot;nullSectionOption&quot;</span><span class="p">;</span>
     <span class="p">}</span>
@@ -122,10 +122,10 @@
     <span class="kt">bool</span> <span class="n">bFullParse</span><span class="p">;</span>  <span class="c1">// if this is true, each KeyOption structure will be returned after each read.</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">SectionOption</span><span class="o">&gt;</span> <span class="n">configs</span><span class="p">;</span>  <span class="c1">// all config data if full parse is true.</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">ConfigOption</span><span class="p">()</span>
+    <span class="n">ConfigOption</span><span class="p">()</span> <span class="o">:</span> <span class="n">configs</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">bConfig</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">configfile</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+        <span class="n">bConfig</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">bMain</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">bFullParse</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
@@ -134,6 +134,7 @@
 
     <span class="kt">void</span> <span class="nf">parseConfig</span><span class="p">();</span>
 
+    <span class="kt">void</span> <span class="nf">parseConfig</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">istream1</span><span class="p">);</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">SectionOption</span><span class="o">&gt;</span> <span class="n">getSectionOptions</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">setSectionOption</span><span class="p">(</span><span class="n">string</span> <span class="n">section</span><span class="p">,</span> <span class="n">string</span> <span class="n">reference</span><span class="p">,</span> <span class="n">string</span> <span class="n">value</span><span class="p">);</span>

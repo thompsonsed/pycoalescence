@@ -3,7 +3,7 @@
 Function doubleCompare
 ======================
 
-- Defined in :ref:`file_necsim_Community.h`
+- Defined in :ref:`file_necsim_DoubleComparison.h`
 
 
 Function Documentation

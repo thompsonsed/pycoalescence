@@ -34,15 +34,30 @@ MIT Licence.
 
 
 
+Includes
+--------
+
+
+- ``cpl_error.h``
+
 
 
 Included By
 -----------
 
 
-- :ref:`file_necsim_Logging.h`
+- :ref:`file_necsim_Logger.h`
+
+- :ref:`file_necsim_Map.h`
 
 - :ref:`file_necsim_CPLCustomHandler.cpp`
 
 
+
+
+Functions
+---------
+
+
+- :ref:`function_cplCustomErrorHandler`
 

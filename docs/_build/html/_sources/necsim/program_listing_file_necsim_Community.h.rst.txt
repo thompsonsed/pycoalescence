@@ -34,12 +34,6 @@ Program Listing for File Community.h
    bool checkSpeciation(const long double &random_number, const long double &speciation_rate,
                         const unsigned long &no_generations);
    
-   bool doubleCompare(double d1, double d2, double epsilon);
-   
-   bool doubleCompare(long double d1, long double d2, long double epsilon);
-   
-   bool doubleCompare(long double d1, long double d2, double epsilon);
-   
    struct CommunityParameters
    {
        unsigned long reference;
@@ -47,45 +41,48 @@ Program Listing for File Community.h
        long double time;
        bool fragment;
        unsigned long metacommunity_reference; // will be 0 if no metacommunity used.
+       // protracted speciation parameters
+       ProtractedSpeciationParameters protracted_parameters;
        bool updated; // set to true if the fragment reference needs updating in the database
    
-       CommunityParameters()
-       {
-           reference = 0;
-           speciation_rate = 0.0;
-           time = 0.0;
-           fragment = false;
-           metacommunity_reference = 0;
-           updated = false;
-       }
+       CommunityParameters() : reference(0), speciation_rate(0.0), time(0), fragment(false), metacommunity_reference(0),
+                               protracted_parameters(), updated(false){}
    
        CommunityParameters(unsigned long reference_in, long double speciation_rate_in, long double time_in,
-                           bool fragment_in, unsigned long metacommunity_reference_in);
+                           bool fragment_in, unsigned long metacommunity_reference_in,
+                           const ProtractedSpeciationParameters &protracted_params);
    
-       void setup(unsigned long reference_in, long double speciation_rate_in, long double time_in,
-                  bool fragment_in, unsigned long metacommunity_reference_in);
+       void setup(unsigned long reference_in, long double speciation_rate_in, long double time_in, bool fragment_in,
+                  unsigned long metacommunity_reference_in, const ProtractedSpeciationParameters &protracted_params);
    
        bool compare(long double speciation_rate_in, long double time_in, bool fragment_in,
-                    unsigned long metacommunity_reference_in);
+                    unsigned long metacommunity_reference_in,
+                    const ProtractedSpeciationParameters &protracted_params);
    
-       bool compare(long double speciation_rate_in, long double time_in, unsigned long metacommunity_reference_in);
+       bool compare(long double speciation_rate_in, long double time_in,
+                    unsigned long metacommunity_reference_in,
+                    const ProtractedSpeciationParameters &protracted_params);
    
        bool compare(unsigned long reference_in);
    };
    
    struct CommunitiesArray
    {
-       vector<CommunityParameters> calc_array;
+       vector<CommunityParameters> communityParameters;
    
        void pushBack(unsigned long reference, long double speciation_rate, long double time, bool fragment,
-                     unsigned long metacommunity_reference);
+                     unsigned long metacommunity_reference,
+                     const ProtractedSpeciationParameters &protracted_params);
    
        void pushBack(CommunityParameters tmp_param);
    
        CommunityParameters &addNew(long double speciation_rate, long double time, bool fragment,
-                                   unsigned long metacommunity_reference);
+                                   unsigned long metacommunity_reference,
+                                   const ProtractedSpeciationParameters &protracted_params);
    
-       bool hasPair(long double speciation_rate, double time, bool fragment, unsigned long metacommunity_reference);
+       bool hasPair(long double speciation_rate, double time, bool fragment,
+                    unsigned long metacommunity_reference,
+                    const ProtractedSpeciationParameters &protracted_params);
    
    };
    
@@ -120,7 +117,6 @@ Program Listing for File Community.h
        unsigned long getReference(long double speciation_rate, unsigned long metacommunity_size);
    };
    
-   
    struct Fragment
    {
        // the name for the fragment (for reference purposes)
@@ -131,7 +127,6 @@ Program Listing for File Community.h
        unsigned long num;
        double area;
    };
-   
    
    class Samplematrix : public DataMask
    {
@@ -187,13 +182,14 @@ Program Listing for File Community.h
        MetacommunitiesArray past_metacommunities;
        // Protracted speciation parameters
        bool protracted;
-       double min_speciation_gen, max_speciation_gen, applied_min_speciation_gen, applied_max_speciation_gen;
+       double min_speciation_gen, max_speciation_gen;
+       ProtractedSpeciationParameters applied_protracted_parameters;
        unsigned long max_species_id, max_fragment_id, max_locations_id;
        // Does not need to be stored during simulation pause
        SpecSimParameters *spec_sim_parameters;
    public:
    
-       Community(Row<TreeNode> *r) : nodes(r)
+       Community(Row<TreeNode> *r) : nodes(r), applied_protracted_parameters()
        {
            in_mem = false;
            iSpecies = 0;
@@ -203,7 +199,6 @@ Program Listing for File Community.h
            has_imported_data = false;
            min_speciation_gen = 0.0;
            max_speciation_gen = 0.0;
-           applied_max_speciation_gen = 0.0;
            protracted = false;
            current_community_parameters = nullptr;
            max_species_id = 0;
@@ -211,7 +206,7 @@ Program Listing for File Community.h
    
        }
    
-       Community()
+       Community() : applied_protracted_parameters()
        {
            in_mem = false;
            iSpecies = 0;
@@ -221,14 +216,13 @@ Program Listing for File Community.h
            has_imported_data = false;
            min_speciation_gen = 0.0;
            max_speciation_gen = 0.0;
-           applied_max_speciation_gen = 0.0;
            protracted = false;
            current_community_parameters = nullptr;
            max_species_id = 0;
            max_locations_id = 0;
        }
    
-       ~Community()
+        virtual ~Community()
        {
            nodes = nullptr;
        }
@@ -256,13 +250,14 @@ Program Listing for File Community.h
        void detectDimensions(string db);
    
        void openSqlConnection(string inputfile);
+   
        void setInternalDatabase();
    
        void internalOption();
    
        void importData(string inputfile);
    
-       void setSimParameters(const SimParameters * sim_parameters);
+       void setSimParameters(const SimParameters *sim_parameters);
    
        void importSimParameters(string file);
    
@@ -270,7 +265,7 @@ Program Listing for File Community.h
    
        void getMaxSpeciesAbundancesID();
    
-       Row<unsigned long> * getCumulativeAbundances();
+       Row<unsigned long> *getCumulativeAbundances();
    
        Row<unsigned long> getRowOut();
    
@@ -280,11 +275,9 @@ Program Listing for File Community.h
    
        void getMaxSpeciesLocationsID();
    
-       void setProtractedParameters(double max_speciation_gen_in);
+       void setProtractedParameters(const ProtractedSpeciationParameters &protracted_params);
    
-       void setProtractedParameters(const double &max_speciation_gen_in, const double &mix_speciation_gen_in);
-   
-       void overrideProtractedParameters(const double &min_speciation_gen_in, const double &max_speciation_gen_in);
+       void overrideProtractedParameters(const ProtractedSpeciationParameters &protracted_params);
    
        void setProtracted(bool protracted_in);
    
@@ -295,10 +288,12 @@ Program Listing for File Community.h
        void outputSpeciesAbundances();
    
        bool checkCalculationsPerformed(long double speciation_rate, double time, bool fragments,
-                                       unsigned long metacommunity_size, long double metacommunity_speciation_rate);
+                                       unsigned long metacommunity_size, long double metacommunity_speciation_rate,
+                                       ProtractedSpeciationParameters proc_parameters);
    
        void addCalculationPerformed(long double speciation_rate, double time, bool fragments,
-                                    unsigned long metacommunity_size, long double metacommunity_speciation_rate);
+                                    unsigned long metacommunity_size, long double metacommunity_speciation_rate,
+                                    const ProtractedSpeciationParameters &protracted_params);
    
        void createFragmentDatabase(const Fragment &f);
    
@@ -324,7 +319,6 @@ Program Listing for File Community.h
    
        void writeNewMetacommuntyParameters();
    
-   
        void updateCommunityParameters();
    
        void writeSpeciationRates();
@@ -335,7 +329,9 @@ Program Listing for File Community.h
    
        void printEndTimes(time_t tStart, time_t tEnd);
    
-       virtual void apply(SpecSimParameters *sp);
+       void apply(SpecSimParameters *sp);
+   
+       virtual void applyNoOutput(SpecSimParameters *sp);
    
        void doApplication(SpecSimParameters *sp);
    

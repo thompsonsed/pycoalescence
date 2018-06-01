@@ -1,5 +1,5 @@
 """
-Contains the landscape class for performing the key operations on a landscape object
+Generate landscapes and check map file combinations.
 """
 import logging
 
@@ -11,7 +11,7 @@ from .map import Map
 
 class Landscape:
 	"""
-	Contains routines for calculating offsets and dimensions of a selection of tif files making up a landscape.
+	Calculates offsets and dimensions of a selection of tif files making up a landscape.
 	"""
 
 	def __init__(self):
@@ -20,6 +20,7 @@ class Landscape:
 		"""
 		self.coarse_scale = 1
 		self.is_setup_map = False
+		self.setup_complete = False
 		self.fine_map = Map()
 		self.coarse_map = Map()
 		self.sample_map = Map()
@@ -34,7 +35,7 @@ class Landscape:
 		self.times_list = []
 		self.rates_list = []
 		self.logging_level = 10
-		self.logger = logging.Logger("landscapelogger")
+		self.logger = logging.Logger("pycoalescence.landscape")
 		self.landscape_type = False
 
 	def _create_logger(self, file=None, logging_level=None, **kwargs):

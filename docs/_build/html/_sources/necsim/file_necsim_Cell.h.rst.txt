@@ -40,6 +40,8 @@ Included By
 -----------
 
 
+- :ref:`file_necsim_Cell.cpp`
+
 - :ref:`file_necsim_Step.h`
 
 - :ref:`file_necsim_SimulateDispersal.h`
@@ -52,4 +54,11 @@ Classes
 
 
 - :ref:`class_Cell`
+
+
+Functions
+---------
+
+
+- :ref:`function_distanceBetweenCells`
 

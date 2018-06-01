@@ -38,7 +38,8 @@ Compiling the program
 ~~~~~~~~~~~~~~~~~~~~~
 For compilation, there are several provided options:
 
-* Compilation can be handled within pycoalescence by running ``python setup.py``. **This is the recommended option.**
+* Compilation can be handled within :ref:`pycoalescence <Introduction_pycoalescence>` by running ``python setup.py``.
+  **This is the recommended option.**
 * Alternatively, compilation can be completed with additional options using make. The steps are outlined below
 
     - You might need to first run ``autoconf`` from within the **necsim** directory to generate the configure executable.
@@ -50,10 +51,10 @@ For compilation, there are several provided options:
   **Makefiles/SimpleCompile**. This can be modified and run using ``make`` to generate the executable.
 
 .. note:: If you want to also compile the module for integrating with python, provide the python library (PYTHON_LIB) and
-          python include directories (PYTHON_INCLUDE) as command line flags to ``./configure``. You must then run This is
-          not recommended, and it is advised you use the :ref:`install proceedure outlined here <Introduction_pycoalescence>`.
+          python include directories (PYTHON_INCLUDE) as command line flags to ``./configure``. You must then run ``make all``.
+          This is not recommended, and it is advised you use the :ref:`install proceedure outlined here <Introduction_pycoalescence>`.
 
-.. warning:: Compilation on High-performance clusters will likely require an icc compiler and custom linking to the
+.. warning:: Compilation on high-performance clusters will likely require an icc compiler and custom linking to the
              required libraries.
 
 See the Requirements section for a full list of the necessary
@@ -65,7 +66,7 @@ Requirements
 
 -  The SQLite library available `here <https://www.sqlite.org/download.html>`__.
 -  The Boost library available `here <http://www.boost.org>`__.
--  C++ compiler (such as GNU g++) with C++11 support.
+-  C++ compiler (such as GNU g++) with C++14 support.
 -  Access to the relevant folders for Default simulations (see FAQS).
 
 Recommended, but not essential:
@@ -97,9 +98,11 @@ Recognised compiler options include:
    "--with-hpc", "Compile ready for HPC, using intel's icpc compilation and a variety of optimisation flags."
    "--with-boost=DIR", "Define a boost library at DIR"
 
-Additional c++ compilation flags can be specified by ``CPPFLAGS=opts`` for additional library paths or compilation options as required.
+Additional c++ compilation flags can be specified by ``CPPFLAGS=opts`` for additional library paths or compilation
+options as required.
 
-Note that gdal and fast-cpp-csv-parser availability will be automatically detected and included in the compilation if possible.
+Note that gdal and fast-cpp-csv-parser availability will be automatically detected and included in the compilation if
+possible.
 
 Running simulations
 ~~~~~~~~~~~~~~~~~~~
@@ -191,17 +194,19 @@ are as followed.
 Config Files
 ''''''''''''
 
-There are two separate config files which are used when setting up simulations.
+A configuration file can be used for setting simulation parameters.
 
 - `main simulation config file`_
-    Contains the main simulation parameters, including dispersal parameters, speciation rates, sampling information and
-    file referencing information. It also includes the paths to the other config files, which must be specified if the
-    main simulation config is used.
-    Contains the map parameters, including paths to the relevant map files, map dimensions, offsets and scaling. This
-    option cannot be null (map dimensions at least must be specified).
-- `time config file`_
-    Contains the temporal sampling points, in generations. If this is 'null', sampling will automatically occur only
-    at the present (generation time=0)
+
+    - Contains the main simulation parameters, including dispersal parameters, speciation rates, sampling information and
+      file referencing information. It also includes the paths to the other config files, which must be specified if the
+      main simulation config is used.
+
+    - Contains the map parameters, including paths to the relevant map files, map dimensions, offsets and scaling. This
+      option cannot be null (map dimensions at least must be specified).
+
+    - Contains the temporal sampling points, in generations. If this is 'null', sampling will automatically occur only
+      at the present (generation time=0)
 
 When running the simulation using config files, the path to the `main simulation config file`_ should be specified, e.g
 ``./necsim -c /path/to/main/config.txt``.
@@ -213,15 +218,15 @@ When running the simulation using config files, the path to the `main simulation
 Main Config File
 ````````````````
 The configuration containing the majority of the simulation set up, outside of map dimensions. An example file is shown
-below. This file can be automatically generated by :func:`create_config() <pycoalescence.coalescence.Coalescence.create_config>`
-in pycoalescence. An example of this configuration is given below:
+below. This file can be automatically generated by
+:func:`create_config() <pycoalescence.simulation.Simulation.create_config>` in pycoalescence. An example of this
+configuration is given below:
 
 ::
 
     [main]
     seed = 6
     job_type = 6
-    map_config = output/mapconf.txt
     output_directory = output
     min_spec_rate = 0.5
     sigma = 4
@@ -230,7 +235,6 @@ in pycoalescence. An example of this configuration is given below:
     sample_size = 0.1
     max_time = 1
     lambda = 1
-    time_config = output/tempconf.txt
     min_species = 1
 
     [spec_rates]
@@ -302,16 +306,16 @@ times and at all scales. An example is given below.
    Pristine maps assume the same dimensions as their respective present-day equivalents.
 
 .. note::
-   In older versions of this program these options were contained in a separate file. However, as of 1.2.4 map and main
+   In older versions of this program these options were contained in a separate file. However, as of 1.2.4 all
    simulation options are contained in the same file.
 
 .. _`time config file`:
 
 
-Time Config File
-````````````````
-The temporal sampling config file (referred to as "time config file") specifies times, in generations, when a full
-sample according to the sample map should be taken again. An example of this file is given below.
+Time Config Options
+```````````````````
+
+The temporal sampling options are specified as follows.
 
 ::
 
@@ -329,21 +333,16 @@ Default parameters
 
 To run the program with the default parameters for testing purposes, run
 with the command line arguments -d or -dl (for the larger default run).
-Note that this will require access to the following folders relative to
+Note that this will require access to the *Default/* folder relative to
 the path of the program for storing the outputs to the default runs:
 
-**./Default**
-
-**./Default/SQL\_data/**
 
 Outputs
 -------
 
-Upon successful completion of a simulation, the two files are created.
+Upon successful completion of a simulation, the outputs and parameters are stored in an SQLite database.
 
-- A csv file is created called *Data\_{the\_task}\_{the\_seed}.csv* where the\_seed and the\_task are the values provided
-  in simulation set-up. This contains basic simulation information for quick reference.
-- an SQLite database file in the output directory in a folder called *SQL\_data*.
+- an SQLite database file in the output directory.
   This database contains all important simulation data over several tables, which can be accessed
   using a program like `DB Browser for SQLite <http://sqlitebrowser.org/>`__ or Microsoft Access.
   Alternatively, most programming languages have an SQLite interface
@@ -351,6 +350,7 @@ Upon successful completion of a simulation, the two files are created.
   `python sqlite3 <https://docs.python.org/2/library/sqlite3.html>`__)
 
 The tables in the SQLite database are
+
 - SIMULATION\_PARAMETERS
 
       contains the parameters the simulation was performed with for referencing later.
@@ -385,25 +385,9 @@ initial speciation rate the program was run with.
 
 Applying Speciation Rates
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Run ``./SpeciationCounter`` with the following command-line options:
-
-1.  path to the SQLite database file (this is the output of a **necsim** simulation).
-2.  T/F for recording spatial data. If true, the SPECIES\_LOCATIONS table will be created (see Outputs_.)
-3.  a sample mask to use for the data. Species' identities for the individuals will only be calculated from locations
-    specified by a 1 in the sample mask (0 otherwise). Use "null" to record all locations.
-4.  a `time config file`_ specifying temporal sampling locations.
-5.  T/F for calculating fragment species abundances individually. If true, the FRAGMENT\_ABUNDANCES table will be created
-    containing the species abundances for each fragment calculated as a square of continuous habitat. Alternatively, can
-    specify a csv file that contains the fragment information in the following format. All x, y coordinates are given on
-    the sample grid size specified at simulation run-time.
-
-    ::
-
-      fragment_name1, x_min, y_min, x_max, y_max, number_of_individuals
-      fragment_name2, x_min, y_min, x_max, y_max, number_of_individuals
-      ...
-6.  A speciation rate to apply. Can list multiple speciation rates by supplying arguments 7 onwards.
+The command-line interface for applying speciation rates post-simulation has been removed - instead use
+:class:`CoalescenceTree <pycoalescence.coalescence_tree.CoalescenceTree>` in
+:ref:`pycoalescence module <Introduction_pycoalescence>`.
 
 Debugging
 ---------
@@ -414,29 +398,22 @@ Description” a list of which can be found in ERROR\_REF.txt.
 Brief Class Descriptions
 ------------------------
 
-A brief description of the important classes is given below. Some
-classes also contain customised exceptions for better tracing of error
-handling.
+A brief description of the important classes is given below.
 
 -  The :cpp:class:`Tree` class
 
    -  The most important class!
    -  Contains the main setup, run and data output routines.
-   -  :cpp:func:`setup()<Tree::setup()>` imports the data files from csv (if necessary) and creates
-      the in-memory objects for the storing of the coalescence tree and
-      the spatial grid of active lineages. Setup time mostly depends on
-      the size of the csv file being imported.
-   -  Run continually loops over sucessive coalesence, move or
-      speciation events until all individuals have speciated or
-      coalesced. This is where the majority of the simulation time will
-      be, and is mostly dependent on the number of individuals,
-      speciation rate and size of the spatial grid.
-   -  At the end of the simulation, the sqlCreate() routine will
-      generate the in-memory SQLite database for storing the coalescent
-      tree. It can run multiple times if multiple speciation rates are
-      required. :cpp:func:`outputData()<Tree::outputData()>` will then be called to create a small csv
-      file containing important information, and output the SQLite
-      database to file if required.
+   -  :cpp:func:`setup()<Tree::setup()>` imports the data files from csv (if necessary) and creates the in-memory
+      objects for the storing of the coalescence tree and the spatial grid of active lineages. Setup time mostly depends
+      on the size of the csv file being imported.
+   -  :cpp:func:`runSimulation()<Tree::runSimulation()>` continually loops over successive coalesence, move or
+      speciation events until all individuals have speciated or coalesced. This is where the majority of the simulation
+      time will be, and is mostly dependent on the number of individuals, speciation rate and size of the spatial grid.
+   -  At the end of the simulation, the :cpp:func:`applyMultipleRates()<Tree::applyMultipleRates()>` routine will
+      generate the in-memory SQLite database for storing the coalescent tree. It can run multiple times if multiple
+      speciation rates are required. :cpp:func:`outputData()<Tree::outputData()>` is called internally to output the
+      SQLite database to file.
 
 -  The :cpp:class:`TreeNode` class
 
@@ -450,42 +427,48 @@ handling.
 
 -  The :cpp:class:`NRrand` class
 
-   -  Contains the random number generator, as written by James
-      Rosindell (j.rosindell@imperial.ac.uk).
+   -  Contains the random number generator, as written by James Rosindell (j.rosindell@imperial.ac.uk).
 
 -  The :cpp:class:`Landscape` class
 
-   -  Contains the routines for importing and calling values from the
-      map objects.
+   -  Contains the routines for importing and calling values from the :cpp:class:`Map` objects.
    -  The :cpp:func:`getVal() <Landscape::getVal()>` and :cpp:func:`runDispersal() <Landscape::runDispersal()>`
-      functions can be modified to produce altered dispersal behaviour, or alterations to the
-      structure of the :cpp:class:`Row`
+      functions can be modified to produce altered dispersal behaviour.
+
+- The :cpp:class:`DispersalCoordinator` class
+
+   -  Used to generate dispersal distances from a particular dispersal kernel. The dispersal kernel can also take the
+      form of a dispersal map, which defines probabilites of dispersal between every cell on the landscape.
 
 -  The :cpp:class:`Matrix` and :cpp:class:`Row` classes
 
-   -  Based on code written by James Rosindell
-      (j.rosindell@imperial.ac.uk).
-   -  Handles indexing of the 2D object plus importing values from a csv
-      file.
+   -  Based on code written by James Rosindell (j.rosindell@imperial.ac.uk).
+   -  Handles indexing of the 2D object plus importing values from a csv or tif file
+
+- The :cpp:class:`Map` class
+
+   -  Derived from :cpp:class:`Matrix` with extra functionality for handling tif file parameter reads and calculation
+      of spatial data.
+
+- The :cpp:class:`DataMask` and :cpp:class:`Samplematrix` classes
+
+   -  Special maps that define the location of sampling across a landscape. Contain extra functionality for defining
+      "null" maps (sampling everywhere).
 
 -  The :cpp:class:`SpeciesList` class
 
-   -  Contains the list of individuals, for application in a matrix, to
-      essentially create a 3D array.
-   -  Handles the positioning of individuals in space within a grid
-      cell.
+   -  Contains the list of individuals, for application in a matrix, to essentially create a 3D array.
+   -  Handles the positioning of individuals in space within a grid cell.
 
 -  The :cpp:class:`ConfigOption` class
 
-   -  Contains basic functions for importing command line arguments from
-      a config file, providing an alternative way of setting up
-      simulations.
+   -  Contains basic functions for importing command line arguments from a config file, providing an alternative way of
+      setting up simulations.
 
 -  The :cpp:class:`Community` class
 
-   -  Provides the routines for applying different speciation rates to a
-      phylogenetic tree, to be used either immediately after simulation
-      within **necsim**, or at a later time using SpeciationCounter_
+   -  Provides the routines for applying different speciation rates to a phylogenetic tree, to be used either
+      immediately after simulation within **necsim**, or at a later time using SpeciationCounter_
    -  Use to generate a community of individuals for a particular set of parameters, providing options for generating
       species identities, species abundance distributions and species locations.
 

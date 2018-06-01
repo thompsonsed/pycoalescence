@@ -11,8 +11,7 @@ Contains all maps and provides the functions for accessing a grid cell in the co
 
 
 
-Collaboration diagram for Landscape\+:
-\nopagebreak
+Collaboration diagram for Landscape\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -61,7 +60,8 @@ void \hyperlink{class_landscape_a9181afc2546082c9d4798e16e033b0f1}{validate\+Map
 \begin{DoxyCompactList}\small\item\em Checks that the map file sizes are correct and that each value on the fragmented maps is less than the historical maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}{update\+Map} (double generation)
 \begin{DoxyCompactList}\small\item\em Checks if an update needs to be performed to the map configuration, and if it does, performs the update. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{do\+Update} ()
+void \hyperlink{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{do\+Update} ()\hypertarget{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{}\label{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}
+
 \begin{DoxyCompactList}\small\item\em Updates the historical map configuration. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a03e35a3a42e40a683be01e75413d30d2}{reset\+Historical} ()
 \begin{DoxyCompactList}\small\item\em Resets the historical variables to recalculate historical maps. \end{DoxyCompactList}\item 
@@ -111,7 +111,7 @@ void \hyperlink{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}{fix\+Grid\+Co
 unsigned long \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal} (const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)
 \begin{DoxyCompactList}\small\item\em The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn\textquotesingle{}t need to perform all the checks until the edge of the fine grid. \end{DoxyCompactList}\item 
 string \hyperlink{class_landscape_a9b867a59c88f754bae6788451845b698}{print\+Vars} ()
-\begin{DoxyCompactList}\small\item\em Prints some selected Map variables to the terminal. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Prints some selected \hyperlink{class_map}{Map} variables to the terminal. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}{clear\+Map} ()\hypertarget{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}{}\label{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}
 
 \begin{DoxyCompactList}\small\item\em Wipes the map of all variables. Only really useful for testing purposes. \end{DoxyCompactList}\item 
@@ -127,16 +127,16 @@ typedef unsigned long(Landscape\+::$\ast$ {\bfseries fptr}) (const double \&x, c
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries fine\+\_\+map}\hypertarget{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}{}\label{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries fine\+\_\+map}\hypertarget{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}{}\label{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}
 
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+fine\+\_\+map}\hypertarget{class_landscape_a5e34fe2e75c3b84657a4edc75f9fcdec}{}\label{class_landscape_a5e34fe2e75c3b84657a4edc75f9fcdec}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+fine\+\_\+map}\hypertarget{class_landscape_a5e34fe2e75c3b84657a4edc75f9fcdec}{}\label{class_landscape_a5e34fe2e75c3b84657a4edc75f9fcdec}
 
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries coarse\+\_\+map}\hypertarget{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}{}\label{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries coarse\+\_\+map}\hypertarget{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}{}\label{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}
 
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+coarse\+\_\+map}\hypertarget{class_landscape_a5ac41db1c48869d974c97393eb548dd8}{}\label{class_landscape_a5ac41db1c48869d974c97393eb548dd8}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+coarse\+\_\+map}\hypertarget{class_landscape_a5ac41db1c48869d974c97393eb548dd8}{}\label{class_landscape_a5ac41db1c48869d974c97393eb548dd8}
 
 \item 
 \hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$ {\bfseries mapvars}\hypertarget{class_landscape_aa3de03e94cea3c560df40bfa78b79f54}{}\label{class_landscape_aa3de03e94cea3c560df40bfa78b79f54}
@@ -248,9 +248,9 @@ fptr {\bfseries get\+Val\+Func}\hypertarget{class_landscape_a3cca2f0650d5979668f
 \begin{DoxyCompactItemize}
 \item 
 ostream \& \hyperlink{class_landscape_a1c309185f0c3a601f27c932f1f2fa886}{operator$<$$<$} (ostream \&os, const \hyperlink{class_landscape}{Landscape} \&r)
-\begin{DoxyCompactList}\small\item\em Operator for outputting the Map object variables to an output stream. This is used for storing the Map object to file. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Operator for outputting the \hyperlink{class_map}{Map} object variables to an output stream. This is used for storing the \hyperlink{class_map}{Map} object to file. \end{DoxyCompactList}\item 
 istream \& \hyperlink{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}{operator$>$$>$} (istream \&is, \hyperlink{class_landscape}{Landscape} \&r)
-\begin{DoxyCompactList}\small\item\em Operator for inputting the Map object variables from an input stream. This is used for reading the Map object from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Operator for inputting the \hyperlink{class_map}{Map} object variables from an input stream. This is used for reading the \hyperlink{class_map}{Map} object from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -455,22 +455,6 @@ Note that this function will not check if the value is actually within bounds of
 \begin{DoxyReturn}{Returns}
 the y location on the fine map 
 \end{DoxyReturn}
-\index{Landscape@{Landscape}!do\+Update@{do\+Update}}
-\index{do\+Update@{do\+Update}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{do\+Update()}{doUpdate()}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::do\+Update (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{}\label{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}
-
-
-Updates the historical map configuration. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em generation} & the current generation timer \\
-\hline
-\end{DoxyParams}
 \index{Landscape@{Landscape}!fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}}
 \index{fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{fix\+Grid\+Coordinates(double \&x, double \&y, long \&xwrap, long \&ywrap)}{fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::fix\+Grid\+Coordinates (
@@ -802,7 +786,7 @@ the historical map state.
 )}\hypertarget{class_landscape_a9b867a59c88f754bae6788451845b698}{}\label{class_landscape_a9b867a59c88f754bae6788451845b698}
 
 
-Prints some selected Map variables to the terminal. 
+Prints some selected \hyperlink{class_map}{Map} variables to the terminal. 
 
 \begin{DoxyReturn}{Returns}
 the string containing the map variables to print 
@@ -954,13 +938,13 @@ Checks if an update needs to be performed to the map configuration, and if it do
 )\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_landscape_a1c309185f0c3a601f27c932f1f2fa886}{}\label{class_landscape_a1c309185f0c3a601f27c932f1f2fa886}
 
 
-Operator for outputting the Map object variables to an output stream. This is used for storing the Map object to file. 
+Operator for outputting the \hyperlink{class_map}{Map} object variables to an output stream. This is used for storing the \hyperlink{class_map}{Map} object to file. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em os} & the output stream. \\
 \hline
-{\em r} & the Map object to output. \\
+{\em r} & the \hyperlink{class_map}{Map} object to output. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -976,13 +960,13 @@ the output stream.
 )\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}{}\label{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}
 
 
-Operator for inputting the Map object variables from an input stream. This is used for reading the Map object from file. 
+Operator for inputting the \hyperlink{class_map}{Map} object variables from an input stream. This is used for reading the \hyperlink{class_map}{Map} object from file. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em is} & the input stream. \\
 \hline
-{\em r} & the Map object to input to. \\
+{\em r} & the \hyperlink{class_map}{Map} object to input to. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

@@ -1,6 +1,11 @@
-//
-// Created by Sam Thompson on 02/04/2018.
-//
+// This file is part of NECSim project which is released under MIT license.
+// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
+/**
+ * @author Samuel Thompson
+ * @file PyImports.h
+ * @brief Routines for importing python objects to c++ vectors.
+ * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
+ */
 
 #ifndef PYIMPORTS_H
 #define PYIMPORTS_H

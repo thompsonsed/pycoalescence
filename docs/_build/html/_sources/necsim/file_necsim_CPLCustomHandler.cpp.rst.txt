@@ -48,3 +48,10 @@ Includes
 
 
 
+
+Functions
+---------
+
+
+- :ref:`function_cplCustomErrorHandler`
+

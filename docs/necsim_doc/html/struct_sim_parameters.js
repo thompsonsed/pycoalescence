@@ -1,9 +1,10 @@
 var struct_sim_parameters =
 [
     [ "SimParameters", "struct_sim_parameters.html#aa91bc46ea6909abeeb7488c36da269ee", null ],
-    [ "importParameters", "struct_sim_parameters.html#affb4a6133434c61c720b648012ccbcea", null ],
+    [ "importParameters", "struct_sim_parameters.html#a6d39e5ea5b6f6eaa6a7c0fb7d0fd74a7", null ],
     [ "importParameters", "struct_sim_parameters.html#a2c587f1f41e13c51696ca24e5edadc96", null ],
     [ "importParameters", "struct_sim_parameters.html#a65833f22d1f30997727ed71e989af02e", null ],
+    [ "operator=", "struct_sim_parameters.html#ab774f2f5f6221536fcadeb2436abda57", null ],
     [ "printSpatialVars", "struct_sim_parameters.html#a04636fc2b0899400011b54bb1f175eb0", null ],
     [ "printVars", "struct_sim_parameters.html#ac7072f58a9dccc718341d25a84148ffc", null ],
     [ "setDispersalParameters", "struct_sim_parameters.html#a74782aab11b1e07a507cc60bdec3bf95", null ],

@@ -15,7 +15,7 @@ Program Listing for File TreeNode.h
    #include <cstdio>
    #include <iostream>
    #include <iomanip>
-   #include "Logging.h"
+   #include "Logger.h"
    
    using namespace std;
    class TreeNode

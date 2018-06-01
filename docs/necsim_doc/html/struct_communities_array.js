@@ -1,8 +1,8 @@
 var struct_communities_array =
 [
-    [ "addNew", "struct_communities_array.html#adf488e4c1790eb8d850820d8014d89fa", null ],
-    [ "hasPair", "struct_communities_array.html#a53d5250849767365e4d50751c3583309", null ],
-    [ "pushBack", "struct_communities_array.html#ab216cad89ebc4cf73859093060a4a20c", null ],
+    [ "addNew", "struct_communities_array.html#ad2f4547bda62b1bfeca6d94696436989", null ],
+    [ "hasPair", "struct_communities_array.html#a0bd0be60b599588b3855f4872b63a3de", null ],
+    [ "pushBack", "struct_communities_array.html#a03dac0fa7caadfbcd54bff684d3e72fe", null ],
     [ "pushBack", "struct_communities_array.html#a0abeec9457993dffd047a78db4e4b289", null ],
-    [ "calc_array", "struct_communities_array.html#addd27a8197dd835e55c529294ecae398", null ]
+    [ "communityParameters", "struct_communities_array.html#a51cb89209da53cdfdc40e0489103a086", null ]
 ];

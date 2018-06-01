@@ -3,7 +3,7 @@
 Variable logger
 ===============
 
-- Defined in :ref:`file_PyLogging.h`
+- Defined in :ref:`file_necsim_Logging.h`
 
 
 Variable Documentation

@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Class ReproductionMap" href="class_ReproductionMap.html" />
+    <link rel="next" title="Template Class PyCommunityTemplate" href="class_PyCommunityTemplate.html" />
     <link rel="prev" title="Class ProtractedSpatialTree" href="class_ProtractedSpatialTree.html" /> 
   </head>
   <body role="document">
@@ -45,7 +45,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="class_ReproductionMap.html" title="Class ReproductionMap"
+          <a href="class_PyCommunityTemplate.html" title="Template Class PyCommunityTemplate"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="class_ProtractedSpatialTree.html" title="Class ProtractedSpatialTree"
@@ -86,6 +86,8 @@
 <dt id="_CPPv214ProtractedTree">
 <span id="ProtractedTree"></span><span class="target" id="necsimclass_protracted_tree"></span><em class="property">class </em><code class="descclassname"></code><code class="descname">ProtractedTree</code><a class="headerlink" href="#_CPPv214ProtractedTree" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><dl class="docutils">
+<dt><strong>Author</strong></dt>
+<dd>Sam Thompson</dd>
 <dt><strong>Author</strong></dt>
 <dd>Sam Thompson </dd>
 <dt><strong>Date</strong></dt>
@@ -224,15 +226,42 @@
 <dt id="_CPPv2N4Tree25importSimulationVariablesERK6string">
 <span id="Tree::importSimulationVariables__stringCR"></span><span class="target" id="necsimclass_tree_1a455d87022772b309a5974ea5f0295139"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>configfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree25importSimulationVariablesERK6string" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Import the simulation variables from the command line structure. </p>
-<p>This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_Tree.html#necsimclass_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and runSim() can be run immediately afterwards.</p>
+<p>This function parses the simulation variables, imports them from the config file, checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_Tree.html#necsimclass_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and <a class="reference internal" href="class_Tree.html#necsimclass_tree_1afe75245862a1c40030c1c8607518cf8d"><span class="std std-ref">runSimulation()</span></a> can be run immediately afterwards.</p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">comargs</span></code>: a vector of strings, containing the command-line arguments </li>
+<li><code class="docutils literal"><span class="pre">configfile</span></code>: the path to the config file containing parameters to parse. </li>
 </ul>
 </dd>
 </dl>
 </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree25importSimulationVariablesE12ConfigOption">
+<span id="Tree::importSimulationVariables__ConfigOption"></span><span class="target" id="necsimclass_tree_1a029af5f2dc1e33b4eead8110090ac778"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><a class="reference internal" href="class_ConfigOption.html#_CPPv212ConfigOption" title="ConfigOption">ConfigOption</a> <em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree25importSimulationVariablesE12ConfigOption" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Import the simulation variables from a <a class="reference internal" href="class_ConfigOption.html#necsimclass_config_option"><span class="std std-ref">ConfigOption</span></a>. </p>
+<p>This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_Tree.html#necsimclass_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and runSim() can be run immediately afterwards.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">config</span></code>: the set of config parameters to import </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree13runFileChecksEv">
+<span id="Tree::runFileChecks"></span><span class="target" id="necsimclass_tree_1a0aefbe2466aefd46dec8c4aea4c85c5e"></span>void <code class="descname">runFileChecks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree13runFileChecksEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Runs the basic file existence checks. Checks for paused simulations and file existence. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree23wipeSimulationVariablesEv">
+<span id="Tree::wipeSimulationVariables"></span><span class="target" id="necsimclass_tree_1aa31508ea6d5801c6dee17c035f393b60"></span>void <code class="descname">wipeSimulationVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree23wipeSimulationVariablesEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resets all the simulation variables. </p>
 </dd></dl>
 
 <dl class="function">
@@ -400,6 +429,12 @@
 <span id="Tree::determineSpeciationRates"></span><span class="target" id="necsimclass_tree_1a25f082da13789dfa3fefcbcfd08b4dfe"></span>void <code class="descname">determineSpeciationRates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree24determineSpeciationRatesEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Determines the speciation rates to apply and then applies them to the coalescence tree post-simulation. </p>
 <p>Detects speciation rates from the config files supplied. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree18addSpeciationRatesE6vectorIeE">
+<span id="Tree::addSpeciationRates__vector:l-double:"></span><span class="target" id="necsimclass_tree_1a38488499b196d3f5ee40b2a68fe3279e"></span>void <code class="descname">addSpeciationRates</code><span class="sig-paren">(</span>vector&lt;long double&gt; <em>spec_rates_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree18addSpeciationRatesE6vectorIeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Adds the speciation rates to those to be applied. </p>
 </dd></dl>
 
 <dl class="function">
@@ -1110,8 +1145,8 @@
   <p class="topless"><a href="class_ProtractedSpatialTree.html"
                         title="previous chapter">Class ProtractedSpatialTree</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="class_ReproductionMap.html"
-                        title="next chapter">Class ReproductionMap</a></p>
+  <p class="topless"><a href="class_PyCommunityTemplate.html"
+                        title="next chapter">Template Class PyCommunityTemplate</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1143,7 +1178,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="class_ReproductionMap.html" title="Class ReproductionMap"
+          <a href="class_PyCommunityTemplate.html" title="Template Class PyCommunityTemplate"
              >next</a> |</li>
         <li class="right" >
           <a href="class_ProtractedSpatialTree.html" title="Class ProtractedSpatialTree"

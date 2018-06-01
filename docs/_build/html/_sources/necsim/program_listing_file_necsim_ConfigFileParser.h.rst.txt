@@ -42,7 +42,7 @@ Program Listing for File ConfigFileParser.h
        vector<string> val;
        vector<string> refs;
    
-       SectionOption()
+       SectionOption() : val(), refs()
        {
            section = "nullSectionOption";
        }
@@ -64,10 +64,10 @@ Program Listing for File ConfigFileParser.h
        bool bFullParse;  // if this is true, each KeyOption structure will be returned after each read.
        vector<SectionOption> configs;  // all config data if full parse is true.
    public:
-       ConfigOption()
+       ConfigOption() : configs()
        {
-           bConfig = false;
            configfile = "none";
+           bConfig = false;
            bMain = false;
            bFullParse = false;
        }
@@ -76,6 +76,7 @@ Program Listing for File ConfigFileParser.h
    
        void parseConfig();
    
+       void parseConfig(istream &istream1);
        vector<SectionOption> getSectionOptions();
    
        void setSectionOption(string section, string reference, string value);

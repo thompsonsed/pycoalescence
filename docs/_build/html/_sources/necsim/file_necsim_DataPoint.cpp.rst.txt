@@ -41,6 +41,8 @@ Includes
 
 - ``DataPoint.h`` (:ref:`file_necsim_DataPoint.h`)
 
+- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+
 
 
 

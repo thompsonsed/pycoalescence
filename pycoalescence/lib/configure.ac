@@ -1,6 +1,6 @@
 AC_INIT(all, 1.0)
 AC_CONFIG_MACRO_DIR([m4])
-CPPFLAGS="$CPPFLAGS -I. -std=c++11"
+CPPFLAGS="$CPPFLAGS -I. -std=c++14"
 LDFLAGS="$LDFLAGS -L."
 VPATH="necsim:$VPATH"
 OJBDIR="$OBJDIR"
@@ -18,9 +18,17 @@ AC_ARG_VAR([PYTHON_LIB], [Library location for python header files, bypassing de
 dnl Switch to c++ mode
 define(m4_pattern_allow)
 AC_LANG(C++)
-
 dnl Check if c++ compiler works works.
 AC_PROG_CXX([icpc icc g++ gcc])
+AX_CXX_COMPILE_STDCXX(14, [], [optional])
+if [[ "$HAVE_CXX14" == 1 ]]
+then
+	fullcpp14="Full"
+	echo "Full c++14 support detected..."
+else
+	fullcpp14="Partial/not detected"
+	AC_MSG_WARN([Some issues encountered detected c++14, continuing anyway.])
+fi
 dnl AC_PROG_CXX
 
 
@@ -221,6 +229,9 @@ echo "    gdal support:            ${have_gdal}"
 echo "       user-defined prefix:  ${with_gdal}"
 echo ""
 echo "    fast-cpp-csv-parser      ${fast_cpp_csv_parser}"
+echo ""
+echo "    c++14 support:           ${fullcpp14}"
+
 
 echo "  ----------------"
 echo "  Detected options"

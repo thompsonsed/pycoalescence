@@ -104,17 +104,9 @@
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N11SpatialTree25importSimulationVariablesERK6string">
-<span id="SpatialTree::importSimulationVariables__stringCR"></span><span class="target" id="necsimclass_spatial_tree_1ac5fc862af2ca6f2b4c471c450093fcae"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>configfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpatialTree25importSimulationVariablesERK6string" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Imports the simulation variables from the config file. </p>
-<p>Also checks for paused simulations and file existence. <dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">configfile</span></code>: a vector containing the configfile to import from </li>
-</ul>
-</dd>
-</dl>
-</p>
+<dt id="_CPPv2N11SpatialTree13runFileChecksEv">
+<span id="SpatialTree::runFileChecks"></span><span class="target" id="necsimclass_spatial_tree_1a060fb8be17d702ed5eb0c142a89d9773"></span>void <code class="descname">runFileChecks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpatialTree13runFileChecksEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Runs the basic file existence checks. Checks for paused simulations and file existence. </p>
 </dd></dl>
 
 <dl class="function">
@@ -454,6 +446,42 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N4Tree25importSimulationVariablesERK6string">
+<span id="Tree::importSimulationVariables__stringCR"></span><span class="target" id="necsimclass_tree_1a455d87022772b309a5974ea5f0295139"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>configfile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree25importSimulationVariablesERK6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Import the simulation variables from the command line structure. </p>
+<p>This function parses the simulation variables, imports them from the config file, checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_Tree.html#necsimclass_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and <a class="reference internal" href="class_Tree.html#necsimclass_tree_1afe75245862a1c40030c1c8607518cf8d"><span class="std std-ref">runSimulation()</span></a> can be run immediately afterwards.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">configfile</span></code>: the path to the config file containing parameters to parse. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree25importSimulationVariablesE12ConfigOption">
+<span id="Tree::importSimulationVariables__ConfigOption"></span><span class="target" id="necsimclass_tree_1a029af5f2dc1e33b4eead8110090ac778"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><a class="reference internal" href="class_ConfigOption.html#_CPPv212ConfigOption" title="ConfigOption">ConfigOption</a> <em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree25importSimulationVariablesE12ConfigOption" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Import the simulation variables from a <a class="reference internal" href="class_ConfigOption.html#necsimclass_config_option"><span class="std std-ref">ConfigOption</span></a>. </p>
+<p>This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_Tree.html#necsimclass_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and runSim() can be run immediately afterwards.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">config</span></code>: the set of config parameters to import </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree23wipeSimulationVariablesEv">
+<span id="Tree::wipeSimulationVariables"></span><span class="target" id="necsimclass_tree_1aa31508ea6d5801c6dee17c035f393b60"></span>void <code class="descname">wipeSimulationVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree23wipeSimulationVariablesEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resets all the simulation variables. </p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N4Tree13internalSetupERK13SimParameters">
 <span id="Tree::internalSetup__SimParametersCR"></span><span class="target" id="necsimclass_tree_1a62db83e47e5850c6a83793829b22b68b"></span>void <code class="descname">internalSetup</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="struct_SimParameters.html#_CPPv213SimParameters" title="SimParameters">SimParameters</a> &amp;<em>sim_parameters_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree13internalSetupERK13SimParameters" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets up the simulation parameters from the one provided. </p>
@@ -609,6 +637,12 @@
 <span id="Tree::determineSpeciationRates"></span><span class="target" id="necsimclass_tree_1a25f082da13789dfa3fefcbcfd08b4dfe"></span>void <code class="descname">determineSpeciationRates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree24determineSpeciationRatesEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Determines the speciation rates to apply and then applies them to the coalescence tree post-simulation. </p>
 <p>Detects speciation rates from the config files supplied. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4Tree18addSpeciationRatesE6vectorIeE">
+<span id="Tree::addSpeciationRates__vector:l-double:"></span><span class="target" id="necsimclass_tree_1a38488499b196d3f5ee40b2a68fe3279e"></span>void <code class="descname">addSpeciationRates</code><span class="sig-paren">(</span>vector&lt;long double&gt; <em>spec_rates_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4Tree18addSpeciationRatesE6vectorIeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Adds the speciation rates to those to be applied. </p>
 </dd></dl>
 
 <dl class="function">

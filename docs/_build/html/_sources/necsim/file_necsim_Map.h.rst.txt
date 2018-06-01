@@ -7,7 +7,7 @@ File Map.h
 
 
 
-Contains the Map class for importing .tif files and obtaining a variety of information from them. 
+Contains the :ref:`template_class_Map` class for importing .tif files and obtaining a variety of information from them. 
 
 
 .. contents:: Contents
@@ -34,6 +34,28 @@ MIT Licence.
 
 
 
+Includes
+--------
+
+
+- ``CPLCustomHandler.h`` (:ref:`file_necsim_CPLCustomHandler.h`)
+
+- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
+
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``Matrix.h`` (:ref:`file_necsim_Matrix.h`)
+
+- ``cpl_conv.h``
+
+- ``cstring``
+
+- ``gdal_priv.h``
+
+- ``sstream``
+
+- ``string``
+
 
 
 Included By
@@ -49,4 +71,11 @@ Included By
 - :ref:`file_necsim_ReproductionMap.h`
 
 
+
+
+Classes
+-------
+
+
+- :ref:`template_class_Map`
 

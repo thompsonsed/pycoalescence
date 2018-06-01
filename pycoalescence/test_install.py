@@ -31,8 +31,6 @@ except ImportError:
 
 
 
-
-
 def main():
 	"""
 	Set the logging method, run the program compilation (if required) and test the install.

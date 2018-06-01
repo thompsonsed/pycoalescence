@@ -7,7 +7,7 @@ File Logging.h
 
 
 
-Routines for writing to cout. Intended to be overloaded for pythonic versions with the logging module. 
+Routines for writing strings to the global logger object. 
 
 
 .. contents:: Contents
@@ -28,7 +28,7 @@ Definition (``necsim/Logging.h``)
 Detailed Description
 --------------------
 
-Sam Thompson
+Samuel Thompson
 MIT Licence. 
 
 
@@ -38,17 +38,7 @@ Includes
 --------
 
 
-- ``CPLCustomHandler.h`` (:ref:`file_necsim_CPLCustomHandler.h`)
-
-- ``LogFile.h`` (:ref:`file_necsim_LogFile.h`)
-
-- ``cstdio``
-
-- ``iostream``
-
-- ``sstream``
-
-- ``stdexcept``
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``string``
 
@@ -58,39 +48,17 @@ Included By
 -----------
 
 
-- :ref:`file_necsim_TreeNode.h`
-
 - :ref:`file_necsim_Matrix.h`
-
-- :ref:`file_necsim_SimParameters.h`
 
 - :ref:`file_necsim_CustomExceptions.h`
 
-- :ref:`file_necsim_ConfigFileParser.cpp`
-
 - :ref:`file_necsim_CPLCustomHandler.cpp`
 
-- :ref:`file_necsim_DataMask.cpp`
-
-- :ref:`file_necsim_DataPoint.h`
-
-- :ref:`file_necsim_NRrand.h`
-
-- :ref:`file_necsim_DispersalCoordinator.cpp`
-
-- :ref:`file_necsim_Filesystem.cpp`
+- :ref:`file_necsim_DataPoint.cpp`
 
 - :ref:`file_necsim_Logging.cpp`
 
-- :ref:`file_necsim_SpatialTree.h`
-
-- :ref:`file_necsim_SimulationTemplates.h`
-
 - :ref:`file_necsim_Setup.cpp`
-
-- :ref:`file_necsim_SimulateDispersal.cpp`
-
-- :ref:`file_necsim_Tree.cpp`
 
 - :ref:`file_necsim_TreeNode.cpp`
 
@@ -108,4 +76,11 @@ Functions
 - :ref:`function_writeInfo`
 
 - :ref:`function_writeWarning`
+
+
+Variables
+---------
+
+
+- :ref:`variable_logger`
 

@@ -18,7 +18,7 @@ Program Listing for File ProtractedSpatialTree.h
    #define SPECIATIONCOUNTER_PROTRACTEDSPATIALTREE_H
    
    
-   class ProtractedSpatialTree : public SpatialTree, public ProtractedTree
+   class ProtractedSpatialTree : public virtual SpatialTree, public virtual ProtractedTree
    {
    
    };

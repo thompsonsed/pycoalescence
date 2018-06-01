@@ -2,8 +2,7 @@
 \label{class_tree}\index{Tree@{Tree}}
 
 
-Inheritance diagram for Tree\+:
-\nopagebreak
+Inheritance diagram for Tree\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,8 +11,7 @@ Inheritance diagram for Tree\+:
 \end{figure}
 
 
-Collaboration diagram for Tree\+:
-\nopagebreak
+Collaboration diagram for Tree\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,8 +21,16 @@ Collaboration diagram for Tree\+:
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \hyperlink{class_tree_a455d87022772b309a5974ea5f0295139}{import\+Simulation\+Variables} (const string \&configfile)
+void \hyperlink{class_tree_a455d87022772b309a5974ea5f0295139}{import\+Simulation\+Variables} (const string \&configfile)
 \begin{DoxyCompactList}\small\item\em Import the simulation variables from the command line structure. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a029af5f2dc1e33b4eead8110090ac778}{import\+Simulation\+Variables} (\hyperlink{class_config_option}{Config\+Option} config)
+\begin{DoxyCompactList}\small\item\em Import the simulation variables from a \hyperlink{class_config_option}{Config\+Option}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_tree_a0aefbe2466aefd46dec8c4aea4c85c5e}{run\+File\+Checks} ()\hypertarget{class_tree_a0aefbe2466aefd46dec8c4aea4c85c5e}{}\label{class_tree_a0aefbe2466aefd46dec8c4aea4c85c5e}
+
+\begin{DoxyCompactList}\small\item\em Runs the basic file existence checks. Checks for paused simulations and file existence. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aa31508ea6d5801c6dee17c035f393b60}{wipe\+Simulation\+Variables} ()\hypertarget{class_tree_aa31508ea6d5801c6dee17c035f393b60}{}\label{class_tree_aa31508ea6d5801c6dee17c035f393b60}
+
+\begin{DoxyCompactList}\small\item\em Resets all the simulation variables. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a62db83e47e5850c6a83793829b22b68b}{internal\+Setup} (const \hyperlink{struct_sim_parameters}{Sim\+Parameters} \&sim\+\_\+parameters\+\_\+in)
 \begin{DoxyCompactList}\small\item\em Sets up the simulation parameters from the one provided. \end{DoxyCompactList}\item 
 bool \hyperlink{class_tree_a5c6065ede9862e9fb6561eb8beaf5d78}{check\+Output\+Directory} ()
@@ -65,6 +71,9 @@ void \hyperlink{class_tree_ae3fb33c46cf7e3af44604a9875b375a3}{set\+Times} ()\hyp
 \begin{DoxyCompactList}\small\item\em Sets the temporal sampling points from the time config file. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a25f082da13789dfa3fefcbcfd08b4dfe}{determine\+Speciation\+Rates} ()
 \begin{DoxyCompactList}\small\item\em Determines the speciation rates to apply and then applies them to the coalescence tree post-\/simulation. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a38488499b196d3f5ee40b2a68fe3279e}{add\+Speciation\+Rates} (vector$<$ long double $>$ spec\+\_\+rates\+\_\+in)\hypertarget{class_tree_a38488499b196d3f5ee40b2a68fe3279e}{}\label{class_tree_a38488499b196d3f5ee40b2a68fe3279e}
+
+\begin{DoxyCompactList}\small\item\em Adds the speciation rates to those to be applied. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}{generate\+Objects} ()\hypertarget{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}{}\label{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}
 
 \begin{DoxyCompactList}\small\item\em Assigns the objects sizes in memory and fills with the starting lineages. \end{DoxyCompactList}\item 
@@ -786,22 +795,36 @@ if the simulation has paused
 \begin{DoxyParamCaption}
 \item[{const string \&}]{configfile}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_tree_a455d87022772b309a5974ea5f0295139}{}\label{class_tree_a455d87022772b309a5974ea5f0295139}
+)}\hypertarget{class_tree_a455d87022772b309a5974ea5f0295139}{}\label{class_tree_a455d87022772b309a5974ea5f0295139}
 
 
 Import the simulation variables from the command line structure. 
+
+This function parses the simulation variables, imports them from the config file, checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} and \hyperlink{class_tree_afe75245862a1c40030c1c8607518cf8d}{run\+Simulation()} can be run immediately afterwards.
+
+
+\begin{DoxyParams}{Parameters}
+{\em configfile} & the path to the config file containing parameters to parse. \\
+\hline
+\end{DoxyParams}
+\index{Tree@{Tree}!import\+Simulation\+Variables@{import\+Simulation\+Variables}}
+\index{import\+Simulation\+Variables@{import\+Simulation\+Variables}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{import\+Simulation\+Variables(\+Config\+Option config)}{importSimulationVariables(ConfigOption config)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::import\+Simulation\+Variables (
+\begin{DoxyParamCaption}
+\item[{{\bf Config\+Option}}]{config}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a029af5f2dc1e33b4eead8110090ac778}{}\label{class_tree_a029af5f2dc1e33b4eead8110090ac778}
+
+
+Import the simulation variables from a \hyperlink{class_config_option}{Config\+Option}. 
 
 This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} and run\+Sim() can be run immediately afterwards.
 
 
 \begin{DoxyParams}{Parameters}
-{\em comargs} & a vector of strings, containing the command-\/line arguments \\
+{\em config} & the set of config parameters to import \\
 \hline
 \end{DoxyParams}
-
-
-Reimplemented in \hyperlink{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}{Spatial\+Tree}.
-
 \index{Tree@{Tree}!internal\+Setup@{internal\+Setup}}
 \index{internal\+Setup@{internal\+Setup}!Tree@{Tree}}
 \subsubsection[{\texorpdfstring{internal\+Setup(const Sim\+Parameters \&sim\+\_\+parameters\+\_\+in)}{internalSetup(const SimParameters &sim_parameters_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::internal\+Setup (

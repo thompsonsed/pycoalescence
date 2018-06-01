@@ -7,7 +7,7 @@ File Logging.cpp
 
 
 
-Routines for writing to cout. Intended to be overloaded for pythonic versions with the logging module. 
+Routines for writing strings to the global logger object. 
 
 
 .. contents:: Contents
@@ -28,7 +28,7 @@ Definition (``necsim/Logging.cpp``)
 Detailed Description
 --------------------
 
-Sam Thompson
+Samuel Thompson
 MIT Licence. 
 
 
@@ -38,9 +38,9 @@ Includes
 --------
 
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
-- ``sstream``
+- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
 
 
 

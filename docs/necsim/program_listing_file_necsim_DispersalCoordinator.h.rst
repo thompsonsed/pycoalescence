@@ -69,7 +69,7 @@ Program Listing for File DispersalCoordinator.h
    
    
        void setDispersal(const string &dispersal_method, const string &dispersal_file,
-                         const unsigned long dispersal_x, const unsigned long dispersal_y,
+                         const unsigned long &dispersal_x, const unsigned long &dispersal_y,
                          const double &m_probin, const double &cutoffin,
                          const double &sigmain, const double &tauin, const bool &restrict_self);
    

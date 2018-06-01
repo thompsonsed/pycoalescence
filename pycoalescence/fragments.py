@@ -1,5 +1,7 @@
 """
-Contains the FragmentedLandscape class for creating a fragmented landscape using hexagonal packing and an even spread of
+Generate fragmented landscapes with specific properties. Detailed :ref:`here <Simulate_landscapes>`.
+
+Contains :class:`.FragmentedLandscape` for creating a fragmented landscape using hexagonal packing and an even spread of
 individuals between fragments. Requires scipy and matplotlib.
 """
 

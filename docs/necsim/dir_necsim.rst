@@ -5,15 +5,11 @@ Directory necsim
 ================
 
 
-Subdirectories
---------------
-
-- :ref:`directory_necsim_fast-cpp-csv-parser2`
-
 
 Files
 -----
 
+- :ref:`file_necsim_Cell.cpp`
 - :ref:`file_necsim_Cell.h`
 - :ref:`file_necsim_Community.cpp`
 - :ref:`file_necsim_Community.h`
@@ -28,6 +24,8 @@ Files
 - :ref:`file_necsim_DataPoint.h`
 - :ref:`file_necsim_DispersalCoordinator.cpp`
 - :ref:`file_necsim_DispersalCoordinator.h`
+- :ref:`file_necsim_DoubleComparison.cpp`
+- :ref:`file_necsim_DoubleComparison.h`
 - :ref:`file_necsim_Filesystem.cpp`
 - :ref:`file_necsim_Filesystem.h`
 - :ref:`file_necsim_Landscape.cpp`
@@ -35,6 +33,8 @@ Files
 - :ref:`file_necsim_LicenseHeader.h`
 - :ref:`file_necsim_LogFile.cpp`
 - :ref:`file_necsim_LogFile.h`
+- :ref:`file_necsim_Logger.cpp`
+- :ref:`file_necsim_Logger.h`
 - :ref:`file_necsim_Logging.cpp`
 - :ref:`file_necsim_Logging.h`
 - :ref:`file_necsim_main.cpp`
@@ -59,8 +59,6 @@ Files
 - :ref:`file_necsim_SpatialTree.h`
 - :ref:`file_necsim_SpeciationCommands.cpp`
 - :ref:`file_necsim_SpeciationCommands.h`
-- :ref:`file_necsim_SpeciesGrid.cpp`
-- :ref:`file_necsim_SpeciesGrid.h`
 - :ref:`file_necsim_SpeciesList.cpp`
 - :ref:`file_necsim_SpeciesList.h`
 - :ref:`file_necsim_SpecSimParameters.h`

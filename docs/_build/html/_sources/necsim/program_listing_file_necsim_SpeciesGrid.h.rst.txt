@@ -20,7 +20,7 @@ Program Listing for File SpeciesGrid.h
    class SpeciesGrid : public Matrix<SpeciesList>
    {
    
-   
+       SpeciesGrid() {}
    };
    
    #endif //SPECIATIONCOUNTER_SPECIESGRID_H

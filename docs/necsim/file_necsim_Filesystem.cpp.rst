@@ -43,7 +43,7 @@ Includes
 
 - ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``boost/filesystem.hpp``
 

@@ -2,8 +2,7 @@
 \label{class_protracted_spatial_tree}\index{Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}}
 
 
-Inheritance diagram for Protracted\+Spatial\+Tree\+:
-\nopagebreak
+Inheritance diagram for Protracted\+Spatial\+Tree\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,8 +11,7 @@ Inheritance diagram for Protracted\+Spatial\+Tree\+:
 \end{figure}
 
 
-Collaboration diagram for Protracted\+Spatial\+Tree\+:
-\nopagebreak
+Collaboration diagram for Protracted\+Spatial\+Tree\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,8 +21,9 @@ Collaboration diagram for Protracted\+Spatial\+Tree\+:
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}{import\+Simulation\+Variables} (const string \&configfile) override
-\begin{DoxyCompactList}\small\item\em Imports the simulation variables from the config file. \end{DoxyCompactList}\item 
+void \hyperlink{class_spatial_tree_a060fb8be17d702ed5eb0c142a89d9773}{run\+File\+Checks} () override\hypertarget{class_spatial_tree_a060fb8be17d702ed5eb0c142a89d9773}{}\label{class_spatial_tree_a060fb8be17d702ed5eb0c142a89d9773}
+
+\begin{DoxyCompactList}\small\item\em Runs the basic file existence checks. Checks for paused simulations and file existence. \end{DoxyCompactList}\item 
 void \hyperlink{class_spatial_tree_ad6a5412bccbccc92a302b2fb05bbced2}{parse\+Args} (vector$<$ string $>$ \&comargs)
 \begin{DoxyCompactList}\small\item\em Parses the command line arguments and saves the flags in \hyperlink{class_tree}{Tree} for fullmode, resuming and other important variables. \end{DoxyCompactList}\item 
 void \hyperlink{class_spatial_tree_aef0097abc7c616ed656e26b4055834c3}{check\+Folders} ()\hypertarget{class_spatial_tree_aef0097abc7c616ed656e26b4055834c3}{}\label{class_spatial_tree_aef0097abc7c616ed656e26b4055834c3}
@@ -93,6 +92,13 @@ unsigned long \hyperlink{class_spatial_tree_a706ec7831f8c68e9245c00ebab76414f}{c
 \begin{DoxyCompactList}\small\item\em Counts the number of lineages at a particular location that need to be added, after making the correct number of those that already exist into tips. \end{DoxyCompactList}\item 
 void \hyperlink{class_spatial_tree_ac986898035a4c5c159cc6db19092c159}{expand\+Cell} (long x, long y, long x\+\_\+wrap, long y\+\_\+wrap, double generation\+\_\+in, unsigned long add)
 \begin{DoxyCompactList}\small\item\em Expands the cell at the desired location by adding the supplied number of lineages. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a455d87022772b309a5974ea5f0295139}{import\+Simulation\+Variables} (const string \&configfile)
+\begin{DoxyCompactList}\small\item\em Import the simulation variables from the command line structure. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a029af5f2dc1e33b4eead8110090ac778}{import\+Simulation\+Variables} (\hyperlink{class_config_option}{Config\+Option} config)
+\begin{DoxyCompactList}\small\item\em Import the simulation variables from a \hyperlink{class_config_option}{Config\+Option}. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_aa31508ea6d5801c6dee17c035f393b60}{wipe\+Simulation\+Variables} ()\hypertarget{class_tree_aa31508ea6d5801c6dee17c035f393b60}{}\label{class_tree_aa31508ea6d5801c6dee17c035f393b60}
+
+\begin{DoxyCompactList}\small\item\em Resets all the simulation variables. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a62db83e47e5850c6a83793829b22b68b}{internal\+Setup} (const \hyperlink{struct_sim_parameters}{Sim\+Parameters} \&sim\+\_\+parameters\+\_\+in)
 \begin{DoxyCompactList}\small\item\em Sets up the simulation parameters from the one provided. \end{DoxyCompactList}\item 
 bool \hyperlink{class_tree_a5c6065ede9862e9fb6561eb8beaf5d78}{check\+Output\+Directory} ()
@@ -126,6 +132,9 @@ void \hyperlink{class_tree_ae3fb33c46cf7e3af44604a9875b375a3}{set\+Times} ()\hyp
 \begin{DoxyCompactList}\small\item\em Sets the temporal sampling points from the time config file. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a25f082da13789dfa3fefcbcfd08b4dfe}{determine\+Speciation\+Rates} ()
 \begin{DoxyCompactList}\small\item\em Determines the speciation rates to apply and then applies them to the coalescence tree post-\/simulation. \end{DoxyCompactList}\item 
+void \hyperlink{class_tree_a38488499b196d3f5ee40b2a68fe3279e}{add\+Speciation\+Rates} (vector$<$ long double $>$ spec\+\_\+rates\+\_\+in)\hypertarget{class_tree_a38488499b196d3f5ee40b2a68fe3279e}{}\label{class_tree_a38488499b196d3f5ee40b2a68fe3279e}
+
+\begin{DoxyCompactList}\small\item\em Adds the speciation rates to those to be applied. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}{generate\+Objects} ()\hypertarget{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}{}\label{class_tree_a50b3d13d4032e0d7a69890b9bd7f84fa}
 
 \begin{DoxyCompactList}\small\item\em Assigns the objects sizes in memory and fills with the starting lineages. \end{DoxyCompactList}\item 
@@ -1218,24 +1227,40 @@ Imports the maps into the forestmap object.
 
 The simulation variables should have already been imported by \hyperlink{class_spatial_tree_a0c83bcd9a84f4fa98c78b75a78a9a012}{set\+Parameters()}, otherwise a Fatal\+\_\+\+Exception will be thrown. \index{Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}!import\+Simulation\+Variables@{import\+Simulation\+Variables}}
 \index{import\+Simulation\+Variables@{import\+Simulation\+Variables}!Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}}
-\subsubsection[{\texorpdfstring{import\+Simulation\+Variables(const string \&configfile) override}{importSimulationVariables(const string &configfile) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Spatial\+Tree\+::import\+Simulation\+Variables (
+\subsubsection[{\texorpdfstring{import\+Simulation\+Variables(const string \&configfile)}{importSimulationVariables(const string &configfile)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::import\+Simulation\+Variables (
 \begin{DoxyParamCaption}
 \item[{const string \&}]{configfile}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}{}\label{class_spatial_tree_ac5fc862af2ca6f2b4c471c450093fcae}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_tree_a455d87022772b309a5974ea5f0295139}{}\label{class_tree_a455d87022772b309a5974ea5f0295139}
 
 
-Imports the simulation variables from the config file. 
+Import the simulation variables from the command line structure. 
 
-Also checks for paused simulations and file existence. 
+This function parses the simulation variables, imports them from the config file, checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} and \hyperlink{class_tree_afe75245862a1c40030c1c8607518cf8d}{run\+Simulation()} can be run immediately afterwards.
+
+
 \begin{DoxyParams}{Parameters}
-{\em configfile} & a vector containing the configfile to import from \\
+{\em configfile} & the path to the config file containing parameters to parse. \\
 \hline
 \end{DoxyParams}
+\index{Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}!import\+Simulation\+Variables@{import\+Simulation\+Variables}}
+\index{import\+Simulation\+Variables@{import\+Simulation\+Variables}!Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}}
+\subsubsection[{\texorpdfstring{import\+Simulation\+Variables(\+Config\+Option config)}{importSimulationVariables(ConfigOption config)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::import\+Simulation\+Variables (
+\begin{DoxyParamCaption}
+\item[{{\bf Config\+Option}}]{config}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_tree_a029af5f2dc1e33b4eead8110090ac778}{}\label{class_tree_a029af5f2dc1e33b4eead8110090ac778}
 
 
-Reimplemented from \hyperlink{class_tree_a455d87022772b309a5974ea5f0295139}{Tree}.
+Import the simulation variables from a \hyperlink{class_config_option}{Config\+Option}. 
 
+This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that \hyperlink{class_tree_aec10ea2b720edc13a38310afdfe2b6e4}{setup()} and run\+Sim() can be run immediately afterwards.
+
+
+\begin{DoxyParams}{Parameters}
+{\em config} & the set of config parameters to import \\
+\hline
+\end{DoxyParams}
 \index{Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}!internal\+Setup@{internal\+Setup}}
 \index{internal\+Setup@{internal\+Setup}!Protracted\+Spatial\+Tree@{Protracted\+Spatial\+Tree}}
 \subsubsection[{\texorpdfstring{internal\+Setup(const Sim\+Parameters \&sim\+\_\+parameters\+\_\+in)}{internalSetup(const SimParameters &sim_parameters_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::internal\+Setup (

@@ -1,8 +1,6 @@
 var NAVTREE =
 [
   [ "necsim", "index.html", [
-    [ "Fast C++ CSV Parser", "md_necsim_fast-cpp-csv-parser2_README.html", null ],
-    [ "necsim", "md_necsim_README.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Bug List", "bug.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -22,13 +20,13 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
+"annotated.html",
 "class_landscape.html#a99fac44043825a97e2e7fbc71caeb8e2",
-"class_protracted_spatial_tree.html#a706ec7831f8c68e9245c00ebab76414f",
-"class_samplematrix.html#a682324892b67910b1dd2fa86a98c0873",
-"class_tree.html#a047b331de4979aa4713c69f09237ac35",
-"functions_o.html",
-"structio_1_1error_1_1integer__underflow.html#a8e38f86a7afea1f0c6e6cac0c548d6f2"
+"class_metacommunity.html#a960bb6bb58eaec017d36d16cb3a3bc8a",
+"class_protracted_tree.html#a505a464578e6a7028e66f26b3e6b4a92",
+"class_spatial_tree.html#a1f7515f16d99a9748ab2c4c667f1ffc4",
+"class_tree.html#ac399ba59be9dc33a04223d10a82ee5ee",
+"struct_sim_parameters.html#ae86196bee7f469e308d23e7dbbf7320c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

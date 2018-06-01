@@ -8,10 +8,13 @@ Program Listing for File Matrix.h
 
 .. code-block:: cpp
 
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef MATRIX
    #define MATRIX
    #define null 0
+   
    #include <cstdio>
    #include <iostream>
    #include <sstream>
@@ -63,7 +66,6 @@ Program Listing for File Matrix.h
            // Change to standard copy
            copy(&r.row[0], &r.row[numCols], row);
        }
-   
    
        void setSize(unsigned long n)
        {
@@ -152,7 +154,6 @@ Program Listing for File Matrix.h
        }
    };
    
-   
    template<class T>
    class Matrix
    {
@@ -163,7 +164,6 @@ Program Listing for File Matrix.h
        unsigned long numCols{}, numRows{};
        // a matrix is an array of rows
        Row<T> *matrix;
-   
    public:
    
        explicit Matrix(unsigned long rows = 0, unsigned long cols = 0) : matrix(null)
@@ -241,7 +241,6 @@ Program Listing for File Matrix.h
            }
            return *this;
        }
-   
    
        const Matrix operator+(const Matrix &m)
        {
@@ -334,7 +333,6 @@ Program Listing for File Matrix.h
            return *this;
        }
    
-   
        Matrix &operator-=(const Matrix &m)
        {
            unsigned long newnumcols, newnumrows;
@@ -377,7 +375,6 @@ Program Listing for File Matrix.h
            return result;
        }
    
-   
        const Matrix operator*(Matrix &m)
        {
            unsigned long newnumcols;
@@ -404,7 +401,7 @@ Program Listing for File Matrix.h
            return result;
        }
    
-       friend ostream& writeOut(ostream &os, const Matrix &m)
+       friend ostream &writeOut(ostream &os, const Matrix &m)
        {
            for(unsigned long r = 0; r < m.numRows; r++)
            {
@@ -417,7 +414,7 @@ Program Listing for File Matrix.h
            return os;
        }
    
-       friend istream& readIn(istream & is, Matrix &m)
+       friend istream &readIn(istream &is, Matrix &m)
        {
            char delim;
            for(unsigned long r = 0; r < m.numRows; r++)
@@ -574,6 +571,5 @@ Program Listing for File Matrix.h
    
    #endif // use_csv
    };
-   
    
    #endif // MATRIX

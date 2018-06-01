@@ -17,9 +17,11 @@ Program Listing for File LogFile.h
    #include <fstream>
    #include <ctime>
    #include <map>
+   
    #define LOGNAME_FORMAT "%d%m%Y_%H%M%S"
    
    using namespace std;
+   
    string getDefaultLogFile();
    
    void getUniqueFileName(string &basic_string);
@@ -31,23 +33,26 @@ Program Listing for File LogFile.h
        ofstream output_stream;
        // log file name
        string file_name;
-       // mapping integer levels to logging level
+       // mapping integer levels to logger level
        map<int, string> levels_map;
+   
        // Makes the class non-copyable as we don't want to copy file streams
-       LogFile(const LogFile&) = delete;
-       LogFile& operator=(const LogFile&) = delete;
+       LogFile(const LogFile &) = delete;
+   
+       LogFile &operator=(const LogFile &) = delete;
+   
    public:
        LogFile();
    
-       explicit LogFile(const string &file_name_in);
+       explicit LogFile(string file_name_in);
+   
        ~LogFile();
    
-       void init(const string &file_name_in);
+       void init(string file_name_in);
    
        void write(const int &level, string message);
    
        void write(const int &level, stringstream &message);
    };
-   
    
    #endif //LOGFILE_H

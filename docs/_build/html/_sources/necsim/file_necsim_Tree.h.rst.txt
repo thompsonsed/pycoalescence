@@ -40,7 +40,7 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
 

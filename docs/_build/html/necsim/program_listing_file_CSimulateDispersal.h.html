@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File CSimulateDispersal.h &#8212; pycoalescence 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File CSimulation.h" href="file_CSimulation.h.html" />
+    <link rel="prev" title="File CSimulateDispersal.h" href="file_CSimulateDispersal.h.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_CSimulation.h.html" title="File CSimulation.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_CSimulateDispersal.h.html" title="File CSimulateDispersal.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_CSimulateDispersal.h.html" accesskey="U">File CSimulateDispersal.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-csimulatedispersal-h">
+<span id="program-listing-file-csimulatedispersal-h"></span><h1>Program Listing for File CSimulateDispersal.h<a class="headerlink" href="#program-listing-for-file-csimulatedispersal-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_CSimulateDispersal.h.html#file-csimulatedispersal-h"><span class="std std-ref">File CSimulateDispersal.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//</span>
+<span class="c1">// Created by Sam Thompson on 29/05/2018.</span>
+<span class="c1">//</span>
+
+<span class="cp">#ifndef NECSIM_CSIMULATEDISPERSAL_H</span>
+<span class="cp">#define NECSIM_CSIMULATEDISPERSAL_H</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;structmember.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PyImports.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PyTemplates.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsimmodule.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim/SimParameters.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim/SimulateDispersal.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;CSimulation.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">PySimulateDispersal</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">SimParameters</span> <span class="o">*</span><span class="n">dispersalParameters</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">has_imported_maps</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">*</span> <span class="n">output_database</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">printing</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">needs_update</span><span class="p">;</span>
+
+    <span class="n">PySimulateDispersal</span><span class="p">()</span> <span class="o">:</span> <span class="n">dispersalParameters</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">has_imported_maps</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">output_database</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+                            <span class="n">printing</span><span class="p">(</span><span class="nb">true</span><span class="p">),</span> <span class="n">needs_update</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+    <span class="p">{</span>
+
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">checkCompleted</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">output_database</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Output database has not been set.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">has_imported_maps</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Maps have not been imported - cannot start simulations.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setDispersalParameters</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">needs_update</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSimulationParameters</span><span class="p">(</span><span class="n">dispersalParameters</span><span class="p">,</span> <span class="n">printing</span><span class="p">);</span>
+            <span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
+            <span class="n">printing</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">needs_update</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">PyObject</span> <span class="o">*</span><span class="nf">set_maps</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">landscape_type</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">fine_map_file</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">coarse_map_file</span><span class="p">;</span>
+    <span class="c1">// parse arguments</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;self pointer is null. Please report this bug.&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+<span class="c1">//  if(!PyArg_ParseTuple(args, &quot;is&quot;, &amp;self-&gt;dispersalParameters-&gt;deme, &amp;fine_map_file))</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;isiiiiiisiiiis&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">deme</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fine_map_file</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_size</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_offset</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">coarse_map_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_x_size</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_x_offset</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">landscape_type</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;Maps have already been imported&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">grid_x_size</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">grid_y_size</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_file</span> <span class="o">=</span> <span class="n">fine_map_file</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_file</span> <span class="o">=</span> <span class="n">coarse_map_file</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="n">landscape_type</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">needs_update</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importMaps</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="nf">set_historical_map_parameters</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">path_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">number_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">rate_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">time_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">path_coarse</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">number_coarse</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">rate_coarse</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">time_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_path_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_number_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_rate_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_time_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_path_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_number_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_rate_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_time_coarse</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;O!O!O!O!O!O!O!O!&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_path_fine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_number_fine</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_rate_fine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_time_fine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_path_coarse</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_number_coarse</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_rate_coarse</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_time_coarse</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">importPyListToVectorString</span><span class="p">(</span><span class="n">p_path_fine</span><span class="p">,</span> <span class="n">path_fine</span><span class="p">,</span> <span class="s">&quot;Fine map paths must be strings.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_number_fine</span><span class="p">,</span> <span class="n">number_fine</span><span class="p">,</span> <span class="s">&quot;Fine map numbers must be integers.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_rate_fine</span><span class="p">,</span> <span class="n">rate_fine</span><span class="p">,</span> <span class="s">&quot;Fine map rates must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_time_fine</span><span class="p">,</span> <span class="n">time_fine</span><span class="p">,</span> <span class="s">&quot;Fine map times must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorString</span><span class="p">(</span><span class="n">p_path_coarse</span><span class="p">,</span> <span class="n">path_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map paths must be strings.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_number_coarse</span><span class="p">,</span> <span class="n">number_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map numbers must be integers.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_rate_coarse</span><span class="p">,</span> <span class="n">rate_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map rates must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_time_coarse</span><span class="p">,</span> <span class="n">time_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map times must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">setHistoricalMapParameters</span><span class="p">(</span><span class="n">path_fine</span><span class="p">,</span> <span class="n">number_fine</span><span class="p">,</span> <span class="n">rate_fine</span><span class="p">,</span> <span class="n">time_fine</span><span class="p">,</span> <span class="n">path_coarse</span><span class="p">,</span>
+                                                              <span class="n">number_coarse</span><span class="p">,</span> <span class="n">rate_coarse</span><span class="p">,</span> <span class="n">time_coarse</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">path_fine</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">number_fine</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">rate_fine</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+           <span class="o">!</span><span class="n">time_fine</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">path_coarse</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">number_coarse</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">rate_coarse</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+           <span class="o">!</span><span class="n">time_coarse</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">needs_update</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importMaps</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="nf">set_output_database</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">char</span> <span class="o">*</span><span class="n">output_file</span><span class="p">;</span>
+    <span class="c1">// parse arguments</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;s&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">output_file</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">output_f</span> <span class="o">=</span> <span class="n">output_file</span><span class="p">;</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setOutputDatabase</span><span class="p">(</span><span class="n">output_f</span><span class="p">);</span>
+            <span class="o">*</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">=</span> <span class="n">output_f</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="nf">set_dispersal_parameters</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">char</span> <span class="o">*</span><span class="n">dispersal_method</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">dispersal_file</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">m_prob</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">dispersal_rel_cost</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">restrict_self</span><span class="p">;</span>
+    <span class="c1">// parse arguments</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;ssdddddi&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dispersal_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sigma</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tau</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_prob</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cutoff</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">dispersal_rel_cost</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">(</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">m_prob</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span>
+                                                          <span class="n">dispersal_rel_cost</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">restrict_self</span><span class="p">),</span>
+                                                          <span class="s">&quot;closed&quot;</span><span class="p">,</span>
+                                                          <span class="n">dispersal_file</span><span class="p">,</span> <span class="s">&quot;none&quot;</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">needs_update</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="nf">runMDT</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">num_repeats</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">is_sequential</span><span class="p">;</span>
+        <span class="c1">// parse arguments</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;iiii&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_repeats</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_steps</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">seed</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">is_sequential</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSequential</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">is_sequential</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">seed</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setNumberRepeats</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setNumberSteps</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_steps</span><span class="p">));</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importMaps</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">checkCompleted</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">runMeanDistanceTravelled</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">writeDatabase</span><span class="p">(</span><span class="s">&quot;DISTANCES_TRAVELLED&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="nf">runMeanDispersal</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">num_repeats</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">is_sequential</span><span class="p">;</span>
+        <span class="c1">// parse arguments</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;iii&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_repeats</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">seed</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">is_sequential</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importMaps</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSequential</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">is_sequential</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">seed</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setNumberRepeats</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">checkCompleted</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">runMeanDispersalDistance</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">writeDatabase</span><span class="p">(</span><span class="s">&quot;DISPERSAL_DISTANCES&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span>
+<span class="nf">PySimulateDispersal_new</span><span class="p">(</span><span class="n">PyTypeObject</span> <span class="o">*</span><span class="n">type</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">self</span> <span class="o">=</span> <span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="p">)</span> <span class="n">PyTemplate_new</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">PySimulateDispersal_init</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">out</span> <span class="o">=</span> <span class="n">PyTemplate_init</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">);</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimParameters</span><span class="p">();</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">=</span> <span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">);</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">printing</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">needs_update</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">PySimulateDispersal_dealloc</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">PyTemplate_dealloc</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">SimulateDispersalMethods</span><span class="p">[]</span> <span class="o">=</span>
+        <span class="p">{</span>
+                <span class="p">{</span><span class="s">&quot;set_dispersal_parameters&quot;</span><span class="p">,</span>      <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_dispersal_parameters</span><span class="p">,</span>      <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                              <span class="s">&quot;Sets the dispersal parameters for this simulation.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s">&quot;set_output_database&quot;</span><span class="p">,</span>           <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_output_database</span><span class="p">,</span>           <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                              <span class="s">&quot;Sets the output database for the simulation.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s">&quot;run_mean_dispersal_distance&quot;</span><span class="p">,</span>   <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">runMeanDispersal</span><span class="p">,</span>              <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                              <span class="s">&quot;Runs the dispersal simulation for the set parameters, calculating the mean distance per step.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s">&quot;run_mean_distance_travelled&quot;</span><span class="p">,</span>   <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">runMDT</span><span class="p">,</span>                        <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                              <span class="s">&quot;Runs the dispersal simulation for the set parameters, calculating the mean distance travelled.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s">&quot;import_maps&quot;</span><span class="p">,</span>                   <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_maps</span><span class="p">,</span>                      <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                              <span class="s">&quot;Imports the map files for the simulation. Should only be run once.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s">&quot;set_historical_map_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_historical_map_parameters</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                              <span class="s">&quot;Sets the historical map parameters.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="k">nullptr</span><span class="p">,</span>                         <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">}</span>
+        <span class="p">};</span>
+
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_SimulateDispersalType</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;necsimmodule.CDispersalSimulation&quot;</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;Simulate a dispersal kernel on a landscape.&quot;</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PySimulateDispersal</span><span class="p">),</span>
+        <span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PySimulateDispersal_new</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">PySimulateDispersal_init</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">PySimulateDispersal_dealloc</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">PyTemplate_traverse</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="c1">//      .tp_members = PyTemplate_members&lt;T&gt;,</span>
+        <span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">SimulateDispersalMethods</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">PyTemplate_gen_getsetters</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="p">};</span>
+<span class="cp">#endif </span><span class="c1">//NECSIM_CSIMULATEDISPERSAL_H</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_CSimulateDispersal.h.html"
+                        title="previous chapter">File CSimulateDispersal.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_CSimulation.h.html"
+                        title="next chapter">File CSimulation.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_CSimulateDispersal.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_CSimulation.h.html" title="File CSimulation.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_CSimulateDispersal.h.html" title="File CSimulateDispersal.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_CSimulateDispersal.h.html" >File CSimulateDispersal.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>

@@ -64,7 +64,5 @@ Variables
 ---------
 
 
-- :ref:`variable_log_name`
-
 - :ref:`variable_saved_stdout`
 

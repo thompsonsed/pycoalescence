@@ -71,9 +71,6 @@
 <span class="c1">//</span>
 <span class="cp">#include</span> <span class="cpf">&quot;Setup.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
-<span class="c1">// Global variables</span>
-<span class="c1">// store the log file name for access anywhere.</span>
-<span class="n">string</span> <span class="n">log_name</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
 <span class="c1">// the old stdout</span>
 <span class="kt">int</span> <span class="n">saved_stdout</span><span class="p">;</span>
 
@@ -92,7 +89,7 @@
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">Fatal_Main_Exception</span><span class="p">(</span><span class="s">&quot;Csv logging output not good: &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+            <span class="k">throw</span> <span class="n">Fatal_Main_Exception</span><span class="p">(</span><span class="s">&quot;Csv logger output not good: &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="n">csv_output</span> <span class="o">&lt;&lt;</span> <span class="n">place</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">start</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">end</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>

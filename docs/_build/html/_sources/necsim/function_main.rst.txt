@@ -3,7 +3,7 @@
 Function main
 =============
 
-- Defined in :ref:`file_SpeciationCounter.cpp`
+- Defined in :ref:`file_necsim_main.cpp`
 
 
 Function Documentation

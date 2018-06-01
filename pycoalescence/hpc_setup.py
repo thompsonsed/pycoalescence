@@ -1,6 +1,5 @@
 """
-Sets up pycoalescence for usage on HPC systems, including providing intel compiler flags for optimisation, and specific
-verbose patterns to add support for certain types of file systems.
+Compile **necsim** with a number of intel compiler optimisations for running on high-performance computing systems.
 """
 from __future__ import absolute_import
 import logging

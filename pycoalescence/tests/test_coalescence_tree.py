@@ -372,7 +372,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		cls.tree.set_speciation_params(record_spatial="T",
 									   record_fragments="sample/FragmentsTest.csv", speciation_rates=[0.5, 0.7],
 									   sample_file="sample/SA_samplemaskINT.tif")
-		cls.tree.apply_speciation()
+		cls.tree.apply()
 		cls.tree.calculate_fragment_richness()
 		cls.tree.calculate_fragment_octaves()
 		np.random.seed(100)

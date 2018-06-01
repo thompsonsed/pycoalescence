@@ -1,6 +1,8 @@
 """
-Contains a basic class with context management for opening sql connections, plus basic functionality for detecting
-existance and structure of databases.
+Safely open, close and fetch data from an sqlite connection.
+
+:class:`.SQLiteConnection` contains context management for opening sql connections, plus basic functionality for
+detecting existence and structure of databases.
 """
 import sqlite3
 

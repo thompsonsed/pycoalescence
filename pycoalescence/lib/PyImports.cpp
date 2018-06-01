@@ -1,6 +1,11 @@
-//
-// Created by Sam Thompson on 02/04/2018.
-//
+// This file is part of NECSim project which is released under MIT license.
+// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
+/**
+ * @author Samuel Thompson
+ * @file PyImports.cpp
+ * @brief Routines for importing python objects to c++ vectors.
+ * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
+ */
 
 #include <cstring>
 #include <unistd.h>
@@ -54,6 +59,10 @@ bool importPyListToVectorULong(PyObject *list_input, vector<unsigned long> &outp
 
 bool importPyListToVectorDouble(PyObject *list_input, vector<double> &output, const string &err_msg)
 {
+	if(list_input == nullptr)
+	{
+		return true;
+	}
 	Py_ssize_t n = PyList_Size(list_input);
 	PyObject * item;
 	for(int i=0; i<n; i++)

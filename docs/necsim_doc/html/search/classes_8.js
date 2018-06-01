@@ -1,7 +1,13 @@
 var searchData=
 [
-  ['landscape',['Landscape',['../class_landscape.html',1,'']]],
-  ['line_5flength_5flimit_5fexceeded',['line_length_limit_exceeded',['../structio_1_1error_1_1line__length__limit__exceeded.html',1,'io::error']]],
-  ['linereader',['LineReader',['../classio_1_1_line_reader.html',1,'io']]],
-  ['logfile',['LogFile',['../class_log_file.html',1,'']]]
+  ['samplematrix',['Samplematrix',['../class_samplematrix.html',1,'']]],
+  ['sectionoption',['SectionOption',['../struct_section_option.html',1,'']]],
+  ['simparameters',['SimParameters',['../struct_sim_parameters.html',1,'']]],
+  ['simulatedispersal',['SimulateDispersal',['../class_simulate_dispersal.html',1,'']]],
+  ['spatialtree',['SpatialTree',['../class_spatial_tree.html',1,'']]],
+  ['speciationcommands',['SpeciationCommands',['../class_speciation_commands.html',1,'']]],
+  ['speciesexception',['SpeciesException',['../struct_species_exception.html',1,'']]],
+  ['specieslist',['SpeciesList',['../class_species_list.html',1,'']]],
+  ['specsimparameters',['SpecSimParameters',['../struct_spec_sim_parameters.html',1,'']]],
+  ['step',['Step',['../struct_step.html',1,'']]]
 ];

@@ -42,7 +42,7 @@ Includes
 
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 
 

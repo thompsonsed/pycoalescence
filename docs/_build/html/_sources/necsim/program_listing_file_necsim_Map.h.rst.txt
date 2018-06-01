@@ -17,20 +17,21 @@ Program Listing for File Map.h
    #include <string>
    #include <cstring>
    #include <sstream>
-   #include "Logging.h"
+   #include "Logger.h"
    #include <gdal_priv.h>
    #include <cpl_conv.h> // for CPLMalloc()
    #include <sstream>
    #include "Matrix.h"
-   #include "Logging.h"
+   #include "Logger.h"
    #include "CustomExceptions.h"
+   #include "CPLCustomHandler.h"
    
    using namespace std;
    #ifdef DEBUG
    #include "CustomExceptions.h"
    #endif // DEBUG
    
-   template<typename T>
+   template<class T>
    class Map : public virtual Matrix<T>
    {
    protected:
@@ -57,7 +58,7 @@ Program Listing for File Map.h
        using Matrix<T>::operator+=;
        using Matrix<T>::operator[];
    
-       Map() : Matrix<T>()
+       Map() : Matrix<T>(0, 0)
        {
            GDALAllRegister();
            poDataset = nullptr;

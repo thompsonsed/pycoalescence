@@ -71,7 +71,7 @@
 
 <span class="cp">#include</span> <span class="cpf">&quot;DispersalCoordinator.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
 <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">DispersalCoordinator</span><span class="p">()</span>
 <span class="p">{</span>
@@ -82,11 +82,10 @@
 
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">*</span> <span class="n">NR_ptr</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">*</span><span class="n">NR_ptr</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">NR</span> <span class="o">=</span> <span class="n">NR_ptr</span><span class="p">;</span>
 <span class="p">}</span>
-
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setHabitatMap</span><span class="p">(</span><span class="n">Landscape</span> <span class="o">*</span><span class="n">map_ptr</span><span class="p">)</span>
 <span class="p">{</span>
@@ -98,16 +97,15 @@
     <span class="n">xdim</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getSimParameters</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">generation_ptr</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span><span class="n">generation_ptr</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">generation</span> <span class="o">=</span> <span class="n">generation_ptr</span><span class="p">;</span>
 <span class="p">}</span>
 
-
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">dispersal_file</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dispersal_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dispersal_y</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">m_probin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">cutoffin</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">tauin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">)</span>
+                                        <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">dispersal_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">dispersal_y</span><span class="p">,</span>
+                                        <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">m_probin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">cutoffin</span><span class="p">,</span>
+                                        <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">tauin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Open our file connection</span>
     <span class="k">if</span><span class="p">(</span><span class="n">dispersal_file</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
@@ -135,7 +133,8 @@
         <span class="n">ifstream</span> <span class="nf">infile</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">infile</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
         <span class="p">{</span>
-            <span class="n">string</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Could not access dispersal map file &quot;</span> <span class="o">+</span> <span class="n">dispersal_file</span> <span class="o">+</span> <span class="s">&quot;. Check file exists and is readable.&quot;</span><span class="p">;</span>
+            <span class="n">string</span> <span class="n">msg</span> <span class="o">=</span>
+                    <span class="s">&quot;Could not access dispersal map file &quot;</span> <span class="o">+</span> <span class="n">dispersal_file</span> <span class="o">+</span> <span class="s">&quot;. Check file exists and is readable.&quot;</span><span class="p">;</span>
             <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="n">infile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
@@ -146,8 +145,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">simParameters</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span><span class="n">simParameters</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">simParameters</span><span class="p">)</span>
     <span class="p">{</span>
@@ -160,7 +158,7 @@
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">fixDispersal</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">row</span> <span class="o">++</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">row</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">fixDispersalRow</span><span class="p">(</span><span class="n">row</span><span class="p">);</span>
     <span class="p">}</span>
@@ -172,7 +170,7 @@
     <span class="k">if</span><span class="p">(</span><span class="n">checkDispersalRow</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
     <span class="p">{</span>
         <span class="kt">double</span> <span class="n">total_value</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">total_value</span> <span class="o">+=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
         <span class="p">}</span>
@@ -180,10 +178,10 @@
         <span class="p">{</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">total_value</span><span class="p">;</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+        <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">total_value</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">total_value</span><span class="p">);</span>
+            <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">total_value</span><span class="p">);</span>
         <span class="p">}</span>
 <span class="cp">#ifdef DEBUG</span>
         <span class="k">if</span><span class="p">(</span><span class="n">checkDispersalRow</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
@@ -200,9 +198,9 @@
     <span class="p">{</span>
         <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
         <span class="p">{</span>
             <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
         <span class="p">}</span>
@@ -219,9 +217,9 @@
         <span class="p">{</span>
             <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Dispersal probability map dimensions do not match.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
+        <span class="kt">bool</span> <span class="n">has_printed</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="kt">bool</span> <span class="n">has_printed</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
             <span class="n">Step</span> <span class="n">origin_step</span><span class="p">;</span>
             <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">origin_step</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
 <span class="cp">#ifdef DEBUG</span>
@@ -239,16 +237,16 @@
                                                            <span class="n">destination_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
                                                            <span class="n">destination_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
                 <span class="kt">double</span> <span class="n">dispersal_prob</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="p">{</span>
                     <span class="n">dispersal_prob</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
                 <span class="p">}</span>
                 <span class="k">else</span>
                 <span class="p">{</span>
-                    <span class="n">dispersal_prob</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">-</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+                    <span class="n">dispersal_prob</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">-</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
                 <span class="p">}</span>
                 <span class="n">dispersal_total</span> <span class="o">+=</span> <span class="n">dispersal_prob</span><span class="p">;</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
                 <span class="p">{</span>
                     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">destination_value</span> <span class="o">&amp;&amp;</span> <span class="n">origin_value</span><span class="p">)</span>
                     <span class="p">{</span>
@@ -310,8 +308,8 @@
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseNullDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Pick a random cell - that&#39;s all we need</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">xdim</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">xdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">xdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">xdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
@@ -349,10 +347,10 @@
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span> <span class="n">this_step</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">col_ref</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">col_ref</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">fmod</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">col_ref</span><span class="p">),</span> <span class="n">xdim</span><span class="p">)));</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">col_ref</span><span class="p">)</span><span class="o">/</span><span class="n">xdim</span><span class="p">));</span>
+    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">col_ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">xdim</span><span class="p">));</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="c1">// Convert back to sample map</span>
@@ -396,14 +394,15 @@
         <span class="c1">// This is to correctly mimic less-dense cells having a lower likelihood of being the parent to the cell.</span>
 
 <span class="cp">#ifdef DEBUG</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
-            <span class="o">!</span><span class="n">fail</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">==</span>
+           <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+           <span class="o">!</span><span class="n">fail</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x,y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; x,y wrap: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Habitat cover: &quot;</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
-                                      <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                                    <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
             <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_007: Dispersal attempted to non-habitat. Check dispersal function.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
@@ -423,8 +422,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-
-<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span> <span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
                                          <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
                                          <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
 <span class="p">{</span>
@@ -447,8 +445,9 @@
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointRestricted</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointRestricted</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                                   <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
+                                                   <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">startx</span> <span class="o">==</span> <span class="n">oldx</span> <span class="o">&amp;&amp;</span> <span class="n">starty</span> <span class="o">==</span> <span class="n">oldy</span> <span class="o">&amp;&amp;</span> <span class="n">startxwrap</span> <span class="o">==</span> <span class="n">oldxwrap</span> <span class="o">&amp;&amp;</span> <span class="n">startywrap</span> <span class="o">==</span> <span class="n">oldywrap</span><span class="p">)</span>
     <span class="p">{</span>

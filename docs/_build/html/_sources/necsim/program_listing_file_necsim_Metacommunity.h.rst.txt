@@ -41,9 +41,10 @@ Program Listing for File Metacommunity.h
    
        Metacommunity();
    
-       ~Metacommunity() = default;
+       ~Metacommunity() override = default;
    
-       void setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in, string database_name_in);
+       void setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in,
+                                   string database_name_in);
    
        void checkSimulationParameters();
    
@@ -53,7 +54,8 @@ Program Listing for File Metacommunity.h
    
        unsigned long selectLineageFromMetacommunity();
    
-       void apply(SpecSimParameters *sp) override ;
+       void applyNoOutput(SpecSimParameters *sp) override ;
+   
    
    };
    

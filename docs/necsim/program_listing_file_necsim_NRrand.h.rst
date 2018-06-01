@@ -38,7 +38,7 @@ Program Listing for File NRrand.h
    # include <iostream>
    # include <fstream>
    #include <climits>
-   #include "Logging.h"
+   #include "Logger.h"
    
    using namespace std;
    const long IM1 = 2147483563;
@@ -117,6 +117,11 @@ Program Listing for File NRrand.h
            {
                throw runtime_error("Trying to set the seed again: this can only be set once.");
            }
+       }
+   
+       void wipeSeed()
+       {
+           seeded = false;
        }
    
        double d01()

@@ -13,10 +13,7 @@ Program Listing for File Setup.cpp
    // 
    #include "Setup.h"
    #include "Logging.h"
-   // Global variables
-   // store the log file name for access anywhere.
-   string log_name = "null"; 
-   // the old stdout 
+   // the old stdout
    int saved_stdout;
    
    
@@ -34,7 +31,7 @@ Program Listing for File Setup.cpp
            }
            catch(exception &e)
            {
-               throw Fatal_Main_Exception("Csv logging output not good: " + e.what());
+               throw Fatal_Main_Exception("Csv logger output not good: " + e.what());
            }
        }
        csv_output << place << "," << start << "," << end << endl;

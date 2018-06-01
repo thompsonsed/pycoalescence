@@ -72,7 +72,7 @@
 <span class="cp">#include</span> <span class="cpf">&lt;boost/filesystem/operations.hpp&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;ConfigFileParser.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">importArgs</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">comargs</span><span class="p">)</span>
 <span class="p">{</span>
@@ -98,7 +98,7 @@
     <span class="p">}</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reference &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">refval</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; not found in keyoption.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reference &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">refval</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; not found in keyoption.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="cp">#endif</span>
     <span class="k">return</span> <span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">);</span>
@@ -171,13 +171,25 @@
         <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span>
                 <span class="s">&quot;ERROR_CONF_004c: Could not open the config file. Check file exists and is readable.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_file</span><span class="p">.</span><span class="n">fail</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">is_file</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
+    <span class="n">parseConfig</span><span class="p">(</span><span class="n">is_file</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">is_file</span><span class="p">.</span><span class="n">eof</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">is_file</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span><span class="s">&quot;ERROR_CONF_002: End of file not reached. Check input file formatting.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ConfigOption</span><span class="o">::</span><span class="n">parseConfig</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">istream1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">istream1</span><span class="p">.</span><span class="n">fail</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">istream1</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="n">string</span> <span class="n">line</span><span class="p">;</span>
         <span class="c1">// Get the first line of the file.</span>
-        <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">is_file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">istream1</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
         <span class="p">{</span>
-<span class="c1">//              os &lt;&lt; line &lt;&lt; endl;</span>
             <span class="n">istringstream</span> <span class="n">is_line</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
             <span class="n">string</span> <span class="n">key</span><span class="p">;</span>
             <span class="n">string</span> <span class="n">val</span><span class="p">;</span>
@@ -193,10 +205,9 @@
                 <span class="p">{</span>
                     <span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
                     <span class="n">tempSections</span><span class="p">.</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">;</span>
-<span class="c1">//                      os &lt;&lt; section &lt;&lt; endl;</span>
                 <span class="p">}</span>
                 <span class="c1">// read each line</span>
-                <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">is_file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+                <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">istream1</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
                 <span class="p">{</span>
                     <span class="c1">// end the section when a new one starts.</span>
                     <span class="k">if</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;[&#39;</span> <span class="o">||</span> <span class="n">line</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -212,7 +223,6 @@
                     <span class="p">}</span>
                     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_line2</span><span class="p">)</span>
                     <span class="p">{</span>
-<span class="c1">//                          os &lt;&lt; is_line2 &lt;&lt; endl;</span>
                         <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span><span class="s">&quot;ERROR_CONF_001: Read error in config file.&quot;</span><span class="p">);</span>
                     <span class="p">}</span>
                     <span class="k">if</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">is_line2</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
@@ -223,7 +233,6 @@
                         <span class="p">{</span>
                             <span class="n">val</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">val</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
                         <span class="p">}</span>
-
                     <span class="p">}</span>
                     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_line2</span><span class="p">)</span>
                     <span class="p">{</span>
@@ -241,14 +250,6 @@
         <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span>
                 <span class="s">&quot;ERROR_CONF_004b: Could not open the config file &quot;</span> <span class="o">+</span> <span class="n">configfile</span> <span class="o">+</span>
                 <span class="s">&quot;. Check file exists and is readable.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">is_file</span><span class="p">.</span><span class="n">eof</span><span class="p">())</span>
-    <span class="p">{</span>
-        <span class="n">is_file</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span><span class="s">&quot;ERROR_CONF_002: End of file not reached. Check input file formatting.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 

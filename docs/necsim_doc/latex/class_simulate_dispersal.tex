@@ -11,8 +11,7 @@ Contains routines for importing a density map file, running a dispersal kernel n
 
 
 
-Collaboration diagram for Simulate\+Dispersal\+:
-\nopagebreak
+Collaboration diagram for Simulate\+Dispersal\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -24,10 +23,14 @@ Collaboration diagram for Simulate\+Dispersal\+:
 \item 
 void \hyperlink{class_simulate_dispersal_a3da09319132db8c7ad035290be6590ef}{set\+Sequential} (bool b\+Sequential)
 \begin{DoxyCompactList}\small\item\em Sets the is\+\_\+sequential flag. \end{DoxyCompactList}\item 
-void \hyperlink{class_simulate_dispersal_a777d7cab80b8543647970d6d64b797a9}{set\+Simulation\+Parameters} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$sim\+\_\+parameters)
+void \hyperlink{class_simulate_dispersal_a9d08a14b3f2a78591af2edf2884edb52}{set\+Simulation\+Parameters} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$sim\+\_\+parameters, bool print=true)
 \begin{DoxyCompactList}\small\item\em Sets the pointer to the simulation parameters object. \end{DoxyCompactList}\item 
-void \hyperlink{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}{import\+Maps} ()
-\begin{DoxyCompactList}\small\item\em Import the maps from the prescribed files. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}{import\+Maps} ()\hypertarget{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}{}\label{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}
+
+\begin{DoxyCompactList}\small\item\em Import the maps from the simulation parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a4acdae18451d1e9f67c005390b89664f}{set\+Dispersal\+Parameters} ()\hypertarget{class_simulate_dispersal_a4acdae18451d1e9f67c005390b89664f}{}\label{class_simulate_dispersal_a4acdae18451d1e9f67c005390b89664f}
+
+\begin{DoxyCompactList}\small\item\em Sets the dispersal parameters in the \hyperlink{class_dispersal_coordinator}{Dispersal\+Coordinator}. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_a46f2cd557ac9b21c107eac75e7c916af}{set\+Seed} (unsigned long s)
 \begin{DoxyCompactList}\small\item\em Sets the seed for the random number generator. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_acae5067045d5989df6d7dce80bcfe276}{set\+Output\+Database} (string out\+\_\+database)
@@ -160,40 +163,6 @@ Gets a random cell from the list of cells.
 \begin{DoxyReturn}{Returns}
 a \hyperlink{struct_cell}{Cell} object reference containing the x and y positions to choose from 
 \end{DoxyReturn}
-\index{Simulate\+Dispersal@{Simulate\+Dispersal}!import\+Maps@{import\+Maps}}
-\index{import\+Maps@{import\+Maps}!Simulate\+Dispersal@{Simulate\+Dispersal}}
-\subsubsection[{\texorpdfstring{import\+Maps()}{importMaps()}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::import\+Maps (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}{}\label{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}
-
-
-Import the maps from the prescribed files. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em fine\+\_\+map\+\_\+file} & path to the fine map file \\
-\hline
-{\em fine\+\_\+map\+\_\+x} & fine map x dimension \\
-\hline
-{\em fine\+\_\+map\+\_\+y} & fine map y dimension \\
-\hline
-{\em fine\+\_\+map\+\_\+x\+\_\+offset} & fine map x offset \\
-\hline
-{\em fine\+\_\+map\+\_\+y\+\_\+offset} & fine map y offset \\
-\hline
-{\em coarse\+\_\+map\+\_\+file} & file path to the coarse map file \\
-\hline
-{\em coarse\+\_\+map\+\_\+x} & coarse map x dimension \\
-\hline
-{\em coarse\+\_\+map\+\_\+y} & coarse map y dimension \\
-\hline
-{\em coarse\+\_\+map\+\_\+x\+\_\+offset} & coarse map x offset \\
-\hline
-{\em coarse\+\_\+map\+\_\+y\+\_\+offset} & coarse map y offset \\
-\hline
-\end{DoxyParams}
 \index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Number\+Repeats@{set\+Number\+Repeats}}
 \index{set\+Number\+Repeats@{set\+Number\+Repeats}!Simulate\+Dispersal@{Simulate\+Dispersal}}
 \subsubsection[{\texorpdfstring{set\+Number\+Repeats(unsigned long n)}{setNumberRepeats(unsigned long n)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Number\+Repeats (
@@ -276,11 +245,12 @@ Sets the is\+\_\+sequential flag.
 \end{DoxyParams}
 \index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Simulation\+Parameters@{set\+Simulation\+Parameters}}
 \index{set\+Simulation\+Parameters@{set\+Simulation\+Parameters}!Simulate\+Dispersal@{Simulate\+Dispersal}}
-\subsubsection[{\texorpdfstring{set\+Simulation\+Parameters(\+Sim\+Parameters $\ast$sim\+\_\+parameters)}{setSimulationParameters(SimParameters *sim_parameters)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Simulation\+Parameters (
+\subsubsection[{\texorpdfstring{set\+Simulation\+Parameters(\+Sim\+Parameters $\ast$sim\+\_\+parameters, bool print=true)}{setSimulationParameters(SimParameters *sim_parameters, bool print=true)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Simulation\+Parameters (
 \begin{DoxyParamCaption}
-\item[{{\bf Sim\+Parameters} $\ast$}]{sim\+\_\+parameters}
+\item[{{\bf Sim\+Parameters} $\ast$}]{sim\+\_\+parameters, }
+\item[{bool}]{print = {\ttfamily true}}
 \end{DoxyParamCaption}
-)}\hypertarget{class_simulate_dispersal_a777d7cab80b8543647970d6d64b797a9}{}\label{class_simulate_dispersal_a777d7cab80b8543647970d6d64b797a9}
+)}\hypertarget{class_simulate_dispersal_a9d08a14b3f2a78591af2edf2884edb52}{}\label{class_simulate_dispersal_a9d08a14b3f2a78591af2edf2884edb52}
 
 
 Sets the pointer to the simulation parameters object. 
@@ -288,6 +258,8 @@ Sets the pointer to the simulation parameters object.
 
 \begin{DoxyParams}{Parameters}
 {\em sim\+\_\+parameters} & pointer to the simulation parameters to use \\
+\hline
+{\em print} & if true, writes the parameters out using write\+Info() \\
 \hline
 \end{DoxyParams}
 \index{Simulate\+Dispersal@{Simulate\+Dispersal}!write\+Database@{write\+Database}}
