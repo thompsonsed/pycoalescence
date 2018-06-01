@@ -39,9 +39,13 @@ Includes
 --------
 
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``LogFile.h`` (:ref:`file_necsim_LogFile.h`)
+
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``Tree.h`` (:ref:`file_necsim_ProtractedSpatialTree.h`)
+
+- ``algorithm``
 
 
 

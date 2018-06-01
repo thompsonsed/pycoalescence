@@ -68,10 +68,12 @@
 </ul>
 <div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
-<span class="cp">#include</span> <span class="cpf">&quot;CPLCustomHandler.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;CPLCustomHandler.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+
 <span class="cp">#ifdef with_gdal</span>
+
 <span class="kt">void</span> <span class="nf">cplCustomErrorHandler</span><span class="p">(</span><span class="n">CPLErr</span> <span class="n">eErrClass</span><span class="p">,</span> <span class="kt">int</span> <span class="n">err_no</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">stringstream</span> <span class="n">error_msg</span><span class="p">;</span>
@@ -95,6 +97,7 @@
     <span class="p">}</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 <span class="p">}</span>
+
 <span class="cp">#endif </span><span class="c1">//with_gdal</span>
 </pre></div>
 </div>

@@ -4,6 +4,7 @@ var searchData=
   ['datamask',['DataMask',['../class_data_mask.html',1,'DataMask'],['../class_data_mask.html#ae89a953b8200f027d44dc74fa748852b',1,'DataMask::DataMask()']]],
   ['datapoint',['DataPoint',['../class_data_point.html',1,'DataPoint'],['../class_data_point.html#a1e1b3678b2d1522b7956148a57e1602f',1,'DataPoint::DataPoint()']]],
   ['decreasenwrap',['decreaseNwrap',['../class_data_point.html#a2d939bcbc5abae0d80fdd42a1b26725f',1,'DataPoint::decreaseNwrap()'],['../class_species_list.html#a15420717ab0ba00bba0ff55f971ee3d2',1,'SpeciesList::decreaseNwrap()']]],
+  ['defaultimport',['defaultImport',['../class_map.html#a414e6bc9305ab830836cf817cb4a0d60',1,'Map']]],
   ['deletespecies',['deleteSpecies',['../class_species_list.html#af7464b3a3ea20220634ab38476a195e4',1,'SpeciesList']]],
   ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
   ['detectdimensions',['detectDimensions',['../class_community.html#a579c5f423fc2461838a80baf6b396310',1,'Community']]],
@@ -18,11 +19,9 @@ var searchData=
   ['doapplication',['doApplication',['../class_community.html#a8ce443a30731d2249852d2b615f4a29a',1,'Community::doApplication(SpecSimParameters *sp)'],['../class_community.html#a7289dd39ee9b69ca314e1752a7b45701',1,'Community::doApplication(SpecSimParameters *sp, Row&lt; TreeNode &gt; *data)']]],
   ['doapplicationinternal',['doApplicationInternal',['../class_community.html#aee7488d02cccb897ed1d561e242391df',1,'Community']]],
   ['doimport',['doImport',['../class_data_mask.html#a85f7b85bb4ac54aa884a8a06f1d35d1b',1,'DataMask']]],
-  ['double_5fquote_5fescape',['double_quote_escape',['../structio_1_1double__quote__escape.html',1,'io']]],
   ['doupdate',['doUpdate',['../class_landscape.html#a1669ae6563ef5ed11ce1da30fb28214b',1,'Landscape']]],
   ['dumpactive',['dumpActive',['../class_tree.html#aca99503f49b91baae7401423fe547daf',1,'Tree']]],
   ['dumpdata',['dumpData',['../class_tree.html#acd23fa139c7d097315c9479187b1a674',1,'Tree']]],
   ['dumpmain',['dumpMain',['../class_tree.html#a4c2988184328a5236ca61f16744cfac2',1,'Tree']]],
-  ['dumpmap',['dumpMap',['../class_spatial_tree.html#a51b4c8703d179cc4a4c861f8b36b4a9b',1,'SpatialTree']]],
-  ['duplicated_5fcolumn_5fin_5fheader',['duplicated_column_in_header',['../structio_1_1error_1_1duplicated__column__in__header.html',1,'io::error']]]
+  ['dumpmap',['dumpMap',['../class_spatial_tree.html#a51b4c8703d179cc4a4c861f8b36b4a9b',1,'SpatialTree']]]
 ];

@@ -34,6 +34,20 @@ Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence.
 
 
 
+Includes
+--------
+
+
+- ``ConfigFileParser.h`` (:ref:`file_necsim_ConfigFileParser.h`)
+
+- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
+
+- ``DoubleComparison.h`` (:ref:`file_necsim_DoubleComparison.h`)
+
+- ``string``
+
+- ``vector``
+
 
 
 Included By
@@ -52,6 +66,8 @@ Included By
 Classes
 -------
 
+
+- :ref:`struct_ProtractedSpeciationParameters`
 
 - :ref:`class_SpecSimParameters`
 

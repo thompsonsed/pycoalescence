@@ -4,6 +4,7 @@ var searchData=
   ['datamask',['DataMask',['../class_data_mask.html#ae89a953b8200f027d44dc74fa748852b',1,'DataMask']]],
   ['datapoint',['DataPoint',['../class_data_point.html#a1e1b3678b2d1522b7956148a57e1602f',1,'DataPoint']]],
   ['decreasenwrap',['decreaseNwrap',['../class_data_point.html#a2d939bcbc5abae0d80fdd42a1b26725f',1,'DataPoint::decreaseNwrap()'],['../class_species_list.html#a15420717ab0ba00bba0ff55f971ee3d2',1,'SpeciesList::decreaseNwrap()']]],
+  ['defaultimport',['defaultImport',['../class_map.html#a414e6bc9305ab830836cf817cb4a0d60',1,'Map']]],
   ['deletespecies',['deleteSpecies',['../class_species_list.html#af7464b3a3ea20220634ab38476a195e4',1,'SpeciesList']]],
   ['detectdimensions',['detectDimensions',['../class_community.html#a579c5f423fc2461838a80baf6b396310',1,'Community']]],
   ['determinespeciationrates',['determineSpeciationRates',['../class_tree.html#a25f082da13789dfa3fefcbcfd08b4dfe',1,'Tree']]],

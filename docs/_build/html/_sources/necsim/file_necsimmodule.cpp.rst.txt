@@ -38,85 +38,25 @@ Includes
 --------
 
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Community.h``
+- ``CCommunity.h`` (:ref:`file_CCommunity.h`)
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CustomExceptions.h``
+- ``CLandscapeMetricsCalculator.h`` (:ref:`file_CLandscapeMetricsCalculator.h`)
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DataPoint.h``
+- ``CSimulateDispersal.h`` (:ref:`file_CSimulateDispersal.h`)
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DispersalCoordinator.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Landscape.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Logging.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Map.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Matrix.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/NRrand.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ProtractedTree.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ReproductionMap.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Setup.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SimParameters.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpatialTree.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpeciesList.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Tree.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/TreeNode.h``
+- ``CSimulation.h`` (:ref:`file_CSimulation.h`)
 
 - ``PyLogging.h`` (:ref:`file_PyLogging.h`)
 
 - ``Python.h``
 
-- ``algorithm``
-
-- ``boost/filesystem.hpp``
-
-- ``cmath``
-
 - ``csignal``
-
-- ``cstdio``
-
-- ``cstring``
-
-- ``ctime``
-
-- ``fstream``
-
-- ``iomanip``
-
-- ``iostream``
-
-- ``necsim/ProtractedSpatialTree.h`` (:ref:`file_necsim_ProtractedSpatialTree.h`)
-
-- ``necsim/ProtractedTree.h`` (:ref:`file_necsim_ProtractedTree.h`)
 
 - ``necsim/Setup.h`` (:ref:`file_necsim_Setup.h`)
 
-- ``necsim/SimulationTemplates.h`` (:ref:`file_necsim_SimulationTemplates.h`)
-
-- ``necsim/SpatialTree.h`` (:ref:`file_necsim_SpatialTree.h`)
-
 - ``necsimmodule.h`` (:ref:`file_necsimmodule.h`)
 
-- ``sqlite3.h``
-
-- ``sstream``
-
-- ``stdexcept``
-
 - ``string``
-
-- ``unistd.h``
 
 - ``vector``
 
@@ -131,9 +71,7 @@ Functions
 
 - :ref:`function_initnecsimmodule`
 
-- :ref:`function_resume_simulation`
-
-- :ref:`function_run_simulation`
+- :ref:`function_readyPyTypeObject`
 
 
 Defines
@@ -148,14 +86,6 @@ Defines
 Variables
 ---------
 
-
-- :ref:`variable_call_logging`
-
-- :ref:`variable_log_set`
-
-- :ref:`variable_logger`
-
-- :ref:`variable_logger_set`
 
 - :ref:`variable_NECSimMethods`
 

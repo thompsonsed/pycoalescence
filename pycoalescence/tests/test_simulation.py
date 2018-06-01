@@ -3,18 +3,16 @@ Contains relatively high-level tests of Simulation object, testing a variety of 
 to assert simulation outputs are as expected.
 """
 import logging
-import unittest
-
 import os
+import unittest
 import warnings
 
 try:
-    from cStringIO import StringIO # Python 2 string support
+	from cStringIO import StringIO  # Python 2 string support
 except ImportError:
-    from io import StringIO
+	from io import StringIO
 
 from pycoalescence import Simulation
-from pycoalescence.simulation import NECSimError
 from pycoalescence.tests.setup import setUpAll, tearDownAll
 
 
@@ -35,8 +33,7 @@ def tearDownModule():
 class TestFileCreation(unittest.TestCase):
 	"""
 	Tests the main Simulation set up routine by running some tiny simulations and checking that simulation parameters
-	are passed properly. This function requires there to be a NECSim executable in build/nv/norm and compiled
-	with the correct defines.
+	are passed properly.
 	"""
 
 	@classmethod
@@ -51,78 +48,23 @@ class TestFileCreation(unittest.TestCase):
 										gen_since_historical=2, dispersal_method="normal")
 		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
 		self.coal.set_speciation_rates([0.1, 0.2])
-		self.coal.finalise_setup()
-		self.coal.run_coalescence()
+		self.coal.run()
 
 	def testFileCreation(self):
 		"""
 		Checks that outputting is to the correct place and folder structure is created properly.
-		:return:
 		"""
 		self.assertTrue(os.path.isfile(self.coal.output_database))
 		self.assertEqual(os.path.join(self.coal.output_database),
-						 os.path.join(self.coal.output_directory, "SQL_data",
-									  str("data_" + str(self.coal.seed) + "_" + str(self.coal.job_type) + ".db")))
+						 os.path.join(self.coal.output_directory, "data_{}_{}.db".format(self.coal.seed,
+																						 self.coal.job_type)))
 
 
 class TestFileNaming(unittest.TestCase):
 	"""
 	Tests that the file naming structure makes sense
 	"""
-
-	def testNoneNamingFine(self):
-		"""
-		Tests that the fine map file naming throws the correct error when called 'none'.
-		:return:
-		"""
-		coal = Simulation()
-		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
-								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_historical=2, dispersal_method="normal")
-		coal.set_map_parameters("null", 10, 10, "none", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "none", "none")
-
-		with warnings.catch_warning(record=True) as w:
-			warnings.simplefilter("always")
-			coal.finalise_setup()
-			self.assertEqual(str(w[0].message), "Fine map file cannot be 'none', changing to 'null'.")
-
-	def testNoneNamingFine(self):
-		"""
-		Tests that the fine map file naming throws the correct error when called 'none'.
-		:return:
-		"""
-		coal = Simulation()
-		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
-								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_historical=2, dispersal_method="normal")
-		coal.set_map_parameters("none", 10, 10, "null", 10, 10, 0, 0, "none", 20, 20, 0, 0, 1, "null", "null")
-		with warnings.catch_warning(record=True) as w:
-			warnings.simplefilter("always")
-			coal.finalise_setup()
-			self.assertEqual(len(w), 2)
-			self.assertEqual(str(w[0].message),
-							 "Historical fine file is 'none' but historical coarse file is not none. Check file names.")
-			self.assertEqual(str(w[1].message), "Defaulting to historical_coarse_map_file = 'none'")
-
-	def testNoneNamingFine(self):
-		"""
-		Tests that the fine map file naming throws the correct error when called 'none'.
-		:return:
-		"""
-		coal = Simulation()
-		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
-								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_historical=2, dispersal_method="normal")
-		coal.set_map_parameters("none", 10, 10, "null", 10, 10, 0, 0, "none", 20, 20, 0, 0, 1, "none", "null")
-		with warnings.catch_warning(record=True) as w:
-			warnings.simplefilter("always")
-			coal.finalise_setup()
-			self.assertEqual(len(w), 2)
-			self.assertEqual(str(w[0].message),
-							 "Coarse file is 'none' but historical coarse file is not none. Check file names.")
-			self.assertEqual(str(w[1].message), "Defaulting to historical_coarse_map_file = 'none'")
-
-	def testNoneNamingFine(self):
+	def testNoneNaming(self):
 		"""
 		Tests that the fine map file naming throws the correct error when called 'none'.
 		:return:
@@ -253,10 +195,9 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.add_sample_time(0.0)
 		self.coal.add_sample_time(1.0)
-		self.coal.create_map_config("output/conf1.txt")
-		self.coal.create_config("output/conf1.txt")
+		self.coal.full_config_file = "output/conf1.txt"
 		self.coal.set_speciation_rates([0.1, 0.2])
-		self.coal.finalise_setup()
+		self.coal.create_config()
 
 	def testConfigWrite(self):
 		"""
@@ -265,34 +206,34 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 		with open("output/conf1.txt", "r") as mapconf:
 			lines = mapconf.readlines()
 			lines = [x.strip() for x in lines]
-			self.assertEqual(lines[27], "[main]")
-			self.assertEqual(lines[28].replace(" ", ""), "seed=1")
-			self.assertEqual(lines[29].replace(" ", ""), "job_type=23")
+			self.assertEqual(lines[0], "[main]")
+			self.assertEqual(lines[1].replace(" ", ""), "seed=1")
+			self.assertEqual(lines[2].replace(" ", ""), "job_type=23")
 
 	def testMapConfigWrite(self):
 		"""
 		Tests the map config output to check output is correct.
 		"""
 		self.coal.add_historical_map(fine_map="sample/SA_sample_fine_historical1.tif",
-								   coarse_map="sample/SA_sample_coarse_historical1.tif",
-								   time=1, rate=0.5)
+									 coarse_map="sample/SA_sample_coarse_historical1.tif",
+									 time=1, rate=0.5)
 		self.coal.add_historical_map(fine_map="sample/SA_sample_fine_historical2.tif",
-								   coarse_map="sample/SA_sample_coarse_historical2.tif",
-								   time=4, rate=0.7)
+									 coarse_map="sample/SA_sample_coarse_historical2.tif",
+									 time=4, rate=0.7)
 		self.coal.create_map_config("output/mapconf2.txt")
 		with open("output/mapconf2.txt", "r") as mapconf:
 			lines = mapconf.readlines()
 			lines = [x.strip() for x in lines]
-			self.assertEqual(lines[0], "[sample_grid]")
-			self.assertEqual(lines[1].replace(" ", ""), "path=null", msg="Config file doesn't produce expected output.")
-			self.assertEqual(lines[7].replace(" ", ""), "[fine_map]",
+			self.assertEqual(lines[21], "[sample_grid]")
+			self.assertEqual(lines[22].replace(" ", ""), "path=null", msg="Config file doesn't produce expected output.")
+			self.assertEqual(lines[28].replace(" ", ""), "[fine_map]",
 							 msg="Config file doesn't produce expected output.")
-			self.assertEqual(lines[8].replace(" ", ""), "path=sample/SA_sample_fine.tif",
+			self.assertEqual(lines[29].replace(" ", ""), "path=sample/SA_sample_fine.tif",
 							 msg="Config file doesn't produce expected output.")
-			self.assertEqual(lines[9].replace(" ", ""), "x=13", msg="Config file doesn't produce expected output.")
-			self.assertEqual(lines[10].replace(" ", ""), "y=13", msg="Config file doesn't produce expected output.")
-			self.assertEqual(lines[11].replace(" ", ""), "x_off=0", msg="Config file doesn't produce expected output.")
-			self.assertEqual(lines[12].replace(" ", ""), "y_off=0", msg="Config file doesn't produce expected output.")
+			self.assertEqual(lines[30].replace(" ", ""), "x=13", msg="Config file doesn't produce expected output.")
+			self.assertEqual(lines[31].replace(" ", ""), "y=13", msg="Config file doesn't produce expected output.")
+			self.assertEqual(lines[32].replace(" ", ""), "x_off=0", msg="Config file doesn't produce expected output.")
+			self.assertEqual(lines[33].replace(" ", ""), "y_off=0", msg="Config file doesn't produce expected output.")
 
 	def testTimeConfigWrite(self):
 		"""
@@ -301,9 +242,9 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 		with open("output/conf1.txt", "r") as f:
 			lines = f.readlines()
 			lines = [x.strip().replace(" ", "") for x in lines]
-			self.assertEqual(lines[40], "[times]", msg="Time config file doesn't produce expected output.")
-			self.assertEqual(lines[41], "time0=0.0", msg="Time config file doesn't produce expected output.")
-			self.assertEqual(lines[42], "time1=1.0", msg="Time config file doesn't produce expected output.")
+			self.assertEqual(lines[17], "[times]", msg="Time config file doesn't produce expected output.")
+			self.assertEqual(lines[18], "time0=0.0", msg="Time config file doesn't produce expected output.")
+			self.assertEqual(lines[19], "time1=1.0", msg="Time config file doesn't produce expected output.")
 
 
 class TestSimulationSetMaps(unittest.TestCase):
@@ -319,8 +260,7 @@ class TestSimulationSetMaps(unittest.TestCase):
 		cls.c = Simulation()
 		cls.c.set_map("null", 10, 10)
 		cls.c.set_simulation_params(seed=1, job_type=12, output_directory="output", min_speciation_rate=0.01, sigma=2)
-		cls.c.finalise_setup()
-		cls.c.run_coalescence()
+		cls.c.run()
 
 	def testMapFilesSetCorrectly(self):
 		"""
@@ -357,7 +297,7 @@ class TestSimulationSetMaps(unittest.TestCase):
 		s.rates_list = rates
 		s.sort_historical_maps()
 		expected_fine = ["mapa", "mapb", "mapc", "mapd"]
-		expected_coarse= ["mapca", "mapcb", "mapcc", "mapcd"]
+		expected_coarse = ["mapca", "mapcb", "mapcc", "mapcd"]
 		expected_times = [0, 10, 11, 14]
 		expected_rates = [0.2, 0.0, 0.9, 0.3]
 		self.assertListEqual(expected_fine, s.historical_fine_list)
@@ -365,10 +305,12 @@ class TestSimulationSetMaps(unittest.TestCase):
 		self.assertListEqual(expected_times, s.times_list)
 		self.assertListEqual(expected_rates, s.rates_list)
 
+
 class TestLoggingOutputsCorrectly(unittest.TestCase):
 	"""
 	Tests that logging outputs as expected.
 	"""
+
 	def testOutputStreamerInfo(self):
 		"""
 		Tests that info output streaming works as intended.
@@ -379,9 +321,9 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		s = Simulation(logging_level=logging.INFO, stream=log_stream)
 		s.set_simulation_params(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map("null", 10, 10)
-		s.finalise_setup()
-		s.run_coalescence()
-		self.assertEqual(expected_log, log_stream.getvalue().replace('\r', '').replace('\n', ''))
+		s.run()
+		log = log_stream.getvalue().replace('\r', '').replace('\n', '')
+		self.assertEqual(expected_log, log)
 
 	def testOutputStreamerWarning(self):
 		"""
@@ -407,17 +349,19 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		s.run_coalescence()
 		self.assertEqual("", log_stream.getvalue())
 
+
 class TestInitialCountSuccess(unittest.TestCase):
 	"""
 	Tests that the initial count is correct
 	"""
+
 	def testInitialCountNoCritical(self):
 		"""
 		Tests that the initial count is successful by catching the output of the critical logging.
 		"""
 		log_stream = StringIO()
 		s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-		s.set_simulation_params(seed = 5, job_type = 12, output_directory="output", min_speciation_rate=0.1)
+		s.set_simulation_params(seed=5, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map_files(sample_file="null", fine_file="sample/large_fine.tif")
 		s.sample_map.x_size = 10
 		s.sample_map.y_size = 10
@@ -426,6 +370,7 @@ class TestInitialCountSuccess(unittest.TestCase):
 		s.finalise_setup()
 		s.run_coalescence()
 		self.assertEqual("", log_stream.getvalue())
+
 
 class TestSimulationDimensionsAndOffsets(unittest.TestCase):
 	"""
@@ -495,7 +440,6 @@ class TestSimulationDimensionsAndOffsets(unittest.TestCase):
 			self.coal.run_coalescence()
 
 
-
 class TestSimulationExtremeSpeciation(unittest.TestCase):
 	"""
 	Tests extreme speciation values to ensure that either 1 or maximal numbers of species are produced.
@@ -513,8 +457,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 								dispersal_method="normal",
 								landscape_type=False)
 		c.set_map("null", 10, 10)
-		c.finalise_setup()
-		c.run_coalescence()
+		c.run()
 		self.assertEqual(c.get_richness(), 1)
 
 	def testMaxSpeciation(self):
@@ -529,8 +472,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 								dispersal_method="normal",
 								landscape_type=False)
 		c.set_map("null", 10, 10)
-		c.finalise_setup()
-		c.run_coalescence()
+		c.run()
 		self.assertEqual(c.get_richness(), 100)
 
 
@@ -575,10 +517,12 @@ class TestSimulationMapDensityReading(unittest.TestCase):
 		"""
 		self.assertTrue(self.c.count_individuals() - 12381 < 2200)
 
+
 class TestHistoricalMapsAlterResult(unittest.TestCase):
 	"""
 	Makes sure that historical maps correctly alter the result of the simulation.
 	"""
+
 	@classmethod
 	def setUpClass(cls):
 		cls.base_sim = Simulation()
@@ -586,25 +530,22 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		cls.base_sim.set_simulation_params(seed=4, job_type=17, output_directory="output",
 										   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
 		cls.base_sim.set_map("sample/SA_sample_fine.tif")
-		cls.base_sim.finalise_setup()
-		cls.base_sim.run_coalescence()
+		cls.base_sim.run()
 		cls.hist_sim.set_simulation_params(seed=4, job_type=18, output_directory="output",
 										   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
 		cls.hist_sim.set_map("sample/SA_sample_fine.tif")
 		cls.hist_sim.add_historical_map(fine_map="sample/example_historical_fine.tif", coarse_map="none",
 										time=10, rate=0.2)
-		cls.hist_sim.finalise_setup()
-		cls.hist_sim.run_coalescence()
+		cls.hist_sim.run()
 		cls.hist_sim2 = Simulation()
 		cls.hist_sim2.set_simulation_params(seed=4, job_type=19, output_directory="output",
-										   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
+											min_speciation_rate=0.1, sigma=2, sample_size=0.1)
 		cls.hist_sim2.set_map("sample/SA_sample_fine.tif")
 		cls.hist_sim2.add_historical_map(fine_map="sample/example_historical_fine.tif", coarse_map="none",
-										time=10, rate=0.2)
+										 time=10, rate=0.2)
 		cls.hist_sim2.add_historical_map(fine_map="sample/SA_sample_fine.tif", coarse_map="none",
-										time=20, rate=0.2)
-		cls.hist_sim2.finalise_setup()
-		cls.hist_sim2.run_coalescence()
+										 time=20, rate=0.2)
+		cls.hist_sim2.run()
 
 	def testSpeciesRichnessDiffer(self):
 		"""
@@ -615,4 +556,3 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		self.assertEqual(2627, self.base_sim.get_richness())
 		self.assertEqual(2520, self.hist_sim2.get_richness())
 		self.assertEqual(2434, self.hist_sim.get_richness())
-

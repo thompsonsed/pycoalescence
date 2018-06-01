@@ -13,6 +13,7 @@ Program Listing for File Landscape.cpp
    #include "Landscape.h"
    #include "Filesystem.h"
    
+   
    uint32_t importToMapAndRound(string map_file, Map<uint32_t> &map_in, unsigned long map_x,
                                 unsigned long map_y,
                                 unsigned long scalar)
@@ -74,6 +75,12 @@ Program Listing for File Landscape.cpp
    {
        if(!check_set_dim)  // checks to make sure it hasn't been run already.
        {
+   #ifdef DEBUG
+           if(mapvarsin == nullptr)
+           {
+               throw FatalException("SimParameters pointer is nullptr. Please report this bug.");
+           }
+   #endif // DEBUG
            mapvars = mapvarsin;
            mapvars->setHistorical(0);
            deme = mapvars->deme;

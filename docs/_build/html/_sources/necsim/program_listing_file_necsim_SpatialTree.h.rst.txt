@@ -57,7 +57,7 @@ Program Listing for File SpatialTree.h
    #include "Setup.h"
    #include "DispersalCoordinator.h"
    #include "ReproductionMap.h"
-   #include "Logging.h"
+   #include "Logger.h"
    
    using namespace std;
    
@@ -88,7 +88,8 @@ Program Listing for File SpatialTree.h
        }
    
        ~SpatialTree() override = default;
-       void importSimulationVariables(const string &configfile) override;
+   
+       void runFileChecks() override;
    
        void parseArgs(vector<string> &comargs);
    

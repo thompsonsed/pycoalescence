@@ -7,39 +7,51 @@
     <includes local="no">numeric</includes>
     <includes local="yes">necsim/Map.h</includes>
     <includes local="yes">necsim/Cell.h</includes>
+    <includedby refid="_c_landscape_metrics_calculator_8h" local="yes">CLandscapeMetricsCalculator.h</includedby>
     <includedby refid="_landscape_metrics_calculator_8cpp" local="yes">LandscapeMetricsCalculator.cpp</includedby>
-    <includedby refid="landscapemetricsmodule_8cpp" local="yes">landscapemetricsmodule.cpp</includedby>
     <incdepgraph>
-      <node id="1622">
+      <node id="1942">
         <label>numeric</label>
       </node>
-      <node id="1621">
+      <node id="1941">
         <label>vector</label>
       </node>
-      <node id="1619">
+      <node id="1939">
         <label>LandscapeMetricsCalculator.h</label>
         <link refid="LandscapeMetricsCalculator.h"/>
-        <childnode refid="1620" relation="include">
+        <childnode refid="1940" relation="include">
         </childnode>
-        <childnode refid="1621" relation="include">
+        <childnode refid="1941" relation="include">
         </childnode>
-        <childnode refid="1622" relation="include">
+        <childnode refid="1942" relation="include">
         </childnode>
-        <childnode refid="1623" relation="include">
+        <childnode refid="1943" relation="include">
         </childnode>
-        <childnode refid="1624" relation="include">
+        <childnode refid="1944" relation="include">
         </childnode>
       </node>
-      <node id="1624">
+      <node id="1944">
         <label>necsim/Cell.h</label>
       </node>
-      <node id="1623">
+      <node id="1943">
         <label>necsim/Map.h</label>
       </node>
-      <node id="1620">
+      <node id="1940">
         <label>algorithm</label>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="1946">
+        <label>CLandscapeMetricsCalculator.h</label>
+        <link refid="_c_landscape_metrics_calculator_8h_source"/>
+      </node>
+      <node id="1945">
+        <label>LandscapeMetricsCalculator.h</label>
+        <link refid="LandscapeMetricsCalculator.h"/>
+        <childnode refid="1946" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
     <innerclass refid="class_landscape_metrics_calculator" prot="public">LandscapeMetricsCalculator</innerclass>
     <briefdescription>
 <para>Contains the <ref refid="class_landscape_metrics_calculator" kindref="compound">LandscapeMetricsCalculator</ref> class for calculating landscape metrics. </para>    </briefdescription>
@@ -60,28 +72,28 @@
 <codeline lineno="17"><highlight class="normal"></highlight></codeline>
 <codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
 <codeline lineno="19"><highlight class="normal"></highlight></codeline>
-<codeline lineno="20" refid="class_landscape_metrics_calculator" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_landscape_metrics_calculator" kindref="compound">LandscapeMetricsCalculator</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>Map&lt;double&gt;</highlight></codeline>
-<codeline lineno="21"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>vector&lt;Cell&gt;<sp/>all_cells;</highlight></codeline>
-<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>calculateMNN();</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checkMinDistance(<ref refid="struct_cell" kindref="compound">Cell</ref><sp/>&amp;home_cell,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;x,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;y,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;<sp/>min_distance);</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>findNearestNeighbourDistance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;<sp/>row,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;<sp/>col);</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createCellList();</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>calculateClumpiness();</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>calculateNoAdjacencies();</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>calculateMinPerimeter();</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight></codeline>
-<codeline lineno="78"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//MEAN_DISTANCE_MEANDISTANCECALCULATOR_H</highlight></codeline>
+<codeline lineno="23" refid="class_landscape_metrics_calculator" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_landscape_metrics_calculator" kindref="compound">LandscapeMetricsCalculator</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_map" kindref="compound">Map</ref>&lt;double&gt;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>vector&lt;Cell&gt;<sp/>all_cells;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>calculateMNN();</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checkMinDistance(<ref refid="struct_cell" kindref="compound">Cell</ref><sp/>&amp;home_cell,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;x,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;y,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;<sp/>min_distance);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>findNearestNeighbourDistance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;<sp/>row,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;<sp/>col);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createCellList();</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>calculateClumpiness();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>calculateNoAdjacencies();</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>calculateMinPerimeter();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//MEAN_DISTANCE_MEANDISTANCECALCULATOR_H</highlight></codeline>
     </programlisting>
     <location file="LandscapeMetricsCalculator.h"/>
   </compounddef>

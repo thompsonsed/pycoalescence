@@ -16,21 +16,9 @@ Program Listing for File PyLogging.h
    #include "Python.h"
    #include <string>
    #include "necsim/LogFile.h"
+   #include "PyLogger.h"
    
-   extern bool log_set;
-   extern bool logger_set;
+   PyLogger * getGlobalLogger(PyObject * logger, PyObject * log_function);
    
-   extern PyObject * call_logging;
-   
-   
-   extern PyObject *logger;
-   
-   PyObject * set_log_function(PyObject *dummy, PyObject *args);
-   
-   PyObject * set_logger(PyObject * self, PyObject * args);
-   
-   void write_log(int level, char * message);
-   
-   void write_log(int level, string message);
-   
+   void removeGlobalLogger();
    #endif // PYLOGGING_H

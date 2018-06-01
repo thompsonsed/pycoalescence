@@ -13,9 +13,10 @@ Program Listing for File SimParameters.h
    #ifndef SPECIATIONCOUNTER_SIMPARAMETERS_H
    #define SPECIATIONCOUNTER_SIMPARAMETERS_H
    #include <string>
+   #include <utility>
    #include <vector>
    #include "ConfigFileParser.h"
-   #include "Logging.h"
+   #include "Logger.h"
    #include "CustomExceptions.h"
    
    using namespace std;
@@ -46,7 +47,7 @@ Program Listing for File SimParameters.h
        // the sample proportion,
        double deme_sample{};
        // the speciation rate.
-       long double  spec{};
+       long double  spec{0.0};
        // the variance of the dispersal kernel.
        double sigma{};
        // max time to run for
@@ -113,9 +114,9 @@ Program Listing for File SimParameters.h
            tau =0;
        }
    
-       void importParameters(ConfigOption *configOption)
+       void importParameters(ConfigOption configOption)
        {
-           configs = *configOption;
+           configs = std::move(configOption);
            importParameters();
        }
    
@@ -468,6 +469,8 @@ Program Listing for File SimParameters.h
            max_speciation_gen = 0.0;
        }
    
+   
+   
        friend ostream& operator<<(ostream& os,const SimParameters& m)
        {
            os << m.fine_map_file << "\n" << m.coarse_map_file << "\n" << m.historical_fine_map_file << "\n";
@@ -522,6 +525,8 @@ Program Listing for File SimParameters.h
            is >> m.configs;
            return is;
        }
+   
+       SimParameters & operator=(const SimParameters &other) = default;
    };
    
    #endif //SPECIATIONCOUNTER_SIMPARAMETERS_H

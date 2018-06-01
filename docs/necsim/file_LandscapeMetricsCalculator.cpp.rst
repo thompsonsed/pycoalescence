@@ -38,7 +38,11 @@ Includes
 --------
 
 
-- ``LandscapeMetricsCalculator.h`` (:ref:`file_LandscapeMetricsCalculator.h`)
+- ``LandscapeMetricsCalculator.h`` (:ref:`file_CLandscapeMetricsCalculator.h`)
+
+- ``necsim/Map.h`` (:ref:`file_necsim_Map.h`)
+
+- ``necsim/Matrix.h`` (:ref:`file_necsim_Matrix.h`)
 
 
 

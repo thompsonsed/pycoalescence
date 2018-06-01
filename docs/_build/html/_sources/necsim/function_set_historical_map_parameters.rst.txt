@@ -3,7 +3,7 @@
 Function set_historical_map_parameters
 ======================================
 
-- Defined in :ref:`file_dispersalmodule.cpp`
+- Defined in :ref:`file_CSimulateDispersal.h`
 
 
 Function Documentation

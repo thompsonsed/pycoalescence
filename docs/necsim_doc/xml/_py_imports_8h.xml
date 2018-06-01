@@ -6,35 +6,81 @@
     <includes local="no">utility</includes>
     <includes local="no">vector</includes>
     <includes local="no">string</includes>
-    <includedby refid="applyspecmodule_8cpp" local="yes">applyspecmodule.cpp</includedby>
-    <includedby refid="dispersalmodule_8cpp" local="yes">dispersalmodule.cpp</includedby>
+    <includedby refid="_c_community_8h" local="yes">CCommunity.h</includedby>
+    <includedby refid="_py_templates_8h" local="yes">PyTemplates.h</includedby>
+    <includedby refid="_c_simulate_dispersal_8h" local="yes">CSimulateDispersal.h</includedby>
+    <includedby refid="_c_simulation_8h" local="yes">CSimulation.h</includedby>
     <includedby refid="_py_imports_8cpp" local="yes">PyImports.cpp</includedby>
     <incdepgraph>
-      <node id="1708">
+      <node id="2054">
         <label>string</label>
       </node>
-      <node id="1705">
+      <node id="2051">
         <label>Python.h</label>
       </node>
-      <node id="1707">
+      <node id="2053">
         <label>vector</label>
       </node>
-      <node id="1706">
+      <node id="2052">
         <label>utility</label>
       </node>
-      <node id="1704">
+      <node id="2050">
         <label>PyImports.h</label>
         <link refid="PyImports.h"/>
-        <childnode refid="1705" relation="include">
+        <childnode refid="2051" relation="include">
         </childnode>
-        <childnode refid="1706" relation="include">
+        <childnode refid="2052" relation="include">
         </childnode>
-        <childnode refid="1707" relation="include">
+        <childnode refid="2053" relation="include">
         </childnode>
-        <childnode refid="1708" relation="include">
+        <childnode refid="2054" relation="include">
         </childnode>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="2060">
+        <label>CSimulation.h</label>
+        <link refid="_c_simulation_8h_source"/>
+        <childnode refid="2059" relation="include">
+        </childnode>
+      </node>
+      <node id="2058">
+        <label>CLandscapeMetricsCalculator.h</label>
+        <link refid="_c_landscape_metrics_calculator_8h_source"/>
+      </node>
+      <node id="2056">
+        <label>CCommunity.h</label>
+        <link refid="_c_community_8h_source"/>
+      </node>
+      <node id="2055">
+        <label>PyImports.h</label>
+        <link refid="PyImports.h"/>
+        <childnode refid="2056" relation="include">
+        </childnode>
+        <childnode refid="2057" relation="include">
+        </childnode>
+        <childnode refid="2059" relation="include">
+        </childnode>
+        <childnode refid="2060" relation="include">
+        </childnode>
+      </node>
+      <node id="2057">
+        <label>PyTemplates.h</label>
+        <link refid="_py_templates_8h_source"/>
+        <childnode refid="2056" relation="include">
+        </childnode>
+        <childnode refid="2058" relation="include">
+        </childnode>
+        <childnode refid="2059" relation="include">
+        </childnode>
+        <childnode refid="2060" relation="include">
+        </childnode>
+      </node>
+      <node id="2059">
+        <label>CSimulateDispersal.h</label>
+        <link refid="_c_simulate_dispersal_8h_source"/>
+      </node>
+    </invincdepgraph>
       <sectiondef kind="func">
       <memberdef kind="function" id="_py_imports_8h_1a4938eb508ac5b2f1e03a13a3860689ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -82,7 +128,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="PyImports.h" line="23" column="1" bodyfile="PyImports.cpp" bodystart="10" bodyend="34"/>
+        <location file="PyImports.h" line="28" column="1" bodyfile="PyImports.cpp" bodystart="15" bodyend="39"/>
       </memberdef>
       <memberdef kind="function" id="_py_imports_8h_1aff3fb1ca36eb470ac911c35916c0d905" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -130,7 +176,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="PyImports.h" line="33" column="1" bodyfile="PyImports.cpp" bodystart="36" bodyend="52"/>
+        <location file="PyImports.h" line="38" column="1" bodyfile="PyImports.cpp" bodystart="41" bodyend="57"/>
       </memberdef>
       <memberdef kind="function" id="_py_imports_8h_1a05fdbfcb6a0ea29a3242b796d654cc91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -178,35 +224,35 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="PyImports.h" line="44" column="1" bodyfile="PyImports.cpp" bodystart="55" bodyend="71"/>
+        <location file="PyImports.h" line="49" column="1" bodyfile="PyImports.cpp" bodystart="60" bodyend="80"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-    </briefdescription>
+<para>Routines for importing python objects to c++ vectors. </para>    </briefdescription>
     <detaileddescription>
-    </detaileddescription>
+<para><simplesect kind="author"><para>Samuel Thompson</para></simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
+</para>    </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Created<sp/>by<sp/>Sam<sp/>Thompson<sp/>on<sp/>02/04/2018.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="4"><highlight class="normal"></highlight></codeline>
-<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PYIMPORTS_H</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PYIMPORTS_H</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Python.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight></codeline>
-<codeline lineno="14"><highlight class="normal"></highlight></codeline>
-<codeline lineno="23"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorString(PyObject<sp/>*list_input,<sp/>vector&lt;string&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorULong(PyObject<sp/>*list_input,<sp/>vector&lt;unsigned<sp/>long&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="44"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorDouble(PyObject<sp/>*list_input,<sp/>vector&lt;double&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//SPECIATIONCOUNTER_PYIMPORTS_H</highlight></codeline>
+<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"></highlight><highlight class="preprocessor">#ifndef<sp/>PYIMPORTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PYIMPORTS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Python.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorString(PyObject<sp/>*list_input,<sp/>vector&lt;string&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorULong(PyObject<sp/>*list_input,<sp/>vector&lt;unsigned<sp/>long&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>importPyListToVectorDouble(PyObject<sp/>*list_input,<sp/>vector&lt;double&gt;<sp/>&amp;output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;err_msg);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//SPECIATIONCOUNTER_PYIMPORTS_H</highlight></codeline>
     </programlisting>
     <location file="PyImports.h"/>
   </compounddef>

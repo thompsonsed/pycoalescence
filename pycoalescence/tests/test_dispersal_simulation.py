@@ -1,10 +1,8 @@
 import logging
 import unittest
 
-import os
-
-from pycoalescence.dispersal_simulation import DispersalSimulation, DispersalError
-
+from pycoalescence import NECSimError
+from pycoalescence.dispersal_simulation import DispersalSimulation
 from pycoalescence.tests.setup import setUpAll, tearDownAll
 
 
@@ -13,6 +11,7 @@ def setUpModule():
 	Creates the output directory and moves logging files
 	"""
 	setUpAll()
+
 
 def tearDownModule():
 	"""
@@ -35,22 +34,21 @@ class TestDispersalSimulation(unittest.TestCase):
 		cls.m.set_map_files("null", "sample/SA_sample_fine.tif")
 		cls.m.set_simulation_parameters(number_repeats=100, output_database="output/sim_pars_test4.db", seed=2,
 										sigma=2, landscape_type="tiled_fine")
-		cls.m.test_mean_dispersal()
+		cls.m.run_mean_dispersal()
 		cls.m.set_simulation_parameters(number_repeats=100, seed=2, sigma=2, landscape_type="tiled_fine")
-		cls.m.test_mean_dispersal()
+		cls.m.run_mean_dispersal()
 		cls.m.set_simulation_parameters(number_repeats=100, seed=4, sigma=3, tau=1, landscape_type="tiled_fine",
 										dispersal_method="fat-tail")
-		cls.m.test_mean_dispersal()
+		cls.m.run_mean_dispersal()
 		cls.m.set_simulation_parameters(number_repeats=100, number_steps=10, seed=2, sigma=2,
 										landscape_type="tiled_fine")
-		cls.m.test_mean_distance_travelled()
+		cls.m.run_mean_distance_travelled()
 		cls.m.set_simulation_parameters(number_repeats=200, number_steps=10, seed=2, sigma=5,
 										landscape_type="tiled_fine")
-		cls.m.test_mean_distance_travelled()
+		cls.m.run_mean_distance_travelled()
 		cls.m.set_simulation_parameters(number_repeats=100, number_steps=20, seed=5, sigma=2,
 										landscape_type="tiled_fine")
-		cls.m.test_mean_distance_travelled()
-
+		cls.m.run_mean_distance_travelled()
 
 	def testRaisesIOError(self):
 		"""
@@ -66,7 +64,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		Tests that a value error is raised when dispersal_database does not exist
 		"""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
-		with self.assertRaises(ValueError):
+		with self.assertRaises(IOError):
 			m.get_mean_dispersal()
 
 	def testRaisesValueErrorNullNotSet(self):
@@ -78,16 +76,16 @@ class TestDispersalSimulation(unittest.TestCase):
 			m.set_simulation_parameters(number_repeats=10000, output_database="output/normaldispersal.db", seed=1)
 			m.set_map_files("null", fine_file="null")
 
-	def testRaisesDispersalError(self):
+	def testRaisesNECSimError(self):
 		"""
 		Tests that a dispersal.Error is raised when incorrect dispersal method is provided.
 		"""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
-		with self.assertRaises(DispersalError):
+		with self.assertRaises(NECSimError):
 			m.set_simulation_parameters(number_repeats=10000, output_database="output/emptydb.db", seed=1,
 										dispersal_method="notamethod")
 			m.set_map_files("null", "sample/SA_sample_fine.tif")
-			m.test_mean_dispersal()
+			m.run_mean_dispersal()
 
 	def testDispersalNullOutputs(self):
 		"""
@@ -97,8 +95,8 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.set_map("null", 10, 10)
 		m.set_simulation_parameters(number_repeats=10000, output_database="output/normaldispersal1.db", seed=2,
 									sigma=10, landscape_type="infinite", restrict_self=False)
-		m.test_mean_dispersal()
-		self.assertAlmostEqual(m.get_mean_dispersal(), 10*(3.14 ** 0.5) / 2 ** 0.5, places=2)
+		m.run_mean_dispersal()
+		self.assertAlmostEqual(m.get_mean_dispersal(), 10 * (3.14 ** 0.5) / 2 ** 0.5, places=2)
 
 	def testLandscapeTypesMatch(self):
 		"""
@@ -107,13 +105,13 @@ class TestDispersalSimulation(unittest.TestCase):
 		m1 = DispersalSimulation(logging_level=logging.CRITICAL)
 		m1.set_map("null", 10, 10)
 		m1.set_simulation_parameters(number_repeats=100000, output_database="output/normaldispersal2.db", seed=2,
-									sigma=2, landscape_type="infinite", restrict_self=False)
-		m1.test_mean_dispersal()
+									 sigma=2, landscape_type="infinite", restrict_self=False)
+		m1.run_mean_dispersal()
 		m2 = DispersalSimulation(logging_level=logging.CRITICAL)
 		m2.set_map("null", 10, 10)
 		m2.set_simulation_parameters(number_repeats=100000, output_database="output/normaldispersal3.db", seed=2,
-									sigma=2, landscape_type="tiled_fine", restrict_self=False)
-		m2.test_mean_dispersal()
+									 sigma=2, landscape_type="tiled_fine", restrict_self=False)
+		m2.run_mean_dispersal()
 		self.assertEqual(m2.get_mean_dispersal(), m1.get_mean_dispersal())
 
 	def testDispersalMapOutputs(self):
@@ -124,7 +122,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.set_map("sample/SA_sample_fine.tif")
 		m.set_simulation_parameters(number_repeats=10000, output_database="output/realdispersal.db", seed=1,
 									sigma=1, landscape_type="tiled_fine")
-		m.test_mean_dispersal()
+		m.run_mean_dispersal()
 		self.assertAlmostEqual(1.2689283170972379, m.get_mean_dispersal(), places=4)
 
 	def testDispersalDistanceTravelled(self):
@@ -132,7 +130,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.set_map("sample/SA_sample_fine.tif")
 		m.set_simulation_parameters(number_repeats=100, number_steps=10, output_database="output/sim_pars_test2.db",
 									seed=2, sigma=1, landscape_type="tiled_fine")
-		m.test_mean_distance_travelled()
+		m.run_mean_distance_travelled()
 		self.assertAlmostEqual(4.076, m.get_mean_distance_travelled(), places=3)
 
 	def testDispersalSimulationParametersStoredCorrectly(self):
@@ -143,11 +141,9 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.set_map("sample/SA_sample_fine.tif")
 		m.set_simulation_parameters(number_repeats=100, output_database="output/sim_pars_test1.db", seed=1,
 									sigma=1, landscape_type="tiled_fine")
-		m.test_mean_dispersal()
-		m.sigma = 2
-		m.number_steps = 10
-		m.seed = 2
-		m.test_mean_distance_travelled()
+		m.run_mean_dispersal()
+		m.update_parameters(sigma=2, number_steps=10, seed=2)
+		m.run_mean_distance_travelled()
 		main_dict = m.get_database_parameters()
 		comparison_dict = {
 			1: {
@@ -191,13 +187,13 @@ class TestDispersalSimulation(unittest.TestCase):
 		"""
 		Tests that the database parameters are stored and returned correctly.
 		"""
-		self.assertEqual( [x for x in range(1, 7)], self.m.get_database_references())
-		self.assertEqual(self.m.get_database_parameters()[1], {"simulation_type" : "DISPERSAL_DISTANCES", "sigma" : 2,
-															   "tau" : 1, "m_prob" : 1.0, "cutoff" : 100,
-															   "dispersal_method" : "normal",
-															   "map_file" : "sample/SA_sample_fine.tif",
-															   "seed" : 2, "number_steps" : 0,
-															   "number_repeats" : 100})
+		self.assertEqual([x for x in range(1, 7)], self.m.get_database_references())
+		self.assertEqual(self.m.get_database_parameters()[1], {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
+															   "tau": 1, "m_prob": 1.0, "cutoff": 100,
+															   "dispersal_method": "normal",
+															   "map_file": "sample/SA_sample_fine.tif",
+															   "seed": 2, "number_steps": 0,
+															   "number_repeats": 100})
 
 	def testDispersalMapReading(self):
 		"""
@@ -207,7 +203,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.set_map("sample/SA_sample_fine.tif")
 		m.set_simulation_parameters(number_repeats=10000, output_database="output/realdispersal2.db", seed=1,
 									sigma=1, landscape_type="tiled_fine")
-		m.test_mean_dispersal()
+		m.run_mean_dispersal()
 		m2 = DispersalSimulation(dispersal_db=m.dispersal_database, logging_level=logging.CRITICAL)
 		self.assertAlmostEqual(1.2689283170972379, m2.get_mean_dispersal(), places=4)
 		m3 = DispersalSimulation(dispersal_db=m, logging_level=logging.CRITICAL)
@@ -219,8 +215,41 @@ class TestDispersalSimulation(unittest.TestCase):
 			self.fail("File name not correctly set.")
 		m.set_simulation_parameters(number_steps=10, number_repeats=10, output_database="output/realdispersal3.db",
 									sigma=1, landscape_type="tiled_fine", seed=1)
-		m.test_mean_distance_travelled()
-		m.test_mean_dispersal()
+		m.run_mean_distance_travelled()
+		m.run_mean_dispersal()
 		with self.assertRaises(ValueError):
 			m.get_mean_dispersal()
 		self.assertAlmostEqual(1.4892922, m.get_mean_dispersal(parameter_reference=2), places=4)
+
+	def testParameterUpdating(self):
+		"""
+		Tests that a simulation can be run properly with updating parameters in between.
+		"""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map("sample/SA_sample_fine.tif")
+		m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal4.db", seed=1,
+									sigma=1, landscape_type="tiled_fine")
+		m.run_mean_dispersal()
+		m.update_parameters(number_repeats=6, sigma=10)
+		m.run_mean_dispersal()
+		m.update_parameters(dispersal_method="fat-tail", number_steps=10)
+		m.run_mean_distance_travelled()
+		expected_params = {1: {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 1.0,
+							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100, "dispersal_method": "normal",
+							   "map_file": "sample/SA_sample_fine.tif", "seed": 1,
+							   "number_steps": 0, "number_repeats": 100},
+						   2: {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 10.0,
+							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100, "dispersal_method": "normal",
+							   "map_file": "sample/SA_sample_fine.tif", "seed": 1,
+							   "number_steps": 0, "number_repeats": 6},
+						   3: {"simulation_type": "DISTANCES_TRAVELLED", "sigma": 10.0,
+							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100, "dispersal_method": "fat-tail",
+							   "map_file": "sample/SA_sample_fine.tif", "seed": 1,
+							   "number_steps": 10, "number_repeats": 6}
+						   }
+		actual_params = m.get_database_parameters()
+		for key in expected_params.keys():
+			self.assertEqual(expected_params[key], actual_params[key])
+		self.assertAlmostEqual(1.287133430, m.get_mean_dispersal(parameter_reference=1), places=4)
+		self.assertAlmostEqual(15.233920, m.get_mean_dispersal(parameter_reference=2), places=4)
+		self.assertAlmostEqual(467.58323, m.get_mean_distance_travelled(parameter_reference=3), places=4)

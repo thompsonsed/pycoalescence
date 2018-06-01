@@ -38,15 +38,15 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
 
 - ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
-- ``SimulateDispersal.h`` (:ref:`file_necsim_SimulateDispersal.h`)
+- ``SimulateDispersal.h`` (:ref:`file_CSimulateDispersal.h`)
 
 - ``utility``
 

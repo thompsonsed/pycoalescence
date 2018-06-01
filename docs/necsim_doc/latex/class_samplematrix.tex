@@ -24,7 +24,7 @@ Collaboration diagram for Samplematrix\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=174pt]{class_samplematrix__coll__graph}
+\includegraphics[width=350pt]{class_samplematrix__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -82,10 +82,9 @@ void \hyperlink{class_data_mask_ab96af629241f61a4d7122c6b7a91a3ef}{recalculate\+
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-Map$<$ bool $>$ {\bfseries sample\+\_\+mask}\hypertarget{class_data_mask_a0ebe741d4b22824f93dacddd175d2c96}{}\label{class_data_mask_a0ebe741d4b22824f93dacddd175d2c96}
-
+\hyperlink{class_map}{Map}$<$ bool $>$ \hyperlink{class_data_mask_a0ebe741d4b22824f93dacddd175d2c96}{sample\+\_\+mask}
 \item 
-Map$<$ double $>$ \hyperlink{class_data_mask_acc231ebddc3e5db0103220b20d968a4f}{sample\+\_\+mask\+\_\+exact}
+\hyperlink{class_map}{Map}$<$ double $>$ \hyperlink{class_data_mask_acc231ebddc3e5db0103220b20d968a4f}{sample\+\_\+mask\+\_\+exact}
 \end{DoxyCompactItemize}
 \subsection*{Protected Types}
 \begin{DoxyCompactItemize}
@@ -244,6 +243,10 @@ Returns the value at the x,y position, with the given x and y wrap. Also checks 
 \hline
 {\em y1} & the y coordinate \\
 \hline
+{\em xwrap} & the x wrapping \\
+\hline
+{\em ywrap} & the y wrapping \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 the value at x,y. 
@@ -355,9 +358,9 @@ Calculates the matrix value at the provided x, y location. If everywhere is samp
 \hline
 {\em y} & the y position on the grid \\
 \hline
-{\em xval} & the number of x wraps \\
+{\em xwrap} & the number of x wraps \\
 \hline
-{\em yval} & the number of y wraps \\
+{\em ywrap} & the number of y wraps \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -473,10 +476,13 @@ Sets the parameters for the datamask, including the dimensions of the map, the o
 
 
 \subsection{Member Data Documentation}
-\index{Samplematrix@{Samplematrix}!sample\+\_\+mask\+\_\+exact@{sample\+\_\+mask\+\_\+exact}}
+\index{Samplematrix@{Samplematrix}!sample\+\_\+mask@{sample\+\_\+mask}}
+\index{sample\+\_\+mask@{sample\+\_\+mask}!Samplematrix@{Samplematrix}}
+\subsubsection[{\texorpdfstring{sample\+\_\+mask}{sample_mask}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Map}$<$bool$>$ Data\+Mask\+::sample\+\_\+mask\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_data_mask_a0ebe741d4b22824f93dacddd175d2c96}{}\label{class_data_mask_a0ebe741d4b22824f93dacddd175d2c96}
+A binary grid telling whether or not the cell should be sampled. \index{Samplematrix@{Samplematrix}!sample\+\_\+mask\+\_\+exact@{sample\+\_\+mask\+\_\+exact}}
 \index{sample\+\_\+mask\+\_\+exact@{sample\+\_\+mask\+\_\+exact}!Samplematrix@{Samplematrix}}
-\subsubsection[{\texorpdfstring{sample\+\_\+mask\+\_\+exact}{sample_mask_exact}}]{\setlength{\rightskip}{0pt plus 5cm}Map$<$double$>$ Data\+Mask\+::sample\+\_\+mask\+\_\+exact\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_data_mask_acc231ebddc3e5db0103220b20d968a4f}{}\label{class_data_mask_acc231ebddc3e5db0103220b20d968a4f}
-A binary grid telling whether or not the cell should be sampled. 
+\subsubsection[{\texorpdfstring{sample\+\_\+mask\+\_\+exact}{sample_mask_exact}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Map}$<$double$>$ Data\+Mask\+::sample\+\_\+mask\+\_\+exact\hspace{0.3cm}{\ttfamily [inherited]}}\hypertarget{class_data_mask_acc231ebddc3e5db0103220b20d968a4f}{}\label{class_data_mask_acc231ebddc3e5db0103220b20d968a4f}
+Exact grid for determining sampling proportion. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

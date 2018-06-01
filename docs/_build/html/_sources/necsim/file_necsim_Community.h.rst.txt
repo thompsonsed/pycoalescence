@@ -109,9 +109,3 @@ Functions
 
 - :ref:`function_checkSpeciation`
 
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
-

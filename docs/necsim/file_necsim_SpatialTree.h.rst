@@ -39,7 +39,7 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``DataPoint.h`` (:ref:`file_necsim_DataPoint.h`)
 
@@ -47,7 +47,7 @@ Includes
 
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``Matrix.h`` (:ref:`file_necsim_Matrix.h`)
 

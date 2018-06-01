@@ -10,6 +10,8 @@ Program Listing for File LandscapeMetricsCalculator.cpp
 
    // This file is part of NECSim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
+   #include "necsim/Matrix.h"
+   #include "necsim/Map.h"
    #include "LandscapeMetricsCalculator.h"
    
    
@@ -143,39 +145,6 @@ Program Listing for File LandscapeMetricsCalculator.cpp
        writeInfo(ss.str());
    }
    
-   // TODO remove when confirmed working
-   //double LandscapeMetricsCalculator::findNearestNeighbours()
-   //{
-   //  createCellList();
-   //  vector<double> all_distances;
-   //  double auto_min = getCols() * getRows();
-   //  if(auto_min < 1.0)
-   //  {
-   //      throw FatalException("Map size < 1, check your files.");
-   //  }
-   //  for(unsigned long i = 0; i < all_cells.size(); i++)
-   //  {
-   //      double min_distance = auto_min;
-   //      for(unsigned long j = 0; j < all_cells.size(); j++)
-   //      {
-   //          if(j != i)
-   //          {
-   //              auto distance = distanceBetweenCells(all_cells[i], all_cells[j]);
-   //              if(distance < min_distance)
-   //              {
-   //                  min_distance = distance;
-   //              }
-   //          }
-   //      }
-   //      all_distances.emplace_back(min_distance);
-   //  }
-   //  if(all_distances.empty())
-   //  {
-   //      throw FatalException("No cells detected on map. Cannot calculate nearest-neighbours.");
-   //  }
-   //  return accumulate(all_distances.begin(), all_distances.end(), 0.0) / all_distances.size();
-   //}
-   
    double LandscapeMetricsCalculator::calculateClumpiness()
    {
        createCellList();
@@ -187,6 +156,10 @@ Program Listing for File LandscapeMetricsCalculator.cpp
        if(G < P && P < 0.5)
        {
            return (G - P)/P;
+       }
+       else if(P == 1.0)
+       {
+           return 1.0;
        }
        else
        {

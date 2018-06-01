@@ -11,8 +11,10 @@ var searchData=
   ['resetspecies',['resetSpecies',['../class_tree_node.html#a715869c786bb0442d56994de11571605',1,'TreeNode']]],
   ['resettree',['resetTree',['../class_community.html#abd099aacb5332a9b89b3421e01269d24',1,'Community']]],
   ['resize',['resize',['../class_row.html#aac3e65388e6ce2a003be1a1b460fab53',1,'Row']]],
+  ['roundedscale',['roundedScale',['../class_map.html#a9862291ea99fe1718d758213b3687bd8',1,'Map']]],
   ['row',['Row',['../class_row.html#a32774cba0d7cdb6f0d7100c395ece9e5',1,'Row::Row(unsigned long cols=0)'],['../class_row.html#a3c76905ddd4522c92da0d8a9e24a22a1',1,'Row::Row(const Row &amp;r)']]],
   ['rundispersal',['runDispersal',['../class_landscape.html#aedc33de89997456d53cceb3e4e424e64',1,'Landscape']]],
+  ['runfilechecks',['runFileChecks',['../class_spatial_tree.html#a060fb8be17d702ed5eb0c142a89d9773',1,'SpatialTree::runFileChecks()'],['../class_tree.html#a0aefbe2466aefd46dec8c4aea4c85c5e',1,'Tree::runFileChecks()']]],
   ['runmeandispersaldistance',['runMeanDispersalDistance',['../class_simulate_dispersal.html#a4a759f6bb3b8288345eaf7c0d66ad29e',1,'SimulateDispersal']]],
   ['runmeandistancetravelled',['runMeanDistanceTravelled',['../class_simulate_dispersal.html#a406514e917874907cfb7a8d6c7889098',1,'SimulateDispersal']]],
   ['runsimulation',['runSimulation',['../class_tree.html#afe75245862a1c40030c1c8607518cf8d',1,'Tree']]]

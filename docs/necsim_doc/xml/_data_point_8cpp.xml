@@ -2,81 +2,97 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
   <compounddef id="_data_point_8cpp" kind="file" language="C++">
     <compoundname>DataPoint.cpp</compoundname>
+    <includes refid="_logging_8h" local="yes">Logging.h</includes>
     <includes refid="_data_point_8h" local="yes">DataPoint.h</includes>
     <incdepgraph>
-      <node id="265">
+      <node id="306">
         <label>Logging.h</label>
         <link refid="_logging_8h_source"/>
-        <childnode refid="266" relation="include">
+        <childnode refid="307" relation="include">
         </childnode>
-        <childnode refid="264" relation="include">
-        </childnode>
-        <childnode refid="267" relation="include">
-        </childnode>
-        <childnode refid="268" relation="include">
-        </childnode>
-        <childnode refid="269" relation="include">
-        </childnode>
-        <childnode refid="270" relation="include">
-        </childnode>
-        <childnode refid="275" relation="include">
+        <childnode refid="308" relation="include">
         </childnode>
       </node>
-      <node id="275">
+      <node id="318">
         <label>CPLCustomHandler.h</label>
         <link refid="_c_p_l_custom_handler_8h_source"/>
+        <childnode refid="319" relation="include">
+        </childnode>
       </node>
-      <node id="268">
+      <node id="311">
         <label>stdexcept</label>
       </node>
-      <node id="266">
+      <node id="307">
         <label>string</label>
       </node>
-      <node id="274">
+      <node id="317">
         <label>map</label>
       </node>
-      <node id="272">
+      <node id="315">
         <label>fstream</label>
       </node>
-      <node id="262">
+      <node id="305">
         <label>necsim/DataPoint.cpp</label>
         <link refid="DataPoint.cpp"/>
-        <childnode refid="263" relation="include">
+        <childnode refid="306" relation="include">
+        </childnode>
+        <childnode refid="320" relation="include">
         </childnode>
       </node>
-      <node id="267">
+      <node id="310">
         <label>cstdio</label>
       </node>
-      <node id="273">
+      <node id="316">
         <label>ctime</label>
       </node>
-      <node id="269">
+      <node id="312">
         <label>sstream</label>
       </node>
-      <node id="264">
+      <node id="309">
         <label>iostream</label>
       </node>
-      <node id="270">
+      <node id="308">
+        <label>Logger.h</label>
+        <link refid="_logger_8h_source"/>
+        <childnode refid="307" relation="include">
+        </childnode>
+        <childnode refid="309" relation="include">
+        </childnode>
+        <childnode refid="310" relation="include">
+        </childnode>
+        <childnode refid="311" relation="include">
+        </childnode>
+        <childnode refid="312" relation="include">
+        </childnode>
+        <childnode refid="313" relation="include">
+        </childnode>
+        <childnode refid="318" relation="include">
+        </childnode>
+      </node>
+      <node id="313">
         <label>LogFile.h</label>
         <link refid="_log_file_8h_source"/>
-        <childnode refid="271" relation="include">
+        <childnode refid="314" relation="include">
         </childnode>
-        <childnode refid="272" relation="include">
+        <childnode refid="315" relation="include">
         </childnode>
-        <childnode refid="273" relation="include">
+        <childnode refid="316" relation="include">
         </childnode>
-        <childnode refid="274" relation="include">
+        <childnode refid="317" relation="include">
         </childnode>
       </node>
-      <node id="263">
+      <node id="319">
+        <label>cpl_error.h</label>
+      </node>
+      <node id="320">
         <label>DataPoint.h</label>
         <link refid="_data_point_8h_source"/>
-        <childnode refid="264" relation="include">
+        <childnode refid="309" relation="include">
         </childnode>
-        <childnode refid="265" relation="include">
+        <childnode refid="308" relation="include">
         </childnode>
       </node>
-      <node id="271">
+      <node id="314">
         <label>cstring</label>
       </node>
     </incdepgraph>
@@ -116,7 +132,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DataPoint.cpp" line="138" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="138" bodyend="143"/>
+        <location file="necsim/DataPoint.cpp" line="139" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="139" bodyend="145"/>
       </memberdef>
       <memberdef kind="function" id="_data_point_8cpp_1a5ea22488fc99136335b4c8474623ccc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>istream &amp;</type>
@@ -153,7 +169,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/DataPoint.cpp" line="145" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="145" bodyend="153"/>
+        <location file="necsim/DataPoint.cpp" line="147" column="1" bodyfile="necsim/DataPoint.cpp" bodystart="147" bodyend="156"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -166,147 +182,163 @@
     <programlisting>
 <codeline lineno="1"><highlight class="comment">//This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight></codeline>
-<codeline lineno="13"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&quot;DataPoint.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="14"><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">DataPoint::setup</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>xwrap_in,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ywrap_in,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>reference_in,</highlight></codeline>
-<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>list_position_in,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>min_max_in)</highlight></codeline>
-<codeline lineno="17"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>x;</highlight></codeline>
-<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>y;</highlight></codeline>
-<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>xwrap_in;</highlight></codeline>
-<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>ywrap_in;</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>next_lineage<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>reference<sp/>=<sp/>reference_in;</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>list_position<sp/>=<sp/>list_position_in;</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>min_max<sp/>=<sp/>min_max_in;</highlight></codeline>
-<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">DataPoint::setup</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>reference_in,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>list_position_in,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>min_max_in)</highlight></codeline>
-<codeline lineno="30"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">setup</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>reference_in,<sp/>list_position_in,<sp/>min_max_in);</highlight></codeline>
-<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">DataPoint::setup</ref>(<ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>datin)</highlight></codeline>
-<codeline lineno="35"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>datin.<ref refid="class_data_point_1a4b97b62d0d3438e0317e39084c9b95cb" kindref="member">getXpos</ref>();</highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>datin.<ref refid="class_data_point_1a185dbf2dc87c0cb9aaaa75e7ec65e79a" kindref="member">getYpos</ref>();</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>datin.<ref refid="class_data_point_1a94c95a87b33ce5d986ff74f6a5c96fcd" kindref="member">getXwrap</ref>();</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>datin.<ref refid="class_data_point_1ab9d7976595edc06922c997767afc9424" kindref="member">getYwrap</ref>();</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>next_lineage<sp/>=<sp/>datin.<ref refid="class_data_point_1a77bfe024c349550b8f0812cca41c8649" kindref="member">getNext</ref>();</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/>last<sp/>=<sp/>datin.get_last();<sp/>//<sp/>removed<sp/>as<sp/>of<sp/>version<sp/>3.1</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>reference<sp/>=<sp/>datin.<ref refid="class_data_point_1aa8b811037d67e2c74c16e9d85939969e" kindref="member">getReference</ref>();</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>list_position<sp/>=<sp/>datin.<ref refid="class_data_point_1a8c60a34fba35ffb915a57f0968043798" kindref="member">getListpos</ref>();</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>=<sp/>datin.<ref refid="class_data_point_1a874d55e25ca0809ba5b8d5d5256731e5" kindref="member">getNwrap</ref>();</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>min_max<sp/>=<sp/>datin.<ref refid="class_data_point_1a190823c53c821336c7a40d1aee6a5995" kindref="member">getMinmax</ref>();</highlight></codeline>
-<codeline lineno="46"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"></highlight></codeline>
-<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a2433657bfd215678d40904310b926033" kindref="member">DataPoint::setReference</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>z)</highlight></codeline>
-<codeline lineno="49"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>reference<sp/>=<sp/>z;</highlight></codeline>
-<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1aa8279493a06f7c9f810e27673d38f5d4" kindref="member">DataPoint::setNext</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x)</highlight></codeline>
-<codeline lineno="54"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>next_lineage<sp/>=<sp/>x;</highlight></codeline>
-<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a8cbeb60a0cb7e46a2bf37973dc72c3b2" kindref="member">DataPoint::setListPosition</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>l)</highlight></codeline>
-<codeline lineno="59"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>list_position<sp/>=<sp/>l;</highlight></codeline>
-<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1ae73f807fa45356311a58953fb39b4e46" kindref="member">DataPoint::setNwrap</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>n)</highlight></codeline>
-<codeline lineno="64"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>=<sp/>n;</highlight></codeline>
-<codeline lineno="66"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a45a301225a2d39b98d19ed88264b5d31" kindref="member">DataPoint::setMinmax</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d)</highlight></codeline>
-<codeline lineno="69"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>min_max<sp/>=<sp/>d;</highlight></codeline>
-<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"></highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a4b97b62d0d3438e0317e39084c9b95cb" kindref="member">DataPoint::getXpos</ref>()</highlight></codeline>
-<codeline lineno="74"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>xpos;</highlight></codeline>
-<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight></codeline>
-<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a185dbf2dc87c0cb9aaaa75e7ec65e79a" kindref="member">DataPoint::getYpos</ref>()</highlight></codeline>
-<codeline lineno="79"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ypos;</highlight></codeline>
-<codeline lineno="81"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a94c95a87b33ce5d986ff74f6a5c96fcd" kindref="member">DataPoint::getXwrap</ref>()</highlight></codeline>
-<codeline lineno="84"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>xwrap;</highlight></codeline>
-<codeline lineno="86"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1ab9d7976595edc06922c997767afc9424" kindref="member">DataPoint::getYwrap</ref>()</highlight></codeline>
-<codeline lineno="89"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ywrap;</highlight></codeline>
-<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1aa8b811037d67e2c74c16e9d85939969e" kindref="member">DataPoint::getReference</ref>()</highlight></codeline>
-<codeline lineno="94"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>reference;</highlight></codeline>
-<codeline lineno="96"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a77bfe024c349550b8f0812cca41c8649" kindref="member">DataPoint::getNext</ref>()</highlight></codeline>
-<codeline lineno="99"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>next_lineage;</highlight></codeline>
-<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"></highlight></codeline>
-<codeline lineno="103"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a8c60a34fba35ffb915a57f0968043798" kindref="member">DataPoint::getListpos</ref>()</highlight></codeline>
-<codeline lineno="104"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>list_position;</highlight></codeline>
-<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"></highlight></codeline>
-<codeline lineno="108"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a874d55e25ca0809ba5b8d5d5256731e5" kindref="member">DataPoint::getNwrap</ref>()</highlight></codeline>
-<codeline lineno="109"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>nwrap;</highlight></codeline>
-<codeline lineno="111"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="112"><highlight class="normal"></highlight></codeline>
-<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a190823c53c821336c7a40d1aee6a5995" kindref="member">DataPoint::getMinmax</ref>()</highlight></codeline>
-<codeline lineno="114"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>min_max;</highlight></codeline>
-<codeline lineno="116"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="117"><highlight class="normal"></highlight></codeline>
-<codeline lineno="118"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a2d939bcbc5abae0d80fdd42a1b26725f" kindref="member">DataPoint::decreaseNwrap</ref>()</highlight></codeline>
-<codeline lineno="119"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(nwrap==0)</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>out_of_range(</highlight><highlight class="stringliteral">&quot;ERROR_DATA_001:<sp/>Trying<sp/>to<sp/>decrease<sp/><sp/>nwrap<sp/>less<sp/>than<sp/>0.&quot;</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>--;</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="128"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="129"><highlight class="normal"></highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a1d80702ad55b2c64f386b71052adc4d8" kindref="member">DataPoint::setEndpoint</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>xwrapin,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ywrapin)</highlight></codeline>
-<codeline lineno="131"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>x;</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>y;</highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>xwrapin;</highlight></codeline>
-<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>ywrapin;</highlight></codeline>
-<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="137"><highlight class="normal"></highlight></codeline>
-<codeline lineno="138"><highlight class="normal">ostream<sp/>&amp;<ref refid="class_data_point_1adfa94e754617c0b58a39bf86925beeac" kindref="member">operator&lt;&lt;</ref>(ostream<sp/>&amp;os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
-<codeline lineno="139"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.xpos<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ypos<sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.xwrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ywrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.next_lineage<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.reference<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.list_position<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.nwrap&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.min_max<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>os;</highlight></codeline>
-<codeline lineno="143"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="145"><highlight class="normal">istream<sp/>&amp;<ref refid="class_data_point_1a5ea22488fc99136335b4c8474623ccc3" kindref="member">operator&gt;&gt;</ref>(istream<sp/>&amp;is,<sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
-<codeline lineno="146"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>m.numRows&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;m.numCols&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;endl;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>delim;</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>&quot;datapoint&quot;<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.xpos<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ypos<sp/><sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.xwrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ywrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.next_lineage<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.reference<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.list_position<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.nwrap&gt;&gt;<sp/>delim;</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.min_max;</highlight></codeline>
-<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>is;</highlight></codeline>
-<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&quot;Logging.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;DataPoint.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">DataPoint::setup</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>xwrap_in,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ywrap_in,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>reference_in,</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>list_position_in,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>min_max_in)</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>x;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>y;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>xwrap_in;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>ywrap_in;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>next_lineage<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>reference<sp/>=<sp/>reference_in;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>list_position<sp/>=<sp/>list_position_in;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>min_max<sp/>=<sp/>min_max_in;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">DataPoint::setup</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>reference_in,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>list_position_in,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>min_max_in)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">setup</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>reference_in,<sp/>list_position_in,<sp/>min_max_in);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a" kindref="member">DataPoint::setup</ref>(<ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>datin)</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>datin.<ref refid="class_data_point_1a4b97b62d0d3438e0317e39084c9b95cb" kindref="member">getXpos</ref>();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>datin.<ref refid="class_data_point_1a185dbf2dc87c0cb9aaaa75e7ec65e79a" kindref="member">getYpos</ref>();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>datin.<ref refid="class_data_point_1a94c95a87b33ce5d986ff74f6a5c96fcd" kindref="member">getXwrap</ref>();</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>datin.<ref refid="class_data_point_1ab9d7976595edc06922c997767afc9424" kindref="member">getYwrap</ref>();</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>next_lineage<sp/>=<sp/>datin.<ref refid="class_data_point_1a77bfe024c349550b8f0812cca41c8649" kindref="member">getNext</ref>();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/>last<sp/>=<sp/>datin.get_last();<sp/>//<sp/>removed<sp/>as<sp/>of<sp/>version<sp/>3.1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>reference<sp/>=<sp/>datin.<ref refid="class_data_point_1aa8b811037d67e2c74c16e9d85939969e" kindref="member">getReference</ref>();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>list_position<sp/>=<sp/>datin.<ref refid="class_data_point_1a8c60a34fba35ffb915a57f0968043798" kindref="member">getListpos</ref>();</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>=<sp/>datin.<ref refid="class_data_point_1a874d55e25ca0809ba5b8d5d5256731e5" kindref="member">getNwrap</ref>();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>min_max<sp/>=<sp/>datin.<ref refid="class_data_point_1a190823c53c821336c7a40d1aee6a5995" kindref="member">getMinmax</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a2433657bfd215678d40904310b926033" kindref="member">DataPoint::setReference</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>z)</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>reference<sp/>=<sp/>z;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1aa8279493a06f7c9f810e27673d38f5d4" kindref="member">DataPoint::setNext</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x)</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>next_lineage<sp/>=<sp/>x;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a8cbeb60a0cb7e46a2bf37973dc72c3b2" kindref="member">DataPoint::setListPosition</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>l)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>list_position<sp/>=<sp/>l;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1ae73f807fa45356311a58953fb39b4e46" kindref="member">DataPoint::setNwrap</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>n)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>nwrap<sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a45a301225a2d39b98d19ed88264b5d31" kindref="member">DataPoint::setMinmax</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>min_max<sp/>=<sp/>d;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a4b97b62d0d3438e0317e39084c9b95cb" kindref="member">DataPoint::getXpos</ref>()</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>xpos;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a185dbf2dc87c0cb9aaaa75e7ec65e79a" kindref="member">DataPoint::getYpos</ref>()</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ypos;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a94c95a87b33ce5d986ff74f6a5c96fcd" kindref="member">DataPoint::getXwrap</ref>()</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>xwrap;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1ab9d7976595edc06922c997767afc9424" kindref="member">DataPoint::getYwrap</ref>()</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ywrap;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1aa8b811037d67e2c74c16e9d85939969e" kindref="member">DataPoint::getReference</ref>()</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>reference;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a77bfe024c349550b8f0812cca41c8649" kindref="member">DataPoint::getNext</ref>()</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>next_lineage;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a8c60a34fba35ffb915a57f0968043798" kindref="member">DataPoint::getListpos</ref>()</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>list_position;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a874d55e25ca0809ba5b8d5d5256731e5" kindref="member">DataPoint::getNwrap</ref>()</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>nwrap;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a190823c53c821336c7a40d1aee6a5995" kindref="member">DataPoint::getMinmax</ref>()</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>min_max;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a2d939bcbc5abae0d80fdd42a1b26725f" kindref="member">DataPoint::decreaseNwrap</ref>()</highlight></codeline>
+<codeline lineno="120"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(nwrap<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>out_of_range(</highlight><highlight class="stringliteral">&quot;ERROR_DATA_001:<sp/>Trying<sp/>to<sp/>decrease<sp/><sp/>nwrap<sp/>less<sp/>than<sp/>0.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nwrap--;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_data_point_1a1d80702ad55b2c64f386b71052adc4d8" kindref="member">DataPoint::setEndpoint</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>xwrapin,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>ywrapin)</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>xpos<sp/>=<sp/>x;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>ypos<sp/>=<sp/>y;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>xwrap<sp/>=<sp/>xwrapin;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>ywrap<sp/>=<sp/>ywrapin;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">ostream<sp/>&amp;<ref refid="class_data_point_1adfa94e754617c0b58a39bf86925beeac" kindref="member">operator&lt;&lt;</ref>(ostream<sp/>&amp;os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.xpos<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ypos<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.xwrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.ywrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.next_lineage<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.reference</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.list_position<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>d.nwrap<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>d.min_max<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>os;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal">istream<sp/>&amp;<ref refid="class_data_point_1a5ea22488fc99136335b4c8474623ccc3" kindref="member">operator&gt;&gt;</ref>(istream<sp/>&amp;is,<sp/><ref refid="class_data_point" kindref="compound">DataPoint</ref><sp/>&amp;d)</highlight></codeline>
+<codeline lineno="148"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>m.numRows&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;m.numCols&lt;&lt;&quot;<sp/>,<sp/>&quot;&lt;&lt;endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>delim;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//os<sp/>&lt;&lt;<sp/>&quot;datapoint&quot;<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.xpos<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ypos<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.xwrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.ywrap<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.next_lineage<sp/>&gt;&gt;<sp/>delim</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&gt;&gt;<sp/>d.reference<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.list_position<sp/>&gt;&gt;<sp/>delim<sp/>&gt;&gt;<sp/>d.nwrap<sp/>&gt;&gt;<sp/>delim;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>is<sp/>&gt;&gt;<sp/>d.min_max;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>is;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>DataPoint::logActive(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level)</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(50,<sp/></highlight><highlight class="stringliteral">&quot;x,<sp/>y,<sp/>(x<sp/>wrap,<sp/>y<sp/>wrap):<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(xpos)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(ypos)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>(&quot;</highlight><highlight class="normal"><sp/>+</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>to_string(xwrap)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(ywrap)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(50,<sp/></highlight><highlight class="stringliteral">&quot;Lineage<sp/>next:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(next_lineage));</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(50,<sp/></highlight><highlight class="stringliteral">&quot;Reference:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(reference));</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(50,<sp/></highlight><highlight class="stringliteral">&quot;List<sp/>position:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(list_position));</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(50,<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>in<sp/>wrapped<sp/>lineages:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(nwrap));</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(50,<sp/></highlight><highlight class="stringliteral">&quot;Minimum<sp/>maximum:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>to_string(min_max));</highlight></codeline>
+<codeline lineno="168"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>DEBUG</highlight></codeline>
     </programlisting>
     <location file="necsim/DataPoint.cpp"/>
   </compounddef>

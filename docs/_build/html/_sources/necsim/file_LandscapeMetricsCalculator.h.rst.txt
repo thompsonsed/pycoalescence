@@ -54,9 +54,9 @@ Included By
 -----------
 
 
-- :ref:`file_LandscapeMetricsCalculator.cpp`
+- :ref:`file_CLandscapeMetricsCalculator.h`
 
-- :ref:`file_landscapemetricsmodule.cpp`
+- :ref:`file_LandscapeMetricsCalculator.cpp`
 
 
 

@@ -38,6 +38,8 @@ Includes
 --------
 
 
+- ``PyLogger.h`` (:ref:`file_PyLogger.h`)
+
 - ``Python.h``
 
 - ``necsim/LogFile.h`` (:ref:`file_necsim_LogFile.h`)
@@ -50,11 +52,9 @@ Included By
 -----------
 
 
-- :ref:`file_applyspecmodule.cpp`
+- :ref:`file_CLandscapeMetricsCalculator.h`
 
-- :ref:`file_dispersalmodule.cpp`
-
-- :ref:`file_landscapemetricsmodule.cpp`
+- :ref:`file_CSimulation.h`
 
 - :ref:`file_necsimmodule.cpp`
 
@@ -67,24 +67,7 @@ Functions
 ---------
 
 
-- :ref:`function_set_log_function`
+- :ref:`function_getGlobalLogger`
 
-- :ref:`function_set_logger`
-
-- :ref:`function_write_log`
-
-- :ref:`function_write_log`
-
-
-Variables
----------
-
-
-- :ref:`variable_call_logging`
-
-- :ref:`variable_log_set`
-
-- :ref:`variable_logger`
-
-- :ref:`variable_logger_set`
+- :ref:`function_removeGlobalLogger`
 

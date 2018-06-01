@@ -24,27 +24,11 @@ import sys
 import json
 from collections import defaultdict
 
-e_list = []
 try:
-	try:
-		from .build import applyspecmodule
-	except ImportError as ie:
-		e_list.append(ie)
-		from build import applyspecmodule
-	ApplySpecError = applyspecmodule.ApplySpecError
-	applyspec_import = True
+	from .build import necsimmodule
 except ImportError as ie:
-	logging.warning("Could not import the apply speciation module. Using deprecated mode.")
-	e_list.append(ie)
-	for each in e_list:
-		logging.warning(str(each))
-	applyspecmodule = None
-	applyspec_import = False
-
-
-	# Empty class for exception handling
-	class ApplySpecError(Exception):
-		pass
+	logging.info(str(ie))
+	from build import necsimodule, NECSimError
 
 from .future_except import FileNotFoundError
 from .system_operations import execute_log_info, mod_directory, create_logger, write_to_log
@@ -87,7 +71,7 @@ class CoalescenceTree(object):
 	  if required (:py:meth:`~import_comparison_data`)
 
 	* Apply additional speciation rates (if required) using :py:meth:`~set_speciation_params` and then
-	  :py:meth:`~apply_speciation`
+	  :py:meth:`~apply`
 
 	* Calculate required metrics (such as :py:meth:`~calculate_fragment_richness`)
 	* Optionally, calculate the goodness of fit (:py:meth:`~calculate_goodness_of_fit`)
@@ -103,6 +87,8 @@ class CoalescenceTree(object):
 		:param log_output: optionally provide a file to output information to instead
 		:return: None
 		"""
+		# C object for calculating the coalescence tree
+		self.c_community = None
 		# speciation objects
 		self.equalised = False
 		self.is_setup_speciation = False
@@ -130,15 +116,13 @@ class CoalescenceTree(object):
 		# Metacommunity parameters
 		self.metacommunity_size = None
 		self.metacommunity_speciation_rate = None
-		# Support for deprecated methods
-		self.apply_spec_module = applyspecmodule
-		self.logger = logging.Logger("applyspeclogger")
+		self.logger = logging.Logger("pycoalescence.coalescence")
 		self.logging_level = logging_level
 		self._create_logger(file=log_output)
-		if not applyspec_import:
-			self.setup(os.path.join(mod_directory, "build/default/SpeciationCounter"))
 		if database is not None:
 			self.set_database(database)
+		# Set to true once speciation rates have been written to the output database.
+		self.has_applied = False
 
 	def __del__(self):
 		"""
@@ -523,6 +507,25 @@ class CoalescenceTree(object):
 		if self.sample_file == "null" and self.record_fragments == "null":
 			raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
 							 "provide a samplemask or set record_fragments=False.")
+		self.set_c_community()
+		protracted_speciation_min = [float(x[0]) for x in self.protracted_parameters]
+		protracted_speciation_max = [float(x[1]) for x in self.protracted_parameters]
+		self.c_community.setup(self.file, self.record_spatial, self.sample_file, self.record_fragments,
+							   self.applied_speciation_rates_list, self.times, protracted_speciation_min,
+							   protracted_speciation_max, self.metacommunity_size, self.metacommunity_speciation_rate)
+
+	def set_c_community(self):
+		"""
+		Sets the c++ object depending on if a metacommunity is used or not.
+
+		:rtype: None
+		"""
+		if self.c_community is None:
+			if self.metacommunity_size == 0:
+				self.c_community = necsimmodule.CCommunity(self.logger, write_to_log)
+			else:
+				self.c_community = necsimmodule.CMetacommunity(self.logger, write_to_log)
+
 
 	def add_time(self, time):
 		"""
@@ -532,7 +535,10 @@ class CoalescenceTree(object):
 		"""
 		if self.times is None:
 			self.times = [0.0]
-		self.times.append(time)
+		self.times.append(float(time))
+		self.set_c_community()
+		self.c_community.add_time(float(time))
+
 
 	def add_times(self, times):
 		"""
@@ -554,8 +560,11 @@ class CoalescenceTree(object):
 		"""
 		if self.protracted_parameters == [(0.0, 0.0)]:
 			self.protracted_parameters = []
+			self.c_community.wipe_protracted_parameters()
 		if (min_speciation_gen, max_speciation_gen) not in self.protracted_parameters:
 			self.protracted_parameters.append((min_speciation_gen, max_speciation_gen))
+			self.set_c_community()
+			self.c_community.add_protracted_parameters(float(min_speciation_gen), float(max_speciation_gen))
 
 	def add_multiple_protracted_parameters(self, min_speciation_gens=None, max_speciation_gens=None,
 										   speciation_gens=None):
@@ -581,11 +590,23 @@ class CoalescenceTree(object):
 		for min_g, max_g in tmp:
 			self.add_protracted_parameters(min_g, max_g)
 
-	def apply_speciation(self):
+	def apply(self):
 		"""
-		Creates the list of speciation options and performs the speciation analysis by calling SpeciationCounter.
+		Generates the cooalescence tree for the set of speciation parameters.
 		This must be run after the main coalescence simulations are complete.
 		It will create additional fields and tables in the SQLite database which contains the requested data.
+		"""
+
+		# Convert fragment file to null if it is true
+		# Log warning if sample file is null and record fragments is true
+		self.apply_incremental()
+		self.c_community.output()
+		self.has_applied = True
+
+	def apply_incremental(self):
+		"""
+		Generates the coalescence tree for the set of speciation parameters. Does not write changes to the database,
+		just holds the changes internally.
 		"""
 		# Check file exists
 		if self.times is None:
@@ -593,34 +614,23 @@ class CoalescenceTree(object):
 		if not os.path.exists(self.file):
 			self.logger.warning(str("Check file existance for " + self.file +
 									". Potential lack of access (verify that definition is a relative path)."))
-		# Convert fragment file to null if it is true
-		# Log warning if sample file is null and record fragments is true
-		if applyspec_import:
-			try:
-				self.apply_spec_module.set_logger(self.logger)
-				self.apply_spec_module.set_log_function(write_to_log)
-				protracted_speciation_min = [float(x[0]) for x in self.protracted_parameters]
-				protracted_speciation_max = [float(x[1]) for x in self.protracted_parameters]
-				self.apply_spec_module.apply(self.file, self.record_spatial, self.sample_file,
-											 self.record_fragments, self.applied_speciation_rates_list, self.times,
-											 protracted_speciation_min, protracted_speciation_max,
-											 self.metacommunity_size, self.metacommunity_speciation_rate)
-			except TypeError as te:
-				raise te
-			except Exception as e:
-				raise ApplySpecError(str(e))
+		self.set_c_community()
+		if self.has_applied:
+			self.logger.warning("Output has already been written to file - regenerating internal object.")
+			self.logger.info("To avoid this message in future, use apply_incremental() and then output() to generate "
+							 "the file")
+			self.c_community.reset()
+		self.c_community.apply()
+
+	def output(self):
+		"""
+		Outputs the coalescence trees to the same simulation database object.
+		"""
+		if self.has_applied:
+			self.logger.error("Coalescence tree has already been written to output database.")
 		else:
-			self.logger.warning("Using deprecated speciation application method.")
-			sim_list = [self.speciation_simulator, self.file, self.record_spatial, self.sample_file,
-						self.times, self.record_fragments]
-			sim_list.extend([str(x) for x in self.applied_speciation_rates_list])
-			sim_list_str = [str(x) for x in sim_list]
-			try:
-				execute_log_info(sim_list_str)
-			except subprocess.CalledProcessError as cpe:
-				self.logger.warning("CalledProcessError while applying speciation rates: " +
-									",".join([str(x) for x in sim_list_str]))
-				raise cpe
+			self.c_community.output()
+
 
 	def get_richness(self, reference=1):
 		"""
@@ -1850,6 +1860,8 @@ class CoalescenceTree(object):
 		self.cursor.execute("DROP TABLE IF EXISTS BETA_DIVERSITY")
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_DISTANCE_SIMILARITY")
 		self.database.commit()
+		if self.c_community is not None:
+			self.c_community.reset()
 
 	def wipe_data(self):
 		"""
@@ -1863,6 +1875,8 @@ class CoalescenceTree(object):
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LOCATIONS")
 		self.clear_calculations()
 		self.database.commit()
+		if self.c_community is not None:
+			self.c_community.reset()
 
 	def sample_fragment_richness(self, fragment, number_of_individuals, community_reference=1, n=1):
 		"""

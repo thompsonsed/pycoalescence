@@ -68,6 +68,8 @@
 </ul>
 <div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim/Matrix.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim/Map.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;LandscapeMetricsCalculator.h&quot;</span><span class="cp"></span>
 
 
@@ -201,39 +203,6 @@
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="p">}</span>
 
-<span class="c1">// TODO remove when confirmed working</span>
-<span class="c1">//double LandscapeMetricsCalculator::findNearestNeighbours()</span>
-<span class="c1">//{</span>
-<span class="c1">//  createCellList();</span>
-<span class="c1">//  vector&lt;double&gt; all_distances;</span>
-<span class="c1">//  double auto_min = getCols() * getRows();</span>
-<span class="c1">//  if(auto_min &lt; 1.0)</span>
-<span class="c1">//  {</span>
-<span class="c1">//      throw FatalException(&quot;Map size &lt; 1, check your files.&quot;);</span>
-<span class="c1">//  }</span>
-<span class="c1">//  for(unsigned long i = 0; i &lt; all_cells.size(); i++)</span>
-<span class="c1">//  {</span>
-<span class="c1">//      double min_distance = auto_min;</span>
-<span class="c1">//      for(unsigned long j = 0; j &lt; all_cells.size(); j++)</span>
-<span class="c1">//      {</span>
-<span class="c1">//          if(j != i)</span>
-<span class="c1">//          {</span>
-<span class="c1">//              auto distance = distanceBetweenCells(all_cells[i], all_cells[j]);</span>
-<span class="c1">//              if(distance &lt; min_distance)</span>
-<span class="c1">//              {</span>
-<span class="c1">//                  min_distance = distance;</span>
-<span class="c1">//              }</span>
-<span class="c1">//          }</span>
-<span class="c1">//      }</span>
-<span class="c1">//      all_distances.emplace_back(min_distance);</span>
-<span class="c1">//  }</span>
-<span class="c1">//  if(all_distances.empty())</span>
-<span class="c1">//  {</span>
-<span class="c1">//      throw FatalException(&quot;No cells detected on map. Cannot calculate nearest-neighbours.&quot;);</span>
-<span class="c1">//  }</span>
-<span class="c1">//  return accumulate(all_distances.begin(), all_distances.end(), 0.0) / all_distances.size();</span>
-<span class="c1">//}</span>
-
 <span class="kt">double</span> <span class="n">LandscapeMetricsCalculator</span><span class="o">::</span><span class="n">calculateClumpiness</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">createCellList</span><span class="p">();</span>
@@ -245,6 +214,10 @@
     <span class="k">if</span><span class="p">(</span><span class="n">G</span> <span class="o">&lt;</span> <span class="n">P</span> <span class="o">&amp;&amp;</span> <span class="n">P</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">G</span> <span class="o">-</span> <span class="n">P</span><span class="p">)</span><span class="o">/</span><span class="n">P</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">P</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mf">1.0</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>

@@ -15,7 +15,7 @@ Program Listing for File SimulationTemplates.h
    #define SIMULATIONTEMPLATES_H
    #include <string>
    #include <sstream>
-   #include "Logging.h"
+   #include "Logger.h"
    #include "CustomExceptions.h"
    
    const string & getConfigFileFromCmdArgs(const vector<string> & com_args)

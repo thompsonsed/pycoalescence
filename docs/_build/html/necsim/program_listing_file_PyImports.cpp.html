@@ -66,10 +66,8 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_PyImports.cpp.html#file-pyimports-cpp"><span class="std std-ref">File PyImports.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//</span>
-<span class="c1">// Created by Sam Thompson on 02/04/2018.</span>
-<span class="c1">//</span>
-
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;csignal&gt;</span><span class="cp"></span>
@@ -122,6 +120,10 @@
 
 <span class="kt">bool</span> <span class="nf">importPyListToVectorDouble</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">list_input</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">output</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">err_msg</span><span class="p">)</span>
 <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">list_input</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
     <span class="n">Py_ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">PyList_Size</span><span class="p">(</span><span class="n">list_input</span><span class="p">);</span>
     <span class="n">PyObject</span> <span class="o">*</span> <span class="n">item</span><span class="p">;</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>

@@ -17,7 +17,7 @@ var class_dispersal_coordinator =
     [ "disperseNullDispersalMap", "class_dispersal_coordinator.html#a4bac3aeedb3ceb40601c3db951032d0e", null ],
     [ "fixDispersal", "class_dispersal_coordinator.html#a588b959feff178953c37bfeae7aa8529", null ],
     [ "fixDispersalRow", "class_dispersal_coordinator.html#a7fc1c7f99cb2ac16ae97c78876eb69ab", null ],
-    [ "setDispersal", "class_dispersal_coordinator.html#ab0face98d80793e7f4a8ad1bf4dfe3f1", null ],
+    [ "setDispersal", "class_dispersal_coordinator.html#a977652ff40148fa7e0a0bfff049b9568", null ],
     [ "setDispersal", "class_dispersal_coordinator.html#a8504699586755df070b44da71ea346a5", null ],
     [ "setEndPointFptr", "class_dispersal_coordinator.html#ae72980ec66825c641545675037885248", null ],
     [ "setGenerationPtr", "class_dispersal_coordinator.html#aad9a57afe4629674c958e4d0de4d2451", null ],

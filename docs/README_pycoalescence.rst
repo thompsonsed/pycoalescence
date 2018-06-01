@@ -135,52 +135,48 @@ The recommended method is:
 #. Finalise setup
 
    - Run :func:`finalise_setup() <pycoalescence.simulation.Simulation.finalise_setup>` to check that simulations are
-     setup, generate the command to be passed to :ref:`necsim <Introduction_necsim>` and create any required config files.
+     setup and set up the maps and data structures in memory :ref:`necsim <Introduction_necsim>`.
 
 #. Run simulations
 
-   - Finally, start the simulation using :func:`run_coalescence() <pycoalescence.simulation.Simulation.run_coalescence>`
+   - Start the simulation using :func:`run_coalescence() <pycoalescence.simulation.Simulation.run_coalescence>`
+   - Returns True if the simulations complete successfully and False if the simulations run out of time and pause
 
-Custom Configuration Files
-''''''''''''''''''''''''''
-Although not recommended for most use-cases, it is possible to manually create a configuration file, instead of relying on
-:func:`finalise_setup() <pycoalescence.simulation.Simulation.finalise_setup>` to do it for you. This may be useful if
-you want to store the setup file in a particular place. The process is outlined below. The configuration
-file is as default stored in mainconf_*job_num*_*seed*.txt.
+#. Apply speciation rates and output database
 
-#. Add a temporal sampling configuration file
+   - Generate a coalescence tree for each speciation rate using
+     :func:`apply_speciation_rates() <pycoalescence.simulation.Simulation.apply_speciation_rates>`
+   - This function also writes the output to the simulation file.
 
-   If you require sampling at points other than the present day, these can be specified within the configuration file.
+.. important:: The last three steps can be combined using :func:`run() <pycoalescence.simulation.Simulation.run>`,
+               which also performs checks for if the simulation has run out of time and paused, rather than completing.
 
-   - Add temporal sampling points using :func:`add_sample_time() <pycoalescence.simulation.Simulation.add_sample_time>`
-     Multiple sample points can be added.
-   - Create the temporal sampling config file (:func:`create_temporal_sampling_config() <pycoalescence.simulation.Simulation.create_temporal_sampling_config>`)
-#. Generate the main config file
-
-   Run :func:`create_config() <pycoalescence.simulation.Simulation.create_config>` to generate the main config file.
-
-   .. note:: If you wish to use multiple map files or multiple temporal samples and wish to use a main config file as well,
-      you must call
-      :func:`create_config() <pycoalescence.simulation.Simulation.create_config>` **after** both
-      :func:`create_map_config() <pycoalescence.simulation.Simulation.create_map_config>` and
-      :func:`create_temporal_sampling_config() <pycoalescence.simulation.Simulation.create_temporal_sampling_config>`
-
-   .. warning:: It is possible to use temporal config files without using a main config file. However,
-      if you want map or main options in config file, you **must** use all config options (main config and temporal config).
-#. Add map configuration options
-
-   If you require multiple map files at different points in time, you shall need to create a configuration (.txt or .cfg)
-   file to make these options accessible to the program.
-
-   These configuration options appear in the main configuration file under various headings.
-
-   - First add the historical map options using :func:`add_historical_map() <pycoalescence.landscape.Landscape.add_historical_map>`
-     This can be performed multiple times to add several maps.
-   - Add the options to the configuration file (:func:`create_map_config() <pycoalescence.simulation.Simulation.create_map_config>`)
 
 .. note::
     See Glossary_ for definitions of :term:`sample map`, :term:`fine map` and :term:`coarse map`.
 
+Key Features
+''''''''''''
+
+Some of key simulation features are listed below.
+
+- **Set differing landscape types** using fine and coarse density maps, both current and historical (see
+  :func:`set_map_files() <pycoalescence.simulation.Simulation.set_map_files>` and
+  :func:`add_historical_map() <pycoalescence.landscape.Landscape.add_historical_map>`).
+- **Specify a sampling mask**, as a binary sampling mask defining areas to sample from (the sample map). Alternatively,
+  for varying sampling effort across space choose `uses_spatial_sampling=True` in
+  :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`.
+- **Multiple sampling points in time** using
+  :func:`add_sample_time() <pycoalescence.simulation.Simulation.add_sample_time>`.
+- **Protracted speciation simulations** using `protracted=True` in
+  :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`.
+- **Non-spatial simulations** using `spatial=False` in
+  :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`.
+- **Spatial simulations using a variety of dispersal kernels**. This is the default, using a normally-distributed
+  dispersal kernel. For other kernels see :ref:`here <disp_kernels>`.
+- **Varying reproductive rates across space** using a map of relative reproductive rates. See :ref:`here <rep_map>`.
+- **Varying landscape types** including infinite landscapes, infinitely tiled landscapes of the coarse or fine density
+  map and closed landscapes with hard boundaries. See :ref:`here <inf_land>`.
 
 
 Examples
@@ -191,12 +187,12 @@ A simple simulation
 .. code-block:: python
 
     from pycoalescence import Simulation
-    # Set logging level to "info" (from logging module)
+    # set logging level to "info" (from logging module)
     c = Simulation(logging_level=20)
     # set the main simulation parameters - use default values for other keyword arguments
     c.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
                             sigma=4, deme=10, sample_size=0.1, max_time=1)
-    # Optionally add a set of speciation rates to apply at the end of the simulation
+    # optionally add a set of speciation rates to apply at the end of the simulation
     c.set_speciation_rates([0.1, 0.2, 0.3])
     # set the map parameters - null means the map will be generated with 100% cover everywhere (no file input).
     c.set_map_parameters(sample_file = "null", sample_x = 100, sample_y=100,
@@ -204,9 +200,8 @@ A simple simulation
                          coarse_file = "null", coarse_x = 1000, coarse_y = 1000,
                          coarse_x_offset = 100, coarse_y_offset = 100, coarse_scale = 10,
                          historical_fine_map = "null", historical_coarse_map = "null")
-    # complete setup and run simulation
-    c.finalise_setup()
-    c.run_coalescence()
+    # run checks, complete the simulation and output the database
+    c.run()
 
 A more complex example using multiple temporal sampling points and detection of map dimensions from the
 inputted map files.
@@ -222,7 +217,7 @@ inputted map files.
                             dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.2,
                             gen_since_historical=200, time_config_file="null", restrict_self=False,
                             landscape_type=False)
-    # Add a set of speciation rates to be applied at the end of the simulation
+    # add a set of speciation rates to be applied at the end of the simulation
     c.set_speciation_rates([0.2, 0.3, 0.4])
     # set the map files
     c.set_map_files(sample_file="null", fine_file="path/to/fine.tif", coarse_file="path/to/coarse.tif")
@@ -231,86 +226,17 @@ inputted map files.
     c.add_sample_time(1.0)
     # add historical maps
     c.add_historical_map(fine_map="path/to/historicalfine1.tif", coarse_map="path/to/historicalcoarse1.tif", time=1, rate=0.5)
-    # create configuration files, run the checks and finalise the simulation
-    c.finalise_setup()
-    # run the simulation
-    c.run_coalescence()
+    # run checks, complete the simulation and output the database
+    c.run()
 
 .. note:: necsim can also be run directly using command line arguments (see
           :ref:`Introduction to necsim <Introduction_necsim>`).
 
-Example configuration file
-
-::
-
-    [sample_grid]
-    path = /Data/Maps/maskmap.tif
-    x = 486
-    y = 517
-    mask = /Data/Maps/maskmap.tif
-
-    [fine_map]
-    path = /Data/Maps/finemap.tif
-    x = 34000
-    y = 28000
-    x_off = 17155
-    y_off = 11178
-
-    [coarse_map]
-    path = /Data/Maps/coarsemap.tif
-    x = 24000
-    y = 20000
-    x_off = 10320
-    y_off = 7200
-    scale = 10.0
-
-    [historical_fine0]
-    path = none
-    number = 0
-    time = 200
-    rate = 0
-
-    [historical_coarse0]
-    path = none
-    number = 0
-    time = 200
-    rate = 0
-
-    [historical_fine1]
-    path = none
-    number = 1
-    time = 200
-    rate = 0
-
-    [historical_coarse1]
-    path = none
-    number = 1
-    time = 200
-    rate = 0
-
-    [dispersal]
-    method = norm-uniform
-    m_probability = 1e-10
-    cutoff = 0
-    restrict_self = 0
-    landscape_type = 0
-
-    [main]
-    seed = 1
-    job_type = 2
-    map_config = output/mainconf_2_1.txt
-    output_directory = output/
-    min_spec_rate = 1e-05
-    sigma = 0.5
-    tau = 2
-    deme = 10
-    sample_size = 0.1
-    max_time = 2000
-    dispersal_relative_cost = 1
-    time_config = null
-    min_species = 1
 
 
+
+
+.. _`disp_kernels`:
 Dispersal Kernels
 '''''''''''''''''
 
@@ -343,6 +269,7 @@ process, see :ref:`here <simulate_landscapes>`
 
 .. important:: In this scenario, it is not possible to use a coarse map, which should be "none".
 
+.. _`rep_map`:
 Differing reproductive rates
 ''''''''''''''''''''''''''''
 
@@ -397,6 +324,7 @@ and y dimensions) and purple arrows indicate the offsets for the coarse map.
 .. image:: src/grid_sample.png
     :alt: Example sample map, fine map and coarse map
 
+.. _`inf_land`:
 Infinite Landscapes
 '''''''''''''''''''
 
@@ -451,6 +379,82 @@ outlined below.
                                   'sample_x_offset': 8208,
                                   'sample_y_offset': 14877})
 
+Generating Configuration Files
+''''''''''''''''''''''''''''''
+
+The default process is to not generate any actual config files - these are instead kept in memory to be passed to c++.
+However, the configs can be written to a file using
+:func:`write_config() <pycoalescence.simulation.Simulation.write_config>`, which may be useful for storing simulation
+parameters outside of the simulation database.
+
+Example configuration file
+
+::
+
+    [main]
+    seed = 1
+    job_type = 2
+    output_directory = output/
+    min_spec_rate = 1e-05
+    sigma = 0.5
+    tau = 2
+    deme = 10
+    sample_size = 0.1
+    max_time = 2000
+    dispersal_relative_cost = 1
+    min_species = 1
+
+    [sample_grid]
+    path = /Data/Maps/maskmap.tif
+    x = 486
+    y = 517
+    mask = /Data/Maps/maskmap.tif
+
+    [fine_map]
+    path = /Data/Maps/finemap.tif
+    x = 34000
+    y = 28000
+    x_off = 17155
+    y_off = 11178
+
+    [coarse_map]
+    path = /Data/Maps/coarsemap.tif
+    x = 24000
+    y = 20000
+    x_off = 10320
+    y_off = 7200
+    scale = 10.0
+
+    [historical_fine0]
+    path = none
+    number = 0
+    time = 200
+    rate = 0
+
+    [historical_coarse0]
+    path = none
+    number = 0
+    time = 200
+    rate = 0
+
+    [historical_fine1]
+    path = none
+    number = 1
+    time = 200
+    rate = 0
+
+    [historical_coarse1]
+    path = none
+    number = 1
+    time = 200
+    rate = 0
+
+    [dispersal]
+    method = norm-uniform
+    m_probability = 1e-10
+    cutoff = 0
+    restrict_self = 0
+    landscape_type = 0
 
 .. _`Postsim_analysis`:
 Post-simulation analysis
@@ -476,10 +480,9 @@ The two functions for this routine are
       desired.
 
 
--  :func:`apply_speciation() <pycoalescence.coalescence_tree.CoalescenceTree.apply_speciation>` performs the analysis.
-   This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations will
-   be stored in extra tables within the same SQL file as originally
-   specified.
+-  :func:`apply() <pycoalescence.coalescence_tree.CoalescenceTree.apply>` performs the analysis and writes to the output
+   file. This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations
+   will be stored in extra tables within the same SQL file as originally specified.
 
 The procedure for applying additional speciation rates to an existing database is
 
@@ -488,9 +491,9 @@ The procedure for applying additional speciation rates to an existing database i
     from pycoalescence import CoalescenceTree
     t = CoalescenceTree()
     speciation_rates = [0.1, 0.2 ,0.3]
-    t.set_database("output/SQL_data/data_1_1.db")
+    t.set_database("output/data_1_1.db")
     t.set_speciation_params("T", "null", speciation_rates)
-    t.apply_speciation()
+    t.apply()
 
 The :class:`CoalescenceTree class<pycoalescence.coalescence_tree.CoalescenceTree>` object can also be set up from a
 :class:`Simulation class<pycoalescence.simulation.Simulation>` object as:
@@ -550,8 +553,8 @@ Additionally, one can provide the following if comparisons between fragments are
     FRAGMENT\_ABUNDANCES using :func:`calculate_comparison_octaves() <pycoalescence.coalescence_tree.CoalescenceTree.calculate_comparison_octaves>`
 
 
-Extended Features
-~~~~~~~~~~~~~~~~~
+Additional Package Features
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Read tif files and perform a number of operations taking into account georeferencing of the data.
   Functionality is contained within the :class:`Map class <pycoalescence.map.Map>` (see :ref:`here <map_reading>`).
@@ -561,7 +564,6 @@ Extended Features
   a single map is supported with "closed", "infinite" or "tiled" landscape types (see :ref:`here <simulate_landscapes>`).
 - Simulations can be merged into a single output, with each simulation occupying a separate guild (see
   :ref:`here <merging_simulations>`). Analyses can then be performed on the combined data.
-
 
 
 
@@ -578,10 +580,10 @@ Essential
 ~~~~~~~~~
 
 -  Python version 2 >= 2.7.9 or 3 >= 3.4.1
--  C++ compiler (such as GNU g++) with C++11 support.
--  The SQLite library available `here <https://www.sqlite.org/download.html>`__. Require both ``c++`` and ``python`` installations.
+-  C++ compiler (such as GNU g++) with C++14 support.
+-  The SQLite library available `here <https://www.sqlite.org/download.html>`__. Requires both ``c++`` and ``python``
+   installations.
 -  The Boost library for C++ available `here <http://www.boost.org>`__.
-
 -  Numerical python (``numpy``) package.
 
 .. tip:: Most packages, including their c++ libraries, can be installed using `pip install package_name` on most UNIX

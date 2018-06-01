@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File README.md" href="file_necsim_fast-cpp-csv-parser2_README.md.html" />
+    <link rel="next" title="File PyTemplates.h" href="file_PyTemplates.h.html" />
     <link rel="prev" title="File PyLogging.h" href="file_PyLogging.h.html" /> 
   </head>
   <body role="document">
@@ -45,7 +45,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_fast-cpp-csv-parser2_README.md.html" title="File README.md"
+          <a href="file_PyTemplates.h.html" title="File PyTemplates.h"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="file_PyLogging.h.html" title="File PyLogging.h"
@@ -74,23 +74,11 @@
 <span class="cp">#include</span> <span class="cpf">&quot;Python.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/LogFile.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PyLogger.h&quot;</span><span class="cp"></span>
 
-<span class="k">extern</span> <span class="kt">bool</span> <span class="n">log_set</span><span class="p">;</span>
-<span class="k">extern</span> <span class="kt">bool</span> <span class="n">logger_set</span><span class="p">;</span>
+<span class="n">PyLogger</span> <span class="o">*</span> <span class="nf">getGlobalLogger</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span> <span class="n">logger</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="n">log_function</span><span class="p">);</span>
 
-<span class="k">extern</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="n">call_logging</span><span class="p">;</span>
-
-
-<span class="k">extern</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">logger</span><span class="p">;</span>
-
-<span class="n">PyObject</span> <span class="o">*</span> <span class="nf">set_log_function</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">dummy</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">);</span>
-
-<span class="n">PyObject</span> <span class="o">*</span> <span class="nf">set_logger</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="n">args</span><span class="p">);</span>
-
-<span class="kt">void</span> <span class="nf">write_log</span><span class="p">(</span><span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">message</span><span class="p">);</span>
-
-<span class="kt">void</span> <span class="nf">write_log</span><span class="p">(</span><span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="n">string</span> <span class="n">message</span><span class="p">);</span>
-
+<span class="kt">void</span> <span class="nf">removeGlobalLogger</span><span class="p">();</span>
 <span class="cp">#endif </span><span class="c1">// PYLOGGING_H</span>
 </pre></div>
 </div>
@@ -109,8 +97,8 @@
   <p class="topless"><a href="file_PyLogging.h.html"
                         title="previous chapter">File PyLogging.h</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="file_necsim_fast-cpp-csv-parser2_README.md.html"
-                        title="next chapter">File README.md</a></p>
+  <p class="topless"><a href="file_PyTemplates.h.html"
+                        title="next chapter">File PyTemplates.h</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -142,7 +130,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_fast-cpp-csv-parser2_README.md.html" title="File README.md"
+          <a href="file_PyTemplates.h.html" title="File PyTemplates.h"
              >next</a> |</li>
         <li class="right" >
           <a href="file_PyLogging.h.html" title="File PyLogging.h"

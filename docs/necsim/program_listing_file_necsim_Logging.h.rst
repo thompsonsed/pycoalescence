@@ -9,18 +9,14 @@ Program Listing for File Logging.h
 .. code-block:: cpp
 
    // This file is part of NECSim project which is released under MIT license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
-   #ifndef LOGGING_IMPORT_H
-   #define LOGGING_IMPORT_H
-   #include <string>
-   #include <iostream>
-   #include <cstdio>
-   #include <stdexcept>
-   #include <sstream>
-   #include "LogFile.h"
-   #include "CPLCustomHandler.h"
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
+   #ifndef NECSIM_LOGGING_H
+   #define NECSIM_LOGGING_H
    
-   using namespace std;
+   #include <string>
+   #include "Logger.h"
+   // Global declaration of logger
+   extern Logger *logger;
    
    void writeInfo(string message);
    
@@ -30,11 +26,12 @@ Program Listing for File Logging.h
    
    void writeCritical(string message);
    
-   
    #ifdef DEBUG
    
    void writeLog(const int &level, string message);
    
    void writeLog(const int &level, stringstream &message);
+   
    #endif // DEBUG
-   #endif // LOGGING_IMPORT_H
+   
+   #endif //MEANDISTANCEMODULE_LOGGING_H

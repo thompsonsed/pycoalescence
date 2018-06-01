@@ -172,6 +172,10 @@ def configure(opts=None):
 
 	:param opts: a list of options to pass to the ./configure call
 	"""
+	if "--with-debug" in opts:
+		for i, each in enumerate(opts):
+			if "-DNDEBUG" in each:
+				opts[i] = opts[i].replace("-DNDEBUG", "")
 	if os.path.exists(os.path.join(mod_directory, "lib/configure")):
 		try:
 			if opts is None:

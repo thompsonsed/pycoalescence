@@ -38,7 +38,9 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
+
+- ``DoubleComparison.h`` (:ref:`file_necsim_DoubleComparison.h`)
 
 - ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
@@ -58,10 +60,4 @@ Functions
 
 
 - :ref:`function_checkSpeciation`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
 

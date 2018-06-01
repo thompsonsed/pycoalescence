@@ -52,9 +52,15 @@ Included By
 -----------
 
 
-- :ref:`file_necsim_Logging.h`
+- :ref:`file_necsim_Logger.h`
 
 - :ref:`file_necsim_LogFile.cpp`
+
+- :ref:`file_necsim_Logger.cpp`
+
+- :ref:`file_necsim_Metacommunity.cpp`
+
+- :ref:`file_necsim_Tree.cpp`
 
 
 

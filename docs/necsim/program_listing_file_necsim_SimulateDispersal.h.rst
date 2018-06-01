@@ -79,13 +79,16 @@ Program Listing for File SimulateDispersal.h
        
        void setSequential(bool bSequential);
    
-       void setSimulationParameters(SimParameters * sim_parameters);
+       void setSimulationParameters(SimParameters * sim_parameters, bool print=true);
    
        void importMaps();
-       
+   
+       void setDispersalParameters();
+   
        void setSeed(unsigned long s)
        {
            seed = s;
+           random.wipeSeed();
            random.setSeed(s);
        }
    

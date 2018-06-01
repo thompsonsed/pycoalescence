@@ -66,7 +66,7 @@ class Map(object):
 		self.dimensions_set = False
 		self.is_sample = is_sample
 		self.logging_level = logging_level
-		self.logger = logging.Logger("maplogger")
+		self.logger = logging.Logger("pycoalescence.map")
 		self._create_logger()
 
 	def __del__(self):

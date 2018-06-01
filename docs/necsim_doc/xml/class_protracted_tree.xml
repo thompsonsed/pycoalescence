@@ -3,7 +3,7 @@
   <compounddef id="class_protracted_tree" kind="class" language="C++" prot="public">
     <compoundname>ProtractedTree</compoundname>
     <basecompoundref refid="class_tree" prot="public" virt="virtual">Tree</basecompoundref>
-    <derivedcompoundref refid="class_protracted_spatial_tree" prot="public" virt="non-virtual">ProtractedSpatialTree</derivedcompoundref>
+    <derivedcompoundref refid="class_protracted_spatial_tree" prot="public" virt="virtual">ProtractedSpatialTree</derivedcompoundref>
     <includes refid="_protracted_spatial_tree_8h" local="no">ProtractedSpatialTree.h</includes>
       <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="class_protracted_tree_1abf37925f160812b6c93075662e5583a9" prot="private" static="no" mutable="no">
@@ -264,12 +264,11 @@
         </inbodydescription>
         <location file="necsim/ProtractedTree.h" line="122" column="1"/>
       </memberdef>
-      <memberdef kind="function" id="class_tree_1a455d87022772b309a5974ea5f0295139" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="class_tree_1a455d87022772b309a5974ea5f0295139" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void Tree::importSimulationVariables</definition>
         <argsstring>(const string &amp;configfile)</argsstring>
         <name>importSimulationVariables</name>
-        <reimplementedby refid="class_spatial_tree_1ac5fc862af2ca6f2b4c471c450093fcae">importSimulationVariables</reimplementedby>
         <param>
           <type>const string &amp;</type>
           <declname>configfile</declname>
@@ -277,18 +276,70 @@
         <briefdescription>
 <para>Import the simulation variables from the command line structure. </para>        </briefdescription>
         <detaileddescription>
-<para>This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <ref refid="class_tree_1aec10ea2b720edc13a38310afdfe2b6e4" kindref="member">setup()</ref> and runSim() can be run immediately afterwards.</para><para><parameterlist kind="param"><parameteritem>
+<para>This function parses the simulation variables, imports them from the config file, checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <ref refid="class_tree_1aec10ea2b720edc13a38310afdfe2b6e4" kindref="member">setup()</ref> and <ref refid="class_tree_1afe75245862a1c40030c1c8607518cf8d" kindref="member">runSimulation()</ref> can be run immediately afterwards.</para><para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername>comargs</parametername>
+<parametername>configfile</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>a vector of strings, containing the command-line arguments </para></parameterdescription>
+<para>the path to the config file containing parameters to parse. </para></parameterdescription>
 </parameteritem>
 </parameterlist>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="180" column="1" bodyfile="necsim/Tree.cpp" bodystart="19" bodyend="25"/>
+        <location file="necsim/Tree.h" line="176" column="1" bodyfile="necsim/Tree.cpp" bodystart="21" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tree_1a029af5f2dc1e33b4eead8110090ac778" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Tree::importSimulationVariables</definition>
+        <argsstring>(ConfigOption config)</argsstring>
+        <name>importSimulationVariables</name>
+        <param>
+          <type><ref refid="class_config_option" kindref="compound">ConfigOption</ref></type>
+          <declname>config</declname>
+        </param>
+        <briefdescription>
+<para>Import the simulation variables from a <ref refid="class_config_option" kindref="compound">ConfigOption</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <ref refid="class_tree_1aec10ea2b720edc13a38310afdfe2b6e4" kindref="member">setup()</ref> and runSim() can be run immediately afterwards.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the set of config parameters to import </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Tree.h" line="187" column="1" bodyfile="necsim/Tree.cpp" bodystart="27" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tree_1a0aefbe2466aefd46dec8c4aea4c85c5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Tree::runFileChecks</definition>
+        <argsstring>()</argsstring>
+        <name>runFileChecks</name>
+        <reimplementedby refid="class_spatial_tree_1a060fb8be17d702ed5eb0c142a89d9773">runFileChecks</reimplementedby>
+        <briefdescription>
+<para>Runs the basic file existence checks. Checks for paused simulations and file existence. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Tree.h" line="192" column="1" bodyfile="necsim/Tree.cpp" bodystart="33" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tree_1aa31508ea6d5801c6dee17c035f393b60" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Tree::wipeSimulationVariables</definition>
+        <argsstring>()</argsstring>
+        <name>wipeSimulationVariables</name>
+        <briefdescription>
+<para>Resets all the simulation variables. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Tree.h" line="197" column="1" bodyfile="necsim/Tree.cpp" bodystart="40" bodyend="44"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a62db83e47e5850c6a83793829b22b68b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -313,7 +364,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="188" column="1" bodyfile="necsim/Tree.cpp" bodystart="27" bodyend="31"/>
+        <location file="necsim/Tree.h" line="204" column="1" bodyfile="necsim/Tree.cpp" bodystart="46" bodyend="50"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -335,7 +386,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="195" column="1" bodyfile="necsim/Tree.cpp" bodystart="33" bodyend="60"/>
+        <location file="necsim/Tree.h" line="211" column="1" bodyfile="necsim/Tree.cpp" bodystart="52" bodyend="79"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -348,7 +399,7 @@
 <para>This version uses the default values read from the config file. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="204" column="1" bodyfile="necsim/Tree.cpp" bodystart="63" bodyend="66"/>
+        <location file="necsim/Tree.h" line="220" column="1" bodyfile="necsim/Tree.cpp" bodystart="81" bodyend="84"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -395,7 +446,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="217" column="1" bodyfile="necsim/Tree.cpp" bodystart="68" bodyend="96"/>
+        <location file="necsim/Tree.h" line="233" column="1" bodyfile="necsim/Tree.cpp" bodystart="86" bodyend="116"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ac374d237b7e2e7e11f6a0ff395003635" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -409,7 +460,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="222" column="1" bodyfile="necsim/Tree.cpp" bodystart="98" bodyend="119"/>
+        <location file="necsim/Tree.h" line="238" column="1" bodyfile="necsim/Tree.cpp" bodystart="118" bodyend="139"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -423,7 +474,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="235" column="1" bodyfile="necsim/Tree.cpp" bodystart="126" bodyend="129"/>
+        <location file="necsim/Tree.h" line="251" column="1" bodyfile="necsim/Tree.cpp" bodystart="145" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ac03c034a5730ee4f4d8727aace776412" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>vector&lt; double &gt;</type>
@@ -436,7 +487,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="240" column="1" bodyfile="necsim/Tree.cpp" bodystart="131" bodyend="143"/>
+        <location file="necsim/Tree.h" line="256" column="1" bodyfile="necsim/Tree.cpp" bodystart="150" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a857521315ca6bd9b3300d099488d74f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>long long</type>
@@ -450,7 +501,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="246" column="1" bodyfile="necsim/Tree.cpp" bodystart="144" bodyend="147"/>
+        <location file="necsim/Tree.h" line="262" column="1" bodyfile="necsim/Tree.cpp" bodystart="164" bodyend="167"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -475,7 +526,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="257" column="1" bodyfile="necsim/Tree.cpp" bodystart="149" bodyend="157"/>
+        <location file="necsim/Tree.h" line="273" column="1" bodyfile="necsim/Tree.cpp" bodystart="169" bodyend="177"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a1e0685310a5a9bca4d6069e8d4ce1f1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>unsigned long</type>
@@ -490,7 +541,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="263" column="1" bodyfile="necsim/Tree.cpp" bodystart="159" bodyend="162"/>
+        <location file="necsim/Tree.h" line="279" column="1" bodyfile="necsim/Tree.cpp" bodystart="179" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a869ab0aba75336f737cbb137c74b8abc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -504,7 +555,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="269" column="1" bodyfile="necsim/Tree.cpp" bodystart="165" bodyend="171"/>
+        <location file="necsim/Tree.h" line="285" column="1" bodyfile="necsim/Tree.cpp" bodystart="184" bodyend="190"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aec10ea2b720edc13a38310afdfe2b6e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -518,7 +569,7 @@
 <para>The simulation parameters are set from comargs using <ref refid="class_tree_1ac374d237b7e2e7e11f6a0ff395003635" kindref="member">setParameters()</ref>. Generates and fills the active and grid objects as well as importing all the maps from the supplied files. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="277" column="1" bodyfile="necsim/Tree.cpp" bodystart="173" bodyend="189"/>
+        <location file="necsim/Tree.h" line="293" column="1" bodyfile="necsim/Tree.cpp" bodystart="192" bodyend="208"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aec2640897132a1b667e852bbafc14c78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -531,7 +582,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="282" column="1" bodyfile="necsim/Tree.cpp" bodystart="191" bodyend="202"/>
+        <location file="necsim/Tree.h" line="298" column="1" bodyfile="necsim/Tree.cpp" bodystart="210" bodyend="221"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a1ba0f5d27c6ef6e9e17f988aff2dfe65" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -544,7 +595,7 @@
 <para>This is not the main set-up routine, which creates the permanent data structures including maps, the coalescence tree and active lineage listings. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="290" column="1" bodyfile="necsim/Tree.cpp" bodystart="204" bodyend="219"/>
+        <location file="necsim/Tree.h" line="306" column="1" bodyfile="necsim/Tree.cpp" bodystart="223" bodyend="238"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ab71da7797a6586ddd948661c34ce4788" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -557,7 +608,7 @@
 <para>This is stored in a separate function so that it can be called in isolation by child classes. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="297" column="1" bodyfile="necsim/Tree.cpp" bodystart="221" bodyend="229"/>
+        <location file="necsim/Tree.h" line="313" column="1" bodyfile="necsim/Tree.cpp" bodystart="240" bodyend="248"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ae3fb33c46cf7e3af44604a9875b375a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -570,7 +621,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="302" column="1" bodyfile="necsim/Tree.cpp" bodystart="231" bodyend="250"/>
+        <location file="necsim/Tree.h" line="318" column="1" bodyfile="necsim/Tree.cpp" bodystart="250" bodyend="269"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a25f082da13789dfa3fefcbcfd08b4dfe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -583,7 +634,24 @@
 <para>Detects speciation rates from the config files supplied. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="309" column="1" bodyfile="necsim/Tree.cpp" bodystart="252" bodyend="270"/>
+        <location file="necsim/Tree.h" line="325" column="1" bodyfile="necsim/Tree.cpp" bodystart="271" bodyend="289"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tree_1a38488499b196d3f5ee40b2a68fe3279e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Tree::addSpeciationRates</definition>
+        <argsstring>(vector&lt; long double &gt; spec_rates_in)</argsstring>
+        <name>addSpeciationRates</name>
+        <param>
+          <type>vector&lt; long double &gt;</type>
+          <declname>spec_rates_in</declname>
+        </param>
+        <briefdescription>
+<para>Adds the speciation rates to those to be applied. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Tree.h" line="330" column="1" bodyfile="necsim/Tree.cpp" bodystart="291" bodyend="318"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a50b3d13d4032e0d7a69890b9bd7f84fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -596,7 +664,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="314" column="1" bodyfile="necsim/Tree.cpp" bodystart="272" bodyend="302"/>
+        <location file="necsim/Tree.h" line="334" column="1" bodyfile="necsim/Tree.cpp" bodystart="320" bodyend="350"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a4af845777294c9116c60115e651620b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>unsigned long</type>
@@ -622,7 +690,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="320" column="1" bodyfile="necsim/Tree.cpp" bodystart="304" bodyend="343"/>
+        <location file="necsim/Tree.h" line="340" column="1" bodyfile="necsim/Tree.cpp" bodystart="352" bodyend="391"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1afe75245862a1c40030c1c8607518cf8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
@@ -635,7 +703,7 @@
 <para>Setup is assumed to have been run already. This function is the main function containing the main loop of the simulation. At the end of the simulation, returns true if the simulation is complete, false otherwise. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="329" column="1" bodyfile="necsim/Tree.cpp" bodystart="346" bodyend="417"/>
+        <location file="necsim/Tree.h" line="349" column="1" bodyfile="necsim/Tree.cpp" bodystart="393" bodyend="464"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a95360a2f62ef0eb436d586552b299e1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -648,7 +716,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="334" column="1" bodyfile="necsim/Tree.cpp" bodystart="458" bodyend="472"/>
+        <location file="necsim/Tree.h" line="354" column="1" bodyfile="necsim/Tree.cpp" bodystart="505" bodyend="519"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a37de93174eece50a2fc082b683d97047" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -661,7 +729,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="339" column="1" bodyfile="necsim/Tree.cpp" bodystart="474" bodyend="501"/>
+        <location file="necsim/Tree.h" line="359" column="1" bodyfile="necsim/Tree.cpp" bodystart="521" bodyend="548"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a3f0c8928b4b72fb6f03cabd4d0e04457" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -675,7 +743,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="344" column="1" bodyfile="necsim/Tree.cpp" bodystart="503" bodyend="508"/>
+        <location file="necsim/Tree.h" line="364" column="1" bodyfile="necsim/Tree.cpp" bodystart="550" bodyend="555"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a23803bddf46ad28a1bdd46bf05693b1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -688,7 +756,7 @@
 <para>The index of the random lineage is stored in this_step, as chosen. Also records the required variables for the step process, like x, y position. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="352" column="1" bodyfile="necsim/Tree.cpp" bodystart="510" bodyend="517"/>
+        <location file="necsim/Tree.h" line="372" column="1" bodyfile="necsim/Tree.cpp" bodystart="557" bodyend="564"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ad65e94936001675b8bc908cf77e0cb53" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -702,7 +770,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="357" column="1" bodyfile="necsim/Tree.cpp" bodystart="519" bodyend="523"/>
+        <location file="necsim/Tree.h" line="377" column="1" bodyfile="necsim/Tree.cpp" bodystart="566" bodyend="570"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a05c9e44f1a4d7af83e65b6c4565b1b28" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -727,7 +795,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="365" column="1" bodyfile="necsim/Tree.cpp" bodystart="525" bodyend="548"/>
+        <location file="necsim/Tree.h" line="385" column="1" bodyfile="necsim/Tree.cpp" bodystart="572" bodyend="595"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ad74c05729c9e5235ab0fa6e34260093a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -753,7 +821,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="376" column="1" bodyfile="necsim/Tree.cpp" bodystart="555" bodyend="559"/>
+        <location file="necsim/Tree.h" line="396" column="1" bodyfile="necsim/Tree.cpp" bodystart="602" bodyend="606"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ab1be13d2e99a4445a7cc84f907e0c90e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -779,7 +847,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="382" column="1" bodyfile="necsim/Tree.cpp" bodystart="561" bodyend="585"/>
+        <location file="necsim/Tree.h" line="402" column="1" bodyfile="necsim/Tree.cpp" bodystart="608" bodyend="632"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a0dc015aa5a45d2a75d80456d680172ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -793,7 +861,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="387" column="1" bodyfile="necsim/Tree.cpp" bodystart="587" bodyend="596"/>
+        <location file="necsim/Tree.h" line="407" column="1" bodyfile="necsim/Tree.cpp" bodystart="634" bodyend="643"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a16eedb70009e7570d933f88e8ce44117" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -829,7 +897,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="406" column="1" bodyfile="necsim/Tree.cpp" bodystart="605" bodyend="626"/>
+        <location file="necsim/Tree.h" line="426" column="1" bodyfile="necsim/Tree.cpp" bodystart="652" bodyend="673"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1afcbe72c55b38c94ae17de9c2e1dd3a7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -842,7 +910,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="411" column="1" bodyfile="necsim/Tree.cpp" bodystart="629" bodyend="647"/>
+        <location file="necsim/Tree.h" line="431" column="1" bodyfile="necsim/Tree.cpp" bodystart="675" bodyend="693"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a8bfa9a86f122b21900ec33ab4b1e323f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -868,7 +936,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="417" column="1" bodyfile="necsim/Tree.cpp" bodystart="649" bodyend="671"/>
+        <location file="necsim/Tree.h" line="437" column="1" bodyfile="necsim/Tree.cpp" bodystart="695" bodyend="717"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ab8a62d0ca2b1746676073e3f33e2a949" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -904,7 +972,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="424" column="1" bodyfile="necsim/Tree.cpp" bodystart="674" bodyend="690"/>
+        <location file="necsim/Tree.h" line="444" column="1" bodyfile="necsim/Tree.cpp" bodystart="719" bodyend="735"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a0973cc37d9b95144db76d36cb363caca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -940,7 +1008,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="433" column="1" bodyfile="necsim/Tree.cpp" bodystart="692" bodyend="704"/>
+        <location file="necsim/Tree.h" line="453" column="1" bodyfile="necsim/Tree.cpp" bodystart="737" bodyend="749"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a6af2aaa691ffbb9899e3f070a715e371" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -976,7 +1044,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="440" column="1" bodyfile="necsim/Tree.cpp" bodystart="706" bodyend="721"/>
+        <location file="necsim/Tree.h" line="460" column="1" bodyfile="necsim/Tree.cpp" bodystart="751" bodyend="766"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1afd6bd75c301d2f57c4997fcfc92f192e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -990,7 +1058,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="446" column="1" bodyfile="necsim/Tree.cpp" bodystart="419" bodyend="456"/>
+        <location file="necsim/Tree.h" line="466" column="1" bodyfile="necsim/Tree.cpp" bodystart="466" bodyend="503"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aa6349a32b3fcfb82a5f8311b11db3982" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1026,7 +1094,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="453" column="1" bodyfile="necsim/Tree.cpp" bodystart="724" bodyend="731"/>
+        <location file="necsim/Tree.h" line="473" column="1" bodyfile="necsim/Tree.cpp" bodystart="768" bodyend="775"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ab699328f13b22f48faa63a5638e907db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1051,7 +1119,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="481" column="1" bodyfile="necsim/Tree.cpp" bodystart="758" bodyend="761"/>
+        <location file="necsim/Tree.h" line="501" column="1" bodyfile="necsim/Tree.cpp" bodystart="806" bodyend="809"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ac89abe0404d05d0363258b72cb80700b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1087,7 +1155,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="461" column="1" bodyfile="necsim/Tree.cpp" bodystart="733" bodyend="738"/>
+        <location file="necsim/Tree.h" line="481" column="1" bodyfile="necsim/Tree.cpp" bodystart="777" bodyend="782"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a49a94b2218f7ae127a53af4a58d02b06" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="class_row" kindref="compound">Row</ref>&lt; unsigned long &gt; *</type>
@@ -1101,7 +1169,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="469" column="1" bodyfile="necsim/Tree.cpp" bodystart="740" bodyend="743"/>
+        <location file="necsim/Tree.h" line="489" column="1" bodyfile="necsim/Tree.cpp" bodystart="784" bodyend="787"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a9997b98824a786d9843a3df40de1226a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1137,7 +1205,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="475" column="1" bodyfile="necsim/Tree.cpp" bodystart="745" bodyend="756"/>
+        <location file="necsim/Tree.h" line="495" column="1" bodyfile="necsim/Tree.cpp" bodystart="789" bodyend="804"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1acfc7efdec999f6dbf2ac089514d22091" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1150,7 +1218,7 @@
 <para>Speciation rates are read from the speciation_rates object, which should have already been calculated. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="488" column="1" bodyfile="necsim/Tree.cpp" bodystart="763" bodyend="843"/>
+        <location file="necsim/Tree.h" line="508" column="1" bodyfile="necsim/Tree.cpp" bodystart="811" bodyend="890"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1163,7 +1231,7 @@
 <para>This function should not be called if the database is already opened on disc, and won&apos;t do anything if it is. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="527" column="1" bodyfile="necsim/Tree.cpp" bodystart="867" bodyend="909"/>
+        <location file="necsim/Tree.h" line="547" column="1" bodyfile="necsim/Tree.cpp" bodystart="914" bodyend="956"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1afdf680e187c25ed39d1e66542ce44cc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1176,7 +1244,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="533" column="1" bodyfile="necsim/Tree.cpp" bodystart="911" bodyend="916"/>
+        <location file="necsim/Tree.h" line="553" column="1" bodyfile="necsim/Tree.cpp" bodystart="958" bodyend="963"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1201,7 +1269,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="542" column="1" bodyfile="necsim/Tree.cpp" bodystart="918" bodyend="928"/>
+        <location file="necsim/Tree.h" line="562" column="1" bodyfile="necsim/Tree.cpp" bodystart="965" bodyend="975"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a2d2065bbebee8b55270d2691d40cd974" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -1214,7 +1282,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="547" column="1" bodyfile="necsim/Tree.cpp" bodystart="930" bodyend="1001"/>
+        <location file="necsim/Tree.h" line="567" column="1" bodyfile="necsim/Tree.cpp" bodystart="977" bodyend="1048"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ab8785fc9e27868a56335048321c13290" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1227,7 +1295,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="552" column="1" bodyfile="necsim/Tree.cpp" bodystart="1003" bodyend="1026"/>
+        <location file="necsim/Tree.h" line="572" column="1" bodyfile="necsim/Tree.cpp" bodystart="1050" bodyend="1068"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a9e240bbfc3139b290a0dead741f560bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1240,7 +1308,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="558" column="1" bodyfile="necsim/Tree.cpp" bodystart="1028" bodyend="1039"/>
+        <location file="necsim/Tree.h" line="578" column="1" bodyfile="necsim/Tree.cpp" bodystart="1070" bodyend="1081"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ae784a6ed362f6c5263ee797759f715b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1253,7 +1321,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="564" column="1" bodyfile="necsim/Tree.cpp" bodystart="1041" bodyend="1177"/>
+        <location file="necsim/Tree.h" line="584" column="1" bodyfile="necsim/Tree.cpp" bodystart="1083" bodyend="1219"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a199f47b62b9b10917ff8b89d20c543a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1266,7 +1334,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="569" column="1" bodyfile="necsim/Tree.cpp" bodystart="1179" bodyend="1219"/>
+        <location file="necsim/Tree.h" line="589" column="1" bodyfile="necsim/Tree.cpp" bodystart="1221" bodyend="1261"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aed6504b4f759fb31fdeb61cd03b2b3f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>string</type>
@@ -1281,7 +1349,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="575" column="1" bodyfile="necsim/Tree.cpp" bodystart="1221" bodyend="1240"/>
+        <location file="necsim/Tree.h" line="595" column="1" bodyfile="necsim/Tree.cpp" bodystart="1263" bodyend="1283"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ae5308f74e982485ac444aa394b952152" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1295,7 +1363,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="591" column="1" bodyfile="necsim/Tree.cpp" bodystart="1248" bodyend="1263"/>
+        <location file="necsim/Tree.h" line="611" column="1" bodyfile="necsim/Tree.cpp" bodystart="1291" bodyend="1306"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a9b2df7fd1b61d3d70ac630f7fbfd683d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>string</type>
@@ -1308,7 +1376,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="596" column="1" bodyfile="necsim/Tree.cpp" bodystart="1265" bodyend="1295"/>
+        <location file="necsim/Tree.h" line="616" column="1" bodyfile="necsim/Tree.cpp" bodystart="1308" bodyend="1338"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a4c2988184328a5236ca61f16744cfac2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1333,7 +1401,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="602" column="1" bodyfile="necsim/Tree.cpp" bodystart="1313" bodyend="1344"/>
+        <location file="necsim/Tree.h" line="622" column="1" bodyfile="necsim/Tree.cpp" bodystart="1356" bodyend="1387"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aca99503f49b91baae7401423fe547daf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1358,7 +1426,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="608" column="1" bodyfile="necsim/Tree.cpp" bodystart="1346" bodyend="1365"/>
+        <location file="necsim/Tree.h" line="628" column="1" bodyfile="necsim/Tree.cpp" bodystart="1389" bodyend="1408"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1acd23fa139c7d097315c9479187b1a674" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1383,7 +1451,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="614" column="1" bodyfile="necsim/Tree.cpp" bodystart="1367" bodyend="1386"/>
+        <location file="necsim/Tree.h" line="634" column="1" bodyfile="necsim/Tree.cpp" bodystart="1410" bodyend="1429"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a3fddb18a5d19b64dec378dca3d3fea31" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1396,7 +1464,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="619" column="1" bodyfile="necsim/Tree.cpp" bodystart="1297" bodyend="1311"/>
+        <location file="necsim/Tree.h" line="639" column="1" bodyfile="necsim/Tree.cpp" bodystart="1340" bodyend="1354"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1ac545d844141db977920fc9fd76ce9dbb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1465,7 +1533,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="632" column="1" bodyfile="necsim/Tree.cpp" bodystart="1397" bodyend="1409"/>
+        <location file="necsim/Tree.h" line="652" column="1" bodyfile="necsim/Tree.cpp" bodystart="1440" bodyend="1452"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1478,7 +1546,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="638" column="1" bodyfile="necsim/Tree.cpp" bodystart="1388" bodyend="1395"/>
+        <location file="necsim/Tree.h" line="658" column="1" bodyfile="necsim/Tree.cpp" bodystart="1431" bodyend="1438"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1af57075728924141c7b6d311822a22dc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1491,7 +1559,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="643" column="1" bodyfile="necsim/Tree.cpp" bodystart="1411" bodyend="1512"/>
+        <location file="necsim/Tree.h" line="663" column="1" bodyfile="necsim/Tree.cpp" bodystart="1454" bodyend="1555"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1af7db53d4870d845741d3159f57b73b30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1504,7 +1572,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="648" column="1" bodyfile="necsim/Tree.cpp" bodystart="1514" bodyend="1535"/>
+        <location file="necsim/Tree.h" line="668" column="1" bodyfile="necsim/Tree.cpp" bodystart="1557" bodyend="1578"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1af145148202f11654d6d6a15a6c021924" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1517,7 +1585,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="653" column="1" bodyfile="necsim/Tree.cpp" bodystart="1537" bodyend="1559"/>
+        <location file="necsim/Tree.h" line="673" column="1" bodyfile="necsim/Tree.cpp" bodystart="1580" bodyend="1602"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a8cfe5d30d53d702f18cd67981e2c9acb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1530,7 +1598,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="658" column="1" bodyfile="necsim/Tree.cpp" bodystart="1561" bodyend="1583"/>
+        <location file="necsim/Tree.h" line="678" column="1" bodyfile="necsim/Tree.cpp" bodystart="1604" bodyend="1626"/>
       </memberdef>
       <memberdef kind="function" id="class_tree_1a3d614f3848dc7acab168642efe345569" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -1544,7 +1612,7 @@
 <para>Reads in the parameters and objects from file and re-starts the simulation. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Tree.h" line="665" column="1" bodyfile="necsim/Tree.cpp" bodystart="1585" bodyend="1595"/>
+        <location file="necsim/Tree.h" line="685" column="1" bodyfile="necsim/Tree.cpp" bodystart="1628" bodyend="1638"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-attrib">
@@ -2111,164 +2179,210 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para><simplesect kind="author"><para>Sam Thompson </para></simplesect>
+<para><simplesect kind="author"><para>Sam Thompson</para></simplesect>
+<simplesect kind="author"><para>Sam Thompson </para></simplesect>
 <simplesect kind="date"><para>10/07/2017 </para></simplesect>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="931">
+      <node id="688">
         <label>ProtractedTree</label>
         <link refid="class_protracted_tree"/>
-        <childnode refid="932" relation="public-inheritance">
+        <childnode refid="689" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="933">
+      <node id="690">
         <label>ProtractedSpatialTree</label>
         <link refid="class_protracted_spatial_tree"/>
-        <childnode refid="931" relation="public-inheritance">
+        <childnode refid="688" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="932">
+      <node id="689">
         <label>Tree</label>
         <link refid="class_tree"/>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="953">
+      <node id="710">
+        <label>Row&lt; double &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="718">
         <label>std::vector&lt; long double &gt;</label>
       </node>
-      <node id="954">
+      <node id="719">
         <label>Step</label>
         <link refid="struct_step"/>
       </node>
-      <node id="943">
+      <node id="702">
         <label>std::vector&lt; double &gt;</label>
       </node>
-      <node id="948">
+      <node id="713">
         <label>std::vector&lt; CommunityParameters &gt;</label>
-        <childnode refid="941" relation="usage">
+        <childnode refid="699" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="952">
+      <node id="717">
         <label>Row&lt; unsigned long &gt;</label>
         <link refid="class_row"/>
       </node>
-      <node id="941">
+      <node id="699">
         <label>CommunityParameters</label>
         <link refid="struct_community_parameters"/>
+        <childnode refid="698" relation="usage">
+          <edgelabel>protracted_parameters</edgelabel>
+        </childnode>
       </node>
-      <node id="956">
+      <node id="707">
+        <label>Row&lt; bool &gt;</label>
+        <link refid="class_row"/>
+      </node>
+      <node id="721">
         <label>Row&lt; DataPoint &gt;</label>
         <link refid="class_row"/>
       </node>
-      <node id="958">
+      <node id="723">
         <label>ConfigOption</label>
         <link refid="class_config_option"/>
       </node>
-      <node id="934">
+      <node id="691">
         <label>ProtractedTree</label>
         <link refid="class_protracted_tree"/>
-        <childnode refid="935" relation="public-inheritance">
+        <childnode refid="692" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="936">
+      <node id="693">
         <label>Community</label>
         <link refid="class_community"/>
-        <childnode refid="937" relation="usage">
+        <childnode refid="694" relation="usage">
           <edgelabel>fragments</edgelabel>
         </childnode>
-        <childnode refid="941" relation="usage">
+        <childnode refid="698" relation="usage">
+          <edgelabel>applied_protracted_parameters</edgelabel>
+        </childnode>
+        <childnode refid="699" relation="usage">
           <edgelabel>current_community_parameters</edgelabel>
         </childnode>
-        <childnode refid="942" relation="usage">
+        <childnode refid="700" relation="usage">
           <edgelabel>spec_sim_parameters</edgelabel>
         </childnode>
-        <childnode refid="944" relation="usage">
+        <childnode refid="703" relation="usage">
           <edgelabel>samplemask</edgelabel>
         </childnode>
-        <childnode refid="946" relation="usage">
+        <childnode refid="711" relation="usage">
           <edgelabel>nodes</edgelabel>
         </childnode>
-        <childnode refid="947" relation="usage">
+        <childnode refid="712" relation="usage">
           <edgelabel>past_communities</edgelabel>
         </childnode>
-        <childnode refid="949" relation="usage">
+        <childnode refid="714" relation="usage">
           <edgelabel>past_metacommunities</edgelabel>
         </childnode>
-        <childnode refid="952" relation="usage">
+        <childnode refid="717" relation="usage">
           <edgelabel>row_out</edgelabel>
         </childnode>
       </node>
-      <node id="940">
+      <node id="705">
+        <label>Map&lt; bool &gt;</label>
+        <link refid="class_map"/>
+        <childnode refid="706" relation="public-inheritance">
+        </childnode>
+        <childnode refid="696" relation="usage">
+          <edgelabel>filename</edgelabel>
+        </childnode>
+      </node>
+      <node id="697">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="950">
+      <node id="715">
         <label>std::vector&lt; MetacommunityParameters &gt;</label>
-        <childnode refid="951" relation="usage">
+        <childnode refid="716" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="935">
+      <node id="692">
         <label>Tree</label>
         <link refid="class_tree"/>
-        <childnode refid="936" relation="usage">
+        <childnode refid="693" relation="usage">
           <edgelabel>community</edgelabel>
         </childnode>
-        <childnode refid="953" relation="usage">
+        <childnode refid="718" relation="usage">
           <edgelabel>speciation_rates</edgelabel>
         </childnode>
-        <childnode refid="954" relation="usage">
+        <childnode refid="719" relation="usage">
           <edgelabel>this_step</edgelabel>
         </childnode>
-        <childnode refid="939" relation="usage">
+        <childnode refid="696" relation="usage">
           <edgelabel>times_file</edgelabel>
           <edgelabel>pause_sim_directory</edgelabel>
           <edgelabel>sql_output_database</edgelabel>
           <edgelabel>out_directory</edgelabel>
         </childnode>
-        <childnode refid="955" relation="usage">
+        <childnode refid="720" relation="usage">
           <edgelabel>NR</edgelabel>
         </childnode>
-        <childnode refid="946" relation="usage">
+        <childnode refid="711" relation="usage">
           <edgelabel>data</edgelabel>
         </childnode>
-        <childnode refid="956" relation="usage">
+        <childnode refid="721" relation="usage">
           <edgelabel>active</edgelabel>
         </childnode>
-        <childnode refid="943" relation="usage">
+        <childnode refid="702" relation="usage">
           <edgelabel>reference_times</edgelabel>
         </childnode>
-        <childnode refid="957" relation="usage">
+        <childnode refid="722" relation="usage">
           <edgelabel>sim_parameters</edgelabel>
         </childnode>
       </node>
-      <node id="955">
+      <node id="720">
         <label>NRrand</label>
         <link refid="class_n_rrand"/>
       </node>
-      <node id="951">
+      <node id="716">
         <label>MetacommunityParameters</label>
         <link refid="struct_metacommunity_parameters"/>
       </node>
-      <node id="942">
+      <node id="700">
         <label>SpecSimParameters</label>
         <link refid="struct_spec_sim_parameters"/>
-        <childnode refid="943" relation="usage">
+        <childnode refid="701" relation="usage">
+          <edgelabel>protracted_parameters</edgelabel>
+        </childnode>
+        <childnode refid="696" relation="usage">
+          <edgelabel>times_file</edgelabel>
+          <edgelabel>fragment_config_file</edgelabel>
+          <edgelabel>samplemask</edgelabel>
+          <edgelabel>filename</edgelabel>
+        </childnode>
+        <childnode refid="702" relation="usage">
           <edgelabel>all_times</edgelabel>
           <edgelabel>all_speciation_rates</edgelabel>
         </childnode>
       </node>
-      <node id="946">
+      <node id="698">
+        <label>ProtractedSpeciationParameters</label>
+        <link refid="struct_protracted_speciation_parameters"/>
+      </node>
+      <node id="708">
+        <label>Map&lt; double &gt;</label>
+        <link refid="class_map"/>
+        <childnode refid="709" relation="public-inheritance">
+        </childnode>
+        <childnode refid="696" relation="usage">
+          <edgelabel>filename</edgelabel>
+        </childnode>
+      </node>
+      <node id="711">
         <label>Row&lt; TreeNode &gt;</label>
         <link refid="class_row"/>
       </node>
-      <node id="957">
+      <node id="722">
         <label>SimParameters</label>
         <link refid="struct_sim_parameters"/>
-        <childnode refid="958" relation="usage">
+        <childnode refid="723" relation="usage">
           <edgelabel>configs</edgelabel>
         </childnode>
-        <childnode refid="939" relation="usage">
+        <childnode refid="696" relation="usage">
           <edgelabel>reproduction_file</edgelabel>
           <edgelabel>times_file</edgelabel>
           <edgelabel>sample_mask_file</edgelabel>
@@ -2281,53 +2395,79 @@
           <edgelabel>coarse_map_file</edgelabel>
           <edgelabel>...</edgelabel>
         </childnode>
-        <childnode refid="943" relation="usage">
+        <childnode refid="702" relation="usage">
           <edgelabel>times</edgelabel>
         </childnode>
       </node>
-      <node id="944">
+      <node id="703">
         <label>Samplematrix</label>
         <link refid="class_samplematrix"/>
-        <childnode refid="945" relation="public-inheritance">
+        <childnode refid="704" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="945">
+      <node id="706">
+        <label>Matrix&lt; bool &gt;</label>
+        <link refid="class_matrix"/>
+        <childnode refid="707" relation="usage">
+          <edgelabel>matrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="704">
         <label>DataMask</label>
         <link refid="class_data_mask"/>
-        <childnode refid="939" relation="usage">
+        <childnode refid="705" relation="usage">
+          <edgelabel>sample_mask</edgelabel>
+        </childnode>
+        <childnode refid="696" relation="usage">
           <edgelabel>inputfile</edgelabel>
         </childnode>
+        <childnode refid="708" relation="usage">
+          <edgelabel>sample_mask_exact</edgelabel>
+        </childnode>
       </node>
-      <node id="938">
+      <node id="695">
         <label>Fragment</label>
         <link refid="struct_fragment"/>
-        <childnode refid="939" relation="usage">
+        <childnode refid="696" relation="usage">
           <edgelabel>name</edgelabel>
         </childnode>
       </node>
-      <node id="947">
+      <node id="712">
         <label>CommunitiesArray</label>
         <link refid="struct_communities_array"/>
-        <childnode refid="948" relation="usage">
-          <edgelabel>calc_array</edgelabel>
+        <childnode refid="713" relation="usage">
+          <edgelabel>communityParameters</edgelabel>
         </childnode>
       </node>
-      <node id="949">
+      <node id="709">
+        <label>Matrix&lt; double &gt;</label>
+        <link refid="class_matrix"/>
+        <childnode refid="710" relation="usage">
+          <edgelabel>matrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="714">
         <label>MetacommunitiesArray</label>
         <link refid="struct_metacommunities_array"/>
-        <childnode refid="950" relation="usage">
+        <childnode refid="715" relation="usage">
           <edgelabel>calc_array</edgelabel>
         </childnode>
       </node>
-      <node id="937">
-        <label>std::vector&lt; Fragment &gt;</label>
-        <childnode refid="938" relation="usage">
+      <node id="701">
+        <label>std::vector&lt; ProtractedSpeciationParameters &gt;</label>
+        <childnode refid="698" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="939">
+      <node id="694">
+        <label>std::vector&lt; Fragment &gt;</label>
+        <childnode refid="695" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="696">
         <label>std::string</label>
-        <childnode refid="940" relation="public-inheritance">
+        <childnode refid="697" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
@@ -2335,6 +2475,7 @@
     <listofallmembers>
       <member refid="class_tree_1a047b331de4979aa4713c69f09237ac35" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>active</name></member>
       <member refid="class_tree_1a8bfa9a86f122b21900ec33ab4b1e323f" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>addLineages</name></member>
+      <member refid="class_tree_1a38488499b196d3f5ee40b2a68fe3279e" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>addSpeciationRates</name></member>
       <member refid="class_tree_1acfc7efdec999f6dbf2ac089514d22091" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>applyMultipleRates</name></member>
       <member refid="class_protracted_tree_1a56a3631e65bb91d04ba4626c4c1ea79a" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>applySpecRate</name></member>
       <member refid="class_tree_1aa6349a32b3fcfb82a5f8311b11db3982" prot="public" virt="non-virtual" ambiguityscope="Tree::"><scope>ProtractedTree</scope><name>applySpecRate</name></member>
@@ -2381,7 +2522,8 @@
       <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>has_imported_vars</name></member>
       <member refid="class_tree_1aaa64e29ab7bc3c6f48d454063f0c39e1" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>has_paused</name></member>
       <member refid="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>hasPaused</name></member>
-      <member refid="class_tree_1a455d87022772b309a5974ea5f0295139" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>importSimulationVariables</name></member>
+      <member refid="class_tree_1a455d87022772b309a5974ea5f0295139" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>importSimulationVariables</name></member>
+      <member refid="class_tree_1a029af5f2dc1e33b4eead8110090ac778" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>importSimulationVariables</name></member>
       <member refid="class_tree_1a3f0c8928b4b72fb6f03cabd4d0e04457" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>incrementGeneration</name></member>
       <member refid="class_tree_1a9b2df7fd1b61d3d70ac630f7fbfd683d" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>initiatePause</name></member>
       <member refid="class_tree_1a8cfe5d30d53d702f18cd67981e2c9acb" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>initiateResume</name></member>
@@ -2406,6 +2548,7 @@
       <member refid="class_protracted_tree_1a505a464578e6a7028e66f26b3e6b4a92" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>protractedVarsToString</name></member>
       <member refid="class_tree_1a56bb1ea64368f5b705360a435350f9d5" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>reference_times</name></member>
       <member refid="class_tree_1ad74c05729c9e5235ab0fa6e34260093a" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>removeOldPosition</name></member>
+      <member refid="class_tree_1a0aefbe2466aefd46dec8c4aea4c85c5e" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>runFileChecks</name></member>
       <member refid="class_tree_1afe75245862a1c40030c1c8607518cf8d" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>runSimulation</name></member>
       <member refid="class_tree_1a78935befd45946b8e69023bffca59c1d" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>seeded</name></member>
       <member refid="class_tree_1aec2640897132a1b667e852bbafc14c78" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>setInitialValues</name></member>
@@ -2451,6 +2594,7 @@
       <member refid="class_tree_1ad376a7c639d857312f5de2ef47482f68" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>Tree</name></member>
       <member refid="class_tree_1ad65e94936001675b8bc908cf77e0cb53" prot="public" virt="virtual"><scope>ProtractedTree</scope><name>updateStepCoalescenceVariables</name></member>
       <member refid="class_tree_1abed1688c75153c4af4e8c574a26dd636" prot="protected" virt="non-virtual"><scope>ProtractedTree</scope><name>uses_temporal_sampling</name></member>
+      <member refid="class_tree_1aa31508ea6d5801c6dee17c035f393b60" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>wipeSimulationVariables</name></member>
       <member refid="class_tree_1a95360a2f62ef0eb436d586552b299e1f" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>writeSimStartToConsole</name></member>
       <member refid="class_tree_1a37de93174eece50a2fc082b683d97047" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>writeStepToConsole</name></member>
       <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" prot="public" virt="non-virtual"><scope>ProtractedTree</scope><name>writeTimes</name></member>

@@ -5,28 +5,64 @@
     <includes local="no">Python.h</includes>
     <includes local="no">vector</includes>
     <includes local="no">string</includes>
+    <includedby refid="_c_community_8h" local="yes">CCommunity.h</includedby>
+    <includedby refid="_c_landscape_metrics_calculator_8h" local="yes">CLandscapeMetricsCalculator.h</includedby>
+    <includedby refid="_c_simulate_dispersal_8h" local="yes">CSimulateDispersal.h</includedby>
+    <includedby refid="_c_simulation_8h" local="yes">CSimulation.h</includedby>
     <includedby refid="necsimmodule_8cpp" local="yes">necsimmodule.cpp</includedby>
     <incdepgraph>
-      <node id="1692">
+      <node id="2034">
         <label>string</label>
       </node>
-      <node id="1689">
+      <node id="2031">
         <label>necsimmodule.h</label>
         <link refid="necsimmodule.h"/>
-        <childnode refid="1690" relation="include">
+        <childnode refid="2032" relation="include">
         </childnode>
-        <childnode refid="1691" relation="include">
+        <childnode refid="2033" relation="include">
         </childnode>
-        <childnode refid="1692" relation="include">
+        <childnode refid="2034" relation="include">
         </childnode>
       </node>
-      <node id="1690">
+      <node id="2032">
         <label>Python.h</label>
       </node>
-      <node id="1691">
+      <node id="2033">
         <label>vector</label>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="2039">
+        <label>CSimulation.h</label>
+        <link refid="_c_simulation_8h_source"/>
+        <childnode refid="2038" relation="include">
+        </childnode>
+      </node>
+      <node id="2037">
+        <label>CLandscapeMetricsCalculator.h</label>
+        <link refid="_c_landscape_metrics_calculator_8h_source"/>
+      </node>
+      <node id="2036">
+        <label>CCommunity.h</label>
+        <link refid="_c_community_8h_source"/>
+      </node>
+      <node id="2035">
+        <label>necsimmodule.h</label>
+        <link refid="necsimmodule.h"/>
+        <childnode refid="2036" relation="include">
+        </childnode>
+        <childnode refid="2037" relation="include">
+        </childnode>
+        <childnode refid="2038" relation="include">
+        </childnode>
+        <childnode refid="2039" relation="include">
+        </childnode>
+      </node>
+      <node id="2038">
+        <label>CSimulateDispersal.h</label>
+        <link refid="_c_simulate_dispersal_8h_source"/>
+      </node>
+    </invincdepgraph>
     <innerclass refid="structmodule__state" prot="public">module_state</innerclass>
       <sectiondef kind="define">
       <memberdef kind="define" id="necsimmodule_8h_1a6d1f389576656b98c42c69f7cf1d55c0" prot="public" static="no">
@@ -65,7 +101,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsimmodule.h" line="216" column="1" bodyfile="necsimmodule.h" bodystart="27" bodyend="-1"/>
+        <location file="necsimmodule.h" line="79" column="1" bodyfile="necsimmodule.h" bodystart="27" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="necsimmodule_8h_1a4375f2eae9ebb387616fb1d8a5f83f77" prot="public" static="yes" mutable="no">
         <type>PyObject *</type>
@@ -96,7 +132,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsimmodule.h" line="46" column="1" bodyfile="necsimmodule.cpp" bodystart="216" bodyend="241"/>
+        <location file="necsimmodule.h" line="46" column="1" bodyfile="necsimmodule.cpp" bodystart="79" bodyend="128"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -117,7 +153,7 @@
 <codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NECSIM_IMPORT</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NECSIM_IMPORT</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structmodule__state" kindref="compound">module_state</ref></highlight></codeline>
+<codeline lineno="18" refid="structmodule__state" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structmodule__state" kindref="compound">module_state</ref></highlight></codeline>
 <codeline lineno="19"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>PyObject<sp/>*error;</highlight></codeline>
 <codeline lineno="21"><highlight class="normal">};</highlight></codeline>

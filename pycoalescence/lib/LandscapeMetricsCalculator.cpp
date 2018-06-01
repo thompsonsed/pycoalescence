@@ -7,6 +7,8 @@
  *
  * @copyright <a href="https://opensource.org/licenses/MIT"> MIT Licence.</a>
  */
+#include "necsim/Matrix.h"
+#include "necsim/Map.h"
 #include "LandscapeMetricsCalculator.h"
 
 
@@ -151,6 +153,10 @@ double LandscapeMetricsCalculator::calculateClumpiness()
 	if(G < P && P < 0.5)
 	{
 		return (G - P)/P;
+	}
+	else if(P == 1.0)
+	{
+		return 1.0;
 	}
 	else
 	{

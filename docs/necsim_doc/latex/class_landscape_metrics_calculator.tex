@@ -2,8 +2,16 @@
 \label{class_landscape_metrics_calculator}\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
 
 
-Inheritance diagram for Landscape\+Metrics\+Calculator\+:
-\nopagebreak
+Calculates a variety of landscape metrics from an imported tif file.  
+
+
+
+
+{\ttfamily \#include $<$Landscape\+Metrics\+Calculator.\+h$>$}
+
+
+
+Inheritance diagram for Landscape\+Metrics\+Calculator\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,19 +20,18 @@ Inheritance diagram for Landscape\+Metrics\+Calculator\+:
 \end{figure}
 
 
-Collaboration diagram for Landscape\+Metrics\+Calculator\+:
-\nopagebreak
+Collaboration diagram for Landscape\+Metrics\+Calculator\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=222pt]{class_landscape_metrics_calculator__coll__graph}
+\includegraphics[width=276pt]{class_landscape_metrics_calculator__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 double \hyperlink{class_landscape_metrics_calculator_a34f344e3282eead2091fe8ccb32e6d48}{calculate\+M\+NN} ()
-\begin{DoxyCompactList}\small\item\em Calculates the mean distance between nearest neighbours on a Map. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Calculates the mean distance between nearest neighbours on a \hyperlink{class_map}{Map}. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_metrics_calculator_a16bde8469f437abc21602eedb979e5e3}{check\+Min\+Distance} (\hyperlink{struct_cell}{Cell} \&home\+\_\+cell, const long \&x, const long \&y, double \&min\+\_\+distance)
 \begin{DoxyCompactList}\small\item\em Checks if the minimum distance between cells is a new minimum. \end{DoxyCompactList}\item 
 double \hyperlink{class_landscape_metrics_calculator_a9dd4cde4aad066b3b204553718a63a98}{find\+Nearest\+Neighbour\+Distance} (const long \&row, const long \&col)
@@ -37,8 +44,134 @@ double \hyperlink{class_landscape_metrics_calculator_aff48704d3a9e02da4914ac2b08
 unsigned long \hyperlink{class_landscape_metrics_calculator_ae477e368c4f13042cf2f9a47e62d60ae}{calculate\+No\+Adjacencies} ()
 \begin{DoxyCompactList}\small\item\em Calculates the number of adjacencies in the landscape. \end{DoxyCompactList}\item 
 double \hyperlink{class_landscape_metrics_calculator_a1ba606d6fb687aceaf4a8e31e8f17273}{calculate\+Min\+Perimeter} ()
-\begin{DoxyCompactList}\small\item\em Calculates the minimum bounding perimeter for square cells on a landscape. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calculates the minimum bounding perimeter for square cells on a landscape. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_aa2764c9ae1c54c1821fa4f63b88fe0f3}{open} (const string \&filename\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Opens the provided filename to the po\+Dataset object. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a2389e09950706ef49640976837186c79}{open} ()\hypertarget{class_map_a2389e09950706ef49640976837186c79}{}\label{class_map_a2389e09950706ef49640976837186c79}
 
+\begin{DoxyCompactList}\small\item\em Overloaded open for using the preset file name. \end{DoxyCompactList}\item 
+bool \hyperlink{class_map_a19f6874b008fcbfac213341d05c2f443}{is\+Open} ()
+\begin{DoxyCompactList}\small\item\em Checks if the connection to the map file has already been opened. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ad73fafd17ff95872e9b63945584ae81f}{close} ()\hypertarget{class_map_ad73fafd17ff95872e9b63945584ae81f}{}\label{class_map_ad73fafd17ff95872e9b63945584ae81f}
+
+\begin{DoxyCompactList}\small\item\em Destroys the connection to the dataset. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ade2338d7a8d598c343208b633f8a3a93}{get\+Raster\+Band} ()\hypertarget{class_map_ade2338d7a8d598c343208b633f8a3a93}{}\label{class_map_ade2338d7a8d598c343208b633f8a3a93}
+
+\begin{DoxyCompactList}\small\item\em Sets the raster band to the first raster. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a4e441dcda33d78bef193b1ad1265b5e8}{get\+Block\+Sizes} ()\hypertarget{class_map_a4e441dcda33d78bef193b1ad1265b5e8}{}\label{class_map_a4e441dcda33d78bef193b1ad1265b5e8}
+
+\begin{DoxyCompactList}\small\item\em Obtains the x and y dimensions from the tif file for reading in blocks. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a180284cfba3442eb3d62fc41d0d8f546}{get\+Meta\+Data} ()\hypertarget{class_map_a180284cfba3442eb3d62fc41d0d8f546}{}\label{class_map_a180284cfba3442eb3d62fc41d0d8f546}
+
+\begin{DoxyCompactList}\small\item\em Sets the no data, data type and data type name values from the tif file. \end{DoxyCompactList}\item 
+double \hyperlink{class_map_afd32790ea28d0c5aa99b582b2d474933}{get\+Upper\+LeftX} ()
+\begin{DoxyCompactList}\small\item\em Gets the upper left x (longitude) coordinate. \end{DoxyCompactList}\item 
+double \hyperlink{class_map_a2d7b63836d06b2710192e7c8afd38641}{get\+Upper\+LeftY} ()
+\begin{DoxyCompactList}\small\item\em Gets the upper left y (latitude) coordinate. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ad1a25204dce37addc3453e091552b014}{import} (const string \&filename) override
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a csv file. \end{DoxyCompactList}\item 
+bool \hyperlink{class_map_a2306683b0b3b4ddb7d776d1ff60d4491}{import\+Tif} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a tif file using the gdal library functions. \end{DoxyCompactList}\item 
+bool \hyperlink{class_map_ade20cc1876ba2774f0f8274d432d89c3}{open\+Offset\+Map} (\hyperlink{class_map}{Map} \&offset\+\_\+map)
+\begin{DoxyCompactList}\small\item\em Opens the offset map and fetches the metadata. \end{DoxyCompactList}\item 
+void {\bfseries close\+Offset\+Map} (\hyperlink{class_map}{Map} \&offset\+\_\+map, const bool \&opened\+\_\+here)\hypertarget{class_map_a39d76e341e0f817d65ddf0100cfe5f26}{}\label{class_map_a39d76e341e0f817d65ddf0100cfe5f26}
+
+\item 
+void \hyperlink{class_map_a200701b23560dd38238801522b234e78}{calculate\+Offset} (\hyperlink{class_map}{Map} \&offset\+\_\+map, long \&offset\+\_\+x, long \&offset\+\_\+y)
+\begin{DoxyCompactList}\small\item\em Calculates the offset between the two maps. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_map_a9862291ea99fe1718d758213b3687bd8}{rounded\+Scale} (\hyperlink{class_map}{Map} \&offset\+\_\+map)
+\begin{DoxyCompactList}\small\item\em Calculates the relative scale of this map compared to the offset map. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a0c17360ca7fa935d59f2169fd0007630}{internal\+Import} ()
+\begin{DoxyCompactList}\small\item\em Default importer when we rely on the default gdal method of converting between values. Note that importing doubles to ints results in the values being rounded down. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a414e6bc9305ab830836cf817cb4a0d60}{default\+Import} ()\hypertarget{class_map_a414e6bc9305ab830836cf817cb4a0d60}{}\label{class_map_a414e6bc9305ab830836cf817cb4a0d60}
+
+\begin{DoxyCompactList}\small\item\em Default import routine for any type. Provided as a separate function so implementation can be called from any template class type. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_aaefe833ab35a68ce54e7eec996c48971}{import\+From\+Double\+And\+Make\+Bool} ()\hypertarget{class_map_aaefe833ab35a68ce54e7eec996c48971}{}\label{class_map_aaefe833ab35a68ce54e7eec996c48971}
+
+\begin{DoxyCompactList}\small\item\em Imports from the supplied filename into the Geo\+Tiff object, converting doubles to booleans. The threshold for conversion is x$>$0.\+5 -\/$>$ true, false otherwise. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ae88574927ad3a38fc0a9bc253a9e4a7a}{import\+Using\+Buffer} (G\+D\+A\+L\+Data\+Type dt\+\_\+buff)
+\begin{DoxyCompactList}\small\item\em Imports from the supplied filename into the Geo\+Tiff object, converting doubles to booleans. The threshold for conversion is x$>$0.\+5 -\/$>$ true, false otherwise. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a03e0486e704090765d253b18a9dde0f5}{print\+Number\+Complete} (const uint32\+\_\+t \&j, unsigned int \&number\+\_\+printed)
+\begin{DoxyCompactList}\small\item\em Print the percentage complete during import. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a6387185da6dc3063cd2311ffab0a5fba}{check\+Tif\+Import\+Failure} ()\hypertarget{class_map_a6387185da6dc3063cd2311ffab0a5fba}{}\label{class_map_a6387185da6dc3063cd2311ffab0a5fba}
+
+\begin{DoxyCompactList}\small\item\em Checks the error code of the C\+P\+L\+Err object and formats the error. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}{set\+Size} (unsigned long rows, unsigned long cols)
+\begin{DoxyCompactList}\small\item\em Sets the matrix size. Similar concept to that for Rows. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}{get\+Cols} () const
+\begin{DoxyCompactList}\small\item\em Getter for the number of columns. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a442879db6473eeab202928dc47992206}{get\+Rows} () const
+\begin{DoxyCompactList}\small\item\em Getter for the number of rows. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ double $>$ \& \hyperlink{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{operator\mbox{[}$\,$\mbox{]}} (unsigned long index)
+\begin{DoxyCompactList}\small\item\em Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{operator+} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the + operator. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{operator-\/} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/ operator. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{operator+=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the += operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{operator-\/=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/= operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{operator$\ast$} (const double s)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for scaling. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{operator$\ast$} (\hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_ae511e2f5874e7602fc968541efeefca1}{set\+Value} (const unsigned long \&x, const unsigned long \&y, const char $\ast$value)
+\begin{DoxyCompactList}\small\item\em Sets the value at the specified indices, including handling type conversion from char to the template class. \end{DoxyCompactList}\item 
+bool \hyperlink{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}{import\+Csv} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a csv file using the fast-\/csv-\/parser method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+G\+D\+A\+L\+Dataset $\ast$ {\bfseries po\+Dataset}\hypertarget{class_map_ab25f4ed0c6612065dbda19cc1db10b75}{}\label{class_map_ab25f4ed0c6612065dbda19cc1db10b75}
+
+\item 
+G\+D\+A\+L\+Raster\+Band $\ast$ {\bfseries po\+Band}\hypertarget{class_map_ac6cbdae357af04320bb5d90aee486e33}{}\label{class_map_ac6cbdae357af04320bb5d90aee486e33}
+
+\item 
+unsigned long {\bfseries block\+X\+Size}\hypertarget{class_map_a929de1f15110afceeec89b47da506e67}{}\label{class_map_a929de1f15110afceeec89b47da506e67}
+
+\item 
+unsigned long {\bfseries block\+Y\+Size}\hypertarget{class_map_ab02c8f5022c1835c135f202fe9b2eebd}{}\label{class_map_ab02c8f5022c1835c135f202fe9b2eebd}
+
+\item 
+double {\bfseries no\+Data\+Value}\hypertarget{class_map_ac7c12737fe97556a4d03487716fa4f45}{}\label{class_map_ac7c12737fe97556a4d03487716fa4f45}
+
+\item 
+string {\bfseries filename}\hypertarget{class_map_a193db5e3339832c878c37336d39122e0}{}\label{class_map_a193db5e3339832c878c37336d39122e0}
+
+\item 
+G\+D\+A\+L\+Data\+Type {\bfseries dt}\hypertarget{class_map_a3dc928c65262f0c8f20f0f64e6cde40f}{}\label{class_map_a3dc928c65262f0c8f20f0f64e6cde40f}
+
+\item 
+C\+P\+L\+Err {\bfseries cpl\+Err}\hypertarget{class_map_a388da4db48d63ab579b600294a600c9d}{}\label{class_map_a388da4db48d63ab579b600294a600c9d}
+
+\item 
+double {\bfseries upper\+\_\+left\+\_\+x}\hypertarget{class_map_ae3b72e22a19277aa531ae90f47c461b2}{}\label{class_map_ae3b72e22a19277aa531ae90f47c461b2}
+
+\item 
+double {\bfseries upper\+\_\+left\+\_\+y}\hypertarget{class_map_a37d531f2f186f90d3f4563e91f2623cb}{}\label{class_map_a37d531f2f186f90d3f4563e91f2623cb}
+
+\item 
+double {\bfseries x\+\_\+res}\hypertarget{class_map_ad385ffe20fb2ae2dc5fa1c6edf72649f}{}\label{class_map_ad385ffe20fb2ae2dc5fa1c6edf72649f}
+
+\item 
+double {\bfseries y\+\_\+res}\hypertarget{class_map_aea5d0fe583fdc11aa94fb5eae6766644}{}\label{class_map_aea5d0fe583fdc11aa94fb5eae6766644}
+
+\item 
+unsigned long {\bfseries num\+Cols}\hypertarget{class_matrix_a341aaedcfaac978957087bd0467dc527}{}\label{class_matrix_a341aaedcfaac978957087bd0467dc527}
+
+\item 
+unsigned long {\bfseries num\+Rows}\hypertarget{class_matrix_ac1e96667d48c7845708f978ddd17475d}{}\label{class_matrix_ac1e96667d48c7845708f978ddd17475d}
+
+\item 
+\hyperlink{class_row}{Row}$<$ double $>$ $\ast$ {\bfseries matrix}\hypertarget{class_matrix_a7a143ae112112155c9622ba17dc434c7}{}\label{class_matrix_a7a143ae112112155c9622ba17dc434c7}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Calculates a variety of landscape metrics from an imported tif file. 
 
 \subsection{Member Function Documentation}
 \index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!calculate\+Clumpiness@{calculate\+Clumpiness}}
@@ -78,7 +211,7 @@ the minimum bounding perimeter for cells on a landscape
 )}\hypertarget{class_landscape_metrics_calculator_a34f344e3282eead2091fe8ccb32e6d48}{}\label{class_landscape_metrics_calculator_a34f344e3282eead2091fe8ccb32e6d48}
 
 
-Calculates the mean distance between nearest neighbours on a Map. 
+Calculates the mean distance between nearest neighbours on a \hyperlink{class_map}{Map}. 
 
 \begin{DoxyReturn}{Returns}
 the mean distance between every cell and its nearest neighbour 
@@ -97,6 +230,35 @@ Calculates the number of adjacencies in the landscape.
 Adjacencies are habitat cells that are directly next to each other. Note that this uses the \char`\"{}double=count\char`\"{} method. \begin{DoxyReturn}{Returns}
 the number of adjacent cells in the landscape. 
 \end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!calculate\+Offset@{calculate\+Offset}}
+\index{calculate\+Offset@{calculate\+Offset}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{calculate\+Offset(\+Map \&offset\+\_\+map, long \&offset\+\_\+x, long \&offset\+\_\+y)}{calculateOffset(Map &offset_map, long &offset_x, long &offset_y)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Map}$<$ double  $>$\+::calculate\+Offset (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}$<$ double $>$ \&}]{offset\+\_\+map, }
+\item[{long \&}]{offset\+\_\+x, }
+\item[{long \&}]{offset\+\_\+y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a200701b23560dd38238801522b234e78}{}\label{class_map_a200701b23560dd38238801522b234e78}
+
+
+Calculates the offset between the two maps. 
+
+The offset\+\_\+map should be larger and contain this map, otherwise returned values will be negative
+
+\begin{DoxyNote}{Note}
+Opens a connection to the tif file (if it has not already been opened), which is then closed. If the connection is already open, then it will not be closed and it is assumed logic elsewhere achieves this.
+
+Offsets are returned as rounded integers at the resolution of the smaller map.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em offset\+\_\+map} & the offset map to read from \\
+\hline
+{\em offset\+\_\+x} & the x offset variable to fill \\
+\hline
+{\em offset\+\_\+y} & the y offset variable to fill \\
+\hline
+\end{DoxyParams}
 \index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!check\+Min\+Distance@{check\+Min\+Distance}}
 \index{check\+Min\+Distance@{check\+Min\+Distance}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
 \subsubsection[{\texorpdfstring{check\+Min\+Distance(\+Cell \&home\+\_\+cell, const long \&x, const long \&y, double \&min\+\_\+distance)}{checkMinDistance(Cell &home_cell, const long &x, const long &y, double &min_distance)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+Metrics\+Calculator\+::check\+Min\+Distance (
@@ -144,6 +306,427 @@ Determines the distance to the nearest neighbour of a cell.
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!get\+Cols@{get\+Cols}}
+\index{get\+Cols@{get\+Cols}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{get\+Cols() const}{getCols() const}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf Matrix}$<$ double  $>$\+::get\+Cols (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}{}\label{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}
+
+
+Getter for the number of columns. 
+
+\begin{DoxyReturn}{Returns}
+the number of columns. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!get\+Rows@{get\+Rows}}
+\index{get\+Rows@{get\+Rows}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{get\+Rows() const}{getRows() const}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf Matrix}$<$ double  $>$\+::get\+Rows (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a442879db6473eeab202928dc47992206}{}\label{class_matrix_a442879db6473eeab202928dc47992206}
+
+
+Getter for the number of rows. 
+
+\begin{DoxyReturn}{Returns}
+the number of rows. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!get\+Upper\+LeftX@{get\+Upper\+LeftX}}
+\index{get\+Upper\+LeftX@{get\+Upper\+LeftX}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{get\+Upper\+Left\+X()}{getUpperLeftX()}}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf Map}$<$ double  $>$\+::get\+Upper\+LeftX (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_afd32790ea28d0c5aa99b582b2d474933}{}\label{class_map_afd32790ea28d0c5aa99b582b2d474933}
+
+
+Gets the upper left x (longitude) coordinate. 
+
+\begin{DoxyReturn}{Returns}
+upper left x of the map 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!get\+Upper\+LeftY@{get\+Upper\+LeftY}}
+\index{get\+Upper\+LeftY@{get\+Upper\+LeftY}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{get\+Upper\+Left\+Y()}{getUpperLeftY()}}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf Map}$<$ double  $>$\+::get\+Upper\+LeftY (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a2d7b63836d06b2710192e7c8afd38641}{}\label{class_map_a2d7b63836d06b2710192e7c8afd38641}
+
+
+Gets the upper left y (latitude) coordinate. 
+
+\begin{DoxyReturn}{Returns}
+upper left y of the map 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!import@{import}}
+\index{import@{import}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{import(const string \&filename) override}{import(const string &filename) override}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Map}$<$ double  $>$\+::import (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_map_ad1a25204dce37addc3453e091552b014}{}\label{class_map_ad1a25204dce37addc3453e091552b014}
+
+
+Imports the matrix from a csv file. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em runtime\+\_\+error} & if type detection for the filename fails. \\
+\hline
+\end{DoxyExceptions}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the file to import. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_matrix_a2476517be70c810ad586d0f0cf4ec121}{Matrix$<$ double $>$}.
+
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!import\+Csv@{import\+Csv}}
+\index{import\+Csv@{import\+Csv}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{import\+Csv(const string \&filename)}{importCsv(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf Matrix}$<$ double  $>$\+::import\+Csv (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}{}\label{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}
+
+
+Imports the matrix from a csv file using the fast-\/csv-\/parser method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. Imports the matrix from a csv file using the standard, slower method. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000003}{Deprecated}]this function should not be used any more as it is much slower. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the csv can be imported. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!import\+Tif@{import\+Tif}}
+\index{import\+Tif@{import\+Tif}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{import\+Tif(const string \&filename)}{importTif(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf Map}$<$ double  $>$\+::import\+Tif (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a2306683b0b3b4ddb7d776d1ff60d4491}{}\label{class_map_a2306683b0b3b4ddb7d776d1ff60d4491}
+
+
+Imports the matrix from a tif file using the gdal library functions. 
+
+\begin{DoxyNote}{Note}
+Opens a connection to the file object, which should be closed. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. \\
+\hline
+\end{DoxyParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!import\+Using\+Buffer@{import\+Using\+Buffer}}
+\index{import\+Using\+Buffer@{import\+Using\+Buffer}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{import\+Using\+Buffer(\+G\+D\+A\+L\+Data\+Type dt\+\_\+buff)}{importUsingBuffer(GDALDataType dt_buff)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Map}$<$ double  $>$\+::import\+Using\+Buffer (
+\begin{DoxyParamCaption}
+\item[{G\+D\+A\+L\+Data\+Type}]{dt\+\_\+buff}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_ae88574927ad3a38fc0a9bc253a9e4a7a}{}\label{class_map_ae88574927ad3a38fc0a9bc253a9e4a7a}
+
+
+Imports from the supplied filename into the Geo\+Tiff object, converting doubles to booleans. The threshold for conversion is x$>$0.\+5 -\/$>$ true, false otherwise. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dt\+\_\+buff} & the buffer type for the data \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T2} & the template type for data reading. \\
+\hline
+\end{DoxyTemplParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!internal\+Import@{internal\+Import}}
+\index{internal\+Import@{internal\+Import}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{internal\+Import()}{internalImport()}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Map}$<$ double $>$\+::internal\+Import (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a0c17360ca7fa935d59f2169fd0007630}{}\label{class_map_a0c17360ca7fa935d59f2169fd0007630}
+
+
+Default importer when we rely on the default gdal method of converting between values. Note that importing doubles to ints results in the values being rounded down. 
+
+\begin{DoxyReturn}{Returns}
+true if a tif file exists and can be imported, false otherwise. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!is\+Open@{is\+Open}}
+\index{is\+Open@{is\+Open}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{is\+Open()}{isOpen()}}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf Map}$<$ double  $>$\+::is\+Open (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a19f6874b008fcbfac213341d05c2f443}{}\label{class_map_a19f6874b008fcbfac213341d05c2f443}
+
+
+Checks if the connection to the map file has already been opened. 
+
+All this does is check if po\+Dataset is a null pointer. \begin{DoxyReturn}{Returns}
+true if po\+Dataset is a null pointer. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!open@{open}}
+\index{open@{open}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{open(const string \&filename\+\_\+in)}{open(const string &filename_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Map}$<$ double  $>$\+::open (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_aa2764c9ae1c54c1821fa4f63b88fe0f3}{}\label{class_map_aa2764c9ae1c54c1821fa4f63b88fe0f3}
+
+
+Opens the provided filename to the po\+Dataset object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & file to open in read-\/only mode. \\
+\hline
+\end{DoxyParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!open\+Offset\+Map@{open\+Offset\+Map}}
+\index{open\+Offset\+Map@{open\+Offset\+Map}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{open\+Offset\+Map(\+Map \&offset\+\_\+map)}{openOffsetMap(Map &offset_map)}}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf Map}$<$ double  $>$\+::open\+Offset\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}$<$ double $>$ \&}]{offset\+\_\+map}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_ade20cc1876ba2774f0f8274d432d89c3}{}\label{class_map_ade20cc1876ba2774f0f8274d432d89c3}
+
+
+Opens the offset map and fetches the metadata. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset\+\_\+map} & the offset map to open (should be the larger map). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the offset map is opened within this function 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const double s)}{operator*(const double s)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ double  $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const double}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{}\label{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}
+
+
+Overloading the $\ast$ operator for scaling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the constant to scale the matrix by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the scaled matrix. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator$\ast$(\+Matrix \&m)}{operator*(Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ double  $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Matrix}$<$ double $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{}\label{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}
+
+
+Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to multiply with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product of each ith,jth value of the matrix. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator+@{operator+}}
+\index{operator+@{operator+}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator+(const Matrix \&m)}{operator+(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ double  $>$\+::operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ double $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{}\label{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}
+
+
+Overloading the + operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the sum of the two matrices. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator+=(const Matrix \&m)}{operator+=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Matrix}\& {\bf Matrix}$<$ double  $>$\+::operator+= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ double $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{}\label{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}
+
+
+Overloading the += operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator-\/(const Matrix \&m)}{operator-(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix} {\bf Matrix}$<$ double  $>$\+::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ double $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{}\label{class_matrix_a08e75978ea8288083ef36f53b4ac115d}
+
+
+Overloading the -\/ operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the subtraction of the two matrices. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator-\/=(const Matrix \&m)}{operator-=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Matrix}\& {\bf Matrix}$<$ double  $>$\+::operator-\/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ double $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{}\label{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}
+
+
+Overloading the -\/= operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{operator[](unsigned long index)}{operator[](unsigned long index)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Row}$<$double $>$\& {\bf Matrix}$<$ double  $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{}\label{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}
+
+
+Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & the row number to get the value from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix row object. 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!print\+Number\+Complete@{print\+Number\+Complete}}
+\index{print\+Number\+Complete@{print\+Number\+Complete}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{print\+Number\+Complete(const uint32\+\_\+t \&j, unsigned int \&number\+\_\+printed)}{printNumberComplete(const uint32_t &j, unsigned int &number_printed)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Map}$<$ double  $>$\+::print\+Number\+Complete (
+\begin{DoxyParamCaption}
+\item[{const uint32\+\_\+t \&}]{j, }
+\item[{unsigned int \&}]{number\+\_\+printed}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a03e0486e704090765d253b18a9dde0f5}{}\label{class_map_a03e0486e704090765d253b18a9dde0f5}
+
+
+Print the percentage complete during import. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em j} & the reference for the counter \\
+\hline
+{\em number\+\_\+printed} & the number of previously printed lines \\
+\hline
+\end{DoxyParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!rounded\+Scale@{rounded\+Scale}}
+\index{rounded\+Scale@{rounded\+Scale}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{rounded\+Scale(\+Map \&offset\+\_\+map)}{roundedScale(Map &offset_map)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf Map}$<$ double  $>$\+::rounded\+Scale (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}$<$ double $>$ \&}]{offset\+\_\+map}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_map_a9862291ea99fe1718d758213b3687bd8}{}\label{class_map_a9862291ea99fe1718d758213b3687bd8}
+
+
+Calculates the relative scale of this map compared to the offset map. 
+
+The offset map should be larger and contain this map.
+
+\begin{DoxyNote}{Note}
+Only the x resolution is checked, it is assumed the x and y resolutions of both maps is the same (i.\+e. each cell on the map is a square.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em offset\+\_\+map} & the offset map object to read from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the relative scale of the offset map 
+\end{DoxyReturn}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{set\+Size(unsigned long rows, unsigned long cols)}{setSize(unsigned long rows, unsigned long cols)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Matrix}$<$ double  $>$\+::set\+Size (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{rows, }
+\item[{unsigned long}]{cols}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}{}\label{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}
+
+
+Sets the matrix size. Similar concept to that for Rows. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & the number of rows. \\
+\hline
+{\em cols} & the number of columns. \\
+\hline
+\end{DoxyParams}
+\index{Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}!set\+Value@{set\+Value}}
+\index{set\+Value@{set\+Value}!Landscape\+Metrics\+Calculator@{Landscape\+Metrics\+Calculator}}
+\subsubsection[{\texorpdfstring{set\+Value(const unsigned long \&x, const unsigned long \&y, const char $\ast$value)}{setValue(const unsigned long &x, const unsigned long &y, const char *value)}}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Matrix}$<$ double  $>$\+::set\+Value (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{x, }
+\item[{const unsigned long \&}]{y, }
+\item[{const char $\ast$}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ae511e2f5874e7602fc968541efeefca1}{}\label{class_matrix_ae511e2f5874e7602fc968541efeefca1}
+
+
+Sets the value at the specified indices, including handling type conversion from char to the template class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x index. \\
+\hline
+{\em y} & the y index. \\
+\hline
+{\em value} & the value to set \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

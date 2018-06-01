@@ -12,7 +12,7 @@ Inheritance Relationships
 Base Type
 *********
 
-- ``public Map< double >``
+- ``public Map< double >`` (:ref:`template_class_Map`)
 
 
 Class Documentation

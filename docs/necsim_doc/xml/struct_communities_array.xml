@@ -4,25 +4,25 @@
     <compoundname>CommunitiesArray</compoundname>
     <includes refid="_community_8h" local="no">Community.h</includes>
       <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="struct_communities_array_1addd27a8197dd835e55c529294ecae398" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_communities_array_1a51cb89209da53cdfdc40e0489103a086" prot="public" static="no" mutable="no">
         <type>vector&lt; <ref refid="struct_community_parameters" kindref="compound">CommunityParameters</ref> &gt;</type>
-        <definition>vector&lt;CommunityParameters&gt; CommunitiesArray::calc_array</definition>
+        <definition>vector&lt;CommunityParameters&gt; CommunitiesArray::communityParameters</definition>
         <argsstring></argsstring>
-        <name>calc_array</name>
+        <name>communityParameters</name>
         <briefdescription>
-        </briefdescription>
+<para>The array of <ref refid="struct_community_parameters" kindref="compound">CommunityParameters</ref> which have been stored. </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="161" column="1" bodyfile="necsim/Community.h" bodystart="161" bodyend="-1"/>
+        <location file="necsim/Community.h" line="139" column="1" bodyfile="necsim/Community.h" bodystart="139" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="struct_communities_array_1ab216cad89ebc4cf73859093060a4a20c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="struct_communities_array_1a03dac0fa7caadfbcd54bff684d3e72fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void CommunitiesArray::pushBack</definition>
-        <argsstring>(unsigned long reference, long double speciation_rate, long double time, bool fragment, unsigned long metacommunity_reference)</argsstring>
+        <argsstring>(unsigned long reference, long double speciation_rate, long double time, bool fragment, unsigned long metacommunity_reference, const ProtractedSpeciationParameters &amp;protracted_params)</argsstring>
         <name>pushBack</name>
         <param>
           <type>unsigned long</type>
@@ -43,6 +43,10 @@
         <param>
           <type>unsigned long</type>
           <declname>metacommunity_reference</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_protracted_speciation_parameters" kindref="compound">ProtractedSpeciationParameters</ref> &amp;</type>
+          <declname>protracted_params</declname>
         </param>
         <briefdescription>
 <para>Adds an extra <ref refid="struct_community_parameters" kindref="compound">CommunityParameters</ref> object to the calc_array vector with the supplied variables. </para>        </briefdescription>
@@ -82,11 +86,18 @@
 <parameterdescription>
 <para>reference for the metacommunity parameters, or 0 if no metacommunity </para></parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>protracted_params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>protracted speciation parameters to add </para></parameterdescription>
+</parameteritem>
 </parameterlist>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="171" column="1" bodyfile="necsim/Community.cpp" bodystart="95" bodyend="100"/>
+        <location file="necsim/Community.h" line="150" column="1" bodyfile="necsim/Community.cpp" bodystart="83" bodyend="89"/>
       </memberdef>
       <memberdef kind="function" id="struct_communities_array_1a0abeec9457993dffd047a78db4e4b289" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -111,12 +122,12 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="178" column="1" bodyfile="necsim/Community.cpp" bodystart="102" bodyend="105"/>
+        <location file="necsim/Community.h" line="158" column="1" bodyfile="necsim/Community.cpp" bodystart="91" bodyend="94"/>
       </memberdef>
-      <memberdef kind="function" id="struct_communities_array_1adf488e4c1790eb8d850820d8014d89fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="struct_communities_array_1ad2f4547bda62b1bfeca6d94696436989" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_community_parameters" kindref="compound">CommunityParameters</ref> &amp;</type>
         <definition>CommunityParameters &amp; CommunitiesArray::addNew</definition>
-        <argsstring>(long double speciation_rate, long double time, bool fragment, unsigned long metacommunity_reference)</argsstring>
+        <argsstring>(long double speciation_rate, long double time, bool fragment, unsigned long metacommunity_reference, const ProtractedSpeciationParameters &amp;protracted_params)</argsstring>
         <name>addNew</name>
         <param>
           <type>long double</type>
@@ -133,6 +144,10 @@
         <param>
           <type>unsigned long</type>
           <declname>metacommunity_reference</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_protracted_speciation_parameters" kindref="compound">ProtractedSpeciationParameters</ref> &amp;</type>
+          <declname>protracted_params</declname>
         </param>
         <briefdescription>
 <para>Adds a new communities calculation paremeters reference, with a new unique reference. </para>        </briefdescription>
@@ -158,17 +173,31 @@
 <parameterdescription>
 <para>true if fragments were used in the new calculation </para></parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>metacommunity_reference</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the reference to the set of metacommunity parameters (0 for none) </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>protracted_params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>protracted speciation parameters to add </para></parameterdescription>
+</parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>reference to the new <ref refid="struct_community_parameters" kindref="compound">CommunityParameters</ref> object added </para></simplesect>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="187" column="1" bodyfile="necsim/Community.cpp" bodystart="107" bodyend="138"/>
+        <location file="necsim/Community.h" line="169" column="1" bodyfile="necsim/Community.cpp" bodystart="96" bodyend="129"/>
       </memberdef>
-      <memberdef kind="function" id="struct_communities_array_1a53d5250849767365e4d50751c3583309" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="struct_communities_array_1a0bd0be60b599588b3855f4872b63a3de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool CommunitiesArray::hasPair</definition>
-        <argsstring>(long double speciation_rate, double time, bool fragment, unsigned long metacommunity_reference)</argsstring>
+        <argsstring>(long double speciation_rate, double time, bool fragment, unsigned long metacommunity_reference, const ProtractedSpeciationParameters &amp;protracted_params)</argsstring>
         <name>hasPair</name>
         <param>
           <type>long double</type>
@@ -185,6 +214,10 @@
         <param>
           <type>unsigned long</type>
           <declname>metacommunity_reference</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_protracted_speciation_parameters" kindref="compound">ProtractedSpeciationParameters</ref> &amp;</type>
+          <declname>protracted_params</declname>
         </param>
         <briefdescription>
 <para>Checks whether the calculation with the supplied variables has already been performed. </para>        </briefdescription>
@@ -211,12 +244,26 @@
 <parameterdescription>
 <para>bool for checking if fragments were used </para></parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>metacommunity_reference</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the reference to the set of metacommunity parameters (0 for none) </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>protracted_params</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>protracted speciation parameters to add </para></parameterdescription>
+</parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>true if the reference exists in past community parameters </para></simplesect>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Community.h" line="199" column="1" bodyfile="necsim/Community.cpp" bodystart="140" bodyend="151"/>
+        <location file="necsim/Community.h" line="184" column="1" bodyfile="necsim/Community.cpp" bodystart="131" bodyend="143"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -224,30 +271,37 @@
     <detaileddescription>
     </detaileddescription>
     <collaborationgraph>
-      <node id="619">
+      <node id="469">
         <label>std::vector&lt; CommunityParameters &gt;</label>
-        <childnode refid="620" relation="usage">
+        <childnode refid="470" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="620">
+      <node id="470">
         <label>CommunityParameters</label>
         <link refid="struct_community_parameters"/>
+        <childnode refid="471" relation="usage">
+          <edgelabel>protracted_parameters</edgelabel>
+        </childnode>
       </node>
-      <node id="618">
+      <node id="471">
+        <label>ProtractedSpeciationParameters</label>
+        <link refid="struct_protracted_speciation_parameters"/>
+      </node>
+      <node id="468">
         <label>CommunitiesArray</label>
         <link refid="struct_communities_array"/>
-        <childnode refid="619" relation="usage">
-          <edgelabel>calc_array</edgelabel>
+        <childnode refid="469" relation="usage">
+          <edgelabel>communityParameters</edgelabel>
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="necsim/Community.h" line="160" column="1" bodyfile="necsim/Community.h" bodystart="159" bodyend="201"/>
+    <location file="necsim/Community.h" line="135" column="1" bodyfile="necsim/Community.h" bodystart="134" bodyend="188"/>
     <listofallmembers>
-      <member refid="struct_communities_array_1adf488e4c1790eb8d850820d8014d89fa" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>addNew</name></member>
-      <member refid="struct_communities_array_1addd27a8197dd835e55c529294ecae398" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>calc_array</name></member>
-      <member refid="struct_communities_array_1a53d5250849767365e4d50751c3583309" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>hasPair</name></member>
-      <member refid="struct_communities_array_1ab216cad89ebc4cf73859093060a4a20c" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>pushBack</name></member>
+      <member refid="struct_communities_array_1ad2f4547bda62b1bfeca6d94696436989" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>addNew</name></member>
+      <member refid="struct_communities_array_1a51cb89209da53cdfdc40e0489103a086" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>communityParameters</name></member>
+      <member refid="struct_communities_array_1a0bd0be60b599588b3855f4872b63a3de" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>hasPair</name></member>
+      <member refid="struct_communities_array_1a03dac0fa7caadfbcd54bff684d3e72fe" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>pushBack</name></member>
       <member refid="struct_communities_array_1a0abeec9457993dffd047a78db4e4b289" prot="public" virt="non-virtual"><scope>CommunitiesArray</scope><name>pushBack</name></member>
     </listofallmembers>
   </compounddef>

@@ -10,10 +10,12 @@ Program Listing for File CPLCustomHandler.cpp
 
    // This file is part of NECSim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
-   #include "CPLCustomHandler.h"
    #include <sstream>
+   #include "CPLCustomHandler.h"
    #include "Logging.h"
+   
    #ifdef with_gdal
+   
    void cplCustomErrorHandler(CPLErr eErrClass, int err_no, const char *msg)
    {
        stringstream error_msg;
@@ -37,4 +39,5 @@ Program Listing for File CPLCustomHandler.cpp
        }
    #endif // DEBUG
    }
+   
    #endif //with_gdal

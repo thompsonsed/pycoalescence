@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_py_community_template" kind="class" language="C++" prot="public">
+    <compoundname>PyCommunityTemplate</compoundname>
+    <basecompoundref refid="class_py_template" prot="public" virt="non-virtual">PyTemplate&lt; T &gt;</basecompoundref>
+    <includes refid="_c_community_8h" local="no">CCommunity.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_py_community_template_1a37402f384e75c02c50360cecfe6b2267" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_spec_sim_parameters" kindref="compound">SpecSimParameters</ref> *</type>
+        <definition>SpecSimParameters* PyCommunityTemplate&lt; T &gt;::specSimParameters</definition>
+        <argsstring></argsstring>
+        <name>specSimParameters</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CCommunity.h" line="32" column="1" bodyfile="CCommunity.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_py_template_1a5b741a472639d65f9bcad29afa16ec99" prot="public" static="no" mutable="no">
+        <type>PyObject_HEAD PyObject *</type>
+        <definition>PyObject_HEAD PyObject* PyTemplate&lt; T &gt;::logger</definition>
+        <argsstring></argsstring>
+        <name>logger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyTemplates.h" line="22" column="1" bodyfile="PyTemplates.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_py_template_1a98bb8152faa73d028342d5cf260f0372" prot="public" static="no" mutable="no">
+        <type>PyObject *</type>
+        <definition>PyObject* PyTemplate&lt; T &gt;::log_function</definition>
+        <argsstring></argsstring>
+        <name>log_function</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyTemplates.h" line="23" column="1" bodyfile="PyTemplates.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_py_template_1ac7bf12e84289f480eaa79fd7c421614a" prot="public" static="no" mutable="no">
+        <type>T *</type>
+        <definition>T* PyTemplate&lt; T &gt;::base_object</definition>
+        <argsstring></argsstring>
+        <name>base_object</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyTemplates.h" line="24" column="1" bodyfile="PyTemplates.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Template for CCommunity and CMetacommunity objects for exporting to python. </para>    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the type of the <ref refid="class_community" kindref="compound">Community</ref> </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="725">
+        <label>PyTemplate&lt; T &gt;</label>
+        <link refid="class_py_template"/>
+      </node>
+      <node id="724">
+        <label>PyCommunityTemplate&lt; T &gt;</label>
+        <link refid="class_py_community_template"/>
+        <childnode refid="725" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="728">
+        <label>T</label>
+      </node>
+      <node id="734">
+        <label>std::vector&lt; double &gt;</label>
+      </node>
+      <node id="727">
+        <label>PyTemplate&lt; T &gt;</label>
+        <link refid="class_py_template"/>
+        <childnode refid="728" relation="usage">
+          <edgelabel>base_object</edgelabel>
+        </childnode>
+      </node>
+      <node id="733">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="729">
+        <label>SpecSimParameters</label>
+        <link refid="struct_spec_sim_parameters"/>
+        <childnode refid="730" relation="usage">
+          <edgelabel>protracted_parameters</edgelabel>
+        </childnode>
+        <childnode refid="732" relation="usage">
+          <edgelabel>times_file</edgelabel>
+          <edgelabel>fragment_config_file</edgelabel>
+          <edgelabel>samplemask</edgelabel>
+          <edgelabel>filename</edgelabel>
+        </childnode>
+        <childnode refid="734" relation="usage">
+          <edgelabel>all_times</edgelabel>
+          <edgelabel>all_speciation_rates</edgelabel>
+        </childnode>
+      </node>
+      <node id="731">
+        <label>ProtractedSpeciationParameters</label>
+        <link refid="struct_protracted_speciation_parameters"/>
+      </node>
+      <node id="726">
+        <label>PyCommunityTemplate&lt; T &gt;</label>
+        <link refid="class_py_community_template"/>
+        <childnode refid="727" relation="public-inheritance">
+        </childnode>
+        <childnode refid="729" relation="usage">
+          <edgelabel>specSimParameters</edgelabel>
+        </childnode>
+      </node>
+      <node id="730">
+        <label>std::vector&lt; ProtractedSpeciationParameters &gt;</label>
+        <childnode refid="731" relation="usage">
+          <edgelabel>elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="732">
+        <label>std::string</label>
+        <childnode refid="733" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="CCommunity.h" line="30" column="1" bodyfile="CCommunity.h" bodystart="29" bodyend="33"/>
+    <listofallmembers>
+      <member refid="class_py_template_1ac7bf12e84289f480eaa79fd7c421614a" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>base_object</name></member>
+      <member refid="class_py_template_1a98bb8152faa73d028342d5cf260f0372" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>log_function</name></member>
+      <member refid="class_py_template_1a5b741a472639d65f9bcad29afa16ec99" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>logger</name></member>
+      <member refid="class_py_community_template_1a37402f384e75c02c50360cecfe6b2267" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>specSimParameters</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

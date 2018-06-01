@@ -59,7 +59,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">write_to_log</span>
-<span class="kn">from</span> <span class="nn">.build</span> <span class="kn">import</span> <span class="n">LandscapeMetricsLib</span>
+<span class="kn">from</span> <span class="nn">.build</span> <span class="kn">import</span> <span class="n">necsimmodule</span>
 <span class="kn">from</span> <span class="nn">.map</span> <span class="kn">import</span> <span class="n">Map</span>
 
 <div class="viewcode-block" id="LandscapeMetrics"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape_metrics.LandscapeMetrics">[docs]</a><span class="k">class</span> <span class="nc">LandscapeMetrics</span><span class="p">(</span><span class="n">Map</span><span class="p">):</span>
@@ -70,19 +70,14 @@
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Initialises the loggers and default map variables.</span>
+
 <span class="sd">		:param file: the path to the map file</span>
 <span class="sd">		:param logging_level: the logging level to report at</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">Map</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;mnncalculatorlogger&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;pycoalescence.landscapemetric&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="n">logging_level</span><span class="p">)</span>
-
-	<span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Sets the loggers</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">LandscapeMetricsLib</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
-		<span class="n">LandscapeMetricsLib</span><span class="o">.</span><span class="n">set_log_function</span><span class="p">(</span><span class="n">write_to_log</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_LM_calc</span> <span class="o">=</span> <span class="n">necsimmodule</span><span class="o">.</span><span class="n">CLandscapeMetricsCalculator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LandscapeMetrics.get_mnn"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape_metrics.LandscapeMetrics.get_mnn">[docs]</a>	<span class="k">def</span> <span class="nf">get_mnn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -93,8 +88,8 @@
 
 <span class="sd">		:rtype: float</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">LandscapeMetricsLib</span><span class="o">.</span><span class="n">calc_mean_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_LM_calc</span><span class="o">.</span><span class="n">import_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_LM_calc</span><span class="o">.</span><span class="n">calculate_MNN</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="LandscapeMetrics.get_clumpiness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape_metrics.LandscapeMetrics.get_clumpiness">[docs]</a>	<span class="k">def</span> <span class="nf">get_clumpiness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -106,8 +101,8 @@
 
 <span class="sd">		:rtype: float</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">LandscapeMetricsLib</span><span class="o">.</span><span class="n">calc_clumpiness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span></div></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_LM_calc</span><span class="o">.</span><span class="n">import_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_LM_calc</span><span class="o">.</span><span class="n">calculate_CLUMPY</span><span class="p">()</span></div></div>
 
 
 

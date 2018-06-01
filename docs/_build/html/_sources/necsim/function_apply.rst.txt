@@ -3,7 +3,7 @@
 Function apply
 ==============
 
-- Defined in :ref:`file_applyspecmodule.cpp`
+- Defined in :ref:`file_CCommunity.h`
 
 
 Function Documentation

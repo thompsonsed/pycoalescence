@@ -16,6 +16,7 @@ var class_n_rrand =
     [ "setDispersalParams", "class_n_rrand.html#a5679f458940de730f527772ca27db5ad", null ],
     [ "setSeed", "class_n_rrand.html#a23325b4d35ee0b5b580726db05e2b8a3", null ],
     [ "uniformUniform", "class_n_rrand.html#a799f55c57dc238f094a20e882e3abb51", null ],
+    [ "wipeSeed", "class_n_rrand.html#a34238557ccd72ee3e58712b7140a649a", null ],
     [ "operator<<", "class_n_rrand.html#a604ebc1c878ab63df21e123dbd34185f", null ],
     [ "operator>>", "class_n_rrand.html#a0b8544414e90bb92ba90afa881b1f06e", null ]
 ];

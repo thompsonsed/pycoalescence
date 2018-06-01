@@ -13,6 +13,7 @@ from pycoalescence.system_operations import set_logging_method
 from pycoalescence.merger import Merger
 from pycoalescence.dispersal_simulation import DispersalSimulation
 from pycoalescence.landscape_metrics import LandscapeMetrics
+from pycoalescence.build import NECSimError
 # Support for no scipy installed
 try:
 	from pycoalescence.fragments import FragmentedLandscape

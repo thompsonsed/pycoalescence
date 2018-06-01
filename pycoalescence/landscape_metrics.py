@@ -4,7 +4,7 @@ Calculates landscape-level metrics, including mean distance to nearest-neighbour
 import logging
 
 from .system_operations import write_to_log
-from .build import LandscapeMetricsLib
+from .build import necsimmodule
 from .map import Map
 
 class LandscapeMetrics(Map):
@@ -15,19 +15,14 @@ class LandscapeMetrics(Map):
 	def __init__(self, file=None, logging_level=logging.WARNING):
 		"""
 		Initialises the loggers and default map variables.
+
 		:param file: the path to the map file
 		:param logging_level: the logging level to report at
 		"""
 		Map.__init__(self, file)
-		self.logger = logging.Logger("mnncalculatorlogger")
+		self.logger = logging.Logger("pycoalescence.landscapemetric")
 		self._create_logger(logging_level=logging_level)
-
-	def _setup(self):
-		"""
-		Sets the loggers
-		"""
-		LandscapeMetricsLib.set_logger(self.logger)
-		LandscapeMetricsLib.set_log_function(write_to_log)
+		self.c_LM_calc = necsimmodule.CLandscapeMetricsCalculator(self.logger, write_to_log)
 
 	def get_mnn(self):
 		"""
@@ -38,8 +33,8 @@ class LandscapeMetrics(Map):
 
 		:rtype: float
 		"""
-		self._setup()
-		return LandscapeMetricsLib.calc_mean_distance(self.file_name)
+		self.c_LM_calc.import_map(self.file_name)
+		return self.c_LM_calc.calculate_MNN()
 
 
 	def get_clumpiness(self):
@@ -51,8 +46,8 @@ class LandscapeMetrics(Map):
 
 		:rtype: float
 		"""
-		self._setup()
-		return LandscapeMetricsLib.calc_clumpiness(self.file_name)
+		self.c_LM_calc.import_map(self.file_name)
+		return self.c_LM_calc.calculate_CLUMPY()
 
 
 

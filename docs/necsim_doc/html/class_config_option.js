@@ -11,6 +11,7 @@ var class_config_option =
     [ "importConfig", "class_config_option.html#afbd1ed9d006c8ff48d90e63a57f55e2a", null ],
     [ "operator[]", "class_config_option.html#a66d2199cf3bd4fa015ef38e34fe02bd1", null ],
     [ "parseConfig", "class_config_option.html#a45cdefa1516c378e5a90803d594ccd34", null ],
+    [ "parseConfig", "class_config_option.html#acc58daf05e74c1e1637a9c06e371c40b", null ],
     [ "setConfig", "class_config_option.html#ac1ae69813100e755359b25b11dfeb8c7", null ],
     [ "setSectionOption", "class_config_option.html#ac824f16f50a77fcc5c11d5ac3fb244cc", null ],
     [ "operator<<", "class_config_option.html#a9e0cbadb5ac652eb62eb6e046dad5126", null ],

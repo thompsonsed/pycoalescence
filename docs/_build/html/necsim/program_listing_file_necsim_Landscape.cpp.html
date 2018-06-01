@@ -71,6 +71,7 @@
 <span class="cp">#include</span> <span class="cpf">&quot;Landscape.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
 
+
 <span class="kt">uint32_t</span> <span class="nf">importToMapAndRound</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">map_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_x</span><span class="p">,</span>
                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_y</span><span class="p">,</span>
                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">scalar</span><span class="p">)</span>
@@ -132,6 +133,12 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks to make sure it hasn&#39;t been run already.</span>
     <span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mapvarsin</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;SimParameters pointer is nullptr. Please report this bug.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
         <span class="n">mapvars</span> <span class="o">=</span> <span class="n">mapvarsin</span><span class="p">;</span>
         <span class="n">mapvars</span><span class="o">-&gt;</span><span class="n">setHistorical</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
         <span class="n">deme</span> <span class="o">=</span> <span class="n">mapvars</span><span class="o">-&gt;</span><span class="n">deme</span><span class="p">;</span>

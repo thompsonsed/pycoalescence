@@ -70,7 +70,7 @@
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;Metacommunity.h&quot;</span><span class="cp"></span>
-
+<span class="cp">#include</span> <span class="cpf">&quot;LogFile.h&quot;</span><span class="cp"></span>
 
 <span class="n">Metacommunity</span><span class="o">::</span><span class="n">Metacommunity</span><span class="p">()</span>
 <span class="p">{</span>
@@ -198,16 +198,12 @@
     <span class="k">return</span> <span class="n">min_indices</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;********************&quot;</span><span class="p">);</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Metacommunity application&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
-    <span class="kt">time_t</span> <span class="n">tStart</span><span class="p">{};</span>
-    <span class="kt">time_t</span> <span class="n">tEnd</span><span class="p">{};</span>
-    <span class="c1">// Start the clock</span>
-    <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tStart</span><span class="p">);</span>
     <span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
     <span class="c1">// Make sure that the connection is opened to file.</span>
     <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
@@ -216,10 +212,7 @@
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Creating coalescence tree from metacommunity...&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
-    <span class="n">doApplication</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
-    <span class="n">output</span><span class="p">();</span>
-    <span class="n">printEndTimes</span><span class="p">(</span><span class="n">tStart</span><span class="p">,</span> <span class="n">tEnd</span><span class="p">);</span>
-
+    <span class="n">Community</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>

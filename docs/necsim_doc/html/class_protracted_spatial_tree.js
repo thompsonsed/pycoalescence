@@ -1,6 +1,7 @@
 var class_protracted_spatial_tree =
 [
     [ "addLineages", "class_protracted_spatial_tree.html#a6e802a5034648cc26b24923f27f85727", null ],
+    [ "addSpeciationRates", "class_protracted_spatial_tree.html#a38488499b196d3f5ee40b2a68fe3279e", null ],
     [ "addWrappedLineage", "class_protracted_spatial_tree.html#a5b26973b7f2dd3ca842a2eb8d2957896", null ],
     [ "applyMultipleRates", "class_protracted_spatial_tree.html#acfc7efdec999f6dbf2ac089514d22091", null ],
     [ "applySpecRate", "class_protracted_spatial_tree.html#a56a3631e65bb91d04ba4626c4c1ea79a", null ],
@@ -49,7 +50,8 @@ var class_protracted_spatial_tree =
     [ "hasPaused", "class_protracted_spatial_tree.html#ae07761c0a91a44ebe459904b1b8ffb43", null ],
     [ "importMaps", "class_protracted_spatial_tree.html#ab9603c25cd1c8466d1e4bfa3f73f191f", null ],
     [ "importReproductionMap", "class_protracted_spatial_tree.html#a5d9f29a12f8b66798139c89f153130db", null ],
-    [ "importSimulationVariables", "class_protracted_spatial_tree.html#ac5fc862af2ca6f2b4c471c450093fcae", null ],
+    [ "importSimulationVariables", "class_protracted_spatial_tree.html#a455d87022772b309a5974ea5f0295139", null ],
+    [ "importSimulationVariables", "class_protracted_spatial_tree.html#a029af5f2dc1e33b4eead8110090ac778", null ],
     [ "incrementGeneration", "class_protracted_spatial_tree.html#aa5db72e986bed4b0aa81217f5be30cf4", null ],
     [ "initiatePause", "class_protracted_spatial_tree.html#a9b2df7fd1b61d3d70ac630f7fbfd683d", null ],
     [ "initiateResume", "class_protracted_spatial_tree.html#a8cfe5d30d53d702f18cd67981e2c9acb", null ],
@@ -68,6 +70,7 @@ var class_protracted_spatial_tree =
     [ "protractedVarsToString", "class_protracted_spatial_tree.html#a505a464578e6a7028e66f26b3e6b4a92", null ],
     [ "protractedVarsToString", "class_protracted_spatial_tree.html#aa8bb5d93c7992404ede0a49bb69ccd1f", null ],
     [ "removeOldPosition", "class_protracted_spatial_tree.html#ae694bde4ab31b51c13c4a96f9a86a8ba", null ],
+    [ "runFileChecks", "class_protracted_spatial_tree.html#a060fb8be17d702ed5eb0c142a89d9773", null ],
     [ "runSimulation", "class_protracted_spatial_tree.html#afe75245862a1c40030c1c8607518cf8d", null ],
     [ "setInitialValues", "class_protracted_spatial_tree.html#aec2640897132a1b667e852bbafc14c78", null ],
     [ "setObjectSizes", "class_protracted_spatial_tree.html#a869ab0aba75336f737cbb137c74b8abc", null ],
@@ -96,6 +99,7 @@ var class_protracted_spatial_tree =
     [ "switchPositions", "class_protracted_spatial_tree.html#a71c99204503ec59815a5338ab934331d", null ],
     [ "updateStepCoalescenceVariables", "class_protracted_spatial_tree.html#ad14491fc87b0a9b28f5b8b316ee8a89d", null ],
     [ "verifyReproductionMap", "class_protracted_spatial_tree.html#a0eb6f50f218289c79770b203d3eeaada", null ],
+    [ "wipeSimulationVariables", "class_protracted_spatial_tree.html#aa31508ea6d5801c6dee17c035f393b60", null ],
     [ "writeSimStartToConsole", "class_protracted_spatial_tree.html#a95360a2f62ef0eb436d586552b299e1f", null ],
     [ "writeStepToConsole", "class_protracted_spatial_tree.html#a37de93174eece50a2fc082b683d97047", null ],
     [ "writeTimes", "class_protracted_spatial_tree.html#ab8785fc9e27868a56335048321c13290", null ],

@@ -2,7 +2,7 @@ import logging
 import unittest
 
 import gdal
-from osgeo import osr, ogr
+from osgeo import osr, ogr, gdal
 import numpy as np
 import shutil
 import os
@@ -428,7 +428,7 @@ class TestMap(unittest.TestCase):
 		m = Map("sample/SA_sample.tif")
 		self.assertEqual(6, m.get_dtype())
 
-
+@unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
 class TestMapReprojection(unittest.TestCase):
 	"""
 	Tests that reprojections work as intended.

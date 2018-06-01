@@ -39,7 +39,7 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``SpecSimParameters.h`` (:ref:`file_necsim_SpecSimParameters.h`)
 

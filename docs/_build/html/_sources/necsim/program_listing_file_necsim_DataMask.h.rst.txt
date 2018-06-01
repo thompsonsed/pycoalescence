@@ -40,9 +40,9 @@ Program Listing for File DataMask.h
        typedef double (DataMask::*fptr)(const long &x, const long &y, const long &xwrap, const long &ywrap);
        fptr getProportionfptr;
    public:
-       Map<bool> sample_mask; 
-       // Stores the exact values from the input tif file.
-       Map<double> sample_mask_exact; 
+       Map<bool> sample_mask;
+       Map<double> sample_mask_exact;
+   
        DataMask();
    
        ~DataMask() = default;

@@ -137,13 +137,16 @@
 
     <span class="kt">void</span> <span class="n">setSequential</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bSequential</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">setSimulationParameters</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">sim_parameters</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setSimulationParameters</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">sim_parameters</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">print</span><span class="o">=</span><span class="nb">true</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setDispersalParameters</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">setSeed</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+        <span class="n">random</span><span class="p">.</span><span class="n">wipeSeed</span><span class="p">();</span>
         <span class="n">random</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
     <span class="p">}</span>
 

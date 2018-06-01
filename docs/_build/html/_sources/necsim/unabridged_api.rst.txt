@@ -10,21 +10,6 @@ Namespaces
 .. toctree::
    :maxdepth: 5
 
-   namespace_io.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   namespace_io__detail.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   namespace_io__error.rst
-
-.. toctree::
-   :maxdepth: 5
-
    namespace_std.rst
 
 Classes and Structs
@@ -54,156 +39,6 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   struct_io__double_quote_escape.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__empty_line_comment.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__base.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__can_not_open_file.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__duplicated_column_in_header.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__escaped_string_not_closed.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__extra_column_in_header.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__header_missing.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__integer_must_be_positive.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__integer_overflow.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__integer_underflow.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__invalid_single_character.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__line_length_limit_exceeded.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__missing_column_in_header.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__no_digit.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__too_few_columns.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__too_many_columns.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__with_column_content.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__with_column_name.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__with_errno.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__with_file_line.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__error__with_file_name.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__ignore_overflow.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__no_comment.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__no_quote_escape.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__set_to_max_on_overflow.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__single_and_empty_line_comment.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__single_line_comment.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__throw_on_overflow.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_io__trim_chars.rst
-
-.. toctree::
-   :maxdepth: 5
-
    struct_MetacommunitiesArray.rst
 
 .. toctree::
@@ -215,6 +50,11 @@ Classes and Structs
    :maxdepth: 5
 
    struct_module_state.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   struct_ProtractedSpeciationParameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -269,46 +109,6 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_io__ByteSourceBase.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__CSVReader.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__detail__AsynchronousReader.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__detail__NonOwningIStreamByteSource.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__detail__NonOwningStringByteSource.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__detail__OwningStdIOByteSourceBase.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__detail__SynchronousReader.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_io__LineReader.rst
-
-.. toctree::
-   :maxdepth: 5
-
    class_Landscape.rst
 
 .. toctree::
@@ -320,6 +120,16 @@ Classes and Structs
    :maxdepth: 5
 
    class_LogFile.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_Logger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_Map.rst
 
 .. toctree::
    :maxdepth: 5
@@ -345,6 +155,31 @@ Classes and Structs
    :maxdepth: 5
 
    class_ProtractedTree.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_PyCommunityTemplate.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_PyLMC.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_PyLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_PySimulateDispersal.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_PyTemplate.rst
 
 .. toctree::
    :maxdepth: 5
@@ -379,11 +214,6 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_SpeciesGrid.rst
-
-.. toctree::
-   :maxdepth: 5
-
    class_SpeciesList.rst
 
 .. toctree::
@@ -413,17 +243,32 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_addProtractedParameters.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_addTime.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_apply.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_calc_clumpiness.rst
+   function_applySpeciationRates.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_calc_mean_distance.rst
+   function_calculateCLUMPY.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_calculateMNN.rst
 
 .. toctree::
    :maxdepth: 5
@@ -448,7 +293,12 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_createCommunity.rst
+   function_cplCustomErrorHandler.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_cplCustomErrorHandler.rst
 
 .. toctree::
    :maxdepth: 5
@@ -519,6 +369,31 @@ Functions
    :maxdepth: 5
 
    function_doubleCompare.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_genCommunityMethods.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_genCommunityType.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_genCommunityType.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_genPySimulationMethods.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_genSimulationType.rst
 
 .. toctree::
    :maxdepth: 5
@@ -548,6 +423,16 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_getGlobalLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_getGlobalLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_getTime.rst
 
 .. toctree::
@@ -573,6 +458,16 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_importConfig.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_importConfigFromString.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_importPyListToVectorDouble.rst
 
 .. toctree::
@@ -613,32 +508,7 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_initapplyspecmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_initapplyspecmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_initdispersalmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_initdispersalmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_initlandscapemetricsmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_initmeandistancemodule.rst
+   function_initialise_logger.rst
 
 .. toctree::
    :maxdepth: 5
@@ -649,131 +519,6 @@ Functions
    :maxdepth: 5
 
    function_initnecsimmodule.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__chop_next_column.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse_float.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse_header_line.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse_line.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse_signed_integer.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_io__detail__parse_unsigned_integer.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_main.rst
 
 .. toctree::
    :maxdepth: 5
@@ -843,7 +588,97 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_removeComOption.rst
+   function_output.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyCommunity_dealloc.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyCommunity_init.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyLMC_dealloc.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyLMC_init.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PySimulateDispersal_dealloc.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PySimulateDispersal_init.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PySimulateDispersal_new.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_clear.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_dealloc.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_gen_getsetters.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_getCallLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_getLogging.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_init.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_new.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_setCallLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_setLogging.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_PyTemplate_traverse.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_readyPyTypeObject.rst
 
 .. toctree::
    :maxdepth: 5
@@ -853,7 +688,22 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_resume_simulation.rst
+   function_removeComOption.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_removeGlobalLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_removeGlobalLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_reset.rst
 
 .. toctree::
    :maxdepth: 5
@@ -863,7 +713,7 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_run_simulation.rst
+   function_run.rst
 
 .. toctree::
    :maxdepth: 5
@@ -893,6 +743,16 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_runMDT.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_runMeanDispersal.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_runXL.rst
 
 .. toctree::
@@ -913,57 +773,37 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_set_log_function.rst
+   function_set_map.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_set_log_function.rst
+   function_set_maps.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_set_logger.rst
+   function_set_output_database.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_set_logger.rst
+   function_setup.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_set_map_parameters.rst
+   function_setupApplySpeciation.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_test_mean_dispersal.rst
+   function_setupResume.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_test_mean_distance_travelled.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_write_log.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_write_log.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_write_log.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_write_log.rst
+   function_wipeProtractedParameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1037,67 +877,47 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable__state.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable__state.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable__state.rst
-
-.. toctree::
-   :maxdepth: 5
-
    variable_AM.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_ApplySpeciationError.rst
+   variable_C_CommunityType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_ApplySpecMethods.rst
+   variable_C_LMCType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_call_logging.rst
+   variable_C_MetacommunityType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_call_logging.rst
+   variable_C_NSESimulationType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_call_logging.rst
+   variable_C_ProtractedNSESimulationType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_call_logging.rst
+   variable_C_ProtractedSpatialSimulationType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_call_logging.rst
+   variable_C_SimulateDispersalType.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_DispersalError.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_DispersalMethods.rst
+   variable_C_SpatialSimulationType.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1108,11 +928,6 @@ Variables
    :maxdepth: 5
 
    variable_gdal_data_sizes.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_globalSimParameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1142,36 +957,6 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable_io__error__max_column_content_length.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_io__error__max_column_name_length.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_io__error__max_file_name_length.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_io__ignore_extra_column.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_io__ignore_missing_column.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_io__ignore_no_column.rst
-
-.. toctree::
-   :maxdepth: 5
-
    variable_IQ1.rst
 
 .. toctree::
@@ -1192,97 +977,17 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable_LandscapeMetricsError.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_LandscapeMetricsMethods.rst
-
-.. toctree::
-   :maxdepth: 5
-
    variable_log_name.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_log_name.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_log_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_log_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_log_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_log_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_log_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
    variable_logger.rst
 
 .. toctree::
    :maxdepth: 5
 
    variable_logger.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger_set.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   variable_logger_set.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1307,12 +1012,32 @@ Variables
 .. toctree::
    :maxdepth: 5
 
+   variable_PyLMCMethods.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_pyLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_pyLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
    variable_saved_stdout.rst
 
 .. toctree::
    :maxdepth: 5
 
    variable_saved_stdout.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   variable_SimulateDispersalMethods.rst
 
 Defines
 *******
@@ -1321,67 +1046,7 @@ Defines
 .. toctree::
    :maxdepth: 5
 
-   define_APPLY_SPEC_IMPORT.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_DISPERSAL_IMPORT.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_DISPERSAL_IMPORT.rst
-
-.. toctree::
-   :maxdepth: 5
-
    define_GETSTATE.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_GETSTATE.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_GETSTATE.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_GETSTATE.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_INITERROR.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_INITERROR.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_INITERROR.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_INITERROR.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_INITERROR.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_INITERROR.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1426,16 +1091,6 @@ Defines
 .. toctree::
    :maxdepth: 5
 
-   define_PYTHON_COMPILE.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_PYTHON_COMPILE.rst
-
-.. toctree::
-   :maxdepth: 5
-
    define_SPECIATIONCOUNTER_PROTRACTEDSPATIALTREE_H.rst
 
 .. toctree::
@@ -1448,15 +1103,6 @@ Defines
 
    define_sql_ram.rst
 
-Typedefs
-********
-
-
-.. toctree::
-   :maxdepth: 5
-
-   typedef_io__ignore_column.rst
-
 Directories
 ***********
 
@@ -1466,11 +1112,6 @@ Directories
 
    dir_necsim.rst
 
-.. toctree::
-   :maxdepth: 5
-
-   dir_necsim_fast-cpp-csv-parser2.rst
-
 Files
 *****
 
@@ -1478,12 +1119,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_applyspecmodule.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_applyspecmodule.h.rst
+   file_CCommunity.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1494,6 +1130,11 @@ Files
    :maxdepth: 5
 
    file_necsim_Cell.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_CLandscapeMetricsCalculator.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1528,7 +1169,12 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_fast-cpp-csv-parser2_csv.h.rst
+   file_CSimulateDispersal.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_CSimulation.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1568,12 +1214,12 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_dispersalmodule.cpp.rst
+   file_necsim_DoubleComparison.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_dispersalmodule.h.rst
+   file_necsim_DoubleComparison.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1608,16 +1254,6 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_landscapemetricsmodule.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_landscapemetricsmodule.h.rst
-
-.. toctree::
-   :maxdepth: 5
-
    file_necsim_LicenseHeader.h.rst
 
 .. toctree::
@@ -1629,6 +1265,16 @@ Files
    :maxdepth: 5
 
    file_necsim_LogFile.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_Logger.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_Logger.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1708,6 +1354,16 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_PyLogger.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_PyLogger.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_PyLogging.cpp.rst
 
 .. toctree::
@@ -1718,7 +1374,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_fast-cpp-csv-parser2_README.md.rst
+   file_PyTemplates.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1784,21 +1440,6 @@ Files
    :maxdepth: 5
 
    file_necsim_SpeciationCommands.h.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_SpeciationCounter.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_necsim_SpeciesGrid.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_necsim_SpeciesGrid.h.rst
 
 .. toctree::
    :maxdepth: 5

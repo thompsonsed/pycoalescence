@@ -74,6 +74,7 @@
 <span class="cp">#include</span> <span class="cpf">&lt;set&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Community.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;DoubleComparison.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
 
 <span class="kt">bool</span> <span class="nf">checkSpeciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span>
@@ -81,49 +82,32 @@
 <span class="p">{</span>
     <span class="c1">// bool result1, result2, result3, result4;</span>
     <span class="kt">long</span> <span class="kt">double</span> <span class="n">res</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">pow</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">speciation_rate</span><span class="p">),</span> <span class="kt">double</span><span class="p">(</span><span class="n">no_generations</span><span class="p">));</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">random_number</span> <span class="o">&lt;=</span> <span class="n">res</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="p">(</span><span class="nb">false</span><span class="p">);</span>
-
+    <span class="k">return</span> <span class="n">random_number</span> <span class="o">&lt;=</span> <span class="n">res</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="kt">bool</span> <span class="nf">doubleCompare</span><span class="p">(</span><span class="kt">double</span> <span class="n">d1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">d2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">epsilon</span><span class="p">)</span>
+
+<span class="n">CommunityParameters</span><span class="o">::</span><span class="n">CommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
+                                         <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                         <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">);</span>
+    <span class="n">setup</span><span class="p">(</span><span class="n">reference_in</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">bool</span> <span class="nf">doubleCompare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">d1</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">d2</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">epsilon</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="n">abs</span><span class="p">((</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">bool</span> <span class="nf">doubleCompare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">d1</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">d2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">epsilon</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="n">abs</span><span class="p">((</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">;</span>
-<span class="p">}</span>
-
-
-<span class="n">CommunityParameters</span><span class="o">::</span><span class="n">CommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span>
-                                         <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
-                                         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">setup</span><span class="p">(</span><span class="n">reference_in</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="n">metacommunity_reference_in</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">void</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
-                                <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
+                                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span> <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">time</span> <span class="o">=</span> <span class="n">time_in</span><span class="p">;</span>
     <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
     <span class="n">fragment</span> <span class="o">=</span> <span class="n">fragment_in</span><span class="p">;</span>
     <span class="n">reference</span> <span class="o">=</span> <span class="n">reference_in</span><span class="p">;</span>
     <span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="n">metacommunity_reference_in</span><span class="p">;</span>
+    <span class="n">protracted_parameters</span> <span class="o">=</span> <span class="n">protracted_params</span><span class="p">;</span>
     <span class="n">updated</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
 <span class="p">}</span>
 
 <span class="kt">bool</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
-                                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">)</span>
+                                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                  <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">time_in</span><span class="p">),</span> <span class="kt">double</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="mf">0.00001</span><span class="p">))</span>
     <span class="p">{</span>
@@ -133,18 +117,22 @@
         <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">os</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
         <span class="k">return</span> <span class="nf">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-                <span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment_in</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span><span class="p">;</span>
+               <span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment_in</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span> <span class="o">&amp;&amp;</span>
+               <span class="n">protracted_params</span> <span class="o">==</span> <span class="n">protracted_parameters</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
            <span class="n">doubleCompare</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="n">time</span> <span class="o">*</span> <span class="mf">0.0001</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment_in</span> <span class="o">&amp;&amp;</span>
-           <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span><span class="p">;</span>
+           <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span> <span class="o">&amp;&amp;</span>
+            <span class="n">protracted_params</span> <span class="o">==</span> <span class="n">protracted_parameters</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">bool</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
-                                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">)</span>
+                                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                  <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-           <span class="n">doubleCompare</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span><span class="p">;</span>
+           <span class="n">doubleCompare</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span> <span class="o">&amp;&amp;</span>
+            <span class="n">protracted_params</span> <span class="o">==</span> <span class="n">protracted_parameters</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">bool</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">)</span>
@@ -153,29 +141,31 @@
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
-                                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">)</span>
+                                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                                <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">CommunityParameters</span> <span class="n">tmp_param</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">);</span>
-    <span class="n">calc_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+    <span class="n">CommunityParameters</span> <span class="n">tmp_param</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">);</span>
+    <span class="n">communityParameters</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="n">CommunityParameters</span> <span class="n">tmp_param</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">calc_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+    <span class="n">communityParameters</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="n">CommunityParameters</span> <span class="o">&amp;</span><span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">addNew</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
-                                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">)</span>
+                                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                                              <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_reference</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">calc_array</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">communityParameters</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">compare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">))</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">compare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">))</span>
         <span class="p">{</span>
             <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment</span> <span class="o">||</span> <span class="o">!</span><span class="n">fragment</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Tried to get reference for non-unique parameter set in communities. &quot;</span>
-                                             <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
+                                     <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span>
             <span class="p">{</span>
@@ -192,17 +182,19 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="n">CommunityParameters</span> <span class="n">tmp_param</span><span class="p">(</span><span class="n">max_reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">);</span>
-    <span class="n">calc_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">calc_array</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+    <span class="n">CommunityParameters</span> <span class="n">tmp_param</span><span class="p">(</span><span class="n">max_reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                                  <span class="n">protracted_params</span><span class="p">);</span>
+    <span class="n">communityParameters</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">communityParameters</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="kt">bool</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">hasPair</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
-                               <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">)</span>
+                               <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                               <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">calc_array</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">communityParameters</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">compare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">))</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">compare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">))</span>
         <span class="p">{</span>
             <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
         <span class="p">}</span>
@@ -229,8 +221,8 @@
     <span class="k">return</span> <span class="n">reference</span> <span class="o">==</span> <span class="n">reference_in</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span>
-<span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span>
+                                    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">MetacommunityParameters</span> <span class="n">tmp_param</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">);</span>
     <span class="n">calc_array</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
@@ -250,7 +242,7 @@
         <span class="p">{</span>
 
             <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Tried to get reference for non-unique parameter set in metacommunities. &quot;</span>
-                                         <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
+                                 <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">else</span>
         <span class="p">{</span>
@@ -464,14 +456,14 @@
         <span class="k">if</span><span class="p">(</span><span class="n">protracted</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="kt">long</span> <span class="kt">double</span> <span class="n">lineage_age</span> <span class="o">=</span> <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getGeneration</span><span class="p">()</span> <span class="o">+</span> <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getGenRate</span><span class="p">();</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">lineage_age</span> <span class="o">&gt;=</span> <span class="n">applied_min_speciation_gen</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">lineage_age</span> <span class="o">&gt;=</span> <span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">min_speciation_gen</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">checkSpeciation</span><span class="p">(</span><span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getSpecRate</span><span class="p">(),</span> <span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">,</span>
                                    <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getGenRate</span><span class="p">()))</span>
                 <span class="p">{</span>
                     <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">speciate</span><span class="p">();</span>
                 <span class="p">}</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">lineage_age</span> <span class="o">&gt;=</span> <span class="n">applied_max_speciation_gen</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">lineage_age</span> <span class="o">&gt;=</span> <span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">max_speciation_gen</span><span class="p">)</span>
                 <span class="p">{</span>
                     <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">speciate</span><span class="p">();</span>
                 <span class="p">}</span>
@@ -531,7 +523,7 @@
         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">tmp_species_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">ids_map</span><span class="p">;</span>
         <span class="n">ids_map</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">iSpecCount</span><span class="p">);</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">TreeNode</span> <span class="o">*</span><span class="n">this_node</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="n">nodes</span><span class="p">)[</span><span class="n">i</span><span class="p">];</span>
             <span class="k">if</span><span class="p">(</span><span class="n">this_node</span><span class="o">-&gt;</span><span class="n">hasSpeciated</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getExistence</span><span class="p">())</span>
@@ -539,7 +531,7 @@
                 <span class="k">auto</span> <span class="n">map_id</span> <span class="o">=</span> <span class="n">ids_map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getSpeciesID</span><span class="p">());</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">map_id</span> <span class="o">==</span> <span class="n">ids_map</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
                 <span class="p">{</span>
-                    <span class="n">tmp_species_count</span> <span class="o">++</span><span class="p">;</span>
+                    <span class="n">tmp_species_count</span><span class="o">++</span><span class="p">;</span>
                     <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">resetSpecies</span><span class="p">();</span>
                     <span class="n">this_node</span><span class="o">-&gt;</span><span class="n">burnSpecies</span><span class="p">(</span><span class="n">tmp_species_count</span><span class="p">);</span>
                     <span class="n">ids_map</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">this_node</span><span class="o">-&gt;</span><span class="n">getSpeciesID</span><span class="p">(),</span> <span class="n">tmp_species_count</span><span class="p">);</span>
@@ -707,7 +699,7 @@
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open_v2</span><span class="p">(</span><span class="n">db</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">tmpdb</span><span class="p">,</span> <span class="n">SQLITE_OPEN_READWRITE</span><span class="p">,</span> <span class="s">&quot;unix-dotfile&quot;</span><span class="p">);</span>
     <span class="n">string</span> <span class="n">to_exec</span> <span class="o">=</span> <span class="s">&quot;SELECT MAX(xval),MAX(yval) FROM SPECIES_LIST;&quot;</span><span class="p">;</span>
     <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
-    <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">tmpdb</span><span class="p">,</span> <span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">strlen</span><span class="p">(</span><span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">()),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">tmpdb</span><span class="p">,</span> <span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xvalmax</span><span class="p">,</span> <span class="n">yvalmax</span><span class="p">;</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
     <span class="n">xvalmax</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
@@ -916,10 +908,10 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">Community</span><span class="o">::</span><span class="n">getCumulativeAbundances</span><span class="p">()</span>
+<span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">Community</span><span class="o">::</span><span class="n">getCumulativeAbundances</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">row_out</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">row_out</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">total</span> <span class="o">+=</span> <span class="n">row_out</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
         <span class="n">row_out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">total</span><span class="p">;</span>
@@ -936,6 +928,7 @@
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">iSpecies</span><span class="p">;</span>
 <span class="p">}</span>
+
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">getMaxSpeciesLocationsID</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bSqlConnection</span><span class="p">)</span>
@@ -984,8 +977,8 @@
        <span class="o">&lt;&lt;</span> <span class="s">&quot;...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="n">string</span> <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE IF NOT EXISTS SPECIES_ABUNDANCES (ID int PRIMARY KEY NOT NULL, &quot;</span>
-            <span class="s">&quot;species_id INT NOT NULL, no_individuals INT NOT &quot;</span>
-            <span class="s">&quot;NULL, community_reference INT NOT NULL);&quot;</span><span class="p">;</span>
+                           <span class="s">&quot;species_id INT NOT NULL, no_individuals INT NOT &quot;</span>
+                           <span class="s">&quot;NULL, community_reference INT NOT NULL);&quot;</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
     <span class="p">{</span>
@@ -1039,7 +1032,7 @@
 <span class="c1">//#endif // DEBUG</span>
         <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
         <span class="n">string</span> <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO SPECIES_ABUNDANCES (ID, species_id, &quot;</span>
-                <span class="s">&quot;no_individuals, community_reference) VALUES (?,?,?,?);&quot;</span><span class="p">;</span>
+                               <span class="s">&quot;no_individuals, community_reference) VALUES (?,?,?,?);&quot;</span><span class="p">;</span>
         <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
                            <span class="k">nullptr</span><span class="p">);</span>
 
@@ -1054,7 +1047,7 @@
             <span class="c1">// fixed precision problem - lexical cast allows for printing of very small doubles.</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">max_species_id</span><span class="o">++</span><span class="p">));</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
-            <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">row_out</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">row_out</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">reference</span><span class="p">));</span>
             <span class="kt">int</span> <span class="n">step</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
             <span class="c1">// makes sure the while loop doesn&#39;t go forever.</span>
@@ -1071,7 +1064,7 @@
                 <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
                 <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SQLITE error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_004d: Could not insert into database. Check destination file has not &quot;</span>
-                        <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
+                      <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
                    <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">sqlite3_errmsg</span><span class="p">(</span><span class="n">database</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">sqlite3_clear_bindings</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
@@ -1089,8 +1082,8 @@
         <span class="k">if</span><span class="p">(</span><span class="n">rc1</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">||</span> <span class="n">rc2</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">writeError</span><span class="p">(</span><span class="s">&quot;ERROR_SQL_013: Could not complete SQL transaction. Check memory database assignment and &quot;</span>
-                    <span class="s">&quot;SQL commands. Ensure SQL statements are properly cleared and that you are not attempting &quot;</span>
-                    <span class="s">&quot;to insert repeat IDs into the database.&quot;</span><span class="p">);</span>
+                       <span class="s">&quot;SQL commands. Ensure SQL statements are properly cleared and that you are not attempting &quot;</span>
+                       <span class="s">&quot;to insert repeat IDs into the database.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">else</span>
         <span class="p">{</span>
@@ -1109,15 +1102,15 @@
 <span class="p">}</span>
 
 <span class="kt">bool</span> <span class="n">Community</span><span class="o">::</span><span class="n">checkCalculationsPerformed</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragments</span><span class="p">,</span>
-                                          <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">)</span>
+                                           <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
+                                           <span class="n">ProtractedSpeciationParameters</span> <span class="n">proc_parameters</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">auto</span> <span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="n">past_metacommunities</span><span class="p">.</span><span class="n">getReference</span><span class="p">(</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>  <span class="n">metacommunity_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="kt">bool</span> <span class="n">has_pair</span> <span class="o">=</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span>
-                                             <span class="n">metacommunity_reference</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">has_pair</span> <span class="o">=</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">proc_parameters</span><span class="p">);</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Checking for calculations with sr=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, t=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span><span class="p">;</span>
@@ -1125,12 +1118,12 @@
                                                             <span class="n">metacommunity_size</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">has_pair</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">os</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">fragments</span> <span class="o">&amp;&amp;</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">fragments</span> <span class="o">&amp;&amp;</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">proc_parameters</span><span class="p">))</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
 
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">fragments</span> <span class="o">&amp;&amp;</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">fragments</span> <span class="o">&amp;&amp;</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">hasPair</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">proc_parameters</span><span class="p">))</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
@@ -1146,13 +1139,13 @@
 <span class="p">{</span>
     <span class="c1">//      os &lt;&lt; &quot;Generating new SQL table for speciation rate &quot; &lt;&lt; s &lt;&lt; &quot;...&quot; &lt;&lt; flush;</span>
     <span class="n">string</span> <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE IF NOT EXISTS FRAGMENT_ABUNDANCES (ID int PRIMARY KEY NOT NULL, fragment &quot;</span>
-            <span class="s">&quot;TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, &quot;</span>
-            <span class="s">&quot;no_individuals INT NOT NULL, community_reference int NOT NULL);&quot;</span><span class="p">;</span>
+                           <span class="s">&quot;TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, &quot;</span>
+                           <span class="s">&quot;no_individuals INT NOT NULL, community_reference int NOT NULL);&quot;</span><span class="p">;</span>
     <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="n">getMaxFragmentAbundancesID</span><span class="p">();</span>
     <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
     <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO FRAGMENT_ABUNDANCES (ID, fragment, area, size, species_id, &quot;</span>
-            <span class="s">&quot;no_individuals, community_reference) VALUES (?,?,?,?,?,?,?);&quot;</span><span class="p">;</span>
+                    <span class="s">&quot;no_individuals, community_reference) VALUES (?,?,?,?,?,?,?);&quot;</span><span class="p">;</span>
     <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
                        <span class="k">nullptr</span><span class="p">);</span>
 
@@ -1168,7 +1161,7 @@
             <span class="n">sqlite3_bind_double</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">area</span><span class="p">);</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">num</span><span class="p">));</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
-            <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">row_out</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">row_out</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">reference</span><span class="p">));</span>
             <span class="kt">int</span> <span class="n">step</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
             <span class="c1">// makes sure the while loop doesn&#39;t go forever.</span>
@@ -1184,8 +1177,8 @@
             <span class="p">{</span>
                 <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_004e: Could not insert into database. Check destination file has not &quot;</span>
-                        <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
-                     <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                      <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
+                   <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SQLITE error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">sqlite3_errmsg</span><span class="p">(</span><span class="n">database</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">writeWarning</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
@@ -1204,8 +1197,8 @@
     <span class="k">if</span><span class="p">(</span><span class="n">rc1</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">||</span> <span class="n">rc2</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeError</span><span class="p">(</span><span class="s">&quot;ERROR_SQL_013: Could not complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                <span class="s">&quot;commands. Ensure SQL statements are properly cleared and that you are not attempting to insert &quot;</span>
-                <span class="s">&quot;repeat IDs into the database.&quot;</span><span class="p">);</span>
+                   <span class="s">&quot;commands. Ensure SQL statements are properly cleared and that you are not attempting to insert &quot;</span>
+                   <span class="s">&quot;repeat IDs into the database.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -1219,7 +1212,8 @@
         <span class="c1">// Now write the database to the file object.</span>
         <span class="n">sqlite3</span> <span class="o">*</span><span class="n">outdatabase2</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-        <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open_v2</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">outdatabase2</span><span class="p">,</span> <span class="n">SQLITE_OPEN_READWRITE</span><span class="p">,</span> <span class="s">&quot;unix-dotfile&quot;</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open_v2</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">outdatabase2</span><span class="p">,</span> <span class="n">SQLITE_OPEN_READWRITE</span><span class="p">,</span>
+                                 <span class="s">&quot;unix-dotfile&quot;</span><span class="p">);</span>
         <span class="c1">// check that the connection to file has opened correctly</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
         <span class="p">{</span>
@@ -1229,8 +1223,8 @@
             <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_016: Connection to output database cannot be opened. Check write access &quot;</span>
-                        <span class="s">&quot;on output folder. Error code: &quot;</span>
-                     <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                      <span class="s">&quot;on output folder. Error code: &quot;</span>
+                   <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -1242,8 +1236,8 @@
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">backupdb</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_003: Could not backup to SQL database. Check destination file has not been &quot;</span>
-                    <span class="s">&quot;moved or deleted.&quot;</span>
-                 <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;moved or deleted.&quot;</span>
+               <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
         <span class="c1">// Perform the backup</span>
@@ -1251,16 +1245,16 @@
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_016: Connection to output database cannot be opened. Check write access on &quot;</span>
-                    <span class="s">&quot;output folder. Error code: &quot;</span>
-                 <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;output folder. Error code: &quot;</span>
+               <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
         <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_backup_finish</span><span class="p">(</span><span class="n">backupdb</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_016: Connection to output database cannot be opened. Check write access on &quot;</span>
-                    <span class="s">&quot;output folder. Error code: &quot;</span>
-                 <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;output folder. Error code: &quot;</span>
+               <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
         <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">outdatabase2</span><span class="p">);</span>
@@ -1317,7 +1311,7 @@
 <span class="p">{</span>
 <span class="c1">//  os &lt;&lt; &quot;Recording spatial data for speciation rate &quot; &lt;&lt; current_community_parameters-&gt;speciation_rate &lt;&lt; &quot;...&quot; &lt;&lt; flush;</span>
     <span class="n">string</span> <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE IF NOT EXISTS SPECIES_LOCATIONS (ID int PRIMARY KEY NOT NULL, species_id INT &quot;</span>
-            <span class="s">&quot;NOT NULL, x INT NOT NULL, y INT NOT NULL, community_reference INT NOT NULL);&quot;</span><span class="p">;</span>
+                           <span class="s">&quot;NOT NULL, x INT NOT NULL, y INT NOT NULL, community_reference INT NOT NULL);&quot;</span><span class="p">;</span>
     <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="n">getMaxSpeciesLocationsID</span><span class="p">();</span>
     <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
@@ -1375,7 +1369,7 @@
                     <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
                     <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SQLITE error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                     <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_004f: Could not insert into database. Check destination file has not &quot;</span>
-                            <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
+                          <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
                        <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                     <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">sqlite3_errmsg</span><span class="p">(</span><span class="n">database</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                     <span class="n">writeWarning</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
@@ -1393,8 +1387,8 @@
     <span class="k">if</span><span class="p">(</span><span class="n">rc1</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">||</span> <span class="n">rc2</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeError</span><span class="p">(</span><span class="s">&quot;ERROR_SQL_013: Could not complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                <span class="s">&quot;commands. Ensure SQL statements are properly cleared and that you are not attempting to insert &quot;</span>
-                <span class="s">&quot;repeat IDs into the database.&quot;</span><span class="p">);</span>
+                   <span class="s">&quot;commands. Ensure SQL statements are properly cleared and that you are not attempting to insert &quot;</span>
+                   <span class="s">&quot;repeat IDs into the database.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -1610,9 +1604,9 @@
             <span class="n">tmp_raw_read</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">getCsvLineAndSplitIntoTokens</span><span class="p">(</span><span class="n">fragment_configs</span><span class="p">));</span>
         <span class="p">}</span>
         <span class="n">fragments</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">tmp_raw_read</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tmp_raw_read</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tmp_raw_read</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">this_fragment</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tmp_raw_read</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">this_fragment</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tmp_raw_read</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
             <span class="k">if</span><span class="p">(</span><span class="n">this_fragment</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="c1">// Only throw an error if the size is not 1 (which usually means that there is an extra line</span>
@@ -1750,7 +1744,7 @@
 <span class="cp">#endif</span>
         <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt2</span><span class="p">;</span>
         <span class="n">string</span> <span class="n">sql_parameters</span> <span class="o">=</span> <span class="s">&quot;SELECT speciation_rate, grid_x, grid_y, protracted, min_speciation_gen, max_speciation_gen, &quot;</span>
-                <span class="s">&quot;sample_x_offset, sample_y_offset, sample_x, sample_y  FROM SIMULATION_PARAMETERS;&quot;</span><span class="p">;</span>
+                                <span class="s">&quot;sample_x_offset, sample_y_offset, sample_x, sample_y  FROM SIMULATION_PARAMETERS;&quot;</span><span class="p">;</span>
         <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">sql_parameters</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">sql_parameters</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span>
                                     <span class="o">&amp;</span><span class="n">stmt2</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
@@ -1803,51 +1797,41 @@
     <span class="k">return</span> <span class="n">database_set</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">setProtractedParameters</span><span class="p">(</span><span class="kt">double</span> <span class="n">max_speciation_gen_in</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">setProtractedParameters</span><span class="p">(</span><span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">max_speciation_gen_in</span> <span class="o">&gt;</span> <span class="n">max_speciation_gen</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">SpeciesException</span><span class="p">(</span>
-                <span class="s">&quot;Maximum protracted speciation generation is higher than original value for simulation.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="n">applied_max_speciation_gen</span> <span class="o">=</span> <span class="n">max_speciation_gen_in</span><span class="p">;</span>
-        <span class="n">protracted</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">setProtractedParameters</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_speciation_gen_in</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">max_speciation_gen_in</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">applied_max_speciation_gen</span> <span class="o">=</span> <span class="n">max_speciation_gen_in</span><span class="p">;</span>
-    <span class="n">applied_min_speciation_gen</span> <span class="o">=</span> <span class="n">min_speciation_gen_in</span><span class="p">;</span>
+    <span class="n">applied_protracted_parameters</span> <span class="o">=</span> <span class="n">protracted_params</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="n">min_speciation_gen</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">max_speciation_gen</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
-            <span class="p">(</span><span class="n">applied_min_speciation_gen</span> <span class="o">&gt;</span> <span class="n">min_speciation_gen</span> <span class="o">||</span> <span class="n">applied_max_speciation_gen</span> <span class="o">&gt;</span> <span class="n">max_speciation_gen</span><span class="p">))</span>
+       <span class="p">(</span><span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">&gt;</span> <span class="n">min_speciation_gen</span> <span class="o">||</span>
+        <span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">max_speciation_gen</span> <span class="o">&gt;</span> <span class="n">max_speciation_gen</span><span class="p">))</span>
     <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Applied speciation parameters: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">applied_min_speciation_gen</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>
-                <span class="n">to_string</span><span class="p">(</span><span class="n">applied_max_speciation_gen</span><span class="p">));</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Simulated speciation parameters: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">min_speciation_gen_in</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>
-                     <span class="n">to_string</span><span class="p">(</span><span class="n">max_speciation_gen_in</span><span class="p">));</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Applied speciation parameters: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">min_speciation_gen</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>
+                <span class="n">to_string</span><span class="p">(</span><span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">max_speciation_gen</span><span class="p">));</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Simulated speciation parameters: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">min_speciation_gen</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>
+                     <span class="n">to_string</span><span class="p">(</span><span class="n">max_speciation_gen</span><span class="p">));</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Applied protracted speciation parameters: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">applied_protracted_parameters</span><span class="p">.</span><span class="n">max_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Original protracted speciation parameters: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">max_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeCritical</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="k">throw</span> <span class="nf">SpeciesException</span><span class="p">(</span><span class="s">&quot;Cannot use protracted parameters with minimum &gt; simulated minimum or &quot;</span>
-                                       <span class="s">&quot;maximum &gt; simulated maximums.&quot;</span><span class="p">);</span>
+                               <span class="s">&quot;maximum &gt; simulated maximums.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">overrideProtractedParameters</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_speciation_gen_in</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">max_speciation_gen_in</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">overrideProtractedParameters</span><span class="p">(</span><span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="n">min_speciation_gen_in</span><span class="p">;</span>
-    <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="n">max_speciation_gen_in</span><span class="p">;</span>
-    <span class="n">applied_max_speciation_gen</span> <span class="o">=</span> <span class="n">max_speciation_gen_in</span><span class="p">;</span>
-    <span class="n">applied_min_speciation_gen</span> <span class="o">=</span> <span class="n">min_speciation_gen_in</span><span class="p">;;</span>
+    <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="n">protracted_params</span><span class="p">.</span><span class="n">min_speciation_gen</span><span class="p">;</span>
+    <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="n">protracted_params</span><span class="p">.</span><span class="n">max_speciation_gen</span><span class="p">;</span>
+    <span class="n">applied_protracted_parameters</span> <span class="o">=</span> <span class="n">protracted_params</span><span class="p">;</span>
+
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">setProtracted</span><span class="p">(</span><span class="kt">bool</span> <span class="n">protracted_in</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">protracted</span> <span class="o">=</span> <span class="n">protracted_in</span><span class="p">;</span>
 <span class="p">}</span>
-
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">getPreviousCalcs</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1871,8 +1855,12 @@
     <span class="k">if</span><span class="p">(</span><span class="n">has_community_parameters</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt2</span><span class="p">;</span>
-        <span class="n">string</span> <span class="n">call2</span> <span class="o">=</span> <span class="s">&quot;SELECT reference, speciation_rate, time, fragments, metacommunity_reference FROM &quot;</span><span class="p">;</span>
-        <span class="n">call2</span> <span class="o">+=</span> <span class="s">&quot;COMMUNITY_PARAMETERS&quot;</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">call2</span> <span class="o">=</span> <span class="s">&quot;SELECT reference, speciation_rate, time, fragments, metacommunity_reference &quot;</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">protracted</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">call2</span> <span class="o">+=</span> <span class="s">&quot;, min_speciation_gen, max_speciation_gen &quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">call2</span> <span class="o">+=</span> <span class="s">&quot; FROM COMMUNITY_PARAMETERS&quot;</span><span class="p">;</span>
         <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">call2</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">call2</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt2</span><span class="p">,</span>
                                 <span class="k">nullptr</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
@@ -1892,11 +1880,15 @@
             <span class="p">}</span>
             <span class="k">else</span>
             <span class="p">{</span>
-                <span class="n">past_communities</span><span class="p">.</span><span class="n">pushBack</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">row_val</span><span class="p">),</span>
-                                          <span class="n">sqlite3_column_double</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                                          <span class="n">sqlite3_column_double</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-                                          <span class="kt">bool</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-                                          <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)));</span>
+                <span class="n">ProtractedSpeciationParameters</span> <span class="n">tmp</span><span class="p">{};</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">protracted</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">tmp</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="n">sqlite3_column_double</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+                    <span class="n">tmp</span><span class="p">.</span><span class="n">max_speciation_gen</span><span class="o">=</span> <span class="n">sqlite3_column_double</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="n">past_communities</span><span class="p">.</span><span class="n">pushBack</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">row_val</span><span class="p">),</span> <span class="n">sqlite3_column_double</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                          <span class="n">sqlite3_column_double</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="kt">bool</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+                                          <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">tmp</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt2</span><span class="p">);</span>
         <span class="p">}</span>
@@ -1968,7 +1960,8 @@
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">addCalculationPerformed</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragments</span><span class="p">,</span>
-                                       <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">)</span>
+                                        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
+                                        <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">auto</span> <span class="n">meta_reference</span> <span class="o">=</span> <span class="n">past_metacommunities</span><span class="p">.</span><span class="n">getReference</span><span class="p">(</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
                                                             <span class="n">metacommunity_size</span><span class="p">);</span>
@@ -1980,13 +1973,15 @@
     <span class="p">{</span>
         <span class="n">meta_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="n">current_community_parameters</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">past_communities</span><span class="p">.</span><span class="n">addNew</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">meta_reference</span><span class="p">);</span>
+    <span class="n">current_community_parameters</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">past_communities</span><span class="p">.</span><span class="n">addNew</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">meta_reference</span><span class="p">,</span>
+                                                            <span class="n">protracted_params</span><span class="p">);</span>
 <span class="cp">#ifdef DEBUG</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">calc_array</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">communityParameters</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">time</span><span class="p">,</span> <span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">time</span><span class="p">,</span> <span class="mf">0.00001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
             <span class="n">doubleCompare</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">,</span>
                           <span class="n">i</span><span class="p">.</span><span class="n">speciation_rate</span><span class="o">*</span><span class="mf">0.00001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+                <span class="n">i</span><span class="p">.</span><span class="n">protracted_parameters</span> <span class="o">==</span> <span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">protracted_parameters</span> <span class="o">&amp;&amp;</span>
                 <span class="n">i</span><span class="p">.</span><span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_reference</span> <span class="o">&amp;&amp;</span>
                 <span class="n">i</span><span class="p">.</span><span class="n">reference</span> <span class="o">!=</span> <span class="n">current_community_parameters</span><span class="o">-&gt;</span><span class="n">reference</span><span class="p">)</span>
         <span class="p">{</span>
@@ -2100,7 +2095,7 @@
     <span class="c1">// Find new community parameters to add</span>
     <span class="k">auto</span> <span class="n">unique_community_refs</span> <span class="o">=</span> <span class="n">getUniqueCommunityRefs</span><span class="p">();</span>
     <span class="n">CommunitiesArray</span> <span class="n">communities_to_write</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">community_param</span> <span class="p">:</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">calc_array</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">community_param</span> <span class="p">:</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">communityParameters</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">unique_community_refs</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
                 <span class="n">unique_community_refs</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">community_param</span><span class="p">.</span><span class="n">reference</span><span class="p">)</span> <span class="o">==</span> <span class="n">unique_community_refs</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
@@ -2109,21 +2104,32 @@
             <span class="n">unique_community_refs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">community_param</span><span class="p">.</span><span class="n">reference</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">communities_to_write</span><span class="p">.</span><span class="n">calc_array</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">communities_to_write</span><span class="p">.</span><span class="n">communityParameters</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="c1">// Create the table if it doesn&#39;t exist</span>
         <span class="n">string</span> <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE IF NOT EXISTS COMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,&quot;</span>
-                <span class="s">&quot; speciation_rate DOUBLE NOT NULL, time DOUBLE NOT NULL, fragments INT NOT NULL, &quot;</span>
-                <span class="s">&quot;metacommunity_reference INT);&quot;</span><span class="p">;</span>
+                               <span class="s">&quot; speciation_rate DOUBLE NOT NULL, time DOUBLE NOT NULL, fragments INT NOT NULL, &quot;</span>
+                               <span class="s">&quot;metacommunity_reference INT&quot;</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">table_command2</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO COMMUNITY_PARAMETERS (reference, speciation_rate, time, fragments,&quot;</span>
+                                <span class="s">&quot; metacommunity_reference&quot;</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">table_command3</span> <span class="o">=</span> <span class="s">&quot;VALUES (?,?,?,?,?&quot;</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">protracted</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">table_command</span> <span class="o">+=</span> <span class="s">&quot;, min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL&quot;</span><span class="p">;</span>
+            <span class="n">table_command2</span> <span class="o">+=</span> <span class="s">&quot;, min_speciation_gen, max_speciation_gen&quot;</span><span class="p">;</span>
+            <span class="n">table_command3</span> <span class="o">+=</span> <span class="s">&quot;, ?, ?&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">table_command</span> <span class="o">+=</span> <span class="s">&quot;);&quot;</span><span class="p">;</span>
+        <span class="n">table_command2</span> <span class="o">+=</span> <span class="s">&quot;) &quot;</span> <span class="o">+</span> <span class="n">table_command3</span> <span class="o">+</span> <span class="s">&quot;);&quot;</span><span class="p">;</span>
+
         <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
         <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
-        <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO COMMUNITY_PARAMETERS (reference, speciation_rate, time, fragments,&quot;</span>
-                <span class="s">&quot; metacommunity_reference) VALUES (?,?,?,?,?);&quot;</span><span class="p">;</span>
-        <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
+
+        <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command2</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
                            <span class="k">nullptr</span><span class="p">);</span>
         <span class="c1">// Then add the required elements</span>
         <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="s">&quot;BEGIN TRANSACTION;&quot;</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
-        <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span> <span class="p">:</span> <span class="n">communities_to_write</span><span class="p">.</span><span class="n">calc_array</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span> <span class="p">:</span> <span class="n">communities_to_write</span><span class="p">.</span><span class="n">communityParameters</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="k">if</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">{</span>
@@ -2134,6 +2140,11 @@
             <span class="n">sqlite3_bind_double</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">time</span><span class="p">));</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">fragment</span><span class="p">));</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">metacommunity_reference</span><span class="p">));</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">protracted</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">protracted_parameters</span><span class="p">.</span><span class="n">min_speciation_gen</span><span class="p">));</span>
+                <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">protracted_parameters</span><span class="p">.</span><span class="n">max_speciation_gen</span><span class="p">));</span>
+            <span class="p">}</span>
             <span class="kt">time_t</span> <span class="n">start_check</span><span class="p">,</span> <span class="n">end_check</span><span class="p">;</span>
             <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start_check</span><span class="p">);</span>
             <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_check</span><span class="p">);</span>
@@ -2149,7 +2160,7 @@
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SQLITE error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">sqlite3_errmsg</span><span class="p">(</span><span class="n">database</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_004a: Could not insert into database. Check destination file has not &quot;</span>
-                        <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
+                      <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the same ID.&quot;</span>
                    <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
                 <span class="n">sqlite3_clear_bindings</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
                 <span class="n">sqlite3_reset</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
@@ -2166,7 +2177,7 @@
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_013: Could not complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                    <span class="s">&quot;commands. Please report this bug.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;commands. Please report this bug.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeWarning</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -2199,11 +2210,11 @@
     <span class="p">{</span>
         <span class="c1">// Create the table if it doesn&#39;t exist</span>
         <span class="n">string</span> <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE IF NOT EXISTS METACOMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,&quot;</span>
-                <span class="s">&quot; speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);&quot;</span><span class="p">;</span>
+                               <span class="s">&quot; speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);&quot;</span><span class="p">;</span>
         <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
         <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
         <span class="n">table_command</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO METACOMMUNITY_PARAMETERS (reference, speciation_rate, metacommunity_size&quot;</span>
-                <span class="s">&quot;) VALUES (?,?,?);&quot;</span><span class="p">;</span>
+                        <span class="s">&quot;) VALUES (?,?,?);&quot;</span><span class="p">;</span>
         <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">table_command</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
                            <span class="k">nullptr</span><span class="p">);</span>
         <span class="c1">// Then add the required elements</span>
@@ -2237,8 +2248,8 @@
                 <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
                 <span class="k">throw</span> <span class="nf">SpeciesException</span><span class="p">(</span><span class="s">&quot;ERROR_SQL_004b: Could not insert into database. Check destination file has not &quot;</span>
-                                               <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the&quot;</span>
-                                               <span class="s">&quot; same ID.&quot;</span><span class="p">);</span>
+                                       <span class="s">&quot;been moved or deleted and that an entry doesn&#39;t already exist with the&quot;</span>
+                                       <span class="s">&quot; same ID.&quot;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="n">sqlite3_clear_bindings</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
             <span class="n">sqlite3_reset</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
@@ -2250,7 +2261,7 @@
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_013: Could not complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                    <span class="s">&quot;commands. Please report this bug.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;commands. Please report this bug.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">sqlite3_errmsg</span><span class="p">(</span><span class="n">database</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeWarning</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
@@ -2259,7 +2270,7 @@
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">updateCommunityParameters</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">parameter</span> <span class="p">:</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">calc_array</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">parameter</span> <span class="p">:</span> <span class="n">past_communities</span><span class="p">.</span><span class="n">communityParameters</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">parameter</span><span class="p">.</span><span class="n">updated</span><span class="p">)</span>
         <span class="p">{</span>
@@ -2284,7 +2295,6 @@
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">writeSpeciationRates</span><span class="p">()</span>
 <span class="p">{</span>
@@ -2314,44 +2324,60 @@
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">protracted_parameters</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Protracted speciation parameters (min, max) are: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">protracted_parameters</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">.</span><span class="n">max_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">calculateTree</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">sr</span> <span class="p">:</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">all_speciation_rates</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">protracted_params</span> <span class="p">:</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">protracted_parameters</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Calculating speciation rate &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sr</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-        <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-        <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">time</span> <span class="p">:</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">all_times</span><span class="p">)</span>
+        <span class="n">setProtractedParameters</span><span class="p">(</span><span class="n">protracted_params</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">sr</span> <span class="p">:</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">all_speciation_rates</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Calculating generation &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+            <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Calculating speciation rate &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sr</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-            <span class="n">resetTree</span><span class="p">();</span>
-            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">checkCalculationsPerformed</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_fragments</span><span class="p">,</span>
-                                           <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
-                                           <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">))</span>
-            <span class="p">{</span>
-                <span class="n">addCalculationPerformed</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_fragments</span><span class="p">,</span>
-                                        <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
-                                        <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">);</span>
-                <span class="n">createDatabase</span><span class="p">();</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_spatial</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="n">recordSpatial</span><span class="p">();</span>
-                <span class="p">}</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_fragments</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="n">applyFragments</span><span class="p">();</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-            <span class="k">else</span>
+            <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+            <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">time</span> <span class="p">:</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">all_times</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;calculation already performed for &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; at time &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Calculating generation &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
                 <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                <span class="n">resetTree</span><span class="p">();</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">checkCalculationsPerformed</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_fragments</span><span class="p">,</span>
+                                               <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                               <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
+                                               <span class="n">applied_protracted_parameters</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="n">addCalculationPerformed</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_fragments</span><span class="p">,</span>
+                                            <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                            <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
+                                            <span class="n">applied_protracted_parameters</span><span class="p">);</span>
+                    <span class="n">createDatabase</span><span class="p">();</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_spatial</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">recordSpatial</span><span class="p">();</span>
+                    <span class="p">}</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">use_fragments</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">applyFragments</span><span class="p">();</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+                    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;calculation already performed for &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; at time &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -2382,11 +2408,17 @@
     <span class="kt">time_t</span> <span class="n">tEnd</span><span class="p">{};</span>
     <span class="c1">// Start the clock</span>
     <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tStart</span><span class="p">);</span>
-    <span class="c1">// First print the variables</span>
-    <span class="n">doApplication</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
+    <span class="n">applyNoOutput</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
     <span class="n">output</span><span class="p">();</span>
     <span class="n">printEndTimes</span><span class="p">(</span><span class="n">tStart</span><span class="p">,</span> <span class="n">tEnd</span><span class="p">);</span>
 <span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">doApplication</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
+<span class="p">}</span>
+
+
 
 <span class="kt">void</span> <span class="n">Community</span><span class="o">::</span><span class="n">doApplication</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span>
 <span class="p">{</span>
@@ -2401,7 +2433,6 @@
     <span class="c1">// Set up the objects</span>
     <span class="n">setList</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
     <span class="n">importSimParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
-    <span class="n">setProtractedParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">max_speciation_gen</span><span class="p">);</span>
     <span class="n">importSamplemask</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">samplemask</span><span class="p">);</span>
     <span class="n">importData</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
     <span class="n">getPreviousCalcs</span><span class="p">();</span>

@@ -3,7 +3,7 @@
 Function writeError
 ===================
 
-- Defined in :ref:`file_PyLogging.cpp`
+- Defined in :ref:`file_PyLogger.cpp`
 
 
 Function Documentation

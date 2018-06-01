@@ -19,26 +19,27 @@ generation after simulations have been completed.
 from __future__ import absolute_import
 from __future__ import print_function
 
-import logging
-import sys
-
 import copy
-import math
-import numpy as np
+import logging
 import os
+import sys
 import types
 
-from .map import Map
-from .landscape import Landscape
-from .system_operations import execute_log_info, create_logger, write_to_log, check_file_exists, check_parent
+import numpy as np
+
 from .future_except import FileNotFoundError, FileExistsError
+from .landscape import Landscape
+from .map import Map
+from .system_operations import write_to_log, check_parent
 
 global sqlite_import, config_success
 try:
 	if sys.version_info[0] == 3:
 		import configparser as ConfigParser
+		from io import StringIO
 	else:
 		import ConfigParser
+		from cStringIO import StringIO
 
 		ConfigParser.ConfigParser.read_file = ConfigParser.ConfigParser.read
 	config_success = True
@@ -65,6 +66,7 @@ except ImportError as ie:
 
 try:
 	import sqlite3
+
 	sqlite_import = True
 	from .coalescence_tree import CoalescenceTree
 except ImportError as ie:
@@ -73,29 +75,11 @@ except ImportError as ie:
 	sqlite3 = None
 	logging.warning("Problem importing sqlite module " + str(ie))
 
-necsim_import_success = False
-import_warnings = []
 try:
-	# Python 2
-	try:
-		from build import necsimmodule
-	except ImportError as ime:
-		import_warnings.append(ime)
-		from .build import necsimmodule
-	NECSimError = necsimmodule.NECSimError
-	necsim_import_success = True
-except (AttributeError, ImportError) as ie:
-	logging.warning("Could not import necsim shared objects. Check compilation has been successfully completed under "
-					"same python version.")
-	logging.warning(str(ie))
-	for each in import_warnings:
-		logging.warning(each)
-	necsim_import_success = False
-
-
-	# Create the empty classes if the import fails
-	class NECSimError(Exception):
-		pass
+	from build import necsimmodule, NECSimError
+except ImportError as ime:
+	logging.info(str(ime))
+	from .build import necsimmodule, NECSimError
 
 
 class Simulation(Landscape):
@@ -114,14 +98,19 @@ class Simulation(Landscape):
 		"""
 		# All the parameters used for the simulation
 		Landscape.__init__(self)
+		# Contains the C object for performing simulations
+		# This will be set depending on the simulation type
+		self.c_simulation = None
 		self._fine_map_sum_res = None
 		self.count_total = None
 		# Create the logging object and pass on the required arguments for its creation
-		passedKwards = {k : v for k, v in kwargs.items() if "stream" not in k}
-		self.logger = logging.Logger("necsimlogger", **passedKwards)
+		passedKwards = {k: v for k, v in kwargs.items() if "stream" not in k}
+		self.logger = logging.Logger("pycoalescence.simulation", **passedKwards)
 		self._create_logger(file=log_output, logging_level=logging_level, **kwargs)
 		self.output_directory = ""
 		self.pause_directory = ""
+		self.config = ConfigParser.ConfigParser()
+		self.config_string = StringIO()
 		self.full_config_file = None
 		self.is_setup = False
 		self.is_setup_param = False
@@ -136,8 +125,7 @@ class Simulation(Landscape):
 		self.job_type = 0
 		self.min_num_species = 1
 		self.tau = 0
-		self.time_config_file = ""
-		self.time_points = None
+		self.times = None
 		# the optional parameters specifying the location (i.e. where in the world the simulation is of
 		# and the compute node (such as NUS_HPC or LOCAL_MACBOOK)
 		self.sim_location = None
@@ -148,9 +136,6 @@ class Simulation(Landscape):
 		self.speciation_file = ""
 		self.record_spatial = False
 		self.record_fragments = False
-		self.speciation_time_config_file = ""
-		self.speciation_sample_file = ""
-		self.is_full = True
 		# The output database location
 		self.output_database = None
 		self.dispersal_method = None
@@ -163,9 +148,6 @@ class Simulation(Landscape):
 		self.max_speciation_gen = 0.0
 		# This variable stores whether a new config file has been opened or not
 		self.config_open = False
-		# Stores our necsim object for running the c++ code
-		if necsim_import_success:
-			self.necsim = necsimmodule
 		# Grid dimensions sizing
 		self.grid = Map()
 		# Dispersal map data
@@ -185,7 +167,6 @@ class Simulation(Landscape):
 		for handler in handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
-		self.necsim = None
 		self.logger = None
 
 	def setup_necsim(self):
@@ -207,9 +188,9 @@ class Simulation(Landscape):
 		if isinstance(time, list):
 			[self.add_sample_time(x) for x in time]
 		else:
-			if not self.time_points or len(self.time_points) == 0:
-				self.time_points = [0.0]
-			self.time_points.append(time)
+			if not self.times or len(self.times) == 0:
+				self.times = [0.0]
+			self.times.append(time)
 
 	def set_config_file(self, output_file=None):
 		"""
@@ -220,12 +201,8 @@ class Simulation(Landscape):
 		if self.full_config_file and output_file != self.full_config_file and output_file:
 			self.logger.warning("Config file has already been set to {}, changing to {}.".format(self.full_config_file,
 																								 output_file))
-		if output_file is None:
-			output_file = os.path.join(self.output_directory,
-									   "mainconf_{}_{}.txt".format(str(self.job_type), str(self.seed)))
-		self.full_config_file = output_file
-
-
+		if output_file is not None:
+			self.full_config_file = output_file
 
 	def load_config(self, config_file):
 		"""
@@ -237,26 +214,41 @@ class Simulation(Landscape):
 		if not config_success:
 			raise ImportError("Failure to import ConfigParser: cannot load config file")
 		else:
-			config = ConfigParser.ConfigParser()
 			with open(config_file, "wa") as f:
-				config.read_file(f)
-			self.seed = config.getint("main", "seed")
-			self.job_type = config.getint("main", "job_type")
-			self.output_directory = config.get("main", "output_directory")
-			self.min_speciation_rate = config.getfloat("main", "min_spec_rate")
-			self.sigma = config.getfloat("main", "sigma")
-			self.tau = config.getfloat("main", "tau")
-			self.deme = config.getint("main", "deme")
-			self.sample_size = config.getfloat("main", "sample_size")
-			self.max_time = config.getint("main", "max_time")
-			self.dispersal_relative_cost = config.getfloat("main", "lambda")
-			self.time_config_file = config.get("main", "time_config")
-			self.min_num_species = config.getint("main", "min_species")
+				self.config.read_file(f)
+			self.seed = self.config.getint("main", "seed")
+			self.job_type = self.config.getint("main", "job_type")
+			self.output_directory = self.config.get("main", "output_directory")
+			self.min_speciation_rate = self.config.getfloat("main", "min_spec_rate")
+			self.sigma = self.config.getfloat("main", "sigma")
+			self.tau = self.config.getfloat("main", "tau")
+			self.deme = self.config.getint("main", "deme")
+			self.sample_size = self.config.getfloat("main", "sample_size")
+			self.max_time = self.config.getint("main", "max_time")
+			self.dispersal_relative_cost = self.config.getfloat("main", "lambda")
+			self.min_num_species = self.config.getint("main", "min_species")
 			self.full_config_file = config_file
-			if config.has_section("spec_rate"):
-				opts = config.options("spec_rate")
+			if self.config.has_section("spec_rate"):
+				opts = self.config.options("spec_rate")
 				for each in opts:
-					self.speciation_rates.append(config.getfloat("spec_rate", each))
+					self.speciation_rates.append(self.config.getfloat("spec_rate", each))
+
+	def write_config(self, config_file):
+		"""
+		Writes the config to the config file provided, overwriting any existing config files.
+
+		:param config_file: the config file to write out to
+
+		:rtype: None
+		"""
+		if config_file is not None:
+			check_parent(config_file)
+			if os.path.exists(config_file) and not self.config_open:
+				os.remove(config_file)
+		with open(config_file, "w") as f:
+			self.config.write(f)
+		self.config_open = True
+		self.full_config_file = config_file
 
 	def create_temporal_sampling_config(self):
 		"""
@@ -264,21 +256,12 @@ class Simulation(Landscape):
 
 		Function is called automatically when creating a config file, and should not be manually called.
 		"""
-		if not self.full_config_file:
-			self.full_config_file = os.path.join(self.output_directory,
-									   "mainconf_{}_{}.txt".format(str(self.job_type), str(self.seed)))
-		check_parent(self.full_config_file)
-		if os.path.exists(self.full_config_file) and not self.config_open:
-				os.remove(self.full_config_file)
-		self.config_open = True
-		if self.time_points and len(self.time_points) != 0:
-			config = ConfigParser.ConfigParser()
-			config.add_section("times")
-			for i, j in enumerate(sorted(set(self.time_points))):
-				config.set("times", "time" + str(i), str(j))
-			with open(self.full_config_file, "a") as conf:
-				config.write(conf)
-			self.time_config_file = "set"
+		if self.times and len(self.times) != 0:
+			self.config.add_section("times")
+			for i, j in enumerate(sorted(set(self.times))):
+				self.config.set("times", "time" + str(i), str(j))
+			if self.full_config_file is not None:
+				self.write_config(self.full_config_file)
 
 	def create_map_config(self, output_file=None):
 		"""
@@ -287,145 +270,136 @@ class Simulation(Landscape):
 		:param str output_file: the file to output configuration data to (the map config file)
 		"""
 		self.set_config_file(output_file)
-		if not config_success:
-			raise ImportError("ConfigParser import was unsuccessful: cannot create config file.")
-		check_parent(self.full_config_file)
-		config = ConfigParser.ConfigParser()
-		if os.path.exists(self.full_config_file) and not self.config_open:
-				os.remove(self.full_config_file)
-		self.config_open = True
 		if self.is_setup_map:
 			if self.is_spatial:
-				config = ConfigParser.ConfigParser()
-				config.add_section("sample_grid")
-				config.set("sample_grid", "path", self.sample_map.file_name)
+				self.config.add_section("sample_grid")
+				self.config.set("sample_grid", "path", self.sample_map.file_name)
 				x, y = map(str, self.sample_map.get_x_y())
-				config.set("sample_grid", "x", str(x))
-				config.set("sample_grid", "y", str(y))
+				self.config.set("sample_grid", "x", str(x))
+				self.config.set("sample_grid", "y", str(y))
 				if self.sample_map.file_name is None:
-					config.set("sample_grid", "mask", "null")
+					self.config.set("sample_grid", "mask", "null")
 				else:
-					config.set("sample_grid", "mask", self.sample_map.file_name)
-					config.set("sample_grid", "uses_spatial_sampling", str(int(self.uses_spatial_sampling)))
-				config.add_section("fine_map")
-				config.set("fine_map", "path", self.fine_map.file_name)
+					self.config.set("sample_grid", "mask", self.sample_map.file_name)
+					self.config.set("sample_grid", "uses_spatial_sampling", str(int(self.uses_spatial_sampling)))
+				self.config.add_section("fine_map")
+				self.config.set("fine_map", "path", self.fine_map.file_name)
 				x, y = map(str, self.fine_map.get_x_y())
-				config.set("fine_map", "x", str(x))
-				config.set("fine_map", "y", str(y))
-				config.set("fine_map", "x_off", str(self.fine_map.x_offset))
-				config.set("fine_map", "y_off", str(self.fine_map.y_offset))
-				config.add_section("coarse_map")
+				self.config.set("fine_map", "x", str(x))
+				self.config.set("fine_map", "y", str(y))
+				self.config.set("fine_map", "x_off", str(self.fine_map.x_offset))
+				self.config.set("fine_map", "y_off", str(self.fine_map.y_offset))
+				self.config.add_section("coarse_map")
 				if self.coarse_map.file_name is not None:
-					config.set("coarse_map", "path", self.coarse_map.file_name)
+					self.config.set("coarse_map", "path", self.coarse_map.file_name)
 					x, y = map(str, self.coarse_map.get_x_y())
-					config.set("coarse_map", "x", str(x))
-					config.set("coarse_map", "y", str(y))
-					config.set("coarse_map", "x_off", str(self.coarse_map.x_offset))
-					config.set("coarse_map", "y_off", str(self.coarse_map.y_offset))
-					config.set("coarse_map", "scale", str(self.coarse_scale))
+					self.config.set("coarse_map", "x", str(x))
+					self.config.set("coarse_map", "y", str(y))
+					self.config.set("coarse_map", "x_off", str(self.coarse_map.x_offset))
+					self.config.set("coarse_map", "y_off", str(self.coarse_map.y_offset))
+					self.config.set("coarse_map", "scale", str(self.coarse_scale))
 				else:
-					config.set("coarse_map", "path", "none")
-					config.set("coarse_map", "x", 0)
-					config.set("coarse_map", "y", 0)
-					config.set("coarse_map", "x_off", 0)
-					config.set("coarse_map", "y_off", 0)
-					config.set("coarse_map", "scale", 1)
+					self.config.set("coarse_map", "path", "none")
+					self.config.set("coarse_map", "x", 0)
+					self.config.set("coarse_map", "y", 0)
+					self.config.set("coarse_map", "x_off", 0)
+					self.config.set("coarse_map", "y_off", 0)
+					self.config.set("coarse_map", "scale", 1)
 				self.sort_historical_maps()
 				if len(self.historical_coarse_list) != 0 and len(self.historical_fine_list) != 0:
 					for i, t in enumerate(self.times_list):
 						try:
-							tmp_fine = "historical_fine" + str(i)
-							config.add_section(tmp_fine)
-							config.set(tmp_fine, "path", self.historical_fine_list[i])
-							config.set(tmp_fine, "number", str(i))
-							config.set(tmp_fine, "time", str(t))
-							config.set(tmp_fine, "rate", str(self.rates_list[i]))
-							tmp_coarse = "historical_coarse" + str(i)
-							config.add_section(tmp_coarse)
-							config.set(tmp_coarse, "path", self.historical_coarse_list[i])
-							config.set(tmp_coarse, "number", str(i))
-							config.set(tmp_coarse, "time", str(t))
-							config.set(tmp_coarse, "rate", str(self.rates_list[i]))
+							tmp_fine = "historical_fine{}".format(i)
+							self.config.add_section(tmp_fine)
+							self.config.set(tmp_fine, "path", self.historical_fine_list[i])
+							self.config.set(tmp_fine, "number", str(i))
+							self.config.set(tmp_fine, "time", str(t))
+							self.config.set(tmp_fine, "rate", str(self.rates_list[i]))
+							tmp_coarse = "historical_coarse{}".format(i)
+							self.config.add_section(tmp_coarse)
+							self.config.set(tmp_coarse, "path", self.historical_coarse_list[i])
+							self.config.set(tmp_coarse, "number", str(i))
+							self.config.set(tmp_coarse, "time", str(t))
+							self.config.set(tmp_coarse, "rate", str(self.rates_list[i]))
 						except IndexError as ie:
-							self.logger.warning('Discrepancy between historical file list, time list or rate list. Check inputs: ' +
-										  ie.message)
+							self.logger.warning(
+								'Discrepancy between historical file list, time list or rate list. Check inputs: {}'.format(ie))
 							break
 				if self.grid.file_name == "set":
-					config.add_section("grid_map")
-					config.set("grid_map", "x", str(self.grid.x_size))
-					config.set("grid_map", "y", str(self.grid.y_size))
-					config.set("sample_grid", "x_off", str(self.sample_map.x_offset))
-					config.set("sample_grid", "y_off", str(self.sample_map.y_offset))
+					self.config.add_section("grid_map")
+					self.config.set("grid_map", "x", str(self.grid.x_size))
+					self.config.set("grid_map", "y", str(self.grid.y_size))
+					self.config.set("sample_grid", "x_off", str(self.sample_map.x_offset))
+					self.config.set("sample_grid", "y_off", str(self.sample_map.y_offset))
 				if self.reproduction_map.file_name not in [None, "none", "null"]:
-					config.add_section("reproduction")
-					config.set("reproduction", "map", self.reproduction_map.file_name)
+					self.config.add_section("reproduction")
+					self.config.set("reproduction", "map", self.reproduction_map.file_name)
 				if self.dispersal_method is not None:
-					config.add_section("dispersal")
-					config.set("dispersal", "method", self.dispersal_method)
-					config.set("dispersal", "m_probability", str(self.m_prob))
-					config.set("dispersal", "cutoff", str(self.cutoff))
+					self.config.add_section("dispersal")
+					self.config.set("dispersal", "method", self.dispersal_method)
+					self.config.set("dispersal", "m_probability", str(self.m_prob))
+					self.config.set("dispersal", "cutoff", str(self.cutoff))
 				if self.restrict_self:
-					if not config.has_section("dispersal"):
-						config.add_section("dispersal")
-					config.set("dispersal", "restrict_self", str(int(self.restrict_self)))
+					if not self.config.has_section("dispersal"):
+						self.config.add_section("dispersal")
+					self.config.set("dispersal", "restrict_self", str(int(self.restrict_self)))
 				if self.landscape_type != "closed":
-					if not config.has_section("dispersal"):
-						config.add_section("dispersal")
-					config.set("dispersal", "landscape_type", self.landscape_type)
+					if not self.config.has_section("dispersal"):
+						self.config.add_section("dispersal")
+					self.config.set("dispersal", "landscape_type", self.landscape_type)
 				if self.dispersal_map.file_name not in ["none", None]:
-					if not config.has_section("dispersal"):
-						config.add_section("dispersal")
-					config.set("dispersal", "dispersal_file", self.dispersal_map.file_name)
-				with open(self.full_config_file, "a") as f:
-					config.write(f)
+					if not self.config.has_section("dispersal"):
+						self.config.add_section("dispersal")
+					self.config.set("dispersal", "dispersal_file", self.dispersal_map.file_name)
+				if self.full_config_file is not None:
+					self.write_config(self.full_config_file)
 		else:
 			raise RuntimeError("Cannot generate map config file without setting up map variables")
 
 	def create_config(self, output_file=None):
 		"""
-		Generates the output config files. This version creates the concise version of the config file.
+		Generates the configuration. This will be written out either by providing an output file here, or by calling
+		write_config();
 
 		:param str output_file: the file to generate the config option. Must be a path to a .txt file.
 		"""
 		self.set_config_file(output_file)
 		if not config_success:
 			raise ImportError("ConfigParser import was unsuccessful: cannot create config file.")
-		if not os.path.exists(os.path.dirname(self.full_config_file)):
-			self.logger.info(
-				'Path {} does not exist for writing output to, creating.'.format(os.path.dirname(self.full_config_file)))
-			os.makedirs(os.path.dirname(self.full_config_file))
-		config = ConfigParser.ConfigParser()
-		if os.path.exists(self.full_config_file) and not self.config_open:
-			os.remove(self.full_config_file)
-		self.config_open = True
+		if self.full_config_file is not None:
+			if not os.path.exists(os.path.dirname(self.full_config_file)):
+				self.logger.info('Path {} does not exist for writing '
+								 'output to, creating.'.format(os.path.dirname(self.full_config_file)))
+				os.makedirs(os.path.dirname(self.full_config_file))
+			if os.path.exists(self.full_config_file) and not self.config_open:
+				os.remove(self.full_config_file)
 		if self.is_setup_map and self.is_setup_param:
 			# New method using ConfigParser
-			config.add_section("main")
-			config.set("main", "seed", str(self.seed))
-			config.set("main", "job_type", str(self.job_type))
-			config.set("main", "output_directory", self.output_directory)
-			config.set("main", "min_spec_rate", str(self.min_speciation_rate))
+			self.config.add_section("main")
+			self.config.set("main", "seed", str(self.seed))
+			self.config.set("main", "job_type", str(self.job_type))
+			self.config.set("main", "output_directory", self.output_directory)
+			self.config.set("main", "min_spec_rate", str(self.min_speciation_rate))
 			if self.is_spatial:
-				config.set("main", "sigma", str(self.sigma))
-				config.set("main", "tau", str(self.tau))
-				config.set("main", "dispersal_relative_cost", str(self.dispersal_relative_cost))
-			config.set("main", "deme", str(self.deme))
-			config.set("main", "sample_size", str(self.sample_size))
-			config.set("main", "max_time", str(self.max_time))
-			config.set("main", "min_species", str(self.min_num_species))
+				self.config.set("main", "sigma", str(self.sigma))
+				self.config.set("main", "tau", str(self.tau))
+				self.config.set("main", "dispersal_relative_cost", str(self.dispersal_relative_cost))
+			self.config.set("main", "deme", str(self.deme))
+			self.config.set("main", "sample_size", str(self.sample_size))
+			self.config.set("main", "max_time", str(self.max_time))
+			self.config.set("main", "min_species", str(self.min_num_species))
 			if self.protracted:
-				config.add_section("protracted")
-				config.set("protracted", "has_protracted", str(int(self.protracted)))
-				config.set("protracted", "min_speciation_gen", str(self.min_speciation_gen))
-				config.set("protracted", "max_speciation_gen", str(self.max_speciation_gen))
+				self.config.add_section("protracted")
+				self.config.set("protracted", "has_protracted", str(int(self.protracted)))
+				self.config.set("protracted", "min_speciation_gen", str(float(self.min_speciation_gen)))
+				self.config.set("protracted", "max_speciation_gen", str(float(self.max_speciation_gen)))
 			if len(self.speciation_rates) != 0:
-				config.add_section("spec_rates")
+				self.config.add_section("spec_rates")
 				for i, j in enumerate(set([x for x in self.speciation_rates])):
-					spec_rate = "spec_" + str(i)
-					config.set("spec_rates", spec_rate, str(j))
-			with open(self.full_config_file, "a") as config_file:
-				config.write(config_file)
-			self.full_config_file = self.full_config_file
+					spec_rate = "spec_{}".format(i)
+					self.config.set("spec_rates", spec_rate, str(j))
+			if self.full_config_file is not None:
+				self.write_config(self.full_config_file)
 		else:
 			raise RuntimeError("Setup has not been completed, cannot create config file")
 		self.create_temporal_sampling_config()
@@ -459,8 +433,7 @@ class Simulation(Landscape):
 		self.set_map_parameters("null", size, size, "null", size, size, 0, 0, "null", size, size, 0, 0, 1, "null",
 								"null")
 		self.set_speciation_rates([alpha])
-		self.finalise_setup()
-		self.run_coalescence()
+		self.run()
 		# Now read the species richness from the database
 		try:
 			richness = self.get_richness()
@@ -486,8 +459,8 @@ class Simulation(Landscape):
 		if not sqlite_import:
 			raise ImportError("sqlite3 module required for obtaining richness from database files.")
 		else:
-			db = os.path.join(self.output_directory,
-							  "SQL_data/data_" + str(self.job_type) + "_" + str(self.seed) + ".db")
+			self.calculate_sql_database()
+			db = self.output_database
 			t = CoalescenceTree()
 			t.set_database(db)
 			return t.get_richness(reference)
@@ -567,7 +540,7 @@ class Simulation(Landscape):
 		if self.dispersal_map.file_name not in {"none", "null", None}:
 			self.dispersal_map.set_dimensions()
 			if self.dispersal_map.x_size != self.fine_map.x_size * self.fine_map.y_size or \
-							self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size:
+					self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size:
 				raise ValueError("Dimensions of dispersal map do not match dimensions of fine map. This is currently"
 								 " unsupported.")
 		if self.reproduction_map.file_name not in {"none", "null", None}:
@@ -575,7 +548,7 @@ class Simulation(Landscape):
 			if not self.reproduction_map.has_equal_dimensions(self.fine_map):
 				# if the sizes match, then proceed with a warning
 				if self.reproduction_map.x_size == self.fine_map.x_size and \
-					self.reproduction_map.y_size == self.fine_map.y_size:
+						self.reproduction_map.y_size == self.fine_map.y_size:
 					self.logger.warning("Coordinates of reproduction map did not match fine map.")
 					self.reproduction_map.x_offset = self.fine_map.x_offset
 					self.reproduction_map.y_offset = self.fine_map.y_offset
@@ -583,7 +556,7 @@ class Simulation(Landscape):
 					self.reproduction_map.y_res = self.fine_map.y_res
 				else:
 					raise ValueError("Dimensions of the reproduction map do not match the fine map. This is currently "
-								     "unsupported.")
+									 "unsupported.")
 		self.check_maps()
 
 	def set_simulation_params(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0, deme=1,
@@ -661,22 +634,20 @@ class Simulation(Landscape):
 				self.protracted = True
 				if max_speciation_gen is None:
 					self.logger.warning("Using protracted speciation, but no maximum speciation generation supplied."
-									" Default to 10^100")
+										" Default to 10^100")
 					self.max_speciation_gen = 10 ** 100
 				else:
 					self.max_speciation_gen = max_speciation_gen
 				if min_speciation_gen is None:
 					self.logger.warning("Using protracted speciation, but no minimum speciation generation supplied."
-									" Default to 0.0")
+										" Default to 0.0")
 					self.min_speciation_gen = 0.0
 				else:
 					self.min_speciation_gen = min_speciation_gen
 			if times:
-				self.time_config_file = "set"
-				self.time_points = times
+				self.times = times
 		else:
-			err = "Parameters already set up."
-			self.logger.warning(err)
+			self.logger.warning("Parameters already set up.")
 
 	def check_simulation_params(self):
 		"""
@@ -684,11 +655,12 @@ class Simulation(Landscape):
 		Note that these checks have not been fully tested and are probably unnecessary in a large number of cases.
 		"""
 		if not self.is_setup_param:
-			# print(self.output_directory)
-			if self.output_directory in {"", None, 'null'}:
-				raise RuntimeError('Output directory not set.')
-			else:
-				self.is_setup_param = True
+			raise RuntimeError("Simulation parameters have not been set.")
+		if self.output_directory in {"", None, 'null'}:
+			raise RuntimeError('Output directory not set.')
+		check_parent(self.output_directory)
+		if self.full_config_file is not None:
+			check_parent(self.full_config_file)
 
 	def resume_coalescence(self, pause_directory, seed, job_type, max_time, out_directory=None,
 						   protracted=None, spatial=None):
@@ -729,22 +701,10 @@ class Simulation(Landscape):
 			if not os.path.exists(each):
 				raise IOError(
 					"Paused file " + each + " not found. Ensure pause directory is correct and is accessible.")
-		if necsim_import_success:
-			self.setup_necsim()
-			try:
-				if self.protracted and self.is_spatial:
-					self.necsim.resume_spatial_protracted(pause_directory, out_directory, seed, job_type, max_time)
-				elif self.is_spatial:
-					self.necsim.resume_spatial(pause_directory, out_directory, seed, job_type, max_time)
-				elif self.protracted:
-					self.necsim.resume_NSE_protracted(pause_directory, out_directory, seed, job_type, max_time)
-				else:
-					self.necsim.resume_NSE(pause_directory, out_directory, seed, job_type, max_time)
-			except Exception as e:
-				raise self.necsim.NECSimError(str(e))
-		else:
-			self.logger.warning("Using deprecated method.")
-			raise ImportError("Cannot run simulation without successful import of necsim module")
+		self.setupNECSim()
+		self.c_simulation.setup_resume(pause_directory, out_directory, seed, job_type, max_time)
+		self.is_setup_complete = True
+		self._run_and_output()
 
 	def persistent_ram_usage(self):
 		"""
@@ -857,7 +817,7 @@ class Simulation(Landscape):
 		"""
 		self.import_fine_map_array()
 		if self.sample_map.file_name not in ["none", "null", None] and \
-						self.sample_map.file_name != self.fine_map.file_name:
+				self.sample_map.file_name != self.fine_map.file_name:
 			self.import_sample_map_array()
 			# Less accurate, but faster way.
 			arr_subset = self.sample_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim]
@@ -881,7 +841,7 @@ class Simulation(Landscape):
 		"""
 		self.import_fine_map_array()
 		if self.sample_map.file_name not in ["none", "null", None] and \
-						self.sample_map.file_name != self.fine_map.file_name:
+				self.sample_map.file_name != self.fine_map.file_name:
 			self.import_sample_map_array()
 			# Less accurate, but faster way.
 			return int(np.sum(np.floor(np.multiply(self.fine_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim],
@@ -935,7 +895,7 @@ class Simulation(Landscape):
 			raise MemoryError(
 				"Cannot achieve RAM limit: minimum requirements are {}GB.".format(round(static_usage, 2)))
 		remaining_space = (ram_limit - static_usage) * 1024 ** 3
-		self.logger.info("Remaining space is {}GB.\n".format(round(remaining_space/1024**3, 2)))
+		self.logger.info("Remaining space is {}GB.\n".format(round(remaining_space / 1024 ** 3, 2)))
 		# Rough calculation of number of cells we have remaining (aim for 75% to be sure)
 		average_density = self.get_average_density()
 		# This is the size of the grid object in memory
@@ -982,7 +942,7 @@ class Simulation(Landscape):
 						printing = False
 						self.logger.info("Shrinking due to high densities in sample zone.\n")
 					# Brute-force dividing by 2 each time
-					size = max(1, int(size/2))
+					size = max(1, int(size / 2))
 				if max_x + size > self.sample_map.x_size or max_y + size > self.sample_map.y_size:
 					self.logger.debug("Max x,y: {}, {}".format(max_x, max_y))
 					self.logger.debug("Size: {}".format(size))
@@ -1031,13 +991,11 @@ class Simulation(Landscape):
 		self.sample_map.y_offset = dict_in["sample_y_offset"]
 		self.grid.file_name = dict_in["grid_file_name"]
 
-	def finalise_setup(self, config_default=True, expected=False, ignore_errors=False):
+	def finalise_setup(self, expected=False, ignore_errors=False):
 		"""
 		Runs all setup routines to provide a complete simulation. Should be called immediately before run_coalescence()
 		to ensure the simulation setup is complete.
-		Calls check_simulation_params, generate_command() and run_checks()
 
-		:param config_default: set to false if want config file to only be created if necessary. Defaults to True
 		:param ignore_errors: if true, any FileNotFoundError and FileExistsError raised by checking the output database
 							  are ignored
 		:param expected: set to true if we expect the output file to exist
@@ -1052,23 +1010,38 @@ class Simulation(Landscape):
 			else:
 				self.logger.info(str(err))
 		# Now check if config files need to be written.
-		config_require = config_default
-		if self.full_config_file != '' and not self.is_full:
-			config_require = True
-		if self.dispersal_method is not None or self.landscape_type:
-			config_require = True
-		if config_require:
-			if self.historical_fine_map_file not in self.historical_fine_list and \
-					self.historical_fine_map_file not in [None, "", "none"]:
-				self.add_historical_map(self.historical_fine_map_file, self.historical_coarse_map_file,
-										self.gen_since_historical, self.habitat_change_rate)
-		if (len(self.historical_coarse_list) > 0) or config_require:
-			self.create_map_config()
-		if config_require:
-			self.is_full = False
-			self.create_config()
-		self.is_setup_complete = True
+		if self.historical_fine_map_file not in self.historical_fine_list and \
+				self.historical_fine_map_file not in [None, "", "none"]:
+			self.add_historical_map(self.historical_fine_map_file, self.historical_coarse_map_file,
+									self.gen_since_historical, self.habitat_change_rate)
+		self.create_config()
+		self.create_map_config()
 		self.calculate_sql_database()
+		self.setupNECSim()
+		if self.full_config_file is not None:
+			self.c_simulation.import_from_config(self.full_config_file)
+		else:
+			self.config.write(self.config_string)
+			self.c_simulation.import_from_config_string(self.config_string.getvalue())
+		self.c_simulation.setup()
+		self.is_setup_complete = True
+
+	def setupNECSim(self):
+		"""
+		Calculates the type of the simulation (spatial/non-spatial, protracted/non-protracted) and sets the c object
+		appropriately.
+
+		:rtype: None
+		"""
+		if self.protracted:
+			if self.is_spatial:
+				self.c_simulation = necsimmodule.CPSpatialSimulation(self.logger, write_to_log)
+			else:
+				self.c_simulation = necsimmodule.CPNSESimulation(self.logger, write_to_log)
+		elif self.is_spatial:
+			self.c_simulation = necsimmodule.CSpatialSimulation(self.logger, write_to_log)
+		else:
+			self.c_simulation = necsimmodule.CNSESimulation(self.logger, write_to_log)
 
 	def set_speciation_rates(self, speciation_rates):
 		"""Add speciation rates for analysis at the end of the simulation. This is optional
@@ -1081,8 +1054,8 @@ class Simulation(Landscape):
 		"""
 		Saves the output database location to self.output_database.
 		"""
-		self.output_database = os.path.join(self.output_directory,
-											"SQL_data", "data_{}_{}.db".format(str(self.job_type), str(self.seed)))
+		self.output_database = os.path.join(self.output_directory, "data_{}_{}.db".format(str(self.job_type),
+																						  str(self.seed)))
 
 	def check_sql_database(self, expected=False):
 		"""
@@ -1122,8 +1095,8 @@ class Simulation(Landscape):
 		if self.is_spatial:
 			Landscape.check_maps(self)
 			if self.grid.file_name == "set" and \
-				self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size or \
-				self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size:
+					self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size or \
+					self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size:
 				raise ValueError("Grid is not within the sample map - please check offsets of sample map.")
 			# Now check our combination of dispersal map, reproduction map and infinite landscape with our fine/coarse maps
 			# makes sense
@@ -1135,7 +1108,6 @@ class Simulation(Landscape):
 				if self.coarse_map.file_name not in {None, "none", "null"}:
 					raise TypeError("Cannot use a coarse map if using a reproduction map. "
 									"This feature is currently unsupported.")
-
 
 	def run_checks(self, expected=False):
 		"""
@@ -1152,46 +1124,59 @@ class Simulation(Landscape):
 			raise RuntimeError(err)
 		self.check_sql_database(expected=expected)
 
+	def run(self):
+		"""
+		Convenience function which completes setp, runs the simulation and calculates the coalescence tree for the set
+		speciation rates in one step.
+
+		:rtype: None
+		"""
+		self.finalise_setup()
+		self._run_and_output()
+
+	def _run_and_output(self):
+		"""
+		Runs the simulation and outputs to the database. Should only be called internally.
+
+		:return:
+		"""
+		if self.run_coalescence():
+			self.apply_speciation_rates()
+		else:
+			self.logger.warning("Simulation did not complete in time specified.\n")
+			self.logger.warning("Resume with extra time to continue.\n")
+
 	def run_coalescence(self):
-		"""Attempt to run the simulation with the given simulation set-up.
-		This is the main routine performing the actual simulation which will take a considerable amount of time."""
+		"""
+		Attempt to run the simulation with the given simulation set-up.
+		This is the main routine performing the actual simulation which will take a considerable amount of time.
+
+		:return: True if the simulation completes successfully, False if the simulation pauses.
+
+		:rtype: bool
+		"""
 		if self.is_setup_complete:
 			# Make the output directory if it doesn't yet exist
 			if not os.path.exists(self.output_directory):
 				os.makedirs(self.output_directory)
-			# Call the c++ code and run the simulation
-			if not necsim_import_success:
-				self.logger.error("NECSim import unsuccessful: cannot run simulations using c++ API. Attempting system call"
-							  " instead")
-			if self.full_config_file != '' and self.full_config_file is not None and necsim_import_success:
-				# Run NECSim
-				try:
-					self.setup_necsim()
-					if self.protracted and self.is_spatial:
-						self.necsim.run_spatial_protracted(self.full_config_file)
-					elif self.is_spatial:
-						self.necsim.run_spatial(self.full_config_file)
-					elif self.protracted:
-						self.necsim.run_NSE_protracted(self.full_config_file)
-					else:
-						self.necsim.run_NSE(self.full_config_file)
-				except Exception as e:
-					raise self.necsim.NECSimError(str(e))
-			else:
-				# Deprecated method if cannot link to shared objects
-				self.logger.warning("Using deprecated os call method.")
-				if necsim_import_success:
-					self.logger.warning("NECSim not successfully imported.")
-				else:
-					self.logger.warning("Config file was :" + self.full_config_file)
-				try:
-					execute_log_info(self.call_list)
-				except:
-					self.logger.critical("Error raised using deprecated os call method.")
-					self.logger.critical("Call was " + str(self.call_list))
+			# Call the c++ object and run the simulation
+			return self.c_simulation.run()
 		else:
-			err = "Set up is incomplete."
-			raise RuntimeError(err)
+			raise RuntimeError("Set up is incomplete.")
+
+	def apply_speciation_rates(self, speciation_rates=None):
+		"""
+		Applies the speciation rates to the coalescence tree and outputs to the database.
+
+		:param speciation_rates: a list of speciation rates to apply
+
+		:rtype: None
+		"""
+		if speciation_rates:
+			for each in speciation_rates:
+				self.speciation_rates.append(each)
+			self.speciation_rates = [x for x in set(self.speciation_rates)]
+		self.c_simulation.apply_speciation_rates(self.speciation_rates)
 
 	def _wipe_objects(self):
 		"""

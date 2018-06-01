@@ -17,6 +17,9 @@
 
 using namespace std;
 
+/**
+ * @brief Calculates a variety of landscape metrics from an imported tif file.
+ */
 class LandscapeMetricsCalculator : public Map<double>
 {
 	vector<Cell> all_cells;

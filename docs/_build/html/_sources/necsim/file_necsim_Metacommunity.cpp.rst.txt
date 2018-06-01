@@ -38,6 +38,8 @@ Includes
 --------
 
 
+- ``LogFile.h`` (:ref:`file_necsim_LogFile.h`)
+
 - ``Metacommunity.h`` (:ref:`file_necsim_Metacommunity.h`)
 
 
