@@ -56,6 +56,7 @@ public:
 	{
 		if(needs_update)
 		{
+			getGlobalLogger(logger, log_function);
 			base_object->setSimulationParameters(dispersalParameters, printing);
 			base_object->setDispersalParameters();
 			printing = false;
@@ -83,14 +84,14 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
 		return nullptr;
 	}
 #endif // DEBUG
-//	if(!PyArg_ParseTuple(args, "is", &self->dispersalParameters->deme, &fine_map_file))
-	if(!PyArg_ParseTuple(args, "isiiiiiisiiiis", &self->dispersalParameters->deme, &fine_map_file,
+	if(!PyArg_ParseTuple(args, "isiiiiiisiiiiis", &self->dispersalParameters->deme, &fine_map_file,
 						 &self->dispersalParameters->fine_map_x_size, &self->dispersalParameters->fine_map_y_size,
 						 &self->dispersalParameters->fine_map_x_offset, &self->dispersalParameters->fine_map_y_offset,
 						 &self->dispersalParameters->sample_x_size, &self->dispersalParameters->sample_y_size,
 						 &coarse_map_file, &self->dispersalParameters->coarse_map_x_size,
 						 &self->dispersalParameters->coarse_map_y_size, &self->dispersalParameters->coarse_map_x_offset,
-						 &self->dispersalParameters->coarse_map_y_offset, &landscape_type))
+						 &self->dispersalParameters->coarse_map_y_offset, &self->dispersalParameters->coarse_map_scale,
+						 &landscape_type))
 	{
 		return nullptr;
 	}

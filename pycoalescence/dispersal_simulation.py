@@ -136,6 +136,26 @@ class DispersalSimulation(Landscape):
 												   " name='{}';".format(table_name)).fetchone() is not None
 		return existence
 
+	def set_map_files(self, fine_file, sample_file="null", coarse_file=None, historical_fine_file=None,
+					  historical_coarse_file=None, deme=1):
+		"""
+		Sets the map files.
+
+		Uses a null sampling regime, as the sample file should have no effect.
+
+		:param str fine_file: the fine map file. Defaults to "null" if none provided
+		:param str coarse_file: the coarse map file. Defaults to "none" if none provided
+		:param str historical_fine_file: the historical fine map file. Defaults to "none" if none provided
+		:param str historical_coarse_file: the historical coarse map file. Defaults to "none" if none provided
+		:param int deme: the number of individuals per cell
+
+		:rtype: None
+		"""
+		Landscape.set_map_files(self, sample_file=sample_file, fine_file=fine_file, coarse_file=coarse_file,
+								historical_fine_file=historical_fine_file,
+								historical_coarse_file=historical_coarse_file)
+		self.deme = deme
+
 	def set_dispersal_parameters(self, dispersal_method="normal", dispersal_file="none", sigma=1, tau=1, m_prob=1,
 								 cutoff=100, dispersal_relative_cost=1, restrict_self=False):
 		"""
@@ -246,7 +266,8 @@ class DispersalSimulation(Landscape):
 													self.sample_map.x_size, self.sample_map.y_size,
 													self.coarse_map.file_name, self.coarse_map.x_size,
 													self.coarse_map.y_size, self.coarse_map.x_offset,
-													self.coarse_map.y_offset, self.landscape_type)
+													self.coarse_map.y_offset, int(self.coarse_scale),
+													self.landscape_type)
 			self.c_dispersal_simulation.set_historical_map_parameters(self.historical_fine_list,
 																	  [x for x in
 																	   range(len(self.historical_fine_list))],

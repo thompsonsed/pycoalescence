@@ -31,7 +31,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		Sets up the class by running the dispersal simulations for later reference.
 		"""
 		cls.m = DispersalSimulation(logging_level=logging.CRITICAL)
-		cls.m.set_map_files("null", "sample/SA_sample_fine.tif")
+		cls.m.set_map_files("sample/SA_sample_fine.tif", )
 		cls.m.set_simulation_parameters(number_repeats=100, output_database="output/sim_pars_test4.db", seed=2,
 										sigma=2, landscape_type="tiled_fine")
 		cls.m.run_mean_dispersal()
@@ -74,7 +74,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
 		with self.assertRaises(ValueError):
 			m.set_simulation_parameters(number_repeats=10000, output_database="output/normaldispersal.db", seed=1)
-			m.set_map_files("null", fine_file="null")
+			m.set_map_files("null")
 
 	def testRaisesNECSimError(self):
 		"""
@@ -84,7 +84,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		with self.assertRaises(NECSimError):
 			m.set_simulation_parameters(number_repeats=10000, output_database="output/emptydb.db", seed=1,
 										dispersal_method="notamethod")
-			m.set_map_files("null", "sample/SA_sample_fine.tif")
+			m.set_map_files("sample/SA_sample_fine.tif", )
 			m.run_mean_dispersal()
 
 	def testDispersalNullOutputs(self):
@@ -253,3 +253,22 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertAlmostEqual(1.287133430, m.get_mean_dispersal(parameter_reference=1), places=4)
 		self.assertAlmostEqual(15.233920, m.get_mean_dispersal(parameter_reference=2), places=4)
 		self.assertAlmostEqual(467.58323, m.get_mean_distance_travelled(parameter_reference=3), places=4)
+
+
+	def testDispersalWithCoarse(self):
+		"""Tests a dispersal simulation using a coarse and fine map."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map_files(fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+		m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal5.db", seed=1,
+									sigma=1, landscape_type="tiled_fine")
+		m.run_mean_dispersal()
+		self.assertAlmostEqual(1.28034, m.get_mean_dispersal(parameter_reference=1), places=4)
+
+	def testDispersalWithSample(self):
+		"""Tests a dispersal simulation using a sample and fine map."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map_files(fine_file="sample/SA_fine_expanded.tif", sample_file="sample/SA_sample_fine.tif")
+		m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal6.db", seed=1,
+									sigma=1, landscape_type="closed")
+		m.run_mean_dispersal()
+		self.assertAlmostEqual(0.9636800, m.get_mean_dispersal(parameter_reference=1), places=4)
