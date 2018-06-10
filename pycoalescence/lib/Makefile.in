@@ -17,9 +17,9 @@ override CPPFLAGS += -fPIC
 
 ACLOCAL_AMFLAGS = -I m4 --install
 
-complete: all NECSim SpeciationCounter end_msg
-
 all: start_msg obj_dir build_dir $(BUILDDIR)/necsimmodule.so end_msg
+
+complete: all NECSim SpeciationCounter end_msg
 
 obj_dir:
 	mkdir -p $(OBJDIR)
@@ -34,8 +34,8 @@ SpeciationCounter: SpeciationCounter.o SpeciationCommands.o Community.o TreeNode
 	$(CXX) -o SpeciationCounter SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o CPLCustomHandler.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 # NECSim compilation
-NECSim: main.o Tree.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
-	$(CXX) -o NECSim main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
+NECSim: main.o Tree.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
+	$(CXX) -o NECSim main.o Tree.o Matrix.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 start_msg: 
 	@echo "-----------------------------------------------"

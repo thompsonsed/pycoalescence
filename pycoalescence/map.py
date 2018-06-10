@@ -432,7 +432,7 @@ class Map(object):
 		x, y = self.get_x_y()
 		if not 0 <= x_size + x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
 			raise ValueError("Requested x, y subset of [{}:{}, {}:{}]"
-							 " not with array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
+							 " not within array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
 																			 y_offset, y_offset + y_size,
 																			 x, y))
 		to_return = np.array(ds.GetRasterBand(1).ReadAsArray(x_offset, y_offset, x_size, y_size), dtype=np.float)

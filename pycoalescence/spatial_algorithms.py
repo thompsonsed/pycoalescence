@@ -160,3 +160,14 @@ def convert_coordinates(x, y, input_srs, output_srs):
 	point.AddPoint(x, y)
 	point.Transform(coord_transform)
 	return point.GetX(), point.GetY()
+
+def estimate_sigma_from_distance(distance, n):
+	"""
+	Estimates the sigma value from a rayleigh distribution (2-d normal) from a total distance travelled in n steps.
+
+	:param float distance: the total distance travelled
+	:param int n: the number of steps
+
+	:return: an estimation of the sigma value required to generate the distance travelled in n steps
+	"""
+	return distance * (2.0 / (math.pi * n)) ** 0.5

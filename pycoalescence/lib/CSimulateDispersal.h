@@ -23,7 +23,7 @@ class PySimulateDispersal : public PyTemplate<SimulateDispersal>
 public:
 	SimParameters *dispersalParameters;
 	bool has_imported_maps;
-	std::string * output_database;
+	unique_ptr<std::string> output_database;
 	bool printing;
 	bool needs_update;
 
@@ -271,18 +271,25 @@ static PyObject *runMDT(PySimulateDispersal *self, PyObject *args)
 {
 	try
 	{
-		int num_repeats, num_steps, seed, is_sequential;
+		int num_repeats, seed, is_sequential;
+		PyObject * p_num_steps;
+		vector<unsigned long> num_steps;
 		// parse arguments
-		if(!PyArg_ParseTuple(args, "iiii", &num_repeats, &num_steps, &seed, &is_sequential))
+		if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps,
+							 &seed, &is_sequential))
 		{
 			return nullptr;
 		}
 		getGlobalLogger(self->logger, self->log_function);
+		if(!importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers."))
+		{
+			return nullptr;
+		}
 		self->setDispersalParameters();
 		self->base_object->setSequential(static_cast<bool>(is_sequential));
 		self->base_object->setSeed(static_cast<unsigned long>(seed));
 		self->base_object->setNumberRepeats(static_cast<unsigned long>(num_repeats));
-		self->base_object->setNumberSteps(static_cast<unsigned long>(num_steps));
+		self->base_object->setNumberSteps(num_steps);
 		if(!self->has_imported_maps)
 		{
 			self->base_object->importMaps();
@@ -353,7 +360,7 @@ PySimulateDispersal_init(PySimulateDispersal *self, PyObject *args, PyObject *kw
 	auto out = PyTemplate_init<SimulateDispersal>(self, args, kwds);
 	self->dispersalParameters = new SimParameters();
 	self->has_imported_maps = false;
-	self->output_database = new std::string("none");
+	self->output_database = make_unique<std::string>("none");
 	self->printing = true;
 	self->needs_update = true;
 	return out;
@@ -368,7 +375,7 @@ static void PySimulateDispersal_dealloc(PySimulateDispersal *self)
 	}
 	if(self->output_database != nullptr)
 	{
-		delete self->output_database;
+		self->output_database.reset();
 		self->output_database = nullptr;
 	}
 	PyTemplate_dealloc<SimulateDispersal>(self);

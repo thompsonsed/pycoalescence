@@ -49,9 +49,9 @@
         </inbodydescription>
         <location file="PyTemplates.h" line="23" column="1" bodyfile="PyTemplates.h" bodystart="23" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_py_template_1ac7bf12e84289f480eaa79fd7c421614a" prot="public" static="no" mutable="no">
-        <type>T *</type>
-        <definition>T* PyTemplate&lt; T &gt;::base_object</definition>
+      <memberdef kind="variable" id="class_py_template_1a14da655e6d3c0b398d8478058316d326" prot="public" static="no" mutable="no">
+        <type>unique_ptr&lt; T &gt;</type>
+        <definition>unique_ptr&lt;T&gt; PyTemplate&lt; T &gt;::base_object</definition>
         <argsstring></argsstring>
         <name>base_object</name>
         <initializer>= nullptr</initializer>
@@ -77,79 +77,73 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="725">
+      <node id="719">
         <label>PyTemplate&lt; T &gt;</label>
         <link refid="class_py_template"/>
       </node>
-      <node id="724">
+      <node id="718">
         <label>PyCommunityTemplate&lt; T &gt;</label>
         <link refid="class_py_community_template"/>
-        <childnode refid="725" relation="public-inheritance">
+        <childnode refid="719" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="728">
-        <label>T</label>
-      </node>
-      <node id="734">
+      <node id="727">
         <label>std::vector&lt; double &gt;</label>
       </node>
-      <node id="727">
+      <node id="721">
         <label>PyTemplate&lt; T &gt;</label>
         <link refid="class_py_template"/>
-        <childnode refid="728" relation="usage">
-          <edgelabel>base_object</edgelabel>
-        </childnode>
       </node>
-      <node id="733">
+      <node id="726">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="729">
+      <node id="722">
         <label>SpecSimParameters</label>
         <link refid="struct_spec_sim_parameters"/>
-        <childnode refid="730" relation="usage">
+        <childnode refid="723" relation="usage">
           <edgelabel>protracted_parameters</edgelabel>
         </childnode>
-        <childnode refid="732" relation="usage">
+        <childnode refid="725" relation="usage">
           <edgelabel>times_file</edgelabel>
           <edgelabel>fragment_config_file</edgelabel>
           <edgelabel>samplemask</edgelabel>
           <edgelabel>filename</edgelabel>
         </childnode>
-        <childnode refid="734" relation="usage">
+        <childnode refid="727" relation="usage">
           <edgelabel>all_times</edgelabel>
           <edgelabel>all_speciation_rates</edgelabel>
         </childnode>
       </node>
-      <node id="731">
+      <node id="724">
         <label>ProtractedSpeciationParameters</label>
         <link refid="struct_protracted_speciation_parameters"/>
       </node>
-      <node id="726">
+      <node id="720">
         <label>PyCommunityTemplate&lt; T &gt;</label>
         <link refid="class_py_community_template"/>
-        <childnode refid="727" relation="public-inheritance">
+        <childnode refid="721" relation="public-inheritance">
         </childnode>
-        <childnode refid="729" relation="usage">
+        <childnode refid="722" relation="usage">
           <edgelabel>specSimParameters</edgelabel>
         </childnode>
       </node>
-      <node id="730">
+      <node id="723">
         <label>std::vector&lt; ProtractedSpeciationParameters &gt;</label>
-        <childnode refid="731" relation="usage">
+        <childnode refid="724" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="732">
+      <node id="725">
         <label>std::string</label>
-        <childnode refid="733" relation="public-inheritance">
+        <childnode refid="726" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
     <location file="CCommunity.h" line="30" column="1" bodyfile="CCommunity.h" bodystart="29" bodyend="33"/>
     <listofallmembers>
-      <member refid="class_py_template_1ac7bf12e84289f480eaa79fd7c421614a" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>base_object</name></member>
+      <member refid="class_py_template_1a14da655e6d3c0b398d8478058316d326" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>base_object</name></member>
       <member refid="class_py_template_1a98bb8152faa73d028342d5cf260f0372" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>log_function</name></member>
       <member refid="class_py_template_1a5b741a472639d65f9bcad29afa16ec99" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>logger</name></member>
       <member refid="class_py_community_template_1a37402f384e75c02c50360cecfe6b2267" prot="public" virt="non-virtual"><scope>PyCommunityTemplate</scope><name>specSimParameters</name></member>

@@ -13,25 +13,25 @@ used to compare against a comparison simulation object. Detailed :ref:`here <Sim
 """
 from __future__ import absolute_import, division
 
+import json
 import logging
-import sqlite3
-import subprocess
 import math
-import numpy as np
 import os
 import random
+import sqlite3
 import sys
-import json
 from collections import defaultdict
 
+import numpy as np
+
 try:
-	from .build import necsimmodule
+	from .necsim import necsimmodule
 except ImportError as ie:
 	logging.info(str(ie))
-	from build import necsimodule, NECSimError
+	from necsim import necsimodule, NECSimError
 
 from .future_except import FileNotFoundError
-from .system_operations import execute_log_info, mod_directory, create_logger, write_to_log
+from .system_operations import mod_directory, create_logger, write_to_log
 from .spatial_algorithms import calculate_distance_between
 from .sqlite_connection import check_sql_table_exist
 import pycoalescence
@@ -40,7 +40,7 @@ import pycoalescence
 try:
 	with open(os.path.join(mod_directory, "reference", "parameter_descriptions.json")) as f:
 		_parameter_descriptions = json.load(f)
-except FileNotFoundError:
+except (FileNotFoundError, IOError):
 	logging.error("Could not find parameter dictionary. Check install is complete.")
 
 
@@ -135,6 +135,7 @@ class CoalescenceTree(object):
 		for handler in self.logger.handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
+		self.c_community = None
 
 	def _create_logger(self, file=None, logging_level=None):
 		"""
@@ -434,7 +435,7 @@ class CoalescenceTree(object):
 		else:
 			raise IOError("File " + filename + " does not exist.")
 
-	def set_speciation_params(self, record_spatial, record_fragments, speciation_rates, sample_file=None,
+	def set_speciation_params(self, speciation_rates, record_spatial=False, record_fragments=False, sample_file=None,
 							  times=None, protracted_speciation_min=None, protracted_speciation_max=None,
 							  metacommunity_size=None, metacommunity_speciation_rate=None):
 		"""
@@ -442,17 +443,18 @@ class CoalescenceTree(object):
 		Set the parameters for the application of speciation rates. If no config files or time_config files are provided,
 		they will be taken from the main coalescence simulation.
 
-		:rtype: None
-		:param bool, str record_spatial: a boolean of whether to record spatial data
-		:param bool, str record_fragments: either a csv file containing fragment data, or T/F for whether fragments should be
-			calculated from squares of continuous habitat.
 		:param list speciation_rates: a list of speciation rates to apply
+		:param bool, str record_spatial: a boolean of whether to record spatial data (default=False)
+		:param bool, str record_fragments: either a csv file containing fragment data, or T/F for whether fragments
+										   should be calculated from squares of continuous habitat (default=False)
 		:param str sample_file: a sample tif or csv specifying the sampling mask
 		:param list times: a list of times to apply (should have been run with the original simulation)
 		:param float protracted_speciation_min: the minimum number of generations required for speciation to occur
 		:param float protracted speciation_max: the maximum number of generations before speciation occurs
 		:param float metacommunity_size: the size of the metacommunity to apply
 		:param float metacommunity_speciation_rate: speciation rate for the metacommunity
+
+		:rtype: None
 		"""
 		if self.is_setup_speciation:
 			self.logger.warning("Speciation parameters already set.")
@@ -485,9 +487,9 @@ class CoalescenceTree(object):
 			if not self.is_protracted():
 				raise ValueError("Supplied protracted parameters for a non-protracted simulation.");
 			else:
-				self.add_protracted_parameters(protracted_speciation_min, protracted_speciation_max)
+				self.protracted_parameters.append((protracted_speciation_min, protracted_speciation_max))
 		else:
-			self.add_protracted_parameters(0.0, 0.0)
+			self.protracted_parameters.append((0.0, 0.0))
 		self.record_spatial = record_spatial
 		self.record_fragments = record_fragments
 		if sample_file is None:
@@ -526,7 +528,6 @@ class CoalescenceTree(object):
 			else:
 				self.c_community = necsimmodule.CMetacommunity(self.logger, write_to_log)
 
-
 	def add_time(self, time):
 		"""
 		Adds the time to the list to be applied.
@@ -538,7 +539,6 @@ class CoalescenceTree(object):
 		self.times.append(float(time))
 		self.set_c_community()
 		self.c_community.add_time(float(time))
-
 
 	def add_times(self, times):
 		"""
@@ -630,7 +630,6 @@ class CoalescenceTree(object):
 			self.logger.error("Coalescence tree has already been written to output database.")
 		else:
 			self.c_community.output()
-
 
 	def get_richness(self, reference=1):
 		"""
@@ -2032,7 +2031,7 @@ class CoalescenceTree(object):
 								 " location.".format(reference))
 				mean = 0
 			else:
-				mean = total_sim/ number_all
+				mean = total_sim / number_all
 			means.append([reference, mean])
 		sql_output = []
 		for row in output:

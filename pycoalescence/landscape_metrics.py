@@ -2,10 +2,15 @@
 Calculates landscape-level metrics, including mean distance to nearest-neighbour for each habitat cell and clumpiness.
 """
 import logging
+try:
+	from .necsim import necsimmodule
+	from .map import Map
+	from .system_operations import write_to_log
+except ImportError:
+	from necsim import necsimmodule
+	from map import Map
+	from system_operations import write_to_log
 
-from .system_operations import write_to_log
-from .build import necsimmodule
-from .map import Map
 
 class LandscapeMetrics(Map):
 	"""
@@ -24,6 +29,11 @@ class LandscapeMetrics(Map):
 		self._create_logger(logging_level=logging_level)
 		self.c_LM_calc = necsimmodule.CLandscapeMetricsCalculator(self.logger, write_to_log)
 
+	def __del__(self):
+		"""Safely destroy the c++ objects."""
+		self.c_LM_calc = None
+		Map.__del__(self)
+
 	def get_mnn(self):
 		"""
 		Calculates the mean nearest-neighbour for cells across a landscape. See :ref:`here <landscape_metrics_mnn>` for
@@ -36,7 +46,6 @@ class LandscapeMetrics(Map):
 		self.c_LM_calc.import_map(self.file_name)
 		return self.c_LM_calc.calculate_MNN()
 
-
 	def get_clumpiness(self):
 		"""
 		Calculates the clumpiness metric for the landscape, a measure of how spread out the points are across the
@@ -48,6 +57,3 @@ class LandscapeMetrics(Map):
 		"""
 		self.c_LM_calc.import_map(self.file_name)
 		return self.c_LM_calc.calculate_CLUMPY()
-
-
-

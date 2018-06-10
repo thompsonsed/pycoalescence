@@ -27,27 +27,15 @@ import types
 
 import numpy as np
 
-from .future_except import FileNotFoundError, FileExistsError
-from .landscape import Landscape
-from .map import Map
-from .system_operations import write_to_log, check_parent
+global sqlite_import
+if sys.version_info[0] == 3:
+	import configparser as ConfigParser
+	from io import StringIO
+else:
+	import ConfigParser
+	from cStringIO import StringIO
 
-global sqlite_import, config_success
-try:
-	if sys.version_info[0] == 3:
-		import configparser as ConfigParser
-		from io import StringIO
-	else:
-		import ConfigParser
-		from cStringIO import StringIO
-
-		ConfigParser.ConfigParser.read_file = ConfigParser.ConfigParser.read
-	config_success = True
-except ImportError as ie:
-	ConfigParser = None
-	logging.warning("Could not import ConfigParser. Config options disabled.")
-	logging.warning(str(ie))
-	config_success = False
+	ConfigParser.ConfigParser.read_file = ConfigParser.ConfigParser.read
 
 try:
 	NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
@@ -75,11 +63,11 @@ except ImportError as ie:
 	sqlite3 = None
 	logging.warning("Problem importing sqlite module " + str(ie))
 
-try:
-	from build import necsimmodule, NECSimError
-except ImportError as ime:
-	logging.info(str(ime))
-	from .build import necsimmodule, NECSimError
+from pycoalescence.necsim import necsimmodule
+from pycoalescence.future_except import FileNotFoundError, FileExistsError
+from pycoalescence.landscape import Landscape
+from pycoalescence.map import Map
+from pycoalescence.system_operations import write_to_log, check_parent
 
 
 class Simulation(Landscape):
@@ -160,14 +148,13 @@ class Simulation(Landscape):
 		self.uses_spatial_sampling = False
 
 	def __del__(self):
-		"""
-		Overriding the destructor for proper destruction of the logger object
-		"""
+		"""Safely destroys the logger and the c++ objects."""
 		handlers = copy.copy(self.logger.handlers)
 		for handler in handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
 		self.logger = None
+		self.c_simulation = None
 
 	def setup_necsim(self):
 		"""
@@ -211,27 +198,24 @@ class Simulation(Landscape):
 		:param str config_file: the config file to read in.
 		"""
 		# New method using ConfigParser
-		if not config_success:
-			raise ImportError("Failure to import ConfigParser: cannot load config file")
-		else:
-			with open(config_file, "wa") as f:
-				self.config.read_file(f)
-			self.seed = self.config.getint("main", "seed")
-			self.job_type = self.config.getint("main", "job_type")
-			self.output_directory = self.config.get("main", "output_directory")
-			self.min_speciation_rate = self.config.getfloat("main", "min_spec_rate")
-			self.sigma = self.config.getfloat("main", "sigma")
-			self.tau = self.config.getfloat("main", "tau")
-			self.deme = self.config.getint("main", "deme")
-			self.sample_size = self.config.getfloat("main", "sample_size")
-			self.max_time = self.config.getint("main", "max_time")
-			self.dispersal_relative_cost = self.config.getfloat("main", "lambda")
-			self.min_num_species = self.config.getint("main", "min_species")
-			self.full_config_file = config_file
-			if self.config.has_section("spec_rate"):
-				opts = self.config.options("spec_rate")
-				for each in opts:
-					self.speciation_rates.append(self.config.getfloat("spec_rate", each))
+		with open(config_file, "wa") as f:
+			self.config.read_file(f)
+		self.seed = self.config.getint("main", "seed")
+		self.job_type = self.config.getint("main", "job_type")
+		self.output_directory = self.config.get("main", "output_directory")
+		self.min_speciation_rate = self.config.getfloat("main", "min_spec_rate")
+		self.sigma = self.config.getfloat("main", "sigma")
+		self.tau = self.config.getfloat("main", "tau")
+		self.deme = self.config.getint("main", "deme")
+		self.sample_size = self.config.getfloat("main", "sample_size")
+		self.max_time = self.config.getint("main", "max_time")
+		self.dispersal_relative_cost = self.config.getfloat("main", "lambda")
+		self.min_num_species = self.config.getint("main", "min_species")
+		self.full_config_file = config_file
+		if self.config.has_section("spec_rate"):
+			opts = self.config.options("spec_rate")
+			for each in opts:
+				self.speciation_rates.append(self.config.getfloat("spec_rate", each))
 
 	def write_config(self, config_file):
 		"""
@@ -323,7 +307,8 @@ class Simulation(Landscape):
 							self.config.set(tmp_coarse, "rate", str(self.rates_list[i]))
 						except IndexError as ie:
 							self.logger.warning(
-								'Discrepancy between historical file list, time list or rate list. Check inputs: {}'.format(ie))
+								'Discrepancy between historical file list, time list or rate list. Check inputs: {}'.format(
+									ie))
 							break
 				if self.grid.file_name == "set":
 					self.config.add_section("grid_map")
@@ -364,10 +349,9 @@ class Simulation(Landscape):
 		:param str output_file: the file to generate the config option. Must be a path to a .txt file.
 		"""
 		self.set_config_file(output_file)
-		if not config_success:
-			raise ImportError("ConfigParser import was unsuccessful: cannot create config file.")
 		if self.full_config_file is not None:
-			if not os.path.exists(os.path.dirname(self.full_config_file)):
+			if not os.path.exists(os.path.dirname(self.full_config_file)) and \
+					os.path.dirname(self.full_config_file) != "":
 				self.logger.info('Path {} does not exist for writing '
 								 'output to, creating.'.format(os.path.dirname(self.full_config_file)))
 				os.makedirs(os.path.dirname(self.full_config_file))
@@ -780,12 +764,8 @@ class Simulation(Landscape):
 		:rtype: None
 		"""
 		if self.fine_map_array is None:
-			ds = gdal.Open(self.fine_map.file_name)
-			self.fine_map_array = ds.GetRasterBand(1).ReadAsArray(self.fine_map.x_offset,
-																  self.fine_map.y_offset,
-																  self.sample_map.x_size,
-																  self.sample_map.y_size)
-			ds = None
+			self.fine_map_array = self.fine_map.get_subset(self.fine_map.x_offset, self.fine_map.y_offset,
+														   self.sample_map.x_size, self.sample_map.y_size)
 
 	def import_sample_map_array(self):
 		"""
@@ -794,9 +774,12 @@ class Simulation(Landscape):
 		:rtype: None
 		"""
 		if self.sample_map_array is None:
-			ds2 = gdal.Open(self.sample_map.file_name)
-			self.sample_map_array = (ds2.GetRasterBand(1).ReadAsArray() >= 0.5) * 1
-			ds2 = None
+			self.sample_map.open()
+			if not self.uses_spatial_sampling:
+				self.sample_map_array = np.ma.masked_where(self.sample_map.data >= 0.5, self.sample_map.data).mask
+			else:
+				self.sample_map_array = self.sample_map.data
+			self.sample_map.data = None
 
 	def grid_density_estimate(self, x_off, y_off, x_dim, y_dim):
 		"""
@@ -820,7 +803,7 @@ class Simulation(Landscape):
 				self.sample_map.file_name != self.fine_map.file_name:
 			self.import_sample_map_array()
 			# Less accurate, but faster way.
-			arr_subset = self.sample_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim]
+			arr_subset = self.sample_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim]
 			return int(np.sum(np.floor(arr_subset * self.get_average_density() * self.sample_size)))
 		return int(np.sum(np.floor(self.fine_map_array * self.deme * self.sample_size)))
 
@@ -844,11 +827,11 @@ class Simulation(Landscape):
 				self.sample_map.file_name != self.fine_map.file_name:
 			self.import_sample_map_array()
 			# Less accurate, but faster way.
-			return int(np.sum(np.floor(np.multiply(self.fine_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim],
-												   self.sample_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim]) *
+			return int(np.sum(np.floor(np.multiply(self.fine_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim],
+												   self.sample_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim]) *
 									   self.deme * self.sample_size)))
 		else:
-			return int(np.sum(np.floor(self.fine_map_array[x_off:x_off + x_dim, y_off:y_off + y_dim] *
+			return int(np.sum(np.floor(self.fine_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim] *
 									   self.deme * self.sample_size)))
 
 	def get_average_density(self):
@@ -906,8 +889,6 @@ class Simulation(Landscape):
 				size = min(self.sample_map.x_size, self.sample_map.y_size)
 			if size < 2:
 				raise MemoryError("Could not find square grid to achieve RAM limit. Please set this manually.")
-			if size > self.sample_map.x_size or size > self.sample_map.y_size:
-				self.logger.info("Memory limit high enough for full spatial simulation. No optimisation necessary.")
 			max_attained = 0
 			max_x = 0
 			max_y = 0

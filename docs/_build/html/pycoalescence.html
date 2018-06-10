@@ -25,12 +25,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Full API" href="necsim/unabridged_api.html" />
     <link rel="prev" title="Modules" href="modules.html" /> 
   </head>
   <body role="document">
@@ -43,6 +44,9 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="necsim/unabridged_api.html" title="Full API"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="Modules"
              accesskey="P">previous</a> |</li>
@@ -1827,21 +1831,18 @@ incomplete simulations if the error is handled correctly.</td>
 
 <dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params">
-<code class="descname">set_speciation_params</code><span class="sig-paren">(</span><em>record_spatial</em>, <em>record_fragments</em>, <em>speciation_rates</em>, <em>sample_file=None</em>, <em>times=None</em>, <em>protracted_speciation_min=None</em>, <em>protracted_speciation_max=None</em>, <em>metacommunity_size=None</em>, <em>metacommunity_speciation_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.set_speciation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_speciation_params</code><span class="sig-paren">(</span><em>speciation_rates</em>, <em>record_spatial=False</em>, <em>record_fragments=False</em>, <em>sample_file=None</em>, <em>times=None</em>, <em>protracted_speciation_min=None</em>, <em>protracted_speciation_max=None</em>, <em>metacommunity_size=None</em>, <em>metacommunity_speciation_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.set_speciation_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters for the application of speciation rates. If no config files or time_config files are provided,
 they will be taken from the main coalescence simulation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>str record_spatial</strong> (<em>bool</em><em>,</em>) &#8211; a boolean of whether to record spatial data</li>
-<li><strong>str record_fragments</strong> (<em>bool</em><em>,</em>) &#8211; either a csv file containing fragment data, or T/F for whether fragments should be
-calculated from squares of continuous habitat.</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>speciation_rates</strong> (<em>list</em>) &#8211; a list of speciation rates to apply</li>
+<li><strong>str record_spatial</strong> (<em>bool</em><em>,</em><em></em>) &#8211; a boolean of whether to record spatial data (default=False)</li>
+<li><strong>str record_fragments</strong> (<em>bool</em><em>,</em><em></em>) &#8211; either a csv file containing fragment data, or T/F for whether fragments
+should be calculated from squares of continuous habitat (default=False)</li>
 <li><strong>sample_file</strong> (<em>str</em>) &#8211; a sample tif or csv specifying the sampling mask</li>
 <li><strong>times</strong> (<em>list</em>) &#8211; a list of times to apply (should have been run with the original simulation)</li>
 <li><strong>protracted_speciation_min</strong> (<em>float</em>) &#8211; the minimum number of generations required for speciation to occur</li>
@@ -1849,6 +1850,9 @@ calculated from squares of continuous habitat.</li>
 <li><strong>metacommunity_size</strong> (<em>float</em>) &#8211; the size of the metacommunity to apply</li>
 <li><strong>metacommunity_speciation_rate</strong> (<em>float</em>) &#8211; speciation rate for the metacommunity</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -2212,6 +2216,31 @@ after number_steps have been moved.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pycoalescence.dispersal_simulation.DispersalSimulation.set_map_files">
+<code class="descname">set_map_files</code><span class="sig-paren">(</span><em>fine_file</em>, <em>sample_file='null'</em>, <em>coarse_file=None</em>, <em>historical_fine_file=None</em>, <em>historical_coarse_file=None</em>, <em>deme=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.set_map_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.set_map_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the map files.</p>
+<p>Uses a null sampling regime, as the sample file should have no effect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fine_file</strong> (<em>str</em>) &#8211; the fine map file. Defaults to &#8220;null&#8221; if none provided</li>
+<li><strong>coarse_file</strong> (<em>str</em>) &#8211; the coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_fine_file</strong> (<em>str</em>) &#8211; the historical fine map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>historical_coarse_file</strong> (<em>str</em>) &#8211; the historical coarse map file. Defaults to &#8220;none&#8221; if none provided</li>
+<li><strong>deme</strong> (<em>int</em>) &#8211; the number of individuals per cell</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pycoalescence.dispersal_simulation.DispersalSimulation.set_simulation_parameters">
 <code class="descname">set_simulation_parameters</code><span class="sig-paren">(</span><em>number_repeats=None</em>, <em>output_database='output.db'</em>, <em>seed=1</em>, <em>dispersal_method='normal'</em>, <em>landscape_type='closed'</em>, <em>sigma=1</em>, <em>tau=1</em>, <em>m_prob=1</em>, <em>cutoff=100</em>, <em>sequential=False</em>, <em>dispersal_relative_cost=1</em>, <em>restrict_self=False</em>, <em>number_steps=1</em>, <em>dispersal_file='none'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.set_simulation_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.set_simulation_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the simulation parameters for the dispersal simulations.</p>
@@ -2238,8 +2267,17 @@ after number_steps have been moved.</p>
 <p>a new random cell is chosen
 :param float dispersal_relative_cost: relative dispersal ability through non-habitat
 :param bool restrict_self: if true, self-dispersal is prohibited
-:param int number_steps: the number to calculate for mean distance travelled
-:param str dispersal_file: path to the dispersal map file, or none.</p>
+:param list/int number_steps: the number to calculate for mean distance travelled, provided as an int or a list</p>
+<blockquote>
+<div>of ints</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dispersal_file</strong> (<em>str</em>) &#8211; path to the dispersal map file, or none.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2252,7 +2290,7 @@ after number_steps have been moved.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>number_repeats</strong> (<em>int</em>) &#8211; the number of repeats to perform the dispersal simulation for</li>
-<li><strong>number_steps</strong> (<em>int</em>) &#8211; the number of steps to iterate for in calculating the mean distance travelled</li>
+<li><strong>number_steps</strong> (<em>list/int</em>) &#8211; the number of steps to iterate for in calculating the mean distance travelled</li>
 <li><strong>seed</strong> (<em>int</em>) &#8211; the random number seed</li>
 <li><strong>dispersal_method</strong> (<em>str</em>) &#8211; the method of dispersal</li>
 <li><strong>dispersal_file</strong> (<em>str</em>) &#8211; the dispersal file (alternative to dispersal_method)</li>
@@ -3901,6 +3939,27 @@ point is assumed to connect to the first point.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pycoalescence.spatial_algorithms.estimate_sigma_from_distance">
+<code class="descname">estimate_sigma_from_distance</code><span class="sig-paren">(</span><em>distance</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#estimate_sigma_from_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.estimate_sigma_from_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the sigma value from a rayleigh distribution (2-d normal) from a total distance travelled in n steps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>distance</strong> (<em>float</em>) &#8211; the total distance travelled</li>
+<li><strong>n</strong> (<em>int</em>) &#8211; the number of steps</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an estimation of the sigma value required to generate the distance travelled in n steps</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pycoalescence.spatial_algorithms.lloyds_algorithm">
 <code class="descname">lloyds_algorithm</code><span class="sig-paren">(</span><em>points_list</em>, <em>maxima</em>, <em>n=7</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/spatial_algorithms.html#lloyds_algorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.spatial_algorithms.lloyds_algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equally spaces the points in the given landscape defined by (0, x_max), (0, y_max) using Lloyd&#8217;s algorithm.</p>
@@ -4363,6 +4422,9 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
   <h4>Previous topic</h4>
   <p class="topless"><a href="modules.html"
                         title="previous chapter">Modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="necsim/unabridged_api.html"
+                        title="next chapter">Full API</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -4394,6 +4456,9 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="necsim/unabridged_api.html" title="Full API"
+             >next</a> |</li>
+        <li class="right" >
           <a href="modules.html" title="Modules"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
@@ -4402,7 +4467,7 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

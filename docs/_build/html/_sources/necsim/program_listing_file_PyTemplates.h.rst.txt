@@ -24,7 +24,7 @@ Program Listing for File PyTemplates.h
        PyObject_HEAD
        PyObject *logger;
        PyObject *log_function;
-       T *base_object = nullptr;
+       unique_ptr<T> base_object = nullptr;
    
    //  virtual void init()
    //  {
@@ -57,7 +57,7 @@ Program Listing for File PyTemplates.h
    {
        if(self->base_object != nullptr)
        {
-           delete self->base_object;
+           self->base_object.reset();
            self->base_object = nullptr;
        }
        removeGlobalLogger();
@@ -130,7 +130,7 @@ Program Listing for File PyTemplates.h
            try
            {
                initialise_logger(self);
-               self->base_object = new T();
+               self->base_object = make_unique<T>();
    //          self->init();
            }
            catch(exception &e)

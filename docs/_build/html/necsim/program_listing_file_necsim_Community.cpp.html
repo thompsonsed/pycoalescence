@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -164,7 +164,16 @@
         <span class="p">{</span>
             <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment</span> <span class="o">||</span> <span class="o">!</span><span class="n">fragment</span><span class="p">)</span>
             <span class="p">{</span>
-                <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Tried to get reference for non-unique parameter set in communities. &quot;</span>
+                <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Non-unique parameter set: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-speciation rate: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-time: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-fragment: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fragment</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-metacommunity reference: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">metacommunity_reference</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-protracted speciation min: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">protracted_params</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-protracted speciation max: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">protracted_params</span><span class="p">.</span><span class="n">max_speciation_gen</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">writeCritical</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Tried to get reference for non-unique parameter set in communities. &quot;</span>
                                      <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span>
@@ -1967,11 +1976,12 @@
                                                             <span class="n">metacommunity_size</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="n">meta_reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Adding metacommunity (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">metacommunity_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">metacommunity_speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="cp">#endif</span>
         <span class="n">meta_reference</span> <span class="o">=</span> <span class="n">past_metacommunities</span><span class="p">.</span><span class="n">addNew</span><span class="p">(</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="n">meta_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">current_community_parameters</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">past_communities</span><span class="p">.</span><span class="n">addNew</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">meta_reference</span><span class="p">,</span>
                                                             <span class="n">protracted_params</span><span class="p">);</span>
@@ -2324,7 +2334,7 @@
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">protracted_parameters</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">protracted_parameters</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Protracted speciation parameters (min, max) are: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
@@ -2333,6 +2343,12 @@
             <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">.</span><span class="n">max_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Metacommunity size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Metacommunity speciation rate: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">spec_sim_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -2511,7 +2527,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

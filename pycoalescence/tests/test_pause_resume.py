@@ -5,8 +5,10 @@ import os
 import shutil
 
 from pycoalescence import Simulation, CoalescenceTree
-from pycoalescence.simulation import NECSimError
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+
+from pycoalescence.necsim import NECSimError
+from pycoalescence.tests.setup import setUpAll, tearDownAll, skipLongTest
+
 
 def setUpModule():
 	"""
@@ -52,7 +54,7 @@ class TestSimulationPause(unittest.TestCase):
 								 coarse_file="sample/SA_sample_coarse.tif")
 		self.coal2.run()
 		self.tree2.set_database(self.coal2)
-		self.tree2.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree2.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree2.apply()
 		self.tree1 = CoalescenceTree()
@@ -112,7 +114,7 @@ class TestSimulationPause(unittest.TestCase):
 		identical results. Checks using comparison of the SPECIES_LIST tables
 		"""
 		self.tree1.set_database(self.coal)
-		self.tree1.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree1.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree1.apply()
 		dict1 = self.tree1.get_simulation_parameters()
@@ -177,7 +179,7 @@ class TestSimulationPause2(unittest.TestCase):
 		self.coal2.set_speciation_rates([0.5])
 		self.coal2.run()
 		self.tree2.set_database(self.coal2)
-		self.tree2.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree2.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree2.apply()
 		self.tree1 = CoalescenceTree()
@@ -225,7 +227,7 @@ class TestSimulationPause2(unittest.TestCase):
 		identical results. Checks using comparison of the SPECIES_LIST tables
 		"""
 		self.tree1.set_database(self.coal3)
-		self.tree1.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree1.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree1.apply()
 		self.assertEqual(self.coal3.get_richness(), self.coal2.get_richness())
@@ -276,7 +278,7 @@ class TestSimulationPause3(unittest.TestCase):
 		self.coal2.set_speciation_rates([0.5])
 		self.coal2.run()
 		self.tree2.set_database(self.coal2)
-		self.tree2.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree2.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree2.apply()
 		self.tree1 = CoalescenceTree()
@@ -350,7 +352,7 @@ class TestSimulationPause3(unittest.TestCase):
 		identical results. Checks using comparison of the SPECIES_LIST tables
 		"""
 		self.tree1.set_database(self.coal)
-		self.tree1.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree1.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree1.apply()
 		self.assertEqual(self.coal.get_richness(), self.coal2.get_richness())
@@ -365,7 +367,7 @@ class TestSimulationPause3(unittest.TestCase):
 		self.assertListEqual([x for x in pause_sim_species_list],
 							 [x for x in single_run_species_list])
 
-
+@skipLongTest
 class TestSimulationPause4(unittest.TestCase):
 	"""
 	Test a simple run on a landscape using sampling, moving the paused files between simulations.
@@ -401,7 +403,7 @@ class TestSimulationPause4(unittest.TestCase):
 		self.coal2.set_speciation_rates([0.5])
 		self.coal2.run()
 		self.tree2.set_database(self.coal2)
-		self.tree2.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree2.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree2.apply()
 
@@ -475,7 +477,7 @@ class TestSimulationPause4(unittest.TestCase):
 		identical results. Checks using comparison of the SPECIES_LIST tables
 		"""
 		self.tree3.set_database(self.coal3)
-		self.tree3.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree3.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree3.apply()
 		self.assertEqual(self.tree3.get_richness(), self.tree2.get_richness())

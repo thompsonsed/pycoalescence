@@ -56,6 +56,8 @@ Included By
 
 - :ref:`file_necsim_Landscape.h`
 
+- :ref:`file_necsim_SimulateDispersal.h`
+
 
 
 

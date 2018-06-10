@@ -5,9 +5,17 @@ log files to their original location.
 
 import logging
 import os
+import sys
+import time
+import unittest
 from shutil import rmtree
+
 import numpy as np
+
 from pycoalescence import set_logging_method
+
+quick_test = None
+
 
 def setUpAll():
 	"""
@@ -16,8 +24,13 @@ def setUpAll():
 	set_logging_method(logging_level=logging.CRITICAL)
 	np.random.seed(0)
 	if os.path.exists("output"):
-		rmtree("output")
-	os.mkdir("output")
+		try:
+			rmtree("output", True)
+		except OSError:
+			time.sleep(0.01)
+			rmtree("output", True)
+	if not os.path.exists("output"):
+		os.mkdir("output")
 	global log_path
 	log_path = None
 	if os.path.exists("Logs"):
@@ -39,18 +52,24 @@ def tearDownAll():
 	Overrides the in-built behaviour for tearing down the module. Removes the output folder to clean up after testing.
 	"""
 	rmtree("output", True)
-	if os.path.exists("output"):
-		for file in os.listdir("output"):
-			p = os.path.join("output", file)
-			if os.path.isdir(p):
-				rmtree(p, ignore_errors=True)
-			else:
-				os.remove(p)
-		try:
-			os.removedirs("output")
-		except OSError:
-			raise OSError("Output not deleted")
+	start = time.time()
+	end = time.time()
+	while os.path.exists("output") and end - start < 10:
+		time.sleep(1)
+		end = time.time()
 	rmtree("Logs", True)
 	rmtree("log", True)
 	if log_path is not None:
 		os.rename(log_path, "Logs")
+
+
+def skipLongTest(f):
+	"""Decorator to skip a long test"""
+	name = f.__name__
+	if quick_test:
+		@unittest.skip("skipping {} due to length...".format(name))
+		def g():
+			pass
+		return g
+	else:
+		return f

@@ -30,9 +30,9 @@
         </inbodydescription>
         <location file="CSimulateDispersal.h" line="25" column="1" bodyfile="CSimulateDispersal.h" bodystart="25" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_py_simulate_dispersal_1a5944a844f78b81476745a6f80bdac650" prot="public" static="no" mutable="no">
-        <type>std::string *</type>
-        <definition>std::string* PySimulateDispersal::output_database</definition>
+      <memberdef kind="variable" id="class_py_simulate_dispersal_1a2f792e38bcb2cebf921cb001d6058108" prot="public" static="no" mutable="no">
+        <type>unique_ptr&lt; std::string &gt;</type>
+        <definition>unique_ptr&lt;std::string&gt; PySimulateDispersal::output_database</definition>
         <argsstring></argsstring>
         <name>output_database</name>
         <briefdescription>
@@ -95,9 +95,9 @@
         </inbodydescription>
         <location file="PyTemplates.h" line="23" column="1" bodyfile="PyTemplates.h" bodystart="23" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_py_template_1ac7bf12e84289f480eaa79fd7c421614a" prot="public" static="no" mutable="no">
-        <type><ref refid="class_simulate_dispersal" kindref="compound">SimulateDispersal</ref> *</type>
-        <definition>SimulateDispersal * PyTemplate&lt; SimulateDispersal  &gt;::base_object</definition>
+      <memberdef kind="variable" id="class_py_template_1a14da655e6d3c0b398d8478058316d326" prot="public" static="no" mutable="no">
+        <type>unique_ptr&lt; <ref refid="class_simulate_dispersal" kindref="compound">SimulateDispersal</ref> &gt;</type>
+        <definition>unique_ptr&lt;SimulateDispersal &gt; PyTemplate&lt; SimulateDispersal  &gt;::base_object</definition>
         <argsstring></argsstring>
         <name>base_object</name>
         <briefdescription>
@@ -147,7 +147,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="CSimulateDispersal.h" line="55" column="1" bodyfile="CSimulateDispersal.h" bodystart="55" bodyend="64"/>
+        <location file="CSimulateDispersal.h" line="55" column="1" bodyfile="CSimulateDispersal.h" bodystart="55" bodyend="65"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -155,103 +155,47 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="749">
+      <node id="743">
         <label>PySimulateDispersal</label>
         <link refid="class_py_simulate_dispersal"/>
-        <childnode refid="750" relation="public-inheritance">
+        <childnode refid="744" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="750">
+      <node id="744">
         <label>PyTemplate&lt; SimulateDispersal &gt;</label>
         <link refid="class_py_template"/>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="770">
-        <label>Row&lt; double &gt;</label>
-        <link refid="class_row"/>
-      </node>
-      <node id="766">
-        <label>Step</label>
-        <link refid="struct_step"/>
-      </node>
-      <node id="753">
-        <label>SimulateDispersal</label>
-        <link refid="class_simulate_dispersal"/>
-        <childnode refid="754" relation="usage">
-          <edgelabel>cells</edgelabel>
-        </childnode>
-        <childnode refid="756" relation="usage">
-          <edgelabel>dispersal_coordinator</edgelabel>
-        </childnode>
-        <childnode refid="757" relation="usage">
-          <edgelabel>density_landscape</edgelabel>
-        </childnode>
-        <childnode refid="767" relation="usage">
-          <edgelabel>random</edgelabel>
-        </childnode>
-        <childnode refid="765" relation="usage">
-          <edgelabel>distances</edgelabel>
-        </childnode>
-        <childnode refid="763" relation="usage">
-          <edgelabel>simParameters</edgelabel>
-        </childnode>
-      </node>
-      <node id="765">
+      <node id="752">
         <label>std::vector&lt; double &gt;</label>
       </node>
-      <node id="764">
+      <node id="751">
         <label>ConfigOption</label>
         <link refid="class_config_option"/>
       </node>
-      <node id="755">
-        <label>Cell</label>
-        <link refid="struct_cell"/>
-      </node>
-      <node id="762">
+      <node id="749">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="758">
-        <label>Map&lt; uint32_t &gt;</label>
-        <link refid="class_map"/>
-        <childnode refid="759" relation="public-inheritance">
-        </childnode>
-        <childnode refid="761" relation="usage">
-          <edgelabel>filename</edgelabel>
-        </childnode>
-      </node>
-      <node id="751">
+      <node id="745">
         <label>PySimulateDispersal</label>
         <link refid="class_py_simulate_dispersal"/>
-        <childnode refid="752" relation="public-inheritance">
+        <childnode refid="746" relation="public-inheritance">
         </childnode>
-        <childnode refid="761" relation="usage">
+        <childnode refid="747" relation="usage">
           <edgelabel>output_database</edgelabel>
         </childnode>
-        <childnode refid="763" relation="usage">
+        <childnode refid="750" relation="usage">
           <edgelabel>dispersalParameters</edgelabel>
         </childnode>
       </node>
-      <node id="767">
-        <label>NRrand</label>
-        <link refid="class_n_rrand"/>
-      </node>
-      <node id="768">
-        <label>Map&lt; double &gt;</label>
-        <link refid="class_map"/>
-        <childnode refid="769" relation="public-inheritance">
-        </childnode>
-        <childnode refid="761" relation="usage">
-          <edgelabel>filename</edgelabel>
-        </childnode>
-      </node>
-      <node id="763">
+      <node id="750">
         <label>SimParameters</label>
         <link refid="struct_sim_parameters"/>
-        <childnode refid="764" relation="usage">
+        <childnode refid="751" relation="usage">
           <edgelabel>configs</edgelabel>
         </childnode>
-        <childnode refid="761" relation="usage">
+        <childnode refid="748" relation="usage">
           <edgelabel>reproduction_file</edgelabel>
           <edgelabel>times_file</edgelabel>
           <edgelabel>sample_mask_file</edgelabel>
@@ -264,90 +208,36 @@
           <edgelabel>coarse_map_file</edgelabel>
           <edgelabel>...</edgelabel>
         </childnode>
-        <childnode refid="765" relation="usage">
+        <childnode refid="752" relation="usage">
           <edgelabel>times</edgelabel>
         </childnode>
       </node>
-      <node id="757">
-        <label>Landscape</label>
-        <link refid="class_landscape"/>
-        <childnode refid="758" relation="usage">
-          <edgelabel>historical_fine_map</edgelabel>
-          <edgelabel>fine_map</edgelabel>
-          <edgelabel>coarse_map</edgelabel>
-          <edgelabel>historical_coarse_map</edgelabel>
-        </childnode>
-        <childnode refid="761" relation="usage">
-          <edgelabel>NextMap</edgelabel>
-          <edgelabel>landscape_type</edgelabel>
-        </childnode>
-        <childnode refid="763" relation="usage">
-          <edgelabel>mapvars</edgelabel>
-        </childnode>
-      </node>
-      <node id="754">
-        <label>std::vector&lt; Cell &gt;</label>
-        <childnode refid="755" relation="usage">
-          <edgelabel>elements</edgelabel>
-        </childnode>
-      </node>
-      <node id="752">
+      <node id="746">
         <label>PyTemplate&lt; SimulateDispersal &gt;</label>
         <link refid="class_py_template"/>
-        <childnode refid="753" relation="usage">
-          <edgelabel>base_object</edgelabel>
+      </node>
+      <node id="747">
+        <label>std::unique_ptr&lt; std::string &gt;</label>
+        <childnode refid="748" relation="usage">
+          <edgelabel>ptr</edgelabel>
         </childnode>
       </node>
-      <node id="769">
-        <label>Matrix&lt; double &gt;</label>
-        <link refid="class_matrix"/>
-        <childnode refid="770" relation="usage">
-          <edgelabel>matrix</edgelabel>
-        </childnode>
-      </node>
-      <node id="759">
-        <label>Matrix&lt; uint32_t &gt;</label>
-        <link refid="class_matrix"/>
-        <childnode refid="760" relation="usage">
-          <edgelabel>matrix</edgelabel>
-        </childnode>
-      </node>
-      <node id="760">
-        <label>Row&lt; uint32_t &gt;</label>
-        <link refid="class_row"/>
-      </node>
-      <node id="756">
-        <label>DispersalCoordinator</label>
-        <link refid="class_dispersal_coordinator"/>
-        <childnode refid="757" relation="usage">
-          <edgelabel>landscape</edgelabel>
-        </childnode>
-        <childnode refid="766" relation="usage">
-          <edgelabel>doDispersal</edgelabel>
-        </childnode>
-        <childnode refid="767" relation="usage">
-          <edgelabel>NR</edgelabel>
-        </childnode>
-        <childnode refid="768" relation="usage">
-          <edgelabel>dispersal_prob_map</edgelabel>
-        </childnode>
-      </node>
-      <node id="761">
+      <node id="748">
         <label>std::string</label>
-        <childnode refid="762" relation="public-inheritance">
+        <childnode refid="749" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="CSimulateDispersal.h" line="22" column="1" bodyfile="CSimulateDispersal.h" bodystart="21" bodyend="65"/>
+    <location file="CSimulateDispersal.h" line="22" column="1" bodyfile="CSimulateDispersal.h" bodystart="21" bodyend="66"/>
     <listofallmembers>
-      <member refid="class_py_template_1ac7bf12e84289f480eaa79fd7c421614a" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>base_object</name></member>
+      <member refid="class_py_template_1a14da655e6d3c0b398d8478058316d326" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>base_object</name></member>
       <member refid="class_py_simulate_dispersal_1ab5cc4cd4b0466ccdc947e0b8f0cfa9f2" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>checkCompleted</name></member>
       <member refid="class_py_simulate_dispersal_1a81fba3af1dfd1a32f2e8f543ab8ddae6" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>dispersalParameters</name></member>
       <member refid="class_py_simulate_dispersal_1a5594ed1200643d899b5eb2541488217a" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>has_imported_maps</name></member>
       <member refid="class_py_template_1a98bb8152faa73d028342d5cf260f0372" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>log_function</name></member>
       <member refid="class_py_template_1a5b741a472639d65f9bcad29afa16ec99" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>logger</name></member>
       <member refid="class_py_simulate_dispersal_1af344386936e2e70b17d44351f63d2af9" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>needs_update</name></member>
-      <member refid="class_py_simulate_dispersal_1a5944a844f78b81476745a6f80bdac650" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>output_database</name></member>
+      <member refid="class_py_simulate_dispersal_1a2f792e38bcb2cebf921cb001d6058108" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>output_database</name></member>
       <member refid="class_py_simulate_dispersal_1a95ccf647e55688481b7a9daaaa1f99b8" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>printing</name></member>
       <member refid="class_py_simulate_dispersal_1ad555ddefb2defcafdf9bdd8ef8ecf358" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>PySimulateDispersal</name></member>
       <member refid="class_py_simulate_dispersal_1a20482e4c2fe685c1f8bb37f2fa3a9502" prot="public" virt="non-virtual"><scope>PySimulateDispersal</scope><name>setDispersalParameters</name></member>

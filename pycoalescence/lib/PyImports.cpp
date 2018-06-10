@@ -45,7 +45,11 @@ bool importPyListToVectorULong(PyObject *list_input, vector<unsigned long> &outp
 	for(int i=0; i<n; i++)
 	{
 		item = PyList_GetItem(list_input, i);
-		if(!PyLong_Check(item))
+		if(!PyLong_Check(item)
+#if PY_MAJOR_VERSION < 3
+		   && !PyInt_Check(item)
+#endif // PY_MAJOR_VERSION < 3
+				)
 		{
 			PyErr_SetString(PyExc_TypeError, err_msg.c_str());
 			return false;

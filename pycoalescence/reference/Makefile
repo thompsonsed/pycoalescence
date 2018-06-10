@@ -4,22 +4,22 @@
 CXX=g++ -std=gnu++14
 LD=@LD@
 CXXFLAGS=-g -O2
-CPPFLAGS=-I/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/include/python3.6m  -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3   -I. -std=c++14 -I/usr/local/Cellar/gdal2/2.2.4/include  -Dwith_gdal  -Dverbose -O3 
-LDFLAGS= -L/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6 -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6 -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6/lib -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6/lib/python3.6 -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6/lib/python3.6/lib-dynload -L. -L/usr/local/Cellar/gdal2/2.2.4/lib -lgdal -L/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/lib/python3.6 -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6 -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6/lib -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6/lib/python3.6 -L/usr/local/opt/python/Frameworks/Python.framework/Versions/3.6/lib/python3.6/lib-dynload
-LIBS=-lpython3.6m -lsqlite3 -lboost_filesystem -lboost_system -lpthread -lgdal
+CPPFLAGS=-I/Users/samthompson/anaconda/envs/CondaPy36/include/python3.6m  -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3   -I/Users/samthompson/anaconda/envs/CondaPy36/include   -I/Users/samthompson/anaconda/envs/CondaPy36/include   -DANACONDA -I. -std=c++14 -I/Users/samthompson/anaconda/include  -Dwith_gdal  -Dverbose -O3 
+LDFLAGS=-L/Users/samthompson/anaconda/envs/CondaPy36/lib  -L/Users/samthompson/anaconda/envs/CondaPy36/lib   -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6/config-3.6m-darwin -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6 -L/Users/samthompson/anaconda/envs/CondaPy36 -L/Users/samthompson/anaconda/envs/CondaPy36/lib -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6 -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6/lib-dynload -L. -L/Users/samthompson/anaconda/lib -lgdal -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6 -L/Users/samthompson/anaconda/envs/CondaPy36 -L/Users/samthompson/anaconda/envs/CondaPy36/lib -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6 -L/Users/samthompson/anaconda/envs/CondaPy36/lib/python3.6/lib-dynload
+LIBS=-lpython -lsqlite3 -lboost_filesystem -lboost_system -lpthread -lgdal
 PLATFORM_SO=-dynamiclib
 VPATH=necsim:
 OBJDIR=obj
-BUILDDIR=/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/build/sharedpy3
+BUILDDIR=/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/necsim
 override CXXFLAGS += -fPIC
 override CPPFLAGS += -fPIC
 
 
 ACLOCAL_AMFLAGS = -I m4 --install
 
-complete: all NECSim SpeciationCounter end_msg
-
 all: start_msg obj_dir build_dir $(BUILDDIR)/necsimmodule.so end_msg
+
+complete: all NECSim SpeciationCounter end_msg
 
 obj_dir:
 	mkdir -p $(OBJDIR)
@@ -34,8 +34,8 @@ SpeciationCounter: SpeciationCounter.o SpeciationCommands.o Community.o TreeNode
 	$(CXX) -o SpeciationCounter SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o CPLCustomHandler.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 # NECSim compilation
-NECSim: main.o Tree.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
-	$(CXX) -o NECSim main.o Tree.o Matrix.o NRrand.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
+NECSim: main.o Tree.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
+	$(CXX) -o NECSim main.o Tree.o Matrix.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandler.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 start_msg: 
 	@echo "-----------------------------------------------"
@@ -211,6 +211,6 @@ obj/necsim/Tree.o: necsim/Tree.h necsim/Logger.h necsim/LogFile.h
 obj/necsim/Tree.o: necsim/CPLCustomHandler.h
 obj/necsim/TreeNode.o: necsim/TreeNode.h necsim/Logger.h necsim/LogFile.h
 obj/necsim/TreeNode.o: necsim/CPLCustomHandler.h necsim/Logging.h
-obj/necsim/main.o: necsim/SpatialTree.h necsim/SimulationTemplates.h
-obj/necsim/main.o: necsim/Logger.h necsim/LogFile.h necsim/CPLCustomHandler.h
-obj/necsim/main.o: necsim/CustomExceptions.h necsim/Logging.h
+obj/necsim/main.o: necsim/Logging.h necsim/Logger.h necsim/LogFile.h
+obj/necsim/main.o: necsim/CPLCustomHandler.h necsim/SpatialTree.h
+obj/necsim/main.o: necsim/SimulationTemplates.h necsim/CustomExceptions.h

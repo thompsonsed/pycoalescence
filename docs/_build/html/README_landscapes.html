@@ -25,14 +25,14 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Merging simulation outputs" href="README_merger.html" />
-    <link rel="prev" title="Program Listing for File TreeNode.h" href="necsim/program_listing_file_necsim_TreeNode.h.html" /> 
+    <link rel="prev" title="pycoalescence" href="README_pycoalescence.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -48,7 +48,7 @@
           <a href="README_merger.html" title="Merging simulation outputs"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="necsim/program_listing_file_necsim_TreeNode.h.html" title="Program Listing for File TreeNode.h"
+          <a href="README_pycoalescence.html" title="pycoalescence"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
       </ul>
@@ -60,7 +60,7 @@
           <div class="body" role="main">
             
   <div class="section" id="simulating-and-generating-landscapes">
-<h1>Simulating and generating landscapes<a class="headerlink" href="#simulating-and-generating-landscapes" title="Permalink to this headline">¶</a></h1>
+<span id="simulate-and-generate-landscapes"></span><h1>Simulating and generating landscapes<a class="headerlink" href="#simulating-and-generating-landscapes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p><strong>pycoalescence</strong> provides functionality for generating fragmented landscapes for simulations, and simulating dispersal
@@ -69,7 +69,7 @@ kernels to produce a variety of landscape-level dispersal metrics. Generation of
 provided through the <a class="reference internal" href="pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation" title="pycoalescence.dispersal_simulation.DispersalSimulation"><code class="xref py py-class docutils literal"><span class="pre">DispersalSimulation</span> <span class="pre">class</span></code></a>.</p>
 </div>
 <div class="section" id="generating-landscapes">
-<h2>Generating landscapes<a class="headerlink" href="#generating-landscapes" title="Permalink to this headline">¶</a></h2>
+<span id="generate-landscapes"></span><h2>Generating landscapes<a class="headerlink" href="#generating-landscapes" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="fragmented-landscapes">
 <h3>Fragmented Landscapes<a class="headerlink" href="#fragmented-landscapes" title="Permalink to this headline">¶</a></h3>
 <p>For our purposes, we define fragmented landscapes as continuous, fully spatial landscapes of a particular size, with n
@@ -149,7 +149,7 @@ file can also be read into a numpy array using <a class="reference internal" hre
 landscape metrics on a map file. This is a work in progress, and additional metrics may be added later.</p>
 <p>MNN here refers to the mean distance from each cell to its nearest neighbouring habitat cell. The distance can be
 calculated for a landscape using the following:</p>
-<div class="code python highlight-py"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
 <span class="o">&gt;&gt;</span> <span class="n">lm</span> <span class="o">=</span> <span class="n">LandscapeMetrics</span><span class="p">(</span><span class="s2">&quot;map_file.tif&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;</span> <span class="n">lm</span><span class="o">.</span><span class="n">get_mnn</span><span class="p">()</span>
 <span class="mf">1.50</span>
@@ -179,7 +179,7 @@ patches; in our scenario there <span class="math">\(k=2\)</span> as we have just
   \frac{G_i - P_i}{1-P_i}, &amp; \text{otherwise}
 \end{cases}\end{split}\]</div>
 <p>The <span class="math">\(\text{CLUMPY}\)</span> metric can be calculated similarly as</p>
-<div class="code python highlight-py"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
 <span class="o">&gt;&gt;</span> <span class="n">lm</span> <span class="o">=</span> <span class="n">LandscapeMetrics</span><span class="p">(</span><span class="s2">&quot;map_file.tif&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;</span> <span class="n">lm</span><span class="o">.</span><span class="n">get_clumpiness</span><span class="p">()</span>
 <span class="mf">0.8</span>
@@ -214,8 +214,8 @@ patches; in our scenario there <span class="math">\(k=2\)</span> as we have just
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="necsim/program_listing_file_necsim_TreeNode.h.html"
-                        title="previous chapter">Program Listing for File TreeNode.h</a></p>
+  <p class="topless"><a href="README_pycoalescence.html"
+                        title="previous chapter">pycoalescence</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="README_merger.html"
                         title="next chapter">Merging simulation outputs</a></p>
@@ -253,14 +253,14 @@ patches; in our scenario there <span class="math">\(k=2\)</span> as we have just
           <a href="README_merger.html" title="Merging simulation outputs"
              >next</a> |</li>
         <li class="right" >
-          <a href="necsim/program_listing_file_necsim_TreeNode.h.html" title="Program Listing for File TreeNode.h"
+          <a href="README_pycoalescence.html" title="pycoalescence"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

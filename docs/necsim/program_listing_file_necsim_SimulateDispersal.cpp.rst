@@ -55,6 +55,25 @@ Program Listing for File SimulateDispersal.cpp
        density_landscape.calcHistoricalCoarseMap();
        density_landscape.setLandscape(simParameters->landscape_type);
        density_landscape.recalculateHabitatMax();
+       dataMask.importSampleMask(*simParameters);
+   }
+   
+   void SimulateDispersal::setSizes()
+   {
+       checkMaxParameterReference();
+       unsigned long i = max_parameter_reference;
+       if(num_steps.empty())
+       {
+           num_steps.insert(1);
+       }
+       for(const auto &item : num_steps)
+       {
+           parameter_references.insert(make_pair(item, i));
+           i ++;
+       }
+       distances.clear();
+       distances.resize(num_repeats * num_steps.size());
+   
    }
    
    void SimulateDispersal::setDispersalParameters()
@@ -78,31 +97,53 @@ Program Listing for File SimulateDispersal.cpp
        {
            throw FatalException("Database file cannot be opened or created.");
        }
+       checkMaxParameterReference();
    }
    
    void SimulateDispersal::setNumberRepeats(unsigned long n)
    {
        num_repeats = n;
-       distances.resize(num_repeats);
    }
    
-   void SimulateDispersal::setNumberSteps(unsigned long s)
+   void SimulateDispersal::setNumberSteps(const vector<unsigned long> &s)
    {
-       num_steps = s;
+       for(const auto item : s)
+       {
+           num_steps.insert(item);
+       }
+   }
+   
+   unsigned long SimulateDispersal::getMaxNumberSteps()
+   {
+       unsigned long max_number_steps = 0;
+       if(!num_steps.empty())
+       {
+           max_number_steps = *num_steps.rbegin();
+       }
+       else
+       {
+           throw FatalException("No steps have been set.");
+       }
+       return max_number_steps;
    }
    
    void SimulateDispersal::storeCellList()
    {
        unsigned long total = 0;
+       unsigned long cell_total = 0;
        // First count the number of density cells and pick a cell size
        for(unsigned long i = 0; i < simParameters->sample_y_size; i++)
        {
            for(unsigned long j = 0; j < simParameters->sample_x_size; j++)
            {
-               total += density_landscape.getVal(j, i, 0, 0, 0.0);
+               if(dataMask.getVal(j, i, 0, 0))
+               {
+                   cell_total++;
+                   total += density_landscape.getVal(j, i, 0, 0, 0.0);
+               }
            }
        }
-       writeInfo("Choosing from " + to_string(total) + " cells.");
+       writeInfo("Choosing from " + to_string(cell_total) + " cells of " + to_string(total) + " individuals.\n");
        cells.resize(total);
        unsigned long ref = 0;
        for(unsigned long i = 0; i < simParameters->sample_y_size; i++)
@@ -140,9 +181,11 @@ Program Listing for File SimulateDispersal.cpp
        storeCellList();
        Cell this_cell{};
        this_cell = getRandomCell();
+       // Set up the parameter reference
+       setSizes();
        for(unsigned long i = 0; i < num_repeats; i++)
        {
-           Cell start_cell;
+           Cell start_cell{};
            if(!is_sequential)
            {
                // This takes into account rejection sampling based on density due to
@@ -153,33 +196,62 @@ Program Listing for File SimulateDispersal.cpp
            // Check the end point
            getEndPoint(this_cell);
            // Now store the output location
-           auto dist = distanceBetweenCells(this_cell, start_cell);
-           distances[i] = dist;
+           distances[i] = make_pair(1, distanceBetweenCells(this_cell, start_cell));
        }
        writeInfo("Dispersal simulation complete.\n");
    }
    
    void SimulateDispersal::runMeanDistanceTravelled()
    {
-       writeInfo("Simulating dispersal " + to_string(num_repeats) + " times for " + to_string(num_steps) +
-                    " generations.\n");
+       stringstream ss;
+       ss << "Simulating dispersal " << num_repeats << " times for (";
+       // The maximum number of steps
+       setSizes();
+       unsigned long max_number_steps = getMaxNumberSteps();
+       for(const auto &item : num_steps)
+       {
+           ss << item;
+           if(item != max_number_steps)
+           {
+               ss << ", ";
+           }
+       }
+       ss << ") generations.\n";
+       writeInfo(ss.str());
        storeCellList();
        Cell this_cell{}, start_cell{};
+       // Reference for the distances vector
+       unsigned long dist_i = 0;
        for(unsigned long i = 0; i < num_repeats; i ++)
        {
+           writeRepeatInfo(i);
+           // iterator for elements in the set.
+           auto step_iterator = num_steps.begin();
            this_cell = getRandomCell();
            start_cell = this_cell;
            generation = 0.0;
            // Keep looping until we get a valid end point
-           for(unsigned long j = 0; j < num_steps; j ++)
+           for(unsigned long j = 1; j <= max_number_steps; j ++)
            {
                getEndPoint(this_cell);
                generation += 0.5;
+               if(j == *step_iterator)
+               {
+                   distances[dist_i] = make_pair(j, distanceBetweenCells(start_cell, this_cell));
+                   step_iterator ++;
+                   dist_i ++;
+               }
            }
-           // Now stores the distance travelled
-           distances[i] = distanceBetweenCells(start_cell, this_cell);
        }
-       writeInfo("Dispersal simulation complete.\n");
+       writeRepeatInfo(num_repeats);
+       writeInfo("\nDispersal simulation complete.\n");
+   }
+   
+   void SimulateDispersal::writeRepeatInfo(unsigned long i)
+   {
+       stringstream os;
+       os << "\rSimulating dispersal " << i << "/" << num_repeats;
+       writeInfo(os.str());
    }
    
    void SimulateDispersal::writeDatabase(string table_name)
@@ -222,8 +294,21 @@ Program Listing for File SimulateDispersal.cpp
            for(unsigned long i = 0; i < distances.size(); i++)
            {
                sqlite3_bind_int(stmt, 1, static_cast<int>(max_id + i));
-               sqlite3_bind_double(stmt, 2, distances[i]);
-               sqlite3_bind_int(stmt, 3, static_cast<int>(parameter_reference));
+               auto iter = parameter_references.find(distances[i].first);
+   
+   //#ifdef DEBUG // TODO move to debug
+               if(iter == parameter_references.end())
+               {
+                   throw FatalException("Cannot find parameter reference. Please report this bug.");
+               }
+   //#endif // DEBUG
+               unsigned long reference = iter->second;
+               if(reference > max_parameter_reference)
+               {
+                   max_parameter_reference = reference;
+               }
+               sqlite3_bind_double(stmt, 2, distances[i].second);
+               sqlite3_bind_int(stmt, 3, static_cast<int>(reference));
                step = sqlite3_step(stmt);
                time_t start_check, end_check;
                time(&start_check);
@@ -263,6 +348,7 @@ Program Listing for File SimulateDispersal.cpp
        {
            throw FatalException("Database connection has not been opened, check programming.");
        }
+       clearParameters();
    }
    
    void SimulateDispersal::writeParameters(string table_name)
@@ -280,19 +366,32 @@ Program Listing for File SimulateDispersal.cpp
            string message = "Could not create PARAMETERS table in database: ";
            throw FatalException(message.append(sErrMsg));
        }
-       string insert_table = "INSERT INTO PARAMETERS VALUES(" + to_string(parameter_reference) + ", '" + table_name + "',";
-       insert_table += to_string((long double)simParameters->sigma) + ",";
-       insert_table += to_string((long double)simParameters->tau) + ", " +  to_string((long double)simParameters->m_prob);
-       insert_table += ", " + to_string((long double)simParameters->cutoff) + ", '" + simParameters->dispersal_method + "','";
-       insert_table += simParameters->fine_map_file + "', " + to_string(seed) + ", " + to_string(num_steps) + ", ";
-       insert_table += to_string(num_repeats) + ");";
-       rc = sqlite3_exec(database, insert_table.c_str(), nullptr, nullptr, &sErrMsg);
-       if(rc != SQLITE_OK)
+       for(const auto &item : parameter_references)
        {
-           string message = "Could not insert into PARAMETERS table in database. \n";
-           message += "Error: ";
-           throw FatalException(message.append(sErrMsg));
+           string insert_table =
+                   "INSERT INTO PARAMETERS VALUES(" + to_string(item.second) + ", '" + table_name + "',";
+           insert_table += to_string((long double) simParameters->sigma) + ",";
+           insert_table +=
+                   to_string((long double) simParameters->tau) + ", " + to_string((long double) simParameters->m_prob);
+           insert_table +=
+                   ", " + to_string((long double) simParameters->cutoff) + ", '" + simParameters->dispersal_method + "','";
+           insert_table += simParameters->fine_map_file + "', " + to_string(seed) + ", " + to_string(item.first) + ", ";
+           insert_table += to_string(num_repeats) + ");";
+           rc = sqlite3_exec(database, insert_table.c_str(), nullptr, nullptr, &sErrMsg);
+           if(rc != SQLITE_OK)
+           {
+               string message = "Could not insert into PARAMETERS table in database. \n";
+               message += "Error: ";
+               throw FatalException(message.append(sErrMsg));
+           }
        }
+   }
+   
+   void SimulateDispersal::clearParameters()
+   {
+       distances.clear();
+       parameter_references.clear();
+       num_steps.clear();
    }
    
    void SimulateDispersal::checkMaxParameterReference()
@@ -301,7 +400,7 @@ Program Listing for File SimulateDispersal.cpp
        sqlite3_stmt *stmt;
        sqlite3_prepare_v2(database, to_exec.c_str(), static_cast<int>(strlen(to_exec.c_str())), &stmt, nullptr);
        int rc = sqlite3_step(stmt);
-       parameter_reference = static_cast<unsigned long>(sqlite3_column_int(stmt, 0) + 1);
+       max_parameter_reference = static_cast<unsigned long>(sqlite3_column_int(stmt, 0) + 1);
        // close the old statement
        rc = sqlite3_finalize(stmt);
        if(rc != SQLITE_OK && rc != SQLITE_DONE)

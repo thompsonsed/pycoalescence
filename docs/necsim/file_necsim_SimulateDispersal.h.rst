@@ -40,6 +40,8 @@ Includes
 
 - ``Cell.h`` (:ref:`file_necsim_Cell.h`)
 
+- ``DataMask.h`` (:ref:`file_necsim_DataMask.h`)
+
 - ``DispersalCoordinator.h`` (:ref:`file_necsim_DispersalCoordinator.h`)
 
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
@@ -53,6 +55,8 @@ Includes
 - ``fstream``
 
 - ``iostream``
+
+- ``set``
 
 - ``sqlite3.h``
 

@@ -8,7 +8,8 @@ import os
 
 from pycoalescence.system_operations import cantor_pairing, check_file_exists, check_parent, create_logger,\
 	elegant_pairing
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from pycoalescence.tests.setup import setUpAll, tearDownAll, skipLongTest
+
 
 def setUpModule():
 	"""
@@ -22,6 +23,7 @@ def tearDownModule():
 	"""
 	tearDownAll()
 
+@skipLongTest
 class TestCantorPairing(unittest.TestCase):
 	"""
 	Tests that cantor pairing successfully creates unique numbers for a very large set of guilds and species

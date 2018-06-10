@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -82,7 +82,7 @@
 <span class="k">class</span> <span class="nc">PyLMC</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">LandscapeMetricsCalculator</span> <span class="o">*</span><span class="n">landscapeMetricsCalculator</span><span class="p">;</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span> <span class="n">landscapeMetricsCalculator</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">has_imported_map</span><span class="p">;</span>
 <span class="p">};</span>
 
@@ -159,7 +159,7 @@
 <span class="k">static</span> <span class="kt">int</span>
 <span class="nf">PyLMC_init</span><span class="p">(</span><span class="n">PyLMC</span><span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">self</span><span class="o">-&gt;</span><span class="n">landscapeMetricsCalculator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LandscapeMetricsCalculator</span><span class="p">();</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">landscapeMetricsCalculator</span> <span class="o">=</span> <span class="n">make_unique</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">();</span>
     <span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_map</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">PyTemplate_init</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">);</span>
 <span class="p">}</span>
@@ -168,7 +168,7 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">landscapeMetricsCalculator</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">delete</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">landscapeMetricsCalculator</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">landscapeMetricsCalculator</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">landscapeMetricsCalculator</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">PyTemplate_dealloc</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
@@ -268,7 +268,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

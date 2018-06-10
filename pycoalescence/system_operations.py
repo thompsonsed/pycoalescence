@@ -7,21 +7,15 @@ exception if there has been no call to set_logging_method()
 
 """
 
-import subprocess
 import logging
-import sys
 import os
-
-if sys.version[0] == "3":
-	from subprocess import STDOUT, check_output
-
+import subprocess
+import sys
 
 # Logging will not raise an exception if there has been no logging file set.
 logging.raiseExceptions = True
-# Set up the module directory
-mod_directory = os.path.dirname(os.path.abspath(__file__))
-
 logging_set = False
+mod_directory = os.path.dirname(os.path.abspath(__file__))
 
 try:
 	from math import isclose
@@ -39,6 +33,7 @@ except ImportError:
 		:return: true for significantly different a and b, false otherwise
 		"""
 		return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
 
 def check_parent(file_path):
 	"""
@@ -61,6 +56,7 @@ def check_parent(file_path):
 	else:
 		raise ValueError("File path is None")
 
+
 def check_file_exists(file_name):
 	"""
 	Checks that the specified filename exists, if it is not "null" or "none".
@@ -75,6 +71,7 @@ def check_file_exists(file_name):
 		err = "Map file " + file_name + " does not exist. Check that this is an absolute path or disable map " \
 										"file check"
 		raise IOError(err)
+
 
 def execute(cmd, silent=False, **kwargs):
 	"""
@@ -118,9 +115,11 @@ def execute_log_info(cmd, **kwargs):
 	:param kwargs: keyword arguments to be passed to subprocess.Popen()
 
 	:return: None
+	:rtype: None
 	"""
 	for line in execute(cmd, **kwargs):
 		logging.info(line.strip("\n"))
+
 
 def execute_silent(cmd, **kwargs):
 	"""
@@ -132,10 +131,10 @@ def execute_silent(cmd, **kwargs):
 	:param kwargs: keyword arguments to be passed to subprocess.Popen()
 
 	:return: None
+	:rtype: None
 	"""
 	for _ in execute(cmd, silent=True, **kwargs):
 		continue
-
 
 
 def set_logging_method(logging_level=logging.INFO, output=None, **kwargs):
@@ -176,7 +175,7 @@ def write_to_log(i, message, logger):
 	logger.log(level=i, msg=message)
 
 
-def create_logger(logger, file = None, logging_level=logging.WARNING, **kwargs):
+def create_logger(logger, file=None, logging_level=logging.WARNING, **kwargs):
 	"""
 	Creates a logger object to be assigned to NECSim sims and dispersal tests.
 
@@ -199,6 +198,7 @@ def create_logger(logger, file = None, logging_level=logging.WARNING, **kwargs):
 	logger.addHandler(sh)
 	return logger
 
+
 def elegant_pairing(x1, x2):
 	"""
 	A more elegant version of cantor pairing, which allows for storing of a greater number of digits without
@@ -212,8 +212,9 @@ def elegant_pairing(x1, x2):
 	:return: a unique reference combining the two integers.
 	"""
 	if x1 > x2:
-		return x1**2 + x1 + x2
-	return x2**2 + x1
+		return x1 ** 2 + x1 + x2
+	return x2 ** 2 + x1
+
 
 def cantor_pairing(x1, x2):
 	"""
@@ -233,4 +234,4 @@ def cantor_pairing(x1, x2):
 
 	:return: a unique reference combining the two integers
 	"""
-	return ((x1 + x2) * (x1 + x2 + 1)/2) + x2
+	return ((x1 + x2) * (x1 + x2 + 1) / 2) + x2

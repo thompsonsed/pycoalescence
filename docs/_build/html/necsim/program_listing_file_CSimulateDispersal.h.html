@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -91,7 +91,7 @@
 <span class="k">public</span><span class="o">:</span>
     <span class="n">SimParameters</span> <span class="o">*</span><span class="n">dispersalParameters</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">has_imported_maps</span><span class="p">;</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">*</span> <span class="n">output_database</span><span class="p">;</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">output_database</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">printing</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">needs_update</span><span class="p">;</span>
 
@@ -117,6 +117,7 @@
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">needs_update</span><span class="p">)</span>
         <span class="p">{</span>
+            <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">log_function</span><span class="p">);</span>
             <span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSimulationParameters</span><span class="p">(</span><span class="n">dispersalParameters</span><span class="p">,</span> <span class="n">printing</span><span class="p">);</span>
             <span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
             <span class="n">printing</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
@@ -138,14 +139,14 @@
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
-<span class="c1">//  if(!PyArg_ParseTuple(args, &quot;is&quot;, &amp;self-&gt;dispersalParameters-&gt;deme, &amp;fine_map_file))</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;isiiiiiisiiiis&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">deme</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fine_map_file</span><span class="p">,</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;isiiiiiisiiiiis&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">deme</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fine_map_file</span><span class="p">,</span>
                          <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_size</span><span class="p">,</span>
                          <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_offset</span><span class="p">,</span>
                          <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">,</span>
                          <span class="o">&amp;</span><span class="n">coarse_map_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_x_size</span><span class="p">,</span>
                          <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_x_offset</span><span class="p">,</span>
-                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">landscape_type</span><span class="p">))</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_scale</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">landscape_type</span><span class="p">))</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
@@ -301,18 +302,22 @@
 <span class="p">{</span>
     <span class="k">try</span>
     <span class="p">{</span>
-        <span class="kt">int</span> <span class="n">num_repeats</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">is_sequential</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">num_repeats</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">is_sequential</span><span class="p">;</span>
+        <span class="n">PyObject</span> <span class="o">*</span> <span class="n">p_num_steps</span><span class="p">;</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">num_steps</span><span class="p">;</span>
         <span class="c1">// parse arguments</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;iiii&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_repeats</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_steps</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">seed</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">is_sequential</span><span class="p">))</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;iO!ii&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_repeats</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_num_steps</span><span class="p">,</span>
+                             <span class="o">&amp;</span><span class="n">seed</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">is_sequential</span><span class="p">))</span>
         <span class="p">{</span>
             <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_num_steps</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="s">&quot;Number of steps must be integers.&quot;</span><span class="p">);</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSequential</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">is_sequential</span><span class="p">));</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">seed</span><span class="p">));</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setNumberRepeats</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">));</span>
-        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setNumberSteps</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_steps</span><span class="p">));</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setNumberSteps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importMaps</span><span class="p">();</span>
@@ -377,7 +382,7 @@
     <span class="k">auto</span> <span class="n">out</span> <span class="o">=</span> <span class="n">PyTemplate_init</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">);</span>
     <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimParameters</span><span class="p">();</span>
     <span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-    <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">=</span> <span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">);</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">=</span> <span class="n">make_unique</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">);</span>
     <span class="n">self</span><span class="o">-&gt;</span><span class="n">printing</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="n">self</span><span class="o">-&gt;</span><span class="n">needs_update</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
@@ -392,7 +397,7 @@
     <span class="p">}</span>
     <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">delete</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">output_database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">PyTemplate_dealloc</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
@@ -493,7 +498,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

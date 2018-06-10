@@ -3,7 +3,7 @@
 """
 import sqlite3
 import unittest
-
+import sys
 import numpy as np
 import random
 
@@ -277,13 +277,25 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		with self.assertRaises(RuntimeError):
 			self.test2.calculate_fragment_octaves()
 
-	def testModelFitting(self):
+	@unittest.skipIf(sys.version[0] != '3', "Skipping python 3.x tests")
+	def testModelFitting2(self):
 		"""
 		Tests that the goodness-of-fit calculations are correctly performed.
 		"""
 		random.seed(2)
 		self.test.calculate_goodness_of_fit()
 		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.3014, places=3)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
+
+	@unittest.skipIf(sys.version[0] == '3', "Skipping python 2.x tests")
+	def testModelFitting3(self):
+		"""
+		Tests that the goodness-of-fit calculations are correctly performed.
+		"""
+		random.seed(2)
+		self.test.calculate_goodness_of_fit()
+		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.30080188997343593, places=3)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
 
@@ -369,8 +381,8 @@ class TestSimulationAnalysis(unittest.TestCase):
 		cls.tree = CoalescenceTree()
 		cls.tree.set_database("sample/sample2.db")
 		cls.tree.wipe_data()
-		cls.tree.set_speciation_params(record_spatial="T",
-									   record_fragments="sample/FragmentsTest.csv", speciation_rates=[0.5, 0.7],
+		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
+									   record_fragments="sample/FragmentsTest.csv",
 									   sample_file="sample/SA_samplemaskINT.tif")
 		cls.tree.apply()
 		cls.tree.calculate_fragment_richness()

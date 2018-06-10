@@ -116,6 +116,11 @@ $(document).ready(function(){initNavTree('class_metacommunity.html','');});
 <div class="title">Metacommunity Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Generates a metacommunity using spatially-implicit neutral simulations, which is used to draw individuals from a community.  
+ <a href="class_metacommunity.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_metacommunity_8h_source.html">Metacommunity.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Metacommunity:</div>
 <div class="dyncontent">
@@ -130,8 +135,8 @@ Collaboration diagram for Metacommunity:</div>
 <div class="center"><img src="class_metacommunity__coll__graph.jpg" border="0" usemap="#_metacommunity_coll__map" alt="Collaboration graph"/></div>
 <map name="_metacommunity_coll__map" id="_metacommunity_coll__map">
 <area shape="rect" id="node2" href="class_community.html" title="A class to contain the tree object lineages and reconstructing the coalescence tree. Contains functions for calculating the number of species for a given speciation rate, outputting spatial data and generating species abundance distributions. Requires a link to the SQLite database from simulation output, and produces results within the same database file. " alt="" coords="1896,370,1984,395"/>
-<area shape="rect" id="node28" href="class_tree.html" title="Tree" alt="" coords="2245,507,2293,533"/>
-<area shape="rect" id="node4" href="struct_fragment.html" title="Contains the information needed for defining a fragment. Fragments can be detected from the Samplemat..." alt="" coords="689,194,768,219"/>
+<area shape="rect" id="node28" href="class_tree.html" title="Main simulation class for performing a non&#45;spatial neutral simulation and generating the phylogenetic..." alt="" coords="2245,507,2293,533"/>
+<area shape="rect" id="node4" href="struct_fragment.html" title="Contains the information needed for defining a fragment. " alt="" coords="689,194,768,219"/>
 <area shape="rect" id="node5" title="STL class. " alt="" coords="286,161,365,186"/>
 <area shape="rect" id="node9" href="struct_spec_sim_parameters.html" title="Contains the simulation parameters that are read from the command line. " alt="" coords="1073,369,1217,394"/>
 <area shape="rect" id="node13" href="class_data_mask.html" title="Contains the DataMask object, a Matrix of booleans describing the spatial sampling pattern..." alt="" coords="1104,110,1186,135"/>
@@ -171,7 +176,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8cad1a5648ff5b6b51f2441898fdad48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2557f1dc48f4a7aba97431ac8a8c7dbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2557f1dc48f4a7aba97431ac8a8c7dbd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_metacommunity.html#a2557f1dc48f4a7aba97431ac8a8c7dbd">createMetacommunityNSENeutralModel</a> ()</td></tr>
-<tr class="memdesc:a2557f1dc48f4a7aba97431ac8a8c7dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the metacommunity in memory using a non-spatially_explicit neutral model, which is run using the <a class="el" href="class_tree.html">Tree</a> class. <br /></td></tr>
+<tr class="memdesc:a2557f1dc48f4a7aba97431ac8a8c7dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the metacommunity in memory using a non-spatially_explicit neutral model, which is run using the <a class="el" href="class_tree.html" title="Main simulation class for performing a non-spatial neutral simulation and generating the phylogenetic...">Tree</a> class. <br /></td></tr>
 <tr class="separator:a2557f1dc48f4a7aba97431ac8a8c7dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1884bfd79b272d8dcb470f34f579cf1"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_metacommunity.html#ac1884bfd79b272d8dcb470f34f579cf1">selectLineageFromMetacommunity</a> ()</td></tr>
 <tr class="memdesc:ac1884bfd79b272d8dcb470f34f579cf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects a random lineage from the metacommunity (rOut), which should be a cumulative sum of species abundances. Performs a binary search on rOut.  <a href="#ac1884bfd79b272d8dcb470f34f579cf1">More...</a><br /></td></tr>
@@ -300,7 +305,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ac9433a0c34911ec1128b5459f61488fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a706aba5b07c98849cb2b4b0318488f99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a706aba5b07c98849cb2b4b0318488f99"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_community.html#a706aba5b07c98849cb2b4b0318488f99">applyFragments</a> ()</td></tr>
-<tr class="memdesc:a706aba5b07c98849cb2b4b0318488f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate species abundances for each fragment, and call <a class="el" href="class_community.html#ad6515ff43ea8189a1acdcccfe893bbba" title="Creates a new table in the database file and outputs the database object to the same file as the inpu...">createFragmentDatabase()</a> for each <a class="el" href="struct_fragment.html" title="Contains the information needed for defining a fragment. Fragments can be detected from the Samplemat...">Fragment</a>. <br /></td></tr>
+<tr class="memdesc:a706aba5b07c98849cb2b4b0318488f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate species abundances for each fragment, and call <a class="el" href="class_community.html#ad6515ff43ea8189a1acdcccfe893bbba" title="Creates a new table in the database file and outputs the database object to the same file as the inpu...">createFragmentDatabase()</a> for each <a class="el" href="struct_fragment.html" title="Contains the information needed for defining a fragment. ">Fragment</a>. <br /></td></tr>
 <tr class="separator:a706aba5b07c98849cb2b4b0318488f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24c425f32b1e3b10227e2d04cbacfe31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24c425f32b1e3b10227e2d04cbacfe31"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_community.html#a24c425f32b1e3b10227e2d04cbacfe31">getPreviousCalcs</a> ()</td></tr>
@@ -469,7 +474,9 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>max_location
 <a class="el" href="struct_spec_sim_parameters.html">SpecSimParameters</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>spec_sim_parameters</b></td></tr>
 <tr class="separator:a45df8aefb9914e7c8f3133143069ca35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Generates a metacommunity using spatially-implicit neutral simulations, which is used to draw individuals from a community. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a118e3a4f337468b21a420f993e9983e1"></a>
 <div class="memitem">
 <div class="memproto">
@@ -937,7 +944,7 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>max_location
 <p>Creates a new table in the database file and outputs the database object to the same file as the input file. Essentially creates a species abundance distribution (as in <a class="el" href="class_community.html#ad6e92dafaf00fd65cc29ca436dc61a2e" title="Creates a new table in the database file and outputs the database object to the same file as the inpu...">createDatabase()</a>), but for the specified fragment within the samplemask. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>the <a class="el" href="struct_fragment.html" title="Contains the information needed for defining a fragment. Fragments can be detected from the Samplemat...">Fragment</a> to sample from. </td></tr>
+    <tr><td class="paramname">f</td><td>the <a class="el" href="struct_fragment.html" title="Contains the information needed for defining a fragment. ">Fragment</a> to sample from. </td></tr>
   </table>
   </dd>
 </dl>

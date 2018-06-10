@@ -13,6 +13,7 @@ var searchData=
   ['writenewcommunityparameters',['writeNewCommunityParameters',['../class_community.html#afbc8709084a00a7450e3a168cb016db9',1,'Community']]],
   ['writenewmetacommuntyparameters',['writeNewMetacommuntyParameters',['../class_community.html#ac900c23ffe2572504fca11f20b7ba8cd',1,'Community']]],
   ['writeparameters',['writeParameters',['../class_simulate_dispersal.html#ae0afed6eeb06f5bae4ee13a24850c8c5',1,'SimulateDispersal']]],
+  ['writerepeatinfo',['writeRepeatInfo',['../class_simulate_dispersal.html#ab8c48b2398f715d4de2b35a91daaae58',1,'SimulateDispersal']]],
   ['writesimstarttoconsole',['writeSimStartToConsole',['../class_tree.html#a95360a2f62ef0eb436d586552b299e1f',1,'Tree']]],
   ['writespeciationrates',['writeSpeciationRates',['../class_community.html#adcfc04e92cbb597682dcc1f2913d6668',1,'Community']]],
   ['writesteptoconsole',['writeStepToConsole',['../class_tree.html#a37de93174eece50a2fc082b683d97047',1,'Tree']]],

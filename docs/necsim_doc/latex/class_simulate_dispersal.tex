@@ -11,7 +11,8 @@ Contains routines for importing a density map file, running a dispersal kernel n
 
 
 
-Collaboration diagram for Simulate\+Dispersal\+:\nopagebreak
+Collaboration diagram for Simulate\+Dispersal\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,6 +29,9 @@ void \hyperlink{class_simulate_dispersal_a9d08a14b3f2a78591af2edf2884edb52}{set\
 void \hyperlink{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}{import\+Maps} ()\hypertarget{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}{}\label{class_simulate_dispersal_a275eef6872de493273fc047467935d7b}
 
 \begin{DoxyCompactList}\small\item\em Import the maps from the simulation parameters. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_a7aeeb01c40f5de7f88bce2b484bf83a0}{set\+Sizes} ()\hypertarget{class_simulate_dispersal_a7aeeb01c40f5de7f88bce2b484bf83a0}{}\label{class_simulate_dispersal_a7aeeb01c40f5de7f88bce2b484bf83a0}
+
+\begin{DoxyCompactList}\small\item\em Creates the map of steps to parameter references and initialises object sizes. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_a4acdae18451d1e9f67c005390b89664f}{set\+Dispersal\+Parameters} ()\hypertarget{class_simulate_dispersal_a4acdae18451d1e9f67c005390b89664f}{}\label{class_simulate_dispersal_a4acdae18451d1e9f67c005390b89664f}
 
 \begin{DoxyCompactList}\small\item\em Sets the dispersal parameters in the \hyperlink{class_dispersal_coordinator}{Dispersal\+Coordinator}. \end{DoxyCompactList}\item 
@@ -37,8 +41,10 @@ void \hyperlink{class_simulate_dispersal_acae5067045d5989df6d7dce80bcfe276}{set\
 \begin{DoxyCompactList}\small\item\em Sets the output database for writing results to. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_a29c7cf41d8b5610109d61f302fb32e73}{set\+Number\+Repeats} (unsigned long n)
 \begin{DoxyCompactList}\small\item\em Sets the number of repeats to run the dispersal kernel for. \end{DoxyCompactList}\item 
-void \hyperlink{class_simulate_dispersal_a4a38f61284426daa4d968bbab91d3608}{set\+Number\+Steps} (unsigned long s)
+void \hyperlink{class_simulate_dispersal_a3cfb1aff1981021b6047c9625919ce3d}{set\+Number\+Steps} (const vector$<$ unsigned long $>$ \&s)
 \begin{DoxyCompactList}\small\item\em Sets the number of steps to run each repeat of the dispersal kernel for when recording mean distance travelled. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_simulate_dispersal_a348d4405655b91f6ce2b83752ce6f7af}{get\+Max\+Number\+Steps} ()
+\begin{DoxyCompactList}\small\item\em Gets the maximum number of steps that is to be applied. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_a85d8ee68e5f4962429571c835aa028b4}{store\+Cell\+List} ()\hypertarget{class_simulate_dispersal_a85d8ee68e5f4962429571c835aa028b4}{}\label{class_simulate_dispersal_a85d8ee68e5f4962429571c835aa028b4}
 
 \begin{DoxyCompactList}\small\item\em Calculates the list of cells to choose randomly from. \end{DoxyCompactList}\item 
@@ -52,10 +58,16 @@ void \hyperlink{class_simulate_dispersal_a4a759f6bb3b8288345eaf7c0d66ad29e}{run\
 void \hyperlink{class_simulate_dispersal_a406514e917874907cfb7a8d6c7889098}{run\+Mean\+Distance\+Travelled} ()\hypertarget{class_simulate_dispersal_a406514e917874907cfb7a8d6c7889098}{}\label{class_simulate_dispersal_a406514e917874907cfb7a8d6c7889098}
 
 \begin{DoxyCompactList}\small\item\em Simulates the dispersal kernel for the set parameters, storing the mean distance travelled. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_ab8c48b2398f715d4de2b35a91daaae58}{write\+Repeat\+Info} (unsigned long i)\hypertarget{class_simulate_dispersal_ab8c48b2398f715d4de2b35a91daaae58}{}\label{class_simulate_dispersal_ab8c48b2398f715d4de2b35a91daaae58}
+
+\begin{DoxyCompactList}\small\item\em Writes the information about this repeat to the logger. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_af7d0a726cb3724c159ca46f4586a8bd3}{write\+Database} (string table\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Writes out the distances to the S\+QL database. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_ae0afed6eeb06f5bae4ee13a24850c8c5}{write\+Parameters} (string table\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Writes the simulation parameters to the output S\+QL database. \end{DoxyCompactList}\item 
+void \hyperlink{class_simulate_dispersal_ae7e23b11a811ec48f2e08d9fa8ad151a}{clear\+Parameters} ()\hypertarget{class_simulate_dispersal_ae7e23b11a811ec48f2e08d9fa8ad151a}{}\label{class_simulate_dispersal_ae7e23b11a811ec48f2e08d9fa8ad151a}
+
+\begin{DoxyCompactList}\small\item\em Clears the parameters from the internal objects so that another dispersal simulation can be run, if necessary. \end{DoxyCompactList}\item 
 void \hyperlink{class_simulate_dispersal_a0dee5d1529bd7ee6f382f7cd1b5393e5}{check\+Max\+Parameter\+Reference} ()\hypertarget{class_simulate_dispersal_a0dee5d1529bd7ee6f382f7cd1b5393e5}{}\label{class_simulate_dispersal_a0dee5d1529bd7ee6f382f7cd1b5393e5}
 
 \begin{DoxyCompactList}\small\item\em Gets the maximum parameter reference from the output S\+QL database and saves val + 1 to parameter\+\_\+reference Assumes that the database exists. \end{DoxyCompactList}\item 
@@ -65,6 +77,9 @@ unsigned long \hyperlink{class_simulate_dispersal_abafd3fc30df157d12e462c4b1907d
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{class_landscape}{Landscape} {\bfseries density\+\_\+landscape}\hypertarget{class_simulate_dispersal_a3538ef66eedcee56817aabb26a1d9d27}{}\label{class_simulate_dispersal_a3538ef66eedcee56817aabb26a1d9d27}
+
+\item 
+\hyperlink{class_data_mask}{Data\+Mask} {\bfseries data\+Mask}\hypertarget{class_simulate_dispersal_a06456ecb5cde83be793855a735c196f0}{}\label{class_simulate_dispersal_a06456ecb5cde83be793855a735c196f0}
 
 \item 
 \hyperlink{class_dispersal_coordinator}{Dispersal\+Coordinator} {\bfseries dispersal\+\_\+coordinator} \{\}\hypertarget{class_simulate_dispersal_a55da369d57d854168ff6e851b0d7892a}{}\label{class_simulate_dispersal_a55da369d57d854168ff6e851b0d7892a}
@@ -82,7 +97,10 @@ unsigned long {\bfseries seed}\hypertarget{class_simulate_dispersal_af9ab2fa8b2c
 sqlite3 $\ast$ {\bfseries database}\hypertarget{class_simulate_dispersal_afd3f96f169715aacbcc2939614a6a910}{}\label{class_simulate_dispersal_afd3f96f169715aacbcc2939614a6a910}
 
 \item 
-vector$<$ double $>$ {\bfseries distances}\hypertarget{class_simulate_dispersal_a616354e9527a71396a428bb63f444a15}{}\label{class_simulate_dispersal_a616354e9527a71396a428bb63f444a15}
+vector$<$ pair$<$ unsigned long, double $>$ $>$ {\bfseries distances}\hypertarget{class_simulate_dispersal_a87359ce728efca1ece43f52c7aa4ce9c}{}\label{class_simulate_dispersal_a87359ce728efca1ece43f52c7aa4ce9c}
+
+\item 
+map$<$ unsigned long, unsigned long $>$ {\bfseries parameter\+\_\+references}\hypertarget{class_simulate_dispersal_a9d6fb5998b4b31837ff214b0bd216b18}{}\label{class_simulate_dispersal_a9d6fb5998b4b31837ff214b0bd216b18}
 
 \item 
 vector$<$ \hyperlink{struct_cell}{Cell} $>$ {\bfseries cells}\hypertarget{class_simulate_dispersal_abcb3ce61b835cbd007d09726302d692a}{}\label{class_simulate_dispersal_abcb3ce61b835cbd007d09726302d692a}
@@ -91,7 +109,7 @@ vector$<$ \hyperlink{struct_cell}{Cell} $>$ {\bfseries cells}\hypertarget{class_
 unsigned long {\bfseries num\+\_\+repeats}\hypertarget{class_simulate_dispersal_a36ca3df92a79e284cdeb84ea0dfb3c9a}{}\label{class_simulate_dispersal_a36ca3df92a79e284cdeb84ea0dfb3c9a}
 
 \item 
-unsigned long {\bfseries num\+\_\+steps}\hypertarget{class_simulate_dispersal_a7f3401f3a7f1ec48635973d94e3470e8}{}\label{class_simulate_dispersal_a7f3401f3a7f1ec48635973d94e3470e8}
+set$<$ unsigned long $>$ {\bfseries num\+\_\+steps}\hypertarget{class_simulate_dispersal_a83c9ad2500bead84ce2d377bc73ae65d}{}\label{class_simulate_dispersal_a83c9ad2500bead84ce2d377bc73ae65d}
 
 \item 
 double {\bfseries generation}\hypertarget{class_simulate_dispersal_ae9f8100eaf9faf01a482342f605a8091}{}\label{class_simulate_dispersal_ae9f8100eaf9faf01a482342f605a8091}
@@ -100,7 +118,7 @@ double {\bfseries generation}\hypertarget{class_simulate_dispersal_ae9f8100eaf9f
 bool {\bfseries is\+\_\+sequential}\hypertarget{class_simulate_dispersal_a72f4b5ec8d52f080f2c9df991fb546ef}{}\label{class_simulate_dispersal_a72f4b5ec8d52f080f2c9df991fb546ef}
 
 \item 
-unsigned long {\bfseries parameter\+\_\+reference}\hypertarget{class_simulate_dispersal_a2d15ba06c50a249328f867a105848f72}{}\label{class_simulate_dispersal_a2d15ba06c50a249328f867a105848f72}
+unsigned long {\bfseries max\+\_\+parameter\+\_\+reference}\hypertarget{class_simulate_dispersal_a34ac3bdba52e178538ec92ee08d74c6c}{}\label{class_simulate_dispersal_a34ac3bdba52e178538ec92ee08d74c6c}
 
 \end{DoxyCompactItemize}
 
@@ -149,6 +167,20 @@ This also takes into account the rejection sampling of density based on the maxi
 {\em this\+\_\+cell} & \hyperlink{struct_cell}{Cell} containing the x and y coordinates of the starting position \\
 \hline
 \end{DoxyParams}
+\index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+Max\+Number\+Steps@{get\+Max\+Number\+Steps}}
+\index{get\+Max\+Number\+Steps@{get\+Max\+Number\+Steps}!Simulate\+Dispersal@{Simulate\+Dispersal}}
+\subsubsection[{\texorpdfstring{get\+Max\+Number\+Steps()}{getMaxNumberSteps()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Simulate\+Dispersal\+::get\+Max\+Number\+Steps (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_simulate_dispersal_a348d4405655b91f6ce2b83752ce6f7af}{}\label{class_simulate_dispersal_a348d4405655b91f6ce2b83752ce6f7af}
+
+
+Gets the maximum number of steps that is to be applied. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \index{Simulate\+Dispersal@{Simulate\+Dispersal}!get\+Random\+Cell@{get\+Random\+Cell}}
 \index{get\+Random\+Cell@{get\+Random\+Cell}!Simulate\+Dispersal@{Simulate\+Dispersal}}
 \subsubsection[{\texorpdfstring{get\+Random\+Cell()}{getRandomCell()}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Cell} \& Simulate\+Dispersal\+::get\+Random\+Cell (
@@ -181,18 +213,18 @@ Sets the number of repeats to run the dispersal kernel for.
 \end{DoxyParams}
 \index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Number\+Steps@{set\+Number\+Steps}}
 \index{set\+Number\+Steps@{set\+Number\+Steps}!Simulate\+Dispersal@{Simulate\+Dispersal}}
-\subsubsection[{\texorpdfstring{set\+Number\+Steps(unsigned long s)}{setNumberSteps(unsigned long s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Number\+Steps (
+\subsubsection[{\texorpdfstring{set\+Number\+Steps(const vector$<$ unsigned long $>$ \&s)}{setNumberSteps(const vector< unsigned long > &s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Simulate\+Dispersal\+::set\+Number\+Steps (
 \begin{DoxyParamCaption}
-\item[{unsigned long}]{s}
+\item[{const vector$<$ unsigned long $>$ \&}]{s}
 \end{DoxyParamCaption}
-)}\hypertarget{class_simulate_dispersal_a4a38f61284426daa4d968bbab91d3608}{}\label{class_simulate_dispersal_a4a38f61284426daa4d968bbab91d3608}
+)}\hypertarget{class_simulate_dispersal_a3cfb1aff1981021b6047c9625919ce3d}{}\label{class_simulate_dispersal_a3cfb1aff1981021b6047c9625919ce3d}
 
 
 Sets the number of steps to run each repeat of the dispersal kernel for when recording mean distance travelled. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em s} & the number of steps \\
+{\em s} & a vector containing each step variable to record the distance at \\
 \hline
 \end{DoxyParams}
 \index{Simulate\+Dispersal@{Simulate\+Dispersal}!set\+Output\+Database@{set\+Output\+Database}}

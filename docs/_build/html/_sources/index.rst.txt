@@ -22,7 +22,6 @@ analysing models.
 
     README_pycoalescence
 
-
 .. toctree::
     :maxdepth: 2
 
@@ -37,6 +36,15 @@ analysing models.
     :maxdepth: 2
 
     README_merger
+
+Code examples
+=============
+
+.. toctree::
+    :maxdepth: 2
+
+    src/examples
+
 
 Code Documentation
 ==================

@@ -21,7 +21,7 @@ public:
 	PyObject_HEAD
 	PyObject *logger;
 	PyObject *log_function;
-	T *base_object = nullptr;
+	unique_ptr<T> base_object = nullptr;
 
 //	virtual void init()
 //	{
@@ -54,7 +54,7 @@ PyTemplate_dealloc(PyTemplate<T> *self)
 {
 	if(self->base_object != nullptr)
 	{
-		delete self->base_object;
+		self->base_object.reset();
 		self->base_object = nullptr;
 	}
 	removeGlobalLogger();
@@ -127,7 +127,7 @@ PyTemplate_init(PyTemplate<T> *self, PyObject *args, PyObject *kwds)
 		try
 		{
 			initialise_logger(self);
-			self->base_object = new T();
+			self->base_object = make_unique<T>();
 //			self->init();
 		}
 		catch(exception &e)

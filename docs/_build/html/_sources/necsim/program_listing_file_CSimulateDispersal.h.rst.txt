@@ -33,7 +33,7 @@ Program Listing for File CSimulateDispersal.h
    public:
        SimParameters *dispersalParameters;
        bool has_imported_maps;
-       std::string * output_database;
+       unique_ptr<std::string> output_database;
        bool printing;
        bool needs_update;
    
@@ -59,6 +59,7 @@ Program Listing for File CSimulateDispersal.h
        {
            if(needs_update)
            {
+               getGlobalLogger(logger, log_function);
                base_object->setSimulationParameters(dispersalParameters, printing);
                base_object->setDispersalParameters();
                printing = false;
@@ -80,14 +81,14 @@ Program Listing for File CSimulateDispersal.h
            return nullptr;
        }
    #endif // DEBUG
-   //  if(!PyArg_ParseTuple(args, "is", &self->dispersalParameters->deme, &fine_map_file))
-       if(!PyArg_ParseTuple(args, "isiiiiiisiiiis", &self->dispersalParameters->deme, &fine_map_file,
+       if(!PyArg_ParseTuple(args, "isiiiiiisiiiiis", &self->dispersalParameters->deme, &fine_map_file,
                             &self->dispersalParameters->fine_map_x_size, &self->dispersalParameters->fine_map_y_size,
                             &self->dispersalParameters->fine_map_x_offset, &self->dispersalParameters->fine_map_y_offset,
                             &self->dispersalParameters->sample_x_size, &self->dispersalParameters->sample_y_size,
                             &coarse_map_file, &self->dispersalParameters->coarse_map_x_size,
                             &self->dispersalParameters->coarse_map_y_size, &self->dispersalParameters->coarse_map_x_offset,
-                            &self->dispersalParameters->coarse_map_y_offset, &landscape_type))
+                            &self->dispersalParameters->coarse_map_y_offset, &self->dispersalParameters->coarse_map_scale,
+                            &landscape_type))
        {
            return nullptr;
        }
@@ -243,18 +244,22 @@ Program Listing for File CSimulateDispersal.h
    {
        try
        {
-           int num_repeats, num_steps, seed, is_sequential;
+           int num_repeats, seed, is_sequential;
+           PyObject * p_num_steps;
+           vector<unsigned long> num_steps;
            // parse arguments
-           if(!PyArg_ParseTuple(args, "iiii", &num_repeats, &num_steps, &seed, &is_sequential))
+           if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps,
+                                &seed, &is_sequential))
            {
                return nullptr;
            }
            getGlobalLogger(self->logger, self->log_function);
+           importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers.");
            self->setDispersalParameters();
            self->base_object->setSequential(static_cast<bool>(is_sequential));
            self->base_object->setSeed(static_cast<unsigned long>(seed));
            self->base_object->setNumberRepeats(static_cast<unsigned long>(num_repeats));
-           self->base_object->setNumberSteps(static_cast<unsigned long>(num_steps));
+           self->base_object->setNumberSteps(num_steps);
            if(!self->has_imported_maps)
            {
                self->base_object->importMaps();
@@ -319,7 +324,7 @@ Program Listing for File CSimulateDispersal.h
        auto out = PyTemplate_init<SimulateDispersal>(self, args, kwds);
        self->dispersalParameters = new SimParameters();
        self->has_imported_maps = false;
-       self->output_database = new std::string("none");
+       self->output_database = make_unique<std::string>("none");
        self->printing = true;
        self->needs_update = true;
        return out;
@@ -334,7 +339,7 @@ Program Listing for File CSimulateDispersal.h
        }
        if(self->output_database != nullptr)
        {
-           delete self->output_database;
+           self->output_database.reset();
            self->output_database = nullptr;
        }
        PyTemplate_dealloc<SimulateDispersal>(self);

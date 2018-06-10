@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import logging
 
 try:
-	from .setup import configure_and_compile
+	from .installer import configure_and_compile
 except (ImportError, SystemError, ValueError):
 	from setup import configure_and_compile
 

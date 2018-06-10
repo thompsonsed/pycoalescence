@@ -80,7 +80,12 @@ Program Listing for File SpecSimParameters.h
            }
            if(min_speciation_gen_in.size() != max_speciation_gen_in.size())
            {
-               throw FatalException("Protracted parameter mismatch between minimum and maximum generations (must be equal length).");
+               throw FatalException("Protracted parameter mismatch between minimum and maximum generations "
+                           "(must be equal length).");
+           }
+           if(!protracted_parameters.empty())
+           {
+               protracted_parameters.clear();
            }
            for(unsigned long i = 0; i < min_speciation_gen_in.size(); i++)
            {

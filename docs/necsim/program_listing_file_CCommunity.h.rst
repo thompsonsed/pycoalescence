@@ -51,6 +51,7 @@ Program Listing for File CCommunity.h
        {
            return nullptr;
        }
+       getGlobalLogger(self->logger, self->log_function);
    #ifdef DEBUG
        if(metacommunity_size == 0)
        {
@@ -99,7 +100,6 @@ Program Listing for File CCommunity.h
        }
        try
        {
-           getGlobalLogger(self->logger, self->log_function);
            self->specSimParameters->setup(std::move(database_str), use_spatial, sample_file_str, times,
                                           fragment_file_str, speciation_rates, min_speciation_gen,
                                           max_speciation_gen, metacommunity_size, metacommunity_speciation_rate);
@@ -222,9 +222,9 @@ Program Listing for File CCommunity.h
            getGlobalLogger(self->logger, self->log_function);
            if(self->base_object != nullptr)
            {
-               delete self->base_object;
+               self->base_object.reset();
            }
-           self->base_object = new T();
+           self->base_object = make_unique<T>();
        }
        catch(exception &e)
        {

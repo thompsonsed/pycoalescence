@@ -26,7 +26,7 @@ then
 	fullcpp14="Full"
 	echo "Full c++14 support detected..."
 else
-	fullcpp14="Partial/not detected"
+	fullcpp14="partial/not detected"
 	AC_MSG_WARN([Some issues encountered detected c++14, continuing anyway.])
 fi
 dnl AC_PROG_CXX

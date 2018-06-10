@@ -72,7 +72,8 @@ extensions = [
 	'sphinx.ext.mathjax',
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
-	'breathe'
+	'breathe',
+	'nbsphinx'
 ]
 if use_exhale:
 	extensions.extend(['exhale'])
@@ -138,7 +139,8 @@ language = None
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README_necsim.rst', 'README.md',
-					'*class_view_hierarchy.rst']
+					 # '*class_view_hierarchy.rst',
+					'**.ipynb_checkpoints']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -576,10 +578,12 @@ full_input = "{base}\n{internal}\n\n".format(
     internal=internal_configs
 )
 
-with open("README_necsim.rst", mode="r") as readme:
+import codecs
+# data="none"
+with codecs.open("README_necsim.rst", "r", "utf8") as readme:
 	data = readme.read()
-if sys.version_info[0] != 3:
-	data= data.decode('utf-8', 'ignore')
+# if sys.version_info[0] != 3:
+# 	data= data.decode('utf-8', 'ignore')
 exhale_args = {
 	"containmentFolder": "./necsim",
 	"rootFileName": "necsim_library.rst",

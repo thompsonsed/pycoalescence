@@ -3,14 +3,13 @@ Runs a variety of high-level tests to ensure that system integration works as in
 and CoalescenceTree
 """
 import logging
+import shutil
 import sqlite3
 import unittest
-import numpy as np
-import os
-import shutil
-from shutil import rmtree
-from pycoalescence import Simulation, CoalescenceTree, NECSimError
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+
+from pycoalescence import Simulation, CoalescenceTree
+from pycoalescence.necsim import NECSimError
+from pycoalescence.tests.setup import setUpAll, tearDownAll, skipLongTest
 
 
 def setUpModule():
@@ -504,7 +503,6 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		with self.assertRaises(NECSimError):
 			c.finalise_setup()
 
-# pass
 
 
 class TestSimulationTifBytes(unittest.TestCase):
@@ -661,7 +659,7 @@ class TestSimulationNonSpatial(unittest.TestCase):
 		Tests that all locations for lineages is 0
 		"""
 		t = CoalescenceTree(self.c2)
-		t.set_speciation_params(record_spatial=True, record_fragments=False, speciation_rates=[0.6, 0.7])
+		t.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial=True, record_fragments=False)
 		t.apply()
 		locations = t.get_species_locations()
 		for row in locations:
@@ -698,7 +696,7 @@ class TestSimulationSampling(unittest.TestCase):
 		cls.coal.set_speciation_rates([0.5, 0.7])
 		cls.coal.run()
 		cls.tree.set_database("output/data_8_6.db")
-		cls.tree.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		cls.tree.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 									   sample_file="null", times=cls.coal.times_list)
 		# self.tree.apply()
 		cls.tree.calculate_octaves()
@@ -731,8 +729,8 @@ class TestCoalSampling2(unittest.TestCase):
 		cls.coal.set_speciation_rates([0.5, 0.6])
 		cls.coal.run()
 		cls.tree = CoalescenceTree(cls.coal)
-		cls.tree.set_speciation_params(record_spatial=True, record_fragments="sample/FragmentsTest.csv",
-									   speciation_rates=[0.5, 0.6])
+		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.6], record_spatial=True,
+									   record_fragments="sample/FragmentsTest.csv")
 		cls.tree.apply()
 		# Copy the simulation file to a backup
 		shutil.copy2(cls.coal.output_database, "output/temp.db")
@@ -755,8 +753,8 @@ class TestCoalSampling2(unittest.TestCase):
 			with self.assertRaises(NECSimError):
 				t = CoalescenceTree("output/temp.db")
 				t.wipe_data()
-				t.set_speciation_params(record_spatial=False, record_fragments=fragment_file,
-										speciation_rates=[0.5, 0.6])
+				t.set_speciation_params(speciation_rates=[0.5, 0.6], record_spatial=False,
+										record_fragments=fragment_file)
 				t.apply()
 
 
@@ -780,8 +778,8 @@ class TestCoalSampling3(unittest.TestCase):
 		cls.coal.set_speciation_rates([0.5, 0.6])
 		cls.coal.run()
 		cls.tree = CoalescenceTree(cls.coal)
-		cls.tree.set_speciation_params(record_spatial=True, record_fragments="sample/FragmentsTest.csv",
-									   speciation_rates=[0.5, 0.6])
+		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.6], record_spatial=True,
+									   record_fragments="sample/FragmentsTest.csv")
 		cls.tree.apply()
 		# Copy the simulation file to a backup
 		shutil.copy2(cls.coal.output_database, "output/temp.db")
@@ -816,8 +814,8 @@ class TestCoalSampling4(unittest.TestCase):
 		cls.coal.set_speciation_rates([0.5, 0.6])
 		cls.coal.run()
 		cls.tree = CoalescenceTree(cls.coal)
-		cls.tree.set_speciation_params(record_spatial=True, record_fragments="sample/FragmentsTest.csv",
-									   speciation_rates=[0.5, 0.6])
+		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.6], record_spatial=True,
+									   record_fragments="sample/FragmentsTest.csv")
 		cls.tree.apply()
 		# Copy the simulation file to a backup
 		shutil.copy2(cls.coal.output_database, "output/temp.db")
@@ -851,8 +849,8 @@ class TestSimulationNullLandscape(unittest.TestCase):
 		cls.coal.set_map(map_file="sample/null.tif")
 		cls.coal.run()
 		cls.tree = CoalescenceTree(cls.coal)
-		cls.tree.set_speciation_params(record_spatial=False, record_fragments="sample/FragmentsTest.csv",
-									   speciation_rates=[0.5, 0.95])
+		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.95], record_spatial=False,
+									   record_fragments="sample/FragmentsTest.csv")
 		cls.tree.apply()
 
 	def testRichness(self):
@@ -900,7 +898,7 @@ class TestSimulationComplexRun(unittest.TestCase):
 		self.coal.set_speciation_rates([0.5])
 		self.coal.run()
 		self.tree.set_database(self.coal)
-		self.tree.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										sample_file="null", times=[0.0, 0.5])
 		self.tree.apply()
 		self.tree.calculate_octaves()
@@ -1045,7 +1043,7 @@ class TestSimulationComplexRun2(unittest.TestCase):
 		self.coal.set_speciation_rates([0.5])
 		self.coal.run()
 		self.tree.set_database("output/data_7_6.db")
-		self.tree.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										sample_file="null", times=[0.0, 1.0])
 		self.tree.apply()
 		self.tree.calculate_octaves()
@@ -1113,7 +1111,7 @@ class TestSimulationComplexRun3(unittest.TestCase):
 		self.coal.set_speciation_rates([0.5])
 		self.coal.run()
 		self.tree.set_database(self.coal)
-		self.tree.set_speciation_params(record_spatial=True, record_fragments=False, speciation_rates=[0.6, 0.7],
+		self.tree.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial=True, record_fragments=False,
 										sample_file="null", times=[0.0, 1.0])
 		self.tree.apply()
 		self.tree.calculate_octaves()
@@ -1166,7 +1164,7 @@ class TestSimulationComplexRun4(unittest.TestCase):
 		self.coal.set_speciation_rates([0.5])
 		self.coal.run()
 		self.tree.set_database(self.coal)
-		self.tree.set_speciation_params(record_spatial=True, record_fragments=False, speciation_rates=[0.6, 0.7],
+		self.tree.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial=True, record_fragments=False,
 										sample_file="null")
 		self.tree.apply()
 		self.tree.calculate_octaves()
@@ -1259,7 +1257,7 @@ class TestSimulationApplySpeciation(unittest.TestCase):
 		"""
 		t = CoalescenceTree(self.coal)
 		with self.assertRaises(ValueError):
-			t.set_speciation_params(record_spatial="T", record_fragments="T", speciation_rates=[0.5, 0.7],
+			t.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T", record_fragments="T",
 									sample_file="null")
 
 	def testRaisesErrorWhenNoSampleMask(self):
@@ -1268,20 +1266,20 @@ class TestSimulationApplySpeciation(unittest.TestCase):
 		"""
 		t = CoalescenceTree(self.coal)
 		with self.assertRaises(ValueError):
-			t.set_speciation_params(record_spatial="T", record_fragments="T", speciation_rates=[0.5, 0.7],
+			t.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T", record_fragments="T",
 									sample_file="null")
 
 	def testRaisesErrorWhenSpecNotDouble(self):
 		t = CoalescenceTree(self.coal)
 		with self.assertRaises(TypeError):
-			t.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=["notdouble"],
+			t.set_speciation_params(speciation_rates=["notdouble"], record_spatial="T", record_fragments="F",
 									sample_file="null")
 
 	def testRaisesErrorWhenSpecNotList(self):
 		t = CoalescenceTree(self.coal)
 
 		with self.assertRaises(TypeError):
-			t.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates="string",
+			t.set_speciation_params(speciation_rates="string", record_spatial="T", record_fragments="F",
 									sample_file="null")
 
 
@@ -1319,7 +1317,7 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
 		self.tree1.set_database(self.coal)
 		self.tree1.calculate_richness()
 		self.tree2.set_database(self.coal2)
-		self.tree2.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1],
+		self.tree2.set_speciation_params(speciation_rates=[0.1], record_spatial=False, record_fragments=False,
 										 sample_file="null")
 		# self.tree2.apply()
 		self.tree2.calculate_richness()
@@ -1376,12 +1374,12 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 		self.coal2.run()
 		# self.coal.set_speciation_rates([0.5, 0.7])
 		self.tree1.set_database(self.coal)
-		self.tree1.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.01],
+		self.tree1.set_speciation_params(speciation_rates=[0.01], record_spatial=False, record_fragments=False,
 										 sample_file="null")
 		# self.tree1.apply()
 		self.tree1.calculate_richness()
 		self.tree2.set_database(self.coal2)
-		self.tree2.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.01],
+		self.tree2.set_speciation_params(speciation_rates=[0.01], record_spatial=False, record_fragments=False,
 										 sample_file="null")
 		# self.tree2.apply()
 		self.tree2.calculate_richness()
@@ -1505,13 +1503,13 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
 		self.tree2.set_database(self.coal2)
 		self.tree3.set_database(self.coal3)
 		self.tree4.set_database(self.coal4)
-		self.tree1.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree1.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
-		self.tree2.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree2.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
-		self.tree3.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree3.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
-		self.tree4.set_speciation_params(record_spatial="T", record_fragments="F", speciation_rates=[0.6, 0.7],
+		self.tree4.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 										 sample_file="null")
 		self.tree1.apply()
 		self.tree2.apply()
@@ -1549,6 +1547,7 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 	"""
 	Tests that the protracted speciation is properly applied, post-simulation.
 	"""
+
 	@classmethod
 	def setUpClass(cls):
 		"""
@@ -1565,7 +1564,7 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 		cls.c = CoalescenceTree(cls.sim, logging_level=60)
 		cls.c.wipe_data()
 		for p_min, p_max in [(50, 100), (25, 100), (50, 200), (0.0, 2000)]:
-			cls.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+			cls.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 										protracted_speciation_min=p_min, protracted_speciation_max=p_max)
 			cls.c.apply_incremental()
 		cls.c.output()
@@ -1575,11 +1574,11 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
 		errors.
 		"""
-		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+		self.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 									 protracted_speciation_min=70, protracted_speciation_max=2000)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
-		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+		self.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 									 protracted_speciation_min=50, protracted_speciation_max=2100)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
@@ -1653,6 +1652,7 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 	Repeat of the above tests for multiple application method.
 	Tests that the protracted speciation is properly applied, post-simulation.
 	"""
+
 	@classmethod
 	def setUpClass(cls):
 		"""
@@ -1667,7 +1667,7 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		cls.sim.run()
 		cls.c = CoalescenceTree(cls.sim, logging_level=60)
 		cls.c.wipe_data()
-		cls.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2])
+		cls.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		cls.c.add_multiple_protracted_parameters(speciation_gens=[(50, 100), (25, 100), (50, 200), (0.0, 2000)])
 		cls.c.apply()
 
@@ -1676,11 +1676,11 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
 		errors.
 		"""
-		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+		self.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 									 protracted_speciation_min=70, protracted_speciation_max=2000)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
-		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+		self.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 									 protracted_speciation_min=50, protracted_speciation_max=2100)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
@@ -1748,11 +1748,13 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		self.assertEqual(ed7, com7_dict)
 		self.assertEqual(ed8, com8_dict)
 
+
 class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 	"""
 	Repeat of the above tests for multiple application method.
 	Tests that the protracted speciation is properly applied, post-simulation.
 	"""
+
 	@classmethod
 	def setUpClass(cls):
 		"""
@@ -1768,7 +1770,7 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		cls.sim.run()
 		cls.c = CoalescenceTree(cls.sim, logging_level=60)
 		cls.c.wipe_data()
-		cls.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2])
+		cls.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		min_speciation_gens = [50, 25, 50, 0]
 		max_speciation_gens = [100, 100, 200, 2000]
 		cls.c.add_multiple_protracted_parameters(min_speciation_gens=min_speciation_gens,
@@ -1780,11 +1782,11 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
 		errors.
 		"""
-		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+		self.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 									 protracted_speciation_min=70, protracted_speciation_max=2000)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
-		self.c.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.1, 0.2],
+		self.c.set_speciation_params(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
 									 protracted_speciation_min=50, protracted_speciation_max=2100)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
@@ -1995,6 +1997,7 @@ class TestSimulationDispersalMapsNoData(unittest.TestCase):
 		self.assertEqual(t.get_simulation_parameters()['dispersal_map'], "sample/dispersal_fine_nodata.tif")
 
 
+@skipLongTest
 class TestDetectRamUsage(unittest.TestCase):
 	"""
 	Class for testing the RAM detection and utilisation of pycoalescence
@@ -2037,8 +2040,8 @@ class TestDetectRamUsage(unittest.TestCase):
 		Tests that additional speciation rates are correctly applied when using an offsetted grid
 		"""
 		t = CoalescenceTree(self.c)
-		t.set_speciation_params(record_spatial="T", record_fragments="sample/FragmentsTest2.csv",
-								speciation_rates=[0.6, 0.7], sample_file="null")
+		t.set_speciation_params(speciation_rates=[0.6, 0.7], record_spatial="T",
+								record_fragments="sample/FragmentsTest2.csv", sample_file="null")
 		t.apply()
 		t.calculate_fragment_richness()
 		self.assertEqual(t.get_fragment_richness(fragment="fragment2", reference=3), 30)
@@ -2080,6 +2083,7 @@ class TestDetectRamUsage(unittest.TestCase):
 		self.assertEqual(self.c.get_richness(1), 1769)
 		self.assertEqual(self.c.get_richness(2), 1769)
 
+	@skipLongTest
 	def testSingleLargeRun(self):
 		"""
 		Tests a single run with a huge number of individuals in two cells
@@ -2128,7 +2132,7 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		cls.c.set_map("null", 10, 10)
 		cls.c.run()
 		cls.t1 = CoalescenceTree(cls.c)
-		cls.t1.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.5])
+		cls.t1.set_speciation_params(speciation_rates=[0.5], record_spatial=False, record_fragments=False)
 		cls.t1.apply()
 		cls.c2 = Simulation()
 		cls.c2.set_simulation_params(seed=1, job_type=44, output_directory="output", min_speciation_rate=0.5,
@@ -2136,15 +2140,15 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		cls.c2.set_map("null", 10, 10)
 		cls.c2.run()
 		cls.t2 = CoalescenceTree(cls.c)
-		cls.t2.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.5],
+		cls.t2.set_speciation_params(speciation_rates=[0.5], record_spatial=False, record_fragments=False,
 									 metacommunity_size=1, metacommunity_speciation_rate=0.5)
 		cls.t2.apply()
 		cls.t3 = CoalescenceTree(cls.c)
-		cls.t3.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.5],
+		cls.t3.set_speciation_params(speciation_rates=[0.5], record_spatial=False, record_fragments=False,
 									 metacommunity_size=1, metacommunity_speciation_rate=1.0)
 		cls.t3.apply()
 		cls.t4 = CoalescenceTree(cls.c)
-		cls.t4.set_speciation_params(record_spatial=False, record_fragments=False, speciation_rates=[0.5],
+		cls.t4.set_speciation_params(speciation_rates=[0.5], record_spatial=False, record_fragments=False,
 									 metacommunity_size=1000000, metacommunity_speciation_rate=0.95)
 		cls.t4.apply()
 
@@ -2187,3 +2191,52 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		self.assertDictEqual(comparison_dict2, metacommunity_dict2)
 		self.assertDictEqual(comparison_dict3, metacommunity_dict3)
 		self.assertDictEqual(comparison_dict4, metacommunity_dict4)
+
+
+class TestProtractedSimsWithMetacommunity(unittest.TestCase):
+	"""Tests that protracted speciation simulations work properly with metacommunities."""
+
+	@classmethod
+	def setUpClass(cls):
+		cls.sim = Simulation(logging_level=50)
+		cls.sim.set_simulation_params(seed=2, job_type=44, output_directory="output",
+									  min_speciation_rate=0.1, sigma=2, protracted=True, min_speciation_gen=1000,
+									  max_speciation_gen=10000)
+		cls.sim.set_map("sample/SA_sample_fine.tif")
+		cls.sim.set_speciation_rates([0.1, 0.2, 0.3])
+		cls.sim.run()
+		cls.tree = CoalescenceTree(cls.sim, logging_level=50)
+		cls.tree.set_speciation_params(speciation_rates=[0.1, 0.2, 0.3], protracted_speciation_min=1000,
+									   protracted_speciation_max=10000, metacommunity_size=10000,
+									   metacommunity_speciation_rate=0.001)
+		cls.tree.apply()
+
+	def testSpeciesRichnessValuesAsExpected(self):
+		"""Tests that the speciation rates can be successfully applied to the coalescence tree."""
+		self.assertEqual(72, self.tree.get_richness(1))
+		self.assertEqual(72, self.tree.get_richness(2))
+		self.assertEqual(72, self.tree.get_richness(3))
+		self.assertEqual(68, self.tree.get_richness(4))
+		self.assertEqual(66, self.tree.get_richness(5))
+		self.assertEqual(64, self.tree.get_richness(6))
+
+	def testParametersCorrectlyStored(self):
+		"""Tests that the community parameters are correctly stored."""
+		params = self.tree.get_community_parameters(1)
+		self.assertEqual(0.1, params["speciation_rate"])
+		self.assertEqual(0, params["metacommunity_reference"])
+		params = self.tree.get_community_parameters(2)
+		self.assertEqual(0.2, params["speciation_rate"])
+		self.assertEqual(0, params["metacommunity_reference"])
+		params = self.tree.get_community_parameters(3)
+		self.assertEqual(0.3, params["speciation_rate"])
+		self.assertEqual(0, params["metacommunity_reference"])
+		params = self.tree.get_community_parameters(4)
+		self.assertEqual(0.1, params["speciation_rate"])
+		self.assertEqual(1, params["metacommunity_reference"])
+		params = self.tree.get_community_parameters(5)
+		self.assertEqual(0.2, params["speciation_rate"])
+		self.assertEqual(1, params["metacommunity_reference"])
+		params = self.tree.get_community_parameters(6)
+		self.assertEqual(0.3, params["speciation_rate"])
+		self.assertEqual(1, params["metacommunity_reference"])

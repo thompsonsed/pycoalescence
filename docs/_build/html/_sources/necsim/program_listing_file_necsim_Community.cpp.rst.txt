@@ -106,6 +106,15 @@ Program Listing for File Community.cpp
            {
                if(i.fragment == fragment || !fragment)
                {
+                   stringstream ss;
+                   ss << "Non-unique parameter set: " << endl;
+                   ss << "-speciation rate: " << speciation_rate << endl;
+                   ss << "-time: " << time << endl;
+                   ss << "-fragment: " << fragment << endl;
+                   ss << "-metacommunity reference: " << metacommunity_reference << endl;
+                   ss << "-protracted speciation min: " << protracted_params.min_speciation_gen << endl;
+                   ss << "-protracted speciation max: " << protracted_params.max_speciation_gen<< endl;
+                   writeCritical(ss.str());
                    throw FatalException("Tried to get reference for non-unique parameter set in communities. "
                                         "Please report this bug.");
                }
@@ -1909,11 +1918,12 @@ Program Listing for File Community.cpp
                                                                metacommunity_size);
        if(meta_reference == 0 && metacommunity_size != 0)
        {
+   #ifdef DEBUG
+           stringstream ss;
+           ss << "Adding metacommunity (" << metacommunity_size << ", " << metacommunity_speciation_rate << ")" << endl;
+           writeInfo(ss.str());
+   #endif
            meta_reference = past_metacommunities.addNew(metacommunity_speciation_rate, metacommunity_size);
-       }
-       else
-       {
-           meta_reference = 0;
        }
        current_community_parameters = &past_communities.addNew(speciation_rate, time, fragments, meta_reference,
                                                                protracted_params);
@@ -2266,7 +2276,7 @@ Program Listing for File Community.cpp
            }
        }
        writeInfo(os.str());
-       if(spec_sim_parameters->protracted_parameters.size() > 1)
+       if(!spec_sim_parameters->protracted_parameters.empty())
        {
            os.str("");
            os << "Protracted speciation parameters (min, max) are: " << endl;
@@ -2275,6 +2285,12 @@ Program Listing for File Community.cpp
                os << i.min_speciation_gen << ", " << i.max_speciation_gen << endl;
            }
            writeInfo(os.str());
+       }
+       if(spec_sim_parameters->metacommunity_size > 0)
+       {
+           os.str("");
+           os << "Metacommunity size: " << spec_sim_parameters->metacommunity_size << endl;
+           os << "Metacommunity speciation rate: " << spec_sim_parameters->metacommunity_speciation_rate << endl;
        }
    }
    

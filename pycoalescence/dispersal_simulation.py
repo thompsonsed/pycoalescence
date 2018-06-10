@@ -9,19 +9,18 @@ Simulate dispersal kernels on landscapes. Detailed :ref:`here <Simulate_landscap
 	- Database containing each distance travelled so that metrics can be calculated.
 	- A table is created for mean dispersal distance over a single step or for mean distance travelled.
 """
+from __future__ import absolute_import
 import logging
 import os
 import sys
-
 from numpy import std
 
-from .landscape import Landscape
 
 # Python 2
 try:
-	from build import necsimmodule, NECSimError
+	from .necsim import necsimmodule
 except ImportError as ime:
-	from .build import necsimmodule, NECSimError
+	from pycoalescence.necsim import necsimmodule
 
 try:
 	try:
@@ -33,8 +32,9 @@ except ImportError as ie:
 	sqlite3 = None
 	logging.warning("Problem importing sqlite module " + str(ie))
 
-from .system_operations import check_parent, write_to_log
-from .map import Map
+from pycoalescence.system_operations import check_parent, write_to_log
+from pycoalescence.map import Map
+from pycoalescence.landscape import Landscape
 
 
 class DispersalSimulation(Landscape):
@@ -85,9 +85,10 @@ class DispersalSimulation(Landscape):
 
 	def __del__(self):
 		"""
-		Safely destroys the connection to the database, if it exists.
+		Safely destroys the connection to the database, if it exists, and destroys the c++ objects.
 		"""
 		self._close_database_connection()
+		self.c_dispersal_simulation = None
 
 	def _open_database_connection(self, database=None):
 		"""
@@ -190,7 +191,7 @@ class DispersalSimulation(Landscape):
 		Provides a convenience function for updating all parameters which can be updated.
 
 		:param int number_repeats: the number of repeats to perform the dispersal simulation for
-		:param int number_steps: the number of steps to iterate for in calculating the mean distance travelled
+		:param list/int number_steps: the number of steps to iterate for in calculating the mean distance travelled
 		:param int seed: the random number seed
 		:param str dispersal_method: the method of dispersal
 		:param str dispersal_file: the dispersal file (alternative to dispersal_method)
@@ -207,6 +208,11 @@ class DispersalSimulation(Landscape):
 		for k, v in locals().items():
 			if v is not None:
 				setattr(self, k, v)
+			if k == "number_steps" and v is not None:
+				if isinstance(v, list):
+					self.number_steps = v
+				else:
+					self.number_steps = [v]
 		self.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma, self.tau, self.m_prob,
 									  self.cutoff, self.dispersal_relative_cost, self.restrict_self)
 
@@ -231,7 +237,8 @@ class DispersalSimulation(Landscape):
 		a new random cell is chosen
 		:param float dispersal_relative_cost: relative dispersal ability through non-habitat
 		:param bool restrict_self: if true, self-dispersal is prohibited
-		:param int number_steps: the number to calculate for mean distance travelled
+		:param list/int number_steps: the number to calculate for mean distance travelled, provided as an int or a list
+								 	  of ints
 		:param str dispersal_file: path to the dispersal map file, or none.
 		"""
 		self.number_repeats = number_repeats
@@ -241,7 +248,12 @@ class DispersalSimulation(Landscape):
 		self.landscape_type = landscape_type
 		self.sequential = sequential
 		self.restrict_self = restrict_self
-		self.number_steps = number_steps
+		if isinstance(number_steps, list):
+			self.number_steps = [int(x) for x in number_steps]
+		else:
+			self.number_steps = [int(number_steps)]
+		if not os.path.exists(os.path.dirname(self.dispersal_database)):
+			os.makedirs(os.path.dirname(self.dispersal_database))
 		self.c_dispersal_simulation.set_output_database(self.dispersal_database)
 		self.set_dispersal_parameters(dispersal_method, dispersal_file, sigma, tau, m_prob,
 									  cutoff, dispersal_relative_cost, restrict_self)
@@ -299,7 +311,7 @@ class DispersalSimulation(Landscape):
 		check_parent(self.dispersal_database)
 		if number_repeats is None and self.number_repeats is None:
 			raise ValueError("number_repeats has not been set.")
-		if number_steps is None and self.number_steps is None:
+		if number_steps is None and self.number_steps in [None, [None], []]:
 			raise ValueError("number_steps has not been set.")
 		if seed is None and self.seed is None:
 			raise ValueError("Seed has not been set.")

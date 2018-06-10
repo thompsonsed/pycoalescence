@@ -25,13 +25,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="necim" href="necsim/necsim_library.html" />
+    <link rel="next" title="Simulating and generating landscapes" href="README_landscapes.html" />
     <link rel="prev" title="Welcome to pycoalescence" href="index.html" /> 
   </head>
   <body role="document">
@@ -45,7 +45,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="necsim/necsim_library.html" title="necim"
+          <a href="README_landscapes.html" title="Simulating and generating landscapes"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to pycoalescence"
@@ -79,6 +79,8 @@ scenarios. The features include:</p>
 <li>Simulations of a region much larger than the sample area.</li>
 <li>Calculation of many biodiversity metrics, including species richness, species abundances, beta-diversity and
 locations of lineages.</li>
+<li>Usage of protracted speciation to restrict the time period that speciation events can occur in.</li>
+<li>Generate and apply a metacommunity to a simulation without requiring a new simulation to be performed.</li>
 <li>Scalability - support for simulations of tens or hundreds of millions of individuals in a single simulation.</li>
 </ul>
 </div>
@@ -86,16 +88,16 @@ locations of lineages.</li>
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#installation" id="id2">Installation</a></li>
-<li><a class="reference internal" href="#performing-simulations" id="id3">Performing simulations</a></li>
-<li><a class="reference internal" href="#post-simulation-analysis" id="id4">Post-simulation analysis</a></li>
-<li><a class="reference internal" href="#extended-analysis" id="id5">Extended analysis</a></li>
-<li><a class="reference internal" href="#additional-package-features" id="id6">Additional Package Features</a></li>
-<li><a class="reference internal" href="#testing-install" id="id7">Testing install</a></li>
+<li><a class="reference internal" href="#installation" id="id4">Installation</a></li>
+<li><a class="reference internal" href="#performing-simulations" id="id5">Performing simulations</a></li>
+<li><a class="reference internal" href="#post-simulation-analysis" id="id6">Post-simulation analysis</a></li>
+<li><a class="reference internal" href="#extended-analysis" id="id7">Extended analysis</a></li>
+<li><a class="reference internal" href="#additional-package-features" id="id8">Additional Package Features</a></li>
+<li><a class="reference internal" href="#testing-install" id="id9">Testing install</a></li>
 </ul>
 </div>
 <div class="section" id="installation">
-<h3><a class="toc-backref" href="#id2">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id4">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
 <p>Currently, only macOS and linux-based operating systems are supported. Windows compatibility will likely be added at a
 later date.</p>
 <div class="section" id="method">
@@ -184,12 +186,17 @@ not usually expected that you need to provide any of these options.</p>
 </div>
 </div>
 <div class="section" id="performing-simulations">
-<span id="id1"></span><h3><a class="toc-backref" href="#id3">Performing simulations</a><a class="headerlink" href="#performing-simulations" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3><a class="toc-backref" href="#id5">Performing simulations</a><a class="headerlink" href="#performing-simulations" title="Permalink to this headline">¶</a></h3>
+<p>Check out the full simulation examples in <a class="reference external" href="example_notebook">this jupyter notebook</a>.</p>
 <div class="section" id="setting-up-simulations">
 <h4>Setting up simulations<a class="headerlink" href="#setting-up-simulations" title="Permalink to this headline">¶</a></h4>
-<p>There are two methods for providing configuration options in pycoalescence. Both require the same initial procedure.
-The recommended method is:</p>
+<p>The process of setting up a <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation" title="pycoalescence.simulation.Simulation"><code class="xref py py-class docutils literal"><span class="pre">Simulation</span></code></a> object is outlined below.</p>
 <ol class="arabic">
+<li><p class="first">Instantiate our <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation" title="pycoalescence.simulation.Simulation"><code class="xref py py-class docutils literal"><span class="pre">Simulation</span></code></a> object using
+<code class="code pycode python docutils literal"><span class="name"><span class="pre">sim</span></span> <span class="operator"><span class="pre">=</span></span> <span class="name"><span class="pre">Simulation</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">logging_level</span></span><span class="operator"><span class="pre">=</span></span><span class="literal number integer"><span class="pre">20</span></span><span class="punctuation"><span class="pre">)</span></span></code> where the logging level corresponds to the amount of information that is
+displayed using <a class="reference external" href="https://docs.python.org/3/library/logging.html">python&#8217;s logging module</a> (20 corresponds to &#8220;info&#8221;,
+the second highest display level, after &#8220;debug&#8221;).</p>
+</li>
 <li><p class="first">Specify simulation parameters</p>
 <ul>
 <li><p class="first">Use <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_simulation_params" title="pycoalescence.simulation.Simulation.set_simulation_params"><code class="xref py py-func docutils literal"><span class="pre">set_simulation_params()</span></code></a>
@@ -250,6 +257,7 @@ setup and set up the maps and data structures in memory <a class="reference inte
 <p class="last">The last three steps can be combined using <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.run" title="pycoalescence.simulation.Simulation.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a>,
 which also performs checks for if the simulation has run out of time and paused, rather than completing.</p>
 </div>
+<p>See the <a class="reference internal" href="#sim-examples"><span class="std std-ref">examples</span></a> for the full simulation process.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">See <a class="reference internal" href="#glossary">Glossary</a> for definitions of <a class="reference internal" href="#term-sample-map"><span class="xref std std-term">sample map</span></a>, <a class="reference internal" href="#term-fine-map"><span class="xref std std-term">fine map</span></a> and <a class="reference internal" href="#term-coarse-map"><span class="xref std std-term">coarse map</span></a>.</p>
@@ -312,13 +320,14 @@ inputted map files.</p>
                         <span class="n">landscape_type</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="c1"># add a set of speciation rates to be applied at the end of the simulation</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_speciation_rates</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
-<span class="c1"># set the map files</span>
+<span class="c1"># set the map files - note that dimensions and offsets are detected automatically from the files</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_map_files</span><span class="p">(</span><span class="n">sample_file</span><span class="o">=</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">fine_file</span><span class="o">=</span><span class="s2">&quot;path/to/fine.tif&quot;</span><span class="p">,</span> <span class="n">coarse_file</span><span class="o">=</span><span class="s2">&quot;path/to/coarse.tif&quot;</span><span class="p">)</span>
 <span class="c1"># add sample times</span>
 <span class="n">c</span><span class="o">.</span><span class="n">add_sample_time</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">add_sample_time</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="c1"># add historical maps</span>
-<span class="n">c</span><span class="o">.</span><span class="n">add_historical_map</span><span class="p">(</span><span class="n">fine_map</span><span class="o">=</span><span class="s2">&quot;path/to/historicalfine1.tif&quot;</span><span class="p">,</span> <span class="n">coarse_map</span><span class="o">=</span><span class="s2">&quot;path/to/historicalcoarse1.tif&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">add_historical_map</span><span class="p">(</span><span class="n">fine_map</span><span class="o">=</span><span class="s2">&quot;path/to/historicalfine1.tif&quot;</span><span class="p">,</span> <span class="n">coarse_map</span><span class="o">=</span><span class="s2">&quot;path/to/historicalcoarse1.tif&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+ <span class="n">rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="c1"># run checks, complete the simulation and output the database</span>
 <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -571,34 +580,33 @@ parameters outside of the simulation database.</p>
 </div>
 </div>
 <div class="section" id="post-simulation-analysis">
-<h3><a class="toc-backref" href="#id4">Post-simulation analysis</a><a class="headerlink" href="#post-simulation-analysis" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id6">Post-simulation analysis</a><a class="headerlink" href="#post-simulation-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Once simulations are complete, necsim&#8217;s <a class="reference internal" href="necsim/necsim_library.html#introduction-speciationcounter"><span class="std std-ref">applying speciation rates functionality</span></a>
 can be used to apply additional speciation rates to the coalescence tree. A simple way of applying additional simulation
 rates is provided within the <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree" title="pycoalescence.coalescence_tree.CoalescenceTree"><code class="xref py py-class docutils literal"><span class="pre">CoalescenceTree</span> <span class="pre">class</span></code></a>.</p>
 <p>The two functions for this routine are</p>
 <ul class="simple">
-<li><a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params" title="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params"><code class="xref py py-func docutils literal"><span class="pre">set_speciation_params()</span></code></a> which takes as
-arguments<ul>
-<li>the SQL database file containing a finished simulation</li>
-<li>T/F of recording full spatial data</li>
-<li>either a csv file containing fragment data, or T/F for whether
-fragments should be calculated from squares of continuous habitat.
-* list of speciation rates to apply</li>
-<li>[optional] a sample file to specify certain cells to sample from</li>
-<li>[optional] a config file containing the temporal sampling points
-desired.</li>
-</ul>
-</li>
+<li><a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params" title="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params"><code class="xref py py-func docutils literal"><span class="pre">set_speciation_params()</span></code></a> which
+primarily takes a list of speciation rates to apply (for other arguments see
+<a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params" title="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params"><code class="xref py py-func docutils literal"><span class="pre">documentation</span></code></a>.</li>
 <li><a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.apply" title="pycoalescence.coalescence_tree.CoalescenceTree.apply"><code class="xref py py-func docutils literal"><span class="pre">apply()</span></code></a> performs the analysis and writes to the output
 file. This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations
 will be stored in extra tables within the same SQL file as originally specified.</li>
 </ul>
-<p>The procedure for applying additional speciation rates to an existing database is</p>
+<p>Instead of speciation events always contributing a new species, they can instead draw from a metacommunity. This is
+achieved by supplying a metacommunity speciation rate and metacommunity size to
+<a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params" title="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params"><code class="xref py py-func docutils literal"><span class="pre">set_speciation_params()</span></code></a>. A non-spatial
+neutral model is run to generate the metacommunity, which is then sampled from every time a speciation event occurs in
+the spatial model. As such the &#8220;speciation rate&#8221; from the spatial model can be intepretted as immigration from a
+metacommunity.</p>
+<div class="section" id="id2">
+<h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>A basic application procedure is</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">CoalescenceTree</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">()</span>
 <span class="n">speciation_rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span> <span class="p">,</span><span class="mf">0.3</span><span class="p">]</span>
 <span class="n">t</span><span class="o">.</span><span class="n">set_database</span><span class="p">(</span><span class="s2">&quot;output/data_1_1.db&quot;</span><span class="p">)</span>
-<span class="n">t</span><span class="o">.</span><span class="n">set_speciation_params</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">set_speciation_params</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">)</span>
 <span class="n">t</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -611,6 +619,20 @@ will be stored in extra tables within the same SQL file as originally specified.
 <span class="n">t</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Example application with more complicated parameters
+.. code-block:: python</p>
+<blockquote>
+<div>from pycoalescence import Simulation, CoalescenceTree
+sim = Simulation()
+# ... set up simulation here, then run
+# Now import our completed simulation without needing to run t.set_database(&#8220;filepath&#8221;)
+speciation_rates = [0.1, 0.2, 0.3]
+times = [0.0, 1.0, 2.0]
+t = CoalescenceTree(sim)
+t.set_speciation_params(speciation_rates=speciation_rates, record_spatial=True,
+record_fragments=&#8221;path/to/fragments.csv&#8221;, sample_file=&#8221;path/to/sample/file.tif&#8221;,
+times=times)
+t.apply()</div></blockquote>
 <p>A few biodiversity metrics can then be obtained directly from the database using built-in functions, relieving the user
 of having to generate these manually. These include</p>
 <ul class="simple">
@@ -619,6 +641,7 @@ of having to generate these manually. These include</p>
 <li>species octave (2^n) classes for generating species abundance distributions,
 using <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_octaves" title="pycoalescence.coalescence_tree.CoalescenceTree.get_octaves"><code class="xref py py-func docutils literal"><span class="pre">get_octaves()</span></code></a></li>
 </ul>
+<p>Check out other full examples in <a class="reference external" href="example_notebook">this jupyter notebook</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The above functions require supplying a speciation rate and time, otherwise will output data for all
@@ -631,14 +654,15 @@ speciation rates and times.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The entire list of species can be outputted using
-<a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_species_list" title="pycoalescence.coalescence_tree.CoalescenceTree.get_species_list"><code class="xref py py-func docutils literal"><span class="pre">get_species_list</span></code></a>. This may be useful for scenarios
-where it is desirable to calculate custom biodiversity metrics.</p>
+<a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_species_list" title="pycoalescence.coalescence_tree.CoalescenceTree.get_species_list"><code class="xref py py-func docutils literal"><span class="pre">get_species_list</span></code></a>. This may be useful
+for scenarios where it is desirable to calculate custom biodiversity metrics.</p>
+</div>
 </div>
 </div>
 <div class="section" id="extended-analysis">
-<h3><a class="toc-backref" href="#id5">Extended analysis</a><a class="headerlink" href="#extended-analysis" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference internal" href="pycoalescence.html#module-pycoalescence.coalescence_tree" title="pycoalescence.coalescence_tree"><code class="xref py py-mod docutils literal"><span class="pre">coalescence_tree</span></code></a> module can be used for more extensive simulation analysis, such
-as comparing simulated landscapes to real data and calculating goodness of fits.</p>
+<h3><a class="toc-backref" href="#id7">Extended analysis</a><a class="headerlink" href="#extended-analysis" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="pycoalescence.html#module-pycoalescence.coalescence_tree" title="pycoalescence.coalescence_tree"><code class="xref py py-mod docutils literal"><span class="pre">coalescence_tree</span></code></a> module can be used for more extensive simulation
+analysis, such as comparing simulated landscapes to real data and calculating goodness of fits.</p>
 <p>The general procedure for using this module involves a few functions, all contained in the
 <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree" title="pycoalescence.coalescence_tree.CoalescenceTree"><code class="xref py py-class docutils literal"><span class="pre">CoalescenceTree</span> <span class="pre">class</span></code></a>.</p>
 <ul class="simple">
@@ -665,7 +689,7 @@ FRAGMENT_ABUNDANCES using <a class="reference internal" href="pycoalescence.html
 </div></blockquote>
 </div>
 <div class="section" id="additional-package-features">
-<h3><a class="toc-backref" href="#id6">Additional Package Features</a><a class="headerlink" href="#additional-package-features" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Additional Package Features</a><a class="headerlink" href="#additional-package-features" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Read tif files and perform a number of operations taking into account georeferencing of the data.
 Functionality is contained within the <a class="reference internal" href="pycoalescence.html#pycoalescence.map.Map" title="pycoalescence.map.Map"><code class="xref py py-class docutils literal"><span class="pre">Map</span> <span class="pre">class</span></code></a> (see <a class="reference internal" href="README_landscapes.html#map-reading"><span class="std std-ref">here</span></a>).</li>
@@ -678,7 +702,7 @@ a single map is supported with &#8220;closed&#8221;, &#8220;infinite&#8221; or &
 </ul>
 </div>
 <div class="section" id="testing-install">
-<h3><a class="toc-backref" href="#id7">Testing install</a><a class="headerlink" href="#testing-install" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Testing install</a><a class="headerlink" href="#testing-install" title="Permalink to this headline">¶</a></h3>
 <p>The system install can be tested by running <code class="xref py py-mod docutils literal"><span class="pre">test_install.py</span></code> from the command line
 (<code class="docutils literal"><span class="pre">python</span> <span class="pre">test_install.py</span></code>) which requires that <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span></code> has been successfully run previously.</p>
 </div>
@@ -791,7 +815,10 @@ details.</p>
 <li><a class="reference internal" href="#generating-configuration-files">Generating Configuration Files</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#post-simulation-analysis">Post-simulation analysis</a></li>
+<li><a class="reference internal" href="#post-simulation-analysis">Post-simulation analysis</a><ul>
+<li><a class="reference internal" href="#id2">Examples</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#extended-analysis">Extended analysis</a></li>
 <li><a class="reference internal" href="#additional-package-features">Additional Package Features</a></li>
 <li><a class="reference internal" href="#testing-install">Testing install</a></li>
@@ -813,8 +840,8 @@ details.</p>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Welcome to pycoalescence</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="necsim/necsim_library.html"
-                        title="next chapter">necim</a></p>
+  <p class="topless"><a href="README_landscapes.html"
+                        title="next chapter">Simulating and generating landscapes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -846,7 +873,7 @@ details.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="necsim/necsim_library.html" title="necim"
+          <a href="README_landscapes.html" title="Simulating and generating landscapes"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to pycoalescence"
@@ -856,7 +883,7 @@ details.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

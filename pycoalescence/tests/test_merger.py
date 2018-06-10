@@ -320,8 +320,8 @@ class TestMergerAnalysis(unittest.TestCase):
 		cls.merger.add_simulation("sample/mergers/data_1_1.db")
 		cls.merger.write()
 		cls.merger.wipe_data()
-		cls.merger.set_speciation_params(record_spatial=False, record_fragments="sample/FragmentsTest.csv",
-										  speciation_rates=[0.5, 0.6], )
+		cls.merger.set_speciation_params(speciation_rates=[0.5, 0.6], record_spatial=False,
+										 record_fragments="sample/FragmentsTest.csv")
 		cls.merger.apply()
 		cls.merger.calculate_fragment_richness()
 

@@ -24,7 +24,7 @@ Program Listing for File CLandscapeMetricsCalculator.h
    class PyLMC : public PyTemplate<LandscapeMetricsCalculator>
    {
    public:
-       LandscapeMetricsCalculator *landscapeMetricsCalculator;
+       unique_ptr<LandscapeMetricsCalculator> landscapeMetricsCalculator;
        bool has_imported_map;
    };
    
@@ -101,7 +101,7 @@ Program Listing for File CLandscapeMetricsCalculator.h
    static int
    PyLMC_init(PyLMC*self, PyObject *args, PyObject *kwds)
    {
-       self->landscapeMetricsCalculator = new LandscapeMetricsCalculator();
+       self->landscapeMetricsCalculator = make_unique<LandscapeMetricsCalculator>();
        self->has_imported_map = false;
        return PyTemplate_init<LandscapeMetricsCalculator>(self, args, kwds);
    }
@@ -110,7 +110,7 @@ Program Listing for File CLandscapeMetricsCalculator.h
    {
        if(self->landscapeMetricsCalculator != nullptr)
        {
-           delete self->landscapeMetricsCalculator;
+           self->landscapeMetricsCalculator.reset();
            self->landscapeMetricsCalculator = nullptr;
        }
        PyTemplate_dealloc<LandscapeMetricsCalculator>(self);

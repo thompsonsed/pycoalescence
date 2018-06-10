@@ -1,7 +1,12 @@
 import logging
 import unittest
+import math
 
-from pycoalescence import NECSimError
+# try:
+# 	import necsim
+# 	NECSimError = necsim.necsimmodule.NECSimError
+# except ImportError:
+from pycoalescence.necsim.necsimmodule import NECSimError as nse
 from pycoalescence.dispersal_simulation import DispersalSimulation
 from pycoalescence.tests.setup import setUpAll, tearDownAll
 
@@ -81,11 +86,14 @@ class TestDispersalSimulation(unittest.TestCase):
 		Tests that a dispersal.Error is raised when incorrect dispersal method is provided.
 		"""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(nse):
 			m.set_simulation_parameters(number_repeats=10000, output_database="output/emptydb.db", seed=1,
 										dispersal_method="notamethod")
 			m.set_map_files("sample/SA_sample_fine.tif", )
-			m.run_mean_dispersal()
+			try:
+				m.run_mean_dispersal()
+			except Exception as e:
+				raise e
 
 	def testDispersalNullOutputs(self):
 		"""
@@ -148,12 +156,12 @@ class TestDispersalSimulation(unittest.TestCase):
 		comparison_dict = {
 			1: {
 				"simulation_type": "DISPERSAL_DISTANCES", "sigma": 1, "tau": 1, "cutoff": 100, "m_prob": 1.0,
-				"dispersal_method": "normal", "map_file": "sample/SA_sample_fine.tif", "seed": 1, "number_steps": 0,
+				"dispersal_method": "normal", "map_file": "sample/SA_sample_fine.tif", "seed": 1, "number_steps": 1,
 				"number_repeats": 100
 
 			},
 			2: {
-				"simulation_type": "DISTANCES_TRAVELLED", "sigma": 2, "tau": 1, "cutoff": 100, "m_prob": 1.0,
+				"simulation_type": "DISTANCES_TRAVELLED", "sigma": 2, "tau": 1, "cutoff": 100.0, "m_prob": 1.0,
 				"dispersal_method": "normal", "map_file": "sample/SA_sample_fine.tif", "seed": 2, "number_steps": 10,
 				"number_repeats": 100
 			}
@@ -188,12 +196,12 @@ class TestDispersalSimulation(unittest.TestCase):
 		Tests that the database parameters are stored and returned correctly.
 		"""
 		self.assertEqual([x for x in range(1, 7)], self.m.get_database_references())
-		self.assertEqual(self.m.get_database_parameters()[1], {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
-															   "tau": 1, "m_prob": 1.0, "cutoff": 100,
-															   "dispersal_method": "normal",
-															   "map_file": "sample/SA_sample_fine.tif",
-															   "seed": 2, "number_steps": 0,
-															   "number_repeats": 100})
+		self.assertEqual( {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
+						   "tau": 1, "m_prob": 1.0, "cutoff": 100.0,
+						   "dispersal_method": "normal",
+						   "map_file": "sample/SA_sample_fine.tif",
+						   "seed": 2, "number_steps": 1,
+						   "number_repeats": 100}, self.m.get_database_parameters()[1],)
 
 	def testDispersalMapReading(self):
 		"""
@@ -235,15 +243,15 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.update_parameters(dispersal_method="fat-tail", number_steps=10)
 		m.run_mean_distance_travelled()
 		expected_params = {1: {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 1.0,
-							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100, "dispersal_method": "normal",
+							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100.0, "dispersal_method": "normal",
 							   "map_file": "sample/SA_sample_fine.tif", "seed": 1,
-							   "number_steps": 0, "number_repeats": 100},
+							   "number_steps": 1, "number_repeats": 100},
 						   2: {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 10.0,
-							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100, "dispersal_method": "normal",
+							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100.0, "dispersal_method": "normal",
 							   "map_file": "sample/SA_sample_fine.tif", "seed": 1,
-							   "number_steps": 0, "number_repeats": 6},
+							   "number_steps": 1, "number_repeats": 6},
 						   3: {"simulation_type": "DISTANCES_TRAVELLED", "sigma": 10.0,
-							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100, "dispersal_method": "fat-tail",
+							   "tau": 1.0, "m_prob": 1.0, "cutoff": 100.0, "dispersal_method": "fat-tail",
 							   "map_file": "sample/SA_sample_fine.tif", "seed": 1,
 							   "number_steps": 10, "number_repeats": 6}
 						   }
@@ -272,3 +280,37 @@ class TestDispersalSimulation(unittest.TestCase):
 									sigma=1, landscape_type="closed")
 		m.run_mean_dispersal()
 		self.assertAlmostEqual(0.9636800, m.get_mean_dispersal(parameter_reference=1), places=4)
+
+	def testApplyingMultipleNumberSteps(self):
+		"""Tests running a single simulation with multiple number of steps at once."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map_files(fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+		m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal7.db", seed=1,
+									sigma=1, landscape_type="tiled_fine", number_steps=[10, 20, 30])
+		m.run_mean_distance_travelled()
+		m.update_parameters(number_steps=[40, 50, 60])
+		m.run_mean_distance_travelled()
+		for k, v in [(1, 10), (2, 20), (3, 30), (4, 40), (5, 50), (6, 60)]:
+			self.assertEqual(v, m.get_database_parameters()[k]["number_steps"])
+		self.assertAlmostEqual(3.83501655, m.get_mean_distance_travelled(parameter_reference=1), places=6)
+		self.assertAlmostEqual(5.250587979, m.get_mean_distance_travelled(parameter_reference=2), places=6)
+		self.assertAlmostEqual(6.83168503847, m.get_mean_distance_travelled(parameter_reference=3), places=6)
+		self.assertAlmostEqual(7.866507740, m.get_mean_distance_travelled(parameter_reference=4), places=6)
+		self.assertAlmostEqual(8.74608830638, m.get_mean_distance_travelled(parameter_reference=5), places=6)
+		self.assertAlmostEqual(9.37058123610, m.get_mean_distance_travelled(parameter_reference=6), places=6)
+
+	def testNullDispersalWithCoarse(self):
+		"""Sanity checks that the distances are calculated properly on a coarse map."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map_files(fine_file="sample/null.tif", coarse_file="sample/null_large.tif")
+		m.set_simulation_parameters(number_repeats=1000, output_database="output/realdispersal8.db", seed=2,
+									sigma=2, landscape_type="closed", number_steps=100)
+		m.run_mean_distance_travelled()
+		m.update_parameters(sigma=4)
+		m.run_mean_distance_travelled()
+		m.update_parameters(sigma=8)
+		m.run_mean_distance_travelled()
+		self.assertAlmostEqual(2*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=1), places=0)
+		self.assertAlmostEqual(4*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=2), places=0)
+		self.assertAlmostEqual(8*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=3), places=0)
+
