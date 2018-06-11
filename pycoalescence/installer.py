@@ -205,6 +205,7 @@ class Installer(build_ext):
 		include = str("CPPFLAGS=-I" + sysconfig.get_python_inc()).replace("\n", "")
 		cflags = " " + sysconfig.get_config_var('CFLAGS')
 		cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
+		cflags += " "
 		pylib = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
 					" -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
 		lib = "LIBS=-lpython"
@@ -234,7 +235,6 @@ class Installer(build_ext):
 			if 'm' in sysconfig.get_config_var('LIBRARY'):
 				lib += 'm'
 			cflags += " -DANACONDA"  # TODO fix anaconda installation
-			cflags += " -undefined dynamic_lookup"
 		ldflags += " " + pylib
 		pylib = "PYTHON_LIB=" + pylib
 		call = [include + cflags, lib, ldflags, pylib, platform_so]

@@ -26,6 +26,13 @@ PyLogger *getGlobalLogger(PyObject *logger, PyObject *log_function)
 		removeGlobalLogger();
 	}
 	pyLogger = new PyLogger();
+	if(logger == nullptr || log_function == nullptr)
+	{
+		string errmsg = "logger or log_function is nullptr when attempting to getGlobalLogger(). "
+				  "Please report this bug.";
+		PyErr_SetString(PyExc_SystemError, errmsg.c_str());
+		return nullptr;
+	}
 	pyLogger->setLogger(logger);
 	pyLogger->setLogFunction(log_function);
 	return pyLogger;

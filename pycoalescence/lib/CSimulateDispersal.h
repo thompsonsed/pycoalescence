@@ -398,19 +398,25 @@ static PyMethodDef SimulateDispersalMethods[] =
 				{nullptr,                         nullptr, 0, nullptr}
 		};
 
-static PyTypeObject C_SimulateDispersalType = {
+static PyTypeObject genSimulateDispersalType()
+{
+	PyTypeObject retSimulateDispersalType = {
 		PyVarObject_HEAD_INIT(nullptr, 0)
-		.tp_name = (char *) "necsimmodule.CDispersalSimulation",
-		.tp_doc = (char *) "Simulate a dispersal kernel on a landscape.",
-		.tp_basicsize = sizeof(PySimulateDispersal),
-		.tp_itemsize = 0,
-		.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
-		.tp_new = PySimulateDispersal_new,
-		.tp_init = (initproc) PySimulateDispersal_init,
-		.tp_dealloc = (destructor) PySimulateDispersal_dealloc,
-		.tp_traverse = (traverseproc) PyTemplate_traverse<SimulateDispersal>,
-//		.tp_members = PyTemplate_members<T>,
-		.tp_methods = SimulateDispersalMethods,
-		.tp_getset = PyTemplate_gen_getsetters<SimulateDispersal>()
-};
+	};
+	retSimulateDispersalType.tp_name = (char *) "necsimmodule.CDispersalSimulation";
+	retSimulateDispersalType.tp_basicsize = sizeof(PySimulateDispersal);
+	retSimulateDispersalType.tp_itemsize = 0;
+	retSimulateDispersalType.tp_dealloc = (destructor) PySimulateDispersal_dealloc;
+	retSimulateDispersalType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
+	retSimulateDispersalType.tp_doc = (char *) "Simulate a dispersal kernel on a landscape.";
+	retSimulateDispersalType.tp_traverse = (traverseproc) PyTemplate_traverse<SimulateDispersal>;
+	retSimulateDispersalType.tp_methods = SimulateDispersalMethods;
+	//		.tp_members = PyTemplate_members<T>,
+	retSimulateDispersalType.tp_getset = PyTemplate_gen_getsetters<SimulateDispersal>();
+	retSimulateDispersalType.tp_init = (initproc) PySimulateDispersal_init;
+	retSimulateDispersalType.tp_new = PySimulateDispersal_new;
+	return retSimulateDispersalType;
+}
+
+static PyTypeObject C_SimulateDispersalType = genSimulateDispersalType();
 #endif //NECSIM_CSIMULATEDISPERSAL_H

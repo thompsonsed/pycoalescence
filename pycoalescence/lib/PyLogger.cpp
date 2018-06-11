@@ -123,6 +123,12 @@ void writeWarning(string message)
 
 void writeError(string message)
 {
+	// TODO move to debug
+	if(pyLogger == nullptr)
+	{
+		cerr << "Pylogger is nullptr!" << endl;
+		throw runtime_error("Pylogger is nullptr");
+	}
 	pyLogger->writeError(message);
 }
 
