@@ -5,9 +5,9 @@ from __future__ import absolute_import
 import logging
 
 try:
-	from .installer import configure_and_compile
+	from .installer import Installer
 except (ImportError, SystemError, ValueError):
-	from setup import configure_and_compile
+	from installer import Installer
 
 
 def build_hpc():
@@ -16,7 +16,11 @@ def build_hpc():
 	and provides a selection of optimisation flags for high-performance systems.
 	:return:
 	"""
-	configure_and_compile(argv=["--with-hpc", "--with-verbose"], logging_level=logging.INFO)
+	from distutils.dist import Distribution
+	dist = Distribution()
+	installer = Installer(dist)
+
+	installer.configure_and_compile(argv=["--with-hpc", "--with-verbose"], logging_level=logging.INFO)
 
 
 if __name__ == "__main__":

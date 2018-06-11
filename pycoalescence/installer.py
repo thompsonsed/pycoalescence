@@ -78,7 +78,7 @@ class Installer(build_ext):
 		with open(os.path.join(self.mod_dir, "lib", "depends_default"), "r") as f_default:
 			lines_default = f_default.readlines()
 		# Now write all back out
-		with open("lib/Makefile", "w") as f_out:
+		with open(os.path.join(self.mod_dir, "lib/Makefile"), "w") as f_out:
 			for line in lines:
 				if "# DO NOT DELETE" in line:
 					break
@@ -96,7 +96,7 @@ class Installer(build_ext):
 			time.sleep(0.5)
 			self.make_depend()
 			# Sleep to ensure that file timings are updated (support for HPC systems with inaccurate timings).
-			time.sleep(0.5)
+			time.sleep(1)
 			try:
 				execute_log_info(["make", "all"], cwd=os.path.join(self.mod_dir, "lib/"))
 				logging.info("Compilation exited successfully.")
@@ -166,6 +166,8 @@ class Installer(build_ext):
 			except subprocess.CalledProcessError as cpe:
 				cpe.message += "Configuration attempted, but error thrown"
 				raise cpe
+			print("Mod dir: {}".format(self.mod_dir)) # TODO remove this
+			print("Build dir: {}".format(self.get_build_dir()))
 		else:
 			raise RuntimeError("File src/configure does not exist. Check installation has been successful.")
 
