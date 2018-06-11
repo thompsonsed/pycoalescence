@@ -8,7 +8,7 @@ import math
 # except ImportError:
 from pycoalescence.necsim.necsimmodule import NECSimError as nse
 from pycoalescence.dispersal_simulation import DispersalSimulation
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():

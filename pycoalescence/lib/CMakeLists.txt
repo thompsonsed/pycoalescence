@@ -36,7 +36,7 @@ set(SOURCE_FILES
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
         necsim/SimulationTemplates.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandlerNecsim.h necsim/cplCustomHandlerNecsim.cpp necsim/Cell.h necsim/DoubleComparison.h necsim/DoubleComparison.cpp)
+        necsim/CPLCustomHandlerNecsim.h necsim/CPLCustomHandlerNecsim.cpp necsim/Cell.h necsim/DoubleComparison.h necsim/DoubleComparison.cpp)
 
 find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
 find_library(gdal 2.1.0 REQUIRED)
@@ -92,7 +92,7 @@ set(SOURCE_FILES
         necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp necsim/SpatialTree.cpp necsim/SpatialTree.h
         necsim/Tree.cpp necsim/Tree.h
         necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandlerNecsim.h necsim/cplCustomHandlerNecsim.cpp necsim/Cell.h necsim/Cell.cpp CSimulation.h PyLogger.cpp PyLogger.h
+        necsim/CPLCustomHandlerNecsim.h necsim/CPLCustomHandlerNecsim.cpp necsim/Cell.h necsim/Cell.cpp CSimulation.h PyLogger.cpp PyLogger.h
         necsim/DoubleComparison.cpp necsim/DoubleComparison.h PyImports.cpp PyImports.h PyLogging.cpp PyLogging.h
         CSimulateDispersal.h CLandscapeMetricsCalculator.h CCommunity.h LandscapeMetricsCalculator.h LandscapeMetricsCalculator.cpp
         necsim/SimulateDispersal.cpp necsim/SimulateDispersal.h

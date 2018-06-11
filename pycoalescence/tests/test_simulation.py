@@ -12,7 +12,7 @@ except ImportError:
 	from io import StringIO
 
 from pycoalescence import Simulation
-from pycoalescence.tests.setup import setUpAll, tearDownAll, skipLongTest
+from setupTests import setUpAll, tearDownAll, skipLongTest
 
 
 def setUpModule():
@@ -315,7 +315,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		Tests that info output streaming works as intended.
 		"""
 		log_stream = StringIO()
-		with open("reference/log_12_2.txt", "r") as content_file:
+		with open("sample/log_12_2.txt", "r") as content_file:
 			expected_log = content_file.read().replace('\r', '').replace('\n', '')
 		s = Simulation(logging_level=logging.INFO, stream=log_stream)
 		s.set_simulation_params(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
@@ -574,9 +574,9 @@ class TestExpansionOverTime(unittest.TestCase):
 
 	def testSpeciesRichnessAtTimes(self):
 		"""Checks the species richness is correct for each time point."""
-		self.assertEqual(100, self.sim.get_richness(1))
-		self.assertEqual(100, self.sim.get_richness(2))
-		self.assertEqual(100, self.sim.get_richness(3))
-		self.assertEqual(100, self.sim.get_richness(4))
-		self.assertEqual(100, self.sim.get_richness(5))
-		self.assertEqual(100, self.sim.get_richness(6))
+		self.assertEqual(344, self.sim.get_richness(1))
+		self.assertEqual(344, self.sim.get_richness(2))
+		self.assertEqual(357, self.sim.get_richness(3))
+		self.assertEqual(367, self.sim.get_richness(4))
+		self.assertEqual(343, self.sim.get_richness(5))
+		self.assertEqual(338, self.sim.get_richness(6))

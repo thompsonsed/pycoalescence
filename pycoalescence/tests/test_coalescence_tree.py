@@ -1,6 +1,8 @@
 """
 
 """
+import os
+import shutil
 import sqlite3
 import unittest
 import sys
@@ -8,7 +10,7 @@ import numpy as np
 import random
 
 from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():
@@ -149,12 +151,15 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-
-		cls.test = CoalescenceTree("sample/sample.db")
-		cls.test.clear_calculations()
+		dst = "output/sampledb.db"
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copyfile("sample/sample.db", dst)
 		random.seed(2)
+		cls.test = CoalescenceTree(dst)
+		cls.test.clear_calculations()
 		cls.test.import_comparison_data("sample/PlotBiodiversityMetrics.db")
-		cls.test.calculate_comparison_octaves(True)
+		# cls.test.calculate_comparison_octaves(False)
 		cls.test.calculate_fragment_richness()
 		cls.test.calculate_fragment_octaves()
 		cls.test.calculate_octaves_error()
@@ -284,9 +289,9 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		random.seed(2)
 		self.test.calculate_goodness_of_fit()
-		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.3014, places=3)
-		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
-		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.30140801329929373, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
 
 	@unittest.skipIf(sys.version[0] == '3', "Skipping python 2.x tests")
 	def testModelFitting3(self):
@@ -295,9 +300,9 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		random.seed(2)
 		self.test.calculate_goodness_of_fit()
-		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.30080188997343593, places=3)
-		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
-		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.30140801329929373, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
 
 class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 	"""
@@ -309,8 +314,11 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-
-		cls.test = CoalescenceTree("sample/sample.db")
+		dst = "output/sampledb.db"
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copyfile("sample/sample.db", dst)
+		cls.test = CoalescenceTree(dst)
 		cls.test.clear_calculations()
 		cls.test.import_comparison_data("sample/PlotBiodiversityMetrics.db")
 		cls.test.calculate_species_distance_similarity()
@@ -341,10 +349,14 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		random.seed(10)
+		dst = "output/sampledb.db"
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copyfile("sample/sample.db", dst)
 		cls.test = CoalescenceTree()
-		cls.test.set_database("sample/sample.db")
+		cls.test.set_database(dst)
 		cls.test.import_comparison_data("sample/PlotBiodiversityMetricsNoAlpha.db")
-		cls.test.calculate_comparison_octaves(True)
+		cls.test.calculate_comparison_octaves(False)
 		cls.test.clear_calculations()
 		cls.test.calculate_fragment_richness()
 		cls.test.calculate_fragment_octaves()

@@ -1,3 +1,5 @@
+"""Tests the Map object for provision of geospatial data and map manipulation operations."""
+
 import logging
 import unittest
 
@@ -8,7 +10,7 @@ import shutil
 import os
 
 from pycoalescence import Map, FragmentedLandscape
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():

@@ -4,7 +4,7 @@ Port older simulation outputs to the updated naming conventions. Should not be r
 
 import sqlite3
 
-from sqlite_connection import check_sql_table_exist
+from pycoalescence.sqlite_connection import check_sql_table_exist
 
 
 def update_parameter_names(database):

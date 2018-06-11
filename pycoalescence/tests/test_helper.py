@@ -10,7 +10,7 @@ import shutil
 
 from pycoalescence.helper import update_parameter_names
 from pycoalescence import CoalescenceTree
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 class TestHelperUpdate(unittest.TestCase):
 	"""

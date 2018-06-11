@@ -9,7 +9,7 @@ import unittest
 
 from pycoalescence import Simulation, CoalescenceTree
 from pycoalescence.necsim import NECSimError
-from pycoalescence.tests.setup import setUpAll, tearDownAll, skipLongTest
+from setupTests import setUpAll, tearDownAll, skipLongTest
 
 
 def setUpModule():

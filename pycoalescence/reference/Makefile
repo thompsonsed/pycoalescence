@@ -4,9 +4,9 @@
 CXX=g++ -std=gnu++14
 LD=@LD@
 CXXFLAGS=-g -O2
-CPPFLAGS=-I/usr/include/python3.6m  -Wsign-compare -DNDEBUG -fmessage-length=0 -grecord-gcc-switches -O2  -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g -DOPENSSL_LOAD_CONF -fmessage-length=0 -grecord-gcc-switches -O2  -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g -fmessage-length=0 -grecord-gcc-switches -O2  -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g  -I. -std=c++14 -I/home/sam/anaconda3/include  -Dwith_gdal  -O3 
-LDFLAGS=-flto -fuse-linker-plugin -ffat-lto-objects -flto-partition=none -L/usr/lib/python3.6 -L/usr -L/usr/lib64 -L/usr/lib64/python3.6 -L/usr/lib64/python3.6/lib-dynload -L. -L/home/sam/anaconda3/lib -lgdal -L/usr/lib/python3.6 -L/usr -L/usr/lib64 -L/usr/lib64/python3.6 -L/usr/lib64/python3.6/lib-dynload
-LIBS=-lpython3.6m -lsqlite3 -lboost_filesystem -lboost_system -lpthread -lgdal
+CPPFLAGS=-I/usr/include/python2.7 -fno-strict-aliasing -fmessage-length=0 -grecord-gcc-switches -O2  -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g -DNDEBUG -fmessage-length=0 -grecord-gcc-switches -O2  -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g -DOPENSSL_LOAD_CONF -fwrapv  -I. -std=c++14 -I/usr/include/gdal  -Dwith_gdal  -Dverbose -O3 
+LDFLAGS=  -L/usr/lib64/python2.7 -L/usr -L/usr/lib64 -L/usr/lib64/python2.7 -L/usr/lib64/python2.7/lib-dynload -L. -L/usr/lib64 -lgdal -L/usr/lib64/python2.7 -L/usr -L/usr/lib64 -L/usr/lib64/python2.7 -L/usr/lib64/python2.7/lib-dynload
+LIBS=-lpython2.7 -lsqlite3 -lboost_filesystem -lboost_system -lpthread -lgdal
 PLATFORM_SO=-shared
 VPATH=necsim:
 OBJDIR=obj

@@ -1,6 +1,4 @@
-"""
-Tests the patched landscape routines for generating islands with distinct dispersal probabilities.
-"""
+"""Tests the patched landscape routines for generating islands with distinct dispersal probabilities."""
 import unittest
 
 import os
@@ -8,7 +6,7 @@ import numpy as np
 
 from pycoalescence.map import Map
 from pycoalescence.patched_landscape import Patch, PatchedLandscape, convert_index_to_x_y
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():
@@ -24,10 +22,12 @@ def tearDownModule():
 	"""
 	tearDownAll()
 
+
 class TestPatchedLandscapeFunctions(unittest.TestCase):
 	"""
 	Tests the free functions within the patched_landscapes file.
 	"""
+
 	def testConvertIndices(self):
 		"""
 		Tests that indices are correctly converted in a range of parameters.
@@ -41,6 +41,7 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		x, y = convert_index_to_x_y(100, 10)
 		self.assertEqual(0, x)
 		self.assertEqual(10, y)
+
 
 class TestPatch(unittest.TestCase):
 	def testAddingPatches(self):
@@ -80,7 +81,7 @@ class TestPatch(unittest.TestCase):
 
 	def testAddingErrors(self):
 		p = Patch(1, 10)
-		p.dispersal_probabilities = {1 : 0,  2 : 0}
+		p.dispersal_probabilities = {1: 0, 2: 0}
 		with self.assertRaises(ValueError):
 			p.re_scale_probabilities()
 		p.dispersal_probabilities = {}
@@ -111,7 +112,7 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		with self.assertRaises(IOError):
 			pl = PatchedLandscape(output_dispersal_map="sample/SA_sample_fine.tif", output_fine_map="notexist")
 		pl = PatchedLandscape(output_fine_map="output/patched1/patched1.tif",
-							  output_dispersal_map="output/patched2/patched2.tif")
+		                      output_dispersal_map="output/patched2/patched2.tif")
 		self.assertTrue(os.path.exists("output/patched1"))
 		self.assertTrue(os.path.exists("output/patched2"))
 
@@ -163,29 +164,29 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		m_fine = "output/matrix_pl_fine.tif"
 		m_dispersal = "output/matrix_pl_dispersal.tif"
 		pl = PatchedLandscape(m_fine, m_dispersal)
-		density_matrix = np.array([[1, 2, 3],
-								  [40, 50, 60],
-								  [700, 800, 900]])
-		density_matrix_out = np.array([[1, 2, 3, 40, 50, 60, 700, 800, 900]])
-		dispersal_matrix = np.array([[1, 0, 0, 1, 1, 0, 1, 1, 1],
-									 [1, 1, 0, 0, 0, 0, 0, 0, 0],
-									 [0, 0, 1, 1, 1, 1, 0, 0, 0],
-								 	 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1]])
-		dispersal_matrix_out = np.array([[0.1666666, 0.1666666, 0.1666666, 0.3333333333,
-										  0.5, 0.5, 0.6666666, 0.8333333333, 1.0],
-										 [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-										 [0, 0, 0.25, 0.5, 0.75, 1.0, 1.0, 1.0, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0]])
+		density_matrix = np.asarray([[1, 2, 3],
+		                           [40, 50, 60],
+		                           [700, 800, 900]])
+		density_matrix_out = np.asarray([[1, 2, 3, 40, 50, 60, 700, 800, 900]])
+		dispersal_matrix = np.asarray([[1, 0, 0, 1, 1, 0, 1, 1, 1],
+		                             [1, 1, 0, 0, 0, 0, 0, 0, 0],
+		                             [0, 0, 1, 1, 1, 1, 0, 0, 0],
+		                             [0, 0, 0, 1, 1, 1, 1, 1, 1],
+		                             [0, 0, 0, 1, 1, 1, 1, 1, 1],
+		                             [0, 0, 0, 1, 1, 1, 1, 1, 1],
+		                             [0, 0, 0, 1, 1, 1, 1, 1, 1],
+		                             [0, 0, 0, 1, 1, 1, 1, 1, 1],
+		                             [0, 0, 0, 1, 1, 1, 1, 1, 1]])
+		dispersal_matrix_out = np.asarray([[0.1666666, 0.1666666, 0.1666666, 0.3333333333,
+		                                  0.5, 0.5, 0.6666666, 0.8333333333, 1.0],
+		                                 [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+		                                 [0, 0, 0.25, 0.5, 0.75, 1.0, 1.0, 1.0, 1.0],
+		                                 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
+		                                 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
+		                                 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
+		                                 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
+		                                 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
+		                                 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0]])
 		pl.generate_from_matrix(density_matrix, dispersal_matrix)
 		fine_map = Map(m_fine)
 		dispersal_map = Map(m_dispersal)
@@ -198,11 +199,10 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		self.assertEqual(9, x)
 		self.assertEqual(9, y)
 		for i in range(9):
-			self.assertEqual(density_matrix_out[0, i], fine_map.data[0,i])
+			self.assertEqual(density_matrix_out[0, i], fine_map.data[0, i])
 		for i in range(9):
 			for j in range(9):
 				self.assertAlmostEqual(dispersal_matrix_out[j, i], dispersal_map.data[j, i], places=4)
-
 
 
 class TestPatchedLandscapeGeneration(unittest.TestCase):
@@ -232,8 +232,8 @@ class TestPatchedLandscapeGeneration(unittest.TestCase):
 
 	def testPatchGeneration(self):
 		expected_dict = {1: {1: 0.4, 2: 0.6, 3: 0.0},
-						 2: {1: 0.7, 2: 0.3, 3: 0.0},
-						 3: {1: 0.9, 2: 0.05, 3: 0.05}}
+		                 2: {1: 0.7, 2: 0.3, 3: 0.0},
+		                 3: {1: 0.9, 2: 0.05, 3: 0.05}}
 		for k1, v1 in expected_dict.items():
 			for k2, v2 in v1.items():
 				self.assertAlmostEqual(self.pl.patches[k1].dispersal_probabilities[k2], v2, places=4)
@@ -272,10 +272,8 @@ class TestPatchedLandscapeGeneration(unittest.TestCase):
 		"""
 		self.dispersal.open()
 		expected_data = np.array([[0.4, 1.0, 1.0],
-								  [0.7, 1.0, 1.0],
-								  [0.9, 0.95, 1.0]])
+		                          [0.7, 1.0, 1.0],
+		                          [0.9, 0.95, 1.0]])
 		for x in range(3):
 			for y in range(3):
 				self.assertAlmostEqual(expected_data[y, x], self.dispersal.data[y, x], places=5)
-
-

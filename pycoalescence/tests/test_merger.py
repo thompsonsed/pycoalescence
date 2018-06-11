@@ -6,9 +6,9 @@ import unittest
 
 import os
 
-from sqlite_connection import fetch_table_from_sql
+from pycoalescence.sqlite_connection import fetch_table_from_sql
 from pycoalescence import Merger
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 def setUpModule():
 	"""

@@ -59,7 +59,7 @@ class Installer(build_ext):
 		Used to generate a default dependency file on a system where makedepend exists, for a system where it does not.
 		"""
 		try:
-			execute_silent(["makedepend", "*.cpp", "necsim/*.cpp", "-f" "depends_default", "-p", "obj/"],
+			execute_silent(["makedepend", "*.cpp", "necsim/*.cpp", "-f" "depends_default", "-p", "obj/", "-Y"],
 						   cwd=os.path.join(self.mod_dir, "lib/"))
 		except (RuntimeError, subprocess.CalledProcessError) as rte:
 			logging.error("Could not execute makedepend: " + str(rte))
@@ -175,7 +175,7 @@ class Installer(build_ext):
 		"""
 		try:
 			execute_log_info(["autoconf"], cwd=os.path.join(self.mod_dir, "lib/"))
-		except (RuntimeError, subprocess.CalledProcessError, FileNotFoundError) as cpe:
+		except (RuntimeError, subprocess.CalledProcessError, FileNotFoundError, OSError, IOError) as cpe:
 			logging.warning("Could not run autoconf function to generate configure executable. "
 							"Please run this functionality manually if installation fails.")
 			logging.warning(str(cpe))
@@ -209,7 +209,10 @@ class Installer(build_ext):
 		pylib = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
 					" -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
 		lib = "LIBS=-lpython"
-		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS"))
+		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS")) + " "
+		if "--sysroot=" in ldflags:
+			logging.warning("--sysroot found in LDFLAGS, removing")
+			ldflags = re.sub(r"--sysroot=.*[,\s]", "", ldflags)
 		ldflags = str("LDFLAGS=" + ldflags).replace("\n", " ")
 		# Get the shared object platform-specific compilation flags.
 		platform_so = "PLATFORM_SO="
