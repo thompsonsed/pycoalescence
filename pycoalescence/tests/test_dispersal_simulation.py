@@ -4,9 +4,9 @@ import math
 
 # try:
 # 	import necsim
-# 	NECSimError = necsim.necsimmodule.NECSimError
+# 	NECSimError = necsim.libnecsim.NECSimError
 # except ImportError:
-from pycoalescence.necsim.necsimmodule import NECSimError as nse
+from pycoalescence.necsim.libnecsim import NECSimError as nse
 from pycoalescence.dispersal_simulation import DispersalSimulation
 from setupTests import setUpAll, tearDownAll
 

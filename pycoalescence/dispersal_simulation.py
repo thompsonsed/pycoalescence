@@ -18,9 +18,9 @@ from numpy import std
 
 # Python 2
 try:
-	from .necsim import necsimmodule
+	from .necsim import libnecsim
 except ImportError as ime:
-	from pycoalescence.necsim import necsimmodule
+	from pycoalescence.necsim import libnecsim
 
 try:
 	try:
@@ -56,7 +56,7 @@ class DispersalSimulation(Landscape):
 		Landscape.__init__(self)
 		self.logger = logging.Logger("pycoalescence.dispersal_simulation")
 		self._create_logger(logging_level=logging_level)
-		self.c_dispersal_simulation = necsimmodule.CDispersalSimulation(self.logger, write_to_log)
+		self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
 		self._db_conn = None
 		# The dispersal simulation data
 		self.dispersal_database = dispersal_db

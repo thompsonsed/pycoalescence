@@ -13,7 +13,9 @@ from setuptools import setup, Extension, find_packages
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.CRITICAL)
-
+necsim_path = os.path.join("pycoalescence", "necsim", "libnecsim.so")
+if os.path.exists(necsim_path):
+	os.remove(necsim_path)
 try:
 	from pycoalescence import __version__ as p_version
 	from pycoalescence.installer import Installer
@@ -50,12 +52,12 @@ setup(name='pycoalescence',
 	  author_email='samuel.thompson14@imperial.ac.uk',
 	  url='http://pycoalescence.readthedocs.io/',
 	  long_description=readme,
-	  ext_modules=[CustomExtension('necsimmodule')],
+	  ext_modules=[CustomExtension("libnecsim", "pycoalescence/lib/")],
 	  cmdclass=dict(build_ext=Installer),
 	  license='MIT',
 	  packages=find_packages(exclude=["*tests*", 'docs']),
 	  package_data={
-		  'pycoalescence': ['reference/*.json', 'reference/*.json', 'necsim/necsimmodule.so'],
+		  'pycoalescence': ['reference/*.json', 'reference/*.json', 'necsim/libnecsim.so'],
 	  },
 	  classifiers=['Development Status :: 4 - Beta',
 				   'License :: OSI Approved :: MIT License',

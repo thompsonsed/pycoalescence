@@ -25,10 +25,10 @@ from collections import defaultdict
 import numpy as np
 
 try:
-	from .necsim import necsimmodule
+	from .necsim import libnecsim
 except ImportError as ie:
 	logging.info(str(ie))
-	from necsim import necsimodule, NECSimError
+	from necsim import libnecsim, NECSimError
 
 from .future_except import FileNotFoundError
 from .system_operations import mod_directory, create_logger, write_to_log
@@ -524,9 +524,9 @@ class CoalescenceTree(object):
 		"""
 		if self.c_community is None:
 			if self.metacommunity_size == 0:
-				self.c_community = necsimmodule.CCommunity(self.logger, write_to_log)
+				self.c_community = libnecsim.CCommunity(self.logger, write_to_log)
 			else:
-				self.c_community = necsimmodule.CMetacommunity(self.logger, write_to_log)
+				self.c_community = libnecsim.CMetacommunity(self.logger, write_to_log)
 
 	def add_time(self, time):
 		"""

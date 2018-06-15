@@ -17,7 +17,7 @@ override CPPFLAGS += -fPIC
 
 ACLOCAL_AMFLAGS = -I m4 --install
 
-all: start_msg obj_dir build_dir $(BUILDDIR)/necsimmodule.so end_msg
+all: start_msg obj_dir build_dir $(BUILDDIR)/libnecsim.so end_msg
 
 complete: all NECSim SpeciationCounter end_msg
 
@@ -51,21 +51,9 @@ end_msg:
 coal: start_msg NECSim end_msg
 
 # python shared object files
-necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandlerNecsim.o Cell.o DoubleComparison.o Logger.o PyLogger.o PyImports.o Metacommunity.o SimulateDispersal.o LandscapeMetricsCalculator.o)
+necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandlerNecsim.o Cell.o DoubleComparison.o Logger.o PyLogger.o PyImports.o Metacommunity.o SimulateDispersal.o LandscapeMetricsCalculator.o necsim.o)
 
-dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandlerNecsim.o Landscape.o DataMask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o Cell.o DoubleComparison.o Logger.o PyLogger.o)
-
-#applyspec_objects = $(addprefix $(OBJDIR)/, PyLogging.o LogFile.o Community.o TreeNode.o DataMask.o ConfigFileParser.o Metacommunity.o Tree.o DataPoint.o Filesystem.o Landscape.o CPLCustomHandlerNecsim.o PyImports.o Cell.o DoubleComparison.o Logger.o PyLogger.o)
-
-#landscape_metrics_objects = $(addprefix $(OBJDIR)/, LandscapeMetricsCalculator.o PyLogging.o CPLCustomHandlerNecsim.o Cell.o Logger.o PyLogger.o LogFile.o FileSystem.o)
-
-$(BUILDDIR)/necsimmodule.so: $(necsim_objects)
-
-#$(BUILDDIR)/dispersalmodule.so: $(dispersal_objects)
-
-#$(BUILDDIR)/applyspecmodule.so: $(applyspec_objects)
-
-#$(BUILDDIR)/landscapemetricsmodule.so: $(landscape_metrics_objects)
+$(BUILDDIR)/libnecsim.so: $(necsim_objects)
 
 
 # now every other object files

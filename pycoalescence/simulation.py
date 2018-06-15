@@ -63,7 +63,7 @@ except ImportError as ie:
 	sqlite3 = None
 	logging.warning("Problem importing sqlite module " + str(ie))
 
-from pycoalescence.necsim import necsimmodule
+from pycoalescence.necsim import libnecsim
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 from pycoalescence.landscape import Landscape
 from pycoalescence.map import Map
@@ -764,8 +764,11 @@ class Simulation(Landscape):
 		:rtype: None
 		"""
 		if self.fine_map_array is None:
-			self.fine_map_array = self.fine_map.get_subset(self.fine_map.x_offset, self.fine_map.y_offset,
-														   self.sample_map.x_size, self.sample_map.y_size)
+			if self.fine_map.file_name == "null":
+				self.fine_map_array = np.ones((self.fine_map.x_size, self.fine_map.y_size))
+			else:
+				self.fine_map_array = self.fine_map.get_subset(self.fine_map.x_offset, self.fine_map.y_offset,
+															   self.sample_map.x_size, self.sample_map.y_size)
 
 	def import_sample_map_array(self):
 		"""
@@ -774,12 +777,15 @@ class Simulation(Landscape):
 		:rtype: None
 		"""
 		if self.sample_map_array is None:
-			self.sample_map.open()
-			if not self.uses_spatial_sampling:
-				self.sample_map_array = np.ma.masked_where(self.sample_map.data >= 0.5, self.sample_map.data).mask
+			if self.sample_map.file_name == "null":
+				self.sample_map_array = np.ones((self.sample_map.x_size, self.sample_map.y_size))
 			else:
-				self.sample_map_array = self.sample_map.data
-			self.sample_map.data = None
+				self.sample_map.open()
+				if not self.uses_spatial_sampling:
+					self.sample_map_array = np.ma.masked_where(self.sample_map.data >= 0.5, self.sample_map.data).mask
+				else:
+					self.sample_map_array = self.sample_map.data
+				self.sample_map.data = None
 
 	def grid_density_estimate(self, x_off, y_off, x_dim, y_dim):
 		"""
@@ -1016,13 +1022,13 @@ class Simulation(Landscape):
 		"""
 		if self.protracted:
 			if self.is_spatial:
-				self.c_simulation = necsimmodule.CPSpatialSimulation(self.logger, write_to_log)
+				self.c_simulation = libnecsim.CPSpatialSimulation(self.logger, write_to_log)
 			else:
-				self.c_simulation = necsimmodule.CPNSESimulation(self.logger, write_to_log)
+				self.c_simulation = libnecsim.CPNSESimulation(self.logger, write_to_log)
 		elif self.is_spatial:
-			self.c_simulation = necsimmodule.CSpatialSimulation(self.logger, write_to_log)
+			self.c_simulation = libnecsim.CSpatialSimulation(self.logger, write_to_log)
 		else:
-			self.c_simulation = necsimmodule.CNSESimulation(self.logger, write_to_log)
+			self.c_simulation = libnecsim.CNSESimulation(self.logger, write_to_log)
 
 	def set_speciation_rates(self, speciation_rates):
 		"""Add speciation rates for analysis at the end of the simulation. This is optional

@@ -28,7 +28,7 @@ except (ImportError, SystemError, ValueError):
 	from future_except import FileNotFoundError
 	from system_operations import execute_log_info, set_logging_method, execute_silent, mod_directory
 from setuptools.command.build_ext import build_ext
-from setuptools.command.build_py import build_py
+
 
 class Installer(build_ext):
 	"""Wraps configuration and compilation of c++ code."""
@@ -38,6 +38,7 @@ class Installer(build_ext):
 		build_ext.__init__(self, dist)
 		self.mod_dir = mod_directory
 		self.build_dir = None
+		self.obj_dir = None
 
 	def make_depend(self):
 		"""
@@ -113,7 +114,7 @@ class Installer(build_ext):
 		"""
 		directory = os.path.join(self.mod_dir, "necsim")
 		dirv = 'sharedpy' + sys.version[0]
-		for file in ["necsimmodule.so"]:
+		for file in ["libnecsim.so"]:
 			src = os.path.join(self.mod_dir, "lib", file)
 			version_dir = os.path.join(directory, dirv)
 			if not os.path.exists(src):
@@ -131,13 +132,25 @@ class Installer(build_ext):
 
 	def get_build_dir(self):
 		"""
-		Gets the build directory for this python version.
-		:return: the build directory path for the current python interpreter
+		Gets the build directory.
+
+		:return: the build directory path
 		"""
 		if self.build_dir is None:
 			directory = os.path.join(self.mod_dir, "necsim")
 			return directory
 		return os.path.join(self.build_dir)
+
+	def get_obj_dir(self):
+		"""
+		Gets the obj directory for installing obj files to.
+
+		:return: the obj directory path
+		"""
+		if self.obj_dir is None:
+			return "obj"
+		return self.obj_dir
+
 
 	def configure(self, opts=None):
 		"""
@@ -150,24 +163,23 @@ class Installer(build_ext):
 			for i, each in enumerate(opts):
 				if "-DNDEBUG" in each:
 					opts[i] = opts[i].replace("-DNDEBUG", "")
-		if os.path.exists(os.path.join(self.mod_dir, "lib/configure")):
+		if os.path.exists(os.path.join(self.mod_dir, "lib", "configure")):
 			try:
 				if opts is None:
 					execute_log_info(["./configure", "--with-verbose", "BUILDDIR={}".format(self.get_build_dir()),
-									  "OBJDIR=obj"], cwd=os.path.join(self.mod_dir, "lib/"))
+									  "OBJDIR={}".format(self.get_obj_dir())],
+									 cwd=os.path.join(self.mod_dir, "lib"))
 				else:
 					command = ["./configure"]
 					command.extend(opts)
 					if "BUILDDIR" not in opts:
 						command.append("BUILDDIR={}".format(self.get_build_dir()))
 					if "OBJDIR" not in opts:
-						command.append("OBJDIR=obj")
-					execute_log_info(command, cwd=os.path.join(self.mod_dir, "lib/"))
+						command.append("OBJDIR={}".format(self.get_obj_dir()))
+					execute_log_info(command, cwd=os.path.join(self.mod_dir, "lib"))
 			except subprocess.CalledProcessError as cpe:
 				cpe.message += "Configuration attempted, but error thrown"
 				raise cpe
-			print("Mod dir: {}".format(self.mod_dir)) # TODO remove this
-			print("Build dir: {}".format(self.get_build_dir()))
 		else:
 			raise RuntimeError("File src/configure does not exist. Check installation has been successful.")
 
@@ -208,9 +220,9 @@ class Installer(build_ext):
 		cflags = " " + sysconfig.get_config_var('CFLAGS')
 		cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
 		cflags += " "
-		pylib = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
+		py_ldflags = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
 					" -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
-		lib = "LIBS=-lpython"
+		py_lib = "PYTHON_LIB=-lpython"
 		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS")) + " "
 		if "--sysroot=" in ldflags:
 			logging.warning("--sysroot found in LDFLAGS, removing")
@@ -230,19 +242,26 @@ class Installer(build_ext):
 		# Make sure that the linker directs to the correct python library (such as -lpython3.5m)
 		# Eventually this will also detect if the install is for an anaconda distribution.
 		if 'conda' not in sys.version and 'Continuum' not in sys.version:
-			lib += sys.version[0:3]
+			py_lib += sys.version[0:3]
 			if 'm' in sysconfig.get_config_var('LIBRARY'):
-				lib += 'm'
+				py_lib += 'm'
 		else:
-			ldflags += " -L{}".format(sysconfig.get_config_var("srcdir"))
+			# TODO remove if necessary
+			# self.build_dir = os.path.join(os.environ["SP_DIR"], "pycoalescence", "necsim")
+			# self.obj_dir = self.build_dir
+			cflags += "-I{}/include {}".format(os.environ["PREFIX"], "--enable-shared")
+			ldflags += "-L{}/lib".format(os.environ["PREFIX"])
+			# ldflags += " -L{}".format(sysconfig.get_config_var("srcdir"))
 			# pylib += " " + sysconfig.get_config_var('RUNSHARED')
-			lib += sys.version[0:3]
+			# ldflags = ""
+			py_lib += sys.version[0:3]
+			# pylib=""
 			if 'm' in sysconfig.get_config_var('LIBRARY'):
-				lib += 'm'
+				py_lib += 'm'
 			cflags += " -DANACONDA"  # TODO fix anaconda installation
-		ldflags += " " + pylib
-		pylib = "PYTHON_LIB=" + pylib
-		call = [include + cflags, lib, ldflags, pylib, platform_so]
+		ldflags += " " + py_ldflags
+		py_ldflags = "PYTHON_LDFLAGS=" + py_ldflags
+		call = [include + cflags, py_lib, ldflags, py_ldflags, platform_so]
 		# Remove the flags which would potentially cause unnecessary warnings to be thrown.
 		# This can be disabled by passing display_warnings=True
 		if not display_warnings:
@@ -263,7 +282,10 @@ class Installer(build_ext):
 		self.autoconf()
 		if len(argv) == 1:
 			logging.info("No compile options provided, using defaults.")
-			call.extend(["--with-verbose", "OBJDIR=obj", "BUILDDIR={}".format(self.get_build_dir())])
+			print("Obj: {}".format(self.get_obj_dir()))
+			print("Build: {}".format(self.get_build_dir()))
+			call.extend(["--with-verbose", "OBJDIR={}", "BUILDDIR={}".format(self.get_obj_dir(),
+																			 self.get_build_dir())])
 		else:
 			if argv[1] == "--h" or argv[1] == "-h" or argv[1] == "-help" or argv[1] == "--help":
 				execute_log_info(["./configure", "--help"], cwd=os.path.join(self.mod_dir, "lib/"))
@@ -318,6 +340,40 @@ class Installer(build_ext):
 		# move_executable()
 		self.backup_makefile()
 
+	def setuptools_cmake(self, ext):
+		"""
+		Configures cmake for setuptools usage.
+
+		:param ext: the extension to build cmake on
+		"""
+		extdir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)), "pycoalescence",
+											  "necsim"))
+		cmake_args, build_args = self.get_default_cmake_args(extdir)
+		env = os.environ.copy()
+		env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
+			env.get('CXXFLAGS', ''),
+			self.distribution.get_version())
+		self.run_cmake(ext.sourcedir, cmake_args, build_args, self.build_temp, env)
+
+	def run_cmake(self, src_dir, cmake_args, build_args, tmp_dir, env):
+		"""
+		Runs cmake to compile necsim.
+
+		:param src_dir: the source directory for necsim .cpp and .h files
+		:param cmake_args: arguments to pass to the cmake project
+		:param tmp_dir: the build directory to output cmake files to
+		:param env: the os.environ (or other environmental variables) to pass on
+		"""
+		if not os.path.exists(tmp_dir):
+			os.makedirs(tmp_dir)
+		print("src dir: {}".format(src_dir))
+		print("tmp dir: {}".format(tmp_dir))
+		print("cmake args: {}".format(cmake_args))
+		subprocess.check_call(['cmake', src_dir] + cmake_args,
+							  cwd=tmp_dir, env=env)
+		subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,
+							  cwd=tmp_dir)
+
 	def run(self):
 		"""Runs installation and generates the shared object files - entry point for setuptools"""
 		for ext in self.extensions:
@@ -327,33 +383,85 @@ class Installer(build_ext):
 		"""Builds the c++ and python extension."""
 		self.build_dir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)),
 													  "pycoalescence", "necsim"))
+		self.obj_dir = self.build_dir
 		if platform.system() == "Windows":
 			raise SyntaxError("Windows is not supported by pycoalescence at this time.")
 		if not os.path.exists(self.build_temp):
 			os.makedirs(self.build_temp)
-		self.configure_and_compile()
+		self.setuptools_cmake(ext)
 
-# TODO fix or remove
-	# def get_outputs(self):
-	# 	"""Gets the outputs of the installation"""
-	# 	outputs = build_ext.get_outputs(self)
-	# 	outputs.extend(os.path.join(self.build_dir, "necsimmodule.so"))
-	# 	return outputs
+	def get_default_cmake_args(self, output_dir):
+		"""
+		Returns the default cmake configure and build arguments.
 
+		:param output_dir: the output directory to use
+
+		:return: tuple of two lists, first containing cmake configure arguments, second containing build arguments
+		:rtype: tuple
+		"""
+		cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + output_dir,
+					  '-DPYTHON_EXECUTABLE=' + sys.executable]
+
+		cfg = 'Debug' if self.debug else 'Release'
+		build_args = ['--config', cfg]
+
+		if platform.system() == "Windows":
+			cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
+				cfg.upper(),
+				output_dir)]
+			if sys.maxsize > 2 ** 32:
+				cmake_args += ['-A', 'x64']
+			build_args += ['--', '/m']
+		else:
+			cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
+			build_args += ['--', '-j2']
+		return cmake_args, build_args
 
 if __name__ == "__main__":
 	fail = True
 	from distutils.dist import Distribution
+	import argparse
 
+	parser = argparse.ArgumentParser(description='Build the c++ library (necsim) required for pycoalescence.')
+	parser.add_argument('--cmake', action='store_true', default=True, dest="cmake",
+						help='use the cmake build process')
+	parser.add_argument('--autotools', action='store_true', default=False, dest="autotools",
+						help='use the autotools build process')
+	parser.add_argument('--compiler-args', metavar='N', type=str, nargs='+', dest="compiler_args",
+						default=[],
+						help='additional arguments to pass to the autotools compiler')
+	parser.add_argument('--cmake-args', metavar='N', type=str, nargs='+', dest="cmake_args",
+						default=[],
+						help='additional arguments to pass to the cmake compiler during configuration')
+	parser.add_argument('--cmake-build-args', metavar='N', type=str, nargs='+', dest="cmake_build_args",
+						default=[],
+						help='additional arguments to pass to the cmake compiler at build time')
+	parser.add_argument('--debug', action='store_false', default=False, dest='debug',
+						help='compile using DEBUG defines')
+	parser.add_argument('-c', '-C', '--compile', action='store_true', default=False, dest='compile_only',
+						help='compile only, do not re-configure necsim')
+
+	args = parser.parse_args()
+	if args.cmake and args.autotools:
+		raise ValueError("Cannot use both cmake and autotools build process - specify one or the other.")
+	if not args.cmake or args.autotools:
+		raise ValueError("Must specify compilation either using autotools or cmake.")
 	dist = Distribution()
 	installer = Installer(dist)
-	if len(sys.argv) > 1:
-		if sys.argv[1] == "compile" or sys.argv[1] == "-c" or sys.argv[1] == "-C":
+	if args.cmake:
+		env = os.environ.copy()
+		build_dir = installer.get_build_dir()
+		obj_dir = installer.get_obj_dir()
+		cmake_args, build_args = installer.get_default_cmake_args(build_dir)
+		cmake_args += args.cmake_args
+		build_args += args.cmake_build_args
+		src_dir = os.path.join(installer.mod_dir, "lib")
+		installer.run_cmake(src_dir, cmake_args, build_args, obj_dir, env)
+	else:
+		if args.compile_only:
 			set_logging_method(logging_level=logging.INFO)
 			installer.copy_makefile()
 			installer.do_compile()
-			# move_shared_object_file()
-			# move_executable()
 			fail = False
-	if fail:
-		installer.configure_and_compile(sys.argv)
+		if fail:
+			installer.configure_and_compile(args.compiler_args)

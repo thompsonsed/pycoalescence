@@ -12,7 +12,7 @@
 #include <Python.h>
 #include <vector>
 #include <string>
-#include "necsimmodule.h"
+#include "necsim.h"
 #include "LandscapeMetricsCalculator.h"
 #include "PyLogging.h"
 #include "necsim/CPLCustomHandlerNecsim.h"
@@ -148,7 +148,7 @@ PyTypeObject genLMCType()
 	PyTypeObject ret_Simulation_Type = {
 			PyVarObject_HEAD_INIT(nullptr, 0)
 	};
-	ret_Simulation_Type.tp_name = (char *)"necsimmodule.CLandscapeMetricsCalculator";
+	ret_Simulation_Type.tp_name = (char *)"libnecsim.CLandscapeMetricsCalculator";
 	ret_Simulation_Type.tp_doc = (char *)"Calculate landscape metrics from a map file.";
 	ret_Simulation_Type.tp_basicsize = sizeof(PyLMC);
 	ret_Simulation_Type.tp_itemsize = 0;

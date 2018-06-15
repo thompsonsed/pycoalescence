@@ -11,7 +11,7 @@
 #include <string>
 #include "PyImports.h"
 #include "PyTemplates.h"
-#include "necsimmodule.h"
+#include "necsim.h"
 #include "necsim/SimParameters.h"
 #include "necsim/SimulateDispersal.h"
 #include "CSimulation.h"
@@ -403,7 +403,7 @@ static PyTypeObject genSimulateDispersalType()
 	PyTypeObject retSimulateDispersalType = {
 		PyVarObject_HEAD_INIT(nullptr, 0)
 	};
-	retSimulateDispersalType.tp_name = (char *) "necsimmodule.CDispersalSimulation";
+	retSimulateDispersalType.tp_name = (char *) "libnecsim.CDispersalSimulation";
 	retSimulateDispersalType.tp_basicsize = sizeof(PySimulateDispersal);
 	retSimulateDispersalType.tp_itemsize = 0;
 	retSimulateDispersalType.tp_dealloc = (destructor) PySimulateDispersal_dealloc;

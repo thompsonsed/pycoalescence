@@ -707,3 +707,18 @@ class TestSubsettingMaps(unittest.TestCase):
 		m = Map("sample/large_mask.tif")
 		self.assertEqual(-243335289.0, np.sum(m.get_subset(0, 0, 1818, 1695)))
 		self.assertEqual(375, np.sum(m.get_subset(0, 0, 1818, 1695, 0)))
+
+	def testWritingSubset(self):
+		"""Tests that writing a subset of the gdal raster works as intended."""
+		m = Map()
+		tmp_file = "output/writesubset.tif"
+		m.data = np.ones((10, 10))
+		m.create(tmp_file)
+		m = Map(tmp_file)
+		tmp_array = np.ones((5, 5)) + 1
+		m.write_subset(tmp_array, 2, 2)
+		m = Map(tmp_file)
+		m.open()
+		expected_array = np.ones((10, 10))
+		expected_array[2:7, 2:7] = 2
+		self.assertTrue(np.array_equal(expected_array, m.data))

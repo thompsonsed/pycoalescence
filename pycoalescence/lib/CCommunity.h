@@ -17,7 +17,7 @@
 #include "necsim/Community.h"
 #include "necsim/Metacommunity.h"
 #include "PyTemplates.h"
-#include "necsimmodule.h"
+#include "necsim.h"
 
 using namespace std;
 
@@ -367,9 +367,9 @@ static PyTypeObject genCommunityType(string tp_name, string tp_doc)
 }
 
 static PyTypeObject
-		C_CommunityType = genCommunityType<Community>((char *) "necsimmodule.CCommunity",
+		C_CommunityType = genCommunityType<Community>((char *) "libnecsim.CCommunity",
 													  (char *) "C class for generating communities from neutral simulations");
-static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "necsimmodule.CMetacommunity",
+static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "libnecsim.CMetacommunity",
 																		  (char *) "C class for generating communities from neutral simulations");
 
 #endif //NECSIM_C_COMMUNITY_H

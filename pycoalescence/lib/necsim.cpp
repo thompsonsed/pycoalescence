@@ -2,7 +2,7 @@
 // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
 /**
  * @author Samuel Thompson
- * @file necsimmodule.cpp
+ * @file necsim.cpp
  * @brief Contains the functions allowing integration of the PyCoalescence python module directly to the c++
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
@@ -17,7 +17,7 @@
 // These are included here for compabilitity reasons
 #include "necsim/Setup.h"
 // This provides compability for protracted speciation events.
-#include "necsimmodule.h"
+#include "necsim.h"
 #include "PyLogging.h"
 #include "CSimulation.h"
 #include "CCommunity.h"
@@ -62,7 +62,7 @@ inline void readyPyTypeObject(PyTypeObject * obj)
 #if PY_MAJOR_VERSION >= 3
 static PyModuleDef moduledef = {
 		PyModuleDef_HEAD_INIT,
-		.m_name = "necsimmodule",
+		.m_name = "libnecsim",
 		.m_doc = "Wrapper for c++ library which performs simulations and analysis.",
 		.m_size = -1,
 };
@@ -71,12 +71,12 @@ static PyModuleDef moduledef = {
 #define INITERROR return NULL
 
 PyMODINIT_FUNC
-PyInit_necsimmodule(void)
+PyInit_libnecsim(void)
 #else
 #define INITERROR return
 
 PyMODINIT_FUNC
-initnecsimmodule(void)
+initlibnecsim(void)
 #endif
 {
 
@@ -84,7 +84,7 @@ initnecsimmodule(void)
 	#if PY_MAJOR_VERSION>=3
 	module = PyModule_Create(&moduledef);
 	#else
-	module = Py_InitModule("necsimmodule", NECSimMethods);
+	module = Py_InitModule("libnecsim", NECSimMethods);
 	#endif
 	if(module == nullptr)
 	{
@@ -111,7 +111,7 @@ initnecsimmodule(void)
 		PyEval_InitThreads();
 		
 	}
-	NECSimError = PyErr_NewException((char*)"necsimmodule.NECSimError", NULL, NULL);
+	NECSimError = PyErr_NewException((char*)"libnecsim.NECSimError", NULL, NULL);
 	Py_INCREF(NECSimError);
 	PyModule_AddObject(module, "NECSimError", NECSimError);
 	PyModule_AddObject(module, (char*)"CSpatialSimulation", (PyObject *) &C_SpatialSimulationType);

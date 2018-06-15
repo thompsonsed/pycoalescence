@@ -10,7 +10,7 @@
 #include "necsim/CustomExceptions.h"
 #include "necsim/Logger.h"
 #include "PyLogger.h"
-
+#include <utility>
 
 extern PyLogger * pyLogger;
 
@@ -113,28 +113,29 @@ void PyLogger::write(const int &level, stringstream &message)
 
 void writeInfo(string message)
 {
-	pyLogger->writeInfo(message);
+	pyLogger->writeInfo(std::move(message));
 }
 
 void writeWarning(string message)
 {
-	pyLogger->writeWarning(message);
+	pyLogger->writeWarning(std::move(message));
 }
 
 void writeError(string message)
 {
-	// TODO move to debug
+#ifdef DEBUG
 	if(pyLogger == nullptr)
 	{
 		cerr << "Pylogger is nullptr!" << endl;
 		throw runtime_error("Pylogger is nullptr");
 	}
-	pyLogger->writeError(message);
+#endif // DEBUG
+	pyLogger->writeError(std::move(message));
 }
 
 void writeCritical(string message)
 {
-	pyLogger->writeCritical(message);
+	pyLogger->writeCritical(std::move(message));
 }
 #ifdef DEBUG
 void writeLog(const int &level, string message)

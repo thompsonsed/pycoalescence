@@ -17,7 +17,7 @@
 #include "necsim/ProtractedTree.h"
 #include "necsim/ProtractedSpatialTree.h"
 #include "PyLogging.h"
-#include "necsimmodule.h"
+#include "necsim.h"
 #include "PyImports.h"
 #include "PyTemplates.h"
 
@@ -278,15 +278,15 @@ PyTypeObject genSimulationType(char *tp_name, char *tp_doc)
 	return ret_Simulation_Type;
 }
 
-static PyTypeObject C_SpatialSimulationType = genSimulationType<SpatialTree>((char *) "necsimmodule.CSpatialSimulation",
+static PyTypeObject C_SpatialSimulationType = genSimulationType<SpatialTree>((char *) "libnecsim.CSpatialSimulation",
 																			 (char *) "C class for spatial simulations.");
-static PyTypeObject C_NSESimulationType = genSimulationType<Tree>((char *) "necsimmodule.CNSESimulation",
+static PyTypeObject C_NSESimulationType = genSimulationType<Tree>((char *) "libnecsim.CNSESimulation",
 																  (char *) "C class for non-spatial simulations.");
 static PyTypeObject C_ProtractedSpatialSimulationType = genSimulationType<ProtractedSpatialTree>(
-		(char *) "necsimmodule.CPSpatialSimulation",
+		(char *) "libnecsim.CPSpatialSimulation",
 		(char *) "C class for protracted spatial simulations.");
 static PyTypeObject C_ProtractedNSESimulationType = genSimulationType<ProtractedTree>(
-		(char *) "necsimmodule.CPNSESimulation",
+		(char *) "libnecsim.CPNSESimulation",
 		(char *) "C class for protracted non-spatial simulations.");
 
 #endif // PY_TREE_NECSIM

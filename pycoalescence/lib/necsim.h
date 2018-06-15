@@ -2,7 +2,7 @@
 // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
 /**
  * @author Samuel Thompson
- * @file necsimmodule.h
+ * @file necsim.h
  * @brief Contains the functions allowing integration of the PyCoalescence python module directly to the c++
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
 // */
@@ -38,12 +38,12 @@ static PyObject *NECSimError;
 #define INITERROR return NULL
 
 PyMODINIT_FUNC
-PyInit_necsimmodule(void)
+PyInit_libnecsim(void)
 #else
 #define INITERROR return
 
 PyMODINIT_FUNC
-initnecsimmodule(void)
+initlibnecsim(void)
 #endif
 ;
 #endif
