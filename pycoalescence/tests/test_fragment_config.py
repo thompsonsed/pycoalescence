@@ -7,7 +7,7 @@ import unittest
 import os
 
 from pycoalescence.fragment_config import FragmentConfigHandler, generate_fragment_csv
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():

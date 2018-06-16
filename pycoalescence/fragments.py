@@ -440,7 +440,6 @@ class FragmentedLandscape():
 		:return: figure object containing the fragmented landscape.
 		:rtype: matplotlib.pyplot.figure
 		"""
-
 		fig = plt.figure()
 		fig.figimage(self.grid, cmap="Greys_r", resize=True)
 		return fig

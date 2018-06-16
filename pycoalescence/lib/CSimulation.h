@@ -17,7 +17,7 @@
 #include "necsim/ProtractedTree.h"
 #include "necsim/ProtractedSpatialTree.h"
 #include "PyLogging.h"
-#include "necsimmodule.h"
+#include "necsim.h"
 #include "PyImports.h"
 #include "PyTemplates.h"
 
@@ -251,7 +251,7 @@ static PyMethodDef *genPySimulationMethods()
 }
 
 template<class T>
-static PyTypeObject genSimulationType(char *tp_name, char *tp_doc)
+PyTypeObject genSimulationType(char *tp_name, char *tp_doc)
 {
 	auto genPyTemplateGetSetters = PyTemplate_gen_getsetters<T>();
 	auto genPyTemplateNew = PyTemplate_new<T>;
@@ -259,33 +259,34 @@ static PyTypeObject genSimulationType(char *tp_name, char *tp_doc)
 	auto genPyTemplateDealloc = PyTemplate_dealloc<T>;
 	auto genPyTemplateTraverse = PyTemplate_traverse<T>;
 	auto genPyTemplateMethods = genPySimulationMethods<T>();
-	static PyTypeObject ret_Simulation_Type = {
+	PyTypeObject ret_Simulation_Type = {
 			PyVarObject_HEAD_INIT(nullptr, 0)
-			.tp_name = tp_name,
-			.tp_doc = tp_doc,
-			.tp_basicsize = sizeof(PyTemplate<T>),
-			.tp_itemsize = 0,
-			.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
-			.tp_new = genPyTemplateNew,
-			.tp_init = (initproc) genPyTemplateInit,
-			.tp_dealloc = (destructor) genPyTemplateDealloc,
-			.tp_traverse = (traverseproc) genPyTemplateTraverse,
-//		.tp_members = PyTemplate_members<T>,
-			.tp_methods = genPyTemplateMethods,
-			.tp_getset = genPyTemplateGetSetters
 	};
+	ret_Simulation_Type.tp_name = tp_name;
+	ret_Simulation_Type.tp_doc = tp_doc;
+
+	ret_Simulation_Type.tp_basicsize = sizeof(PyTemplate<T>);
+	ret_Simulation_Type.tp_itemsize = 0;
+	ret_Simulation_Type.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
+	ret_Simulation_Type.tp_new = genPyTemplateNew;
+	ret_Simulation_Type.tp_init = (initproc) genPyTemplateInit;
+	ret_Simulation_Type.tp_dealloc = (destructor) genPyTemplateDealloc;
+	ret_Simulation_Type.tp_traverse = (traverseproc) genPyTemplateTraverse;
+//		.tp_members = PyTemplate_members<T>,
+	ret_Simulation_Type.tp_methods = genPyTemplateMethods;
+	ret_Simulation_Type.tp_getset = genPyTemplateGetSetters;
 	return ret_Simulation_Type;
 }
 
-static PyTypeObject C_SpatialSimulationType = genSimulationType<SpatialTree>((char *) "necsimmodule.CSpatialSimulation",
+static PyTypeObject C_SpatialSimulationType = genSimulationType<SpatialTree>((char *) "libnecsim.CSpatialSimulation",
 																			 (char *) "C class for spatial simulations.");
-static PyTypeObject C_NSESimulationType = genSimulationType<Tree>((char *) "necsimmodule.CNSESimulation",
+static PyTypeObject C_NSESimulationType = genSimulationType<Tree>((char *) "libnecsim.CNSESimulation",
 																  (char *) "C class for non-spatial simulations.");
 static PyTypeObject C_ProtractedSpatialSimulationType = genSimulationType<ProtractedSpatialTree>(
-		(char *) "necsimmodule.CPSpatialSimulation",
+		(char *) "libnecsim.CPSpatialSimulation",
 		(char *) "C class for protracted spatial simulations.");
 static PyTypeObject C_ProtractedNSESimulationType = genSimulationType<ProtractedTree>(
-		(char *) "necsimmodule.CPNSESimulation",
+		(char *) "libnecsim.CPNSESimulation",
 		(char *) "C class for protracted non-spatial simulations.");
 
 #endif // PY_TREE_NECSIM

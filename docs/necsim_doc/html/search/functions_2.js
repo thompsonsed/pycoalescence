@@ -49,6 +49,7 @@ var searchData=
   ['checktimeupdate',['checkTimeUpdate',['../class_tree.html#afcbe72c55b38c94ae17de9c2e1dd3a7f',1,'Tree']]],
   ['chooserandomlineage',['chooseRandomLineage',['../class_tree.html#a23803bddf46ad28a1bdd46bf05693b1f',1,'Tree']]],
   ['clearmap',['clearMap',['../class_landscape.html#a28d01a593cbaf9d8fde9c2e1da996f91',1,'Landscape']]],
+  ['clearparameters',['clearParameters',['../class_simulate_dispersal.html#ae7e23b11a811ec48f2e08d9fa8ad151a',1,'SimulateDispersal']]],
   ['clearspatialmask',['clearSpatialMask',['../class_data_mask.html#a2d152bcb13820a9061ea85c984e042a7',1,'DataMask']]],
   ['close',['close',['../class_map.html#ad73fafd17ff95872e9b63945584ae81f',1,'Map']]],
   ['coalescenceevent',['coalescenceEvent',['../class_tree.html#a16eedb70009e7570d933f88e8ce44117',1,'Tree']]],

@@ -2,6 +2,11 @@
 pycoalescence
 =============
 
+.. role:: pycode(code)
+   :language: python
+
+.. _example_notebook: src/examples.ipynb
+
 Introduction
 ------------
 
@@ -22,6 +27,8 @@ scenarios. The features include:
 - Simulations of a region much larger than the sample area.
 - Calculation of many biodiversity metrics, including species richness, species abundances, beta-diversity and
   locations of lineages.
+- Usage of protracted speciation to restrict the time period that speciation events can occur in.
+- Generate and apply a metacommunity to a simulation without requiring a new simulation to be performed.
 - Scalability - support for simulations of tens or hundreds of millions of individuals in a single simulation.
 
 Getting started
@@ -101,11 +108,17 @@ not usually expected that you need to provide any of these options.
 Performing simulations
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Check out the full simulation examples in `this jupyter notebook <example_notebook>`_.
+
 Setting up simulations
 ''''''''''''''''''''''
 
-There are two methods for providing configuration options in pycoalescence. Both require the same initial procedure.
-The recommended method is:
+The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulation>` object is outlined below.
+
+#. Instantiate our :class:`Simulation <pycoalescence.simulation.Simulation>` object using
+   :pycode:`sim = Simulation(logging_level=20)` where the logging level corresponds to the amount of information that is
+   displayed using `python's logging module <https://docs.python.org/3/library/logging.html>`_ (20 corresponds to "info",
+   the second highest display level, after "debug").
 
 #. Specify simulation parameters
 
@@ -151,6 +164,7 @@ The recommended method is:
 .. important:: The last three steps can be combined using :func:`run() <pycoalescence.simulation.Simulation.run>`,
                which also performs checks for if the simulation has run out of time and paused, rather than completing.
 
+See the :ref:`examples <sim_examples>` for the full simulation process.
 
 .. note::
     See Glossary_ for definitions of :term:`sample map`, :term:`fine map` and :term:`coarse map`.
@@ -179,6 +193,7 @@ Some of key simulation features are listed below.
   map and closed landscapes with hard boundaries. See :ref:`here <inf_land>`.
 
 
+.. _sim_examples:
 Examples
 ''''''''
 
@@ -219,13 +234,14 @@ inputted map files.
                             landscape_type=False)
     # add a set of speciation rates to be applied at the end of the simulation
     c.set_speciation_rates([0.2, 0.3, 0.4])
-    # set the map files
+    # set the map files - note that dimensions and offsets are detected automatically from the files
     c.set_map_files(sample_file="null", fine_file="path/to/fine.tif", coarse_file="path/to/coarse.tif")
     # add sample times
     c.add_sample_time(0.0)
     c.add_sample_time(1.0)
     # add historical maps
-    c.add_historical_map(fine_map="path/to/historicalfine1.tif", coarse_map="path/to/historicalcoarse1.tif", time=1, rate=0.5)
+    c.add_historical_map(fine_map="path/to/historicalfine1.tif", coarse_map="path/to/historicalcoarse1.tif", time=1,
+     rate=0.5)
     # run checks, complete the simulation and output the database
     c.run()
 
@@ -467,24 +483,25 @@ rates is provided within the :class:`CoalescenceTree class<pycoalescence.coalesc
 
 The two functions for this routine are
 
--  :func:`set_speciation_params() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>` which takes as
-   arguments
-
-   -  the SQL database file containing a finished simulation
-   -  T/F of recording full spatial data
-   -  either a csv file containing fragment data, or T/F for whether
-      fragments should be calculated from squares of continuous habitat.
-      \* list of speciation rates to apply
-   -  [optional] a sample file to specify certain cells to sample from
-   -  [optional] a config file containing the temporal sampling points
-      desired.
-
+-  :func:`set_speciation_params() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>` which
+   primarily takes a list of speciation rates to apply (for other arguments see
+   :func:`documentation <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>`.
 
 -  :func:`apply() <pycoalescence.coalescence_tree.CoalescenceTree.apply>` performs the analysis and writes to the output
    file. This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations
    will be stored in extra tables within the same SQL file as originally specified.
 
-The procedure for applying additional speciation rates to an existing database is
+Instead of speciation events always contributing a new species, they can instead draw from a metacommunity. This is
+achieved by supplying a metacommunity speciation rate and metacommunity size to
+:func:`set_speciation_params() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>`. A non-spatial
+neutral model is run to generate the metacommunity, which is then sampled from every time a speciation event occurs in
+the spatial model. As such the "speciation rate" from the spatial model can be intepretted as immigration from a
+metacommunity.
+
+Examples
+''''''''
+
+A basic application procedure is
 
 .. code-block:: python
 
@@ -492,7 +509,7 @@ The procedure for applying additional speciation rates to an existing database i
     t = CoalescenceTree()
     speciation_rates = [0.1, 0.2 ,0.3]
     t.set_database("output/data_1_1.db")
-    t.set_speciation_params("T", "null", speciation_rates)
+    t.set_speciation_params(speciation_rates)
     t.apply()
 
 The :class:`CoalescenceTree class<pycoalescence.coalescence_tree.CoalescenceTree>` object can also be set up from a
@@ -506,6 +523,21 @@ The :class:`CoalescenceTree class<pycoalescence.coalescence_tree.CoalescenceTree
     # Now import our completed simulation without needing to run t.set_database("filepath")
     t = CoalescenceTree(sim)
 
+Example application with more complicated parameters
+.. code-block:: python
+
+    from pycoalescence import Simulation, CoalescenceTree
+    sim = Simulation()
+    # ... set up simulation here, then run
+    # Now import our completed simulation without needing to run t.set_database("filepath")
+    speciation_rates = [0.1, 0.2, 0.3]
+    times = [0.0, 1.0, 2.0]
+    t = CoalescenceTree(sim)
+    t.set_speciation_params(speciation_rates=speciation_rates, record_spatial=True,
+    record_fragments="path/to/fragments.csv", sample_file="path/to/sample/file.tif",
+    times=times)
+    t.apply()
+
 A few biodiversity metrics can then be obtained directly from the database using built-in functions, relieving the user
 of having to generate these manually. These include
 
@@ -516,20 +548,22 @@ of having to generate these manually. These include
 - species octave (2^n) classes for generating species abundance distributions,
   using :func:`get_octaves() <pycoalescence.coalescence_tree.CoalescenceTree.get_octaves>`
 
+Check out other full examples in `this jupyter notebook <example_notebook>`_.
+
 .. note:: The above functions require supplying a speciation rate and time, otherwise will output data for all
           speciation rates and times.
 
 .. tip:: Equivalent functions also exist for obtaining individual fragment biodiversity metrics.
 
 .. tip:: The entire list of species can be outputted using
-         :func:`get_species_list <pycoalescence.coalescence_tree.CoalescenceTree.get_species_list>`. This may be useful for scenarios
-         where it is desirable to calculate custom biodiversity metrics.
+         :func:`get_species_list <pycoalescence.coalescence_tree.CoalescenceTree.get_species_list>`. This may be useful
+         for scenarios where it is desirable to calculate custom biodiversity metrics.
 
 Extended analysis
 ~~~~~~~~~~~~~~~~~
 
-The :py:mod:`coalescence_tree <pycoalescence.coalescence_tree>` module can be used for more extensive simulation analysis, such
-as comparing simulated landscapes to real data and calculating goodness of fits.
+The :py:mod:`coalescence_tree <pycoalescence.coalescence_tree>` module can be used for more extensive simulation
+analysis, such as comparing simulated landscapes to real data and calculating goodness of fits.
 
 The general procedure for using this module involves a few functions, all contained in the
 :class:`CoalescenceTree class <pycoalescence.coalescence_tree.CoalescenceTree>`.
@@ -537,6 +571,7 @@ The general procedure for using this module involves a few functions, all contai
 - :func:`set_database() <pycoalescence.coalescence_tree.CoalescenceTree.set_database>` generates the link to the SQL
   database, which should be an output from a **necsim** simulation (run using the
   :class:`Simulation class <pycoalescence.simulation.Simulation>`).
+
 - :func:`import_comparison_data() <pycoalescence.coalescence_tree.CoalescenceTree.import_comparison_data>` reads an
   SQL database which contains real data to compare to the simulation output. The comparison data should contain the
   following tables:

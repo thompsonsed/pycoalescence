@@ -1,10 +1,10 @@
 AC_INIT(all, 1.0)
 AC_CONFIG_MACRO_DIR([m4])
 CPPFLAGS="$CPPFLAGS -I. -std=c++14"
-LDFLAGS="$LDFLAGS -L."
 VPATH="necsim:$VPATH"
 OJBDIR="$OBJDIR"
 BUILDDIR="$BUILDDIR"
+LDFLAGS="$LDFLAGS -L."
 platform_so="$PLATFORM_SO"
 
 dnl Check the provided arguments
@@ -13,7 +13,8 @@ AC_ARG_WITH(verbose, [AS_HELP_STRING([--with-verbose],[enable verbose mode enabl
 AC_ARG_WITH(gdal, [AS_HELP_STRING([--with-gdal[PATH]],[prefix of gdal [guess]])],[],[with_gdal=no])
 AC_ARG_WITH(hpc, [AS_HELP_STRING([--with-hpc],[add compile options for icp compilation on IC HPC])],[],[with_hpc=no])
 AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing default paths])
-AC_ARG_VAR([PYTHON_LIB], [Library location for python header files, bypassing default paths])
+AC_ARG_VAR([PYTHON_LDFLAGS], [Library location for python header files, bypassing default paths])
+AC_ARG_VAR([PYTHON_LIB], [Name of the python library for linking (e.g. -lpython3.6m)])
 
 dnl Switch to c++ mode
 define(m4_pattern_allow)
@@ -21,12 +22,13 @@ AC_LANG(C++)
 dnl Check if c++ compiler works works.
 AC_PROG_CXX([icpc icc g++ gcc])
 AX_CXX_COMPILE_STDCXX(14, [], [optional])
+
 if [[ "$HAVE_CXX14" == 1 ]]
 then
 	fullcpp14="Full"
 	echo "Full c++14 support detected..."
 else
-	fullcpp14="Partial/not detected"
+	fullcpp14="partial/not detected"
 	AC_MSG_WARN([Some issues encountered detected c++14, continuing anyway.])
 fi
 dnl AC_PROG_CXX
@@ -81,8 +83,7 @@ then
 	with_sqlite3="no"
 	AC_ERROR([A working sqlite3 library is required. Make sure it is correctly installed on your system.])
 fi
-LIBS="$LIBS -lsqlite3"
-
+LIBS="$LIBS -lsqlite3 $PYTHON_LIB"
 dnl Check boost headers
 AC_LANG(C++)
 BOOST_REQUIRE([1.54], AC_ERROR([A working boost library v1.54 or greater is required. Make sure it is correctly installed on your system.]))
@@ -173,7 +174,7 @@ fi
 DEFINES="$defines $user_options"
 CPPFLAGS2="$CPPFLAGS $PYTHON_INCLUDE"
 CPPFLAGS="$CPPFLAGS $DEFINES -O3 $PYTHON_INCLUDE"
-LDFLAGS="$LDFLAGS $PYTHON_LIB"
+LDFLAGS="$LDFLAGS $PYTHON_LDFLAGS"
 AC_SUBST(objs, ["$defines"])
 
 dnl Create the output variables

@@ -6,20 +6,25 @@
 ##INTRODUCTION
 pycoalescence is a python package for spatially-explicit coalescence neutral simulations. pycoalescence provides a
 pythonic interface for setting up, running and analysing spatially-explicit neutral simulations. Simulations themselves
-are performed in c++ using [necsim](http://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html) for 
+are performed in c++ using [necsim](https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html) for 
 excellent performance. Usage of python allows for easier setup of simulation parameters. 
 
-For full documentation please see [here](http://pycoalescence.readthedocs.io/en/release/).
+For full documentation please see [here](https://pycoalescence.readthedocs.io/en/release/).
 
 ##INSTALLATION
 
-Simply run `setup.py` with any required compilation flags. This requires all dependencies have been installed.
-By default, .o files are compiled to lib/obj and .so files are compiled to build/sharedpyX
-where X is the major python version number (allowing for both python 2.x and python 3.x versions
- to be installed in the same directory). 
- 
- Make sure compilation is performed under the same python version simulations will be performed in.  
+Using pip, make sure all the prerequisites are installed and run
+`pip install pycoalescence`.
 
+If you cannot install via pip, download the tar ball and
+run `python setup.py install`. The package can also be installed locally,
+ (i.e not to the virtual or system environment) using `python installer.py` in
+ the module directory. Either method requires all dependencies have been installed.
+ By default, .o files are compiled to lib/obj and the .so file is compiled to the
+necsim directory.
+
+Make sure compilation is performed under the same python version
+simulations will be performed in.
 
 ##BASIC USAGE
 
@@ -55,25 +60,34 @@ The basic procedure for this procedure is
 
 ##REQUIREMENTS
 
-### Essential
-* Python version 2 >= 2.7.9 or 3 >= 3.4.1
-* C++ compiler (such as GNU g++) with C++11 support.
-* The SQLite library available here. Require both c++ and python installations.
-* The Boost library for C++ available here.
-* Numerical python (numpy) package. 
-* Note that gdal `c++` files are also required for compiling the coalescence simulator with tif file support.
 
-###Recommended
-* The gdal library for both python and C++ (available here). This is **ESSENTIAL** if you wish to use .tif files for necsim. 
-It allows reading parameter information from .tif files (using detect_map_dimensions()). Both the python package and 
-c++ binaries are required; installation differs between systems, so view the gdal documentation for more help installing
- gdal properly.
-* The fast-cpp-csv-parser by Ben Strasser, available here. This provides much faster csv read and write capabilities and
- is probably essential for larger-scale simulations, but not necessary if your simulations are small. 
- The folder fast-cpp-csv-parser/ should be in the same directory as your necsim C++ header files 
- (the lib/necsim directory).
-* Scientific python (scipy) package v12.0 or later for generating landscapes.
-Only necessary if usage of the `FragmentedLandscapes` class is needed.
+### Essential
+
+
+-  Python version 2 >= 2.7.9 or 3 >= 3.4.1
+-  C++ compiler (such as GNU g++) with C++14 support.
+-  The SQLite library available [here](https://www.sqlite.org/download.html). Requires both ``c++`` 
+   and ``python`` installations. Comes as standard with python.
+-  The Boost library for C++ available [here](https://www.boost.org).
+-  Numerical python (``numpy``) package (`pip install numpy`).
+- The gdal library for both python and C++ ([available here](https://www.gdal.org/)). Although it is possible to turn
+  off gdal support, this is not recommended as it is essential if you wish to use .tif files for
+  simulation. Both the python package and ``c++`` binaries are required; installation differs between systems, so view
+  the gdal documentation for more help installing gdal properly.
+
+
+### Recommended
+
+
+
+- The fast-cpp-csv-parser by Ben Strasser, available
+  [here](https://github.com/ben-strasser/fast-cpp-csv-parser). This provides much faster csv read and write capabilities
+  and is probably essential for larger-scale simulations, but not necessary if your simulations are small. The folder
+  *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory).
+
+- Scipy package for generating fragmented landscapes (``pip install scipy``).
+
+- Matplotlib package for plotting fragmented landscapes (``pip install matplotlib``).
 
 ##CONTACTS
 
@@ -83,6 +97,7 @@ Contact: samuelthompson14@imperial.ac.uk - thompsonsed@gmail.com
 
 Institution: Imperial College London and National University of Singapore
 
-Version: 1.0.1
-This project is released under MIT 
+Version: 1.2.6
+
+This project is released under MIT licence. 
 See file **LICENSE.txt** or go to [here](https://opensource.org/licenses/MIT) for full license details.

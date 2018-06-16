@@ -6,4 +6,4 @@ Modules
     :maxdepth: 3
 
     pycoalescence
-    necsim/necsim
+    necsim

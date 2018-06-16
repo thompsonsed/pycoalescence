@@ -14,6 +14,7 @@ var searchData=
   ['writenewmetacommuntyparameters',['writeNewMetacommuntyParameters',['../class_community.html#ac900c23ffe2572504fca11f20b7ba8cd',1,'Community']]],
   ['writeout',['writeOut',['../class_matrix.html#ab3d577ddd4221a3da49296c2c4ae4e04',1,'Matrix']]],
   ['writeparameters',['writeParameters',['../class_simulate_dispersal.html#ae0afed6eeb06f5bae4ee13a24850c8c5',1,'SimulateDispersal']]],
+  ['writerepeatinfo',['writeRepeatInfo',['../class_simulate_dispersal.html#ab8c48b2398f715d4de2b35a91daaae58',1,'SimulateDispersal']]],
   ['writesimstarttoconsole',['writeSimStartToConsole',['../class_tree.html#a95360a2f62ef0eb436d586552b299e1f',1,'Tree']]],
   ['writespeciationrates',['writeSpeciationRates',['../class_community.html#adcfc04e92cbb597682dcc1f2913d6668',1,'Community']]],
   ['writesteptoconsole',['writeStepToConsole',['../class_tree.html#a37de93174eece50a2fc082b683d97047',1,'Tree']]],

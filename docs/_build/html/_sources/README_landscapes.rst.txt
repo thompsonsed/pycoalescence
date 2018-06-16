@@ -1,4 +1,5 @@
 .. _`simulate_and_generate_landscapes`:
+
 Simulating and generating landscapes
 ====================================
 
@@ -11,6 +12,7 @@ kernels to produce a variety of landscape-level dispersal metrics. Generation of
 provided through the :class:`DispersalSimulation class <pycoalescence.dispersal_simulation.DispersalSimulation>`.
 
 .. _`generate_landscapes`:
+
 Generating landscapes
 ---------------------
 
@@ -106,6 +108,7 @@ Obtaining landscape metrics
 landscape metrics on a map file. This is a work in progress, and additional metrics may be added later.
 
 .. _`landscape_metrics_mnn`:
+
 Mean nearest-neighbour
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -120,6 +123,7 @@ calculated for a landscape using the following:
     1.50
 
 .. _`landscape_metrics_clumpy`:
+
 Clumpiness metric
 ^^^^^^^^^^^^^^^^^
 

@@ -19,6 +19,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   struct_CommunitiesArray.rst
+
+.. toctree::
+   :maxdepth: 5
+
    struct_CommunityParameters.rst
 
 .. toctree::
@@ -75,11 +80,6 @@ Classes and Structs
    :maxdepth: 5
 
    class_Cell.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_CommunitiesArray.rst
 
 .. toctree::
    :maxdepth: 5

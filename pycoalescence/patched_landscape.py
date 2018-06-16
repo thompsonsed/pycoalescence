@@ -255,8 +255,10 @@ def convert_index_to_x_y(index, dim):
 
 	:param index: the index to convert from
 	:param dim: the x dimension of the matrix
-	:return:
+
+	:return: a tuple of integers containing the x and y coordinates
+	:rtype: tuple
 	"""
 	density_x = index % dim
 	density_y = math.floor(index / dim)
-	return density_x, density_y
+	return int(density_x), int(density_y)

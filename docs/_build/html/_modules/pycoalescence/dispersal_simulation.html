@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
@@ -140,9 +140,10 @@
 
 	<span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Safely destroys the connection to the database, if it exists.</span>
+<span class="sd">		Safely destroys the connection to the database, if it exists, and destroys the c++ objects.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_close_database_connection</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span> <span class="o">=</span> <span class="bp">None</span>
 
 	<span class="k">def</span> <span class="nf">_open_database_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -191,6 +192,26 @@
 												   <span class="s2">&quot; name=&#39;{}&#39;;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 		<span class="k">return</span> <span class="n">existence</span>
 
+<div class="viewcode-block" id="DispersalSimulation.set_map_files"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.set_map_files">[docs]</a>	<span class="k">def</span> <span class="nf">set_map_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fine_file</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">coarse_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">historical_fine_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+					  <span class="n">historical_coarse_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sets the map files.</span>
+
+<span class="sd">		Uses a null sampling regime, as the sample file should have no effect.</span>
+
+<span class="sd">		:param str fine_file: the fine map file. Defaults to &quot;null&quot; if none provided</span>
+<span class="sd">		:param str coarse_file: the coarse map file. Defaults to &quot;none&quot; if none provided</span>
+<span class="sd">		:param str historical_fine_file: the historical fine map file. Defaults to &quot;none&quot; if none provided</span>
+<span class="sd">		:param str historical_coarse_file: the historical coarse map file. Defaults to &quot;none&quot; if none provided</span>
+<span class="sd">		:param int deme: the number of individuals per cell</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">Landscape</span><span class="o">.</span><span class="n">set_map_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="n">sample_file</span><span class="p">,</span> <span class="n">fine_file</span><span class="o">=</span><span class="n">fine_file</span><span class="p">,</span> <span class="n">coarse_file</span><span class="o">=</span><span class="n">coarse_file</span><span class="p">,</span>
+								<span class="n">historical_fine_file</span><span class="o">=</span><span class="n">historical_fine_file</span><span class="p">,</span>
+								<span class="n">historical_coarse_file</span><span class="o">=</span><span class="n">historical_coarse_file</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">deme</span> <span class="o">=</span> <span class="n">deme</span></div>
+
 <div class="viewcode-block" id="DispersalSimulation.set_dispersal_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.set_dispersal_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">set_dispersal_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dispersal_method</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="n">dispersal_file</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m_prob</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 								 <span class="n">cutoff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dispersal_relative_cost</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">restrict_self</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -225,7 +246,7 @@
 <span class="sd">		Provides a convenience function for updating all parameters which can be updated.</span>
 
 <span class="sd">		:param int number_repeats: the number of repeats to perform the dispersal simulation for</span>
-<span class="sd">		:param int number_steps: the number of steps to iterate for in calculating the mean distance travelled</span>
+<span class="sd">		:param list/int number_steps: the number of steps to iterate for in calculating the mean distance travelled</span>
 <span class="sd">		:param int seed: the random number seed</span>
 <span class="sd">		:param str dispersal_method: the method of dispersal</span>
 <span class="sd">		:param str dispersal_file: the dispersal file (alternative to dispersal_method)</span>
@@ -242,6 +263,11 @@
 		<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 			<span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 				<span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;number_steps&quot;</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="n">v</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_dispersal_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_prob</span><span class="p">,</span>
 									  <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_relative_cost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">restrict_self</span><span class="p">)</span></div>
 
@@ -266,7 +292,8 @@
 <span class="sd">		a new random cell is chosen</span>
 <span class="sd">		:param float dispersal_relative_cost: relative dispersal ability through non-habitat</span>
 <span class="sd">		:param bool restrict_self: if true, self-dispersal is prohibited</span>
-<span class="sd">		:param int number_steps: the number to calculate for mean distance travelled</span>
+<span class="sd">		:param list/int number_steps: the number to calculate for mean distance travelled, provided as an int or a list</span>
+<span class="sd">								 	  of ints</span>
 <span class="sd">		:param str dispersal_file: path to the dispersal map file, or none.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span> <span class="o">=</span> <span class="n">number_repeats</span>
@@ -276,7 +303,10 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="n">landscape_type</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequential</span> <span class="o">=</span> <span class="n">sequential</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">restrict_self</span> <span class="o">=</span> <span class="n">restrict_self</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="n">number_steps</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">number_steps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="n">number_steps</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">number_steps</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">set_output_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_dispersal_parameters</span><span class="p">(</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">dispersal_file</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">m_prob</span><span class="p">,</span>
 									  <span class="n">cutoff</span><span class="p">,</span> <span class="n">dispersal_relative_cost</span><span class="p">,</span> <span class="n">restrict_self</span><span class="p">)</span></div>
@@ -301,7 +331,8 @@
 													<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
 													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
 													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span><span class="p">)</span>
+													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span><span class="p">),</span>
+													<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">set_historical_map_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">,</span>
 																	  <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
 																	   <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
@@ -333,7 +364,7 @@
 		<span class="n">check_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">number_repeats</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_repeats has not been set.&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">number_steps</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">number_steps</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">],</span> <span class="p">[]]:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_steps has not been set.&quot;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Seed has not been set.&quot;</span><span class="p">)</span>
@@ -560,7 +591,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

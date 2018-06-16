@@ -7,7 +7,7 @@ File SpatialTree.h
 
 
 
-Contains the :ref:`class_SpatialTree` class for running simulations and outputting the phylogenetic tree. 
+Contains :ref:`class_SpatialTree` for running simulations and outputting the phylogenetic tree. 
 
 
 .. contents:: Contents
@@ -28,8 +28,6 @@ Definition (``necsim/SpatialTree.h``)
 Detailed Description
 --------------------
 
-Sam Thompson 
-31/08/2016
 Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 

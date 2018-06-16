@@ -7,7 +7,7 @@ File Map.h
 
 
 
-Contains the :ref:`template_class_Map` class for importing .tif files and obtaining a variety of information from them. 
+Contains :ref:`template_class_Map` for importing .tif files and obtaining a variety of information from them. 
 
 
 .. contents:: Contents

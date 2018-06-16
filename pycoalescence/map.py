@@ -118,13 +118,13 @@ class Map(object):
 
 		:rtype: None
 		"""
-		ds = self.get_database(file=file)
+		ds = self.get_dataset(file=file)
 		self.band_number = band_no
 		self.data = np.array(ds.GetRasterBand(self.band_number).ReadAsArray(),
 							 dtype=np.float)
 		ds = None
 
-	def get_database(self, file=None):
+	def get_dataset(self, file=None):
 		"""
 		Gets the dataset from the file.
 
@@ -160,7 +160,7 @@ class Map(object):
 				self.band_number = 1
 		else:
 			self.band_number = band_no
-		ds = self.get_database()
+		ds = self.get_dataset()
 		data_type = ds.GetRasterBand(self.band_number).DataType
 		ds = None
 		return data_type
@@ -180,7 +180,7 @@ class Map(object):
 				self.band_number = 1
 		else:
 			self.band_number = band_no
-		ds = self.get_database()
+		ds = self.get_dataset()
 		no_data = ds.GetRasterBand(self.band_number).GetNoDataValue()
 		return no_data
 
@@ -225,6 +225,36 @@ class Map(object):
 		ds.FlushCache()
 		ds = None
 
+	def write_subset(self, array, x_off, y_off):
+		"""
+		Writes over a subset of the array to file. The size of the overwritten area is detected from the inputted array,
+		and the offsets describe the location in the output map to overwrite.
+
+		The output map must file must exist and be larger than the array.
+
+		:param numpy.ndarray array: the array to write out
+		:param int x_off: the x offset to begin writing out from
+		:param int y_off: the y offset to begin writing out from
+
+		:rtype: None
+		"""
+		# TODO write unittests for this
+		if not self.map_exists(self.file_name):
+			raise IOError("File {} does not exist for writing.".format(self.file_name))
+		x, y = self.get_x_y()
+		if array.shape[0] > x or array.shape[1] > y:
+			raise ValueError("Array of size {}, {} is larger than map of size {}, {}.".format(array.shape[0],
+																							  array.shape[1],
+																							  x, y))
+		ds = gdal.Open(self.file_name, gdal.GA_Update)
+		if not ds:
+			raise IOError("Could not open tif file {}.".format(self.file_name))
+		if self.band_number is None:
+			self.band_number = 1
+		ds.GetRasterBand(self.band_number).WriteArray(array, x_off, y_off)
+		ds.FlushCache()
+		ds = None
+
 	def create(self, file, bands=1, datatype=gdal.GDT_Byte, geotransform=None, projection=None):
 		"""
 		Create the file output and writes the data to the output.
@@ -266,7 +296,7 @@ class Map(object):
 			src_file = self.file_name
 		if self.map_exists(dst_file):
 			raise IOError("File already exists at {}.".format(dst_file))
-		src_ds = self.get_database(src_file)
+		src_ds = self.get_dataset(src_file)
 		driver = gdal.GetDriverByName("GTiff")
 		dst_ds = driver.CreateCopy(dst_file, src_ds, strict=0)
 		# Once we're done, close properly the dataset
@@ -358,7 +388,7 @@ class Map(object):
 		"""
 		if self.dimensions_set:
 			return [self.x_size, self.y_size]
-		ds = self.get_database()
+		ds = self.get_dataset()
 		x = ds.RasterXSize
 		y = ds.RasterYSize
 		ds = None
@@ -370,7 +400,7 @@ class Map(object):
 
 		:return: list containing the geotransform parameters
 		"""
-		ds = self.get_database()
+		ds = self.get_dataset()
 		ulx, xres, xskew, uly, yskew, yres = ds.GetGeoTransform()
 		ds = None
 		return [ulx, xres, xskew, uly, yskew, yres]
@@ -396,7 +426,7 @@ class Map(object):
 
 		:rtype: str
 		"""
-		ds = self.get_database()
+		ds = self.get_dataset()
 		sr = ds.GetProjection()
 		ds = None
 		return sr
@@ -428,11 +458,11 @@ class Map(object):
 
 		:return: a numpy array containing the subsetted data
 		"""
-		ds = self.get_database()
+		ds = self.get_dataset()
 		x, y = self.get_x_y()
 		if not 0 <= x_size + x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
 			raise ValueError("Requested x, y subset of [{}:{}, {}:{}]"
-							 " not with array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
+							 " not within array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
 																			 y_offset, y_offset + y_size,
 																			 x, y))
 		to_return = np.array(ds.GetRasterBand(1).ReadAsArray(x_offset, y_offset, x_size, y_size), dtype=np.float)

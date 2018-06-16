@@ -7,7 +7,7 @@ File Tree.h
 
 
 
-Contains the :ref:`class_Tree` class implementation as the main simulation object for spatially-implicit coalescence simulations. Provides the basis for spatially-explicit versions in :ref:`class_SpatialTree`, and protracted speciation versions in :ref:`class_ProtractedTree` and :ref:`class_ProtractedSpatialTree`. 
+Contains the main simulation object for spatially-implicit coalescence simulations. 
 
 
 .. contents:: Contents
@@ -28,10 +28,8 @@ Definition (``necsim/Tree.h``)
 Detailed Description
 --------------------
 
-Main simulation class for performing a non-spatial neutral simulation and generating the phylogenetic tree of the individuals.
-Samuel Thompson 
-24/03/17
-MIT Licence.
+Provides the basis for spatially-explicit versions in :ref:`class_SpatialTree`, and protracted speciation versions in :ref:`class_ProtractedTree` and :ref:`class_ProtractedSpatialTree`.
+MIT Licence. 
 
 
 

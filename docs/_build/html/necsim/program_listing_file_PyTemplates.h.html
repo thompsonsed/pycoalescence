@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -82,7 +82,7 @@
     <span class="n">PyObject_HEAD</span>
     <span class="n">PyObject</span> <span class="o">*</span><span class="n">logger</span><span class="p">;</span>
     <span class="n">PyObject</span> <span class="o">*</span><span class="n">log_function</span><span class="p">;</span>
-    <span class="n">T</span> <span class="o">*</span><span class="n">base_object</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">base_object</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
 
 <span class="c1">//  virtual void init()</span>
 <span class="c1">//  {</span>
@@ -115,7 +115,7 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">delete</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">removeGlobalLogger</span><span class="p">();</span>
@@ -188,7 +188,7 @@
         <span class="k">try</span>
         <span class="p">{</span>
             <span class="n">initialise_logger</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
-            <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span> <span class="o">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">();</span>
+            <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span> <span class="o">=</span> <span class="n">make_unique</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">();</span>
 <span class="c1">//          self-&gt;init();</span>
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
@@ -331,7 +331,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

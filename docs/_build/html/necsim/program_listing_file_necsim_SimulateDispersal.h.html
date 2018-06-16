@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -82,17 +82,20 @@
 <span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;set&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Landscape.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;DispersalCoordinator.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Cell.h&quot;</span><span class="cp"></span>
-
+<span class="cp">#include</span> <span class="cpf">&quot;DataMask.h&quot;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="nc">SimulateDispersal</span>
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
     <span class="c1">// The density map object</span>
     <span class="n">Landscape</span> <span class="n">density_landscape</span><span class="p">;</span>
+    <span class="c1">// The samplemask object</span>
+    <span class="n">DataMask</span> <span class="n">dataMask</span><span class="p">;</span>
     <span class="c1">// Dispersal coordinator</span>
     <span class="n">DispersalCoordinator</span> <span class="n">dispersal_coordinator</span><span class="p">{};</span>
     <span class="c1">// Stores all key simulation parameters for the Landscape object</span>
@@ -103,30 +106,31 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">;</span>
     <span class="c1">// The sqlite3 database object for storing outputs</span>
     <span class="n">sqlite3</span> <span class="o">*</span> <span class="n">database</span><span class="p">;</span>
-    <span class="c1">// Vector for storing successful dispersal distances</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">distances</span><span class="p">;</span>
+    <span class="c1">// Vector for storing pairs of dispersal distances to parameter references</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;&gt;</span> <span class="n">distances</span><span class="p">;</span>
+    <span class="c1">// Maps distances to parameter references</span>
+    <span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">parameter_references</span><span class="p">;</span>
     <span class="c1">// Vector for storing the cells (for randomly choosing from)</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="n">cells</span><span class="p">;</span>
     <span class="c1">// The number of repeats to run the dispersal loop for</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num_repeats</span><span class="p">;</span>
-    <span class="c1">// The number of num_steps within each dispersal loop for the average distance travelled/</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num_steps</span><span class="p">;</span>
+    <span class="c1">// The number of num_steps within each dispersal loop for the average distance travelled, which should be</span>
+    <span class="n">set</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">num_steps</span><span class="p">;</span>
     <span class="c1">// generation counter</span>
     <span class="kt">double</span> <span class="n">generation</span><span class="p">;</span>
     <span class="c1">// If true, sequentially selects dispersal probabilities, default is true</span>
     <span class="kt">bool</span> <span class="n">is_sequential</span><span class="p">;</span>
     <span class="c1">// Reference number for this set of parameters in the database output</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">parameter_reference</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_parameter_reference</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">SimulateDispersal</span><span class="p">()</span>
+    <span class="n">SimulateDispersal</span><span class="p">()</span> <span class="o">:</span> <span class="n">num_steps</span><span class="p">(),</span> <span class="n">distances</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">simParameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">num_repeats</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">is_sequential</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">parameter_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">max_parameter_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">generation</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -141,6 +145,8 @@
 
     <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">();</span>
 
+    <span class="kt">void</span> <span class="nf">setSizes</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">setDispersalParameters</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">setSeed</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">)</span>
@@ -154,7 +160,10 @@
 
     <span class="kt">void</span> <span class="nf">setNumberRepeats</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">setNumberSteps</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setNumberSteps</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getMaxNumberSteps</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">storeCellList</span><span class="p">();</span>
 
     <span class="k">const</span> <span class="n">Cell</span><span class="o">&amp;</span> <span class="n">getRandomCell</span><span class="p">();</span>
@@ -165,10 +174,14 @@
 
     <span class="kt">void</span> <span class="nf">runMeanDistanceTravelled</span><span class="p">();</span>
 
+
+    <span class="kt">void</span> <span class="nf">writeRepeatInfo</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">);</span>
+
     <span class="kt">void</span> <span class="nf">writeDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">writeParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">);</span>
 
+    <span class="kt">void</span> <span class="nf">clearParameters</span><span class="p">();</span>
     <span class="kt">void</span> <span class="nf">checkMaxParameterReference</span><span class="p">();</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">checkMaxIdNumber</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">);</span>
@@ -237,7 +250,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

@@ -5,7 +5,6 @@ to assert simulation outputs are as expected.
 import logging
 import os
 import unittest
-import warnings
 
 try:
 	from cStringIO import StringIO  # Python 2 string support
@@ -13,7 +12,7 @@ except ImportError:
 	from io import StringIO
 
 from pycoalescence import Simulation
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll, skipLongTest
 
 
 def setUpModule():
@@ -316,7 +315,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		Tests that info output streaming works as intended.
 		"""
 		log_stream = StringIO()
-		with open("reference/log_12_2.txt", "r") as content_file:
+		with open("sample/log_12_2.txt", "r") as content_file:
 			expected_log = content_file.read().replace('\r', '').replace('\n', '')
 		s = Simulation(logging_level=logging.INFO, stream=log_stream)
 		s.set_simulation_params(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
@@ -350,6 +349,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		self.assertEqual("", log_stream.getvalue())
 
 
+@skipLongTest
 class TestInitialCountSuccess(unittest.TestCase):
 	"""
 	Tests that the initial count is correct
@@ -509,7 +509,7 @@ class TestSimulationMapDensityReading(unittest.TestCase):
 		"""
 		Tests the average density of the fine map is correct.
 		"""
-		self.assertAlmostEqual(self.c.get_average_density(), 38339.500427246094, 3)
+		self.assertAlmostEqual(self.c.get_average_density(), 38339.499790687034, 3)
 
 	def testCountIndividuals(self):
 		"""
@@ -556,3 +556,27 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		self.assertEqual(2627, self.base_sim.get_richness())
 		self.assertEqual(2520, self.hist_sim2.get_richness())
 		self.assertEqual(2434, self.hist_sim.get_richness())
+
+@skipLongTest
+class TestExpansionOverTime(unittest.TestCase):
+	"""Tests that large expansions over time are dealt with properly when sampling multiple time points."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Run the simulation for expansion over time."""
+		cls.sim = Simulation(logging_level=50)
+		cls.sim.set_simulation_params(seed=5, job_type=17, output_directory="output", min_speciation_rate=0.0001,
+									  sigma=1, deme=100, sample_size=1.0, landscape_type="infinite")
+		cls.sim.set_map_files("null", "sample/null.tif", "sample/null_large.tif")
+		cls.sim.add_historical_map("sample/null.tif", "sample/null_large.tif", time=500, rate=0.5)
+		cls.sim.add_sample_time([0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])
+		cls.sim.run()
+
+	def testSpeciesRichnessAtTimes(self):
+		"""Checks the species richness is correct for each time point."""
+		self.assertEqual(344, self.sim.get_richness(1))
+		self.assertEqual(344, self.sim.get_richness(2))
+		self.assertEqual(357, self.sim.get_richness(3))
+		self.assertEqual(367, self.sim.get_richness(4))
+		self.assertEqual(343, self.sim.get_richness(5))
+		self.assertEqual(338, self.sim.get_richness(6))

@@ -8,6 +8,7 @@ Class Hierarchy
    <ul class="treeView" id="class-treeView">
      <li>
        <ul class="collapsibleList">
+         <li>Struct <a href="struct_CommunitiesArray.html#struct-CommunitiesArray">CommunitiesArray</a></li>
          <li>Struct <a href="struct_CommunityParameters.html#struct-CommunityParameters">CommunityParameters</a></li>
          <li>Struct <a href="struct_ConfigException.html#struct-ConfigException">ConfigException</a></li>
          <li>Struct <a href="struct_FatalException.html#struct-FatalException">FatalException</a></li>
@@ -20,7 +21,6 @@ Class Hierarchy
          <li>Struct <a href="struct_SimParameters.html#struct-SimParameters">SimParameters</a></li>
          <li>Struct <a href="struct_SpeciesException.html#struct-SpeciesException">SpeciesException</a></li>
          <li>Class <a href="class_Cell.html#class-Cell">Cell</a></li>
-         <li>Class <a href="class_CommunitiesArray.html#class-CommunitiesArray">CommunitiesArray</a></li>
          <li>Class <a href="class_Community.html#class-Community">Community</a></li>
          <li>Class <a href="class_ConfigOption.html#class-ConfigOption">ConfigOption</a></li>
          <li>Class <a href="class_DataMask.html#class-DataMask">DataMask</a></li>

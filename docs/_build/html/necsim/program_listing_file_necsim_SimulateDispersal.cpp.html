@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -113,6 +113,25 @@
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcHistoricalCoarseMap</span><span class="p">();</span>
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">landscape_type</span><span class="p">);</span>
     <span class="n">density_landscape</span><span class="p">.</span><span class="n">recalculateHabitatMax</span><span class="p">();</span>
+    <span class="n">dataMask</span><span class="p">.</span><span class="n">importSampleMask</span><span class="p">(</span><span class="o">*</span><span class="n">simParameters</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setSizes</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">checkMaxParameterReference</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="n">max_parameter_reference</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">num_steps</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">num_steps</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span> <span class="p">:</span> <span class="n">num_steps</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">parameter_references</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">make_pair</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">i</span><span class="p">));</span>
+        <span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">distances</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="n">distances</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_repeats</span> <span class="o">*</span> <span class="n">num_steps</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setDispersalParameters</span><span class="p">()</span>
@@ -136,31 +155,53 @@
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Database file cannot be opened or created.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
+    <span class="n">checkMaxParameterReference</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setNumberRepeats</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">num_repeats</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
-    <span class="n">distances</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setNumberSteps</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setNumberSteps</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">num_steps</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="nl">item</span> <span class="p">:</span> <span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">num_steps</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">getMaxNumberSteps</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_number_steps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">num_steps</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">max_number_steps</span> <span class="o">=</span> <span class="o">*</span><span class="n">num_steps</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;No steps have been set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">max_number_steps</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">storeCellList</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">cell_total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="c1">// First count the number of density cells and pick a cell size</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">total</span> <span class="o">+=</span> <span class="n">density_landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">dataMask</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">cell_total</span><span class="o">++</span><span class="p">;</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">density_landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+            <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Choosing from &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">total</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; cells.&quot;</span><span class="p">);</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Choosing from &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">cell_total</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; cells of &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">total</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; individuals.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
     <span class="n">cells</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">total</span><span class="p">);</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ref</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
@@ -198,9 +239,11 @@
     <span class="n">storeCellList</span><span class="p">();</span>
     <span class="n">Cell</span> <span class="n">this_cell</span><span class="p">{};</span>
     <span class="n">this_cell</span> <span class="o">=</span> <span class="n">getRandomCell</span><span class="p">();</span>
+    <span class="c1">// Set up the parameter reference</span>
+    <span class="n">setSizes</span><span class="p">();</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_repeats</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">Cell</span> <span class="n">start_cell</span><span class="p">;</span>
+        <span class="n">Cell</span> <span class="n">start_cell</span><span class="p">{};</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_sequential</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="c1">// This takes into account rejection sampling based on density due to</span>
@@ -211,33 +254,62 @@
         <span class="c1">// Check the end point</span>
         <span class="n">getEndPoint</span><span class="p">(</span><span class="n">this_cell</span><span class="p">);</span>
         <span class="c1">// Now store the output location</span>
-        <span class="k">auto</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">distanceBetweenCells</span><span class="p">(</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">start_cell</span><span class="p">);</span>
-        <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">;</span>
+        <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_pair</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">distanceBetweenCells</span><span class="p">(</span><span class="n">this_cell</span><span class="p">,</span> <span class="n">start_cell</span><span class="p">));</span>
     <span class="p">}</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Dispersal simulation complete.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">runMeanDistanceTravelled</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Simulating dispersal &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; times for &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span> <span class="o">+</span>
-                 <span class="s">&quot; generations.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Simulating dispersal &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">num_repeats</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; times for (&quot;</span><span class="p">;</span>
+    <span class="c1">// The maximum number of steps</span>
+    <span class="n">setSizes</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_number_steps</span> <span class="o">=</span> <span class="n">getMaxNumberSteps</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span> <span class="p">:</span> <span class="n">num_steps</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">item</span> <span class="o">!=</span> <span class="n">max_number_steps</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;) generations.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="n">storeCellList</span><span class="p">();</span>
     <span class="n">Cell</span> <span class="n">this_cell</span><span class="p">{},</span> <span class="n">start_cell</span><span class="p">{};</span>
+    <span class="c1">// Reference for the distances vector</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dist_i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_repeats</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
+        <span class="n">writeRepeatInfo</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="c1">// iterator for elements in the set.</span>
+        <span class="k">auto</span> <span class="n">step_iterator</span> <span class="o">=</span> <span class="n">num_steps</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
         <span class="n">this_cell</span> <span class="o">=</span> <span class="n">getRandomCell</span><span class="p">();</span>
         <span class="n">start_cell</span> <span class="o">=</span> <span class="n">this_cell</span><span class="p">;</span>
         <span class="n">generation</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
         <span class="c1">// Keep looping until we get a valid end point</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">num_steps</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">max_number_steps</span><span class="p">;</span> <span class="n">j</span> <span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">getEndPoint</span><span class="p">(</span><span class="n">this_cell</span><span class="p">);</span>
             <span class="n">generation</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="o">*</span><span class="n">step_iterator</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">distances</span><span class="p">[</span><span class="n">dist_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_pair</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">distanceBetweenCells</span><span class="p">(</span><span class="n">start_cell</span><span class="p">,</span> <span class="n">this_cell</span><span class="p">));</span>
+                <span class="n">step_iterator</span> <span class="o">++</span><span class="p">;</span>
+                <span class="n">dist_i</span> <span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">}</span>
-        <span class="c1">// Now stores the distance travelled</span>
-        <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distanceBetweenCells</span><span class="p">(</span><span class="n">start_cell</span><span class="p">,</span> <span class="n">this_cell</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Dispersal simulation complete.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">writeRepeatInfo</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">);</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Dispersal simulation complete.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">writeRepeatInfo</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Simulating dispersal &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;/&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">num_repeats</span><span class="p">;</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">writeDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">)</span>
@@ -280,8 +352,21 @@
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">distances</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">max_id</span> <span class="o">+</span> <span class="n">i</span><span class="p">));</span>
-            <span class="n">sqlite3_bind_double</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-            <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">parameter_reference</span><span class="p">));</span>
+            <span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">parameter_references</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">);</span>
+
+<span class="c1">//#ifdef DEBUG // TODO move to debug</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">iter</span> <span class="o">==</span> <span class="n">parameter_references</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Cannot find parameter reference. Please report this bug.&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+<span class="c1">//#endif // DEBUG</span>
+            <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">reference</span> <span class="o">&gt;</span> <span class="n">max_parameter_reference</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">max_parameter_reference</span> <span class="o">=</span> <span class="n">reference</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">sqlite3_bind_double</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">);</span>
+            <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">reference</span><span class="p">));</span>
             <span class="n">step</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
             <span class="kt">time_t</span> <span class="n">start_check</span><span class="p">,</span> <span class="n">end_check</span><span class="p">;</span>
             <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start_check</span><span class="p">);</span>
@@ -321,6 +406,7 @@
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Database connection has not been opened, check programming.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
+    <span class="n">clearParameters</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">writeParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">)</span>
@@ -338,19 +424,32 @@
         <span class="n">string</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Could not create PARAMETERS table in database: &quot;</span><span class="p">;</span>
         <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">sErrMsg</span><span class="p">));</span>
     <span class="p">}</span>
-    <span class="n">string</span> <span class="n">insert_table</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO PARAMETERS VALUES(&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">parameter_reference</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &#39;&quot;</span> <span class="o">+</span> <span class="n">table_name</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span><span class="p">;</span>
-    <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sigma</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">tau</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>  <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">m_prob</span><span class="p">);</span>
-    <span class="n">insert_table</span> <span class="o">+=</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">cutoff</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &#39;&quot;</span> <span class="o">+</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">dispersal_method</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
-    <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">fine_map_file</span> <span class="o">+</span> <span class="s">&quot;&#39;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
-    <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;);&quot;</span><span class="p">;</span>
-    <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">insert_table</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span> <span class="p">:</span> <span class="n">parameter_references</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">string</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Could not insert into PARAMETERS table in database. </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-        <span class="n">message</span> <span class="o">+=</span> <span class="s">&quot;Error: &quot;</span><span class="p">;</span>
-        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">sErrMsg</span><span class="p">));</span>
+        <span class="n">string</span> <span class="n">insert_table</span> <span class="o">=</span>
+                <span class="s">&quot;INSERT INTO PARAMETERS VALUES(&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">second</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &#39;&quot;</span> <span class="o">+</span> <span class="n">table_name</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span><span class="p">;</span>
+        <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sigma</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+        <span class="n">insert_table</span> <span class="o">+=</span>
+                <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">tau</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">m_prob</span><span class="p">);</span>
+        <span class="n">insert_table</span> <span class="o">+=</span>
+                <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">cutoff</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &#39;&quot;</span> <span class="o">+</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">dispersal_method</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
+        <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">fine_map_file</span> <span class="o">+</span> <span class="s">&quot;&#39;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
+        <span class="n">insert_table</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">num_repeats</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;);&quot;</span><span class="p">;</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">insert_table</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">string</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Could not insert into PARAMETERS table in database. </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="s">&quot;Error: &quot;</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">sErrMsg</span><span class="p">));</span>
+        <span class="p">}</span>
     <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">clearParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">distances</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="n">parameter_references</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="n">num_steps</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">checkMaxParameterReference</span><span class="p">()</span>
@@ -359,7 +458,7 @@
     <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
     <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
-    <span class="n">parameter_reference</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">max_parameter_reference</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
     <span class="c1">// close the old statement</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_finalize</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
@@ -449,7 +548,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

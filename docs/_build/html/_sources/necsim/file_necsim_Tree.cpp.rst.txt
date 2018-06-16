@@ -7,7 +7,7 @@ File Tree.cpp
 
 
 
-Contains the :ref:`class_Tree` class implementation as the main simulation object for spatially-implicit coalescence simulations. Provides the basis for spatially-explicit versions in :ref:`class_SpatialTree`, and protracted speciation versions in :ref:`class_ProtractedTree` and :ref:`class_ProtractedSpatialTree`. 
+Contains the main simulation object for spatially-implicit coalescence simulations. Provides the basis for spatially-explicit versions in :ref:`class_SpatialTree`, and protracted speciation versions in :ref:`class_ProtractedTree` and :ref:`class_ProtractedSpatialTree`. 
 
 
 .. contents:: Contents
@@ -28,8 +28,6 @@ Definition (``necsim/Tree.cpp``)
 Detailed Description
 --------------------
 
-Samuel Thompson 
-24/03/17
 MIT Licence. 
 
 

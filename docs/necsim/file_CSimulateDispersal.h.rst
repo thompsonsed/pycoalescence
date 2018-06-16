@@ -99,6 +99,8 @@ Includes
 
 - ``necsimmodule.h`` (:ref:`file_necsimmodule.h`)
 
+- ``set``
+
 - ``sqlite3.h``
 
 - ``sstream``
