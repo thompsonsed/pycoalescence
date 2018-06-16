@@ -246,16 +246,9 @@ class Installer(build_ext):
 			if 'm' in sysconfig.get_config_var('LIBRARY'):
 				py_lib += 'm'
 		else:
-			# TODO remove if necessary
-			# self.build_dir = os.path.join(os.environ["SP_DIR"], "pycoalescence", "necsim")
-			# self.obj_dir = self.build_dir
 			cflags += "-I{}/include {}".format(os.environ["PREFIX"], "--enable-shared")
 			ldflags += "-L{}/lib".format(os.environ["PREFIX"])
-			# ldflags += " -L{}".format(sysconfig.get_config_var("srcdir"))
-			# pylib += " " + sysconfig.get_config_var('RUNSHARED')
-			# ldflags = ""
 			py_lib += sys.version[0:3]
-			# pylib=""
 			if 'm' in sysconfig.get_config_var('LIBRARY'):
 				py_lib += 'm'
 			cflags += " -DANACONDA"  # TODO fix anaconda installation
@@ -366,10 +359,6 @@ class Installer(build_ext):
 		"""
 		if not os.path.exists(tmp_dir):
 			os.makedirs(tmp_dir)
-		# TODO remove this
-		print("src dir: {}".format(src_dir))
-		print("tmp dir: {}".format(tmp_dir))
-		print("cmake args: {}".format(cmake_args))
 		subprocess.check_call(['cmake', src_dir] + cmake_args,
 							  cwd=tmp_dir, env=env)
 		subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,

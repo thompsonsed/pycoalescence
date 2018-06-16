@@ -238,7 +238,6 @@ class Map(object):
 
 		:rtype: None
 		"""
-		# TODO write unittests for this
 		if not self.map_exists(self.file_name):
 			raise IOError("File {} does not exist for writing.".format(self.file_name))
 		x, y = self.get_x_y()
