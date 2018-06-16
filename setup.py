@@ -45,6 +45,14 @@ class CustomExtension(Extension):
 with open('README.rst') as f:
 	readme = f.read()
 
+# libnecsim = Extension('pycoalescence/lib',
+# 					  sources=all_srcs,
+# 					  include_dirs = ["pycoalescence/lib" "pycoalescence/lib/necsim"],
+# 					  libraries=['gdal', 'boost_filesystem', 'boost_system', 'sqlite3'],
+# 					  extra_compile_args=['-std=c++14'],
+# 					  language="c++",  # generate C++ code
+# 					  )
+
 setup(name='pycoalescence',
 	  version=p_version,
 	  description='A spatially-explicit neutral ecology simulator using coalescence methods',
@@ -52,6 +60,7 @@ setup(name='pycoalescence',
 	  author_email='samuel.thompson14@imperial.ac.uk',
 	  url='http://pycoalescence.readthedocs.io/',
 	  long_description=readme,
+	  # ext_modules=[libnecsim],
 	  ext_modules=[CustomExtension("libnecsim", "pycoalescence/lib/")],
 	  cmdclass=dict(build_ext=Installer),
 	  license='MIT',

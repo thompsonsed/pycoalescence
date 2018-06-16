@@ -9,6 +9,7 @@ and compiles the ``c++`` files, if possible. Command line flags can be provided 
 
 from __future__ import print_function, absolute_import, division  # Only Python 2.x
 
+import itertools
 import logging
 import os
 import platform
@@ -151,7 +152,6 @@ class Installer(build_ext):
 			return "obj"
 		return self.obj_dir
 
-
 	def configure(self, opts=None):
 		"""
 		Runs ./configure --opts with the supplied options. This should create the makefile for compilation, otherwise a
@@ -221,7 +221,7 @@ class Installer(build_ext):
 		cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
 		cflags += " "
 		py_ldflags = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
-					" -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
+						 " -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
 		py_lib = "PYTHON_LIB=-lpython"
 		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS")) + " "
 		if "--sysroot=" in ldflags:
@@ -366,6 +366,7 @@ class Installer(build_ext):
 		"""
 		if not os.path.exists(tmp_dir):
 			os.makedirs(tmp_dir)
+		# TODO remove this
 		print("src dir: {}".format(src_dir))
 		print("tmp dir: {}".format(tmp_dir))
 		print("cmake args: {}".format(cmake_args))
@@ -399,9 +400,10 @@ class Installer(build_ext):
 		:return: tuple of two lists, first containing cmake configure arguments, second containing build arguments
 		:rtype: tuple
 		"""
-		cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + output_dir,
-					  '-DPYTHON_EXECUTABLE=' + sys.executable]
-
+		cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}'.format(output_dir),
+					  "-DPYTHON_LIBRARY={}".format(get_python_library("{}.{}".format(sys.version_info.major,
+																						sys.version_info.minor))),
+					  "-DPYTHON_INCLUDE_DIR={}".format(sysconfig.get_python_inc())]
 		cfg = 'Debug' if self.debug else 'Release'
 		build_args = ['--config', cfg]
 
@@ -416,6 +418,74 @@ class Installer(build_ext):
 			cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
 			build_args += ['--', '-j2']
 		return cmake_args, build_args
+
+
+def get_python_library(python_version):
+	"""Get path to the python library associated with the current python
+	interpreter."""
+	# determine direct path to libpython
+	python_library = sysconfig.get_config_var('LIBRARY')
+	potential_library = None
+	# if static (or nonexistent), try to find a suitable dynamic libpython
+	if (python_library is None or python_library[-2:] == '.a'):
+
+		candidate_lib_prefixes = ['', 'lib']
+
+		candidate_extensions = ['.lib', '.so']
+		if sysconfig.get_config_var('WITH_DYLD'):
+			candidate_extensions.insert(0, '.dylib')
+
+		candidate_versions = [python_version]
+		if python_version:
+			candidate_versions.append('')
+			candidate_versions.insert(
+				0, "".join(python_version.split(".")[:2]))
+
+		abiflags = getattr(sys, 'abiflags', '')
+		candidate_abiflags = [abiflags]
+		if abiflags:
+			candidate_abiflags.append('')
+
+		# Ensure the value injected by virtualenv is
+		# returned on windows.
+		# Because calling `sysconfig.get_config_var('multiarchsubdir')`
+		# returns an empty string on Linux, `du_sysconfig` is only used to
+		# get the value of `LIBDIR`.
+		libdir = sysconfig.get_config_var('LIBDIR')
+		if sysconfig.get_config_var('MULTIARCH'):
+			masd = sysconfig.get_config_var('multiarchsubdir')
+			if masd:
+				if masd.startswith(os.sep):
+					masd = masd[len(os.sep):]
+				libdir = os.path.join(libdir, masd)
+
+		if libdir is None:
+			libdir = os.path.abspath(os.path.join(
+				sysconfig.get_config_var('LIBDEST'), "..", "libs"))
+
+		candidates = (
+			os.path.join(
+				libdir,
+				''.join((pre, 'python', ver, abi, ext))
+			)
+			for (pre, ext, ver, abi) in itertools.product(
+			candidate_lib_prefixes,
+			candidate_extensions,
+			candidate_versions,
+			candidate_abiflags
+		)
+		)
+		for candidate in candidates:
+			if os.path.exists(candidate):
+				# we found a (likely alternate) libpython
+				potential_library = candidate
+				if potential_library[-2:] != ".a":
+					break
+			# Otherwise still a static library, keep searching
+	if potential_library is None:
+		raise IOError("No python libraries found")
+	return potential_library
+
 
 if __name__ == "__main__":
 	fail = True
