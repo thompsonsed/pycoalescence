@@ -361,8 +361,13 @@ class Installer(build_ext):
 			os.makedirs(tmp_dir)
 		subprocess.check_call(['cmake', src_dir] + cmake_args,
 							  cwd=tmp_dir, env=env)
-		subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,
+		subprocess.check_call(['cmake', '--build', '.', "--target", "necsim"] + build_args,
 							  cwd=tmp_dir)
+		if platform.system() == "Windows":
+			shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(),
+																					 "libnecsim.pyd"))
+		# subprocess.check_call(['cmake', "--install", "."], # TODO remove
+		# 					  cwd=tmp_dir)
 
 	def run(self):
 		"""Runs installation and generates the shared object files - entry point for setuptools"""
@@ -374,8 +379,8 @@ class Installer(build_ext):
 		self.build_dir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)),
 													  "pycoalescence", "necsim"))
 		self.obj_dir = self.build_dir
-		if platform.system() == "Windows":
-			raise SyntaxError("Windows is not supported by pycoalescence at this time.")
+		# if platform.system() == "Windows":
+		# 	raise SyntaxError("Windows is not supported by pycoalescence at this time.")
 		if not os.path.exists(self.build_temp):
 			os.makedirs(self.build_temp)
 		self.setuptools_cmake(ext)
@@ -389,23 +394,25 @@ class Installer(build_ext):
 		:return: tuple of two lists, first containing cmake configure arguments, second containing build arguments
 		:rtype: tuple
 		"""
-		cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}'.format(output_dir),
-					  "-DPYTHON_LIBRARY={}".format(get_python_library("{}.{}".format(sys.version_info.major,
+		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(get_python_library("{}.{}".format(sys.version_info.major,
 																						sys.version_info.minor))),
-					  "-DPYTHON_INCLUDE_DIR={}".format(sysconfig.get_python_inc())]
+					  "-DPYTHON_INCLUDE_DIR:FILEPATH={}".format(sysconfig.get_python_inc())]
 		cfg = 'Debug' if self.debug else 'Release'
 		build_args = ['--config', cfg]
 
 		if platform.system() == "Windows":
-			cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
-				cfg.upper(),
+			cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}'.format(
+				# cfg.upper(),
 				output_dir)]
 			if sys.maxsize > 2 ** 32:
 				cmake_args += ['-A', 'x64']
 			build_args += ['--', '/m']
 		else:
-			cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
+
+			cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg,
+						   '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}'.format(output_dir)]
 			build_args += ['--', '-j2']
+		print(cmake_args) # TODO remove
 		return cmake_args, build_args
 
 
@@ -517,6 +524,8 @@ if __name__ == "__main__":
 		src_dir = os.path.join(installer.mod_dir, "lib")
 		installer.run_cmake(src_dir, cmake_args, build_args, obj_dir, env)
 	else:
+		if platform.system() != "Windows":
+			raise SystemError("Usage of configure and make on a windows system is not supported.")
 		if args.compile_only:
 			set_logging_method(logging_level=logging.INFO)
 			installer.copy_makefile()

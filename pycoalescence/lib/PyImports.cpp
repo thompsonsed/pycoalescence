@@ -8,7 +8,9 @@
  */
 
 #include <cstring>
+#ifndef WIN_INSTALL
 #include <unistd.h>
+#endif
 #include <csignal>
 #include "PyImports.h"
 

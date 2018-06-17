@@ -550,8 +550,8 @@ class MapAssignment(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		shutil.copy("sample/null.tif", "output/")
-		cls.map = Map(file="output/null.tif")
+		shutil.copy(os.path.join("sample", "null.tif"), "output")
+		cls.map = Map(file=os.path.join("output", "null.tif"))
 		cls.map.open()
 		cls.map.data[0:5, 0:2] = 10
 		cls.map.write()
@@ -560,13 +560,13 @@ class MapAssignment(unittest.TestCase):
 		"""
 		Just a double check to make sure that the base map file is correct (not really a test of this code at all).
 		"""
-		ds = gdal.Open("sample/null.tif")
+		ds = gdal.Open(os.path.join("sample", "null.tif"))
 		arr = ds.GetRasterBand(1).ReadAsArray()
 		self.assertEqual(np.sum(arr), 169)
 		ds = None
 
 	def testMapUpdates(self):
-		ds = gdal.Open("output/null.tif")
+		ds = gdal.Open(os.path.join("output", "null.tif"))
 		arr = ds.GetRasterBand(1).ReadAsArray()
 		self.assertEqual(np.sum(arr), 259)
 		ds = None
@@ -585,15 +585,20 @@ class TestFragmentedLandscape(unittest.TestCase):
 		"""
 		if os.path.exists("landscapes"):
 			shutil.rmtree("landscapes")
-		cls.l1 = FragmentedLandscape(size=10, number_fragments=2, total=4, output_file="landscapes/l1.tif")
-		cls.l2 = FragmentedLandscape(size=100, number_fragments=57, total=150, output_file="landscapes/l2.tif")
-		cls.l3 = FragmentedLandscape(size=24, number_fragments=5, total=5, output_file="landscapes/l3.tif")
+		cls.l1 = FragmentedLandscape(size=10, number_fragments=2, total=4,
+									 output_file=os.path.join("landscapes", "l1.tif"))
+		cls.l2 = FragmentedLandscape(size=100, number_fragments=57, total=150,
+									 output_file=os.path.join("landscapes", "l2.tif"))
+		cls.l3 = FragmentedLandscape(size=24, number_fragments=5, total=5,
+									 output_file=os.path.join("landscapes", "l3.tif"))
 		cls.l1.generate()
 		cls.l2.generate()
 		cls.l3.generate()
-		cls.l4 = FragmentedLandscape(size=10, number_fragments=1, total=2, output_file="landscapes/l4.tif")
+		cls.l4 = FragmentedLandscape(size=10, number_fragments=1, total=2,
+									 output_file=os.path.join("landscapes", "l4.tif"))
 		cls.l4.generate()
-		cls.l5 = FragmentedLandscape(size=100, number_fragments=100, total=2000, output_file="landscapes/l5.tif")
+		cls.l5 = FragmentedLandscape(size=100, number_fragments=100, total=2000,
+									 output_file=os.path.join("landscapes", "l5.tif"))
 		cls.l5.generate()
 
 	@classmethod
@@ -603,13 +608,13 @@ class TestFragmentedLandscape(unittest.TestCase):
 			shutil.rmtree("landscapes")
 
 	def testCreateFragmentedLandscapes(self):
-		self.assertEqual(self.l1.output_file, "landscapes/l1.tif")
+		self.assertEqual(self.l1.output_file, os.path.join("landscapes", "l1.tif"))
 		self.assertTrue(os.path.exists(self.l1.output_file))
-		self.assertEqual(self.l2.output_file, "landscapes/l2.tif")
+		self.assertEqual(self.l2.output_file, os.path.join("landscapes", "l2.tif"))
 		self.assertTrue(os.path.exists(self.l2.output_file))
-		self.assertEqual(self.l3.output_file, "landscapes/l3.tif")
+		self.assertEqual(self.l3.output_file, os.path.join("landscapes", "l3.tif"))
 		self.assertTrue(os.path.exists(self.l3.output_file))
-		self.assertEqual(self.l4.output_file, "landscapes/l4.tif")
+		self.assertEqual(self.l4.output_file, os.path.join("landscapes", "l4.tif"))
 		self.assertTrue(os.path.exists(self.l4.output_file))
 
 	def testDimensionsCorrect1(self):

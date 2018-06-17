@@ -24,16 +24,16 @@ except ImportError:
 	pass
 
 # Get all the c++ source files
-py_src_files = [os.path.join("pycoalescence/lib", x) for x in os.listdir("pycoalescence/lib")
-				if ".cpp" in x]
-necsim_src_files = [os.path.join("pycoalescence/lib/necsim", x) for x in os.listdir("pycoalescence/lib/necsim") if
-					".cpp" in x]
-all_srcs = [x for x in necsim_src_files + py_src_files if "main.cpp" not in x]
-
-data_dir = "pycoalescence/reference"
-
-data_files = [os.path.join(data_dir, x) for x in os.listdir(data_dir) if x not in ['Makefile', '.DS_Store',
-																				   'log_12_2.txt']]
+# py_src_files = [os.path.join("pycoalescence/lib", x) for x in os.listdir("pycoalescence/lib")
+# 				if ".cpp" in x]
+# necsim_src_files = [os.path.join("pycoalescence/lib/necsim", x) for x in os.listdir("pycoalescence/lib/necsim") if
+# 					".cpp" in x]
+# all_srcs = [x for x in necsim_src_files + py_src_files if "main.cpp" not in x]
+#
+# data_dir = "pycoalescence/reference"
+#
+# data_files = [os.path.join(data_dir, x) for x in os.listdir(data_dir) if x not in ['Makefile', '.DS_Store',
+# 																				   'log_12_2.txt']]
 
 
 class CustomExtension(Extension):
@@ -61,12 +61,12 @@ setup(name='pycoalescence',
 	  url='http://pycoalescence.readthedocs.io/',
 	  long_description=readme,
 	  # ext_modules=[libnecsim],
-	  ext_modules=[CustomExtension("libnecsim", "pycoalescence/lib/")],
+	  ext_modules=[CustomExtension("libnecsim", os.path.join("pycoalescence","lib"))],
 	  cmdclass=dict(build_ext=Installer),
 	  license='MIT',
 	  packages=find_packages(exclude=["*tests*", 'docs']),
 	  package_data={
-		  'pycoalescence': ['reference/*.json', 'reference/*.json', 'necsim/libnecsim.so'],
+		  'pycoalescence': ['reference/*.json', 'reference/*.json'],
 	  },
 	  classifiers=['Development Status :: 4 - Beta',
 				   'License :: OSI Approved :: MIT License',

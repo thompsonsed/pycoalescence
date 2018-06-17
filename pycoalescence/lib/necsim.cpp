@@ -60,12 +60,17 @@ inline void readyPyTypeObject(PyTypeObject * obj)
 }
 
 #if PY_MAJOR_VERSION >= 3
-static PyModuleDef moduledef = {
-		PyModuleDef_HEAD_INIT,
-		.m_name = "libnecsim",
-		.m_doc = "Wrapper for c++ library which performs simulations and analysis.",
-		.m_size = -1,
-};
+static PyModuleDef genPyModuleDef()
+{
+	PyModuleDef tmpModuleDef = {
+			PyModuleDef_HEAD_INIT,
+	};
+	tmpModuleDef.m_name = "libnecsim";
+	tmpModuleDef.m_doc = "Wrapper for c++ library which performs simulations and analysis.";
+	tmpModuleDef.m_size = -1;
+	return tmpModuleDef;
+}
+static PyModuleDef moduledef = genPyModuleDef();
 
 
 #define INITERROR return NULL

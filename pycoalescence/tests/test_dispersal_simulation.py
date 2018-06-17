@@ -1,4 +1,5 @@
 import logging
+import os
 import unittest
 import math
 
@@ -36,9 +37,9 @@ class TestDispersalSimulation(unittest.TestCase):
 		Sets up the class by running the dispersal simulations for later reference.
 		"""
 		cls.m = DispersalSimulation(logging_level=logging.CRITICAL)
-		cls.m.set_map_files("sample/SA_sample_fine.tif", )
-		cls.m.set_simulation_parameters(number_repeats=100, output_database="output/sim_pars_test4.db", seed=2,
-										sigma=2, landscape_type="tiled_fine")
+		cls.m.set_map_files(os.path.join("sample", "SA_sample_fine.tif"))
+		cls.m.set_simulation_parameters(number_repeats=100, output_database=os.path.join("output", "sim_pars_test4.db"),
+										seed=2, sigma=2, landscape_type="tiled_fine")
 		cls.m.run_mean_dispersal()
 		cls.m.set_simulation_parameters(number_repeats=100, seed=2, sigma=2, landscape_type="tiled_fine")
 		cls.m.run_mean_dispersal()
@@ -199,7 +200,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertEqual( {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
 						   "tau": 1, "m_prob": 1.0, "cutoff": 100.0,
 						   "dispersal_method": "normal",
-						   "map_file": "sample/SA_sample_fine.tif",
+						   "map_file": os.path.join("sample", "SA_sample_fine.tif"),
 						   "seed": 2, "number_steps": 1,
 						   "number_repeats": 100}, self.m.get_database_parameters()[1],)
 

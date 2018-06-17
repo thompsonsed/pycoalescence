@@ -151,7 +151,7 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		dst = "output/sampledb.db"
+		dst = "output/sampledb0.db"
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copyfile("sample/sample.db", dst)
@@ -314,7 +314,7 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		dst = "output/sampledb.db"
+		dst = "output/sampledb1.db"
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copyfile("sample/sample.db", dst)
@@ -349,7 +349,7 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		random.seed(10)
-		dst = "output/sampledb.db"
+		dst = "output/sampledb2.db"
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copyfile("sample/sample.db", dst)
