@@ -1313,6 +1313,8 @@ class CoalescenceTree(object):
 		"""
 		self._check_database()
 		if fragment is None:
+			if reference is None:
+				reference = 1
 			return [list(x) for x in
 					self.cursor.execute("SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES WHERE "
 										"community_reference==?", (reference,)).fetchall()]

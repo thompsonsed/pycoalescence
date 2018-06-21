@@ -21,6 +21,13 @@ For full documentation please see
 INSTALLATION
 ------------
 
+Installation is available through pip, conda or a manual installation.
+For full installation instructions, see
+`here <https://pycoalescence.readthedocs.io/en/release/README_pycoalescence.html#installation>`__.
+
+Currently, pip is supported on Mac OS X and Linux and conda is supported
+on Linux and Windows.
+
 Using pip, make sure all the prerequisites are installed and run
 ``pip install pycoalescence``.
 
