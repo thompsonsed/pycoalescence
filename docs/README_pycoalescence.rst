@@ -39,72 +39,106 @@ Getting started
 
 Installation
 ~~~~~~~~~~~~
-Currently, only macOS and linux-based operating systems are supported. Windows compatibility will likely be added at a
-later date.
 
-Method
-''''''
+Two methods of installation are recommended: using conda to handle package management, including installation of all
+dependencies, or using `pip <https://pypi.org/project/pip/>` into python virtual environments
+(see `here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>` for good advice).
 
-Before attempting installation, make sure the `prerequisites are installed`_. In particular, GDAL can cause issues if
-the installation is incomplete. Consider compiling GDAL directly from source if you experience problems. On some systems
- installation will require that *autoconf* and *autotools* are installed on your computer.
-There are a few options for installation:
+The other methods of installing listed here are provided as references to the install process itself, and to provide
+finer control over installation methods if difficulties are encountered. Note that pip and conda both internally call
+setuptools, which in turn runs ``installer.py``.
 
-.. _`prerequisites are installed`: Prerequisites_
+.. important:: Mac OS X and Linux are supported through pip. Mac OS, Linux and Windows are supported through conda,
+               although some Mac OS X systems may experience issues if multiple python versions are installed on the
+               same system. For manual installation it should be possible install **pycoalescence** on any system, but
+               may require some tinkering.
 
-- Install from pip **[recommended]**
+.. note:: Whichever installation option you use, it is important to ensure that the package is compiled in the same
+          environment as you intend to run simulations.
 
-    - It is recommended to use virtual environments with pip for installation.
-    - Run ``pip install pycoalescence`` to download and install pycoalescence.
+Installing via conda
+''''''''''''''''''''
 
-- Use setuptools
+Conda is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
+manner. As such, installation of **pycoalescence**, and all its dependencies including boost, gdal, cmake and the
+relevant c++ compiler, simply requires ``conda install pycoalescence``. Note that conda installs the dependencies into
+its own environment, and as such may ignore system installs.
 
-    - Download the source files manually.
-    - Run ``python setup.py install`` from the terminal to build and install the package
-    - Alternatively, run ``python setup.py sdist`` to build the source distribution.
+Installing via pip
+''''''''''''''''''
 
-- Manual install
+Installation via pip requires that the non-python dependencies are installed manually first. Importantly, make sure that
+`gdal <http://www.gdal.org/>`__ is fully functional. On some systems this appears to need compilation directly from
+source. Also ensure that you have a c++14 compliant compiler, `cmake <https://cmake.org/>`_,
+`sqlite <https://www.sqlite.org/download.html>`__ and `boost <http://www.boost.org>`__ installed. Finally make sure
+your python 3 is >= 3.4 or python 2 >= 2.7.9.
 
-    - Download the source files manually.
-    - Run ``python installer.py`` from the pycoalescence directory.
-    - Additional compiler options can be provided using``python setup.py [opts]`` where ``[opts]`` are
-      your required compilation flags (see  `Compilation Options`_).
+With all requirements installled, it is recommended that you use a virtual environment (or pipenv) to control your
+python packages (`see here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__).
+
+Finally, installation of **pycoalescence**, including python dependencies, should just require
+``pip install pycoalescence``. The package should be downloaded and built.
 
 
-- Run ``./configure`` and ``make`` yourself.
 
-    If you require additional compilation options, run ``./configure`` with your options from the lib/ directory. Then
-    run ``make`` and check that installation is complete. The shared object file should be moved into the *build/sharedpyx*
-    directory, where *x* is the major python version number (2 or 3).
-- Custom compilation
+Installing manually - setuptools
+''''''''''''''''''''''''''''''''
 
-    Compile the c++ files yourself with the required defines and copy the executable to the required directory.
+This method is not recommended unless you experience problems with conda or pip. To install using setuptools, download
+the source code manually and run ``python setup.py install`` from the terminal. Running this command will install
+**pycoalescence** to the current python environment.
 
-For HPC use, running ``python hpc_setup.py`` (see :py:mod:`hpc_setup <pycoalescence.hpc_setup>`) will perform
-compilation for an HPC using the intel compiler and copy the executable to "../../Code" relative to pycoalescence.
+Installing manually - installer.py
+''''''''''''''''''''''''''''''''''
 
-.. warning:: Additional steps may have to be taken to ensure availability of the correct packages on HPC systems. Check
-             with your HPC administrator for details.
+Calling ``python installer.py [opts]`` from the *pycoalescence* directory within the source code allows for finer
+control over installation options. Importantly, two different make environments can be used, either ./configure and
+make, or cmake. A list of options is given below, and can also be displayed by running ``python installer.py -h``.
+Running ``python installer.py`` will generate the package in-place, meaning that it will not be added to the python
+environment. This can be desirable for HPC systems where package installation is not permitted.
 
-.. note:: Separate compiles of the program are usually required for each python installation and virtual environment.
-          This can cause complications for certain IDEs. If you encounter problems, it is recommended that you run
-          ``setup.py`` from within you IDE, or use pip to handle package installation.
 
-.. _`sec Compilation Options`:
 
-Compilation Options
++--------------------+-------------------------------------------------------------------------+---------+
+| Option             | Description                                                             | Default |
++--------------------+-------------------------------------------------------------------------+---------+
+| --cmake            | Build the c++ library (necsim) required for pycoalescence.              | True    |
++--------------------+-------------------------------------------------------------------------+---------+
+| --autotools        | Use the autotools build process (./configure and make)                  | False   |
++--------------------+-------------------------------------------------------------------------+---------+
+| --compiler-args    | Additional arguments to pass to the autotools compiler                  | None    |
++--------------------+-------------------------------------------------------------------------+---------+
+| --cmake-args       | Additional arguments to pass to the cmake compiler during configuration | None    |
++--------------------+-------------------------------------------------------------------------+---------+
+| --cmake-build-args | Additional arguments to pass to the cmake compiler at build time        | None    |
++--------------------+-------------------------------------------------------------------------+---------+
+| --debug            | Compile using DEBUG defines                                             | False   |
++--------------------+-------------------------------------------------------------------------+---------+
+| -c -C --compile    | Compile only, do not re-configure necsim                                | False   |
++--------------------+-------------------------------------------------------------------------+---------+
+
+HPC installation
+''''''''''''''''
+
+On systems where package installation is not possible, use ``python installer.py`` to build the package in-place.
+Alternatively, ``python hpc_setup.py`` provides a custom installation with a few options switched on for HPC systems,
+including usage of the intel compiler by default and optimisation flags for HPC. Note that this option uses the
+autotools process (``./configure`` and ``make``) instead of cmake for compilation.
+
+Installation issues
 '''''''''''''''''''
-These are the possible flags which can be provided during installation as options in ``python installer.py [opts]``. It is
-not usually expected that you need to provide any of these options.
 
-.. csv-table::
-   :header: "Option", "Description"
-   :widths: 20, 80
+If you are on Windows or Linux, consider using conda to manage package dependencies. Errors related to installation from
+conda should be reported. On Mac OS X, installation via pip requires that the dependencies have already been provided.
 
-   "--with-debug", "Adds additional debugging information, including writing all messages to a log file."
-   "--with-gdal=DIR", "Define a gdal library at DIR"
-   "--with-hpc", "Compile ready for HPC, using intel's icpc compilation and a variety of optimisation flags."
-   "--with-boost=DIR", "Define a boost library at DIR"
+The most common issue for installing **pycoalescence** is gdal dependencies not being found (including errors relating
+to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
+location, or the header files not being included with the gdal install. To fix this, install the c++ library on your
+system first. Then download the python package from `here <https://pypi.org/project/GDAL/#files>`, and run
+``python setup.py build`` from the gdal directory. If this is successful, run ``python setup.py install`` to install
+gdal to your python environment.
+
+For issues related to missing boost headers, make sure that your system has boost properly installed.
 
 .. _`performing_simulations`:
 
@@ -120,8 +154,8 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
 
 #. Instantiate our :class:`Simulation <pycoalescence.simulation.Simulation>` object using
    :pycode:`sim = Simulation(logging_level=20)` where the logging level corresponds to the amount of information that is
-   displayed using `python's logging module <https://docs.python.org/3/library/logging.html>`_ (20 corresponds to "info",
-   the second highest display level, after "debug").
+   displayed using `python's logging module <https://docs.python.org/3/library/logging.html>`_ (20 corresponds to
+   "info", the second highest display level, after "debug").
 
 #. Specify simulation parameters
 
@@ -619,36 +653,37 @@ Prerequisites
 Essential
 ~~~~~~~~~
 
--  Python version 2 >= 2.7.9 or 3 >= 3.4.1
+Note that conda should detect and install all prerequisites automatically. Pip will detect and install python
+prerequisites (such as numpy), although on some systems will fail to install gdal.
+
+-  Python version 2 >= 2.7.9 or 3 >= 3.4.1. Other versions may work, but are not supported.
 -  C++ compiler (such as GNU g++) with C++14 support.
--  The SQLite library available `here <https://www.sqlite.org/download.html>`__. Requires both ``c++`` and ``python``
+-  `Cmake <https://cmake.org/>`_ for installing via pip or conda.
+-  `The SQLite library <https://www.sqlite.org/download.html>`__ for both ``c++`` and ``python``
    installations. Comes as standard with python.
--  The Boost library for C++ available `here <http://www.boost.org>`__.
--  Numerical python (``numpy``) package (``pip install numpy``).
 - The gdal library for both python and C++ (`available here <http://www.gdal.org/>`__). Although it is possible to turn
   off gdal support, this is not recommended as it is essential if you wish to use .tif files for
   :ref:`necsim <Introduction_necsim>`.  It allows reading parameter information from .tif files (using
   :func:`detect_map_dimensions() <pycoalescence.simulation.Simulation.detect_map_dimensions>`). Both the python package
   and ``c++`` binaries are required; installation differs between systems, so view the gdal documentation for more
   help installing gdal properly.
-
-.. tip:: Most packages, including their c++ libraries, can be installed using `pip install package_name` on most UNIX
-         systems.
+-  The Boost library for C++ available `here <http://www.boost.org>`__.
+-  Numerical python (``numpy``) package (``pip install numpy``).
 
 Recommended
 ~~~~~~~~~~~
 
 
-- The fast-cpp-csv-parser by Ben Strasser, available
-  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__. This provides much faster csv read and write capabilities
-  and is probably essential for larger-scale simulations, but not necessary if your simulations are small. The folder
-  *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory).
+- For work involving large csv files, the fast-cpp-csv-parser by Ben Strasser, available
+  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__ is recommended. This provides much faster csv read and
+  write capabilities and is probably essential for larger-scale simulations, but not necessary if your simulations are
+  small or you are intending to use *.tif* files (the recommended method). The folder
+  *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory)
+  and requires manual installation.
 
 - Scipy package for generating fragmented landscapes (``pip install scipy``).
 
 - Matplotlib package for plotting fragmented landscapes (``pip install matplotlib``).
-.. note:: Running ``configure`` (or ``python installer.py``) will detect system components, including ``sqlite3``,
-          ``boost``, ``gdal`` and ``fast-cpp-csv-parser`` and set the correct compilation flags.
 
 .. include:: Glossary.rst
 
@@ -664,10 +699,9 @@ Author: Samuel Thompson
 
 Contact: samuelthompson14@imperial.ac.uk - thompsonsed@gmail.com
 
-Institution: Imperial College London and National University of
-Singapore
+Institution: Imperial College London and National University of Singapore
 
-This project is released under BSD-3 See file
+This project is released under MIT See file
 **LICENSE.txt** or go to
-`here <https://opensource.org/licenses/BSD-3-Clause>`__ for full license
+`here <https://opensource.org/licenses/MIT>`__ for full license
 details.

@@ -28,27 +28,6 @@
 using namespace std;
 
 
-static PyMethodDef NECSimMethods[] =
-{
-	{NULL, NULL, 0 , NULL}
-};
-
-// Conditional compilation for python >= 3.0 (changed how python integration worked)
-#if PY_MAJOR_VERSION >= 3
-static int necsim_traverse(PyObject *m, visitproc visit, void *arg)
-{
-	Py_VISIT(GETSTATE(m)->error);
-	return 0;
-}
-
-static int necsim_clear(PyObject *m)
-{
-	Py_CLEAR(GETSTATE(m)->error);
-	return 0;
-}
-
-#endif
-
 
 inline void readyPyTypeObject(PyTypeObject * obj)
 {
@@ -86,7 +65,7 @@ initlibnecsim(void)
 {
 
 	PyObject *module;
-	#if PY_MAJOR_VERSION>=3
+	#if PY_MAJOR_VERSION >= 3
 	module = PyModule_Create(&moduledef);
 	#else
 	module = Py_InitModule("libnecsim", NECSimMethods);

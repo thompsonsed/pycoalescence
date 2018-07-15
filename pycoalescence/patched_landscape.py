@@ -6,9 +6,13 @@ Detailed :ref:`here <generate_landscapes>`.
 Dispersal probabilities are defined between different patches, and each patch will be contain n individuals.
 """
 from __future__ import division
-import os
-import numpy as np
+
+import csv
 import math
+import os
+
+import numpy as np
+
 from .map import Map
 from .system_operations import check_parent
 
@@ -126,7 +130,7 @@ class PatchedLandscape:
 		"""
 		return "PatchedLandscape({}, {})".format(self.fine_map.file_name, self.dispersal_map.file_name)
 
-	def add_patch(self, id, density, self_dispersal, dispersal_probabilities=None):
+	def add_patch(self, id, density, self_dispersal=None, dispersal_probabilities=None):
 		"""
 		Add a patch with the given parameters.
 
@@ -140,14 +144,22 @@ class PatchedLandscape:
 			raise KeyError("Patch with id of {} already in patch list.".format(id))
 		if density <= 0:
 			raise ValueError("Density cannot be less than 0.")
+		if self_dispersal is None:
+			if dispersal_probabilities is None:
+				raise TypeError("Must provide self-dispersal value.")
 		patch = Patch(id, density)
-		patch.add_patch(id, self_dispersal)
+		patch.add_patch(id, self_dispersal if self_dispersal is not None else 0.0)
 		if dispersal_probabilities:
 			if not isinstance(dispersal_probabilities, dict):
 				raise TypeError("Dispersal probabilities must be provided as a dictionary of "
 								"ids->relative probabilities.")
+			if self_dispersal is None:
+				if id not in dispersal_probabilities.keys():
+					raise KeyError("Must provide self dispersal value either separately or within dictionary.")
+				patch.dispersal_probabilities[id] = dispersal_probabilities[id]
 			for key, value in dispersal_probabilities.items():
-				patch.add_patch(key, value)
+				if key != id:
+					patch.add_patch(key, value)
 		self.patches[id] = patch
 
 	def has_patch(self, id):
@@ -207,12 +219,28 @@ class PatchedLandscape:
 					self.dispersal_map.data[src_index, dst_index] = src_patch.dispersal_probabilities[k2]
 		self.dispersal_map.data = np.cumsum(self.dispersal_map.data, axis=1)
 		for i in range(map_size):
-			if not np.isclose(self.dispersal_map.data[i, map_size-1], 1.0):
+			if not np.isclose(self.dispersal_map.data[i, map_size - 1], 1.0):
 				raise ValueError("Dispersal map does not sum to 1 "
-								 "across rows: {} != {}.".format(self.dispersal_map.data[i, map_size-1], 1.0))
+								 "across rows: {} != {}.".format(self.dispersal_map.data[i, map_size - 1], 1.0))
 		self.fine_map.create(self.fine_map.file_name, datatype=5)
 		self.dispersal_map.create(self.dispersal_map.file_name, datatype=6)
 
+	def generate_fragment_csv(self, fragment_csv):
+		"""
+		Generates a fragment csv for usage within a coalescence simulation, with each patch becomming one fragment on
+		the landscape.
+
+		:param fragment_csv: the path to the output csv to create
+
+		:raises IOError: if the output fragment csv already exists
+		"""
+		if os.path.exists(fragment_csv):
+			raise IOError("Output file already exists at {}.".format(fragment_csv))
+		check_parent(fragment_csv)
+		with open(fragment_csv, "w") as csv_file:
+			csv_writer = csv.writer(csv_file)
+			for k1, patch in self.patches.items():
+				csv_writer.writerow([k1, patch.index, 0, patch.index, 0, patch.density])
 
 	def generate_from_matrix(self, density_matrix, dispersal_matrix):
 		"""
@@ -233,7 +261,7 @@ class PatchedLandscape:
 			raise TypeError("Supplied matrices must be numpy arrays.")
 		x_dim, y_dim = dispersal_matrix.shape
 		x_density, y_density = density_matrix.shape
-		if not x_density*y_density == x_dim or x_dim != y_dim:
+		if not x_density * y_density == x_dim or x_dim != y_dim:
 			raise ValueError("Density matrix should have dimensions x by y and dispersal matrix xy by xy.")
 		# create the patches first
 		for y in range(y_dim):
