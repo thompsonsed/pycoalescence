@@ -465,6 +465,11 @@ class CoalescenceTree(object):
 				record_fragments = "F"
 		if record_fragments is "T":
 			record_fragments = "null"
+		if record_fragments not in ["F", "null"]:
+			if not os.path.exists(record_fragments):
+				raise IOError("Fragment config does not exist at {}.".format(record_fragments))
+			if not (record_fragments.endswith(".csv") or record_fragments.endswith(".txt")):
+				raise IOError("Supplied fragment config file is not a csv or txt file: {}.".format(record_fragments))
 		if speciation_rates is None:
 			raise RuntimeError("No speciation rates supplied: requires at least 1 for analysis.")
 		if record_spatial is "T":
@@ -500,12 +505,21 @@ class CoalescenceTree(object):
 		if times is None:
 			self.logger.info("No times provided, defaulting to 0.0.")
 			times = [0.0]
+		else:
+			if not isinstance(times, list):
+				times = [times]
+			out_times = []
+			for each in times:
+				if isinstance(each, int):
+					out_times.append(float(each))
+				else:
+					out_times.append(each)
+			times = out_times
 		if self.times is None:
 			self.times = times
 		else:
 			self.times.extend(times)
 		self.applied_speciation_rates_list = speciation_rates
-
 		if self.sample_file == "null" and self.record_fragments == "null":
 			raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
 							 "provide a samplemask or set record_fragments=False.")

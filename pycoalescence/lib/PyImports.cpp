@@ -31,7 +31,7 @@ bool importPyListToVectorString(PyObject *list_input, vector<string> &output, co
 			return false;
 		}
 #if PY_MAJOR_VERSION >= 3
-		char * tmpspec = PyUnicode_AsUTF8(item);
+		const char * tmpspec = PyUnicode_AsUTF8(item);
 #else
 		char * tmpspec = PyString_AsString(item);
 #endif

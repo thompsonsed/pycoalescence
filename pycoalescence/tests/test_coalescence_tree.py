@@ -2,15 +2,16 @@
 
 """
 import os
+import random
 import shutil
 import sqlite3
-import unittest
 import sys
+import unittest
+
 import numpy as np
-import random
+from setupTests import setUpAll, tearDownAll
 
 from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description
-from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():
@@ -21,11 +22,13 @@ def setUpModule():
 	t = CoalescenceTree("sample/sample.db")
 	t.clear_calculations()
 
+
 def tearDownModule():
 	"""
 	Removes the output directory
 	"""
 	tearDownAll()
+
 
 class TestNullSimulationErrors(unittest.TestCase):
 	"""
@@ -174,7 +177,8 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		Removes the files from output."
 		"""
 		cls.test.clear_calculations()
-		# pass
+
+	# pass
 
 	def testComparisonDataNoExistError(self):
 		c = CoalescenceTree("sample/sample.db")
@@ -304,6 +308,7 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
 
+
 class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 	"""
 	Tests analysis is performed correctly
@@ -337,6 +342,7 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 		self.assertListEqual(species_distances[0], [0, 11])
 		self.assertListEqual(species_distances[1], [1, 274])
 		self.assertListEqual(species_distances[2], [2, 289])
+
 
 class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 	"""
@@ -381,6 +387,30 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 			self.test.calculate_goodness_of_fit()
 
 
+class TestSimulationAnalysisTemporal(unittest.TestCase):
+	"""Tests that applying multiple times works as expected."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Generates the analysis object."""
+		src = os.path.join("sample", "sample2.db")
+		dst = os.path.join("output", "sample2.db")
+		if not os.path.exists(dst):
+			shutil.copy(src, dst)
+		cls.tree = CoalescenceTree()
+		cls.tree.set_database(dst)
+		cls.tree.wipe_data()
+
+	def testTimesWrongFormatError(self):
+		"""Tests that an error is raised when the times are in the wrong format."""
+		with self.assertRaises(TypeError):
+			self.tree.set_speciation_params([0.4, 0.6], times=[0.1, 0.2, "notafloat"])
+		with self.assertRaises(TypeError):
+			self.tree.set_speciation_params([0.4, 0.6], times="notafloat")
+		self.tree.times = []
+		self.tree.set_speciation_params([0.4, 0.6], times=[0, 1, 10])
+		self.assertEqual([0.0, 1.0, 10.0], self.tree.times)
+
 
 class TestSimulationAnalysis(unittest.TestCase):
 	"""
@@ -390,16 +420,33 @@ class TestSimulationAnalysis(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
+		src = os.path.join("sample", "sample2.db")
+		dst = os.path.join("output", "sample2.db")
+		if not os.path.exists(dst):
+			shutil.copy(src, dst)
 		cls.tree = CoalescenceTree()
-		cls.tree.set_database("sample/sample2.db")
+		cls.tree.set_database(dst)
 		cls.tree.wipe_data()
 		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
-									   record_fragments="sample/FragmentsTest.csv",
-									   sample_file="sample/SA_samplemaskINT.tif")
+									   record_fragments=os.path.join("sample", "FragmentsTest.csv"),
+									   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
 		cls.tree.apply()
 		cls.tree.calculate_fragment_richness()
 		cls.tree.calculate_fragment_octaves()
 		np.random.seed(100)
+
+	def testFragmentConfigNoExistError(self):
+		"""Tests that an error is raised if the fragment config file does not exist."""
+		tree = CoalescenceTree(self.tree.file)
+		with self.assertRaises(IOError):
+			tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
+									   record_fragments=os.path.join("sample", "notafragmentconfig.csv"),
+									   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+		with self.assertRaises(IOError):
+			tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
+									   record_fragments=os.path.join("sample", "example_historical_fine.tif"),
+									   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+
 
 	def testReadsFragmentsRichness(self):
 		"""
@@ -520,7 +567,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		"""
 		Tests that the sampling from the landscape works as intended
 		"""
-		number_dict = {"fragment1" : 3, "fragment2" : 10}
+		number_dict = {"fragment1": 3, "fragment2": 10}
 		np.random.seed(100)
 		self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1,
 																 community_reference=2))

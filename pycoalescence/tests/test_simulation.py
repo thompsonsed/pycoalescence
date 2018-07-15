@@ -279,7 +279,7 @@ class TestSimulationSetMaps(unittest.TestCase):
 		"""
 		Tests that the simulation completes successfully and outputs as intended.
 		"""
-		self.assertEqual(self.c.get_richness(), 6)
+		self.assertEqual(5, self.c.get_richness())
 
 	def testOrdersHistoricalMaps(self):
 		"""
@@ -553,9 +553,9 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		"""
 		self.assertNotEqual(self.base_sim.get_richness(), self.hist_sim.get_richness())
 		self.assertNotEqual(self.hist_sim.get_richness(), self.hist_sim2.get_richness())
-		self.assertEqual(2627, self.base_sim.get_richness())
-		self.assertEqual(2520, self.hist_sim2.get_richness())
-		self.assertEqual(2434, self.hist_sim.get_richness())
+		self.assertEqual(2614, self.base_sim.get_richness())
+		self.assertEqual(2532, self.hist_sim2.get_richness())
+		self.assertEqual(2475, self.hist_sim.get_richness())
 
 @skipLongTest
 class TestExpansionOverTime(unittest.TestCase):
@@ -574,9 +574,9 @@ class TestExpansionOverTime(unittest.TestCase):
 
 	def testSpeciesRichnessAtTimes(self):
 		"""Checks the species richness is correct for each time point."""
-		self.assertEqual(344, self.sim.get_richness(1))
-		self.assertEqual(344, self.sim.get_richness(2))
-		self.assertEqual(357, self.sim.get_richness(3))
-		self.assertEqual(367, self.sim.get_richness(4))
-		self.assertEqual(343, self.sim.get_richness(5))
-		self.assertEqual(338, self.sim.get_richness(6))
+		self.assertEqual(373, self.sim.get_richness(1))
+		self.assertEqual(363, self.sim.get_richness(2))
+		self.assertEqual(371, self.sim.get_richness(3))
+		self.assertEqual(363, self.sim.get_richness(4))
+		self.assertEqual(377, self.sim.get_richness(5))
+		self.assertEqual(386, self.sim.get_richness(6))

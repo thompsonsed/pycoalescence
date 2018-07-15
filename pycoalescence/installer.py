@@ -207,6 +207,21 @@ class Installer(build_ext):
 			logging.warning(cpe.message)
 			raise RuntimeError("Make file has not been generated. Cannot clean.")
 
+	def get_ldflags(self):
+		"""Get the ldflags that python was compiled with, removing some problematic options."""
+		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS")) + " "
+		if "--sysroot=" in ldflags:
+			logging.warning("--sysroot found in LDFLAGS, removing")
+			ldflags = re.sub(r"--sysroot=.*[,\s]", "", ldflags)
+		ldflags = ldflags.replace("\n", " ")
+		return ldflags
+
+	def get_ldshared(self):
+		"""Get the ldshared python variables"""
+		ldflags = sysconfig.get_config_var("LDSHARED")
+		ldflags = " ".join(ldflags.split()[1:]).replace("-bundle", "-shared")
+		return ldflags
+
 	def get_compilation_flags(self, display_warnings=False):
 		"""
 		Generates the compilation flags for passing to ./configure.
@@ -223,11 +238,7 @@ class Installer(build_ext):
 		py_ldflags = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
 						 " -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
 		py_lib = "PYTHON_LIB=-lpython"
-		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS")) + " "
-		if "--sysroot=" in ldflags:
-			logging.warning("--sysroot found in LDFLAGS, removing")
-			ldflags = re.sub(r"--sysroot=.*[,\s]", "", ldflags)
-		ldflags = str("LDFLAGS=" + ldflags).replace("\n", " ")
+		ldflags = str("LDFLAGS=" + self.get_ldflags())
 		# Get the shared object platform-specific compilation flags.
 		platform_so = "PLATFORM_SO="
 		if platform.system() == "Linux":
@@ -343,7 +354,10 @@ class Installer(build_ext):
 			extdir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)), "pycoalescence",
 												  "necsim"))
 		else:
-			extdir = os.path.join(os.environ.get("SP_DIR"), "pycoalescence", "necsim")
+			sp_dir = os.environ.get("SP_DIR")
+			if sp_dir is None:
+				sp_dir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
+			extdir = os.path.join(sp_dir, "pycoalescence", "necsim")
 		cmake_args, build_args = self.get_default_cmake_args(extdir)
 		env = os.environ.copy()
 		env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
@@ -369,8 +383,9 @@ class Installer(build_ext):
 		if platform.system() == "Windows":
 			shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(),
 																					 "libnecsim.pyd"))
-		# subprocess.check_call(['cmake', "--install", "."], # TODO remove
-		# 					  cwd=tmp_dir)
+
+	# subprocess.check_call(['cmake', "--install", "."], # TODO remove
+	# 					  cwd=tmp_dir)
 
 	def run(self):
 		"""Runs installation and generates the shared object files - entry point for setuptools"""
@@ -398,8 +413,16 @@ class Installer(build_ext):
 		:rtype: tuple
 		"""
 		cfg = 'Debug' if self.debug else 'Release'
-		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(get_python_library("{}.{}".format(sys.version_info.major,
-																						sys.version_info.minor))),
+		# pymalloc_ext = "m" if bool(sysconfig.get_config_var('WITH_PYMALLOC')) else ""
+		# v_info = sys.version_info
+		cflags = sysconfig.get_config_var('CFLAGS')
+		cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
+		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(sysconfig.get_config_var("LIBDIR")),
+					  # "-DPYTHON_LINKER:=-lpython{}.{}{}".format(v_info.major, v_info.minor, pymalloc_ext),
+					  "-DPYTHON_CPPFLAGS:='{}'".format(cflags),
+					  "-DPYTHON_LDFLAGS:='{}'".format(self.get_ldshared()),
+					  # "-DPYTHON_LIBRARY:FILEPATH={}".format(get_python_library("{}.{}".format(sys.version_info.major,
+					  # 																				  sys.version_info.minor))),
 					  "-DPYTHON_INCLUDE_DIR:FILEPATH={}".format(sysconfig.get_python_inc()),
 					  '-DCMAKE_BUILD_TYPE={}'.format(cfg)]
 		build_args = ['--config', cfg]
@@ -425,7 +448,7 @@ def get_python_library(python_version):
 	python_library = sysconfig.get_config_var('LIBRARY')
 	potential_library = None
 	# if static (or nonexistent), try to find a suitable dynamic libpython
-	if (python_library is None or python_library[-2:] == '.a'):
+	if python_library is None or python_library[-2:] == '.a':
 
 		candidate_lib_prefixes = ['', 'lib']
 
@@ -479,7 +502,7 @@ def get_python_library(python_version):
 				potential_library = candidate
 				if potential_library[-2:] != ".a":
 					break
-			# Otherwise still a static library, keep searching
+		# Otherwise still a static library, keep searching
 	if potential_library is None:
 		raise IOError("No python libraries found")
 	return potential_library

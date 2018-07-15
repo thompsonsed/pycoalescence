@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.8)
 
 project(necsim CXX)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    message("Detected debug mode")
+    message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
 endif ()
 option(minimal_ram "minimal_ram" OFF)
@@ -35,6 +35,7 @@ endif ()
 set(SOURCE_FILES
         necsim.cpp
         necsim.h
+        ${SOURCE_DIR_NECSIM}/NRrand.h
         ${SOURCE_DIR_NECSIM}/Filesystem.cpp
         ${SOURCE_DIR_NECSIM}/SpatialTree.cpp
         ${SOURCE_DIR_NECSIM}/Tree.cpp
@@ -76,19 +77,25 @@ add_library(necsim SHARED ${SOURCE_FILES})
 #link_directories(/usr/local/lib)
 find_package(GDAL 2.1.0 REQUIRED)
 if (DEFINED ENV{CONDA_PREFIX})
-    if (APPLE)
+#    if (APPLE)
         # use, i.e. don't skip the full RPATH for the build tree
-        SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-    endif ()
-    message("Conda install detected")
+#        SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+#    endif ()
+    message(STATUS "Conda install detected")
 
     if(NOT WINDOWS)
+#        find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
+#        include_directories(${Boost_INCLUDE_DIR})
+#        target_link_libraries(necsim ${Boost_LIBRARIES})
+#        find_package(sqlite3)
+#        include_directories(${SQLITE3_INCLUDE_DIRS})
+#        target_link_libraries(necsim ${SQLITE3_LIBRARIES})
         target_link_libraries(necsim sqlite3)
         target_link_libraries(necsim boost_filesystem)
         target_link_libraries(necsim boost_system)
     endif()
 else ()
-    message("Standard python install detected")
+    message(STATUS "Standard python install detected")
     find_package(sqlite3)
     include_directories(${SQLITE3_INCLUDE_DIRS})
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})
@@ -100,14 +107,28 @@ include_directories(${GDAL_INCLUDE_DIR})
 
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
-target_link_libraries(necsim ${PYTHON_LIBRARIES})
+link_directories(${PYTHON_LIBRARIES})
+
+if(PYTHON_CPPFLAGS)
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${PYTHON_CPPFLAGS}")
+endif()
+if(PYTHON_LDFLAGS)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${PYTHON_LDFLAGS}")
+endif()
+#if(PYTHON_LINKER)
+#    target_link_libraries(necsim ${PYTHON_LINKER})
+#endif()
+message(STATUS "Python include dirs: ${PYTHON_INCLUDE_DIRS}")
+message(STATUS "Python libraries: ${PYTHON_LIBRARIES}")
+message(STATUS "CXXFLAGS: ${CMAKE_CXX_FLAGS}")
+message(STATUS "Shared linker flags: ${CMAKE_SHARED_LINKER_FLAGS}")
 add_definitions(-Dwith_gdal)
 
 
 
 if(WINDOWS)
     SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${OUTPUT_BINDIR} CACHE PATH "build directory")
-    message("Detecting libraries for windows")
+    message(STATUS "Detecting libraries for windows")
 #    set(Boost_NO_SYSTEM_PATHS true)
 #    set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
 #    set(Boost_USE_MULTITHREADED OFF)
@@ -118,8 +139,8 @@ if(WINDOWS)
     include_directories(${SQLITE3_INCLUDE_DIRS})
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})
     # disable autolinking in boost
-    add_definitions( -DBOOST_ALL_NO_LIB )
-
+#    add_definitions( -DBOOST_ALL_NO_LIB )
+    add_definitions(-DBOOST_SYSTEM_NO_DEPRECATED)
     # force all boost libraries to dynamic link (we already disabled
     # autolinking, so I don't know why we need this, but we do!)
     add_definitions( -DBOOST_ALL_DYN_LINK )
