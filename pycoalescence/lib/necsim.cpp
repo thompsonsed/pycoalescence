@@ -27,6 +27,13 @@
 
 using namespace std;
 
+#if PY_MAJOR_VERSION < 3
+static PyMethodDef NECSimMethods[] =
+{
+	{NULL, NULL, 0 , NULL}
+};
+#endif // PY_MAJOR_VERSION
+
 
 
 inline void readyPyTypeObject(PyTypeObject * obj)

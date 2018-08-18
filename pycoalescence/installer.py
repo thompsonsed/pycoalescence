@@ -209,7 +209,11 @@ class Installer(build_ext):
 
 	def get_ldflags(self):
 		"""Get the ldflags that python was compiled with, removing some problematic options."""
-		ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysconfig.get_config_var("LDFLAGS")) + " "
+		sysldflags = sysconfig.get_config_var("LDFLAGS")
+		if sysldflags is None:
+			ldflags = ""
+		else:
+			ldflags = re.sub(r"-arch \b[^ ]*[\ ]*", "", sysldflags) + " "
 		if "--sysroot=" in ldflags:
 			logging.warning("--sysroot found in LDFLAGS, removing")
 			ldflags = re.sub(r"--sysroot=.*[,\s]", "", ldflags)
@@ -217,8 +221,10 @@ class Installer(build_ext):
 		return ldflags
 
 	def get_ldshared(self):
-		"""Get the ldshared python variables"""
+		"""Get the ldshared python variables and replaces -bundle with -shared for proper compilation."""
 		ldflags = sysconfig.get_config_var("LDSHARED")
+		if ldflags is None:
+			return ""
 		ldflags = " ".join(ldflags.split()[1:]).replace("-bundle", "-shared")
 		return ldflags
 
@@ -376,10 +382,13 @@ class Installer(build_ext):
 		"""
 		if not os.path.exists(tmp_dir):
 			os.makedirs(tmp_dir)
-		subprocess.check_call(['cmake', src_dir] + cmake_args,
-							  cwd=tmp_dir, env=env)
-		subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,
-							  cwd=tmp_dir)
+		try:
+			subprocess.check_call(['cmake', src_dir] + cmake_args,
+								  cwd=tmp_dir, env=env)
+			subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,
+								  cwd=tmp_dir)
+		except subprocess.CalledProcessError as cpe:
+			raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
 		if platform.system() == "Windows":
 			shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(),
 																					 "libnecsim.pyd"))
@@ -416,8 +425,16 @@ class Installer(build_ext):
 		# pymalloc_ext = "m" if bool(sysconfig.get_config_var('WITH_PYMALLOC')) else ""
 		# v_info = sys.version_info
 		cflags = sysconfig.get_config_var('CFLAGS')
-		cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
-		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(sysconfig.get_config_var("LIBDIR")),
+		if cflags is not None:
+			cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
+		else:
+			cflags = ""
+		libdir = sysconfig.get_config_var("LIBDIR")
+		if libdir is None:
+			libdir = os.path.abspath(os.path.join(sysconfig.get_config_var('LIBDEST'), "..", "libs"))
+			if sysconfig.get_config_var("LIBDEST") is None:
+				raise SystemError("Cannot detect library directory for python install.")
+		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(libdir),
 					  # "-DPYTHON_LINKER:=-lpython{}.{}{}".format(v_info.major, v_info.minor, pymalloc_ext),
 					  "-DPYTHON_CPPFLAGS:='{}'".format(cflags),
 					  "-DPYTHON_LDFLAGS:='{}'".format(self.get_ldshared()),

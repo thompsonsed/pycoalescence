@@ -6,6 +6,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
 endif ()
+# Change this option to ON if RAM usage is an issue
 option(minimal_ram "minimal_ram" OFF)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,6 +37,7 @@ set(SOURCE_FILES
         necsim.cpp
         necsim.h
         ${SOURCE_DIR_NECSIM}/NRrand.h
+        ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Filesystem.cpp
         ${SOURCE_DIR_NECSIM}/SpatialTree.cpp
         ${SOURCE_DIR_NECSIM}/Tree.cpp
