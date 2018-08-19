@@ -429,7 +429,10 @@ class Installer(build_ext):
 			cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
 		else:
 			cflags = ""
-		libdir = sysconfig.get_config_var("LIBDIR")
+		if platform.system() == "Windows":
+			libdir = get_python_library("{}.{}".format(sys.version_info.major, sys.version_info.minor))
+		else:
+			libdir = sysconfig.get_config_var("LIBDIR")
 		if libdir is None:
 			libdir = os.path.abspath(os.path.join(sysconfig.get_config_var('LIBDEST'), "..", "libs"))
 			if sysconfig.get_config_var("LIBDEST") is None:
