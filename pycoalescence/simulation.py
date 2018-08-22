@@ -14,7 +14,7 @@ generation after simulations have been completed.
 
 :output:
 	- Database containing generated coalescence tree, simulation parameters and basic biodiversity metrics.
-	- If the simulation does not complete, will instead generate a set of Dump_*.csv files for resuming simulations
+	- If the simulation does not complete, will instead dump data to a Dump_main_*_*.csv file for resuming simulations.
 """
 from __future__ import absolute_import
 from __future__ import print_function
@@ -677,14 +677,10 @@ class Simulation(Landscape):
 		self.job_type = job_type
 		self.max_time = max_time
 		self.calculate_sql_database()
-		file_path = [
-			os.path.join(pause_directory, "Pause", str("Dump_" + x + "_" + str(job_type) + "_" + str(seed) + ".csv"))
-			for x in
-			["active", "data", "map"]]
-		for each in file_path:
-			if not os.path.exists(each):
-				raise IOError(
-					"Paused file " + each + " not found. Ensure pause directory is correct and is accessible.")
+		file_path = os.path.join(pause_directory, "Pause", str("Dump_main_" + str(job_type) + "_" + str(seed) + ".csv"))
+		if not os.path.exists(file_path):
+			raise IOError(
+				"Paused file " + file_path + " not found. Ensure pause directory is correct and is accessible.")
 		self.setupNECSim()
 		self.c_simulation.setup_resume(pause_directory, out_directory, seed, job_type, max_time)
 		self.is_setup_complete = True

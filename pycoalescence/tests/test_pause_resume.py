@@ -321,7 +321,7 @@ class TestSimulationPause3(unittest.TestCase):
 		"""
 		Tests that simulations can resume execution.
 		"""
-		paused_file_list = ["Dump_map_", "Dump_main_", "Dump_active_", "Dump_data_"]
+		paused_file_list = ["Dump_main_"]
 		os.mkdir("output2")
 		os.mkdir("output2/Pause")
 		for file in paused_file_list:

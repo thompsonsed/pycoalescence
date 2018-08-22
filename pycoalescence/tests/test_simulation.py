@@ -553,9 +553,9 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		"""
 		self.assertNotEqual(self.base_sim.get_richness(), self.hist_sim.get_richness())
 		self.assertNotEqual(self.hist_sim.get_richness(), self.hist_sim2.get_richness())
-		self.assertEqual(2614, self.base_sim.get_richness())
-		self.assertEqual(2532, self.hist_sim2.get_richness())
-		self.assertEqual(2475, self.hist_sim.get_richness())
+		self.assertEqual(2682, self.base_sim.get_richness())
+		self.assertEqual(2498, self.hist_sim2.get_richness())
+		self.assertEqual(2431, self.hist_sim.get_richness())
 
 @skipLongTest
 class TestExpansionOverTime(unittest.TestCase):
@@ -580,3 +580,4 @@ class TestExpansionOverTime(unittest.TestCase):
 		self.assertEqual(363, self.sim.get_richness(4))
 		self.assertEqual(377, self.sim.get_richness(5))
 		self.assertEqual(386, self.sim.get_richness(6))
+

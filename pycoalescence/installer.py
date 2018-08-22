@@ -393,9 +393,6 @@ class Installer(build_ext):
 			shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(),
 																					 "libnecsim.pyd"))
 
-	# subprocess.check_call(['cmake', "--install", "."], # TODO remove
-	# 					  cwd=tmp_dir)
-
 	def run(self):
 		"""Runs installation and generates the shared object files - entry point for setuptools"""
 		for ext in self.extensions:
@@ -522,7 +519,7 @@ def get_python_library(python_version):
 				potential_library = candidate
 				if potential_library[-2:] != ".a":
 					break
-		# Otherwise still a static library, keep searching
+	# Otherwise still a static library, keep searching
 	if potential_library is None:
 		raise IOError("No python libraries found")
 	return potential_library

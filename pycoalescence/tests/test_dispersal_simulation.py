@@ -9,7 +9,7 @@ import math
 # except ImportError:
 from pycoalescence.necsim.libnecsim import NECSimError as nse
 from pycoalescence.dispersal_simulation import DispersalSimulation
-from setupTests import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll, skipLongTest
 
 
 def setUpModule():
@@ -107,6 +107,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.run_mean_dispersal()
 		self.assertAlmostEqual(m.get_mean_dispersal(), 10 * (3.14 ** 0.5) / 2 ** 0.5, places=2)
 
+	@skipLongTest
 	def testLandscapeTypesMatch(self):
 		"""
 		Tests that a null landscape with tiled_fine matches a null landscape with infinite
@@ -300,6 +301,7 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertAlmostEqual(9.171927160953157, m.get_mean_distance_travelled(parameter_reference=5), places=6)
 		self.assertAlmostEqual(9.752385114899754, m.get_mean_distance_travelled(parameter_reference=6), places=6)
 
+	@skipLongTest
 	def testNullDispersalWithCoarse(self):
 		"""Sanity checks that the distances are calculated properly on a coarse map."""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)

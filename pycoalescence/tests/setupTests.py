@@ -14,7 +14,10 @@ import numpy as np
 
 from pycoalescence import set_logging_method
 
-quick_test = None
+try:
+	quick_test = os.environ["quick_test"]
+except KeyError:
+	quick_test = None
 
 
 def setUpAll():
