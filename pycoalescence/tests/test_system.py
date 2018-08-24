@@ -469,7 +469,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 										min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 										cutoff=0.0, landscape_type="closed")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
-								reproduction_map="sample/SA_sample_reproduction.tif")
+								death_map="sample/SA_sample_reproduction.tif")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.run()
 		self.coal2 = Simulation()
@@ -501,7 +501,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 								min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 								cutoff=0.0, landscape_type="closed")
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
-						reproduction_map="sample/SA_sample_reproduction_invalid.tif")
+						death_map="sample/SA_sample_reproduction_invalid.tif")
 		with self.assertRaises(NECSimError):
 			c.finalise_setup()
 
@@ -1920,7 +1920,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 class TestSimulationDispersalMapsSumming(unittest.TestCase):
 	"""
 	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
-	intended, including modifying the dispersal map to cumulative probabilities.
+	intended.
 	"""
 
 	@classmethod
@@ -1941,7 +1941,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
 		"""
 		Tests that running a simulation with a dispersal map produces the expected output.
 		"""
-		self.assertEqual(self.c.get_richness(1), 1167)
+		self.assertEqual(1171, self.c.get_richness(1))
 
 	def testDispersalParamStorage(self):
 		"""
@@ -1967,7 +1967,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
 class TestSimulationDispersalMapsNoData(unittest.TestCase):
 	"""
 	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
-	intended, including modifying the dispersal map to cumulative probabilities.
+	intended.
 	"""
 
 	@classmethod
@@ -2330,7 +2330,7 @@ class TestSamplingGridNumber(unittest.TestCase):
 									   min_speciation_rate=0.9, sigma=2, deme=1, sample_size=0.01)
 		cls.sim1.set_map_files("null", "sample/high_density.tif")
 		cls.sim1.run()
-		cls.sim2 = Simulation(logging_level=10)
+		cls.sim2 = Simulation(logging_level=50)
 		cls.sim2.set_simulation_params(seed=2, job_type=46, output_directory="output",
 									   min_speciation_rate=0.9, sigma=2, deme=1, sample_size=0.01)
 		cls.sim2.set_map_files("null", "sample/high_density.tif")
@@ -2352,3 +2352,74 @@ class TestSamplingGridNumber(unittest.TestCase):
 	def testSpeciesRichnessNear(self):
 		"""Tests that the two species richness values are near one another."""
 		self.assertAlmostEqual(1.0, self.tree1.get_number_individuals()/self.tree2.get_number_individuals(), 0)
+
+
+class TestReproductionMaps(unittest.TestCase):
+	"""Tests a simulation with the  maps."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Runs the simulations using reproduction maps."""
+		cls.sim1 = Simulation(logging_level=50)
+		cls.sim1.set_simulation_params(seed=1, job_type=47, output_directory="output",
+									   min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
+		cls.sim1.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+							  reproduction_map="sample/SA_sample_reproduction.tif")
+		cls.sim1.run()
+		cls.sim2 = Simulation(logging_level=50)
+		cls.sim2.set_simulation_params(seed=1, job_type=48, output_directory="output",
+									   min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
+		cls.sim2.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
+		cls.sim2.run()
+		cls.sim3 = Simulation(logging_level=50)
+		cls.sim3.set_simulation_params(seed=2, job_type=47, output_directory="output",
+									  min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
+		cls.sim3.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+							   death_map="sample/SA_sample_reproduction.tif",
+							   reproduction_map="sample/SA_sample_reproduction.tif")
+		cls.sim3.run()
+		cls.sim4 = Simulation(logging_level=50)
+		cls.sim4.set_simulation_params(seed=4, job_type=47, output_directory="output",
+									   min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
+		cls.sim4.set_map_files("null", fine_file="sample/SA_sample_coarse_pristine.tif",
+							   death_map="sample/SA_death.tif",
+							   reproduction_map="sample/SA_reproduction_coarse.tif",
+							   dispersal_map="sample/dispersal_fine2.tif")
+		cls.sim4.run()
+		cls.coal1 = CoalescenceTree(cls.sim1)
+		cls.coal2 = CoalescenceTree(cls.sim2)
+		cls.coal3 = CoalescenceTree(cls.sim3)
+		cls.coal4 = CoalescenceTree(cls.sim4)
+
+
+	def testDeathMapNullRaisesError(self):
+		"""Tests that an error is raised when the reproduction map has a zero value where the density map does not."""
+		c = Simulation(logging_level=logging.CRITICAL)
+		c.set_simulation_params(seed=3, job_type=47, output_directory="output", min_speciation_rate=0.1,
+								sigma=4, tau=4, deme=1, sample_size=0.01, max_time=2, dispersal_relative_cost=1,
+								min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+								cutoff=0.0, landscape_type="closed")
+
+		with self.assertRaises(NECSimError):
+			c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+							reproduction_map="sample/SA_sample_reproduction_invalid.tif")
+			c.run()
+
+	def testOutputRichness(self):
+		"""Tests the output richness is as expected"""
+
+		self.assertEqual(199, self.coal1.get_richness())
+		self.assertEqual(221, self.coal2.get_richness())
+		self.assertEqual(215, self.coal3.get_richness())
+		self.assertNotEqual(self.coal1.get_richness(), self.coal2.get_richness())
+		self.assertNotEqual(self.coal1.get_richness(), self.coal3.get_richness())
+		self.assertNotEqual(1214, self.coal4.get_richness())
+
+	def testOutputNumberIndividuals(self):
+		"""Tests that the number of individuals simulated in each scenario is correct."""
+		self.assertEqual(284, self.coal1.get_number_individuals())
+		self.assertEqual(self.coal1.get_number_individuals(), self.coal2.get_number_individuals())
+		self.assertEqual(self.coal2.get_number_individuals(), self.coal3.get_number_individuals())
+		self.assertEqual(2150, self.coal4.get_number_individuals())
+
+

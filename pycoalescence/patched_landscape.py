@@ -195,7 +195,7 @@ class PatchedLandscape:
 
 		The fine map file will be dimensions 1xN where N is the number of patches in the landscape.
 	 	The dispersal probability map will be dimensions NxN, where dispersal occurs from the y index cell to the x
-	 	index cell. Dispersal probabilities are stored as cumulative probabilities.
+	 	index cell.
 		"""
 		map_size = len(self.patches)
 		self.fine_map.data = np.zeros(shape=(1, map_size))
@@ -217,11 +217,6 @@ class PatchedLandscape:
 					self.dispersal_map.data[src_index, dst_index] = 0.0
 				else:
 					self.dispersal_map.data[src_index, dst_index] = src_patch.dispersal_probabilities[k2]
-		self.dispersal_map.data = np.cumsum(self.dispersal_map.data, axis=1)
-		for i in range(map_size):
-			if not np.isclose(self.dispersal_map.data[i, map_size - 1], 1.0):
-				raise ValueError("Dispersal map does not sum to 1 "
-								 "across rows: {} != {}.".format(self.dispersal_map.data[i, map_size - 1], 1.0))
 		self.fine_map.create(self.fine_map.file_name, datatype=5)
 		self.dispersal_map.create(self.dispersal_map.file_name, datatype=6)
 

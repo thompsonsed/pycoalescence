@@ -38,6 +38,8 @@ set(SOURCE_FILES
         necsim.h
         ${SOURCE_DIR_NECSIM}/NRrand.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
+        ${SOURCE_DIR_NECSIM}/Map.h
+        ${SOURCE_DIR_NECSIM}/SimParameters.h
         ${SOURCE_DIR_NECSIM}/Filesystem.cpp
         ${SOURCE_DIR_NECSIM}/SpatialTree.cpp
         ${SOURCE_DIR_NECSIM}/Tree.cpp
@@ -50,7 +52,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/Setup.cpp
         ${SOURCE_DIR_NECSIM}/SpeciesList.h
         ${SOURCE_DIR_NECSIM}/Community.cpp
-        ${SOURCE_DIR_NECSIM}/ReproductionMap.cpp
+        ${SOURCE_DIR_NECSIM}/ActivityMap.cpp
         ${SOURCE_DIR_NECSIM}/Metacommunity.cpp
         ${SOURCE_DIR_NECSIM}/DataMask.cpp
         ${SOURCE_DIR_NECSIM}/DataPoint.cpp

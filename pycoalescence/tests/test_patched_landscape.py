@@ -161,16 +161,24 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
 									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
 									   [0, 0, 0, 1, 1, 1, 1, 1, 1]])
-		dispersal_matrix_out = np.asarray([[0.1666666, 0.1666666, 0.1666666, 0.3333333333,
-											0.5, 0.5, 0.6666666, 0.8333333333, 1.0],
-										   [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-										   [0, 0, 0.25, 0.5, 0.75, 1.0, 1.0, 1.0, 1.0],
-										   [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										   [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										   [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										   [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										   [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										   [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0]])
+		dispersal_matrix_out = np.asarray([[0.1666666, 0., 0., 0.16666673, 0.16666667,
+											0., 0.1666666, 0.16666673, 0.16666667],
+										   [0.5, 0.5, 0., 0., 0.,
+											0., 0., 0., 0.],
+										   [0., 0., 0.25, 0.25, 0.25,
+											0.25, 0., 0., 0.],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667]])
 		pl.generate_from_matrix(density_matrix, dispersal_matrix)
 		fine_map = Map(m_fine)
 		dispersal_map = Map(m_dispersal)
@@ -223,7 +231,7 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		patch1.index = 1
 		patch2 = Patch("patch2", 200)
 		patch2.index = 2
-		pl.patches = {"patch1" : patch1, "patch2" : patch2}
+		pl.patches = {"patch1": patch1, "patch2": patch2}
 		output_csv = os.path.join("output", "fragment_csv", "generated_fragment.csv")
 		pl.generate_fragment_csv(output_csv)
 		self.assertTrue(os.path.exists(os.path.dirname(output_csv)))
@@ -293,9 +301,9 @@ class TestPatchedLandscapeSystems(unittest.TestCase):
 	def testDispersalMapValues(self):
 		"""Tests that the dispersal map values are correct."""
 		self.dispersal.open()
-		expected_data = np.array([[0.4, 1.0, 1.0],
-								  [0.7, 1.0, 1.0],
-								  [0.9, 0.95, 1.0]])
+		expected_data = np.array([[0.4, 0.6, 0.0],
+								  [0.7, 0.3, 0.0],
+								  [0.9, 0.05, 0.05]])
 		for x in range(3):
 			for y in range(3):
 				self.assertAlmostEqual(expected_data[y, x], self.dispersal.data[y, x], places=5)

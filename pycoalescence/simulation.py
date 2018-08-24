@@ -140,6 +140,7 @@ class Simulation(Landscape):
 		self.grid = Map()
 		# Dispersal map data
 		self.dispersal_map = Map()
+		self.death_map = Map()
 		self.reproduction_map = Map()
 		self.fine_map_array = None
 		self.sample_map_array = None
@@ -316,6 +317,9 @@ class Simulation(Landscape):
 					self.config.set("grid_map", "y", str(self.grid.y_size))
 					self.config.set("sample_grid", "x_off", str(self.sample_map.x_offset))
 					self.config.set("sample_grid", "y_off", str(self.sample_map.y_offset))
+				if self.death_map.file_name not in [None, "none", "null"]:
+					self.config.add_section("death")
+					self.config.set("death", "map", self.death_map.file_name)
 				if self.reproduction_map.file_name not in [None, "none", "null"]:
 					self.config.add_section("reproduction")
 					self.config.set("reproduction", "map", self.reproduction_map.file_name)
@@ -465,7 +469,7 @@ class Simulation(Landscape):
 			return t.is_protracted()
 
 	def set_map_files(self, sample_file, fine_file=None, coarse_file=None, historical_fine_file=None,
-					  historical_coarse_file=None, dispersal_map=None, reproduction_map=None):
+					  historical_coarse_file=None, dispersal_map=None, death_map=None, reproduction_map=None):
 		"""
 		Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
 		the specified dimensions.
@@ -476,7 +480,7 @@ class Simulation(Landscape):
 		If the historical fine or coarse files are "none", they will not be used.
 
 		.. note:: the dispersal map should be of dimensions xy by xy where x, y are the fine map dimensions. Dispersal
-				  probabilities should sum to 1 across each row, and each row/column index represents dispersal from the
+				  rates from each row/column index represents dispersal from the
 				  row index to the column index according to index = x+(y*xdim), where x,y are the coordinates of the
 				  cell and xdim is the x dimension of the fine map. See the
 				  :class:`PatchedLandscape class <pycoalescence.patched_landscape.PatchedLandscape>` for routines for
@@ -488,6 +492,7 @@ class Simulation(Landscape):
 		:param str historical_fine_file: the historical fine map file. Defaults to "none" if none provided
 		:param str historical_coarse_file: the historical coarse map file. Defaults to "none" if none provided
 		:param str dispersal_map: the dispersal map for reading dispersal values. Default to "none" if none provided
+		:param str death_map: a map of relative death probabilities, at the scale of the fine map
 		:param str reproduction_map: a map of relative reproduction probabilities, at the scale of the fine map
 
 		:rtype: None
@@ -498,6 +503,10 @@ class Simulation(Landscape):
 			self.dispersal_map.file_name = "none"
 		else:
 			self.dispersal_map.file_name = dispersal_map
+		if death_map is None:
+			self.death_map.file_name = "none"
+		else:
+			self.death_map.file_name = death_map
 		if reproduction_map is None:
 			self.reproduction_map.file_name = "none"
 		else:
@@ -509,7 +518,7 @@ class Simulation(Landscape):
 		Detects all the map dimensions for the provided files (where possible) and sets the respective values.
 		This is intended to be run after set_map_files()
 
-		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but
+		:raises TypeError: if a dispersal map or death map is specified, we must have a fine map specified, but
 						   not a coarse map.
 
 		:raises IOError: if one of the required maps does not exist
@@ -527,21 +536,33 @@ class Simulation(Landscape):
 					self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size:
 				raise ValueError("Dimensions of dispersal map do not match dimensions of fine map. This is currently"
 								 " unsupported.")
-		if self.reproduction_map.file_name not in {"none", "null", None}:
-			self.reproduction_map.set_dimensions()
-			if not self.reproduction_map.has_equal_dimensions(self.fine_map):
-				# if the sizes match, then proceed with a warning
-				if self.reproduction_map.x_size == self.fine_map.x_size and \
-						self.reproduction_map.y_size == self.fine_map.y_size:
-					self.logger.warning("Coordinates of reproduction map did not match fine map.")
-					self.reproduction_map.x_offset = self.fine_map.x_offset
-					self.reproduction_map.y_offset = self.fine_map.y_offset
-					self.reproduction_map.x_res = self.fine_map.x_res
-					self.reproduction_map.y_res = self.fine_map.y_res
-				else:
-					raise ValueError("Dimensions of the reproduction map do not match the fine map. This is currently "
-									 "unsupported.")
+		self.check_dimensions_match_fine(self.death_map, "death")
+		self.check_dimensions_match_fine(self.reproduction_map, "reproduction")
 		self.check_maps()
+
+	def check_dimensions_match_fine(self, map_to_check, name=""):
+		"""
+		Checks that the dimensions of the provided map matches the fine map.
+
+		:param Map map_to_check: map to check the dimensions of against the fine map
+		:param str name: name to write out in error message
+
+		:return: true if the dimensions match
+		"""
+		if map_to_check.file_name not in {"none", "null", None}:
+			map_to_check.set_dimensions()
+			if not map_to_check.has_equal_dimensions(self.fine_map):
+				# if the sizes match, then proceed with a warning
+				if map_to_check.x_size == self.fine_map.x_size and \
+						map_to_check.y_size == self.fine_map.y_size:
+					self.logger.warning("Coordinates of {} map did not match fine map.".format(name))
+					map_to_check.x_offset = self.fine_map.x_offset
+					map_to_check.y_offset = self.fine_map.y_offset
+					map_to_check.x_res = self.fine_map.x_res
+					map_to_check.y_res = self.fine_map.y_res
+				else:
+					raise ValueError("Dimensions of the {} map do not match the fine map. This is currently "
+									 "unsupported.".format(name))
 
 	def set_simulation_params(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0, deme=1,
 							  sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
@@ -700,8 +721,8 @@ class Simulation(Landscape):
 			total_ram += self.fine_map.x_size * self.fine_map.y_size * 4
 		if self.historical_coarse_map_file not in [None, "none"] or len(self.historical_coarse_list) != 0:
 			total_ram += self.coarse_map.x_size * self.coarse_map.y_size * 4
-		if self.reproduction_map.file_name not in [None, "none"]:
-			total_ram += self.reproduction_map.x_size * self.reproduction_map.y_size * 8
+		if self.death_map.file_name not in [None, "none"]:
+			total_ram += self.death_map.x_size * self.death_map.y_size * 8
 		if self.sample_map.file_name not in [None, "none", "null"]:
 			total_ram += self.sample_map.x_size * self.sample_map.y_size * 1
 		if self.dispersal_map.file_name not in [None, "none"]:
@@ -1068,7 +1089,7 @@ class Simulation(Landscape):
 		"""
 		Checks that the maps all exist and that the file structure makes sense.
 
-		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but
+		:raises TypeError: if a dispersal map or death map is specified, we must have a fine map specified, but
 			not a coarse map.
 
 		:raises IOError: if one of the required maps does not exist
@@ -1081,15 +1102,15 @@ class Simulation(Landscape):
 					self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size or \
 					self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size:
 				raise ValueError("Grid is not within the sample map - please check offsets of sample map.")
-			# Now check our combination of dispersal map, reproduction map and infinite landscape with our fine/coarse maps
+			# Now check our combination of dispersal map, death map and infinite landscape with our fine/coarse maps
 			# makes sense
 			if self.dispersal_map.file_name not in {"none", None}:
 				if self.coarse_map.file_name not in {None, "none"}:
 					raise TypeError("Cannot use a coarse map if using a dispersal map. "
 									"This feature is currently unsupported.")
-			if self.reproduction_map.file_name not in {None, "none", "null"}:
+			if self.death_map.file_name not in {None, "none", "null"}:
 				if self.coarse_map.file_name not in {None, "none", "null"}:
-					raise TypeError("Cannot use a coarse map if using a reproduction map. "
+					raise TypeError("Cannot use a coarse map if using a death map. "
 									"This feature is currently unsupported.")
 
 	def run_checks(self, expected=False):
