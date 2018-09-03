@@ -8,8 +8,8 @@ Program Listing for File Metacommunity.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef SPECIATIONCOUNTER_METACOMMUNITY_H
    #define SPECIATIONCOUNTER_METACOMMUNITY_H
@@ -41,9 +41,9 @@ Program Listing for File Metacommunity.h
    
        Metacommunity();
    
-       ~Metacommunity() = default;
+       ~Metacommunity() override = default;
    
-       void setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in, string database_name_in);
+       void setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in);
    
        void checkSimulationParameters();
    
@@ -53,7 +53,8 @@ Program Listing for File Metacommunity.h
    
        unsigned long selectLineageFromMetacommunity();
    
-       void apply(SpecSimParameters *sp) override ;
+       void applyNoOutput(SpecSimParameters *sp) override ;
+   
    
    };
    

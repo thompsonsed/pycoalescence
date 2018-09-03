@@ -8,18 +8,43 @@ Program Listing for File Tree.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
+   
+   #include <algorithm>
+   
+   #ifdef WIN_INSTALL
+   #include <windows.h>
+   #define sleep Sleep
+   #endif
    
    #include "Tree.h"
-   #include "Logging.h"
+   #include "Logger.h"
+   #include "LogFile.h"
    
    void Tree::importSimulationVariables(const string &configfile)
    {
        sim_parameters.importParameters(configfile);
+       runFileChecks();
+   }
+   
+   void Tree::importSimulationVariables(ConfigOption config)
+   {
+       sim_parameters.importParameters(config);
+       runFileChecks();
+   }
+   
+   void Tree::runFileChecks()
+   {
        checkOutputDirectory();
        // Now check for paused simulations
        checkSims();
+   }
+   
+   void Tree::wipeSimulationVariables()
+   {
+       SimParameters tmpSimParameters;
+       sim_parameters = tmpSimParameters;
    }
    
    void Tree::internalSetup(const SimParameters &sim_parameters_in)
@@ -40,7 +65,7 @@ Program Listing for File Tree.cpp
            {
                writeInfo("Output folder does not exist... creating...");
                bool bOutputFolder = boost::filesystem::create_directory(sim_parameters.output_directory);
-               if( bOutputFolder)
+               if(bOutputFolder)
                {
                    writeInfo("done!\n");
                }
@@ -57,7 +82,6 @@ Program Listing for File Tree.cpp
        return true;
    }
    
-   
    void Tree::checkSims()
    {
        checkSims(sim_parameters.output_directory, sim_parameters.the_seed, sim_parameters.the_task);
@@ -72,7 +96,8 @@ Program Listing for File Tree.cpp
        string file_to_open;
    //  char file_to_open[100];
    //  sprintf (file_to_open, "%s/Pause/Data_%i.csv",outdirect,int(the_task));
-       file_to_open = output_dir + string("/Pause/Dump_active_") + to_string((unsigned long long)task_in)+"_"+to_string((unsigned long long)seed_in) + string(".csv");
+       file_to_open = output_dir + string("/Pause/Dump_main_") + to_string((unsigned long long) task_in) + "_" +
+                      to_string((unsigned long long) seed_in) + string(".csv");
        out.open(file_to_open);
        if(out.good())
        {
@@ -80,8 +105,9 @@ Program Listing for File Tree.cpp
            writeInfo(os.str());
            if(!has_imported_pause)
            {
-               setResumeParameters(sim_parameters.output_directory, sim_parameters.output_directory, sim_parameters.the_seed,
-                                   sim_parameters.the_task, sim_parameters.max_time);
+               setResumeParameters(sim_parameters.output_directory, sim_parameters.output_directory,
+                                   static_cast<unsigned long>(sim_parameters.the_seed),
+                                   static_cast<unsigned long>(sim_parameters.the_task), sim_parameters.max_time);
            }
            has_paused = true;
        }
@@ -120,7 +146,6 @@ Program Listing for File Tree.cpp
    {
    }
    
-   
    bool Tree::hasPaused()
    {
        return has_paused;
@@ -139,6 +164,7 @@ Program Listing for File Tree.cpp
            return tmp;
        }
    }
+   
    long long Tree::getSeed()
    {
        return the_seed;
@@ -148,7 +174,7 @@ Program Listing for File Tree.cpp
    {
        if(!seeded)
        {
-           NR.setSeed(seed_in);
+           NR->setSeed(seed_in);
            the_seed = seed_in;
            seeded = true;
        }
@@ -158,7 +184,6 @@ Program Listing for File Tree.cpp
    {
        return static_cast<unsigned long>(floor(deme * deme_sample));
    }
-   
    
    unsigned long Tree::setObjectSizes()
    {
@@ -228,25 +253,22 @@ Program Listing for File Tree.cpp
    
    void Tree::setTimes()
    {
-       if(!uses_temporal_sampling)
+       // Import the time sample points
+       if(!reference_times.empty())
        {
-           // Import the time sample points
-           if(reference_times.size() != 0)
-           {
-               throw FatalException("Reference times have already been set.");
-           }
-           if(times_file == "set")
-           {
-               uses_temporal_sampling = true;
-               reference_times = sim_parameters.times;
-               sort(reference_times.begin(), reference_times.end());
-           }
-           if(reference_times.size() <= 1)
-           {
-               times_file = "null";
-               reference_times.clear();
-               reference_times.push_back(0.0);
-           }
+           throw FatalException("Reference times have already been set.");
+       }
+       if(times_file == "set")
+       {
+           uses_temporal_sampling = true;
+           reference_times = sim_parameters.times;
+           sort(reference_times.begin(), reference_times.end());
+       }
+       if(reference_times.size() <= 1)
+       {
+           times_file = "null";
+           reference_times.clear();
+           reference_times.push_back(0.0);
        }
    }
    
@@ -270,6 +292,35 @@ Program Listing for File Tree.cpp
        sort(speciation_rates.begin(), speciation_rates.end());
    }
    
+   void Tree::addSpeciationRates(vector<long double> spec_rates_in)
+   {
+       if(speciation_rates.empty())
+       {
+           speciation_rates.push_back(spec);
+       }
+       for(const auto &item : spec_rates_in)
+       {
+           if(item > spec)
+           {
+               speciation_rates.push_back(item);
+           }
+           else if(doubleCompare(spec, item, item * 0.000001))
+           {
+               speciation_rates.push_back(spec);
+           }
+           else
+           {
+               stringstream ss;
+               ss << "ERROR_SQL_018b: Speciation rate of " << item;
+               ss << " is less than the minimum possible (" << spec << ") - skipping." << endl;
+               throw SpeciesException(ss.str());
+           }
+       }
+       // Sort the speciation rates remove duplicates
+       sort(speciation_rates.begin(), speciation_rates.end());
+       speciation_rates.erase(unique(speciation_rates.begin(), speciation_rates.end()), speciation_rates.end());
+   }
+   
    void Tree::generateObjects()
    {
        unsigned long initial_count = setObjectSizes();
@@ -290,7 +341,7 @@ Program Listing for File Tree.cpp
            else
            {
                stringstream ss;
-               ss <<"ERROR_MAIN_007: FATAL. Sizing error - endactive is greater than the size of active. ";
+               ss << "ERROR_MAIN_007: FATAL. Sizing error - endactive is greater than the size of active. ";
                ss << "Please report this bug" << endl;
                ss << "endactive: " << endactive << endl;
                ss << "active.size: " << active.size() << endl;
@@ -320,7 +371,7 @@ Program Listing for File Tree.cpp
            // end of the simulation.
            // This also contains the start x and y position of the species.
            data[number_start].setup(true);
-           data[number_start].setSpec(NR.d01());
+           data[number_start].setSpec(NR->d01());
            endactive++;
            enddata++;
        }
@@ -342,7 +393,6 @@ Program Listing for File Tree.cpp
    #endif
        return number_start;
    }
-   
    
    bool Tree::runSimulation()
    {
@@ -368,14 +418,14 @@ Program Listing for File Tree.cpp
                // increase the counter of the number of moves (or generations) the lineage has undergone.
                data[active[this_step.chosen].getReference()].increaseGen();
                // Check if speciation happens
-               if(calcSpeciation(data[active[this_step.chosen].getReference()].getSpecRate(), 0.99999*spec,
-                                  data[active[this_step.chosen].getReference()].getGenRate()))
+               if(calcSpeciation(data[active[this_step.chosen].getReference()].getSpecRate(), 0.99999 * spec,
+                                 data[active[this_step.chosen].getReference()].getGenRate()))
                {
                    speciation(this_step.chosen);
                }
                else
                {
-                   // remove the species data from the species list to be placed somewhere new.
+                   // remove the species data from the species species_id_list to be placed somewhere new.
                    removeOldPosition(this_step.chosen);
                    calcNextStep();
    #ifdef DEBUG
@@ -512,7 +562,7 @@ Program Listing for File Tree.cpp
    {
        incrementGeneration();
        // choose a random lineage to die and be reborn out of those currently active
-       this_step.chosen = NR.i0(endactive - 1) + 1;  // cannot be 0
+       this_step.chosen = NR->i0(endactive - 1) + 1;  // cannot be 0
        // Rejection sample based on reproductive potential
        updateStepCoalescenceVariables();
    }
@@ -523,7 +573,7 @@ Program Listing for File Tree.cpp
        this_step.coal = false;
    }
    
-   void Tree::speciation(const unsigned long& chosen)
+   void Tree::speciation(const unsigned long &chosen)
    {
        // alter the data such that it reflects the speciation event.
        unsigned long data_position = active[chosen].getReference();
@@ -587,7 +637,7 @@ Program Listing for File Tree.cpp
    
    void Tree::calcNextStep()
    {
-       unsigned long random_lineage = NR.i0(static_cast<unsigned long>(deme)) + 1;
+       unsigned long random_lineage = NR->i0(static_cast<unsigned long>(deme)) + 1;
        if(random_lineage != this_step.chosen && random_lineage <= endactive)
        {
            // then we have a coalescence event
@@ -603,7 +653,7 @@ Program Listing for File Tree.cpp
        return checkSpeciation(random_number, speciation_rate, no_generations);
    }
    
-   void Tree::coalescenceEvent(const unsigned long& chosen, unsigned long& coalchosen)
+   void Tree::coalescenceEvent(const unsigned long &chosen, unsigned long &coalchosen)
    {
        // coalescence occured, so we need to adjust the data appropriatedly
        // our chosen lineage has merged with the coalchosen lineage, so we need to sync up the data.
@@ -619,13 +669,12 @@ Program Listing for File Tree.cpp
                    active[chosen].getMinmax()));  // set the new minmax to the maximum of the two minimums.
        active[chosen].setMinmax(active[coalchosen].getMinmax());
        data[enddata].setGenerationRate(0);
-       data[enddata].setSpec(NR.d01());
+       data[enddata].setSpec(NR->d01());
        active[chosen].setReference(enddata);
        active[coalchosen].setReference(enddata);
        //      removeOldPosition(chosen);
        switchPositions(chosen);
    }
-   
    
    void Tree::checkTimeUpdate()
    {
@@ -649,53 +698,65 @@ Program Listing for File Tree.cpp
    
    void Tree::addLineages(double generation_in)
    {
-       auto added_data = static_cast<unsigned long>(floor(deme_sample * deme));
-       unsigned long added_active = added_data - endactive;
-       checkSimSize(added_data, added_active);
+       auto number_added = static_cast<unsigned long>(floor(deme_sample * deme));
+       // Store all the data lineages to add in a vector
+       vector<TreeNode> data_to_add{};
        // change those that already exist to tips
        for(unsigned long i = 0; i < endactive; i++)
        {
-           makeTip(endactive, generation_in);
+           // With probability deme_sample, just change the active lineage to a tip.
+           if(checkProportionAdded(deme_sample) && number_added > 0)
+           {
+               number_added --;
+               makeTip(endactive, generation_in, data_to_add);
+           }
        }
-       for(unsigned long i = 0; i < added_active; i++)
+       checkSimSize(data_to_add.size() + number_added, number_added);
+       for(auto & item : data_to_add)
        {
            enddata ++;
-           endactive ++;
-           active[endactive].setup(enddata, endactive, 1.0);
-           data[enddata].setup(true,0, 0, 0, 0, generation_in);
-           data[enddata].setSpec(NR.d01());
+           data[enddata] = item;
        }
-       if(endactive != added_data)
+       for(unsigned long i = 0; i < number_added; i++)
        {
-           throw FatalException("Error whilst adding lineages. Please report this bug.");
+           enddata++;
+           endactive++;
+           active[endactive].setup(enddata, endactive, 1.0);
+           data[enddata].setup(true, 0, 0, 0, 0, generation_in);
+           data[enddata].setSpec(NR->d01());
        }
    }
    
+   bool Tree::checkProportionAdded(const double &proportion_added)
+   {
+       return NR->d01() < proportion_added;
+   }
    
    void Tree::checkSimSize(unsigned long req_data, unsigned long req_active)
    {
-       // need to be triple the size of the maximum number of individuals plus enddata
-       unsigned long min_data = (3 * req_data) + enddata + 2;
        unsigned long min_active = endactive + req_active + 2;
-       if(data.size() <= min_data)
+       unsigned long min_data = enddata + req_data + 2;
+       // Take into account future coalescence events
+       min_data += min_active * 2;
+       if(data.size() < min_data)
        {
            // change the size of data
            data.resize(min_data);
        }
    
-       if(active.size() <= min_active)
+       if(active.size() < min_active)
        {
            // change the size of active.
            active.resize(min_active);
        }
    }
    
-   void Tree::makeTip(const unsigned long &tmp_active, const double &generationin)
+   void Tree::makeTip(const unsigned long &tmp_active, const double &generationin, vector<TreeNode> &data_added)
    {
        unsigned long reference = active[tmp_active].getReference();
        if(data[reference].isTip())
        {
-           convertTip(tmp_active, generationin);
+           convertTip(tmp_active, generationin, data_added);
        }
        else
        {
@@ -704,23 +765,20 @@ Program Listing for File Tree.cpp
        }
    }
    
-   void Tree::convertTip(unsigned long i, double generationin)
+   void Tree::convertTip(unsigned long i, double generationin, vector<TreeNode> &data_added)
    {
-       enddata++;
-       if(enddata >= data.size())
-       {
-           throw FatalException("Cannot add tip - no space in data. Check size calculations.");
-       }
-       data[enddata].setup(true, active[i].getXpos(), active[i].getYpos(),
+       TreeNode tmp_tree_node;
+       tmp_tree_node.setup(true, active[i].getXpos(), active[i].getYpos(),
                            active[i].getXwrap(),
                            active[i].getYwrap(), generationin);
        // Now link the old tip to the new tip
-       data[active[i].getReference()].setParent(enddata);
-       data[enddata].setGenerationRate(0);
-       data[enddata].setSpec(NR.d01());
-       active[i].setReference(enddata);
+       auto data_pos = enddata + data_added.size() + 1;
+       data[active[i].getReference()].setParent(data_pos);
+       tmp_tree_node.setGenerationRate(0);
+       tmp_tree_node.setSpec(NR->d01());
+       active[i].setReference(data_pos);
+       data_added.emplace_back(tmp_tree_node);
    }
-   
    
    void Tree::applySpecRate(long double sr, double t)
    {
@@ -738,7 +796,7 @@ Program Listing for File Tree.cpp
        community.calcSpeciesAbundance();
    }
    
-   Row<unsigned long> * Tree::getCumulativeAbundances()
+   Row<unsigned long> *Tree::getCumulativeAbundances()
    {
        return community.getCumulativeAbundances();
    }
@@ -747,13 +805,17 @@ Program Listing for File Tree.cpp
    {
        if(!community.hasImportedData())
        {
+           community.setSimParameters(&sim_parameters);
            community.setDatabase(database);
        }
        community.resetTree();
        community.internalOption();
-       community.overrideProtractedParameters(getProtractedGenerationMin(), getProtractedGenerationMax());
+       ProtractedSpeciationParameters tmp;
+       tmp.min_speciation_gen = getProtractedGenerationMin();
+       tmp.max_speciation_gen = getProtractedGenerationMax();
+       community.overrideProtractedParameters(tmp);
        community.setProtracted(getProtracted());
-       community.addCalculationPerformed(sr, t, false, 0, 0.0);
+       community.addCalculationPerformed(sr, t, false, 0, 0.0, tmp);
    }
    
    void Tree::applySpecRate(long double sr)
@@ -763,20 +825,24 @@ Program Listing for File Tree.cpp
    
    void Tree::applyMultipleRates()
    {
+       if(!sim_complete)
+       {
+           throw FatalException("Simulation is not complete - cannot apply speciation rates.");
+       }
        stringstream os;
-       if(speciation_rates.size() == 0)
+       if(speciation_rates.empty())
        {
            os << "No additional speciation rates to apply." << endl;
        }
        speciation_rates.push_back(spec);
        // Get only unique speciation rates
        vector<long double> unique_speciation_rates;
-       for(const double &s : speciation_rates)
+       for(const long double &s : speciation_rates)
        {
            bool add = true;
-           for(const double & u : unique_speciation_rates)
+           for(const long double &u : unique_speciation_rates)
            {
-               if(doubleCompare(u, s, s*0.00001))
+               if(doubleCompare(u, s, s * 0.00001))
                {
                    add = false;
                }
@@ -832,11 +898,6 @@ Program Listing for File Tree.cpp
                    // Use the run spec if the rates are very close to equal
                    applySpecRate(spec, k);
                }
-               else
-               {
-                   writeWarning("Speciation rate " + to_string(i) +
-                                        " less than simulation minimum (" + to_string(spec) + ")\n");
-               }
            }
        }
        community.writeNewCommunityParameters();
@@ -869,13 +930,13 @@ Program Listing for File Tree.cpp
    {
    #ifdef sql_ram
        // open connection to the database file
-       remove(sqloutname.c_str());
+       remove(sql_output_database.c_str());
        stringstream os;
-       os << "\r    Writing to " << sqloutname << " ....     " << flush;
+       os << "\r    Writing to " << sql_output_database << " ....     " << flush;
        writeInfo(os.str());
-       openSQLiteDatabase(sqloutname, outdatabase);
+       openSQLiteDatabase(sql_output_database, outdatabase);
        // create the backup object to write data to the file from memory.
-       sqlite3_backup* backupdb;
+       sqlite3_backup *backupdb;
        backupdb = sqlite3_backup_init(outdatabase, "main", database, "main");
        if(!backupdb)
        {
@@ -896,15 +957,15 @@ Program Listing for File Tree.cpp
            {
                stringstream ss;
                ss << "ERROR_SQL_010: SQLite database file could not be opened. Check the folder exists and you "
-                       "have write permissions. (REF3) Error code: "
-                    << rc << endl;
+                     "have write permissions. (REF3) Error code: "
+                  << rc << endl;
                ss << "Attempted call " << i << " times" << endl;
                writeWarning(ss.str());
            }
        }
        sqlite3_backup_finish(backupdb);
        os.str("");
-       os << "\r    Writing to " << sqloutname << " ....  done!              " << endl;
+       os << "\r    Writing to " << sql_output_database << " ....  done!              " << endl;
        writeInfo(os.str());
    #endif
    }
@@ -930,7 +991,7 @@ Program Listing for File Tree.cpp
    
    unsigned long Tree::sortData()
    {
-       // Sort and process the species list so that the useful information can be extracted from it.
+       // Sort and process the species species_id_list so that the useful information can be extracted from it.
        stringstream os;
        os << "Finalising data..." << flush;
        writeInfo(os.str());
@@ -968,7 +1029,7 @@ Program Listing for File Tree.cpp
            {
                if((!(data[i].hasSpeciated())) && (data[i].getParent() == 0 && data[i].getExistence()))
                {
-                   throw FatalException(string("ERROR_MAIN_004: " + to_string((long long)i) +
+                   throw FatalException(string("ERROR_MAIN_004: " + to_string((long long) i) +
                                                " has not speciated and parent is 0."));
                }
            }
@@ -989,7 +1050,7 @@ Program Listing for File Tree.cpp
                }
            }
        }
-       catch(FatalException& me)
+       catch(FatalException &me)
        {
    #ifdef DEBUG
            writeLog(30, me.what());
@@ -1005,11 +1066,6 @@ Program Listing for File Tree.cpp
    {
        stringstream os;
        os << "Total generations simulated (steps): " << generation << " (" << steps << ")" << endl;
-   #ifdef DEBUG
-       stringstream ss;
-       ss << "Count dispersal, density fails: " << count_dispersal_fails << ", " << count_density_fails << endl;
-       writeLog(10, ss);
-   #endif
        os << "Setup time was " << floor((sim_start - start) / 60) << " minutes " << (sim_start - start) % 60 << " seconds"
           << endl;
        os << "Simulation time was " << floor((sim_finish - sim_start) / 3600) << " hours "
@@ -1019,13 +1075,25 @@ Program Listing for File Tree.cpp
           << (out_finish - sim_finish) % 60 << " seconds" << endl;
        os << "SQL output time was " << floor((sim_end - out_finish) / 60) << " minutes " << (sim_end - out_finish) % 60
           << " seconds" << endl;
-       time_taken += (sim_end - out_finish);
-       os << "Total time taken was " << floor((time_taken) / 3600) << " hours " << flush;
+       time_taken += (sim_end - sim_finish);
+       os << "Total simulation and output time was " << floor((time_taken) / 3600) << " hours " << flush;
        os << (floor((time_taken) / 60) - 60 * floor((time_taken) / 3600)) << flush;
        os << " minutes " << (time_taken) % 60 << " seconds" << endl;
        writeInfo(os.str());
    }
    
+   void Tree::openSQLDatabase()
+   {
+       if(database == nullptr)
+       {
+   #ifdef sql_ram
+           sqlite3_open(":memory:", &database);
+   #endif
+   #ifndef sql_ram
+           openSQLiteDatabase(sql_output_database, database);
+   #endif
+       }
+   }
    
    void Tree::sqlCreate()
    {
@@ -1036,41 +1104,39 @@ Program Listing for File Tree.cpp
        writeInfo(os.str());
        os.str("");
        // Create the folder if it doesn't exist
-       sqloutname = out_directory;
-       string sqlfolder = out_directory + "/SQL_data/";
+       sql_output_database = out_directory;
+       string sqlfolder = out_directory;
        try
        {
-           createParent(sqlfolder);
-           sqloutname += string("/SQL_data/data_") + to_string(the_task) + "_" + to_string(the_seed) + ".db";
+           if(!boost::filesystem::exists(boost::filesystem::path(sqlfolder)))
+           {
+               createParent(sqlfolder);
+           }
+           sql_output_database += string("/data_") + to_string(the_task) + "_" + to_string(the_seed) + ".db";
        }
        catch(FatalException &fe)
        {
            writeWarning(fe.what());
-           sqloutname = string("data_") + to_string(the_task) + "_" + to_string(the_seed) + ".db";
+           sql_output_database = string("data_") + to_string(the_task) + "_" + to_string(the_seed) + ".db";
        }
-       remove(sqloutname.c_str());
+       remove(sql_output_database.c_str());
        os.str("");
        os << "\r    Generating species list....              " << flush;
        writeInfo(os.str());
        // for outputting the full data from the simulation in to a SQL file.
-       sqlite3_stmt* stmt;
-       char* sErrMsg;
+       sqlite3_stmt *stmt = nullptr;
+       char *sErrMsg = nullptr;
        int rc = 0;
    // Open a SQL database in memory. This will be written to disk later.
    // A check here can be done to write to disc directly instead to massively reduce RAM consumption
-   #ifdef sql_ram
-       sqlite3_open(":memory:", &database);
-   #endif
-   #ifndef sql_ram
-       openSQLiteDatabase(sqloutname, database);
-   #endif
+       openSQLDatabase();
        // Create the command to be executed by adding to the string.
        string all_commands;
        all_commands =
                "CREATE TABLE SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, xval INT NOT NULL,";
        all_commands += "yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, speciated INT NOT "
-               "NULL, parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT "
-               "NULL, gen_added DOUBLE NOT NULL);";
+                       "NULL, parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT "
+                       "NULL, gen_added DOUBLE NOT NULL);";
    
        // Create the table within the SQL database
        rc = sqlite3_exec(database, all_commands.c_str(), nullptr, nullptr, &sErrMsg);
@@ -1080,8 +1146,8 @@ Program Listing for File Tree.cpp
            sqlite3_close(database);
            // delete any old database files - this is risky, but there isn't a better way of ensuring that the file
            // actually gets created.
-           remove(sqloutname.c_str());
-           rc = sqlite3_open(sqloutname.c_str(), &database);
+           remove(sql_output_database.c_str());
+           rc = sqlite3_open(sql_output_database.c_str(), &database);
            rc = sqlite3_exec(database, all_commands.c_str(), nullptr, nullptr, &sErrMsg);
            if(rc != SQLITE_OK)
            {
@@ -1094,8 +1160,8 @@ Program Listing for File Tree.cpp
        }
        // Now create the prepared statement into which we shall insert the values from the table
        all_commands = "INSERT INTO SPECIES_LIST "
-               "(ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence,randnum,gen_alive,gen_added) "
-               "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                      "(ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence,randnum,gen_alive,gen_added) "
+                      "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
        sqlite3_prepare_v2(database, all_commands.c_str(), static_cast<int>(strlen(all_commands.c_str())), &stmt, nullptr);
    
        // Start the transaction
@@ -1132,8 +1198,8 @@ Program Listing for File Tree.cpp
        {
            stringstream ss;
            ss << "ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL "
-                   "commands. Ensure SQL statements are properly cleared."
-                << endl;
+                 "commands. Ensure SQL statements are properly cleared."
+              << endl;
            ss << "Error code: " << rc << endl;
            // try again
            int i = 0;
@@ -1144,7 +1210,7 @@ Program Listing for File Tree.cpp
                rc = sqlite3_exec(database, "END TRANSACTION;", nullptr, nullptr, &sErrMsg);
                ss << "Attempt " << i << " failed..." << endl;
                ss << "ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL "
-                       "commands. Ensure SQL statements are properly cleared." << endl;
+                     "commands. Ensure SQL statements are properly cleared." << endl;
            }
            writeError(ss.str());
        }
@@ -1154,8 +1220,8 @@ Program Listing for File Tree.cpp
        {
            stringstream ss;
            ss << "ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL "
-                   "commands. Ensure SQL statements are properly cleared."
-                << endl;
+                 "commands. Ensure SQL statements are properly cleared."
+              << endl;
            ss << "Error code: " << rc << endl;
        }
        // Vacuum the file so that the file size is reduced (reduces by around 3%)
@@ -1172,22 +1238,22 @@ Program Listing for File Tree.cpp
    
    void Tree::sqlCreateSimulationParameters()
    {
-       char* sErrMsg;
+       char *sErrMsg;
    // Now additionally store the simulation parameters (extremely useful data)
        string to_execute = "CREATE TABLE SIMULATION_PARAMETERS (seed INT PRIMARY KEY not null, job_type INT NOT NULL,";
        to_execute += "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT "
-               "NULL, deme INT NOT NULL, ";
+                     "NULL, deme INT NOT NULL, ";
        to_execute += "sample_size DOUBLE NOT NULL, max_time INT NOT NULL, dispersal_relative_cost DOUBLE NOT NULL, "
-               "min_num_species ";
-       to_execute += "INT NOT NULL, habitat_change_rate DOUBLE NOT NULL, gen_since_pristine DOUBLE NOT NULL, ";
+                     "min_num_species ";
+       to_execute += "INT NOT NULL, habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, ";
        to_execute += "time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, "
-               "coarse_map_y INT NOT NULL,";
+                     "coarse_map_y INT NOT NULL,";
        to_execute += "coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, coarse_map_scale DOUBLE NOT "
-               "NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL,";
+                     "NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL,";
        to_execute += "fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, ";
        to_execute += "sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, ";
        to_execute += "sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, ";
-       to_execute += "pristine_coarse_map TEXT NOT NULL, pristine_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, ";
+       to_execute += "historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, ";
        to_execute += "dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, ";
        to_execute += "restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, ";
        to_execute += "min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, dispersal_map TEXT NOT NULL);";
@@ -1196,7 +1262,7 @@ Program Listing for File Tree.cpp
        {
            stringstream ss;
            ss << "ERROR_SQL_008: Cannot start SQL transaction. Check memory database assignment and SQL commands."
-                << endl;
+              << endl;
            ss << "Error code: " << rc << endl;
            writeError(ss.str());
        }
@@ -1215,15 +1281,16 @@ Program Listing for File Tree.cpp
    string Tree::simulationParametersSqlInsertion()
    {
        string to_execute;
-       to_execute = "INSERT INTO SIMULATION_PARAMETERS VALUES(" + to_string((long long)the_seed) + "," +
-                    to_string((long long)the_task);
-       to_execute += ",'" + out_directory + "'," + boost::lexical_cast<std::string>((long double)spec) + "," +
+       to_execute = "INSERT INTO SIMULATION_PARAMETERS VALUES(" + to_string((long long) the_seed) + "," +
+                    to_string((long long) the_task);
+       to_execute += ",'" + out_directory + "'," + boost::lexical_cast<std::string>((long double) spec) + "," +
                      to_string(0.0) + ",";
-       to_execute += to_string(0.0) + "," + to_string((long long)deme) + ",";
-       to_execute += to_string((long double)deme_sample) + "," + to_string((long long)maxtime) + ",";
+       to_execute += to_string(0.0) + "," + to_string((long long) deme) + ",";
+       to_execute += to_string((long double) deme_sample) + "," + to_string((long long) maxtime) + ",";
        to_execute += to_string(0.0) + "," + to_string(0.0) + ",";
-       to_execute += to_string((long double)sim_parameters.habitat_change_rate) + ",";
-       to_execute += to_string((long double)sim_parameters.gen_since_pristine) + ",'" + sim_parameters.times_file + "','";
+       to_execute += to_string((long double) sim_parameters.habitat_change_rate) + ",";
+       to_execute +=
+               to_string((long double) sim_parameters.gen_since_historical) + ",'" + sim_parameters.times_file + "','";
        to_execute += "none', 0, 0, 0, 0, 0, 'null', 0, 0, 0, 0, 'none', 1, 1, 1, 1, 0, 0, 'none', 'none',";
        to_execute += to_string(sim_complete);
        to_execute += ", 'none', 0.0, 0, 0, 'none', ";
@@ -1249,22 +1316,19 @@ Program Listing for File Tree.cpp
        // This function saves the data to 4 files. One contains the main simulation parameters, the other 3 contain the
        // simulation results thus far
        // including the grid object, data object and active object.
-       string pause_folder = initiatePause();
-       dumpMain(pause_folder);
-       dumpActive(pause_folder);
-       dumpData(pause_folder);
-       completePause();
+       auto out1 = initiatePause();
+       dumpMain(out1);
+       dumpActive(out1);
+       dumpData(out1);
+       completePause(out1);
    }
    
-   string Tree::initiatePause()
+   ofstream Tree::initiatePause()
    {
        stringstream os;
        os << "Pausing simulation..." << endl << "Saving data to temp file in " << out_directory << "/Pause/ ..." << flush;
        writeInfo(os.str());
        os.str("");
-       ofstream out;
-       out.precision(64);
-       string file_to_open;
        // Create the pause directory
        string pause_folder = out_directory + "/Pause/";
        boost::filesystem::path pause_dir(pause_folder);
@@ -1274,22 +1338,27 @@ Program Listing for File Tree.cpp
            {
                boost::filesystem::create_directory(pause_dir);
            }
-           catch(exception& e)
+           catch(exception &e)
            {
                stringstream ss;
                ss << "Failure to create " << out_directory << "/Pause/"
-                    << "." << endl;
+                  << "." << endl;
                ss << e.what() << endl;
                ss << "Writing directly to output directory." << endl;
                writeError(ss.str());
                pause_folder = out_directory;
            }
        }
-       return pause_folder;
+       string file_to_open = pause_folder + "Dump_main_" + to_string(the_task) + "_" + to_string(the_seed) + ".csv";
+       ofstream out;
+       out.open(file_to_open.c_str());
+       out << setprecision(64);
+       return out;
    }
    
-   void Tree::completePause()
+   void Tree::completePause(ofstream &out)
    {
+       out.close();
        stringstream os;
        os << "done!" << endl;
        os << "SQL dump started" << endl;
@@ -1304,14 +1373,10 @@ Program Listing for File Tree.cpp
        writeTimes();
    }
    
-   void Tree::dumpMain(string pause_folder)
+   void Tree::dumpMain(ofstream &out)
    {
        try
        {
-           string file_to_open = pause_folder + "Dump_main_" + to_string(the_task) + "_" + to_string(the_seed) + ".csv";
-           ofstream out;
-           out.open(file_to_open.c_str());
-           out << setprecision(64);
            // Save that this simulation was not a protracted speciation sim
            out << bIsProtracted << "\n";
            // Saving the initial data to one file.
@@ -1323,58 +1388,44 @@ Program Listing for File Tree.cpp
            out << endactive << "\n" << startendactive << "\n" << maxsimsize << "\n" << steps << "\n";
            out << generation << "\n" << "\n" << maxtime << "\n";
            out << deme_sample << "\n" << spec << "\n" << deme << "\n";
-           out << sqloutname << "\n" << NR << "\n" << sim_parameters << "\n";
+           out << sql_output_database << "\n" << *NR << "\n" << sim_parameters << "\n";
            // now output the protracted speciation variables (there should be two of these).
            out << getProtractedVariables();
-           out.close();
        }
-       catch(exception& e)
+       catch(exception &e)
        {
            stringstream ss;
-           ss << e.what() << endl;
-           ss << "Failed to perform main dump to " << pause_folder << endl;
+           ss << "Failed to perform dump of main: " << e.what() << endl;
            writeError(ss.str());
        }
    }
    
-   void Tree::dumpActive(string pause_folder)
+   void Tree::dumpActive(ofstream &out)
    {
        try
        {
            // Output the active object
-           ofstream out3;
-           string file_to_open = pause_folder + "Dump_active_" + to_string(the_task) + "_" + to_string(the_seed) + ".csv";
-           out3 << setprecision(64);
-           out3.open(file_to_open.c_str());
-           out3 << active;
-           out3.close();
+           out << active;
        }
-       catch(exception& e)
+       catch(exception &e)
        {
            stringstream ss;
-           ss << e.what() << endl;
-           ss << "Failed to perform active dump to " << pause_folder << endl;
+           ss << "Failed to perform dump of active: " << e.what() << endl;
            writeError(ss.str());
        }
    }
    
-   void Tree::dumpData(string pause_folder)
+   void Tree::dumpData(ofstream &out)
    {
        try
        {
            // Output the data object
-           ofstream out4;
-           string file_to_open = pause_folder + "Dump_data_" + to_string(the_task) + "_" + to_string(the_seed) + ".csv";
-           out4 << setprecision(64);
-           out4.open(file_to_open.c_str());
-           out4 << data;
-           out4.close();
+           out << data;
        }
-       catch(exception& e)
+       catch(exception &e)
        {
            stringstream ss;
-           ss << e.what() << endl;
-           ss << "Failed to perform data dump to " << pause_folder << endl;
+           ss << "Failed to perform dump of data: " << e.what() << endl;
            writeError(ss.str());
        }
    }
@@ -1386,6 +1437,21 @@ Program Listing for File Tree.cpp
            pause_sim_directory = out_directory;
            has_imported_pause = true;
        }
+   }
+   
+   ifstream Tree::openSaveFile()
+   {
+       ifstream in1;
+       string file_to_open = pause_sim_directory + string("/Pause/Dump_main_") + to_string(the_task) + "_" +
+                             to_string(the_seed) + string(".csv");
+       in1.open(file_to_open);
+       if(!in1)
+       {
+           stringstream es;
+           es << "Cannot open file at " << file_to_open << endl;
+           throw FatalException(es.str());
+       }
+       return in1;
    }
    
    void Tree::setResumeParameters(
@@ -1402,19 +1468,14 @@ Program Listing for File Tree.cpp
        }
    }
    
-   void Tree::loadMainSave()
+   void Tree::loadMainSave(ifstream &in1)
    {
-       string file_to_open;
        try
        {
            stringstream os;
            os << "\rLoading data from temp file...main..." << flush;
            writeInfo(os.str());
            os.str("");
-           ifstream in1;
-           file_to_open = pause_sim_directory + string("/Pause/Dump_main_") + to_string(the_task) + "_" +
-                          to_string(the_seed) + string(".csv");
-           in1.open(file_to_open);
            // Reading the initial data
            string string1;
            // First read our boolean which just determines whether the simulation is a protracted simulation or not.
@@ -1426,12 +1487,12 @@ Program Listing for File Tree.cpp
                if(getProtracted())
                {
                    throw FatalException("Paused simulation is not a protracted speciation simulation. "
-                                                 "Cannot be resumed by this program. Please report this bug");
+                                        "Cannot be resumed by this program. Please report this bug");
                }
                else
                {
                    throw FatalException("Paused simulation is a protracted speciation simulation. "
-                                                 "Cannot be resumed by this program. Please report this bug");
+                                        "Cannot be resumed by this program. Please report this bug");
                }
            }
            in1 >> enddata >> seeded >> the_seed >> the_task;
@@ -1449,8 +1510,8 @@ Program Listing for File Tree.cpp
            has_imported_vars = false;
            in1 >> deme_sample >> spec >> deme;
            in1.ignore();
-           getline(in1, sqloutname);
-           in1 >> NR;
+           getline(in1, sql_output_database);
+           in1 >> *NR;
            in1.ignore();
            in1 >> sim_parameters;
            if(maxtime == 0)
@@ -1463,7 +1524,7 @@ Program Listing for File Tree.cpp
                throw FatalException("Time set to 0 on resume!");
            }
    #endif
-           NR.setDispersalMethod(sim_parameters.dispersal_method, sim_parameters.m_prob, sim_parameters.cutoff);
+           NR->setDispersalMethod(sim_parameters.dispersal_method, sim_parameters.m_prob, sim_parameters.cutoff);
            if(has_imported_pause)
            {
                sim_parameters.output_directory = out_directory;
@@ -1472,7 +1533,6 @@ Program Listing for File Tree.cpp
            double tmp1, tmp2;
            in1 >> tmp1 >> tmp2;
            setProtractedVariables(tmp1, tmp2);
-           in1.close();
            if(times_file == "null")
            {
                if(uses_temporal_sampling)
@@ -1497,42 +1557,32 @@ Program Listing for File Tree.cpp
                }
            }
        }
-       catch(exception& e)
+       catch(exception &e)
        {
            string msg;
-           msg = string(e.what()) + "Failure to import parameters from " + file_to_open;
+           msg = "Failure to import parameters from temp main: " + string(e.what());
            throw FatalException(msg);
        }
    }
    
-   void Tree::loadDataSave()
+   void Tree::loadDataSave(ifstream &in1)
    {
-       string file_to_open;
-       // Input the data object
        try
        {
            stringstream os;
            os << "\rLoading data from temp file...data..." << flush;
            writeInfo(os.str());
-           ifstream in4;
-           //      sprintf(file_to_open,"%s/Pause/Data_%i_data.csv",out_directory,int(the_task));
-           file_to_open = pause_sim_directory + string("/Pause/Dump_data_") + to_string(the_task) + "_" +
-                          to_string(the_seed) + string(".csv");
-           in4.open(file_to_open);
-           in4 >> data;
-           //          os << data[0] << endl;
-           //          os << data[1] << endl;
-           in4.close();
+           in1 >> data;
        }
-       catch(exception& e)
+       catch(exception &e)
        {
            string msg;
-           msg = string(e.what()) + "Failure to import data from " + file_to_open;
+           msg = "Failure to import data from temp data: " + string(e.what());
            throw FatalException(msg);
        }
    }
    
-   void Tree::loadActiveSave()
+   void Tree::loadActiveSave(ifstream &in1)
    {
        string file_to_open;
        try
@@ -1541,17 +1591,12 @@ Program Listing for File Tree.cpp
            os << "\rLoading data from temp file...active..." << flush;
            writeInfo(os.str());
            // Input the active object
-           ifstream in3;
-           file_to_open = pause_sim_directory + string("/Pause/Dump_active_") + to_string(the_task) + "_" +
-                          to_string(the_seed) + string(".csv");
-           in3.open(file_to_open);
-           in3 >> active;
-           in3.close();
+           in1 >> active;
        }
-       catch(exception& e)
+       catch(exception &e)
        {
            string msg;
-           msg = string(e.what()) + "Failure to import active from " + file_to_open;
+           msg = "Failure to import data from temp active: " + string(e.what());
            throw FatalException(msg);
        }
    }
@@ -1583,14 +1628,19 @@ Program Listing for File Tree.cpp
    void Tree::simResume()
    {
        initiateResume();
+       // open the save file
+       auto is = openSaveFile();
        // now load the objects
-       loadMainSave();
+       loadMainSave(is);
        setObjectSizes();
-       loadActiveSave();
-       loadDataSave();
+       loadActiveSave(is);
+       loadDataSave(is);
        time(&sim_start);
        writeInfo("\rLoading data from temp file...done!\n");
    }
+   
+   
+   
    #ifdef DEBUG
    
    void Tree::validateLineages()
@@ -1624,7 +1674,6 @@ Program Listing for File Tree.cpp
        writeInfo("done\n");
    }
    
-   
    void Tree::debugEndStep()
    {
        try
@@ -1639,7 +1688,7 @@ Program Listing for File Tree.cpp
                }
            }
        }
-       catch(FatalException& fe)
+       catch(FatalException &fe)
        {
            writeLog(50, "Logging chosen:");
            active[this_step.chosen].logActive(50);
@@ -1660,7 +1709,7 @@ Program Listing for File Tree.cpp
    
    void Tree::debugCoalescence()
    {
-       if(this_step.coalchosen ==0)
+       if(this_step.coalchosen == 0)
        {
            return;
        }
@@ -1677,8 +1726,8 @@ Program Listing for File Tree.cpp
            ss << "ERROR_MOVE_006: NON FATAL. Nwrap not set correctly. Check move programming function." << endl;
            throw FatalException(ss.str());
        }
-       if(active[this_step.coalchosen].getXpos() != (unsigned long)this_step.oldx ||
-          active[this_step.coalchosen].getYpos() != (unsigned long)this_step.oldy ||
+       if(active[this_step.coalchosen].getXpos() != (unsigned long) this_step.oldx ||
+          active[this_step.coalchosen].getYpos() != (unsigned long) this_step.oldy ||
           active[this_step.coalchosen].getXwrap() != this_step.oldxwrap ||
           active[this_step.coalchosen].getYwrap() != this_step.oldywrap)
        {
@@ -1714,6 +1763,5 @@ Program Listing for File Tree.cpp
            throw FatalException("Parent not set to 0 for active lineage.");
        }
    }
-   
    
    #endif // DEBUG

@@ -3,7 +3,7 @@
 Variable NECSimMethods
 ======================
 
-- Defined in :ref:`file_necsimmodule.cpp`
+- Defined in :ref:`file_necsim.cpp`
 
 
 Variable Documentation

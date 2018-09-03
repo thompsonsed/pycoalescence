@@ -1,209 +1,178 @@
 cmake_minimum_required(VERSION 3.8)
-project(NECSim)
+# Main necsimmodule python program
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(SOURCE_FILES
-        necsim/SpeciationCommands.cpp
-        necsim/SpeciationCommands.h
-        necsim/ConfigFileParser.cpp
-        necsim/ConfigFileParser.h
-        necsim/CustomExceptions.h
-        necsim/DataPoint.h
-        necsim/DispersalCoordinator.cpp
-        necsim/DispersalCoordinator.h
-        necsim/NRrand.h
-        necsim/LicenseHeader.h
-        necsim/Logging.cpp
-        necsim/Logging.h
-        necsim/main.cpp
-        necsim/Landscape.cpp
-        necsim/Landscape.h
-        necsim/Matrix.h
-        necsim/ProtractedTree.cpp
-        necsim/ProtractedTree.h
-        necsim/Setup.cpp
-        necsim/Setup.h
-        necsim/SpeciesList.h
-        necsim/Step.h
-        necsim/Community.cpp
-        necsim/Community.h
-        necsim/TreeNode.h necsim/ReproductionMap.cpp necsim/ReproductionMap.h
-        necsim/DataMask.h necsim/SimParameters.h necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h
-        necsim/DataMask.cpp
-        necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
-        necsim/Tree.cpp necsim/Tree.h
-        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
-
-#set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.62.0/include)
-#set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.62.0/lib)
-find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-find_library(gdal 2.1.0 REQUIRED)
-find_library(SQL_DIR sqlite3)
-#find_library(GDAL_DIR gdal)
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(/usr/local/include)
-include_directories(../)
-link_directories(/usr/local/lib)
-add_executable(NECSim ${SOURCE_FILES})
-add_definitions(-Dwith_gdal -Dverbose)
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    add_definitions(-DDEBUG=1)
+project(necsim CXX)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    message(STATUS "Detected debug mode")
+    add_definitions(-DDEBUG)
+endif ()
+# Change this option to ON if RAM usage is an issue
+option(minimal_ram "minimal_ram" OFF)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(SOURCE_DIR_NECSIM "${PROJECT_SOURCE_DIR}/necsim")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+if (NOT ${minimal_ram})
+    add_definitions(-Dsql_ram)
 endif()
-target_link_libraries(NECSim "${SQL_DIR}")
-target_link_libraries(NECSim gdal)
-#message(${Boost_LIBRARIES})
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set(WINDOWS TRUE)
+    add_definitions(-DWIN_INSTALL)
 
-target_link_libraries(NECSim ${Boost_LIBRARIES})
-
-# DISPERSAL PROGRAM
-project(Dispersal)
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    set(LINUX TRUE)
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(MACOSX TRUE)
+endif()
+#if (DEFINED ENV{CONDA_PREFIX})
+#    message(STATUS "Installing inside conda env at $ENV{PREFIX}")
+#    set(CMAKE_INSTALL_PREFIX "$ENV{PREFIX}")
+#endif()
+include_directories(${SOURCE_DIR_NECSIM})
+if (${CMAKE_C_COMPILER} MATCHES "icc.*$")
+    set(USING_INTEL TRUE)
+endif ()
 set(SOURCE_FILES
-        necsim/SimulateDispersal.cpp
-        necsim/SimulateDispersal.h
-        dispersalmodule.cpp
-        dispersalmodule.h
-        necsim/Filesystem.cpp necsim/Filesystem.h necsim/SpatialTree.cpp necsim/SpatialTree.h necsim/Tree.cpp
-        necsim/Tree.h necsim/Landscape.cpp necsim/Landscape.h necsim/Map.h necsim/Map.cpp necsim/DataMask.cpp
-        necsim/DataMask.h necsim/SimParameters.h necsim/Cell.h)
-find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-find_package(PythonLibs REQUIRED)
-find_library(SQL_DIR sqlite3)
-find_library(GDAL_DIR gdal)
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-add_library(Dispersal SHARED ${SOURCE_FILES})
-include_directories(${PYTHON_INCLUDE_DIRS})
-add_definitions(-Dwith_gdal)
-target_link_libraries(Dispersal ${PYTHON_LIBRARIES})
-target_link_libraries(Dispersal "${SQL_DIR}")
-target_link_libraries(Dispersal gdal)
-target_link_libraries(Dispersal ${Boost_LIBRARIES})
+        necsim.cpp
+        necsim.h
+        ${SOURCE_DIR_NECSIM}/NRrand.h
+        ${SOURCE_DIR_NECSIM}/Matrix.h
+        ${SOURCE_DIR_NECSIM}/Map.h
+        ${SOURCE_DIR_NECSIM}/SimParameters.h
+        ${SOURCE_DIR_NECSIM}/Filesystem.cpp
+        ${SOURCE_DIR_NECSIM}/SpatialTree.cpp
+        ${SOURCE_DIR_NECSIM}/Tree.cpp
+        ${SOURCE_DIR_NECSIM}/SpeciationCommands.cpp
+        ${SOURCE_DIR_NECSIM}/ConfigFileParser.cpp
+        ${SOURCE_DIR_NECSIM}/DispersalCoordinator.cpp
+        ${SOURCE_DIR_NECSIM}/Logger.cpp
+        ${SOURCE_DIR_NECSIM}/Landscape.cpp
+        ${SOURCE_DIR_NECSIM}/ProtractedTree.cpp
+        ${SOURCE_DIR_NECSIM}/Setup.cpp
+        ${SOURCE_DIR_NECSIM}/SpeciesList.h
+        ${SOURCE_DIR_NECSIM}/Community.cpp
+        ${SOURCE_DIR_NECSIM}/ActivityMap.cpp
+        ${SOURCE_DIR_NECSIM}/Metacommunity.cpp
+        ${SOURCE_DIR_NECSIM}/DataMask.cpp
+        ${SOURCE_DIR_NECSIM}/DataPoint.cpp
+        ${SOURCE_DIR_NECSIM}/SpeciesList.cpp
+        ${SOURCE_DIR_NECSIM}/TreeNode.cpp
+        ${SOURCE_DIR_NECSIM}/LogFile.cpp
+        ${SOURCE_DIR_NECSIM}/CPLCustomHandlerNecsim.cpp
+        ${SOURCE_DIR_NECSIM}/Cell.cpp
+        PyLogger.cpp
+        ${SOURCE_DIR_NECSIM}/DoubleComparison.cpp
+        PyImports.cpp
+        PyLogging.cpp
+        LandscapeMetricsCalculator.cpp
+        CCommunity.h
+        CSimulation.h
+        CLandscapeMetricsCalculator.h
+        CSimulateDispersal.h
+        ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp)
+if (APPLE)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+elseif(WINDOWS)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
+endif ()
+add_library(necsim SHARED ${SOURCE_FILES})
+#include_directories(/usr/local/include)
+#link_directories(/usr/local/lib)
+find_package(GDAL 2.1.0 REQUIRED)
+if (DEFINED ENV{CONDA_PREFIX})
+#    if (APPLE)
+        # use, i.e. don't skip the full RPATH for the build tree
+#        SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+#    endif ()
+    message(STATUS "Conda install detected")
 
-project(applyspecmodule)
-set(SOURCE_FILES applyspecmodule.cpp applyspecmodule.h necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/Metacommunity.h
-        necsim/Metacommunity.cpp necsim/Community.h necsim/Community.cpp
-        PyLogging.h PyImports.cpp PyLogging.h
-        necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/SpeciesList.cpp necsim/SpatialTree.cpp necsim/SpatialTree.h
-        necsim/Tree.cpp necsim/Tree.h necsim/ProtractedSpatialTree.h
-        necsim/SpeciationCommands.cpp
-        necsim/SpeciationCommands.h
-        necsim/ConfigFileParser.cpp
-        necsim/ConfigFileParser.h
-        necsim/CustomExceptions.h
-        necsim/DataPoint.h
-        necsim/DispersalCoordinator.cpp
-        necsim/DispersalCoordinator.h
-        necsim/NRrand.h
-        necsim/LicenseHeader.h
-        necsim/Logging.h
-        necsim/Landscape.cpp
-        necsim/Landscape.h
-        necsim/Matrix.h
-        necsim/ProtractedTree.cpp
-        necsim/ProtractedTree.h
-        necsim/Setup.cpp
-        necsim/Setup.h
-        necsim/SpeciesList.h
-        necsim/Step.h
-        necsim/Community.cpp
-        necsim/Community.h
-        necsim/TreeNode.h necsim/ReproductionMap.cpp necsim/ReproductionMap.h
-        necsim/DataMask.h necsim/SimParameters.h necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h
-        necsim/DataMask.cpp
-        necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
-        necsim/Tree.cpp necsim/Tree.h
-        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
+    if(NOT WINDOWS)
+#        find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
+#        include_directories(${Boost_INCLUDE_DIR})
+#        target_link_libraries(necsim ${Boost_LIBRARIES})
+#        find_package(sqlite3)
+#        include_directories(${SQLITE3_INCLUDE_DIRS})
+#        target_link_libraries(necsim ${SQLITE3_LIBRARIES})
+        target_link_libraries(necsim sqlite3)
+        target_link_libraries(necsim boost_filesystem)
+        target_link_libraries(necsim boost_system)
+    endif()
+else ()
+    message(STATUS "Standard python install detected")
+    find_package(sqlite3)
+    include_directories(${SQLITE3_INCLUDE_DIRS})
+    target_link_libraries(necsim ${SQLITE3_LIBRARIES})
+    if(NOT WINDOWS)
+        find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
+        include_directories(${Boost_INCLUDE_DIR})
+        target_link_libraries(necsim ${Boost_LIBRARIES})
+    endif()
+endif ()
+include_directories(${GDAL_INCLUDE_DIR})
 
 find_package(PythonLibs REQUIRED)
-find_library(SQL_DIR sqlite3)
-#find_library(GDAL_DIR gdal)
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-add_library(applyspecmodule SHARED ${SOURCE_FILES})
 include_directories(${PYTHON_INCLUDE_DIRS})
-add_definitions(-Dwith_gdal)
-target_link_libraries(applyspecmodule ${PYTHON_LIBRARIES})
-target_link_libraries(applyspecmodule "${SQL_DIR}")
-target_link_libraries(applyspecmodule gdal)
-target_link_libraries(applyspecmodule ${Boost_LIBRARIES})
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    add_definitions(-DDEBUG=1)
+link_directories(${PYTHON_LIBRARIES})
+
+if(NOT WINDOWS)
+    if(PYTHON_CPPFLAGS)
+
+        set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${PYTHON_CPPFLAGS}")
+    endif()
+    if(PYTHON_LDFLAGS)
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${PYTHON_LDFLAGS}")
+    endif()
 endif()
-project(necsimmodule)
-set(SOURCE_FILES
-        necsimmodule.cpp
-        necsimmodule.h PyLogging.h
-        necsim/Filesystem.cpp necsim/Filesystem.h PyLogging.cpp necsim/SpeciesList.cpp necsim/SpatialTree.cpp necsim/SpatialTree.h
-        necsim/Tree.cpp necsim/Tree.h necsim/ProtractedSpatialTree.h
-        necsim/SpeciationCommands.cpp
-        necsim/SpeciationCommands.h
-        necsim/ConfigFileParser.cpp
-        necsim/ConfigFileParser.h
-        necsim/CustomExceptions.h
-        necsim/DataPoint.h
-        necsim/DispersalCoordinator.cpp
-        necsim/DispersalCoordinator.h
-        necsim/NRrand.h
-        necsim/LicenseHeader.h
-        necsim/Logging.h
-        necsim/Landscape.cpp
-        necsim/Landscape.h
-        necsim/Matrix.h
-        necsim/ProtractedTree.cpp
-        necsim/ProtractedTree.h
-        necsim/Setup.cpp
-        necsim/Setup.h
-        necsim/SpeciesList.h
-        necsim/Step.h
-        necsim/Community.cpp
-        necsim/Community.h
-        necsim/TreeNode.h necsim/ReproductionMap.cpp necsim/ReproductionMap.h
-        necsim/DataMask.h necsim/SimParameters.h necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h
-        necsim/DataMask.cpp
-        necsim/DataPoint.cpp necsim/SpeciesList.cpp necsim/TreeNode.cpp PyLogging.h necsim/SpatialTree.cpp necsim/SpatialTree.h
-        necsim/Tree.cpp necsim/Tree.h
-        necsim/SimulationTemplates.h necsim/LogFile.cpp necsim/LogFile.h necsim/ProtractedSpatialTree.h necsim/SpecSimParameters.h
-        necsim/CPLCustomHandler.h necsim/CPLCustomHandler.cpp necsim/Cell.h)
-find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-find_package(PythonLibs REQUIRED)
-find_library(SQL_DIR sqlite3)
-#find_library(GDAL_DIR gdal)
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-include_directories(${PYTHON_INCLUDE_DIRS})
+#if(PYTHON_LINKER)
+#    target_link_libraries(necsim ${PYTHON_LINKER})
+#endif()
+message(STATUS "Python include dirs: ${PYTHON_INCLUDE_DIRS}")
+message(STATUS "Python libraries: ${PYTHON_LIBRARIES}")
+message(STATUS "CXXFLAGS: ${CMAKE_CXX_FLAGS}")
+message(STATUS "Shared linker flags: ${CMAKE_SHARED_LINKER_FLAGS}")
 add_definitions(-Dwith_gdal)
-add_library(necsimmodule SHARED ${SOURCE_FILES})
-target_link_libraries(necsimmodule ${PYTHON_LIBRARIES})
-target_link_libraries(necsimmodule "${SQL_DIR}")
-target_link_libraries(necsimmodule gdal)
-target_link_libraries(necsimmodule ${Boost_LIBRARIES})
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    add_definitions(-DDEBUG=1)
+
+
+
+if(WINDOWS)
+    SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${OUTPUT_BINDIR} CACHE PATH "build directory")
+    target_link_libraries(necsim ${PYTHON_LIBRARIES})
+    message(STATUS "Detecting libraries for windows")
+#    set(Boost_NO_SYSTEM_PATHS true)
+#    set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
+#    set(Boost_USE_MULTITHREADED ON)
+    add_definitions( -DBOOST_ALL_NO_LIB ) # <----- This is really important for Windows compatibility
+    # force all boost libraries to dynamic link (we already disabled
+    # autolinking, so I don't know why we need this, but we do!)
+#    add_definitions( -DBOOST_ALL_DYN_LINK )
+#    set(Boost_USE_MULTITHREAD ON)
+#    set(Boost_USE_STATIC_LIBS ON)
+#    set(Boost_NO_SYSTEM_PATHS ON)
+#    set(Boost_USE_STATIC_LIBS OFF)
+#    set(Boost_USE_MULTITHREADED ON)
+#    set(Boost_USE_STATIC_RUNTIME OFF)
+    set(Boost_DEBUG ON)  #<---------- Real life saver
+#    add_definitions(-DBOOST_SYSTEM_NO_DEPRECATED)
+    find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
+    include_directories(${Boost_INCLUDE_DIR})
+    target_link_libraries(necsim ${Boost_LIBRARIES})
+    message(STATUS "Boost root: ${Boost_ROOT}")
+    message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIR}")
+    message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+    find_package(sqlite3)
+    include_directories(${SQLITE3_INCLUDE_DIRS})
+    target_link_libraries(necsim ${SQLITE3_LIBRARIES})
+    target_link_libraries(necsim ${GDAL_LIBRARY})
+#    INSTALL_TARGETS(../necsim/ RUNTIME_DIRECTORY
+#            ../necsim/ necsim)
+#    INSTALL(TARGETS ExecutableTarget StaticLibraryTarget SharedLibraryTarget
+#            RUNTIME DESTINATION bin
+#            LIBRARY DESTINATION lib
+#            ARCHIVE DESTINATION lib
+#            )
+
+else()
+    target_link_libraries(necsim ${GDAL_LIBRARY})
+#    target_link_libraries(necsim gdal)
 endif()
-project(SpeciationCounter)
-set(SOURCE_FILES
-        SpeciationCounter.cpp
-        necsim/Metacommunity.cpp necsim/Metacommunity.h necsim/Filesystem.cpp necsim/Filesystem.h necsim/DataMask.cpp necsim/SpecSimParameters.h necsim/Cell.h)
-find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-find_library(SQL_DIR sqlite3)
-#find_library(GDAL_DIR gdal)
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-add_library(SpeciationCounter SHARED ${SOURCE_FILES} necsim/Metacommunity.cpp necsim/Metacommunity.h)
-include_directories(${PYTHON_INCLUDE_DIRS})
-add_definitions(-Dwith_gdal)
-target_link_libraries(SpeciationCounter ${PYTHON_LIBRARIES})
-target_link_libraries(SpeciationCounter "${SQL_DIR}")
-target_link_libraries(SpeciationCounter gdal)
-target_link_libraries(SpeciationCounter ${Boost_LIBRARIES})
-
-
-
-#target_link_libraries(NECSIM ${SQLITE_INCLUDE_DIRS})

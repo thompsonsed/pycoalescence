@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 31/08/16
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -41,7 +41,7 @@ Includes
 
 - ``DataMask.h`` (:ref:`file_necsim_DataMask.h`)
 
-- ``Map.h`` (:ref:`file_necsim_Map.h`)
+- ``Map.h`` (:ref:`file_necsim_ActivityMap.h`)
 
 - ``SimParameters.h`` (:ref:`file_necsim_SimParameters.h`)
 
@@ -90,6 +90,10 @@ Classes
 Functions
 ---------
 
+
+- :ref:`function_archimedesSpiralX`
+
+- :ref:`function_archimedesSpiralY`
 
 - :ref:`function_importToMapAndRound`
 

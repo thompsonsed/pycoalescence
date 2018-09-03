@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -39,6 +39,8 @@ BSD-3 Licence.
 Included By
 -----------
 
+
+- :ref:`file_necsim_Cell.cpp`
 
 - :ref:`file_necsim_Step.h`
 
@@ -52,4 +54,11 @@ Classes
 
 
 - :ref:`class_Cell`
+
+
+Functions
+---------
+
+
+- :ref:`function_distanceBetweenCells`
 

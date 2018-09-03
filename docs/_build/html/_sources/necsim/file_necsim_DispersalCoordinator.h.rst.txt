@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 07/08/2017
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -39,9 +39,11 @@ Includes
 --------
 
 
+- ``ActivityMap.h`` (:ref:`file_necsim_ActivityMap.h`)
+
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
-- ``Map.h`` (:ref:`file_necsim_Map.h`)
+- ``Map.h`` (:ref:`file_necsim_ActivityMap.h`)
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
 
@@ -56,6 +58,8 @@ Includes
 - ``fstream``
 
 - ``iostream``
+
+- ``memory``
 
 - ``stdexcept``
 

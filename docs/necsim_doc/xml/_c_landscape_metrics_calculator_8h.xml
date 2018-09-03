@@ -1,0 +1,487 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="_c_landscape_metrics_calculator_8h" kind="file" language="C++">
+    <compoundname>CLandscapeMetricsCalculator.h</compoundname>
+    <includes local="no">Python.h</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includes refid="necsim_8h" local="yes">necsim.h</includes>
+    <includes refid="_landscape_metrics_calculator_8h" local="yes">LandscapeMetricsCalculator.h</includes>
+    <includes refid="_py_logging_8h" local="yes">PyLogging.h</includes>
+    <includes local="yes">necsim/CPLCustomHandlerNecsim.h</includes>
+    <includes refid="_py_templates_8h" local="yes">PyTemplates.h</includes>
+    <includedby refid="necsim_8cpp" local="yes">necsim.cpp</includedby>
+    <incdepgraph>
+      <node id="1892">
+        <label>structmember.h</label>
+      </node>
+      <node id="1889">
+        <label>necsim/Logger.h</label>
+      </node>
+      <node id="1882">
+        <label>numeric</label>
+      </node>
+      <node id="1878">
+        <label>string</label>
+      </node>
+      <node id="1875">
+        <label>CLandscapeMetricsCalculator.h</label>
+        <link refid="CLandscapeMetricsCalculator.h"/>
+        <childnode refid="1876" relation="include">
+        </childnode>
+        <childnode refid="1877" relation="include">
+        </childnode>
+        <childnode refid="1878" relation="include">
+        </childnode>
+        <childnode refid="1879" relation="include">
+        </childnode>
+        <childnode refid="1880" relation="include">
+        </childnode>
+        <childnode refid="1885" relation="include">
+        </childnode>
+        <childnode refid="1890" relation="include">
+        </childnode>
+        <childnode refid="1891" relation="include">
+        </childnode>
+      </node>
+      <node id="1887">
+        <label>PyLogger.h</label>
+        <link refid="_py_logger_8h_source"/>
+        <childnode refid="1876" relation="include">
+        </childnode>
+        <childnode refid="1878" relation="include">
+        </childnode>
+        <childnode refid="1888" relation="include">
+        </childnode>
+        <childnode refid="1889" relation="include">
+        </childnode>
+      </node>
+      <node id="1879">
+        <label>necsim.h</label>
+        <link refid="necsim_8h_source"/>
+        <childnode refid="1876" relation="include">
+        </childnode>
+        <childnode refid="1877" relation="include">
+        </childnode>
+        <childnode refid="1878" relation="include">
+        </childnode>
+      </node>
+      <node id="1876">
+        <label>Python.h</label>
+      </node>
+      <node id="1877">
+        <label>vector</label>
+      </node>
+      <node id="1880">
+        <label>LandscapeMetricsCalculator.h</label>
+        <link refid="_landscape_metrics_calculator_8h_source"/>
+        <childnode refid="1881" relation="include">
+        </childnode>
+        <childnode refid="1877" relation="include">
+        </childnode>
+        <childnode refid="1882" relation="include">
+        </childnode>
+        <childnode refid="1883" relation="include">
+        </childnode>
+        <childnode refid="1884" relation="include">
+        </childnode>
+      </node>
+      <node id="1894">
+        <label>utility</label>
+      </node>
+      <node id="1888">
+        <label>sstream</label>
+      </node>
+      <node id="1884">
+        <label>necsim/Cell.h</label>
+      </node>
+      <node id="1893">
+        <label>PyImports.h</label>
+        <link refid="_py_imports_8h_source"/>
+        <childnode refid="1876" relation="include">
+        </childnode>
+        <childnode refid="1894" relation="include">
+        </childnode>
+        <childnode refid="1877" relation="include">
+        </childnode>
+        <childnode refid="1878" relation="include">
+        </childnode>
+      </node>
+      <node id="1886">
+        <label>necsim/LogFile.h</label>
+      </node>
+      <node id="1890">
+        <label>necsim/CPLCustomHandlerNecsim.h</label>
+      </node>
+      <node id="1883">
+        <label>necsim/Map.h</label>
+      </node>
+      <node id="1891">
+        <label>PyTemplates.h</label>
+        <link refid="_py_templates_8h_source"/>
+        <childnode refid="1876" relation="include">
+        </childnode>
+        <childnode refid="1892" relation="include">
+        </childnode>
+        <childnode refid="1893" relation="include">
+        </childnode>
+      </node>
+      <node id="1881">
+        <label>algorithm</label>
+      </node>
+      <node id="1885">
+        <label>PyLogging.h</label>
+        <link refid="_py_logging_8h_source"/>
+        <childnode refid="1876" relation="include">
+        </childnode>
+        <childnode refid="1878" relation="include">
+        </childnode>
+        <childnode refid="1886" relation="include">
+        </childnode>
+        <childnode refid="1887" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_py_l_m_c" prot="public">PyLMC</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_c_landscape_metrics_calculator_8h_1ab1d5ed5588c462ac70d7ecca3791fe7b" prot="public" static="yes" mutable="no">
+        <type>PyMethodDef</type>
+        <definition>PyMethodDef PyLMCMethods[]</definition>
+        <argsstring>[]</argsstring>
+        <name>PyLMCMethods</name>
+        <initializer>=
+		{
+				{&quot;import_map&quot;, (PyCFunction) set_map,                METH_VARARGS,
+						&quot;Imports the map file to calculate landscape metrics on. Should only be run once.&quot;},
+				{&quot;calculate_MNN&quot;, (PyCFunction) calculateMNN,                METH_NOARGS,
+						&quot;Calculates the mean nearest-neighbour for the landscape&quot;},
+				{&quot;calculate_CLUMPY&quot;, (PyCFunction) calculateCLUMPY,                METH_NOARGS,
+						&quot;Calculates the CLUMPY metric for the landscape&quot;},
+				{nullptr, nullptr, 0, nullptr}
+		}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="135" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_c_landscape_metrics_calculator_8h_1a313f8f464b6baecde913c4346e110f71" prot="public" static="yes" mutable="no">
+        <type>PyTypeObject</type>
+        <definition>PyTypeObject C_LMCType</definition>
+        <argsstring></argsstring>
+        <name>C_LMCType</name>
+        <initializer>= genLMCType()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="167" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_c_landscape_metrics_calculator_8h_1a94e33ee961fc19ef56d69b8a26aa5623" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PyObject *</type>
+        <definition>PyObject* set_map</definition>
+        <argsstring>(PyLMC *self, PyObject *args)</argsstring>
+        <name>set_map</name>
+        <param>
+          <type><ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>PyObject *</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+<para>Sets the map parameters and imports the maps. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the python self object </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments to parse, should contain all key map parameters </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>pointer to the python object </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="34" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="34" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="_c_landscape_metrics_calculator_8h_1a1a41fd3e5a2a68f492d2d2cb86dd49e2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PyObject *</type>
+        <definition>static PyObject* calculateCLUMPY</definition>
+        <argsstring>(PyLMC *self)</argsstring>
+        <name>calculateCLUMPY</name>
+        <param>
+          <type><ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the CLUMPY metric for the imported map file. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the python self pointer </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>PyFloatType object containing the mean distance to the nearest neighbour </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="69" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="69" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="_c_landscape_metrics_calculator_8h_1a7d84cb2ca450d2d93c7d76d3b1f7bb38" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PyObject *</type>
+        <definition>static PyObject* calculateMNN</definition>
+        <argsstring>(PyLMC *self)</argsstring>
+        <name>calculateMNN</name>
+        <param>
+          <type><ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the mean distance to the nearest neighbour for each cell on the imported map file. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the python self pointer </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>PyFloatType object containing the mean distance to the nearest neighbour </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="96" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="96" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="_c_landscape_metrics_calculator_8h_1a0c57c2e8b38d0962e47575462fb01568" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int PyLMC_init</definition>
+        <argsstring>(PyLMC *self, PyObject *args, PyObject *kwds)</argsstring>
+        <name>PyLMC_init</name>
+        <param>
+          <type><ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>PyObject *</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>PyObject *</type>
+          <declname>kwds</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="118" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="118" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="_c_landscape_metrics_calculator_8h_1ad0e322c3a4827a9c4c9619d1f45204e0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void PyLMC_dealloc</definition>
+        <argsstring>(PyLMC *self)</argsstring>
+        <name>PyLMC_dealloc</name>
+        <param>
+          <type><ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="125" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="125" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="_c_landscape_metrics_calculator_8h_1a027838645050807fc80035494bdc95c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>PyTypeObject</type>
+        <definition>PyTypeObject genLMCType</definition>
+        <argsstring>()</argsstring>
+        <name>genLMCType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="CLandscapeMetricsCalculator.h" line="146" column="1" bodyfile="CLandscapeMetricsCalculator.h" bodystart="146" bodyend="164"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Wraps the C <ref refid="class_landscape_metrics_calculator" kindref="compound">LandscapeMetricsCalculator</ref> objects for accessing via python. </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Samuel Thompson</para></simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"></highlight><highlight class="preprocessor">#ifndef<sp/>NECSIM_CLANDSCAPEMETRICSCALCULATOR_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NECSIM_CLANDSCAPEMETRICSCALCULATOR_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Python.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;LandscapeMetricsCalculator.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyLogging.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/CPLCustomHandlerNecsim.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyTemplates.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="class_py_l_m_c" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_py_template" kindref="compound">PyTemplate</ref>&lt;LandscapeMetricsCalculator&gt;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>unique_ptr&lt;LandscapeMetricsCalculator&gt;<sp/>landscapeMetricsCalculator;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>has_imported_map;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">PyObject<sp/>*set_map(<ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref><sp/>*</highlight><highlight class="keyword">self</highlight><highlight class="normal">,<sp/>PyObject<sp/>*args)</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<sp/>map_file;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>parse<sp/>arguments</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!PyArg_ParseTuple(args,<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal">,<sp/>&amp;map_file))</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!self-&gt;has_imported_map)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>getGlobalLogger(self-&gt;logger,<sp/>self-&gt;log_function);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>map_path<sp/>=<sp/>map_file;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;landscapeMetricsCalculator-&gt;import(map_path);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;has_imported_map<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal">(exception<sp/>&amp;e)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>removeGlobalLogger();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PyErr_SetString(NECSimError,<sp/>e.what());</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Py_RETURN_NONE;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="keyword">static</highlight><highlight class="normal"><sp/>PyObject<sp/>*<sp/>calculateCLUMPY(<ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref><sp/>*</highlight><highlight class="keyword">self</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>parse<sp/>arguments</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>getGlobalLogger(self-&gt;logger,<sp/>self-&gt;log_function);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!self-&gt;has_imported_map)</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>runtime_error(</highlight><highlight class="stringliteral">&quot;Map<sp/>has<sp/>not<sp/>been<sp/>imported<sp/>-<sp/>cannot<sp/>calculate<sp/>CLUMPY<sp/>metric.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>c<sp/>=<sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;landscapeMetricsCalculator-&gt;calculateClumpiness();</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>PyFloat_FromDouble(c);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal">(exception<sp/>&amp;e)</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>removeGlobalLogger();</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PyErr_SetString(NECSimError,<sp/>e.what());</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="keyword">static</highlight><highlight class="normal"><sp/>PyObject<sp/>*<sp/>calculateMNN(<ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref><sp/>*</highlight><highlight class="keyword">self</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>parse<sp/>arguments</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>getGlobalLogger(self-&gt;logger,<sp/>self-&gt;log_function);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!self-&gt;has_imported_map)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>runtime_error(</highlight><highlight class="stringliteral">&quot;Map<sp/>has<sp/>not<sp/>been<sp/>imported<sp/>-<sp/>cannot<sp/>calculate<sp/>MNN<sp/>metric.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>c<sp/>=<sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;landscapeMetricsCalculator-&gt;calculateMNN();</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>PyFloat_FromDouble(c);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal">(exception<sp/>&amp;e)</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>removeGlobalLogger();</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PyErr_SetString(NECSimError,<sp/>e.what());</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">PyLMC_init(<ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref>*</highlight><highlight class="keyword">self</highlight><highlight class="normal">,<sp/>PyObject<sp/>*args,<sp/>PyObject<sp/>*kwds)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;landscapeMetricsCalculator<sp/>=<sp/>make_unique&lt;LandscapeMetricsCalculator&gt;();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;has_imported_map<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>PyTemplate_init&lt;LandscapeMetricsCalculator&gt;(</highlight><highlight class="keyword">self</highlight><highlight class="normal">,<sp/>args,<sp/>kwds);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>PyLMC_dealloc(<ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref><sp/>*</highlight><highlight class="keyword">self</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(self-&gt;landscapeMetricsCalculator<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;landscapeMetricsCalculator.reset();</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">self</highlight><highlight class="normal">-&gt;landscapeMetricsCalculator<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>PyTemplate_dealloc&lt;LandscapeMetricsCalculator&gt;(</highlight><highlight class="keyword">self</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>PyMethodDef<sp/>PyLMCMethods[]<sp/>=</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;import_map&quot;</highlight><highlight class="normal">,<sp/>(PyCFunction)<sp/>set_map,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>METH_VARARGS,</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Imports<sp/>the<sp/>map<sp/>file<sp/>to<sp/>calculate<sp/>landscape<sp/>metrics<sp/>on.<sp/>Should<sp/>only<sp/>be<sp/>run<sp/>once.&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;calculate_MNN&quot;</highlight><highlight class="normal">,<sp/>(PyCFunction)<sp/>calculateMNN,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>METH_NOARGS,</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Calculates<sp/>the<sp/>mean<sp/>nearest-neighbour<sp/>for<sp/>the<sp/>landscape&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;calculate_CLUMPY&quot;</highlight><highlight class="normal">,<sp/>(PyCFunction)<sp/>calculateCLUMPY,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>METH_NOARGS,</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Calculates<sp/>the<sp/>CLUMPY<sp/>metric<sp/>for<sp/>the<sp/>landscape&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>0,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal">PyTypeObject<sp/>genLMCType()</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>PyTypeObject<sp/>ret_Simulation_Type<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PyVarObject_HEAD_INIT(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>0)</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_name<sp/>=<sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*)</highlight><highlight class="stringliteral">&quot;libnecsim.CLandscapeMetricsCalculator&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_doc<sp/>=<sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*)</highlight><highlight class="stringliteral">&quot;Calculate<sp/>landscape<sp/>metrics<sp/>from<sp/>a<sp/>map<sp/>file.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_basicsize<sp/>=<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="class_py_l_m_c" kindref="compound">PyLMC</ref>);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_itemsize<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_flags<sp/>=<sp/>Py_TPFLAGS_DEFAULT<sp/>|<sp/>Py_TPFLAGS_BASETYPE<sp/>|<sp/>Py_TPFLAGS_HAVE_GC;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_new<sp/>=<sp/>PyTemplate_new&lt;LandscapeMetricsCalculator&gt;;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_init<sp/>=<sp/>(initproc)<sp/>PyLMC_init;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_dealloc<sp/>=<sp/>(destructor)<sp/>PyLMC_dealloc;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_traverse<sp/>=<sp/>(traverseproc)<sp/>PyTemplate_traverse&lt;LandscapeMetricsCalculator&gt;;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/>.tp_members<sp/>=<sp/>PyTemplate_members&lt;T&gt;,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_methods<sp/>=<sp/>PyLMCMethods;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>ret_Simulation_Type.tp_getset<sp/>=<sp/>PyTemplate_gen_getsetters&lt;LandscapeMetricsCalculator&gt;();</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ret_Simulation_Type;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>PyTypeObject<sp/>C_LMCType<sp/>=<sp/>genLMCType();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>NECSIM_CLANDSCAPEMETRICSCALCULATOR_H</highlight></codeline>
+    </programlisting>
+    <location file="CLandscapeMetricsCalculator.h"/>
+  </compounddef>
+</doxygen>

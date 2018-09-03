@@ -7,7 +7,7 @@ File main.cpp
 
 
 
-A generic simulator for spatially explicit coalescence models suitable for HPC applications. It contains all functions for running large-scale simulations backwards in time using coalescence techniques. Outputs include an SQLite database containing spatial and temporal information about tracked lineages, and allow for rebuilding of the coalescence tree. Currently, a fat-tailed dispersal kernel or normal distribution can be used for dispersal processes. 
+A generic simulator for spatially explicit coalescence models suitable for HPC applications. It contains all functions for running large-scale simulations backwards in time using coalescence techniques. Outputs include an SQLite database containing spatial and temporal information about tracked lineages, and allow for rebuilding of the coalescence tree. 
 
 
 .. contents:: Contents
@@ -28,6 +28,7 @@ Definition (``necsim/main.cpp``)
 Detailed Description
 --------------------
 
+Currently, a fat-tailed dispersal kernel or normal distribution can be used for dispersal processes.
 Run with -h to see full input options.
 Outputs include
 
@@ -39,7 +40,7 @@ Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
 Based heavily on code written by James Rosindell
 Contact: j.rosindell@imperial.ac.uk
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -47,6 +48,10 @@ BSD-3 Licence.
 Includes
 --------
 
+
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
 
 - ``SimulationTemplates.h`` (:ref:`file_necsim_SimulationTemplates.h`)
 

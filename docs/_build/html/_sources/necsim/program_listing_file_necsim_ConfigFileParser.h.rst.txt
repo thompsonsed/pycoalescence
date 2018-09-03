@@ -8,8 +8,8 @@ Program Listing for File ConfigFileParser.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    //
    #ifndef CONFIGCLASS
    #define CONFIGCLASS
@@ -24,11 +24,12 @@ Program Listing for File ConfigFileParser.h
    #include <stdexcept>
    #include <vector>
    #include <cstring>
+   #ifndef WIN_INSTALL
    #include <unistd.h>
+   #endif
    #include <cmath>
    #include <cctype>
    #include <algorithm>
-   //#include "StpdToString.h" TODO remove this
    
    using namespace std;
    using std::string;
@@ -43,7 +44,7 @@ Program Listing for File ConfigFileParser.h
        vector<string> val;
        vector<string> refs;
    
-       SectionOption()
+       SectionOption() : val(), refs()
        {
            section = "nullSectionOption";
        }
@@ -65,10 +66,10 @@ Program Listing for File ConfigFileParser.h
        bool bFullParse;  // if this is true, each KeyOption structure will be returned after each read.
        vector<SectionOption> configs;  // all config data if full parse is true.
    public:
-       ConfigOption()
+       ConfigOption() : configs()
        {
-           bConfig = false;
            configfile = "none";
+           bConfig = false;
            bMain = false;
            bFullParse = false;
        }
@@ -77,6 +78,7 @@ Program Listing for File ConfigFileParser.h
    
        void parseConfig();
    
+       void parseConfig(istream &istream1);
        vector<SectionOption> getSectionOptions();
    
        void setSectionOption(string section, string reference, string value);

@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 07/08/2017
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -43,7 +43,9 @@ Includes
 
 - ``DispersalCoordinator.h`` (:ref:`file_necsim_DispersalCoordinator.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``utility``
 
 
 

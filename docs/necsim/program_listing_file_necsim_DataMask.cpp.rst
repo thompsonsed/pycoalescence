@@ -8,13 +8,15 @@ Program Listing for File DataMask.cpp
 
 .. code-block:: cpp
 
+   
    #include "DataMask.h"
    #include "Landscape.h"
-   #include "Logging.h"
+   #include "Logger.h"
    
    DataMask::DataMask()
    {
-       bDefault = true;
+       isNullSample = true;
+       isGridOffset = false;
        x_dim = 0;
        y_dim = 0;
        x_offset = 0;
@@ -24,58 +26,121 @@ Program Listing for File DataMask.cpp
        getProportionfptr = &DataMask::getBoolProportion;
    }
    
-   bool DataMask::getDefault()
+   bool DataMask::isNull()
    {
-       return bDefault;
+       return isNullSample;
    }
    
-   bool DataMask::setup(const string &sample_mask_file, const unsigned long &x_in, const unsigned long &y_in,
-                        const unsigned long &mask_x_in, const unsigned long &mask_y_in,
-                        const unsigned long &x_offset_in, const unsigned long &y_offset_in)
+   void DataMask::setup(const SimParameters &sim_parameters)
    {
    #ifdef DEBUG
-       if((x_in > mask_x_in || y_in > mask_y_in) && !bDefault)
+       if((sim_parameters.grid_x_size > sim_parameters.sample_x_size ||
+           sim_parameters.grid_y_size > sim_parameters.sample_y_size) && !isNullSample)
        {
-           writeLog(50, "Grid size: " + to_string(x_in) + ", " + to_string(y_in));
-           writeLog(50, "Sample mask size: " + to_string(mask_x_in) + ", " + to_string(mask_y_in));
+           writeLog(50, "Grid size: " + to_string(sim_parameters.grid_x_size) + ", " +
+                        to_string(sim_parameters.grid_y_size));
+           writeLog(50, "Sample mask size: " + to_string(sim_parameters.sample_x_size) + ", " +
+                        to_string(sim_parameters.sample_y_size));
            throw FatalException("Datamask dimensions do not make sense");
        }
    #endif // DEBUG
-       inputfile = sample_mask_file;
-       x_dim = x_in;
-       y_dim = y_in;
-       mask_x_dim = mask_x_in;
-       mask_y_dim  = mask_y_in;
-       x_offset = x_offset_in;
-       y_offset = y_offset_in;
-       bDefault = inputfile == "null" || inputfile == "none";
-       return bDefault;
+       inputfile = sim_parameters.sample_mask_file;
+       x_dim = sim_parameters.grid_x_size;
+       y_dim = sim_parameters.grid_y_size;
+       mask_x_dim = sim_parameters.sample_x_size;
+       mask_y_dim = sim_parameters.sample_y_size;
+       x_offset = sim_parameters.sample_x_offset;
+       y_offset = sim_parameters.sample_y_offset;
+       if(x_dim != mask_x_dim || y_dim != mask_y_dim)
+       {
+           isGridOffset = true;
+       }
+       else
+       {
+           isGridOffset = false;
+       }
+   }
+   
+   bool DataMask::checkCanUseDefault(const SimParameters &sim_parameters)
+   {
+       if(sim_parameters.sample_mask_file == "null")
+       {
+           if(sim_parameters.fine_map_x_size == sim_parameters.sample_x_size &&
+              sim_parameters.fine_map_y_size == sim_parameters.sample_y_size &&
+              sim_parameters.fine_map_x_offset == 0 && sim_parameters.fine_map_y_offset == 0)
+           {
+               isNullSample = true;
+           }
+           else
+           {
+               isNullSample = false;
+           }
+       }
+       else
+       {
+           isNullSample = sim_parameters.sample_mask_file == "none";
+       }
+       return isNullSample;
    }
    
    void DataMask::importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim,
                                     unsigned long mask_ydim,
-                                    unsigned long xoffset, unsigned long yoffset, string inputfile)
+                                    unsigned long xoffset, unsigned long yoffset, string inputfile_in)
    {
-       if(!setup(inputfile, xdim, ydim, mask_xdim, mask_ydim, xoffset, yoffset))
+       SimParameters tmp_sim_parameters;
+       tmp_sim_parameters.sample_mask_file = inputfile_in;
+       tmp_sim_parameters.grid_x_size = xdim;
+       tmp_sim_parameters.grid_y_size = ydim;
+       tmp_sim_parameters.sample_x_size = mask_xdim;
+       tmp_sim_parameters.sample_y_size = mask_ydim;
+       tmp_sim_parameters.sample_x_offset = xoffset;
+       tmp_sim_parameters.sample_y_offset = yoffset;
+       setup(tmp_sim_parameters);
+       isNullSample = inputfile_in == "null" || inputfile_in == "none";
+       if(!isNullSample)
        {
            doImport();
        }
    }
+   
    void DataMask::doImport()
    {
        sample_mask.setSize(mask_y_dim, mask_x_dim);
        sample_mask.import(inputfile);
        sample_mask.close();
-       getProportionfptr = &DataMask::getBoolProportion;
+       completeBoolImport();
+   }
    
+   void DataMask::completeBoolImport()
+   {
+       mask_x_dim = sample_mask.getCols();
+       mask_y_dim = sample_mask.getRows();
+       getProportionfptr = &DataMask::getBoolProportion;
+   }
+   
+   void DataMask::setupNull(SimParameters &mapvarin)
+   {
+       sample_mask.setSize(mapvarin.fine_map_y_size, mapvarin.fine_map_x_size);
+       for(unsigned long i = 0; i < sample_mask.getRows(); i++)
+       {
+           for(unsigned long j = 0; j < sample_mask.getCols(); j++)
+           {
+               sample_mask[i][j] = i + y_offset < mask_y_dim && j + x_offset < mask_x_dim;
+           }
+       }
+       completeBoolImport();
    }
    
    void DataMask::importSampleMask(SimParameters &mapvarin)
    {
-       if(!setup(mapvarin.sample_mask_file, mapvarin.grid_x_size, mapvarin.grid_y_size,
-                mapvarin.sample_x_size, mapvarin.sample_y_size, mapvarin.sample_x_offset, mapvarin.sample_y_offset))
+       setup(mapvarin);
+       if(!checkCanUseDefault(mapvarin))
        {
-           if(mapvarin.uses_spatial_sampling)
+           if(inputfile == "null")
+           {
+               setupNull(mapvarin);
+           }
+           else if(mapvarin.uses_spatial_sampling)
            {
    #ifdef DEBUG
                writeLog(10, "Using spatial sampling.");
@@ -84,6 +149,8 @@ Program Listing for File DataMask.cpp
                sample_mask_exact.setSize(mask_y_dim, mask_x_dim);
                sample_mask_exact.import(inputfile);
                sample_mask_exact.close();
+               mask_x_dim = sample_mask_exact.getCols();
+               mask_y_dim = sample_mask_exact.getRows();
                getProportionfptr = &DataMask::getSampleProportion;
            }
            else
@@ -107,7 +174,7 @@ Program Listing for File DataMask.cpp
    {
        long xval = x + (xwrap * x_dim) + x_offset;
        long yval = y + (ywrap * y_dim) + y_offset;
-       if(bDefault)
+       if(isNullSample)
        {
            return true;
        }
@@ -128,7 +195,6 @@ Program Listing for File DataMask.cpp
    #endif
        return sample_mask[yval][xval];
    }
-   
    
    double DataMask::getNullProportion(const long &x, const long &y, const long &xwrap, const long &ywrap)
    {
@@ -151,10 +217,10 @@ Program Listing for File DataMask.cpp
    double DataMask::getSampleProportion(const long &x, const long &y, const long &xwrap, const long &ywrap)
    {
    #ifdef DEBUG
-       if(bDefault || sample_mask_exact.getCols() == 0)
+       if(isNullSample || sample_mask_exact.getCols() == 0)
        {
            throw out_of_range("Cannot get the exact value from a samplemask if we are using a null mask, or the "
-                                      "exact samplemask has not been properly imported.");
+                              "exact samplemask has not been properly imported.");
        }
    #endif // DEBUG
        long xval = x + (xwrap * x_dim) + x_offset;
@@ -167,7 +233,7 @@ Program Listing for File DataMask.cpp
        return (this->*getProportionfptr)(x, y, xwrap, ywrap);
    }
    
-   void DataMask::convertBoolean(Landscape &map1, const double &deme_sampling, const double &generation)
+   void DataMask::convertBoolean(shared_ptr<Landscape> map1, const double &deme_sampling, const double &generation)
    {
        // Clear the old boolean object and set the new size
        sample_mask.setSize(y_dim, x_dim);
@@ -179,8 +245,8 @@ Program Listing for File DataMask.cpp
                long tmp_y = y;
                long tmp_xwrap = 0;
                long tmp_ywrap = 0;
-               recalculate_coordinates(tmp_x, tmp_y, tmp_xwrap, tmp_ywrap);
-               double density = map1.getVal(tmp_x, tmp_y, tmp_xwrap, tmp_ywrap, generation) * deme_sampling;
+               recalculateCoordinates(tmp_x, tmp_y, tmp_xwrap, tmp_ywrap);
+               double density = map1->getVal(tmp_x, tmp_y, tmp_xwrap, tmp_ywrap, generation) * deme_sampling;
                sample_mask[y][x] = density >= 1.0;
            }
        }
@@ -191,12 +257,13 @@ Program Listing for File DataMask.cpp
        sample_mask_exact.setSize(0, 0);
    }
    
-   void DataMask::recalculate_coordinates(long &x, long &y, long &x_wrap, long &y_wrap)
+   void DataMask::recalculateCoordinates(long &x, long &y, long &x_wrap, long &y_wrap)
    {
-       if(!bDefault)
+       // TODO FIX THIS AND FIGURE OUT WTF IS GOING ON
+       if(isGridOffset)
        {
-           x_wrap = (long)((floor((x - (double) x_offset) / (double) x_dim)));
-           y_wrap = (long)((floor((y - (double) y_offset) / (double) y_dim)));
+           x_wrap = (long) ((floor((x - (double) x_offset) / (double) x_dim)));
+           y_wrap = (long) ((floor((y - (double) y_offset) / (double) y_dim)));
            x += -x_offset - (x_wrap * x_dim);
            y += -y_offset - (y_wrap * y_dim);
        }

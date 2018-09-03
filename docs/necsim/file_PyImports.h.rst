@@ -7,6 +7,8 @@ File PyImports.h
 
 
 
+Routines for importing python objects to c++ vectors. 
+
 
 .. contents:: Contents
    :local:
@@ -21,6 +23,13 @@ Definition (``PyImports.h``)
 
    program_listing_file_PyImports.h.rst
 
+
+
+Detailed Description
+--------------------
+
+Samuel Thompson
+MIT Licence. 
 
 
 
@@ -43,9 +52,13 @@ Included By
 -----------
 
 
-- :ref:`file_applyspecmodule.cpp`
+- :ref:`file_CCommunity.h`
 
-- :ref:`file_dispersalmodule.cpp`
+- :ref:`file_PyTemplates.h`
+
+- :ref:`file_CSimulateDispersal.h`
+
+- :ref:`file_CSimulation.h`
 
 - :ref:`file_PyImports.cpp`
 

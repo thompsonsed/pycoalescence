@@ -8,56 +8,39 @@ Program Listing for File Logging.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
-   #include <sstream>
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #include "Logging.h"
-   
-   
-   using namespace std;
-   
+   #include "Logger.h"
    void writeInfo(string message)
    {
-   #ifdef DEBUG
-       writeLog(20, message);
-   #endif // DEBUG
-       cout << message << flush;
+       logger->writeInfo(message);
    }
    
    void writeWarning(string message)
    {
-   #ifdef DEBUG
-       writeLog(30, message);
-   #endif // DEBUG
-       cerr << message << flush;
+       logger->writeWarning(message);
    }
    
    void writeError(string message)
    {
-   #ifdef DEBUG
-       writeLog(40, message);
-   #endif // DEBUG
-       cerr << message << flush;
+       logger->writeError(message);
    }
    
    void writeCritical(string message)
    {
-   #ifdef DEBUG
-       writeLog(50, message);
-   #endif // DEBUG
-       cerr << message << flush;
+       logger->writeCritical(message);
    }
    
    #ifdef DEBUG
    void writeLog(const int &level, string message)
    {
-       static LogFile logfile;
-       logfile.write(level, std::move(message));
+       logger->writeLog(level, message);
    }
    
    void writeLog(const int &level, stringstream &message)
    {
-       writeLog(level, message.str());
+       logger->writeLog(level, message.str());
    }
-   #endif // DEBUG
    
+   #endif //DEBUG

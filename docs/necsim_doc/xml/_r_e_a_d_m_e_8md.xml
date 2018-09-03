@@ -10,8 +10,8 @@
 <codeline><highlight class="normal">#<sp/>necsim<sp/>#</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">Version:<sp/>1.0</highlight></codeline>
-<codeline><highlight class="normal">This<sp/>project<sp/>is<sp/>released<sp/>under<sp/>BSD-3<sp/></highlight></codeline>
-<codeline><highlight class="normal">See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>go<sp/>to<sp/>[here](https://opensource.org/licenses/BSD-3-Clause)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>project<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>licence</highlight></codeline>
+<codeline><highlight class="normal">See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>go<sp/>to<sp/>[here](https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">##<sp/>CONTENTS<sp/>##</highlight></codeline>
 <codeline><highlight class="normal">*<sp/>**INTRODUCTION**</highlight></codeline>
@@ -25,7 +25,7 @@
 <codeline></codeline>
 <codeline><highlight class="normal">##<sp/>INTRODUCTION<sp/>##</highlight></codeline>
 <codeline></codeline>
-<codeline><highlight class="normal">necsim<sp/>is<sp/>a<sp/>generic<sp/>spatial<sp/>coalescence<sp/>simulator<sp/>for<sp/>neutral<sp/>systems.<sp/>It<sp/>applies<sp/>the<sp/>model<sp/>to<sp/>map<sp/>objects,<sp/>which<sp/>can<sp/>change<sp/>over<sp/>time,<sp/>for<sp/>a<sp/>specific<sp/>set<sp/>of<sp/>supplied<sp/>parameters,<sp/>and<sp/>outputs<sp/>information<sp/>for<sp/>each<sp/>individual<sp/>to<sp/>a<sp/>SQL<sp/>database.<sp/></highlight></codeline>
+<codeline><highlight class="normal">necsim<sp/>is<sp/>a<sp/>generic<sp/>spatial<sp/>coalescence<sp/>simulator<sp/>for<sp/>neutral<sp/>systems.<sp/>It<sp/>applies<sp/>the<sp/>model<sp/>to<sp/>temporally<sp/>and<sp/>spatially<sp/>varying<sp/>density<sp/>maps<sp/>for<sp/>a<sp/>specific<sp/>set<sp/>of<sp/>supplied<sp/>parameters,<sp/>and<sp/>outputs<sp/>information<sp/>for<sp/>each<sp/>individual<sp/>to<sp/>a<sp/>SQL<sp/>database.<sp/></highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">necsim<sp/>includes<sp/>functionality<sp/>for<sp/>applying<sp/>varying<sp/>speciation<sp/>rates<sp/>after<sp/>simulations<sp/>are<sp/>complete.<sp/>This<sp/>enables<sp/>the<sp/>main<sp/>simulation<sp/>to<sp/>be<sp/>run<sp/>with<sp/>the<sp/>*minimum*<sp/>speciation<sp/>rate<sp/>required<sp/>and<sp/>afterwards<sp/>analysis<sp/>can<sp/>be<sp/>completed<sp/>using<sp/>different<sp/>speciation<sp/>rates.</highlight></codeline>
 <codeline></codeline>
@@ -35,7 +35,7 @@
 <codeline></codeline>
 <codeline><highlight class="normal">##<sp/>INSTRUCTIONS<sp/>##</highlight></codeline>
 <codeline><highlight class="normal">###Compiling<sp/>the<sp/>program###</highlight></codeline>
-<codeline><highlight class="normal">See<sp/>the<sp/>Requirements<sp/>section<sp/>for<sp/>a<sp/>full<sp/>list<sp/>of<sp/>the<sp/>necessary<sp/>prerequisites.<sp/>Once<sp/>these<sp/>are<sp/>installed,<sp/>compiling<sp/>the<sp/>program<sp/>should<sp/>be<sp/>relatively<sp/>easy.<sp/>NECSim<sp/>requires<sp/>a<sp/>linker<sp/>to<sp/>the<sp/>boost<sp/>libraries,<sp/>as<sp/>well<sp/>as<sp/>the<sp/>sqlite3<sp/>library.<sp/>It<sp/>is<sp/>recommended<sp/>to<sp/>run<sp/>with<sp/>the<sp/>maximum<sp/>optimisation<sp/>possible.<sp/></highlight></codeline>
+<codeline><highlight class="normal">See<sp/>the<sp/>Requirements<sp/>section<sp/>for<sp/>a<sp/>full<sp/>species_id_list<sp/>of<sp/>the<sp/>necessary<sp/>prerequisites.<sp/>Once<sp/>these<sp/>are<sp/>installed,<sp/>compiling<sp/>the<sp/>program<sp/>should<sp/>be<sp/>relatively<sp/>easy.<sp/>necsim<sp/>requires<sp/>a<sp/>linker<sp/>to<sp/>the<sp/>boost<sp/>libraries,<sp/>as<sp/>well<sp/>as<sp/>the<sp/>sqlite3<sp/>library.<sp/>It<sp/>is<sp/>recommended<sp/>to<sp/>run<sp/>with<sp/>the<sp/>maximum<sp/>optimisation<sp/>possible.</highlight></codeline>
 <codeline></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">Additionally,<sp/>if<sp/>support<sp/>is<sp/>required<sp/>for<sp/>tif<sp/>files<sp/>(an<sp/>alternative<sp/>to<sp/>importing<sp/>csv<sp/>files),<sp/>the<sp/>[gdal<sp/>library](http://www.gdal.org/)<sp/>is<sp/>required.<sp/>See<sp/>the<sp/>online<sp/>documentation<sp/>for<sp/>help<sp/>compiling<sp/>gdal<sp/>for<sp/>your<sp/>operating<sp/>system.<sp/>When<sp/>compiling<sp/>using<sp/>gdal,<sp/>use<sp/>the<sp/>```-D<sp/>with_gdal```<sp/>compilation<sp/>flag.</highlight></codeline>
@@ -44,10 +44,11 @@
 <codeline><highlight class="normal">for<sp/>the<sp/>application<sp/>of<sp/>different<sp/>speciation<sp/>rates.</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">###Running<sp/>simulations###</highlight></codeline>
+<codeline><highlight class="normal">Note<sp/>that<sp/>the<sp/>recommended<sp/>method<sp/>of<sp/>running<sp/>and<sp/>analysing<sp/>simulations<sp/>is<sp/>through<sp/>the<sp/>[**pycoalescence**](https://pycoalescence.readthedocs.io)<sp/>python<sp/>package.</highlight></codeline>
 <codeline><highlight class="normal">The<sp/>routine<sp/>relies<sp/>on<sp/>supplying<sp/>command<sp/>line<sp/>arguments<sp/>(see<sp/>below)<sp/>for<sp/>all<sp/>the<sp/>major<sp/>simulation<sp/>variables.<sp/>Alternatively,<sp/>supplying<sp/>a<sp/>config<sp/>.txt<sp/>file<sp/>and<sp/>using<sp/>the<sp/>command<sp/>line<sp/>arguments<sp/>`./necsim<sp/>-c<sp/>/path/to/config.txt`<sp/>can<sp/>be<sp/>used<sp/>for<sp/>parsing<sp/>command<sp/>line<sp/>arguments<sp/>from<sp/>the<sp/>text<sp/>file.<sp/></highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">####Command<sp/>Line<sp/>Arguments<sp/>####</highlight></codeline>
-<codeline><highlight class="normal">The<sp/>following<sp/>command<sp/>line<sp/>arguments<sp/>are<sp/>required.<sp/>This<sp/>list<sp/>can<sp/>be<sp/>accessed<sp/>by<sp/>running<sp/>`“./necsim<sp/>-h”`<sp/>or<sp/>`./necsim<sp/>-help`</highlight></codeline>
+<codeline><highlight class="normal">The<sp/>following<sp/>command<sp/>line<sp/>arguments<sp/>are<sp/>required.<sp/>This<sp/>species_id_list<sp/>can<sp/>be<sp/>accessed<sp/>by<sp/>running<sp/>`“./necsim<sp/>-h”`<sp/>or<sp/>`./necsim<sp/>-help`</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">The<sp/>command<sp/>line<sp/>options<sp/>to<sp/>be<sp/>specified<sp/>are:</highlight></codeline>
 <codeline></codeline>
@@ -70,7 +71,7 @@
 <codeline></codeline>
 <codeline><highlight class="normal">ref=sample_grid<sp/>path=/path/to/file<sp/><sp/>x=100<sp/><sp/><sp/>y=200<sp/><sp/><sp/>mask=/path/to/mask</highlight></codeline>
 <codeline><highlight class="normal">ref=fine_map<sp/><sp/><sp/><sp/>path=/path/to/file<sp/><sp/>x=100<sp/><sp/><sp/>y=200<sp/><sp/><sp/>x_off=10<sp/><sp/><sp/><sp/>y_off=20</highlight></codeline>
-<codeline><highlight class="normal">ref=pristine_fine<sp/><sp/><sp/>path=/path/to/file<sp/><sp/>number=n<sp/><sp/><sp/><sp/>rate=r<sp/><sp/>time=g</highlight></codeline>
+<codeline><highlight class="normal">ref=historical_fine<sp/>path=/path/to/file<sp/><sp/>number=n<sp/><sp/><sp/><sp/>rate=r<sp/><sp/>time=g</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">Alternatively,<sp/>by<sp/>specifying<sp/>the<sp/>-f<sp/>flag,<sp/>(full<sp/>mode)<sp/>as<sp/>the<sp/>first<sp/>argument,<sp/>the<sp/>program<sp/>can<sp/>read<sp/>in<sp/>extended<sp/>command<sp/>line<sp/>arguments,<sp/>which<sp/>are<sp/>as<sp/>followed.</highlight></codeline>
 <codeline></codeline>
@@ -97,13 +98,13 @@
 <codeline><highlight class="normal">21.<sp/>lambda<sp/>-<sp/>the<sp/>relative<sp/>cost<sp/>of<sp/>moving<sp/>through<sp/>non-forest</highlight></codeline>
 <codeline><highlight class="normal">22.<sp/>the_task<sp/>-<sp/>for<sp/>referencing<sp/>the<sp/>specific<sp/>task<sp/>later<sp/>on.</highlight></codeline>
 <codeline><highlight class="normal">23.<sp/>the<sp/>minimum<sp/>number<sp/>of<sp/>species<sp/>the<sp/>system<sp/>is<sp/>known<sp/>to<sp/>contain.</highlight></codeline>
-<codeline><highlight class="normal">24.<sp/>the<sp/>pristine<sp/>fine<sp/>map<sp/>file<sp/>to<sp/>use</highlight></codeline>
-<codeline><highlight class="normal">25.<sp/>the<sp/>pristine<sp/>coarse<sp/>map<sp/>file<sp/>to<sp/>use</highlight></codeline>
-<codeline><highlight class="normal">26.<sp/>the<sp/>rate<sp/>of<sp/>forest<sp/>change<sp/>from<sp/>pristine</highlight></codeline>
-<codeline><highlight class="normal">27.<sp/>the<sp/>time<sp/>(in<sp/>generations)<sp/>since<sp/>the<sp/>pristine<sp/>forest<sp/>was<sp/>seen.</highlight></codeline>
+<codeline><highlight class="normal">24.<sp/>the<sp/>historical<sp/>fine<sp/>map<sp/>file<sp/>to<sp/>use</highlight></codeline>
+<codeline><highlight class="normal">25.<sp/>the<sp/>historical<sp/>coarse<sp/>map<sp/>file<sp/>to<sp/>use</highlight></codeline>
+<codeline><highlight class="normal">26.<sp/>the<sp/>rate<sp/>of<sp/>forest<sp/>change<sp/>from<sp/>historical</highlight></codeline>
+<codeline><highlight class="normal">27.<sp/>the<sp/>time<sp/>(in<sp/>generations)<sp/>since<sp/>the<sp/>historical<sp/>forest<sp/>was<sp/>seen.</highlight></codeline>
 <codeline><highlight class="normal">28.<sp/>the<sp/>dispersal<sp/>tau<sp/>value<sp/>(the<sp/>width<sp/>of<sp/>the<sp/>kernel.</highlight></codeline>
 <codeline><highlight class="normal">29.<sp/>the<sp/>sample<sp/>mask,<sp/>with<sp/>binary<sp/>1:0<sp/>values<sp/>for<sp/>areas<sp/>that<sp/>we<sp/>want<sp/>to<sp/>sample<sp/>from.<sp/>If<sp/>this<sp/>is<sp/>not<sp/>provided<sp/>then<sp/>this<sp/>will<sp/>default<sp/>to<sp/>mapping<sp/>the<sp/>whole<sp/>area.</highlight></codeline>
-<codeline><highlight class="normal">30.<sp/><sp/>the<sp/>link<sp/>to<sp/>the<sp/>file<sp/>containing<sp/>every<sp/>generation<sp/>that<sp/>the<sp/>list<sp/>should<sp/>be<sp/>expanded.<sp/>This<sp/>should<sp/>be<sp/>in<sp/>the<sp/>format<sp/>of<sp/>a<sp/>list.</highlight></codeline>
+<codeline><highlight class="normal">30.<sp/><sp/>the<sp/>link<sp/>to<sp/>the<sp/>file<sp/>containing<sp/>every<sp/>generation<sp/>that<sp/>the<sp/>species_id_list<sp/>should<sp/>be<sp/>expanded.<sp/>This<sp/>should<sp/>be<sp/>in<sp/>the<sp/>format<sp/>of<sp/>a<sp/>species_id_list.</highlight></codeline>
 <codeline><highlight class="normal">31.<sp/>(and<sp/>onwards)<sp/>-<sp/>speciation<sp/>rates<sp/>to<sp/>apply<sp/>after<sp/>the<sp/>simulation<sp/>is<sp/>complete.</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">####Config<sp/>Files<sp/>####</highlight></codeline>
@@ -132,8 +133,8 @@
 <codeline><highlight class="normal">lambda<sp/>=<sp/>1</highlight></codeline>
 <codeline><highlight class="normal">job_num<sp/>=<sp/>i</highlight></codeline>
 <codeline><highlight class="normal">est_spec<sp/>=<sp/>i</highlight></codeline>
-<codeline><highlight class="normal">pristine_fine_source<sp/>=<sp/>/path/to/pristine/fine.csv</highlight></codeline>
-<codeline><highlight class="normal">pristine_coarse_source<sp/>=<sp/>/path/to/pristine/coarse.csv</highlight></codeline>
+<codeline><highlight class="normal">historical_fine_source<sp/>=<sp/>/path/to/historical/fine.csv</highlight></codeline>
+<codeline><highlight class="normal">historical_coarse_source<sp/>=<sp/>/path/to/historical/coarse.csv</highlight></codeline>
 <codeline><highlight class="normal">forest_change<sp/>=<sp/>d</highlight></codeline>
 <codeline><highlight class="normal">time_since<sp/>=<sp/>f</highlight></codeline>
 <codeline><highlight class="normal">dispersal<sp/>=<sp/>f</highlight></codeline>
@@ -149,7 +150,7 @@
 <codeline><highlight class="normal">Upon<sp/>successful<sp/>completion<sp/>of<sp/>a<sp/>simulation,<sp/>necsim<sp/>will<sp/>produce<sp/>an<sp/>SQLite<sp/>database<sp/>file<sp/>in<sp/>the<sp/>output<sp/>directory<sp/>in<sp/>an<sp/>SQL\_data<sp/>folder.<sp/>This<sp/>database<sp/>contains<sp/>several<sp/>tables,<sp/>which<sp/>can<sp/>be<sp/>accessed<sp/>using<sp/>a<sp/>program<sp/>like<sp/>[DB<sp/>Browser<sp/>for<sp/>SQLite](http://sqlitebrowser.org/)<sp/>or<sp/>Microsoft<sp/>Access.<sp/>Alternatively,<sp/>most<sp/>programming<sp/>languages<sp/>have<sp/>an<sp/>SQLite<sp/>interface<sp/>([RSQlite](https://cran.r-project.org/web/packages/RSQLite/index.html),<sp/>[python<sp/>sqlite3](https://docs.python.org/2/library/sqlite3.html))</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">*<sp/>The<sp/>main<sp/>table<sp/>within<sp/>the<sp/>database<sp/>is<sp/>the<sp/>SPECIES\_LIST<sp/>table,<sp/>which<sp/>is<sp/>the<sp/>location<sp/>and<sp/>inheritence<sp/>of<sp/>every<sp/>lineage<sp/>recorded.<sp/>Several<sp/>other<sp/>important<sp/>data<sp/>structures<sp/>(such<sp/>as<sp/>whether<sp/>it<sp/>is<sp/>a<sp/>&quot;tip&quot;<sp/>of<sp/>the<sp/>phylogenetic<sp/>tree<sp/>of<sp/>not)<sp/>which<sp/>are<sp/>used<sp/><sp/>when<sp/>re-constructing<sp/>the<sp/>species<sp/>identity.</highlight></codeline>
-<codeline><highlight class="normal">*<sp/>A<sp/>secondary<sp/>output<sp/>from<sp/>necims<sp/>is<sp/>a<sp/>SIMULATION\_PARAMETERS<sp/>table<sp/>for<sp/>identifying<sp/>the<sp/>exact<sp/>parameters<sp/>with<sp/>which<sp/>the<sp/>model<sp/>is<sp/>run.</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>A<sp/>secondary<sp/>output<sp/>from<sp/>necsims<sp/>is<sp/>a<sp/>SIMULATION\_PARAMETERS<sp/>table<sp/>for<sp/>identifying<sp/>the<sp/>exact<sp/>parameters<sp/>with<sp/>which<sp/>the<sp/>model<sp/>is<sp/>run.</highlight></codeline>
 <codeline><highlight class="normal">*<sp/>SpeciationCounter<sp/>also<sp/>produces<sp/>a<sp/>SPECIES_ABUNDANCES<sp/>table<sp/>containing<sp/>species<sp/>abundances<sp/>across<sp/>the<sp/>whole<sp/>sample<sp/>map,<sp/>plus<sp/>(optionally)<sp/>a<sp/>table<sp/>of<sp/>SPECIES\_LOCATIONS<sp/>(containing<sp/>the<sp/>x,y<sp/>location<sp/>of<sp/>every<sp/>individual)<sp/>and<sp/>FRAGMENT\_ABUNDANCES<sp/>(species<sp/>abundances<sp/>for<sp/>each<sp/>habitat<sp/>fragment<sp/>separately).</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">##<sp/>REQUIREMENTS<sp/>##</highlight></codeline>
@@ -188,11 +189,11 @@
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Based<sp/>on<sp/>code<sp/>written<sp/>by<sp/>James<sp/>Rosindell<sp/>(j.rosindell@imperial.ac.uk).</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Handles<sp/>indexing<sp/>of<sp/>the<sp/>2D<sp/>object<sp/>plus<sp/>importing<sp/>values<sp/>from<sp/>a<sp/>csv<sp/>file.</highlight></codeline>
 <codeline><highlight class="normal">*<sp/>The<sp/>`SpeciesList`<sp/>class</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>the<sp/>list<sp/>of<sp/>individuals,<sp/>for<sp/>application<sp/>in<sp/>a<sp/>matrix,<sp/>to<sp/>essentially<sp/>create<sp/>a<sp/>3D<sp/>array.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>the<sp/>species_id_list<sp/>of<sp/>individuals,<sp/>for<sp/>application<sp/>in<sp/>a<sp/>matrix,<sp/>to<sp/>essentially<sp/>create<sp/>a<sp/>3D<sp/>array.</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Handles<sp/>the<sp/>positioning<sp/>of<sp/>individuals<sp/>in<sp/>space<sp/>within<sp/>a<sp/>grid<sp/>cell.</highlight></codeline>
 <codeline><highlight class="normal">*<sp/>The<sp/>`ConfigOption`<sp/>class</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>Contains<sp/>basic<sp/>functions<sp/>for<sp/>importing<sp/>command<sp/>line<sp/>arguments<sp/>from<sp/>a<sp/>config<sp/>file,<sp/>providing<sp/>an<sp/>alternative<sp/>way<sp/>of<sp/>setting<sp/>up<sp/>simulations.</highlight></codeline>
-<codeline><highlight class="normal">*<sp/>The<sp/>`TreeList`<sp/>class</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>The<sp/>`Community`<sp/>class</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>-<sp/>Provides<sp/>the<sp/>routines<sp/>for<sp/>applying<sp/>different<sp/>speciation<sp/>rates<sp/>to<sp/>a<sp/>phylogenetic<sp/>tree,<sp/>to<sp/>be<sp/>used<sp/>either<sp/>immediately<sp/>after<sp/>simulation<sp/>within<sp/>necsim,<sp/>or<sp/>at<sp/>a<sp/>later<sp/>time<sp/>using<sp/>SpeciationCounter.cpp</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline><highlight class="normal">##<sp/>KNOWN<sp/>BUGS<sp/>##</highlight></codeline>

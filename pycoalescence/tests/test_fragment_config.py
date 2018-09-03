@@ -7,7 +7,7 @@ import unittest
 import os
 
 from pycoalescence.fragment_config import FragmentConfigHandler, generate_fragment_csv
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 
 def setUpModule():
@@ -33,7 +33,7 @@ class TestFragmentConfigHandler(unittest.TestCase):
 		"""
 		Generates the expected dictionary for the object
 		"""
-		cls.fragment_csv = "output/fragment_config1.csv"
+		cls.fragment_csv = os.path.join("output", "fragment_config1.csv")
 		cls.expected_dict = {"fragment1": {"min_x": 8, "max_x": 11, "min_y": 0, "max_y": 4, "area": 40},
 							 "fragment2": {"min_x": 1, "max_x": 8, "min_y": 1, "max_y": 8, "area": 10}}
 
@@ -48,24 +48,30 @@ class TestFragmentConfigHandler(unittest.TestCase):
 		"""
 		f = FragmentConfigHandler()
 		with self.assertRaises(ValueError):
-			f.generate_config(input_shapefile="output/not_a_shape.tif", input_raster="output/SA_samplemask.tif")
+			f.generate_config(input_shapefile=os.path.join("output", "not_a_shape.tif"),
+							  input_raster=os.path.join("output", "SA_samplemask.tif"))
 		with self.assertRaises(ValueError):
-			f.generate_config(input_shapefile="output/not_a_shape.shp", input_raster="output/SA_samplemask.tfi")
+			f.generate_config(input_shapefile=os.path.join("output", "not_a_shape.shp"),
+							  input_raster=os.path.join("output", "SA_samplemask.tfi"))
 		with self.assertRaises(IOError):
-			f.generate_config(input_shapefile="output/not_a_shape.shp", input_raster="sample/SA_sample.tif")
+			f.generate_config(input_shapefile=os.path.join("output", "not_a_shape.shp"),
+							  input_raster=os.path.join("sample", "SA_sample.tif"))
 		with self.assertRaises(IOError):
-			f.generate_config(input_shapefile="sample/shape_sample.shp", input_raster="sample/SA_samplenot.tif")
+			f.generate_config(input_shapefile=os.path.join("sample", "shape_sample.shp"),
+							  input_raster=os.path.join("sample", "SA_samplenot.tif"))
 		with self.assertRaises(IOError):
-			f.write_csv(output_csv="sample/FragmentsTest.csv")
+			f.write_csv(output_csv=os.path.join("sample", "FragmentsTest.csv"))
 		with self.assertRaises(ValueError):
-			f.generate_config(input_shapefile="sample/shape_sample.shp", input_raster="sample/SA_sample.tif")
+			f.generate_config(input_shapefile=os.path.join("sample", "shape_sample.shp"),
+							  input_raster=os.path.join("sample", "SA_sample.tif"))
 
 	def testGenerateFragments(self):
 		"""
 		Tests that the fragments are correctly generated from the extents on the map.
 		"""
 		f = FragmentConfigHandler()
-		f.generate_config(input_shapefile="sample/shape_sample.shp", input_raster="sample/SA_sample_fine.tif")
+		f.generate_config(input_shapefile=os.path.join("sample", "shape_sample.shp"),
+						  input_raster=os.path.join("sample", "SA_sample_fine.tif"))
 		for each in self.expected_dict.keys():
 			self.assertDictEqual(self.expected_dict[each], f.fragment_list[each])
 
@@ -93,7 +99,7 @@ class TestFragmentCsvGeneration(unittest.TestCase):
 		"""
 		Defines the output csv.
 		"""
-		cls.fragment_csv = "output/fragment_config1.csv"
+		cls.fragment_csv = os.path.join("output", "fragment_config1.csv")
 
 	@classmethod
 	def tearDownClass(cls):
@@ -107,7 +113,8 @@ class TestFragmentCsvGeneration(unittest.TestCase):
 		"""
 		Tests that the fragments are generated correctly using the pipeline.
 		"""
-		generate_fragment_csv(input_shapefile="sample/shape_sample.shp", input_raster="sample/SA_sample_fine.tif",
+		generate_fragment_csv(input_shapefile=os.path.join("sample", "shape_sample.shp"),
+							  input_raster=os.path.join("sample", "SA_sample_fine.tif"),
 							  output_csv=self.fragment_csv)
 		output = []
 		with open(self.fragment_csv, "r") as csvfile:

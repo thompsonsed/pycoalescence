@@ -8,15 +8,12 @@ Program Listing for File Setup.cpp
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    // 
    #include "Setup.h"
    #include "Logging.h"
-   // Global variables
-   // store the log file name for access anywhere.
-   string log_name = "null"; 
-   // the old stdout 
+   // the old stdout
    int saved_stdout;
    
    
@@ -34,7 +31,7 @@ Program Listing for File Setup.cpp
            }
            catch(exception &e)
            {
-               throw Fatal_Main_Exception("Csv logging output not good: " + e.what());
+               throw Fatal_Main_Exception("Csv logger output not good: " + e.what());
            }
        }
        csv_output << place << "," << start << "," << end << endl;
@@ -162,7 +159,7 @@ Program Listing for File Setup.cpp
    
    void removeComOption(unsigned long &argc, vector<string> &comargs)
    {
-       // stupidly long list of possible arguments, but can't think of a better way to check this.
+       // stupidly long species_id_list of possible arguments, but can't think of a better way to check this.
        if(comargs[1] == "-d" || comargs[1] == "-D" ||  comargs[1] == "-dl" ||  comargs[1] == "-dL" ||  comargs[1] == " -Dl" ||  comargs[1] == "-DL" ||
            comargs[1] == "-dx" || comargs[1] == "-dX" ||  comargs[1] == "-DX" ||  comargs[1] == " -Dx" ||  comargs[1] == "-c" ||  comargs[1] == "-C" ||
            comargs[1] == "-config" ||  comargs[1] == "-Config" || comargs[1] == "-f" || comargs[1] == "-h" || comargs[1] == "-H" || comargs[1] == "-F)")

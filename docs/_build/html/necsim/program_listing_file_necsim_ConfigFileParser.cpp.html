@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File ConfigFileParser.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File ConfigFileParser.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_ConfigFileParser.cpp.html" title="File ConfigFileParser.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_ConfigFileParser.cpp.html" accesskey="U">File ConfigFileParser.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,13 +66,13 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_ConfigFileParser.cpp.html#file-necsim-configfileparser-cpp"><span class="std std-ref">File ConfigFileParser.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 <span class="c1">//</span>
 <span class="cp">#include</span> <span class="cpf">&lt;boost/filesystem/operations.hpp&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;ConfigFileParser.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">importArgs</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">comargs</span><span class="p">)</span>
 <span class="p">{</span>
@@ -83,7 +83,7 @@
     <span class="c1">// check size is correct</span>
     <span class="k">if</span><span class="p">(</span><span class="n">comargs</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">argc</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_MAIN_010: Incorrect command line parsing.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeError</span><span class="p">(</span><span class="s">&quot;ERROR_MAIN_010: Incorrect command line parsing.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -98,7 +98,7 @@
     <span class="p">}</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reference &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">refval</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; not found in keyoption.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Reference &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">refval</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; not found in keyoption.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="cp">#endif</span>
     <span class="k">return</span> <span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">);</span>
@@ -171,13 +171,25 @@
         <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span>
                 <span class="s">&quot;ERROR_CONF_004c: Could not open the config file. Check file exists and is readable.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_file</span><span class="p">.</span><span class="n">fail</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">is_file</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
+    <span class="n">parseConfig</span><span class="p">(</span><span class="n">is_file</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">is_file</span><span class="p">.</span><span class="n">eof</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">is_file</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span><span class="s">&quot;ERROR_CONF_002: End of file not reached. Check input file formatting.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ConfigOption</span><span class="o">::</span><span class="n">parseConfig</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">istream1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">istream1</span><span class="p">.</span><span class="n">fail</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">istream1</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="n">string</span> <span class="n">line</span><span class="p">;</span>
         <span class="c1">// Get the first line of the file.</span>
-        <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">is_file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">istream1</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
         <span class="p">{</span>
-<span class="c1">//              os &lt;&lt; line &lt;&lt; endl;</span>
             <span class="n">istringstream</span> <span class="n">is_line</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
             <span class="n">string</span> <span class="n">key</span><span class="p">;</span>
             <span class="n">string</span> <span class="n">val</span><span class="p">;</span>
@@ -193,10 +205,9 @@
                 <span class="p">{</span>
                     <span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
                     <span class="n">tempSections</span><span class="p">.</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span><span class="p">;</span>
-<span class="c1">//                      os &lt;&lt; section &lt;&lt; endl;</span>
                 <span class="p">}</span>
                 <span class="c1">// read each line</span>
-                <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">is_file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+                <span class="k">while</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">istream1</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
                 <span class="p">{</span>
                     <span class="c1">// end the section when a new one starts.</span>
                     <span class="k">if</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;[&#39;</span> <span class="o">||</span> <span class="n">line</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -212,7 +223,6 @@
                     <span class="p">}</span>
                     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_line2</span><span class="p">)</span>
                     <span class="p">{</span>
-<span class="c1">//                          os &lt;&lt; is_line2 &lt;&lt; endl;</span>
                         <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span><span class="s">&quot;ERROR_CONF_001: Read error in config file.&quot;</span><span class="p">);</span>
                     <span class="p">}</span>
                     <span class="k">if</span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">is_line2</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
@@ -223,7 +233,6 @@
                         <span class="p">{</span>
                             <span class="n">val</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">val</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
                         <span class="p">}</span>
-
                     <span class="p">}</span>
                     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_line2</span><span class="p">)</span>
                     <span class="p">{</span>
@@ -241,14 +250,6 @@
         <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span>
                 <span class="s">&quot;ERROR_CONF_004b: Could not open the config file &quot;</span> <span class="o">+</span> <span class="n">configfile</span> <span class="o">+</span>
                 <span class="s">&quot;. Check file exists and is readable.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">is_file</span><span class="p">.</span><span class="n">eof</span><span class="p">())</span>
-    <span class="p">{</span>
-        <span class="n">is_file</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">ConfigException</span><span class="p">(</span><span class="s">&quot;ERROR_CONF_002: End of file not reached. Check input file formatting.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -526,14 +527,14 @@
         <li class="right" >
           <a href="file_necsim_ConfigFileParser.cpp.html" title="File ConfigFileParser.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_ConfigFileParser.cpp.html" >File ConfigFileParser.cpp</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

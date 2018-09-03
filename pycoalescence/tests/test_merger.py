@@ -6,9 +6,9 @@ import unittest
 
 import os
 
-from sqlite_connection import fetch_table_from_sql
+from pycoalescence.sqlite_connection import fetch_table_from_sql
 from pycoalescence import Merger
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
 
 def setUpModule():
 	"""
@@ -210,11 +210,11 @@ class TestSimulationMerging(unittest.TestCase):
 						'coarse_map_x_offset': 11, 'coarse_map_y': 41, 'coarse_map_y_offset': 14, 'cutoff': 0.0,
 						'deme': 1, 'dispersal_map': 'none', 'dispersal_method': 'normal',
 						'dispersal_relative_cost': 1.0, 'fine_map_file': 'sample/SA_sample_fine.tif', 'fine_map_x': 13,
-						'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_pristine': 200.0,
+						'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_historical': 200.0,
 						'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'landscape_type': 'closed',
 						'job_type': 6, 'm_probability': 0.0, 'max_speciation_gen': 0.0, 'max_time': 10,
 						'min_num_species': 1, 'min_speciation_gen': 0.0, 'output_dir': 'output',
-						'pristine_coarse_map': 'none', 'pristine_fine_map': 'none', 'protracted': 0,
+						'historical_coarse_map': 'none', 'historical_fine_map': 'none', 'protracted': 0,
 						'sample_file': 'null', 'sample_size': 0.1, 'sample_x': 13, 'sample_x_offset': 0, 'sample_y': 13,
 						'sample_y_offset': 0, 'seed': 6, 'sigma': 4.0, 'sim_complete': 1, 'speciation_rate': 0.5,
 						'tau': 4.0, 'time_config_file': 'set'}
@@ -222,11 +222,11 @@ class TestSimulationMerging(unittest.TestCase):
 						'coarse_map_x_offset': 11, 'coarse_map_y': 41, 'coarse_map_y_offset': 14, 'cutoff': 0.0,
 						'deme': 2, 'dispersal_map': 'none', 'dispersal_method': 'normal',
 						'dispersal_relative_cost': 1.0, 'fine_map_file': 'sample/SA_sample_fine.tif', 'fine_map_x': 13,
-						'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_pristine': 200.0,
+						'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_historical': 200.0,
 						'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'landscape_type': 'closed',
 						'job_type': 6, 'm_probability': 0.0, 'max_speciation_gen': 0.0, 'max_time': 10,
 						'min_num_species': 1, 'min_speciation_gen': 0.0, 'output_dir': 'output',
-						'pristine_coarse_map': 'none', 'pristine_fine_map': 'none', 'protracted': 0,
+						'historical_coarse_map': 'none', 'historical_fine_map': 'none', 'protracted': 0,
 						'sample_file': 'null', 'sample_size': 0.1, 'sample_x': 13, 'sample_x_offset': 0, 'sample_y': 13,
 						'sample_y_offset': 0, 'seed': 6, 'sigma': 4.0, 'sim_complete': 1, 'speciation_rate': 0.5,
 						'tau': 4.0, 'time_config_file': 'set'}
@@ -320,9 +320,9 @@ class TestMergerAnalysis(unittest.TestCase):
 		cls.merger.add_simulation("sample/mergers/data_1_1.db")
 		cls.merger.write()
 		cls.merger.wipe_data()
-		cls.merger.set_speciation_params(record_spatial=False, record_fragments="sample/FragmentsTest.csv",
-										  speciation_rates=[0.5, 0.6], )
-		cls.merger.apply_speciation()
+		cls.merger.set_speciation_parameters(speciation_rates=[0.5, 0.6], record_spatial=False,
+											 record_fragments="sample/FragmentsTest.csv")
+		cls.merger.apply()
 		cls.merger.calculate_fragment_richness()
 
 	@classmethod

@@ -8,8 +8,8 @@ Program Listing for File SpeciationCommands.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #include "SpeciationCommands.h"
    
@@ -120,7 +120,7 @@ Program Listing for File SpeciationCommands.cpp
            os << "6 - Speciation rate." << endl;
            os << "7 - onwards - Further speciation rates. [OPTIONAL]" << endl;
            os << "Would you like to run with the default paramenters?" << endl;
-           os << "       (This requires a SQL database file at ../../Data/Coal_sim/Test_output/SQL_data/data_0_1.db)"
+           os << "       (This requires a SQL database file at ../../Data/Coal_sim/Test_output/data_0_1.db)"
               << endl;
            os << "Enter Y/N: " << flush;
            writeInfo(os.str());
@@ -138,7 +138,7 @@ Program Listing for File SpeciationCommands.cpp
        }
        if(comargs[1] == "-d" || bRunDefault)
        {
-           sp.filename = "../../Data/Coal_sim/Test_output/SQL_data/data_0_1.db";
+           sp.filename = "../../Data/Coal_sim/Test_output/data_0_1.db";
            sp.all_speciation_rates.push_back(0.001);
            sp.samplemask = "null";
            sp.times_file = "null";

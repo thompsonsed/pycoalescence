@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -38,9 +38,11 @@ Includes
 --------
 
 
-- ``Map.h`` (:ref:`file_necsim_Map.h`)
+- ``Map.h`` (:ref:`file_necsim_ActivityMap.h`)
 
 - ``SimParameters.h`` (:ref:`file_necsim_SimParameters.h`)
+
+- ``memory``
 
 - ``string``
 
@@ -55,6 +57,8 @@ Included By
 - :ref:`file_necsim_DataMask.cpp`
 
 - :ref:`file_necsim_Landscape.h`
+
+- :ref:`file_necsim_SimulateDispersal.h`
 
 
 

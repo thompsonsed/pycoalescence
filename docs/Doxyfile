@@ -867,7 +867,15 @@ RECURSIVE              = YES
 EXCLUDE                = ../pycoalescence/lib/necsim/fast-cpp-csv-parser \
                          necsim/fast-cpp-csv-parser/ \
                          ../../necsim/fast-cpp-csv-parser/ \
-                         *README_necsim.rst
+                         *README_necsim.rst \
+                         ../lib/cmake-build-release/ \
+                         ../lib/cmake-build-release-venv/ \
+                         ../lib/cmake-build-debug/ \
+                         cmake-build-release/ \
+                         cmake-build-release-venv/ \
+                         cmake-build-debug/ \
+                         necsim/cmake-build/cmake-build-debug/ \
+                         necsim/cmake-build/cmake-build-release/
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -894,7 +902,15 @@ EXCLUDE_PATTERNS       = ../pycoalescence/lib/necsim/fast-cpp-csv-parser/* \
                          */lib/obj/* \
                          */lib/Release/* \
                          */lib/SimTest/* \
-                         *.d
+                         *.d \
+                         ../pycoalescence/lib/cmake* \
+                         *.ac \
+                         */lib/cmake* \
+                         */lib/cmake-build-debug/* \
+                         /lib/cmake-build-release/* \
+                         */lib/cmake-build-release-venv/* \
+                         */lib/necsim/cmake* \
+                         */cmake*/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -987,7 +1003,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = 
+USE_MDFILE_AS_MAINPAGE = /Users/samthompson/Documents/PhD/Code/necsim/README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -2104,7 +2120,7 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = 
+PREDEFINED             = with_gdal=1
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

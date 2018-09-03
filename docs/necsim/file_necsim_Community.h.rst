@@ -7,7 +7,7 @@ File Community.h
 
 
 
-Contains the :ref:`class_Community` object, which is used for reconstructing the coalescence tree after simulations are complete. 
+Contains various objects used for reconstructing the coalescence tree after simulations are complete. 
 
 
 .. contents:: Contents
@@ -28,9 +28,7 @@ Definition (``necsim/Community.h``)
 Detailed Description
 --------------------
 
-Samuel Thompson 
-31/08/16
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -88,6 +86,8 @@ Classes
 -------
 
 
+- :ref:`struct_CommunitiesArray`
+
 - :ref:`struct_CommunityParameters`
 
 - :ref:`struct_Fragment`
@@ -95,8 +95,6 @@ Classes
 - :ref:`struct_MetacommunitiesArray`
 
 - :ref:`struct_MetacommunityParameters`
-
-- :ref:`class_CommunitiesArray`
 
 - :ref:`class_Community`
 
@@ -108,10 +106,4 @@ Functions
 
 
 - :ref:`function_checkSpeciation`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
 

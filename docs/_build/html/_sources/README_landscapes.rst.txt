@@ -1,4 +1,5 @@
 .. _`simulate_and_generate_landscapes`:
+
 Simulating and generating landscapes
 ====================================
 
@@ -11,6 +12,7 @@ kernels to produce a variety of landscape-level dispersal metrics. Generation of
 provided through the :class:`DispersalSimulation class <pycoalescence.dispersal_simulation.DispersalSimulation>`.
 
 .. _`generate_landscapes`:
+
 Generating landscapes
 ---------------------
 
@@ -97,3 +99,67 @@ the main program. There are therefore a number of additional features in this cl
   :func:`open() <pycoalescence.map.Map.reproject_raster>`.
 
 .. note:: All processing is done using the gdal module.
+
+.. _`landscape_metrics`:
+Obtaining landscape metrics
+---------------------------
+
+:class:`LandscapeMetrics <pycoalescence.landscape_metrics.LandscapeMetrics>` contains methods for calculating some
+landscape metrics on a map file. This is a work in progress, and additional metrics may be added later.
+
+.. _`landscape_metrics_mnn`:
+
+Mean nearest-neighbour
+^^^^^^^^^^^^^^^^^^^^^^
+
+MNN here refers to the mean distance from each cell to its nearest neighbouring habitat cell. The distance can be
+calculated for a landscape using the following:
+
+.. code:: python
+
+    >> from pycoalescence import LandscapeMetrics
+    >> lm = LandscapeMetrics("map_file.tif")
+    >> lm.get_mnn()
+    1.50
+
+.. _`landscape_metrics_clumpy`:
+
+Clumpiness metric
+^^^^^^^^^^^^^^^^^
+
+The clumpiness metric is a measure of the proportional deviation of proportion of like adjacencies involving the
+corresponding class from that expected under a spatially random distribution. It produces a :math:`\text{CLUMPY}` value,
+where :math:`-1 <= \text{CLUMPY} <= 1`. -1 represents a perfectly disaggregated landscape. 1 represents a perfectly
+aggregated landscape. 0 represents a random landscape. The formula outlined below works where there are :math:`k`
+patches; in our scenario there :math:`k=2` as we have just habitat or non-habitat.
+
+We have:
+
+ - :math:`g_ii`, the number of adjacencies between pixels of patch type :math:`i` using the the double count method.
+ - :math:`g_ik`, the number of adjacencies between pixels of patches :math:`i` and :math:`j`
+ - :math:`\text{min}e_i`, the minimum perimeter (in cell surfaces) for a maximally-clumped class :math:`i`
+ - :math:`P_i`, the proportion of the landscape occupied by class :math:`i`.
+
+Given
+
+.. math::
+
+    G_i = (\frac{g_{ii}}{(\sum_{k=1}^{n} g_{ik}) - \text{min} e_i}
+
+then
+
+.. math::
+
+    \text{CLUMPY} = \begin{cases}
+      \frac{G_i - P_i}{P_i}, & \text{if}\ G_i < P_i\ \&\ P_i < 0.5 \\
+      \frac{G_i - P_i}{1-P_i}, & \text{otherwise}
+    \end{cases}
+
+The :math:`\text{CLUMPY}` metric can be calculated similarly as
+
+.. code:: python
+
+    >> from pycoalescence import LandscapeMetrics
+    >> lm = LandscapeMetrics("map_file.tif")
+    >> lm.get_clumpiness()
+    0.8

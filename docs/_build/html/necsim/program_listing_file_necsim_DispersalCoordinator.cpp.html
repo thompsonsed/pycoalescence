@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File DispersalCoordinator.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File DispersalCoordinator.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_DispersalCoordinator.cpp.html" title="File DispersalCoordinator.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_DispersalCoordinator.cpp.html" accesskey="U">File DispersalCoordinator.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,48 +66,57 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_DispersalCoordinator.cpp.html#file-necsim-dispersalcoordinator-cpp"><span class="std std-ref">File DispersalCoordinator.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;DispersalCoordinator.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
-<span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">DispersalCoordinator</span><span class="p">()</span>
+<span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">DispersalCoordinator</span><span class="p">()</span> <span class="o">:</span> <span class="n">dispersal_prob_map</span><span class="p">(),</span> <span class="n">raw_dispersal_prob_map</span><span class="p">(),</span> <span class="n">NR</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+                                               <span class="n">landscape</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span><span class="p">()),</span>
+                                               <span class="n">reproduction_map</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">generation</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+                                               <span class="n">doDispersal</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">checkEndPointFptr</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">xdim</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">ydim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="p">{</span>
+
 <span class="p">}</span>
 
 <span class="n">DispersalCoordinator</span><span class="o">::~</span><span class="n">DispersalCoordinator</span><span class="p">()</span>
-<span class="p">{</span>
+<span class="o">=</span> <span class="k">default</span><span class="p">;</span>
 
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="n">shared_ptr</span> <span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">NR_ptr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">NR</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">NR_ptr</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">*</span> <span class="n">NR_ptr</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">NR</span> <span class="o">=</span> <span class="n">NR_ptr</span><span class="p">;</span>
-<span class="p">}</span>
 
-
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setHabitatMap</span><span class="p">(</span><span class="n">Landscape</span> <span class="o">*</span><span class="n">map_ptr</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setMaps</span><span class="p">(</span><span class="n">shared_ptr</span> <span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span> <span class="n">landscape_ptr</span><span class="p">,</span> <span class="n">shared_ptr</span> <span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span> <span class="n">repr_map_ptr</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">habitat_map</span> <span class="o">=</span> <span class="n">map_ptr</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">map_ptr</span><span class="p">)</span>
+    <span class="n">landscape</span> <span class="o">=</span> <span class="n">landscape_ptr</span><span class="p">;</span>
+    <span class="n">reproduction_map</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">repr_map_ptr</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">landscape_ptr</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Attempting to set map pointer to null pointer in DispersalCoordinator.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="n">xdim</span> <span class="o">=</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">getSimParameters</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">;</span>
+    <span class="n">xdim</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getSimParameters</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">;</span>
+    <span class="n">ydim</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getSimParameters</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fine_map_y_size</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span> <span class="n">generation_ptr</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setMaps</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span> <span class="n">landscape_ptr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMaps</span><span class="p">(</span><span class="n">landscape_ptr</span><span class="p">,</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span><span class="n">generation_ptr</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">generation</span> <span class="o">=</span> <span class="n">generation_ptr</span><span class="p">;</span>
 <span class="p">}</span>
 
-
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">dispersal_file</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dispersal_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dispersal_y</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">m_probin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">cutoffin</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">tauin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">)</span>
+                                        <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">dispersal_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">dispersal_y</span><span class="p">,</span>
+                                        <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">m_probin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">cutoffin</span><span class="p">,</span>
+                                        <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">tauin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Open our file connection</span>
     <span class="k">if</span><span class="p">(</span><span class="n">dispersal_file</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
@@ -121,31 +130,23 @@
         <span class="n">NR</span><span class="o">-&gt;</span><span class="n">setDispersalParams</span><span class="p">(</span><span class="n">sigmain</span><span class="p">,</span> <span class="n">tauin</span><span class="p">);</span>
         <span class="n">NR</span><span class="o">-&gt;</span><span class="n">setDispersalMethod</span><span class="p">(</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">m_probin</span><span class="p">,</span> <span class="n">cutoffin</span><span class="p">);</span>
         <span class="n">doDispersal</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseDensityMap</span><span class="p">;</span>
+        <span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">standardiseValues</span><span class="p">();</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dispersal_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Using null dispersal file.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
         <span class="n">doDispersal</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseNullDispersalMap</span><span class="p">;</span>
+        <span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">standardiseValues</span><span class="p">();</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Using dispersal file.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
         <span class="n">doDispersal</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseDispersalMap</span><span class="p">;</span>
-        <span class="c1">// Check file existance</span>
-        <span class="n">ifstream</span> <span class="nf">infile</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">infile</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
-        <span class="p">{</span>
-            <span class="n">string</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Could not access dispersal map file &quot;</span> <span class="o">+</span> <span class="n">dispersal_file</span> <span class="o">+</span> <span class="s">&quot;. Check file exists and is readable.&quot;</span><span class="p">;</span>
-            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="n">infile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
-        <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">dispersal_x</span> <span class="o">*</span> <span class="n">dispersal_y</span><span class="p">,</span> <span class="n">dispersal_x</span> <span class="o">*</span> <span class="n">dispersal_y</span><span class="p">);</span>
-        <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
-        <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="n">importDispersal</span><span class="p">(</span><span class="n">dispersal_x</span> <span class="o">*</span> <span class="n">dispersal_y</span><span class="p">,</span> <span class="n">dispersal_file</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">simParameters</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span><span class="n">simParameters</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">simParameters</span><span class="p">)</span>
     <span class="p">{</span>
@@ -156,11 +157,273 @@
                  <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sigma</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">tau</span><span class="p">,</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">restrict_self</span><span class="p">);</span>
 <span class="p">}</span>
 
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">importDispersal</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">dispersal_dim</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">dispersal_file</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Check file existance</span>
+    <span class="n">ifstream</span> <span class="n">infile</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">infile</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">string</span> <span class="n">msg</span> <span class="o">=</span>
+                <span class="s">&quot;Could not access dispersal map file &quot;</span> <span class="o">+</span> <span class="n">dispersal_file</span> <span class="o">+</span> <span class="s">&quot;. Check file exists and is readable.&quot;</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">infile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+    <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">dispersal_dim</span><span class="p">,</span> <span class="n">dispersal_dim</span><span class="p">);</span>
+    <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">import</span><span class="p">(</span><span class="n">dispersal_file</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">hasHistorical</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">setRawDispersalMap</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="o">*</span><span class="n">generation</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">addDensity</span><span class="p">();</span>
+    <span class="n">addReproduction</span><span class="p">();</span>
+    <span class="n">fixDispersal</span><span class="p">();</span>
+    <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+    <span class="n">verifyDispersalMapSetup</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setRawDispersalMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">raw_dispersal_prob_map</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">addDensity</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ydim</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">xdim</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">xdim</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">density</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">density</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">Step</span> <span class="n">origin_step</span><span class="p">;</span>
+                    <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">origin_step</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
+                    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                    <span class="n">Step</span> <span class="n">destination_step</span><span class="p">;</span>
+                    <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">destination_step</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">xdim</span><span class="p">));</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal from &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;) to &quot;</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span>
+                       <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Source row: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">k</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; destination row: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">index</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal map value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Origin density: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">origin_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span>
+                                                                  <span class="n">origin_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                                                  <span class="n">origin_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Destination density: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getValFine</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                    <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                    <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Dispersal map is non zero where density is 0.&quot;</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">*=</span> <span class="n">density</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">addReproduction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">reproduction_map</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">isNull</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ydim</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">xdim</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">xdim</span><span class="p">;</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+                    <span class="p">{</span>
+
+                        <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="o">*</span><span class="n">reproduction_map</span><span class="p">)[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">fixDispersal</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">row</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fixDispersalRow</span><span class="p">(</span><span class="n">row</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">fixDispersalRow</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// check if the row needs to be fixed</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">checkDispersalRow</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">total_value</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">total_value</span> <span class="o">+=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">total_value</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">total_value</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">total_value</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">checkDispersalRow</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Dispersal probability map not correctly fixed to sum to 1.0.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkDispersalRow</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.00000001</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">verifyDispersalMapSetup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Verifying dispersal setup...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">!=</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Dispersal probability map dimensions do not match.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="kt">bool</span> <span class="n">has_printed</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">();</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Step</span> <span class="n">origin_step</span><span class="p">;</span>
+            <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">origin_step</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+<span class="cp">#ifdef DEBUG</span>
+            <span class="n">assertReferenceMatches</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+            <span class="kt">bool</span> <span class="n">origin_value</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">origin_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span>
+                                                  <span class="n">origin_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="kt">double</span> <span class="n">dispersal_total</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">();</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">Step</span> <span class="n">destination_step</span><span class="p">;</span>
+                <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">destination_step</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+<span class="cp">#ifdef DEBUG</span>
+                <span class="n">assertReferenceMatches</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+                <span class="kt">bool</span> <span class="n">destination_value</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">destination_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span>
+                                                           <span class="n">destination_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                                           <span class="n">destination_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="kt">double</span> <span class="n">dispersal_prob</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">dispersal_prob</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">dispersal_prob</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">-</span> <span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+                <span class="p">}</span>
+                <span class="n">dispersal_total</span> <span class="o">+=</span> <span class="n">dispersal_prob</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">destination_value</span> <span class="o">&amp;&amp;</span> <span class="n">origin_value</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal from &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;) to &quot;</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span>
+                           <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Source row: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; destination row: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal map value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">dispersal_prob</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Origin density: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">origin_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span>
+                                                                      <span class="n">origin_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span>
+                                                                      <span class="mf">0.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Destination density: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">destination_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">destination_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span>
+                                                                           <span class="n">destination_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                                                           <span class="n">destination_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                        <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Dispersal map is non zero where density is 0.&quot;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">origin_value</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">has_printed</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">has_printed</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                        <span class="n">writeWarning</span><span class="p">(</span><span class="s">&quot;Dispersal values exist for non-zero density values.&quot;</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">dispersal_total</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">origin_value</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No dispersal probabilities from cell at &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">origin_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;) to any other cell, despite non-zero density.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">updateDispersalMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">dispersal_prob_map</span> <span class="o">=</span> <span class="n">raw_dispersal_prob_map</span><span class="p">;</span>
+        <span class="n">addDensity</span><span class="p">();</span>
+        <span class="n">addReproduction</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#ifdef DEBUG</span>
+
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">assertReferenceMatches</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">expected</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">row_ref</span> <span class="o">=</span> <span class="n">expected</span><span class="p">;</span>
+    <span class="n">Step</span> <span class="n">step</span><span class="p">;</span>
+    <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">row_ref</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">actual</span> <span class="o">=</span> <span class="n">calculateCellReference</span><span class="p">(</span><span class="n">step</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">actual</span> <span class="o">!=</span> <span class="n">expected</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Expected reference &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">expected</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Actual reference &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">actual</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Coordinates: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;(&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Converted values: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">convertSampleXToFineX</span><span class="p">(</span><span class="n">step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">);</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">convertSampleYToFineY</span><span class="p">(</span><span class="n">step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseNullDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Pick a random cell - that&#39;s all we need</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">xdim</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">xdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="kt">long</span> <span class="n">rand_x</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">rand_y</span><span class="p">;</span>
+    <span class="c1">// rejection sample based on reproduction values.</span>
+    <span class="k">do</span>
+    <span class="p">{</span>
+        <span class="n">rand_x</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">xdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+        <span class="n">rand_y</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">ydim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">actionOccurs</span><span class="p">(</span><span class="n">rand_x</span><span class="p">,</span> <span class="n">rand_y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+    <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">this_step</span><span class="p">,</span> <span class="n">rand_x</span> <span class="o">+</span> <span class="n">rand_y</span> <span class="o">*</span> <span class="n">xdim</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperseDispersalMap</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
@@ -175,8 +438,8 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_col</span> <span class="o">=</span> <span class="n">dispersal_prob_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
     <span class="k">while</span><span class="p">(</span><span class="n">max_col</span> <span class="o">-</span> <span class="n">min_col</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">to_check</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">max_col</span> <span class="o">-</span> <span class="n">min_col</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_col</span><span class="p">);</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row_ref</span><span class="p">][</span><span class="n">to_check</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">random_no</span><span class="p">)</span>
+        <span class="k">auto</span> <span class="n">to_check</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">max_col</span> <span class="o">-</span> <span class="n">min_col</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_col</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dispersal_prob_map</span><span class="p">[</span><span class="n">row_ref</span><span class="p">][</span><span class="n">to_check</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">random_no</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">min_col</span> <span class="o">=</span> <span class="n">to_check</span><span class="p">;</span>
         <span class="p">}</span>
@@ -187,23 +450,32 @@
     <span class="p">}</span>
     <span class="c1">// Now get the coordinates of our cell reference</span>
     <span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">this_step</span><span class="p">,</span> <span class="n">max_col</span><span class="p">);</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Dispersal attempted to cell of zero density &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span> <span class="n">this_step</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">col_ref</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">calculateCellCoordinates</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">col_ref</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">fmod</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">col_ref</span><span class="p">),</span> <span class="n">xdim</span><span class="p">)));</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">col_ref</span><span class="p">)</span><span class="o">/</span><span class="n">xdim</span><span class="p">));</span>
+    <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">=</span> <span class="kt">long</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">col_ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">xdim</span><span class="p">));</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="c1">// Convert back to sample map</span>
-    <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">convertFineToSample</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">);</span>
+    <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">convertFineToSample</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">);</span>
 
 <span class="p">}</span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">calculateCellReference</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span> <span class="o">=</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">convertSampleXToFineX</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">);</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">convertSampleYToFineY</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">convertSampleXToFineX</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">convertSampleYToFineY</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">xdim</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -221,50 +493,94 @@
     <span class="c1">// Store the density in the end location.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">density</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">dist</span><span class="p">,</span> <span class="n">angle</span><span class="p">;</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">fail</span><span class="p">)</span>
+    <span class="c1">// First check to see if the source cell is non-habitat.</span>
+    <span class="c1">// If this is the case, then find the nearest neighbouring habitat pixel and only pick dispersal distances</span>
+    <span class="c1">// greater than or equal to that distance.</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">))</span>
     <span class="p">{</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">direction</span><span class="p">();</span>
-        <span class="n">dist</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">dispersal</span><span class="p">();</span>
-        <span class="n">density</span> <span class="o">=</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">runDispersal</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span>
-                                          <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="n">fail</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">);</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">fail</span><span class="p">)</span>
+        <span class="c1">// TODO add proper unittests for this scenario</span>
+        <span class="k">auto</span> <span class="n">min_distance</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">distanceToNearestHabitat</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                                                <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">);</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">fail</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">fail</span> <span class="o">=</span> <span class="o">!</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span>
-                                  <span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">);</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">dispersalMinDistance</span><span class="p">(</span><span class="n">min_distance</span><span class="p">);</span>
+            <span class="c1">// TODO move to debug</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_distance</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Distance is less than minimum distance: please report this bug.&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">direction</span><span class="p">();</span>
+            <span class="n">density</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">runDispersal</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span>
+                                              <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="n">fail</span><span class="p">,</span>
+                                              <span class="o">*</span><span class="n">generation</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">fail</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">fail</span> <span class="o">=</span> <span class="o">!</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span>
+                                      <span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">);</span>
+            <span class="p">}</span>
         <span class="p">}</span>
-        <span class="c1">// Discard the dispersal event a percentage of the time, based on the maximum value of the habitat map.</span>
-        <span class="c1">// This is to correctly mimic less-dense cells having a lower likelihood of being the parent to the cell.</span>
-
-<span class="cp">#ifdef DEBUG</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
-            <span class="o">!</span><span class="n">fail</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x,y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">;</span>
-            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; x,y wrap: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Habitat cover: &quot;</span><span class="p">;</span>
-            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
-                                      <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-            <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
-            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_007: Dispersal attempted to non-habitat. Check dispersal function.&quot;</span><span class="p">);</span>
-        <span class="p">}</span>
-<span class="cp">#endif</span>
     <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">fail</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">direction</span><span class="p">();</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">dispersal</span><span class="p">();</span>
+            <span class="n">density</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">runDispersal</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span>
+                                              <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="n">fail</span><span class="p">,</span>
+                                              <span class="o">*</span><span class="n">generation</span><span class="p">);</span>
+            <span class="c1">// Discard the dispersal event a percentage of the time, based on the maximum value of the habitat map.</span>
+            <span class="c1">// This is to correctly mimic less-dense cells having a lower likelihood of being the parent to the cell.</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">fail</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">fail</span> <span class="o">=</span> <span class="o">!</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span>
+                                      <span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">==</span>
+       <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">fail</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;x,y: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; x,y wrap: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Habitat cover: &quot;</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span><span class="p">,</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">,</span> <span class="o">*</span><span class="n">generation</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
+        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_007: Dispersal attempted to non-habitat. Check dispersal function.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">setEndPointFptr</span><span class="p">(</span><span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">restrict_self</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">restrict_self</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">checkEndPointFptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointRestricted</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">isNull</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">checkEndPointFptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointRestricted</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">checkEndPointFptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointDensityRestrictedReproduction</span><span class="p">;</span>
+        <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
-        <span class="n">checkEndPointFptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointDensity</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">isNull</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">checkEndPointFptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointDensity</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">checkEndPointFptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointDensityReproduction</span><span class="p">;</span>
+        <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-
-<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span> <span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPoint</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
                                          <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
                                          <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
 <span class="p">{</span>
@@ -275,7 +591,7 @@
                                                 <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
                                                 <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">((</span><span class="kt">double</span><span class="p">(</span><span class="n">density</span><span class="p">)</span> <span class="o">/</span> <span class="kt">double</span><span class="p">(</span><span class="n">habitat_map</span><span class="o">-&gt;</span><span class="n">getHabitatMax</span><span class="p">()))</span> <span class="o">&lt;</span>
+    <span class="k">if</span><span class="p">((</span><span class="kt">double</span><span class="p">(</span><span class="n">density</span><span class="p">)</span> <span class="o">/</span> <span class="kt">double</span><span class="p">(</span><span class="n">landscape</span><span class="o">-&gt;</span><span class="n">getHabitatMax</span><span class="p">()))</span> <span class="o">&lt;</span>
        <span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="n">oldx</span> <span class="o">=</span> <span class="n">startx</span><span class="p">;</span>
@@ -287,14 +603,59 @@
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointRestricted</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
-                              <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointRestricted</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span>
+                                                   <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span>
+                                                   <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">startx</span> <span class="o">==</span> <span class="n">oldx</span> <span class="o">&amp;&amp;</span> <span class="n">starty</span> <span class="o">==</span> <span class="n">oldy</span> <span class="o">&amp;&amp;</span> <span class="n">startxwrap</span> <span class="o">==</span> <span class="n">oldxwrap</span> <span class="o">&amp;&amp;</span> <span class="n">startywrap</span> <span class="o">==</span> <span class="n">oldywrap</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">checkEndPointDensity</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">,</span> <span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointDensityReproduction</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
+                                                            <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span>
+                                                            <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span>
+                                                            <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">checkEndPointDensity</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">,</span> <span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">actionOccurs</span><span class="p">(</span><span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">oldx</span> <span class="o">=</span> <span class="n">startx</span><span class="p">;</span>
+            <span class="n">oldy</span> <span class="o">=</span> <span class="n">starty</span><span class="p">;</span>
+            <span class="n">oldxwrap</span> <span class="o">=</span> <span class="n">startxwrap</span><span class="p">;</span>
+            <span class="n">oldywrap</span> <span class="o">=</span> <span class="n">startywrap</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">checkEndPointDensityRestrictedReproduction</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">density</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldx</span><span class="p">,</span>
+                                                                      <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldy</span><span class="p">,</span>
+                                                                      <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldxwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">oldywrap</span><span class="p">,</span>
+                                                                      <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span>
+                                                                      <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span>
+                                                                      <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">checkEndPointRestricted</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">,</span> <span class="n">startx</span><span class="p">,</span> <span class="n">starty</span><span class="p">,</span> <span class="n">startxwrap</span><span class="p">,</span> <span class="n">startywrap</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reproduction_map</span><span class="o">-&gt;</span><span class="n">actionOccurs</span><span class="p">(</span><span class="n">oldx</span><span class="p">,</span> <span class="n">oldy</span><span class="p">,</span> <span class="n">oldxwrap</span><span class="p">,</span> <span class="n">oldywrap</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">oldx</span> <span class="o">=</span> <span class="n">startx</span><span class="p">;</span>
+            <span class="n">oldy</span> <span class="o">=</span> <span class="n">starty</span><span class="p">;</span>
+            <span class="n">oldxwrap</span> <span class="o">=</span> <span class="n">startxwrap</span><span class="p">;</span>
+            <span class="n">oldywrap</span> <span class="o">=</span> <span class="n">startywrap</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DispersalCoordinator</span><span class="o">::</span><span class="n">disperse</span><span class="p">(</span><span class="n">Step</span> <span class="o">&amp;</span><span class="n">this_step</span><span class="p">)</span>
@@ -356,14 +717,14 @@
         <li class="right" >
           <a href="file_necsim_DispersalCoordinator.cpp.html" title="File DispersalCoordinator.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_DispersalCoordinator.cpp.html" >File DispersalCoordinator.cpp</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

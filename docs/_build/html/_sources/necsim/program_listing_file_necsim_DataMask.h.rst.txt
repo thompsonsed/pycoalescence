@@ -8,8 +8,8 @@ Program Listing for File DataMask.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    
    #ifndef SPECIATIONCOUNTER_DataMask_H
@@ -19,6 +19,7 @@ Program Listing for File DataMask.h
    class Landscape;
    
    #include <string>
+   #include <memory>
    
    #include "SimParameters.h"
    #include "Map.h"
@@ -30,9 +31,12 @@ Program Listing for File DataMask.h
    protected:
        // the file to read in from
        string inputfile;
-       bool bDefault;
+       // True if the sample mask is true everywhere
+       bool isNullSample;
+       // True if the grid is smaller than the sample mask
+       bool isGridOffset;
        unsigned long x_offset, y_offset;
-       // Stores the size of the grid which is stored as a full species list
+       // Stores the size of the grid which is stored as a full species species_id_list
        unsigned long x_dim, y_dim;
        // Stores the size of the samplemask from which spatially sampling is read
        unsigned long mask_x_dim, mask_y_dim;
@@ -40,23 +44,26 @@ Program Listing for File DataMask.h
        typedef double (DataMask::*fptr)(const long &x, const long &y, const long &xwrap, const long &ywrap);
        fptr getProportionfptr;
    public:
-       Map<bool> sample_mask; 
-       // Stores the exact values from the input tif file.
-       Map<double> sample_mask_exact; 
+       Map<bool> sample_mask;
+       Map<double> sample_mask_exact;
+   
        DataMask();
    
        ~DataMask() = default;
    
-       bool getDefault();
+       bool isNull();
    
-       bool setup(const string &sample_mask_file, const unsigned long &x_in, const unsigned long &y_in,
-                  const unsigned long &mask_x_in, const unsigned long &mask_y_in,
-                  const unsigned long &x_offset_in, const unsigned long &y_offset_in);
+       void setup(const SimParameters &sim_parameters);
    
+       bool checkCanUseDefault(const SimParameters &sim_parameters);
        void importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim,
-                              unsigned long xoffset, unsigned long yoffset, string inputfile);
+                              unsigned long xoffset, unsigned long yoffset, string inputfile_in);
    
        void doImport();
+   
+       void completeBoolImport();
+   
+       void setupNull(SimParameters &mapvarin);
    
        void importSampleMask(SimParameters &mapvarin);
    
@@ -71,11 +78,11 @@ Program Listing for File DataMask.h
    
        double getExactValue(const long &x, const long &y, const long &xwrap, const long &ywrap);
    
-       void convertBoolean(Landscape &map1, const double &deme_sampling, const double &generation);
+       void convertBoolean(shared_ptr<Landscape> map1, const double &deme_sampling, const double &generation);
    
        void clearSpatialMask();
    
-       void recalculate_coordinates(long &x, long &y, long &x_wrap, long &y_wrap);
+       void recalculateCoordinates(long &x, long &y, long &x_wrap, long &y_wrap);
    };
    
    

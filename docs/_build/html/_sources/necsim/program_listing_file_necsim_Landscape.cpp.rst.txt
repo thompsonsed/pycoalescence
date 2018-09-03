@@ -8,34 +8,36 @@ Program Listing for File Landscape.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
+   #define _USE_MATH_DEFINES
+   
+   #include <cmath>
    #include "Landscape.h"
    #include "Filesystem.h"
    
-   uint32_t importToMapAndRound(string map_file, Map<uint32_t> &matrix_in, unsigned long matrix_x,
-                                unsigned long matrix_y,
+   uint32_t importToMapAndRound(string map_file, Map<uint32_t> &map_in, unsigned long map_x,
+                                unsigned long map_y,
                                 unsigned long scalar)
    {
    #ifndef SIZE_LIMIT
-       if(matrix_x > 1000000 || matrix_y > 1000000)
+       if(map_x > 1000000 || map_y > 1000000)
        {
-           throw runtime_error("Extremely large map sizes set for " + map_file + ": " + to_string(matrix_x) + ", " +
-                                       to_string(matrix_y) + "\n");
+           throw runtime_error("Extremely large map sizes set for " + map_file + ": " + to_string(map_x) + ", " +
+                               to_string(map_y) + "\n");
        }
    #endif
-   
        Map<float> temp_matrix;
-   //  temp_matrix.open(map_file);
-       temp_matrix.setSize(matrix_y, matrix_x);
+       temp_matrix.setSize(map_y, map_x);
    #ifdef DEBUG
        writeInfo("Calculating fine map");
    #endif
        if(map_file == "null")
        {
-           for(unsigned long i = 0; i < matrix_y; i++)
+           writeInfo("Setting null map.\n");
+           for(unsigned long i = 0; i < map_y; i++)
            {
-               for(unsigned long j = 0; j < matrix_x; j++)
+               for(unsigned long j = 0; j < map_x; j++)
                {
                    temp_matrix[i][j] = 1.0;
                }
@@ -44,20 +46,25 @@ Program Listing for File Landscape.cpp
        else  // There is a map to read in.
        {
            temp_matrix.import(map_file);
+           map_in.open(map_file);
+           map_in.getRasterBand();
+           map_in.getMetaData();
+           map_in.close();
        }
    #ifdef DEBUG
        writeInfo("import complete");
    #endif
        uint32_t max_value = 0;
-       matrix_in.setSize(temp_matrix.getRows(), temp_matrix.getCols());
-       for(unsigned long i = 0; i < matrix_y; i++)
+       map_in.setSize(temp_matrix.getRows(), temp_matrix.getCols());
+   
+       for(unsigned long i = 0; i < temp_matrix.getRows(); i++)
        {
-           for(unsigned long j = 0; j < matrix_x; j++)
+           for(unsigned long j = 0; j < temp_matrix.getCols(); j++)
            {
-               matrix_in[i][j] = (uint32_t)(max(round(temp_matrix[i][j] * (double)scalar), 0.0));
-               if(matrix_in[i][j] > max_value)
+               map_in[i][j] = (uint32_t) (max(round(temp_matrix[i][j] * (double) scalar), 0.0));
+               if(map_in[i][j] > max_value)
                {
-                   max_value = matrix_in[i][j];
+                   max_value = map_in[i][j];
                }
            }
        }
@@ -65,12 +72,30 @@ Program Listing for File Landscape.cpp
        return max_value;
    }
    
+   unsigned long archimedesSpiralX(const double &centre_x, const double &centre_y, const double &radius,
+                                   const double &theta)
+   {
+       return static_cast<unsigned long>(floor(radius * cos(theta) + centre_x));
+   }
+   
+   unsigned long archimedesSpiralY(const double &centre_x, const double &centre_y, const double &radius,
+                                   const double &theta)
+   {
+       return static_cast<unsigned long>(floor(radius * sin(theta) + centre_y));
+   }
    
    void Landscape::setDims(SimParameters *mapvarsin)
    {
        if(!check_set_dim)  // checks to make sure it hasn't been run already.
        {
+   #ifdef DEBUG
+           if(mapvarsin == nullptr)
+           {
+               throw FatalException("SimParameters pointer is nullptr. Please report this bug.");
+           }
+   #endif // DEBUG
            mapvars = mapvarsin;
+           mapvars->setHistorical(0);
            deme = mapvars->deme;
            x_dim = mapvars->grid_x_size;
            y_dim = mapvars->grid_y_size;
@@ -78,10 +103,11 @@ Program Listing for File Landscape.cpp
            nUpdate = 0;
            check_set_dim = true;
            update_time = 0;
-           gen_since_pristine = mapvars->gen_since_pristine;
-           if(gen_since_pristine == 0)
+           updateMap(0);
+           gen_since_historical = mapvars->gen_since_historical;
+           if(gen_since_historical == 0)
            {
-               gen_since_pristine = 0.000000000000000001;
+               gen_since_historical = 0.000000000000000001;
            }
            habitat_change_rate = mapvars->habitat_change_rate;
            landscape_type = mapvars->landscape_type;
@@ -118,20 +144,20 @@ Program Listing for File Landscape.cpp
        fine_max = importToMapAndRound(fileinput, fine_map, mapxsize, mapysize, deme);
    }
    
-   void Landscape::calcPristineFineMap()
+   void Landscape::calcHistoricalFineMap()
    {
-       string file_input = mapvars->pristine_fine_map_file;
+       string file_input = mapvars->historical_fine_map_file;
        unsigned long map_x_size = mapvars->fine_map_x_size;
        unsigned long map_y_size = mapvars->fine_map_y_size;
        if(!check_set_dim)  // checks that the dimensions have been set.
        {
            throw FatalException("ERROR_MAP_002: dimensions not set.");
        }
-       has_pristine = file_input != "none";
-       pristine_fine_max = 0;
-       if(has_pristine)
+       has_historical = file_input != "none";
+       historical_fine_max = 0;
+       if(has_historical)
        {
-           pristine_fine_max = importToMapAndRound(file_input, pristine_fine_map, map_x_size, map_y_size, deme);
+           historical_fine_max = importToMapAndRound(file_input, historical_fine_map, map_x_size, map_y_size, deme);
        }
    }
    
@@ -152,30 +178,31 @@ Program Listing for File Landscape.cpp
        }
    }
    
-   void Landscape::calcPristineCoarseMap()
+   void Landscape::calcHistoricalCoarseMap()
    {
-       string file_input = mapvars->pristine_coarse_map_file;
+       string file_input = mapvars->historical_coarse_map_file;
        unsigned long map_x_size = mapvars->coarse_map_x_size;
        unsigned long map_y_size = mapvars->coarse_map_y_size;
        if(!check_set_dim)  // checks that the dimensions have been set.
        {
            throw FatalException("ERROR_MAP_003: dimensions not set.");
        }
-       pristine_coarse_max = 0;
+       historical_coarse_max = 0;
        if(has_coarse)
        {
-           has_pristine = file_input != "none";
-           if(has_pristine)
+           has_historical = file_input != "none";
+           if(has_historical)
            {
-               pristine_coarse_max = importToMapAndRound(file_input, pristine_coarse_map, map_x_size, map_y_size, deme);
+               historical_coarse_max = importToMapAndRound(file_input, historical_coarse_map, map_x_size, map_y_size,
+                                                           deme);
            }
        }
    }
    
-   void Landscape::setTimeVars(double gen_since_pristine_in, double habitat_change_rate_in)
+   void Landscape::setTimeVars(double gen_since_historical_in, double habitat_change_rate_in)
    {
        update_time = 0;
-       gen_since_pristine = gen_since_pristine_in;
+       gen_since_historical = gen_since_historical_in;
        habitat_change_rate = habitat_change_rate_in;
    }
    
@@ -183,7 +210,7 @@ Program Listing for File Landscape.cpp
    {
        if(mapvars->times_file != "null")
        {
-           mapvars->setPristine(0);
+           mapvars->setHistorical(0);
        }
        if(fine_map.getCols() == 0 || fine_map.getRows() == 0)
        {
@@ -212,62 +239,104 @@ Program Listing for File Landscape.cpp
        os << "coarsex: " << coarse_x_min << "," << coarse_x_max << endl;
        os << "coarsey: " << coarse_y_min << "," << coarse_y_max << endl;
        os << "offsets: "
-            << "(" << fine_x_offset << "," << fine_y_offset << ")(" << coarse_x_offset << "," << coarse_y_offset << ")" << endl;
-       os << "pristine fine file: " << pristine_fine_map << endl;
-       os << "pristine coarse file: " << pristine_coarse_map << endl;
+          << "(" << fine_x_offset << "," << fine_y_offset << ")(" << coarse_x_offset << "," << coarse_y_offset << ")"
+          << endl;
+       os << "historical fine file: " << historical_fine_map << endl;
+       os << "historical coarse file: " << historical_coarse_map << endl;
        writeInfo(os.str());
    #endif
        //      os << "fine variables: " << finexmin << "," << fine_x_max << endl;
        //      os << "coarse variabes: " << coarse_x_min << "," << coarse_x_max << endl;
-       if(fine_x_min < coarse_x_min || fine_x_max > coarse_x_max || (fine_x_max - fine_x_min) < x_dim || (fine_y_max - fine_y_min) < y_dim)
+       if(fine_x_min < coarse_x_min || fine_x_max > coarse_x_max || (fine_x_max - fine_x_min) < x_dim ||
+          (fine_y_max - fine_y_min) < y_dim)
        {
            throw FatalException(
-               "ERROR_MAP_006: FATAL - fine map extremes outside coarse map or sample grid larger than fine map");
+                   "ERROR_MAP_006: FATAL - fine map extremes outside coarse map or sample grid larger than fine map");
        }
    }
    
    bool Landscape::checkAllDimensionsZero()
    {
        return mapvars->fine_map_x_offset == 0 && mapvars->fine_map_y_offset == 0 && mapvars->coarse_map_x_offset == 0 &&
-               mapvars->coarse_map_y_offset == 0 && mapvars->sample_x_offset == 0 && mapvars->sample_y_offset == 0 &&
-               mapvars->fine_map_x_size == 0 && mapvars->fine_map_y_size == 0 && mapvars->coarse_map_x_size == 0 &&
-               mapvars->coarse_map_y_size == 0;
+              mapvars->coarse_map_y_offset == 0 && mapvars->sample_x_offset == 0 && mapvars->sample_y_offset == 0 &&
+              mapvars->fine_map_x_size == 0 && mapvars->fine_map_y_size == 0 && mapvars->coarse_map_x_size == 0 &&
+              mapvars->coarse_map_y_size == 0;
    }
    
    void Landscape::calculateOffsetsFromMaps()
    {
        long x_offset, y_offset;
-       // TODO complete this functionality - required for rcoalescence
        if(mapvars->sample_mask_file != "null" && mapvars->sample_mask_file != "none")
        {
+           writeInfo("Calculating offsets from maps...\n");
            // Opens an empty map object for the sample mask file and then calculates the offsets.
            Map<uint32_t> tmp_sample_map;
            tmp_sample_map.open(mapvars->sample_mask_file);
+           tmp_sample_map.getRasterBand();
+           tmp_sample_map.getMetaData();
            tmp_sample_map.calculateOffset(fine_map, x_offset, y_offset);
            if(tmp_sample_map.roundedScale(fine_map) != 1)
            {
-               writeInfo("Sample map resolution does not match fine map resolution.");
+               writeInfo("Sample map resolution does not match fine map resolution.\n");
            }
            tmp_sample_map.close();
            if(x_offset < 0 || y_offset < 0)
            {
                stringstream ss;
-               ss << "Offsets of " << mapvars->fine_map_file << " from " << mapvars->sample_mask_file << " are negative: ";
-               ss << "check map files are set correctly." << endl;
+               ss << "Fine map upper-left coordinates: " << fine_map.getUpperLeftX() << ", " << fine_map.getUpperLeftY();
+               ss << endl << "Sample map upper-left coordinates: " << tmp_sample_map.getUpperLeftX() << ", ";
+               ss << tmp_sample_map.getUpperLeftY() << endl;
+               writeInfo(ss.str());
+               ss.str("");
+               ss << "Offsets of " << mapvars->fine_map_file << " from " << mapvars->sample_mask_file << " are negative (";
+               ss << x_offset << ", " << y_offset << "): ";
+               ss << "check map files are set correctly.\n" << endl;
                throw FatalException(ss.str());
            }
            mapvars->fine_map_x_offset = static_cast<unsigned long>(x_offset);
            mapvars->fine_map_y_offset = static_cast<unsigned long>(y_offset);
        }
+       mapvars->coarse_map_x_size = coarse_map.getCols();
+       mapvars->coarse_map_y_size = coarse_map.getRows();
+       mapvars->fine_map_x_size = fine_map.getCols();
+       mapvars->fine_map_y_size = fine_map.getRows();
+       mapvars->sample_x_offset = 0;
+       mapvars->sample_y_offset = 0;
+       mapvars->sample_x_size = mapvars->fine_map_x_size;
+       mapvars->sample_y_size = mapvars->fine_map_y_size;
+       mapvars->grid_x_size = mapvars->fine_map_x_size;
+       mapvars->grid_y_size = mapvars->fine_map_y_size;
+       x_dim = mapvars->grid_x_size;
+       y_dim = mapvars->grid_y_size;
        fine_map.calculateOffset(coarse_map, x_offset, y_offset);
-       scale = fine_map.roundedScale(coarse_map);
+       mapvars->coarse_map_x_offset = static_cast<unsigned long>(x_offset);
+       mapvars->coarse_map_y_offset = static_cast<unsigned long>(y_offset);
+       mapvars->coarse_map_scale = fine_map.roundedScale(coarse_map);
+       scale = mapvars->coarse_map_scale;
        if(x_offset < 0 || y_offset < 0)
        {
            stringstream ss;
-           ss << "Offsets of " << mapvars->fine_map_file << " from " << mapvars->sample_mask_file << " are negative: ";
+           ss << "Fine map upper-left coordinates: " << fine_map.getUpperLeftX() << ", " << fine_map.getUpperLeftY();
+           ss << endl << "Coarse map upper-left coordinates: " << coarse_map.getUpperLeftX() << ", ";
+           ss << fine_map.getUpperLeftY();
+           writeInfo(ss.str());
+           ss.str("");
+           ss << "Offsets of " << mapvars->coarse_map_file << " from " << mapvars->fine_map_file << " are negative (";
+           ss << x_offset << ", " << y_offset << "): ";
            ss << "check map files are set correctly." << endl;
            throw FatalException(ss.str());
        }
+       stringstream ss;
+       ss << "Dimensions detected as: " << endl;
+       ss << "Fine map" << endl;
+       ss << "-dimensions: " << fine_map.getCols() << ", " << fine_map.getRows() << endl;
+       ss << "-offsets: " << mapvars->fine_map_x_offset << ", " << mapvars->fine_map_y_offset << endl;
+       ss << "Coarse map" << endl;
+       ss << "-dimensions: " << coarse_map.getCols() << ", " << coarse_map.getRows() << endl;
+       ss << "-offsets: " << mapvars->coarse_map_x_offset << ", " << mapvars->coarse_map_y_offset << endl;
+       ss << "-scale: " << mapvars->coarse_map_scale << endl;
+       writeInfo(ss.str());
+       calculateOffsetsFromParameters();
    }
    
    void Landscape::calculateOffsetsFromParameters()
@@ -300,19 +369,19 @@ Program Listing for File Landscape.cpp
        }
    }
    
-   
-   
    void Landscape::validateMaps()
    {
        stringstream os;
        os << "\rValidating maps..." << flush;
+   #ifdef historical_mode
        double dTotal = fine_map.getCols() + coarse_map.getCols();
        unsigned long iCounter = 0;
-       if(has_pristine)
+   #endif // historical_mode
+       if(has_historical)
        {
-           if(fine_map.getCols() == pristine_fine_map.getCols() && fine_map.getRows() == pristine_fine_map.getRows() &&
-                   coarse_map.getCols() == pristine_coarse_map.getCols() && coarse_map.getRows() ==
-                                                                               pristine_coarse_map.getRows())
+           if(fine_map.getCols() == historical_fine_map.getCols() && fine_map.getRows() == historical_fine_map.getRows() &&
+              coarse_map.getCols() == historical_coarse_map.getCols() && coarse_map.getRows() ==
+                                                                         historical_coarse_map.getRows())
            {
                os << "\rValidating maps...map sizes okay" << flush;
                writeInfo(os.str());
@@ -320,22 +389,23 @@ Program Listing for File Landscape.cpp
            else
            {
                throw FatalException(
-                       "ERROR_MAP_009: Landscape validation failed - modern and pristine maps are not the same dimensions.");
+                       "ERROR_MAP_009: Landscape validation failed - modern and historical maps are not the same dimensions.");
            }
+   #ifdef historical_mode
            for(unsigned long i = 0; i < fine_map.getCols(); i++)
            {
                for(unsigned long j = 0; j < fine_map.getRows(); j++)
                {
-                   if(fine_map[j][i] > pristine_fine_map[j][i])
+                   if(fine_map[j][i] > historical_fine_map[j][i])
                    {
    #ifdef DEBUG
                        stringstream ss;
-                       ss << "fine map: " << fine_map[j][i] << " pristine map: " << pristine_fine_map[j][i];
+                       ss << "fine map: " << fine_map[j][i] << " historical map: " << historical_fine_map[j][i];
                        ss << " x,y: " << i << "," << j << endl;
                        writeLog(50, ss);
    #endif //DEBUG
                        throw FatalException("ERROR_MAP_007: Landscape validation failed - fine map value larger "
-                                                 "than pristine fine map value.");
+                                                 "than historical fine map value.");
                    }
                }
                double dPercentComplete = 100 * ((double)(i + iCounter) / dTotal);
@@ -346,29 +416,29 @@ Program Listing for File Landscape.cpp
                    writeInfo(os.str());
                }
            }
+   #endif // historical mode
        }
+   #ifdef historical_mode
        iCounter = fine_map.getCols();
-       if(has_pristine)
+       stringstream ss;
+       if(has_historical)
        {
            for(unsigned long i = 0; i < coarse_map.getCols(); i++)
            {
                for(unsigned long j = 0; j < coarse_map.getRows(); j++)
                {
-                   if(coarse_map[j][i] > pristine_coarse_map[j][i])
+                   if(coarse_map[j][i] > historical_coarse_map[j][i])
                    {
-   #ifdef DEBUG
-                       stringstream ss;
-                       ss << "coarse map: " << coarse_map[j][i] << " pristine map: " << pristine_coarse_map[j][i];
+                       ss << "coarse map: " << coarse_map[j][i] << " historical map: " << historical_coarse_map[j][i];
                        ss << " coarse map x+1: " << coarse_map[j][i + 1]
-                            << " pristine map: " << pristine_coarse_map[j][i + 1];
+                          << " historical map: " << historical_coarse_map[j][i + 1];
                        ss << " x,y: " << i << "," << j;
                        writeLog(50, ss);
-   #endif // DEBUG
                        throw FatalException("ERROR_MAP_008: Landscape validation failed - coarse map value larger "
-                                                 "than pristine coarse map value.");
+                                            "than historical coarse map value.");
                    }
                }
-               double dPercentComplete = 100 * ((double)(i + iCounter) / dTotal);
+               double dPercentComplete = 100 * ((double) (i + iCounter) / dTotal);
                if(i % 1000 == 0)
                {
                    os.str("");
@@ -376,53 +446,69 @@ Program Listing for File Landscape.cpp
                    writeInfo(os.str());
                }
            }
-           
+   
        }
+   #endif // historical_mode
        os.str("");
        os << "\rValidating maps complete                                       " << endl;
        writeInfo(os.str());
    }
    
-   void Landscape::updateMap(double generation)
+   bool Landscape::updateMap(double generation)
    {
-       // only update the map if the pristine state has not been reached.
-       if(!mapvars->is_pristine && has_pristine)
+       // only update the map if the historical state has not been reached.
+       if(!mapvars->is_historical && has_historical)
        {
-           if(mapvars->gen_since_pristine < generation)
+           if(mapvars->gen_since_historical < generation)
            {
                // Only update the map if the maps have actually changed
-               if(mapvars->setPristine(nUpdate+1))
+               if(mapvars->setHistorical(nUpdate + 1))
                {
-                   nUpdate++;
-                   // pristine_fine_map = mapvars->pristine_fine_map_file;
-                   // pristine_coarse_map = mapvars->pristine_coarse_map_file;
-                   current_map_time = gen_since_pristine;
-                   gen_since_pristine = mapvars->gen_since_pristine;
-                   if(gen_since_pristine == 0)
-                   {
-                       gen_since_pristine = 0.000000000000000001;
-                   }
-                   habitat_change_rate = mapvars->habitat_change_rate;
-                   fine_max = pristine_fine_max;
-                   fine_map = pristine_fine_map;
-                   coarse_max = pristine_coarse_max;
-                   coarse_map = pristine_coarse_map;
-                   calcPristineCoarseMap();
-                   calcPristineFineMap();
-                   if(has_pristine)
-                   {
-                       is_pristine = mapvars->is_pristine;
-                   }
-                   recalculateHabitatMax();
-                   
-                   
+                   stringstream ss;
+                   ss << "\nUpdating historical maps at " << generation << "...\n";
+                   writeInfo(ss.str());
+                   fine_max = historical_fine_max;
+                   fine_map = historical_fine_map;
+                   coarse_max = historical_coarse_max;
+                   coarse_map = historical_coarse_map;
+                   doUpdate();
+                   return true;
                }
            }
        }
+       return false;
+   }
+   
+   void Landscape::doUpdate()
+   {
+       nUpdate++;
+       // historical_fine_map = mapvars->historical_fine_map_file;
+       // historical_coarse_map = mapvars->historical_coarse_map_file;
+       current_map_time = gen_since_historical;
+       gen_since_historical = mapvars->gen_since_historical;
+       if(gen_since_historical == 0)
+       {
+           gen_since_historical = 0.000000000000000001;
+       }
+       habitat_change_rate = mapvars->habitat_change_rate;
+       calcHistoricalFineMap();
+       calcHistoricalCoarseMap();
+       if(has_historical)
+       {
+           is_historical = mapvars->is_historical;
+       }
+       recalculateHabitatMax();
+   }
+   
+   void Landscape::resetHistorical()
+   {
+       nUpdate = 0;
+       doUpdate();
    }
    
    void Landscape::setLandscape(string landscape_type)
    {
+       infinite_boundaries = true;
        if(landscape_type == "infinite")
        {
            writeInfo("Setting infinite landscape.\n");
@@ -440,6 +526,7 @@ Program Listing for File Landscape.cpp
        }
        else if(landscape_type == "closed")
        {
+           infinite_boundaries = false;
            getValFunc = &Landscape::getValFinite;
        }
        else
@@ -448,14 +535,14 @@ Program Listing for File Landscape.cpp
        }
    }
    
-   unsigned long Landscape::getVal(const double& x, const double& y,
-                             const long& xwrap, const long& ywrap, const double& current_generation)
+   unsigned long Landscape::getVal(const double &x, const double &y,
+                                   const long &xwrap, const long &ywrap, const double &current_generation)
    {
        return (this->*getValFunc)(x, y, xwrap, ywrap, current_generation);
    }
    
    unsigned long Landscape::getValInfinite(
-       const double& x, const double& y, const long& xwrap, const long& ywrap, const double& current_generation)
+           const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)
    {
        double xval, yval;
        xval = x + (x_dim * xwrap);  //
@@ -469,7 +556,7 @@ Program Listing for File Landscape.cpp
    }
    
    unsigned long Landscape::getValCoarseTiled(
-       const double& x, const double& y, const long& xwrap, const long& ywrap, const double& current_generation)
+           const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)
    {
        double newx = fmod(x + (xwrap * x_dim) + fine_x_offset + coarse_x_offset, coarse_map.getCols());
        double newy = fmod(y + (ywrap * y_dim) + fine_x_offset + coarse_x_offset, coarse_map.getRows());
@@ -485,7 +572,7 @@ Program Listing for File Landscape.cpp
    }
    
    unsigned long Landscape::getValFineTiled(
-       const double& x, const double& y, const long& xwrap, const long& ywrap, const double& current_generation)
+           const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)
    {
    
        double newx = fmod(x + (xwrap * x_dim) + fine_x_offset, fine_map.getCols());
@@ -515,56 +602,64 @@ Program Listing for File Landscape.cpp
    unsigned long Landscape::getValCoarse(const double &xval, const double &yval, const double &current_generation)
    {
        unsigned long retval = 0;
-       if(has_pristine)
+       if(has_historical)
        {
-           if(is_pristine || pristine_coarse_map[yval][xval] == coarse_map[yval][xval])
+           if(is_historical || historical_coarse_map[yval][xval] == coarse_map[yval][xval])
            {
-               return pristine_coarse_map[yval][xval];
+               return historical_coarse_map[yval][xval];
            }
            else
            {
                double currentTime = current_generation - current_map_time;
-               retval = (unsigned long)floor(coarse_map[yval][xval] +
+               retval = (unsigned long) floor(coarse_map[yval][xval] +
                                               (habitat_change_rate *
-                                               ((pristine_coarse_map[yval][xval] - coarse_map[yval][xval]) /
-                                                       (gen_since_pristine-current_map_time)) * currentTime));
+                                               ((historical_coarse_map[yval][xval] - coarse_map[yval][xval]) /
+                                                (gen_since_historical - current_map_time)) * currentTime));
            }
        }
        else
        {
            return coarse_map[yval][xval];
        }
-   #ifdef pristine_mode
-       if(retval > pristine_coarse_map[yval][xval])
+   #ifdef historical_mode
+       if(retval > historical_coarse_map[yval][xval])
            {
                string ec =
-                   "Returned value greater than pristine value. Check file input. (or disable this error before "
+                   "Returned value greater than historical value. Check file input. (or disable this error before "
                    "compilation.\n";
-               ec += "pristine value: " + to_string((long long)pristine_coarse_map[yval][xval]) +
+               ec += "historical value: " + to_string((long long)historical_coarse_map[yval][xval]) +
                      " returned value: " + to_string((long long)retval);
                throw FatalException(ec);
            }
-   // Note that debug mode will throw an exception if the returned value is less than the pristine state
+   // Note that debug mode will throw an exception if the returned value is less than the historical state
    
    #endif
        return retval;
    }
    
-   unsigned long Landscape::getValFine(const double&xval, const double &yval, const double& current_generation)
+   unsigned long Landscape::getValFine(const double &xval, const double &yval, const double &current_generation)
    {
        unsigned long retval = 0;
-       if(has_pristine)
+       if(has_historical)
        {
-           if(is_pristine || pristine_fine_map[yval][xval] == fine_map[yval][xval])
+           if(is_historical || historical_fine_map[yval][xval] == fine_map[yval][xval])
            {
-               retval = pristine_fine_map[yval][xval];
+               retval = historical_fine_map[yval][xval];
            }
            else
            {
                double currentTime = current_generation - current_map_time;
+   #ifdef historical_mode
                retval = (unsigned long)floor(fine_map[yval][xval] +
-                                              (habitat_change_rate * ((pristine_fine_map[yval][xval] - fine_map[yval][xval]) /
-                                                      (gen_since_pristine-current_map_time)) * currentTime));
+                                              (habitat_change_rate * ((historical_fine_map[yval][xval] - fine_map[yval][xval]) /
+                                                      (gen_since_historical-current_map_time)) * currentTime));
+   #else
+               retval = (unsigned long) floor(fine_map[yval][xval] +
+                                              (habitat_change_rate *
+                                               ((static_cast<double>(historical_fine_map[yval][xval]) -
+                                                 static_cast<double>(fine_map[yval][xval])) /
+                                                (gen_since_historical - current_map_time)) * currentTime));
+   #endif
            }
        }
        else
@@ -572,13 +667,13 @@ Program Listing for File Landscape.cpp
            return fine_map[yval][xval];
        }
    // os <<fine_map[yval][xval] << "-"<< retval << endl;
-   // Note that debug mode will throw an exception if the returned value is less than the pristine state
-   #ifdef pristine_mode
-       if(has_pristine)
+   // Note that debug mode will throw an exception if the returned value is less than the historical state
+   #ifdef historical_mode
+       if(has_historical)
        {
-           if(retval > pristine_fine_map[yval][xval])
+           if(retval > historical_fine_map[yval][xval])
            {
-               throw FatalException("Returned value greater than pristine value. Check file input. (or disable this "
+               throw FatalException("Returned value greater than historical value. Check file input. (or disable this "
                                          "error before compilation.");
            }
        }
@@ -587,7 +682,7 @@ Program Listing for File Landscape.cpp
    }
    
    unsigned long Landscape::getValFinite(
-       const double& x, const double& y, const long& xwrap, const long& ywrap, const double& current_generation)
+           const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)
    {
    
        double xval, yval;
@@ -599,7 +694,7 @@ Program Listing for File Landscape.cpp
            return 0;
        }
        if((xval < fine_x_min || xval >= fine_x_max || yval < fine_y_min ||
-          yval >= fine_y_max) && has_coarse)  // check if the coordinate comes from the coarse resolution map.
+           yval >= fine_y_max) && has_coarse)  // check if the coordinate comes from the coarse resolution map.
        {
            // take in to account the fine map offsetting
            xval += fine_x_offset;
@@ -627,24 +722,23 @@ Program Listing for File Landscape.cpp
        return y + fine_y_offset + (ywrap * y_dim);
    }
    
-   void Landscape::convertFineToSample(long & x, long & xwrap, long &y, long &ywrap)
+   void Landscape::convertFineToSample(long &x, long &xwrap, long &y, long &ywrap)
    {
-       auto tmpx = double(x);
-       auto tmpy = double(y);
-       convertCoordinates(tmpx, tmpy, xwrap, ywrap);
+       auto tmpx = double(x - fine_x_offset);
+       auto tmpy = double(y - fine_y_offset);
+       fixGridCoordinates(tmpx, tmpy, xwrap, ywrap);
        x = static_cast<long>(floor(tmpx));
        y = static_cast<long>(floor(tmpy));
    }
    
-   
-   unsigned long Landscape::getInitialCount(double dSample, DataMask& samplemask)
+   unsigned long Landscape::getInitialCount(double dSample, DataMask &samplemask)
    {
        unsigned long toret;
        toret = 0;
        long x, y;
        long xwrap, ywrap;
        unsigned long max_x, max_y;
-       if(samplemask.getDefault())
+       if(samplemask.isNull())
        {
            max_x = fine_map.getCols();
            max_y = fine_map.getRows();
@@ -662,7 +756,7 @@ Program Listing for File Landscape.cpp
                y = j;
                xwrap = 0;
                ywrap = 0;
-               samplemask.recalculate_coordinates(x, y, xwrap, ywrap);
+               samplemask.recalculateCoordinates(x, y, xwrap, ywrap);
                toret += (unsigned long) (max(floor(dSample * (getVal(x, y, xwrap, ywrap, 0)) *
                                                    samplemask.getExactValue(x, y, xwrap, ywrap)), 0.0));
            }
@@ -670,7 +764,7 @@ Program Listing for File Landscape.cpp
        return toret;
    }
    
-   SimParameters * Landscape::getSimParameters()
+   SimParameters *Landscape::getSimParameters()
    {
        if(!mapvars)
        {
@@ -679,12 +773,13 @@ Program Listing for File Landscape.cpp
        return mapvars;
    }
    
-   bool Landscape::checkMap(const double& x, const double& y, const long& xwrap, const long& ywrap, const double generation)
+   bool
+   Landscape::checkMap(const double &x, const double &y, const long &xwrap, const long &ywrap, const double generation)
    {
        return getVal(x, y, xwrap, ywrap, generation) != 0;
    }
    
-   bool Landscape::checkFine(const double& x, const double& y, const long& xwrap, const long& ywrap)
+   bool Landscape::isOnFine(const double &x, const double &y, const long &xwrap, const long &ywrap)
    {
        double tmpx, tmpy;
        tmpx = x + xwrap * x_dim;
@@ -692,7 +787,28 @@ Program Listing for File Landscape.cpp
        return !(tmpx < fine_x_min || tmpx >= fine_x_max || tmpy < fine_y_min || tmpy >= fine_y_max);
    }
    
-   void Landscape::convertCoordinates(double& x, double& y, long& xwrap, long& ywrap)
+   bool Landscape::isOnCoarse(const double &x, const double &y, const long &xwrap, const long &ywrap)
+   {
+       double xval, yval;
+       xval = x + xwrap * x_dim;
+       yval = y + ywrap * y_dim;
+       return xval < coarse_x_min || xval >= coarse_x_max || yval < coarse_y_min || yval >= coarse_y_max;
+   }
+   
+   bool Landscape::isOnMap(const double &x, const double &y, const long &xwrap, const long &ywrap)
+   {
+       if(infinite_boundaries)
+       {
+           return true;
+       }
+       if(has_coarse && isOnCoarse(x, y, xwrap, ywrap))
+       {
+           return true;
+       }
+       return isOnFine(x, y, xwrap, ywrap);
+   }
+   
+   void Landscape::fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap)
    {
        xwrap += floor(x / x_dim);
        ywrap += floor(y / y_dim);
@@ -700,18 +816,18 @@ Program Listing for File Landscape.cpp
        y = y - ywrap * y_dim;
    }
    
-   unsigned long Landscape::runDispersal(const double& dist,
-                          const double& angle,
-                          long& startx,
-                          long& starty,
-                          long& startxwrap,
-                          long& startywrap,
-                          bool& disp_comp,
-                          const double& generation)
+   unsigned long Landscape::runDispersal(const double &dist,
+                                         const double &angle,
+                                         long &startx,
+                                         long &starty,
+                                         long &startxwrap,
+                                         long &startywrap,
+                                         bool &disp_comp,
+                                         const double &generation)
    {
    // Checks that the start point is not out of matrix - this might have to be disabled to ensure that when updating the
    // map, it doesn't cause problems.
-   #ifdef pristine_mode
+   #ifdef historical_mode
        if(!checkMap(startx, starty, startxwrap, startywrap, generation))
        {
            disp_comp = true;
@@ -723,7 +839,7 @@ Program Listing for File Landscape.cpp
        double newx, newy;
        newx = startx + (x_dim * startxwrap) + 0.5;
        newy = starty + (y_dim * startywrap) + 0.5;
-       if(dispersal_relative_cost ==1)
+       if(dispersal_relative_cost == 1)
        {
            // then nothing complicated is required and we can jump straight to the final point.
            newx += dist * cos(angle);
@@ -743,7 +859,7 @@ Program Listing for File Landscape.cpp
                while(cur_dist < dist)
                {
                    // Check if the starting position of the loop is in the fine map or not.
-                   if(checkFine(newx, newy, 0, 0))
+                   if(isOnFine(newx, newy, 0, 0))
                    {
                        // Keep the standard movement rate
                        boost = 1;
@@ -779,7 +895,7 @@ Program Listing for File Landscape.cpp
            {
                while(cur_dist < dist)
                {
-                   if(checkFine(newx, newy, 0, 0))
+                   if(isOnFine(newx, newy, 0, 0))
                    {
                        boost = 1;
                    }
@@ -806,7 +922,7 @@ Program Listing for File Landscape.cpp
            {
                while(cur_dist < dist)
                {
-                   if(checkFine(newx, newy, 0, 0))
+                   if(isOnFine(newx, newy, 0, 0))
                    {
                        boost = 1;
                    }
@@ -834,7 +950,7 @@ Program Listing for File Landscape.cpp
                //              os << "...ang4..." <<  flush;
                while(cur_dist < dist)
                {
-                   if(checkFine(newx, newy, 0, 0))
+                   if(isOnFine(newx, newy, 0, 0))
                    {
                        boost = 1;
                    }
@@ -869,18 +985,18 @@ Program Listing for File Landscape.cpp
            newy = starty + 0.5 + tot_dist * sin(angle);
        }
        unsigned long ret = getVal(newx, newy, 0, 0, generation);
-       if(ret >0)
+       if(ret > 0)
        {
            long newxwrap, newywrap;
            newxwrap = 0;
            newywrap = 0;
-           convertCoordinates(newx, newy, newxwrap, newywrap);
+           fixGridCoordinates(newx, newy, newxwrap, newywrap);
    #ifdef DEBUG
            if(!checkMap(newx, newy, newxwrap, newywrap, generation))
            {
                throw FatalException(string(
-                   "ERROR_MOVE_007: Dispersal attempted to non-forest. Check dispersal function. Forest cover: " +
-                   to_string((long long)getVal(newx, newy, newxwrap, newywrap, generation))));
+                       "ERROR_MOVE_007: Dispersal attempted to non-forest. Check dispersal function. Forest cover: " +
+                       to_string((long long) getVal(newx, newy, newxwrap, newywrap, generation))));
            }
    #endif
            startx = newx;
@@ -892,11 +1008,36 @@ Program Listing for File Landscape.cpp
        return ret;
    };
    
+   double Landscape::distanceToNearestHabitat(const long & start_x, const long & start_y, const long & start_x_wrap,
+                                              const long & start_y_wrap, const double & generation)
+   {
+       long end_x = start_x;
+       long end_y = start_y;
+       double theta = 0;
+       double radius = 1.0;
+       while(!getVal(end_x, end_y, start_x_wrap, start_y_wrap, generation))
+       {
+           theta += 0.1 * M_PI / (2.0 * max(radius, 1.0));
+           radius = theta / (2 * M_PI);
+           end_x = archimedesSpiralX(start_x, start_y, radius, theta);
+           end_y = archimedesSpiralY(start_x, start_y, radius, theta);
+   
+           // Double check that the distance is not greater than the map size
+           // This acts as a fail-safe in case someone presents a historical map with no habitat cells on
+           if(!isOnMap(end_x, end_y, start_x_wrap, start_y_wrap))
+           {
+               throw FatalException("Could not find a habitat cell for parent. Check that your map files always have a "
+                           "place for lineages to disperse from.");
+           }
+       }
+       return pow(pow((start_x - end_x), 2) + pow((start_y - end_y), 2), 0.5);
+   }
+   
    void Landscape::clearMap()
    {
        current_map_time = 0;
        check_set_dim = false;
-       is_pristine = false;
+       is_historical = false;
    }
    
    string Landscape::printVars()
@@ -916,18 +1057,23 @@ Program Listing for File Landscape.cpp
        return habitat_max;
    }
    
+   bool Landscape::hasHistorical()
+   {
+       return has_historical;
+   }
+   
    void Landscape::recalculateHabitatMax()
    {
        habitat_max = 0;
-       if(is_pristine && has_pristine)
+       if(is_historical && has_historical)
        {
-           if(habitat_max < pristine_fine_max)
+           if(habitat_max < historical_fine_max)
            {
-               habitat_max = pristine_fine_max;
+               habitat_max = historical_fine_max;
            }
-           if(habitat_max < pristine_coarse_max)
+           if(habitat_max < historical_coarse_max)
            {
-               habitat_max = pristine_coarse_max;
+               habitat_max = historical_coarse_max;
            }
        }
        else
@@ -940,13 +1086,13 @@ Program Listing for File Landscape.cpp
            {
                habitat_max = coarse_max;
            }
-           if(habitat_max < pristine_fine_max)
+           if(habitat_max < historical_fine_max)
            {
-               habitat_max = pristine_fine_max;
+               habitat_max = historical_fine_max;
            }
-           if(habitat_max < pristine_coarse_max)
+           if(habitat_max < historical_coarse_max)
            {
-               habitat_max = pristine_coarse_max;
+               habitat_max = historical_coarse_max;
            }
        }
    #ifdef DEBUG
@@ -955,7 +1101,7 @@ Program Listing for File Landscape.cpp
            stringstream ss;
            writeLog(10, "habitat_max may be unreasonably large: " + to_string(habitat_max));
            ss << "fine, coarse, pfine, pcoarse: " << fine_max << ", " << coarse_max;
-           ss << ", " << pristine_fine_max << ", " << pristine_coarse_max << endl;
+           ss << ", " << historical_fine_max << ", " << historical_coarse_max << endl;
        }
    #endif
    }

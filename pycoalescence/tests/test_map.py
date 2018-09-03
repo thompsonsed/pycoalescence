@@ -1,14 +1,17 @@
+"""Tests the Map object for provision of geospatial data and map manipulation operations."""
+
 import logging
 import unittest
 
 import gdal
-from osgeo import osr, ogr
+from osgeo import osr, ogr, gdal
 import numpy as np
 import shutil
 import os
 
 from pycoalescence import Map, FragmentedLandscape
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll
+
 
 def setUpModule():
 	"""
@@ -16,11 +19,13 @@ def setUpModule():
 	"""
 	setUpAll()
 
+
 def tearDownModule():
 	"""
 	Removes the output directory
 	"""
 	tearDownAll()
+
 
 class TestMap(unittest.TestCase):
 	"""
@@ -37,7 +42,6 @@ class TestMap(unittest.TestCase):
 		self.coarse_map = Map()
 		self.coarse_map.file_name = "sample/SA_sample_coarse.tif"
 		self.fine_offset_map = Map("sample/SA_sample_fine_offset.tif")
-
 
 	def testDetectGeoTransform(self):
 		"""
@@ -161,9 +165,10 @@ class TestMap(unittest.TestCase):
 	def testGetSpatialReference(self):
 		m = Map("sample/SA_sample_fine.tif")
 		proj = m.get_projection()
-		self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
-						 'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],'
-						 'AUTHORITY["EPSG","4326"]]', proj)
+		self.assertEqual(
+			'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
+			'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],'
+			'AUTHORITY["EPSG","4326"]]', proj)
 
 	def testRasteriseShapefile(self):
 		"""
@@ -309,6 +314,50 @@ class TestMap(unittest.TestCase):
 		self.assertEqual(1, m.data[20, 4])
 		self.assertEqual(0, m.data[21, 7])
 
+	def testRasteriseShapefileWithGeotransform(self):
+		"""
+		Tests that a custom geotransform can be provided for during rasterisation.
+		"""
+		m = Map()
+		output_raster = "output/raster_out8.tif"
+		geo_transform = (-78.375,0.00833333, 0, 0.858333, 0, -0.00833333)
+		output_ds = ogr.Open("sample/shape_sample.shp")
+		m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform)
+		self.assertTrue(os.path.exists(output_raster))
+		dims = m.get_dimensions()
+		for i, each in enumerate([12, 10, 0, 0, 0.00833333, -0.00833333]):
+			self.assertAlmostEqual(each, dims[i], places=5)
+		self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+						 'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+						 'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+		m.open()
+		output_ds = None
+		self.assertEqual(53, np.sum(m.data))
+		self.assertEqual(1, m.data[5, 4])
+		self.assertEqual(0, m.data[0, 0])
+
+	def testRasteriseShapefileWithGeotransformAndDims(self):
+		"""
+		Tests that a custom geotransform and dimensions can be provided for during rasterisation.
+		"""
+		m = Map()
+		output_raster = "output/raster_out9.tif"
+		geo_transform = (-78.375,0.00833333, 0, 0.858333, 0, -0.00833333)
+		output_ds = ogr.Open("sample/shape_sample.shp")
+		m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform, width=13, height=13)
+		self.assertTrue(os.path.exists(output_raster))
+		dims = m.get_dimensions()
+		for i, each in enumerate([13, 13, 0, 0, 0.00833333, -0.00833333]):
+			self.assertAlmostEqual(each, dims[i], places=5)
+		self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+						 'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+						 'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+		m.open()
+		output_ds = None
+		self.assertEqual(53, np.sum(m.data))
+		self.assertEqual(1, m.data[5, 4])
+		self.assertEqual(0, m.data[0, 0])
+
 	def testRasteriseErrors(self):
 		"""
 		Tests that rasterise raises the correct errors when files don't exist, or incorrect parameters are provided.
@@ -321,9 +370,16 @@ class TestMap(unittest.TestCase):
 		with self.assertRaises(IOError):
 			m.rasterise(shape_file="sample/shape_sample.shp", raster_file="sample/SA_sample.tif", x_res=0.00833333,
 						y_res=0.001, field="field2", burn_val=100)
+		with self.assertRaises(ValueError):
+			m.rasterise(shape_file="sample/SA_sample.tif", raster_file="output.tif", x_res=0.00833333,
+							y_res=0.001, field="field2", burn_val=100)
 		m = Map()
 		with self.assertRaises(ValueError):
 			m.rasterise(shape_file="sample/shape_sample.shp", raster_file="no_exist.tif")
+		m = Map()
+		with self.assertRaises(ValueError):
+			m.rasterise(shape_file="sample/shape_sample.shp", raster_file="output.tif",
+						geo_transform=(1, 1, 1, 1, 1, 1), x_res=1.0, y_res=1.0)
 
 	def testCreateCopy(self):
 		"""
@@ -346,6 +402,26 @@ class TestMap(unittest.TestCase):
 		m.data = np.zeros(shape=(10, 10))
 		m.create(output_file)
 		self.assertTrue(os.path.exists(output_file))
+		m2 = Map(output_file)
+		m2.open()
+		self.assertEqual((10, 10), m2.data.shape)
+		self.assertEqual(0, np.sum(m2.data))
+
+	def testCreateWithGeotransform(self):
+		"""
+		Tests that the create function works properly with setting a geotransform.
+		"""
+		m = Map()
+		np.random.seed(1)
+		m.data = np.random.rand(10, 10)
+		output_file = "output/test_create2.tif"
+		gt = (-76.54166666666666, 0.008333333333333333, 0.0, 5.024999999999999, 0.0, -0.008333333333333333)
+		proj = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]'
+		m.create(output_file, bands=1, datatype=gdal.GDT_Float32, geotransform=gt, projection=proj)
+		m2 = Map(output_file)
+		m2.open()
+		self.assertEqual((10, 10), m2.data.shape)
+		self.assertAlmostEqual(48.58779, np.sum(m2.data), places=5)
 
 	def testDataTypeFetch(self):
 		"""
@@ -354,10 +430,12 @@ class TestMap(unittest.TestCase):
 		m = Map("sample/SA_sample.tif")
 		self.assertEqual(6, m.get_dtype())
 
+@unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
 class TestMapReprojection(unittest.TestCase):
 	"""
 	Tests that reprojections work as intended.
 	"""
+
 	@classmethod
 	def setUpClass(cls):
 		"""
@@ -399,7 +477,7 @@ class TestMapReprojection(unittest.TestCase):
 		self.assertAlmostEqual(-929.3830958815255, dims_2[5], places=5)
 		self.assertAlmostEqual(-8520579.357801815, dims_2[6], places=5)
 		self.assertAlmostEqual(560098.928515636, dims_2[7], places=5)
-		self.assertAlmostEqual(dims_2[4]*2, dims_3[4], places=5)
+		self.assertAlmostEqual(dims_2[4] * 2, dims_3[4], places=5)
 		self.assertAlmostEqual(dims_2[5] * 10, dims_3[5], places=5)
 		shutil.copy2(self.map_1, self.map_4)
 		m_4 = Map(self.map_4)
@@ -415,7 +493,7 @@ class TestMapReprojection(unittest.TestCase):
 		self.m_2.open()
 		for i in range(self.m.data.shape[0]):
 			for j in range(self.m.data.shape[1]):
-				self.assertEqual(self.m.data[i, j], self.m_2.data[i,j])
+				self.assertEqual(self.m.data[i, j], self.m_2.data[i, j])
 		self.m_3.open()
 		self.assertEqual(444, self.m_3.data[0, 0])
 		self.assertEqual(258, self.m_3.data[1, 11])
@@ -432,10 +510,9 @@ class TestMapReprojection(unittest.TestCase):
 		dims = m_5.read_dimensions()
 		dims_2 = m_4.get_dimensions()
 		for i, each in enumerate(dims_2[6:]):
-			self.assertAlmostEqual(each, dims[i+6])
-		self.assertAlmostEqual(dims[4], 2*dims_2[4])
-		self.assertAlmostEqual(dims[5], 3*dims_2[5])
-
+			self.assertAlmostEqual(each, dims[i + 6])
+		self.assertAlmostEqual(dims[4], 2 * dims_2[4])
+		self.assertAlmostEqual(dims[5], 3 * dims_2[5])
 
 	def testUpScaling(self):
 		"""
@@ -449,18 +526,32 @@ class TestMapReprojection(unittest.TestCase):
 		dims = m_5.read_dimensions()
 		dims_2 = m_4.get_dimensions()
 		for i, each in enumerate(dims_2[6:]):
-			self.assertAlmostEqual(each, dims[i+6])
-		self.assertAlmostEqual(dims[4], 0.5*dims_2[4])
-		self.assertAlmostEqual(dims[5], 0.5*dims_2[5])
+			self.assertAlmostEqual(each, dims[i + 6])
+		self.assertAlmostEqual(dims[4], 0.5 * dims_2[4])
+		self.assertAlmostEqual(dims[5], 0.5 * dims_2[5])
+
+	def testNoData(self):
+		"""
+		Tests that no data values are correctly read from tif files.
+		"""
+		m = Map("sample/large_mask.tif")
+		self.assertEqual(-99.0, m.get_no_data())
+		self.assertEqual(-99.0, m.get_no_data(1))
+		m2 = Map("sample/bytesample.tif")
+		self.assertIsNone(m2.get_no_data())
+		m3 = Map("sample/example_historical_fine.tif")
+		self.assertAlmostEqual(-3.4028234663852886e+38, m3.get_no_data(), places=7)
+
 
 class MapAssignment(unittest.TestCase):
 	"""
 	Asserts that the Map class correctly reads and writes data properly.
 	"""
+
 	@classmethod
 	def setUpClass(cls):
-		shutil.copy("sample/null.tif", "output/")
-		cls.map = Map(file="output/null.tif")
+		shutil.copy(os.path.join("sample", "null.tif"), "output")
+		cls.map = Map(file=os.path.join("output", "null.tif"))
 		cls.map.open()
 		cls.map.data[0:5, 0:2] = 10
 		cls.map.write()
@@ -469,17 +560,16 @@ class MapAssignment(unittest.TestCase):
 		"""
 		Just a double check to make sure that the base map file is correct (not really a test of this code at all).
 		"""
-		ds = gdal.Open("sample/null.tif")
+		ds = gdal.Open(os.path.join("sample", "null.tif"))
 		arr = ds.GetRasterBand(1).ReadAsArray()
 		self.assertEqual(np.sum(arr), 169)
 		ds = None
 
 	def testMapUpdates(self):
-		ds = gdal.Open("output/null.tif")
+		ds = gdal.Open(os.path.join("output", "null.tif"))
 		arr = ds.GetRasterBand(1).ReadAsArray()
 		self.assertEqual(np.sum(arr), 259)
 		ds = None
-
 
 
 class TestFragmentedLandscape(unittest.TestCase):
@@ -493,15 +583,22 @@ class TestFragmentedLandscape(unittest.TestCase):
 		Sets up the class object by creating the required maps
 		:return:
 		"""
-		cls.l1 = FragmentedLandscape(size=10, number_fragments=2, total=4, output_file="landscapes/l1.tif")
-		cls.l2 = FragmentedLandscape(size=100, number_fragments=57, total=150, output_file="landscapes/l2.tif")
-		cls.l3 = FragmentedLandscape(size=24, number_fragments=5, total=5, output_file="landscapes/l3.tif")
+		if os.path.exists("landscapes"):
+			shutil.rmtree("landscapes")
+		cls.l1 = FragmentedLandscape(size=10, number_fragments=2, total=4,
+									 output_file=os.path.join("landscapes", "l1.tif"))
+		cls.l2 = FragmentedLandscape(size=100, number_fragments=57, total=150,
+									 output_file=os.path.join("landscapes", "l2.tif"))
+		cls.l3 = FragmentedLandscape(size=24, number_fragments=5, total=5,
+									 output_file=os.path.join("landscapes", "l3.tif"))
 		cls.l1.generate()
 		cls.l2.generate()
 		cls.l3.generate()
-		cls.l4 = FragmentedLandscape(size=10, number_fragments=1, total=2, output_file="landscapes/l4.tif")
+		cls.l4 = FragmentedLandscape(size=10, number_fragments=1, total=2,
+									 output_file=os.path.join("landscapes", "l4.tif"))
 		cls.l4.generate()
-		cls.l5 = FragmentedLandscape(size=100, number_fragments=100, total=2000, output_file="landscapes/l5.tif")
+		cls.l5 = FragmentedLandscape(size=100, number_fragments=100, total=2000,
+									 output_file=os.path.join("landscapes", "l5.tif"))
 		cls.l5.generate()
 
 	@classmethod
@@ -511,13 +608,13 @@ class TestFragmentedLandscape(unittest.TestCase):
 			shutil.rmtree("landscapes")
 
 	def testCreateFragmentedLandscapes(self):
-		self.assertEqual(self.l1.output_file, "landscapes/l1.tif")
+		self.assertEqual(self.l1.output_file, os.path.join("landscapes", "l1.tif"))
 		self.assertTrue(os.path.exists(self.l1.output_file))
-		self.assertEqual(self.l2.output_file, "landscapes/l2.tif")
+		self.assertEqual(self.l2.output_file, os.path.join("landscapes", "l2.tif"))
 		self.assertTrue(os.path.exists(self.l2.output_file))
-		self.assertEqual(self.l3.output_file, "landscapes/l3.tif")
+		self.assertEqual(self.l3.output_file, os.path.join("landscapes", "l3.tif"))
 		self.assertTrue(os.path.exists(self.l3.output_file))
-		self.assertEqual(self.l4.output_file, "landscapes/l4.tif")
+		self.assertEqual(self.l4.output_file, os.path.join("landscapes", "l4.tif"))
 		self.assertTrue(os.path.exists(self.l4.output_file))
 
 	def testDimensionsCorrect1(self):
@@ -561,8 +658,6 @@ class TestFragmentedLandscape(unittest.TestCase):
 		self.assertEqual(m5.y_size, 100)
 
 
-
-
 class TestSubsettingMaps(unittest.TestCase):
 	"""
 	Tests the reading of tif files works correctly, including subsetting and cached-subsetting to obtain selections from
@@ -577,7 +672,17 @@ class TestSubsettingMaps(unittest.TestCase):
 		cls.m = Map("sample/SA_sample_fine.tif")
 
 	def testSubsetting(self):
+		"""
+		Tests the basic subsetting functionality works as intended.
+		:return:
+		"""
 		arr = self.m.get_subset(x_offset=0, y_offset=0, x_size=13, y_size=13)
+		with self.assertRaises(ValueError):
+			self.m.get_subset(-1, -1, 13, 13)
+		with self.assertRaises(ValueError):
+			self.m.get_subset(0, 0, 14, 14)
+		with self.assertRaises(ValueError):
+			self.m.get_subset(14, 14, 1, 1)
 		self.assertEqual(arr[0, 0], 231)
 		self.assertEqual(arr[1, 0], 296)
 		self.assertEqual(arr[0, 1], 303)
@@ -587,6 +692,10 @@ class TestSubsettingMaps(unittest.TestCase):
 		self.assertEqual(arr2[0, 1], 286)
 
 	def testCachedSubsetting(self):
+		"""
+		Tests that the cached subsetting functionality works as intended.
+		:return:
+		"""
 		arr = self.m.get_cached_subset(x_offset=0, y_offset=0, x_size=13, y_size=13)
 		self.assertEqual(arr[0, 0], 231)
 		self.assertEqual(arr[1, 0], 296)
@@ -595,3 +704,26 @@ class TestSubsettingMaps(unittest.TestCase):
 		self.assertEqual(arr2[0, 0], 288)
 		self.assertEqual(arr2[1, 0], 263)
 		self.assertEqual(arr2[0, 1], 286)
+
+	def testSubsettingNoData(self):
+		"""
+		Tests that the correct array is returned when using a no data value.
+		"""
+		m = Map("sample/large_mask.tif")
+		self.assertEqual(-243335289.0, np.sum(m.get_subset(0, 0, 1818, 1695)))
+		self.assertEqual(375, np.sum(m.get_subset(0, 0, 1818, 1695, 0)))
+
+	def testWritingSubset(self):
+		"""Tests that writing a subset of the gdal raster works as intended."""
+		m = Map()
+		tmp_file = "output/writesubset.tif"
+		m.data = np.ones((10, 10))
+		m.create(tmp_file)
+		m = Map(tmp_file)
+		tmp_array = np.ones((5, 5)) + 1
+		m.write_subset(tmp_array, 2, 2)
+		m = Map(tmp_file)
+		m.open()
+		expected_array = np.ones((10, 10))
+		expected_array[2:7, 2:7] = 2
+		self.assertTrue(np.array_equal(expected_array, m.data))

@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -39,6 +39,8 @@ Includes
 
 
 - ``Cell.h`` (:ref:`file_necsim_Cell.h`)
+
+- ``DataMask.h`` (:ref:`file_necsim_DataMask.h`)
 
 - ``DispersalCoordinator.h`` (:ref:`file_necsim_DispersalCoordinator.h`)
 
@@ -53,6 +55,8 @@ Includes
 - ``fstream``
 
 - ``iostream``
+
+- ``set``
 
 - ``sqlite3.h``
 
@@ -78,13 +82,6 @@ Classes
 
 
 - :ref:`class_SimulateDispersal`
-
-
-Functions
----------
-
-
-- :ref:`function_distanceBetweenCells`
 
 
 Defines

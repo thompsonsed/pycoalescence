@@ -28,8 +28,7 @@ Definition (``necsim/ProtractedSpatialTree.h``)
 Detailed Description
 --------------------
 
-Sam Thompson
-Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com BSD-3 Licence. 
+Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 
 

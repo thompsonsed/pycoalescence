@@ -126,15 +126,20 @@ Collaboration diagram for SimulateDispersal:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_simulate_dispersal__coll__graph.jpg" border="0" usemap="#_simulate_dispersal_coll__map" alt="Collaboration graph"/></div>
 <map name="_simulate_dispersal_coll__map" id="_simulate_dispersal_coll__map">
-<area shape="rect" id="node3" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. " alt="" coords="718,6,762,31"/>
-<area shape="rect" id="node4" href="class_dispersal_coordinator.html" title="Class for generating dispersal distances and provide routines for reading dispersal distance maps as ..." alt="" coords="925,238,1071,263"/>
-<area shape="rect" id="node5" href="class_landscape.html" title="Contains all maps and provides the functions for accessing a grid cell in the correct temporal and sp..." alt="" coords="697,183,783,209"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="213,359,293,385"/>
-<area shape="rect" id="node8" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m..." alt="" coords="481,134,594,159"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="5,353,131,391"/>
-<area shape="rect" id="node9" href="class_config_option.html" title="Config option class to store and import options from a file. " alt="" coords="203,134,303,159"/>
-<area shape="rect" id="node11" href="struct_step.html" title="Stores the elements associated with a single step in a coalescence simulation. " alt="" coords="716,246,764,271"/>
-<area shape="rect" id="node12" href="class_n_rrand.html" title="Contains the functions for random number generation. " alt="" coords="706,314,774,339"/>
+<area shape="rect" id="node3" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. " alt="" coords="562,6,606,31"/>
+<area shape="rect" id="node5" href="class_data_mask.html" title="Contains the DataMask object, a Matrix of booleans describing the spatial sampling pattern..." alt="" coords="863,118,944,143"/>
+<area shape="rect" id="node6" href="class_map.html" title="Map\&lt; bool \&gt;" alt="" coords="536,61,632,86"/>
+<area shape="rect" id="node7" href="class_matrix.html" title="Matrix\&lt; bool \&gt;" alt="" coords="239,34,345,59"/>
+<area shape="rect" id="node8" href="class_row.html" title="Row\&lt; bool \&gt;" alt="" coords="20,34,116,59"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="252,129,331,154"/>
+<area shape="rect" id="node11" href="class_map.html" title="Map\&lt; double \&gt;" alt="" coords="529,191,639,217"/>
+<area shape="rect" id="node18" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m..." alt="" coords="528,387,641,413"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="5,122,131,161"/>
+<area shape="rect" id="node15" href="class_dispersal_coordinator.html" title="Class for generating dispersal distances and provide routines for reading dispersal distance maps as ..." alt="" coords="830,230,977,255"/>
+<area shape="rect" id="node12" href="class_matrix.html" title="Matrix\&lt; double \&gt;" alt="" coords="231,377,352,402"/>
+<area shape="rect" id="node13" href="class_row.html" title="Row\&lt; double \&gt;" alt="" coords="13,377,124,402"/>
+<area shape="rect" id="node16" href="struct_step.html" title="Stores the elements associated with a single step in a coalescence simulation. " alt="" coords="560,259,609,285"/>
+<area shape="rect" id="node19" href="class_config_option.html" title="Config option class to store and import options from a file. " alt="" coords="242,426,341,451"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -143,12 +148,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3da09319132db8c7ad035290be6590ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a3da09319132db8c7ad035290be6590ef">setSequential</a> (bool bSequential)</td></tr>
 <tr class="memdesc:a3da09319132db8c7ad035290be6590ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the is_sequential flag.  <a href="#a3da09319132db8c7ad035290be6590ef">More...</a><br /></td></tr>
 <tr class="separator:a3da09319132db8c7ad035290be6590ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a777d7cab80b8543647970d6d64b797a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a777d7cab80b8543647970d6d64b797a9">setSimulationParameters</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> *sim_parameters)</td></tr>
-<tr class="memdesc:a777d7cab80b8543647970d6d64b797a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pointer to the simulation parameters object.  <a href="#a777d7cab80b8543647970d6d64b797a9">More...</a><br /></td></tr>
-<tr class="separator:a777d7cab80b8543647970d6d64b797a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275eef6872de493273fc047467935d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a275eef6872de493273fc047467935d7b">importMaps</a> ()</td></tr>
-<tr class="memdesc:a275eef6872de493273fc047467935d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import the maps from the prescribed files.  <a href="#a275eef6872de493273fc047467935d7b">More...</a><br /></td></tr>
+<tr class="memitem:a9d08a14b3f2a78591af2edf2884edb52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a9d08a14b3f2a78591af2edf2884edb52">setSimulationParameters</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> *sim_parameters, bool print=true)</td></tr>
+<tr class="memdesc:a9d08a14b3f2a78591af2edf2884edb52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pointer to the simulation parameters object.  <a href="#a9d08a14b3f2a78591af2edf2884edb52">More...</a><br /></td></tr>
+<tr class="separator:a9d08a14b3f2a78591af2edf2884edb52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275eef6872de493273fc047467935d7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a275eef6872de493273fc047467935d7b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a275eef6872de493273fc047467935d7b">importMaps</a> ()</td></tr>
+<tr class="memdesc:a275eef6872de493273fc047467935d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import the maps from the simulation parameters. <br /></td></tr>
 <tr class="separator:a275eef6872de493273fc047467935d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aeeb01c40f5de7f88bce2b484bf83a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7aeeb01c40f5de7f88bce2b484bf83a0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a7aeeb01c40f5de7f88bce2b484bf83a0">setSizes</a> ()</td></tr>
+<tr class="memdesc:a7aeeb01c40f5de7f88bce2b484bf83a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the map of steps to parameter references and initialises object sizes. <br /></td></tr>
+<tr class="separator:a7aeeb01c40f5de7f88bce2b484bf83a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4acdae18451d1e9f67c005390b89664f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4acdae18451d1e9f67c005390b89664f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a4acdae18451d1e9f67c005390b89664f">setDispersalParameters</a> ()</td></tr>
+<tr class="memdesc:a4acdae18451d1e9f67c005390b89664f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the dispersal parameters in the <a class="el" href="class_dispersal_coordinator.html" title="Class for generating dispersal distances and provide routines for reading dispersal distance maps as ...">DispersalCoordinator</a>. <br /></td></tr>
+<tr class="separator:a4acdae18451d1e9f67c005390b89664f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f2cd557ac9b21c107eac75e7c916af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a46f2cd557ac9b21c107eac75e7c916af">setSeed</a> (unsigned long s)</td></tr>
 <tr class="memdesc:a46f2cd557ac9b21c107eac75e7c916af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the seed for the random number generator.  <a href="#a46f2cd557ac9b21c107eac75e7c916af">More...</a><br /></td></tr>
 <tr class="separator:a46f2cd557ac9b21c107eac75e7c916af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,9 +172,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29c7cf41d8b5610109d61f302fb32e73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a29c7cf41d8b5610109d61f302fb32e73">setNumberRepeats</a> (unsigned long n)</td></tr>
 <tr class="memdesc:a29c7cf41d8b5610109d61f302fb32e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number of repeats to run the dispersal kernel for.  <a href="#a29c7cf41d8b5610109d61f302fb32e73">More...</a><br /></td></tr>
 <tr class="separator:a29c7cf41d8b5610109d61f302fb32e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a38f61284426daa4d968bbab91d3608"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a4a38f61284426daa4d968bbab91d3608">setNumberSteps</a> (unsigned long s)</td></tr>
-<tr class="memdesc:a4a38f61284426daa4d968bbab91d3608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number of steps to run each repeat of the dispersal kernel for when recording mean distance travelled.  <a href="#a4a38f61284426daa4d968bbab91d3608">More...</a><br /></td></tr>
-<tr class="separator:a4a38f61284426daa4d968bbab91d3608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cfb1aff1981021b6047c9625919ce3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a3cfb1aff1981021b6047c9625919ce3d">setNumberSteps</a> (const vector&lt; unsigned long &gt; &amp;s)</td></tr>
+<tr class="memdesc:a3cfb1aff1981021b6047c9625919ce3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number of steps to run each repeat of the dispersal kernel for when recording mean distance travelled.  <a href="#a3cfb1aff1981021b6047c9625919ce3d">More...</a><br /></td></tr>
+<tr class="separator:a3cfb1aff1981021b6047c9625919ce3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348d4405655b91f6ce2b83752ce6f7af"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a348d4405655b91f6ce2b83752ce6f7af">getMaxNumberSteps</a> ()</td></tr>
+<tr class="memdesc:a348d4405655b91f6ce2b83752ce6f7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum number of steps that is to be applied.  <a href="#a348d4405655b91f6ce2b83752ce6f7af">More...</a><br /></td></tr>
+<tr class="separator:a348d4405655b91f6ce2b83752ce6f7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85d8ee68e5f4962429571c835aa028b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85d8ee68e5f4962429571c835aa028b4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a85d8ee68e5f4962429571c835aa028b4">storeCellList</a> ()</td></tr>
 <tr class="memdesc:a85d8ee68e5f4962429571c835aa028b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the list of cells to choose randomly from. <br /></td></tr>
@@ -179,12 +196,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a406514e917874907cfb7a8d6c7889098">runMeanDistanceTravelled</a> ()</td></tr>
 <tr class="memdesc:a406514e917874907cfb7a8d6c7889098"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulates the dispersal kernel for the set parameters, storing the mean distance travelled. <br /></td></tr>
 <tr class="separator:a406514e917874907cfb7a8d6c7889098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8c48b2398f715d4de2b35a91daaae58"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8c48b2398f715d4de2b35a91daaae58"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#ab8c48b2398f715d4de2b35a91daaae58">writeRepeatInfo</a> (unsigned long i)</td></tr>
+<tr class="memdesc:ab8c48b2398f715d4de2b35a91daaae58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the information about this repeat to the logger. <br /></td></tr>
+<tr class="separator:ab8c48b2398f715d4de2b35a91daaae58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7d0a726cb3724c159ca46f4586a8bd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#af7d0a726cb3724c159ca46f4586a8bd3">writeDatabase</a> (string table_name)</td></tr>
 <tr class="memdesc:af7d0a726cb3724c159ca46f4586a8bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes out the distances to the SQL database.  <a href="#af7d0a726cb3724c159ca46f4586a8bd3">More...</a><br /></td></tr>
 <tr class="separator:af7d0a726cb3724c159ca46f4586a8bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0afed6eeb06f5bae4ee13a24850c8c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#ae0afed6eeb06f5bae4ee13a24850c8c5">writeParameters</a> (string table_name)</td></tr>
 <tr class="memdesc:ae0afed6eeb06f5bae4ee13a24850c8c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the simulation parameters to the output SQL database.  <a href="#ae0afed6eeb06f5bae4ee13a24850c8c5">More...</a><br /></td></tr>
 <tr class="separator:ae0afed6eeb06f5bae4ee13a24850c8c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7e23b11a811ec48f2e08d9fa8ad151a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7e23b11a811ec48f2e08d9fa8ad151a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#ae7e23b11a811ec48f2e08d9fa8ad151a">clearParameters</a> ()</td></tr>
+<tr class="memdesc:ae7e23b11a811ec48f2e08d9fa8ad151a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the parameters from the internal objects so that another dispersal simulation can be run, if necessary. <br /></td></tr>
+<tr class="separator:ae7e23b11a811ec48f2e08d9fa8ad151a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dee5d1529bd7ee6f382f7cd1b5393e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0dee5d1529bd7ee6f382f7cd1b5393e5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulate_dispersal.html#a0dee5d1529bd7ee6f382f7cd1b5393e5">checkMaxParameterReference</a> ()</td></tr>
 <tr class="memdesc:a0dee5d1529bd7ee6f382f7cd1b5393e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum parameter reference from the output SQL database and saves val + 1 to parameter_reference Assumes that the database exists. <br /></td></tr>
@@ -195,45 +220,51 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a3538ef66eedcee56817aabb26a1d9d27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3538ef66eedcee56817aabb26a1d9d27"></a>
-<a class="el" href="class_landscape.html">Landscape</a>&#160;</td><td class="memItemRight" valign="bottom"><b>density_landscape</b></td></tr>
-<tr class="separator:a3538ef66eedcee56817aabb26a1d9d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af69dbb932efef10441d1acf219416c0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af69dbb932efef10441d1acf219416c0f"></a>
+shared_ptr&lt; <a class="el" href="class_landscape.html">Landscape</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>density_landscape</b></td></tr>
+<tr class="separator:af69dbb932efef10441d1acf219416c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06456ecb5cde83be793855a735c196f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06456ecb5cde83be793855a735c196f0"></a>
+<a class="el" href="class_data_mask.html">DataMask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dataMask</b></td></tr>
+<tr class="separator:a06456ecb5cde83be793855a735c196f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55da369d57d854168ff6e851b0d7892a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55da369d57d854168ff6e851b0d7892a"></a>
 <a class="el" href="class_dispersal_coordinator.html">DispersalCoordinator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dispersal_coordinator</b> {}</td></tr>
 <tr class="separator:a55da369d57d854168ff6e851b0d7892a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d11b4ed3e3942d2bb42e66116fffd2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d11b4ed3e3942d2bb42e66116fffd2d"></a>
 <a class="el" href="struct_sim_parameters.html">SimParameters</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>simParameters</b></td></tr>
 <tr class="separator:a6d11b4ed3e3942d2bb42e66116fffd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f6389fc4116b52622a900c55532f86b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f6389fc4116b52622a900c55532f86b"></a>
-<a class="el" href="class_n_rrand.html">NRrand</a>&#160;</td><td class="memItemRight" valign="bottom"><b>random</b></td></tr>
-<tr class="separator:a5f6389fc4116b52622a900c55532f86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b66ec7506a0cadab13f802de2d4d2c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b66ec7506a0cadab13f802de2d4d2c2"></a>
+shared_ptr&lt; <a class="el" href="class_n_rrand.html">NRrand</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>random</b></td></tr>
+<tr class="separator:a1b66ec7506a0cadab13f802de2d4d2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9ab2fa8b2c3e1bb1ba49b31679ae0d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9ab2fa8b2c3e1bb1ba49b31679ae0d7"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>seed</b></td></tr>
 <tr class="separator:af9ab2fa8b2c3e1bb1ba49b31679ae0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd3f96f169715aacbcc2939614a6a910"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd3f96f169715aacbcc2939614a6a910"></a>
 sqlite3 *&#160;</td><td class="memItemRight" valign="bottom"><b>database</b></td></tr>
 <tr class="separator:afd3f96f169715aacbcc2939614a6a910"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a616354e9527a71396a428bb63f444a15"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a616354e9527a71396a428bb63f444a15"></a>
-vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>distances</b></td></tr>
-<tr class="separator:a616354e9527a71396a428bb63f444a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87359ce728efca1ece43f52c7aa4ce9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87359ce728efca1ece43f52c7aa4ce9c"></a>
+vector&lt; pair&lt; unsigned long, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>distances</b></td></tr>
+<tr class="separator:a87359ce728efca1ece43f52c7aa4ce9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d6fb5998b4b31837ff214b0bd216b18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d6fb5998b4b31837ff214b0bd216b18"></a>
+map&lt; unsigned long, unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_references</b></td></tr>
+<tr class="separator:a9d6fb5998b4b31837ff214b0bd216b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcb3ce61b835cbd007d09726302d692a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abcb3ce61b835cbd007d09726302d692a"></a>
 vector&lt; <a class="el" href="struct_cell.html">Cell</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cells</b></td></tr>
 <tr class="separator:abcb3ce61b835cbd007d09726302d692a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36ca3df92a79e284cdeb84ea0dfb3c9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36ca3df92a79e284cdeb84ea0dfb3c9a"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>num_repeats</b></td></tr>
 <tr class="separator:a36ca3df92a79e284cdeb84ea0dfb3c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f3401f3a7f1ec48635973d94e3470e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f3401f3a7f1ec48635973d94e3470e8"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>num_steps</b></td></tr>
-<tr class="separator:a7f3401f3a7f1ec48635973d94e3470e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83c9ad2500bead84ce2d377bc73ae65d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83c9ad2500bead84ce2d377bc73ae65d"></a>
+set&lt; unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>num_steps</b></td></tr>
+<tr class="separator:a83c9ad2500bead84ce2d377bc73ae65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9f8100eaf9faf01a482342f605a8091"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9f8100eaf9faf01a482342f605a8091"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>generation</b></td></tr>
 <tr class="separator:ae9f8100eaf9faf01a482342f605a8091"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72f4b5ec8d52f080f2c9df991fb546ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72f4b5ec8d52f080f2c9df991fb546ef"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_sequential</b></td></tr>
 <tr class="separator:a72f4b5ec8d52f080f2c9df991fb546ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d15ba06c50a249328f867a105848f72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d15ba06c50a249328f867a105848f72"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_reference</b></td></tr>
-<tr class="separator:a2d15ba06c50a249328f867a105848f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34ac3bdba52e178538ec92ee08d74c6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34ac3bdba52e178538ec92ee08d74c6c"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>max_parameter_reference</b></td></tr>
+<tr class="separator:a34ac3bdba52e178538ec92ee08d74c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains routines for importing a density map file, running a dispersal kernel n times on a landscape and record the dispersal distances. </p>
@@ -289,6 +320,24 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
 
 </div>
 </div>
+<a class="anchor" id="a348d4405655b91f6ce2b83752ce6f7af"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long SimulateDispersal::getMaxNumberSteps </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the maximum number of steps that is to be applied. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a7d0a2b28dd8d45f1b8a74dbcd82290e7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -304,38 +353,6 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
 
 <p>Gets a random cell from the list of cells. </p>
 <dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="struct_cell.html" title="Simple structure containing the x and y positions of a cell. ">Cell</a> object reference containing the x and y positions to choose from </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a275eef6872de493273fc047467935d7b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SimulateDispersal::importMaps </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Import the maps from the prescribed files. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fine_map_file</td><td>path to the fine map file </td></tr>
-    <tr><td class="paramname">fine_map_x</td><td>fine map x dimension </td></tr>
-    <tr><td class="paramname">fine_map_y</td><td>fine map y dimension </td></tr>
-    <tr><td class="paramname">fine_map_x_offset</td><td>fine map x offset </td></tr>
-    <tr><td class="paramname">fine_map_y_offset</td><td>fine map y offset </td></tr>
-    <tr><td class="paramname">coarse_map_file</td><td>file path to the coarse map file </td></tr>
-    <tr><td class="paramname">coarse_map_x</td><td>coarse map x dimension </td></tr>
-    <tr><td class="paramname">coarse_map_y</td><td>coarse map y dimension </td></tr>
-    <tr><td class="paramname">coarse_map_x_offset</td><td>coarse map x offset </td></tr>
-    <tr><td class="paramname">coarse_map_y_offset</td><td>coarse map y offset </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -363,14 +380,14 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
 
 </div>
 </div>
-<a class="anchor" id="a4a38f61284426daa4d968bbab91d3608"></a>
+<a class="anchor" id="a3cfb1aff1981021b6047c9625919ce3d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void SimulateDispersal::setNumberSteps </td>
           <td>(</td>
-          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramtype">const vector&lt; unsigned long &gt; &amp;&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
@@ -380,7 +397,7 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
 <p>Sets the number of steps to run each repeat of the dispersal kernel for when recording mean distance travelled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>the number of steps </td></tr>
+    <tr><td class="paramname">s</td><td>a vector containing each step variable to record the distance at </td></tr>
   </table>
   </dd>
 </dl>
@@ -467,7 +484,7 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
 
 </div>
 </div>
-<a class="anchor" id="a777d7cab80b8543647970d6d64b797a9"></a>
+<a class="anchor" id="a9d08a14b3f2a78591af2edf2884edb52"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -475,8 +492,18 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
           <td class="memname">void SimulateDispersal::setSimulationParameters </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_sim_parameters.html">SimParameters</a> *&#160;</td>
-          <td class="paramname"><em>sim_parameters</em></td><td>)</td>
+          <td class="paramname"><em>sim_parameters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>print</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -485,6 +512,7 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_re
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sim_parameters</td><td>pointer to the simulation parameters to use </td></tr>
+    <tr><td class="paramname">print</td><td>if true, writes the parameters out using writeInfo() </td></tr>
   </table>
   </dd>
 </dl>

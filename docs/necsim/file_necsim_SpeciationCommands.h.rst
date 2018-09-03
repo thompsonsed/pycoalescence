@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 19/07/2017
-BSD-3 Licence. For use on the SQL database outputs of NECSim v3.1+. It requires command line parameters and generates a data object from them. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
+MIT Licence. For use on the SQL database outputs of NECSim v3.1+. It requires command line parameters and generates a data object from them. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
 
 
 
@@ -39,7 +39,7 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``SpecSimParameters.h`` (:ref:`file_necsim_SpecSimParameters.h`)
 

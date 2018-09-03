@@ -13,14 +13,14 @@ represent different environmental niches, body sizes or other differentiating fa
 Usage
 -----
 
-Add simulations using :func:`add_simulation() class <pycoalescence.merger.Merger.add_simulation()>` and then use
-:func:`write() class <pycoalescence.merger.Merger.write()>`.
+Add simulations using :func:`add_simulation() <pycoalescence.merger.Merger.add_simulation>` and then use
+:func:`write() <pycoalescence.merger.Merger.write>`.
 
 Previously calculated metrics are all stored in *_GUILDS tables. Species identities are preserved (without allowing for
 a species to exist in more than one guild), meaning all metrics can be re-calculated using
-:func:`apply_speciation() class <pycoalescence.coalescence_tree.CoalescenceTree.apply_speciation()>` and functions such
-as :func:`calculate_richness() class <pycoalescence.coalescence_tree.CoalescenceTree.calculate_richness()>`.
-Alternatively, use :func:`add_simulations() class <pycoalescence.merger.Merger.add_simulations()>`
+:func:`apply_speciation() <pycoalescence.coalescence_tree.CoalescenceTree.apply_speciation>` and functions such
+as :func:`calculate_richness() <pycoalescence.coalescence_tree.CoalescenceTree.calculate_richness>`.
+Alternatively, use :func:`add_simulations() <pycoalescence.merger.Merger.add_simulations>`
 
 
 .. code-block:: python

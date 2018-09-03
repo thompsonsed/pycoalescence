@@ -1,5 +1,7 @@
 """
-Contains the routines for generating Voronoi diagrams and spacing points on a landscape using Lloyd's algorithm.
+Simple spatial algorithms required for package functionality.
+
+Algorithms include generation of Voronoi diagrams and spacing points on a landscape using Lloyd's algorithm.
 """
 from __future__ import absolute_import
 
@@ -135,7 +137,7 @@ def archimedes_spiral(centre_x, centre_y, radius, theta):
 	:param float theta: the angle of rotation
 
 	:return: tuple of x and y coordinates
-	:rtype tuple
+	:rtype: tuple
 	"""
 	return int(math.floor(radius * math.cos(theta) + centre_x)),\
 		   int(math.floor(radius * math.sin(theta) + centre_y))
@@ -158,3 +160,14 @@ def convert_coordinates(x, y, input_srs, output_srs):
 	point.AddPoint(x, y)
 	point.Transform(coord_transform)
 	return point.GetX(), point.GetY()
+
+def estimate_sigma_from_distance(distance, n):
+	"""
+	Estimates the sigma value from a rayleigh distribution (2-d normal) from a total distance travelled in n steps.
+
+	:param float distance: the total distance travelled
+	:param int n: the number of steps
+
+	:return: an estimation of the sigma value required to generate the distance travelled in n steps
+	"""
+	return distance * (2.0 / (math.pi * n)) ** 0.5

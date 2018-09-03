@@ -8,14 +8,17 @@ Program Listing for File SimParameters.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef SPECIATIONCOUNTER_SIMPARAMETERS_H
    #define SPECIATIONCOUNTER_SIMPARAMETERS_H
    #include <string>
+   #include <utility>
    #include <vector>
    #include "ConfigFileParser.h"
-   #include "Logging.h"
+   #include "Logger.h"
+   #include "CustomExceptions.h"
+   
    using namespace std;
    /************************************************************
                        MAPVARS STRUCTURE
@@ -23,7 +26,7 @@ Program Listing for File SimParameters.h
    struct SimParameters
    {
        string fine_map_file, coarse_map_file, output_directory;
-       string pristine_fine_map_file, pristine_coarse_map_file, sample_mask_file;
+       string historical_fine_map_file, historical_coarse_map_file, sample_mask_file;
         // for file naming purposes.
        long long the_task{}, the_seed{};
        // the variables for the grid containing the initial individuals.
@@ -42,16 +45,16 @@ Program Listing for File SimParameters.h
        // the size of each square of habitat in numbers of individuals
        unsigned long deme{};
        // the sample proportion,
-        double deme_sample{};
+       double deme_sample{};
        // the speciation rate.
-       long double  spec{};
+       long double  spec{0.0};
        // the variance of the dispersal kernel.
        double sigma{};
        // max time to run for
        unsigned long max_time{};
-       // the number of generations since a pristine landscape was encountered.
-       double gen_since_pristine{};
-       // the transform rate of the forest from pristine to modern forest.
+       // the number of generations since a historical landscape was encountered.
+       double gen_since_historical{};
+       // the transform rate of the forest from historical to modern forest.
        double habitat_change_rate{};
        // the fatness of the dispersal kernel
        double tau{};
@@ -66,11 +69,11 @@ Program Listing for File SimParameters.h
        // file containing the points to record data from
        string times_file;
        // vector of times
-       vector<double> times{};
+       vector<double> times;
        // Stores the full list of configs imported from file
-       ConfigOption configs{};
-       // Set to true if the completely pristine state has been reached.
-       bool is_pristine{};
+       ConfigOption configs;
+       // Set to true if the oldest historical state has been reached.
+       bool is_historical{};
        // if the sample file is not null, this variable tells us whether different points in space require different
        // numbers of individuals to be sampled. If this is the case, the actual values are read from the sample mask as a
        // proportion of individuals sampled, from 0-1. Otherwise, it is treated as a boolean mask, with values > 0.5
@@ -86,20 +89,23 @@ Program Listing for File SimParameters.h
        // to any other.
        string dispersal_file;
    
+       // a map of relative death probabilities.
+       string death_file;
+   
        // a map of relative reproduction probabilities.
        string reproduction_file;
-   
-       SimParameters()
+       SimParameters() : times(), configs()
        {
            fine_map_file = "none";
            coarse_map_file = "none";
            output_directory = "none";
-           pristine_fine_map_file = "none";
-           pristine_coarse_map_file = "none";
+           historical_fine_map_file = "none";
+           historical_coarse_map_file = "none";
            sample_mask_file = "none";
            times_file = "null";
            dispersal_method = "none";
            landscape_type = "none";
+           death_file = "none";
            reproduction_file = "none";
            dispersal_file = "none";
            min_speciation_gen = 0.0;
@@ -111,9 +117,9 @@ Program Listing for File SimParameters.h
            tau =0;
        }
    
-       void importParameters(ConfigOption *configOption)
+       void importParameters(ConfigOption configOption)
        {
-           configs = *configOption;
+           configs = std::move(configOption);
            importParameters();
        }
    
@@ -155,8 +161,8 @@ Program Listing for File SimParameters.h
            coarse_map_x_offset = stoul(configs.getSectionOptions("coarse_map", "x_off", "0"));
            coarse_map_y_offset = stoul(configs.getSectionOptions("coarse_map", "y_off", "0"));
            coarse_map_scale = stoul(configs.getSectionOptions("coarse_map", "scale", "0"));
-           pristine_fine_map_file = configs.getSectionOptions("pristine_fine0", "path", "none");
-           pristine_coarse_map_file = configs.getSectionOptions("pristine_coarse0", "path", "none");
+           historical_fine_map_file = configs.getSectionOptions("historical_fine0", "path", "none");
+           historical_coarse_map_file = configs.getSectionOptions("historical_coarse0", "path", "none");
            dispersal_method = configs.getSectionOptions("dispersal", "method", "none");
            m_prob = stod(configs.getSectionOptions("dispersal", "m_probability", "0"));
            cutoff = stod(configs.getSectionOptions("dispersal", "cutoff", "0.0"));
@@ -164,6 +170,7 @@ Program Listing for File SimParameters.h
            restrict_self = static_cast<bool>(stoi(configs.getSectionOptions("dispersal", "restrict_self", "0")));
            landscape_type = configs.getSectionOptions("dispersal", "landscape_type", "none");
            dispersal_file = configs.getSectionOptions("dispersal", "dispersal_file", "none");
+           death_file = configs.getSectionOptions("death", "map", "none");
            reproduction_file = configs.getSectionOptions("reproduction", "map", "none");
            output_directory = configs.getSectionOptions("main", "output_directory", "Default");
            the_seed = stol(configs.getSectionOptions("main", "seed", "0"));
@@ -196,7 +203,7 @@ Program Listing for File SimParameters.h
                    times_file = "null";
                }
            }
-           setPristine(0);
+           setHistorical(0);
        }
    
        void setKeyParameters(const long long &task_in, const long long &seed_in, const string &output_directory_in,
@@ -235,16 +242,68 @@ Program Listing for File SimParameters.h
            restrict_self = restrict_self_in;
            landscape_type = landscape_type_in;
            dispersal_file = dispersal_file_in;
-           reproduction_file = reproduction_file_in;
+           death_file = reproduction_file_in;
        }
    
-       void setPristineMapParameters(const string &pristine_fine_file_map_in, const string &pristine_coarse_map_file_in,
-                                     const double &gen_since_pristine_in, const double &habitat_change_rate_in)
+       void setHistoricalMapParameters(const string &historical_fine_file_map_in,
+                                       const string &historical_coarse_map_file_in,
+                                       const double &gen_since_historical_in, const double &habitat_change_rate_in)
        {
-           pristine_fine_map_file = pristine_fine_file_map_in;
-           pristine_coarse_map_file = pristine_coarse_map_file_in;
-           gen_since_pristine = gen_since_pristine_in;
+           historical_fine_map_file = historical_fine_file_map_in;
+           historical_coarse_map_file = historical_coarse_map_file_in;
+           gen_since_historical = gen_since_historical_in;
            habitat_change_rate = habitat_change_rate_in;
+       }
+   
+       void setHistoricalMapParameters(vector<string> path_fine, vector<unsigned long> number_fine,
+                                       vector<double> rate_fine,
+                                       vector<double> time_fine, vector<string> path_coarse,
+                                       vector<unsigned long> number_coarse, vector<double> rate_coarse,
+                                       vector<double> time_coarse)
+       {
+           habitat_change_rate = 0.0;
+           if(!rate_fine.empty())
+           {
+               is_historical = true;
+               habitat_change_rate = rate_fine[0];
+           }
+           gen_since_historical = 0.0;
+           if(!time_fine.empty())
+           {
+               gen_since_historical = time_fine[0];
+           }
+           if(time_fine.size() != rate_fine.size() || rate_fine.size() != number_fine.size() ||
+              number_fine.size() != time_fine.size())
+           {
+               stringstream ss;
+               ss << "Lengths of historical fine map variables lists must be the same: " <<  time_fine.size() << "!=";
+               ss << rate_fine.size() << "!=" << number_fine.size() << "!=" << time_fine.size() << endl;
+               throw FatalException(ss.str());
+           }
+           if(time_coarse.size() != rate_coarse.size() || rate_coarse.size() != number_coarse.size() ||
+              number_coarse.size() != time_coarse.size())
+           {
+               stringstream ss;
+               ss << "Lengths of historical coarse map variables lists must be the same: " <<  time_coarse.size() << "!=";
+               ss << rate_coarse.size() << "!=" << number_coarse.size() << "!=" << time_coarse.size() << endl;
+               throw FatalException(ss.str());
+           }
+           for(unsigned long i = 0; i < time_fine.size(); i ++)
+           {
+               string tmp = "historical_fine" + to_string(number_fine[i]);
+               configs.setSectionOption(tmp, "path", path_fine[i]);
+               configs.setSectionOption(tmp, "number", to_string(number_fine[i]));
+               configs.setSectionOption(tmp, "time", to_string(time_fine[i]));
+               configs.setSectionOption(tmp, "rate", to_string(rate_fine[i]));
+           }
+           for(unsigned long i = 0; i < time_coarse.size(); i ++)
+           {
+               string tmp = "historical_coarse" + to_string(number_fine[i]);
+               configs.setSectionOption(tmp, "path", path_coarse[i]);
+               configs.setSectionOption(tmp, "number", to_string(number_coarse[i]));
+               configs.setSectionOption(tmp, "time", to_string(time_coarse[i]));
+               configs.setSectionOption(tmp, "rate", to_string(rate_coarse[i]));
+           }
        }
    
        void setMapParameters(const string &fine_map_file_in, const string &coarse_map_file_in,
@@ -281,45 +340,45 @@ Program Listing for File SimParameters.h
            uses_spatial_sampling = uses_spatial_sampling_in;
        }
    
-       bool setPristine(unsigned int n)
+       bool setHistorical(unsigned int n)
        {
-           is_pristine = true;
+           is_historical = true;
            bool finemapcheck = false;
            bool coarsemapcheck = false;
-           // Loop over each element in the config file (each line) and check if it is pristine fine or pristine coarse.
+           // Loop over each element in the config file (each line) and check if it is historical fine or historical coarse.
            for(unsigned int i = 0; i < configs.getSectionOptionsSize(); i ++ )
            {
-   
-               if(configs[i].section.find("pristine_fine") == 0)
+               if(configs[i].section.find("historical_fine") == 0)
                {
                    // Then loop over each element to find the number, and check if it is equal to our input number.
-                   is_pristine = false;
                    if(stol(configs[i].getOption("number")) == n)
                    {
+                       is_historical = false;
                        string tmpmapfile;
                        tmpmapfile = configs[i].getOption("path");
-                       if(pristine_fine_map_file != tmpmapfile)
+                       if(historical_fine_map_file != tmpmapfile)
                        {
                            finemapcheck = true;
-                           pristine_fine_map_file = tmpmapfile;
+                           historical_fine_map_file = tmpmapfile;
                        }
                        habitat_change_rate = stod(configs[i].getOption("rate"));
-                       gen_since_pristine = stod(configs[i].getOption("time"));
+                       gen_since_historical = stod(configs[i].getOption("time"));
                    }
                }
-               else if(configs[i].section.find("pristine_coarse") == 0)
+               else if(configs[i].section.find("historical_coarse") == 0)
                {
                    if(stol(configs[i].getOption("number")) == n)
                    {
                        string tmpmapfile;
                        tmpmapfile = configs[i].getOption("path");
-                       is_pristine = false;
-                       if(tmpmapfile != pristine_coarse_map_file)
+                       is_historical = false;
+                       if(tmpmapfile != historical_coarse_map_file)
                        {
                            coarsemapcheck=true;
-                           pristine_coarse_map_file = tmpmapfile;
+                           historical_coarse_map_file = tmpmapfile;
                            // check matches
-                           if(habitat_change_rate != stod(configs[i].getOption("rate")) || gen_since_pristine != stod(configs[i].getOption("time")))
+                           if(habitat_change_rate != stod(configs[i].getOption("rate")) ||
+                              gen_since_historical != stod(configs[i].getOption("time")))
                            {
                                writeWarning("Forest transform values do not match between fine and coarse maps. Using fine values.");
                            }
@@ -382,14 +441,18 @@ Program Listing for File SimParameters.h
            {
                os << "Dispersal (m, cutoff): " << m_prob << ", " << cutoff << endl;
            }
-           os << "Fine input file: " << fine_map_file  << endl;
+           os << "Fine map\n-file: " << fine_map_file  << endl;
            os << "-dimensions: (" << fine_map_x_size << ", " << fine_map_y_size <<")"<< endl;
            os << "-offset: (" << fine_map_x_offset << ", " << fine_map_y_offset << ")" << endl;
-           os << "Coarse input file: " << coarse_map_file  << endl;
+           os << "Coarse map\n-file: " << coarse_map_file  << endl;
            os << "-dimensions: (" << coarse_map_x_size << ", " << coarse_map_y_size <<")"<< endl;
            os << "-offset: (" << coarse_map_x_offset << ", " << coarse_map_y_offset << ")" << endl;
            os << "-scale: " << coarse_map_scale << endl;
            os << "Sample grid" << endl;
+           if(sample_mask_file != "none" && sample_mask_file != "null")
+           {
+               os << "-file: " << sample_mask_file << endl;
+           }
            os << "-dimensions: (" << sample_x_size << ", " << sample_y_size << ")" << endl;
            os << "-optimised area: (" << grid_x_size << ", " << grid_y_size << ")" << endl;
            os << "-optimised offsets: (" << sample_x_offset << ", " << sample_y_offset << ")" << endl;
@@ -416,17 +479,19 @@ Program Listing for File SimParameters.h
            max_speciation_gen = 0.0;
        }
    
+   
+   
        friend ostream& operator<<(ostream& os,const SimParameters& m)
        {
-           os << m.fine_map_file << "\n" << m.coarse_map_file << "\n" << m.pristine_fine_map_file << "\n";
-           os << m.pristine_coarse_map_file << "\n" << m.sample_mask_file << "\n";
+           os << m.fine_map_file << "\n" << m.coarse_map_file << "\n" << m.historical_fine_map_file << "\n";
+           os << m.historical_coarse_map_file << "\n" << m.sample_mask_file << "\n";
            os << m.the_seed << "\n" <<  m.the_task << "\n" <<  m.grid_x_size << "\n" << m.grid_y_size << "\n";
            os << m.sample_x_size << "\n" << m.sample_y_size << "\n" << m.sample_x_offset << "\n" << m.sample_y_offset << "\n";
            os << m.fine_map_x_size << "\n" << m.fine_map_y_size << "\n";
            os << m.fine_map_x_offset << "\n" << m.fine_map_y_offset << "\n" << m.coarse_map_x_size << "\n" << m.coarse_map_y_size << "\n" << m.coarse_map_x_offset << "\n";
            os << m.coarse_map_y_offset << "\n" << m.coarse_map_scale << "\n" << m.desired_specnum << "\n";
            os << m.dispersal_relative_cost << "\n" << m.deme << "\n" << m.deme_sample<< "\n";
-           os << m.spec << "\n" << m.sigma << "\n" << m.max_time << "\n" << m.gen_since_pristine << "\n" << m. habitat_change_rate << "\n" << m.tau;
+           os << m.spec << "\n" << m.sigma << "\n" << m.max_time << "\n" << m.gen_since_historical << "\n" << m. habitat_change_rate << "\n" << m.tau;
            os << "\n" << m.dispersal_method << "\n";
            os << m.m_prob << "\n" << m.cutoff << "\n" << m.restrict_self <<"\n" << m.landscape_type << "\n" << m.times_file << "\n";
            os << m.dispersal_file << "\n" << m.uses_spatial_sampling << "\n";
@@ -443,15 +508,15 @@ Program Listing for File SimParameters.h
        {
            getline(is, m.fine_map_file);
            getline(is, m.coarse_map_file);
-           getline(is, m.pristine_fine_map_file);
-           getline(is, m.pristine_coarse_map_file);
+           getline(is, m.historical_fine_map_file);
+           getline(is, m.historical_coarse_map_file);
            getline(is, m.sample_mask_file);
            is >> m.the_seed >> m.the_task >>  m.grid_x_size >> m.grid_y_size;
            is >> m.sample_x_size >> m.sample_y_size >> m.sample_x_offset >> m.sample_y_offset;
            is >> m.fine_map_x_size >> m.fine_map_y_size;
            is >> m.fine_map_x_offset >> m.fine_map_y_offset >> m.coarse_map_x_size >> m.coarse_map_y_size >> m.coarse_map_x_offset ;
            is >> m.coarse_map_y_offset >> m.coarse_map_scale >> m.desired_specnum >> m.dispersal_relative_cost >> m.deme >> m.deme_sample;
-           is >> m.spec >> m.sigma >> m.max_time >> m.gen_since_pristine >> m.habitat_change_rate >> m.tau;
+           is >> m.spec >> m.sigma >> m.max_time >> m.gen_since_historical >> m.habitat_change_rate >> m.tau;
            is.ignore();
            getline(is, m.dispersal_method);
            is >> m.m_prob >> m.cutoff >> m.restrict_self >> m.landscape_type;
@@ -470,6 +535,8 @@ Program Listing for File SimParameters.h
            is >> m.configs;
            return is;
        }
+   
+       SimParameters & operator=(const SimParameters &other) = default;
    };
    
    #endif //SPECIATIONCOUNTER_SIMPARAMETERS_H

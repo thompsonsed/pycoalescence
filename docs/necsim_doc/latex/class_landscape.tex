@@ -27,6 +27,8 @@ Collaboration diagram for Landscape\+:
 \begin{DoxyCompactList}\small\item\em The default constructor. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_a99fac44043825a97e2e7fbc71caeb8e2}{get\+Habitat\+Max} ()
 \begin{DoxyCompactList}\small\item\em Gets the maximum habitat value from any map. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_ad8e9a0520be7426592aa1d8c91227f3e}{has\+Historical} ()
+\begin{DoxyCompactList}\small\item\em Returns if the simulation is using historical maps. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}{set\+Dims} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$mapvarsin)
 \begin{DoxyCompactList}\small\item\em Sets the dimensions of the grid, the area where the species are initially sampled from. This function must be run before any of the calc map functions to allow for the correct deme allocation. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_ab7d8cd906a44c24a7f120362563d1217}{check\+Map\+Exists} ()
@@ -34,16 +36,16 @@ bool \hyperlink{class_landscape_ab7d8cd906a44c24a7f120362563d1217}{check\+Map\+E
 void \hyperlink{class_landscape_ad500af94a2afd577e682b3c042cab217}{calc\+Fine\+Map} ()\hypertarget{class_landscape_ad500af94a2afd577e682b3c042cab217}{}\label{class_landscape_ad500af94a2afd577e682b3c042cab217}
 
 \begin{DoxyCompactList}\small\item\em Imports the fine map object from file and calculates the correct values at each point. Without a map to input, the fine map will simply be a matrix of 1s. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_a43ef527fd2272381ba20c6f6d8e471bd}{calc\+Pristine\+Fine\+Map} ()\hypertarget{class_landscape_a43ef527fd2272381ba20c6f6d8e471bd}{}\label{class_landscape_a43ef527fd2272381ba20c6f6d8e471bd}
+void \hyperlink{class_landscape_aa1861f8971b5dad0904284f8d873da3a}{calc\+Historical\+Fine\+Map} ()\hypertarget{class_landscape_aa1861f8971b5dad0904284f8d873da3a}{}\label{class_landscape_aa1861f8971b5dad0904284f8d873da3a}
 
-\begin{DoxyCompactList}\small\item\em Imports the pristine fine map object from file and calculates the correct values at each point. Without a map to input, the pristine fine map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Imports the historical fine map object from file and calculates the correct values at each point. Without a map to input, the historical fine map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}{calc\+Coarse\+Map} ()\hypertarget{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}{}\label{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}
 
 \begin{DoxyCompactList}\small\item\em Imports the coarse map object from file and calculates the correct values at each point. Without a map to input, the coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_a4dec3f0568fd393b197c7c42878744b0}{calc\+Pristine\+Coarse\+Map} ()\hypertarget{class_landscape_a4dec3f0568fd393b197c7c42878744b0}{}\label{class_landscape_a4dec3f0568fd393b197c7c42878744b0}
+void \hyperlink{class_landscape_a2ac3d30b203ecb73d0b2a126a4ed8acf}{calc\+Historical\+Coarse\+Map} ()\hypertarget{class_landscape_a2ac3d30b203ecb73d0b2a126a4ed8acf}{}\label{class_landscape_a2ac3d30b203ecb73d0b2a126a4ed8acf}
 
-\begin{DoxyCompactList}\small\item\em Imports the pristine coarse map object from file and calculates the correct values at each point. Without a map to input, the pristine coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_aecca7c3f17087922283f63ce6148ddb4}{set\+Time\+Vars} (double gen\+\_\+since\+\_\+pristine\+\_\+in, double habitat\+\_\+change\+\_\+rate\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Imports the historical coarse map object from file and calculates the correct values at each point. Without a map to input, the historical coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_ac8aa9b3c8003cbc52c929e7532c0b0aa}{set\+Time\+Vars} (double gen\+\_\+since\+\_\+historical\+\_\+in, double habitat\+\_\+change\+\_\+rate\+\_\+in)
 \begin{DoxyCompactList}\small\item\em Sets the time variables. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_ae4d6050ab25b5c0dca01446b0e59bfb1}{calc\+Offset} ()
 \begin{DoxyCompactList}\small\item\em Calculates the offset and extremeties of the fine map. \end{DoxyCompactList}\item 
@@ -56,29 +58,33 @@ void \hyperlink{class_landscape_a739549f09fbfbc36674e1a27ad8e9363}{calculate\+Of
 \begin{DoxyCompactList}\small\item\em Uses the inputted parameters to set the offsets for the map files. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a9181afc2546082c9d4798e16e033b0f1}{validate\+Maps} ()\hypertarget{class_landscape_a9181afc2546082c9d4798e16e033b0f1}{}\label{class_landscape_a9181afc2546082c9d4798e16e033b0f1}
 
-\begin{DoxyCompactList}\small\item\em Checks that the map file sizes are correct and that each value on the fragmented maps is less than the pristine maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}{update\+Map} (double generation)\hypertarget{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}{}\label{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}
+\begin{DoxyCompactList}\small\item\em Checks that the map file sizes are correct and that each value on the fragmented maps is less than the historical maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_a568d5338ce85c35a66461033ced3cb05}{update\+Map} (double generation)
+\begin{DoxyCompactList}\small\item\em Checks if an update needs to be performed to the map configuration, and if it does, performs the update. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{do\+Update} ()\hypertarget{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{}\label{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}
 
-\begin{DoxyCompactList}\small\item\em Updates the maps to the newer map. \end{DoxyCompactList}\item 
-bool \hyperlink{class_landscape_a264624ebb17fe757f4e7c9e082592b79}{is\+Pristine} ()
-\begin{DoxyCompactList}\small\item\em Gets the pristine boolean. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_a04efbb8d2470b1c4990694f0b92e3476}{set\+Pristine} (const bool \&b\+Pristinein)
-\begin{DoxyCompactList}\small\item\em Sets the pristine state of the system. \end{DoxyCompactList}\item 
-double \hyperlink{class_landscape_af76f7e71318f9ef5cac060de7351fdbc}{get\+Pristine} ()
-\begin{DoxyCompactList}\small\item\em Get the pristine map time. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Updates the historical map configuration. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_a03e35a3a42e40a683be01e75413d30d2}{reset\+Historical} ()
+\begin{DoxyCompactList}\small\item\em Resets the historical variables to recalculate historical maps. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_ab302f8a4ae779d20df94cb2525187cac}{is\+Historical} ()
+\begin{DoxyCompactList}\small\item\em Gets the historical boolean. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_a7b1c5459e1ecf8d11c1dd12299a53c61}{set\+Historical} (const bool \&historical\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the historical state of the system. \end{DoxyCompactList}\item 
+double \hyperlink{class_landscape_a6b15e6748d7d776deaa489e618750983}{get\+Historical} ()
+\begin{DoxyCompactList}\small\item\em Get the historical map time. \end{DoxyCompactList}\item 
 string {\bfseries get\+Landscape\+Type} ()\hypertarget{class_landscape_a5dec397270e8278478f807660e43d565}{}\label{class_landscape_a5dec397270e8278478f807660e43d565}
 
 \item 
-void \hyperlink{class_landscape_a5131b05f34a66951d63ec575a4aedb82}{check\+Pristine} (double generation)
-\begin{DoxyCompactList}\small\item\em Checks if the pristine state has been reached. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_ae4a7ae12f299407d5c379fd20ed2ccbc}{check\+Historical} (double generation)
+\begin{DoxyCompactList}\small\item\em Checks if the historical state has been reached. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a63150f634d7936439bc5a1d20b84a7b2}{set\+Landscape} (string is\+\_\+infinite)
 \begin{DoxyCompactList}\small\item\em Sets the landscape functions to either infinite or finite. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_a06dbce690810d8d771490c310cb96310}{get\+Val} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
 \begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version involves a call to the function pointer, $\ast$get\+Val\+Func, so that the correct call to either \hyperlink{class_landscape_a736605cefe34af236a4f8da38276a12e}{get\+Val\+Finite()} or get\+Val\+Infinite is made. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_aa98fad5a154486dbb0bca6056e19399c}{get\+Val\+Coarse} (const double \&xval, const double \&yval, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value from the coarse maps, including linear interpolating between the pristine and present maps. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Gets the value from the coarse maps, including linear interpolating between the historical and present maps. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_a33a1d5c3fba6c895ad3d390a547e0361}{get\+Val\+Fine} (const double \&xval, const double \&yval, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value from the fine maps, including linear interpolating between the pristine and present maps. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Gets the value from the fine maps, including linear interpolating between the historical and present maps. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_a736605cefe34af236a4f8da38276a12e}{get\+Val\+Finite} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
 \begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes finite landscape. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_a98762916e5acb685338016b88abae251}{get\+Val\+Infinite} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
@@ -99,20 +105,26 @@ unsigned long \hyperlink{class_landscape_ae8d533d9a8fff3a96c240aadaeac3f04}{get\
 \begin{DoxyCompactList}\small\item\em Gets the mapvars object pointer for referencing simulation parameters. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_a24de83f1e8f762b9640cdba35793a404}{check\+Map} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double generation)
 \begin{DoxyCompactList}\small\item\em Checks whether the point is habitat or non-\/habitat. \end{DoxyCompactList}\item 
-bool \hyperlink{class_landscape_a0545765b734539f622804bb3aa72e38c}{check\+Fine} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
+bool \hyperlink{class_landscape_a92cd54efe4722ee0c40434875043d6c7}{is\+On\+Fine} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
 \begin{DoxyCompactList}\small\item\em Checks whether the point comes from the fine grid. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_af5ba56f29b355c5dd7226231144d147e}{convert\+Coordinates} (double \&x, double \&y, long \&xwrap, long \&ywrap)
-\begin{DoxyCompactList}\small\item\em Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_a88b7191cdc10684eb6a851350d2f7a01}{is\+On\+Coarse} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Checks whether the point comes from the coarse grid. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_abe24da20e362bd88f3794e4d8d5ccafb}{is\+On\+Map} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Checks that the point supplied is within map limits. If the map is inifite, returns true. \end{DoxyCompactList}\item 
+void \hyperlink{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}{fix\+Grid\+Coordinates} (double \&x, double \&y, long \&xwrap, long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal} (const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)
 \begin{DoxyCompactList}\small\item\em The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn\textquotesingle{}t need to perform all the checks until the edge of the fine grid. \end{DoxyCompactList}\item 
+double \hyperlink{class_landscape_a3a552903c925b9769ecc2cad5b051682}{distance\+To\+Nearest\+Habitat} (const long \&start\+\_\+x, const long \&start\+\_\+y, const long \&start\+\_\+x\+\_\+wrap, const long \&start\+\_\+y\+\_\+wrap, const double \&generation)
+\begin{DoxyCompactList}\small\item\em Calculates the distance from the start position to the nearest habitat cell. \end{DoxyCompactList}\item 
 string \hyperlink{class_landscape_a9b867a59c88f754bae6788451845b698}{print\+Vars} ()
-\begin{DoxyCompactList}\small\item\em Prints some selected Map variables to the terminal. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Prints some selected \hyperlink{class_map}{Map} variables to the terminal. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}{clear\+Map} ()\hypertarget{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}{}\label{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}
 
 \begin{DoxyCompactList}\small\item\em Wipes the map of all variables. Only really useful for testing purposes. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_abaf14ac4da88cd26f6593bdaa88d999f}{recalculate\+Habitat\+Max} ()\hypertarget{class_landscape_abaf14ac4da88cd26f6593bdaa88d999f}{}\label{class_landscape_abaf14ac4da88cd26f6593bdaa88d999f}
 
-\begin{DoxyCompactList}\small\item\em Recalculates the habitat map maximum by checking the maximums for each of the relevant map files (fine, coarse and pristines). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Recalculates the habitat map maximum by checking the maximums for each of the relevant map files (fine, coarse and historicals). \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -122,16 +134,16 @@ typedef unsigned long(Landscape\+::$\ast$ {\bfseries fptr}) (const double \&x, c
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries fine\+\_\+map}\hypertarget{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}{}\label{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries fine\+\_\+map}\hypertarget{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}{}\label{class_landscape_a8947e46b9be54b42a93fb0792d4a9ed4}
 
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries pristine\+\_\+fine\+\_\+map}\hypertarget{class_landscape_a7e2e62cbb3abfde813d7e4f07a79d44f}{}\label{class_landscape_a7e2e62cbb3abfde813d7e4f07a79d44f}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+fine\+\_\+map}\hypertarget{class_landscape_a5e34fe2e75c3b84657a4edc75f9fcdec}{}\label{class_landscape_a5e34fe2e75c3b84657a4edc75f9fcdec}
 
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries coarse\+\_\+map}\hypertarget{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}{}\label{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries coarse\+\_\+map}\hypertarget{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}{}\label{class_landscape_a58c8bb6432b578dac46bdbdba9e759c9}
 
 \item 
-Map$<$ uint32\+\_\+t $>$ {\bfseries pristine\+\_\+coarse\+\_\+map}\hypertarget{class_landscape_aa1d40884f7423c474afae4e39b850387}{}\label{class_landscape_aa1d40884f7423c474afae4e39b850387}
+\hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+coarse\+\_\+map}\hypertarget{class_landscape_a5ac41db1c48869d974c97393eb548dd8}{}\label{class_landscape_a5ac41db1c48869d974c97393eb548dd8}
 
 \item 
 \hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$ {\bfseries mapvars}\hypertarget{class_landscape_aa3de03e94cea3c560df40bfa78b79f54}{}\label{class_landscape_aa3de03e94cea3c560df40bfa78b79f54}
@@ -197,16 +209,16 @@ double {\bfseries update\+\_\+time} \{\}\hypertarget{class_landscape_a6a3b5496ba
 double {\bfseries habitat\+\_\+change\+\_\+rate} \{\}\hypertarget{class_landscape_af58f378233b6143a4b38987573a2ea98}{}\label{class_landscape_af58f378233b6143a4b38987573a2ea98}
 
 \item 
-double {\bfseries gen\+\_\+since\+\_\+pristine} \{\}\hypertarget{class_landscape_a5b8b74a728b52d46fdb2c120351f5100}{}\label{class_landscape_a5b8b74a728b52d46fdb2c120351f5100}
+double {\bfseries gen\+\_\+since\+\_\+historical} \{\}\hypertarget{class_landscape_a780302ea1b4320e137c31e766bb8a1ae}{}\label{class_landscape_a780302ea1b4320e137c31e766bb8a1ae}
 
 \item 
 double {\bfseries current\+\_\+map\+\_\+time}\hypertarget{class_landscape_addbe4d0513a863384085e839d47d78ad}{}\label{class_landscape_addbe4d0513a863384085e839d47d78ad}
 
 \item 
-bool {\bfseries is\+\_\+pristine}\hypertarget{class_landscape_a96d7b521dddccd6239b6ea81d21e10ea}{}\label{class_landscape_a96d7b521dddccd6239b6ea81d21e10ea}
+bool {\bfseries is\+\_\+historical}\hypertarget{class_landscape_a6d45f993b8d922286b349bcd0a679843}{}\label{class_landscape_a6d45f993b8d922286b349bcd0a679843}
 
 \item 
-bool {\bfseries has\+\_\+pristine}\hypertarget{class_landscape_ac75b3fb928b0974e0f351bc57112899e}{}\label{class_landscape_ac75b3fb928b0974e0f351bc57112899e}
+bool {\bfseries has\+\_\+historical}\hypertarget{class_landscape_a7c92406ace422080c978fbf6c2b8d4ab}{}\label{class_landscape_a7c92406ace422080c978fbf6c2b8d4ab}
 
 \item 
 unsigned long {\bfseries habitat\+\_\+max}\hypertarget{class_landscape_ae0f64209a3747b1f023da89254683490}{}\label{class_landscape_ae0f64209a3747b1f023da89254683490}
@@ -218,13 +230,16 @@ unsigned long {\bfseries fine\+\_\+max}\hypertarget{class_landscape_a5b36f28911c
 unsigned long {\bfseries coarse\+\_\+max}\hypertarget{class_landscape_a4ce133d5e07e46f127bfa4f47597dcec}{}\label{class_landscape_a4ce133d5e07e46f127bfa4f47597dcec}
 
 \item 
-unsigned long {\bfseries pristine\+\_\+fine\+\_\+max}\hypertarget{class_landscape_a4353a23f1a363ef200b89a3100612cb5}{}\label{class_landscape_a4353a23f1a363ef200b89a3100612cb5}
+unsigned long {\bfseries historical\+\_\+fine\+\_\+max}\hypertarget{class_landscape_a86e67628c5ad3426f1f258e35ab5e4df}{}\label{class_landscape_a86e67628c5ad3426f1f258e35ab5e4df}
 
 \item 
-unsigned long {\bfseries pristine\+\_\+coarse\+\_\+max}\hypertarget{class_landscape_ad7326e82982ff2397b3a7fc90f945d62}{}\label{class_landscape_ad7326e82982ff2397b3a7fc90f945d62}
+unsigned long {\bfseries historical\+\_\+coarse\+\_\+max}\hypertarget{class_landscape_aa79ae2cca59b135591c3cb978f14ee2a}{}\label{class_landscape_aa79ae2cca59b135591c3cb978f14ee2a}
 
 \item 
 string {\bfseries landscape\+\_\+type}\hypertarget{class_landscape_a2bed03fc250afab4f9341da6f1f6c0da}{}\label{class_landscape_a2bed03fc250afab4f9341da6f1f6c0da}
+
+\item 
+bool {\bfseries infinite\+\_\+boundaries}\hypertarget{class_landscape_ad4cf6ac6f87d0253d50b2738bb57087e}{}\label{class_landscape_ad4cf6ac6f87d0253d50b2738bb57087e}
 
 \item 
 string {\bfseries Next\+Map}\hypertarget{class_landscape_a7e16bed309816971071c17ad0ebf94e5}{}\label{class_landscape_a7e16bed309816971071c17ad0ebf94e5}
@@ -243,15 +258,15 @@ fptr {\bfseries get\+Val\+Func}\hypertarget{class_landscape_a3cca2f0650d5979668f
 \begin{DoxyCompactItemize}
 \item 
 ostream \& \hyperlink{class_landscape_a1c309185f0c3a601f27c932f1f2fa886}{operator$<$$<$} (ostream \&os, const \hyperlink{class_landscape}{Landscape} \&r)
-\begin{DoxyCompactList}\small\item\em Operator for outputting the Map object variables to an output stream. This is used for storing the Map object to file. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Operator for outputting the \hyperlink{class_map}{Map} object variables to an output stream. This is used for storing the \hyperlink{class_map}{Map} object to file. \end{DoxyCompactList}\item 
 istream \& \hyperlink{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}{operator$>$$>$} (istream \&is, \hyperlink{class_landscape}{Landscape} \&r)
-\begin{DoxyCompactList}\small\item\em Operator for inputting the Map object variables from an input stream. This is used for reading the Map object from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Operator for inputting the \hyperlink{class_map}{Map} object variables from an input stream. This is used for reading the \hyperlink{class_map}{Map} object from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Contains all maps and provides the functions for accessing a grid cell in the correct temporal and spacial location. 
 
-The function \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with \hyperlink{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}{set\+Dims()}, import the map files with \hyperlink{class_landscape_ad500af94a2afd577e682b3c042cab217}{calc\+Fine\+Map()}, \hyperlink{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}{calc\+Coarse\+Map()} etc, then set up the landscape type using \hyperlink{class_landscape_a63150f634d7936439bc5a1d20b84a7b2}{set\+Landscape()} and \hyperlink{class_landscape_a04efbb8d2470b1c4990694f0b92e3476}{set\+Pristine()}. Usage is then by \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} for running a dispersal kernel on the landscape, and then \hyperlink{class_landscape_a06dbce690810d8d771490c310cb96310}{get\+Val()} to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. 
+The function \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with \hyperlink{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}{set\+Dims()}, import the map files with \hyperlink{class_landscape_ad500af94a2afd577e682b3c042cab217}{calc\+Fine\+Map()}, \hyperlink{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}{calc\+Coarse\+Map()} etc, then set up the landscape type using \hyperlink{class_landscape_a63150f634d7936439bc5a1d20b84a7b2}{set\+Landscape()} and sethistorical(). Usage is then by \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} for running a dispersal kernel on the landscape, and then \hyperlink{class_landscape_a06dbce690810d8d771490c310cb96310}{get\+Val()} to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. 
 
 \subsection{Member Function Documentation}
 \index{Landscape@{Landscape}!calc\+Offset@{calc\+Offset}}
@@ -292,34 +307,22 @@ If this is true, then it means we can calculate actual offsets and dimensions fr
 \begin{DoxyReturn}{Returns}
 true if all map offsets are zero 
 \end{DoxyReturn}
-\index{Landscape@{Landscape}!check\+Fine@{check\+Fine}}
-\index{check\+Fine@{check\+Fine}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{check\+Fine(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{checkFine(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::check\+Fine (
+\index{Landscape@{Landscape}!check\+Historical@{check\+Historical}}
+\index{check\+Historical@{check\+Historical}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{check\+Historical(double generation)}{checkHistorical(double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::check\+Historical (
 \begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap}
+\item[{double}]{generation}
 \end{DoxyParamCaption}
-)}\hypertarget{class_landscape_a0545765b734539f622804bb3aa72e38c}{}\label{class_landscape_a0545765b734539f622804bb3aa72e38c}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_ae4a7ae12f299407d5c379fd20ed2ccbc}{}\label{class_landscape_ae4a7ae12f299407d5c379fd20ed2ccbc}
 
 
-Checks whether the point comes from the fine grid. 
+Checks if the historical state has been reached. 
 
-
+If there are no historical maps, this function will do nothing. 
 \begin{DoxyParams}{Parameters}
-{\em x} & the x position. \\
-\hline
-{\em y} & the y position. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension. \\
+{\em generation} & the time to check at. \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-a boolean of whether the location is on the fine map. 
-\end{DoxyReturn}
 \index{Landscape@{Landscape}!check\+Map@{check\+Map}}
 \index{check\+Map@{check\+Map}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{check\+Map(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double generation)}{checkMap(const double &x, const double &y, const long &xwrap, const long &ywrap, const double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::check\+Map (
@@ -365,47 +368,6 @@ Checks that the map files exist (or are none/null).
 \begin{DoxyReturn}{Returns}
 true if all the paths exist in configs 
 \end{DoxyReturn}
-\index{Landscape@{Landscape}!check\+Pristine@{check\+Pristine}}
-\index{check\+Pristine@{check\+Pristine}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{check\+Pristine(double generation)}{checkPristine(double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::check\+Pristine (
-\begin{DoxyParamCaption}
-\item[{double}]{generation}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_a5131b05f34a66951d63ec575a4aedb82}{}\label{class_landscape_a5131b05f34a66951d63ec575a4aedb82}
-
-
-Checks if the pristine state has been reached. 
-
-If there are no pristine maps, this function will do nothing. 
-\begin{DoxyParams}{Parameters}
-{\em generation} & the time to check at. \\
-\hline
-\end{DoxyParams}
-\index{Landscape@{Landscape}!convert\+Coordinates@{convert\+Coordinates}}
-\index{convert\+Coordinates@{convert\+Coordinates}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{convert\+Coordinates(double \&x, double \&y, long \&xwrap, long \&ywrap)}{convertCoordinates(double &x, double &y, long &xwrap, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::convert\+Coordinates (
-\begin{DoxyParamCaption}
-\item[{double \&}]{x, }
-\item[{double \&}]{y, }
-\item[{long \&}]{xwrap, }
-\item[{long \&}]{ywrap}
-\end{DoxyParamCaption}
-)}\hypertarget{class_landscape_af5ba56f29b355c5dd7226231144d147e}{}\label{class_landscape_af5ba56f29b355c5dd7226231144d147e}
-
-
-Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position. \\
-\hline
-{\em y} & the y position. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension. \\
-\hline
-\end{DoxyParams}
 \index{Landscape@{Landscape}!convert\+Fine\+To\+Sample@{convert\+Fine\+To\+Sample}}
 \index{convert\+Fine\+To\+Sample@{convert\+Fine\+To\+Sample}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{convert\+Fine\+To\+Sample(long \&x, long \&xwrap, long \&y, long \&ywrap)}{convertFineToSample(long &x, long &xwrap, long &y, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::convert\+Fine\+To\+Sample (
@@ -475,6 +437,62 @@ Note that this function will not check if the value is actually within bounds of
 \begin{DoxyReturn}{Returns}
 the y location on the fine map 
 \end{DoxyReturn}
+\index{Landscape@{Landscape}!distance\+To\+Nearest\+Habitat@{distance\+To\+Nearest\+Habitat}}
+\index{distance\+To\+Nearest\+Habitat@{distance\+To\+Nearest\+Habitat}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{distance\+To\+Nearest\+Habitat(const long \&start\+\_\+x, const long \&start\+\_\+y, const long \&start\+\_\+x\+\_\+wrap, const long \&start\+\_\+y\+\_\+wrap, const double \&generation)}{distanceToNearestHabitat(const long &start_x, const long &start_y, const long &start_x_wrap, const long &start_y_wrap, const double &generation)}}]{\setlength{\rightskip}{0pt plus 5cm}double Landscape\+::distance\+To\+Nearest\+Habitat (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{start\+\_\+x, }
+\item[{const long \&}]{start\+\_\+y, }
+\item[{const long \&}]{start\+\_\+x\+\_\+wrap, }
+\item[{const long \&}]{start\+\_\+y\+\_\+wrap, }
+\item[{const double \&}]{generation}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a3a552903c925b9769ecc2cad5b051682}{}\label{class_landscape_a3a552903c925b9769ecc2cad5b051682}
+
+
+Calculates the distance from the start position to the nearest habitat cell. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+\_\+x} & the start x coordinate \\
+\hline
+{\em start\+\_\+y} & the start y coordinate \\
+\hline
+{\em start\+\_\+x\+\_\+wrap} & the starting x wrapping \\
+\hline
+{\em start\+\_\+y\+\_\+wrap} & the starting y wrapping \\
+\hline
+{\em generation} & the generation timer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the distance from the start position to the nearest habitat cell 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}}
+\index{fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{fix\+Grid\+Coordinates(double \&x, double \&y, long \&xwrap, long \&ywrap)}{fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::fix\+Grid\+Coordinates (
+\begin{DoxyParamCaption}
+\item[{double \&}]{x, }
+\item[{double \&}]{y, }
+\item[{long \&}]{xwrap, }
+\item[{long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}{}\label{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}
+
+
+Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position. \\
+\hline
+{\em y} & the y position. \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension. \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension. \\
+\hline
+\end{DoxyParams}
 \index{Landscape@{Landscape}!get\+Habitat\+Max@{get\+Habitat\+Max}}
 \index{get\+Habitat\+Max@{get\+Habitat\+Max}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{get\+Habitat\+Max()}{getHabitatMax()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Landscape\+::get\+Habitat\+Max (
@@ -488,6 +506,20 @@ Gets the maximum habitat value from any map.
 
 \begin{DoxyReturn}{Returns}
 the maximum habitat value 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!get\+Historical@{get\+Historical}}
+\index{get\+Historical@{get\+Historical}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{get\+Historical()}{getHistorical()}}]{\setlength{\rightskip}{0pt plus 5cm}double Landscape\+::get\+Historical (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_a6b15e6748d7d776deaa489e618750983}{}\label{class_landscape_a6b15e6748d7d776deaa489e618750983}
+
+
+Get the historical map time. 
+
+\begin{DoxyReturn}{Returns}
+double the historical map time 
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!get\+Initial\+Count@{get\+Initial\+Count}}
 \index{get\+Initial\+Count@{get\+Initial\+Count}!Landscape@{Landscape}}
@@ -510,20 +542,6 @@ Counts the number of spaces available in the initial species space. Requires the
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 the total number of individuals predicted to initially exist on the map. 
-\end{DoxyReturn}
-\index{Landscape@{Landscape}!get\+Pristine@{get\+Pristine}}
-\index{get\+Pristine@{get\+Pristine}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{get\+Pristine()}{getPristine()}}]{\setlength{\rightskip}{0pt plus 5cm}double Landscape\+::get\+Pristine (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_af76f7e71318f9ef5cac060de7351fdbc}{}\label{class_landscape_af76f7e71318f9ef5cac060de7351fdbc}
-
-
-Get the pristine map time. 
-
-\begin{DoxyReturn}{Returns}
-double the pristine map time 
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!get\+Sim\+Parameters@{get\+Sim\+Parameters}}
 \index{get\+Sim\+Parameters@{get\+Sim\+Parameters}!Landscape@{Landscape}}
@@ -581,7 +599,7 @@ the value on the correct map at the correct space.
 )}\hypertarget{class_landscape_aa98fad5a154486dbb0bca6056e19399c}{}\label{class_landscape_aa98fad5a154486dbb0bca6056e19399c}
 
 
-Gets the value from the coarse maps, including linear interpolating between the pristine and present maps. 
+Gets the value from the coarse maps, including linear interpolating between the historical and present maps. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -637,7 +655,7 @@ the value on the correct map at the correct space.
 )}\hypertarget{class_landscape_a33a1d5c3fba6c895ad3d390a547e0361}{}\label{class_landscape_a33a1d5c3fba6c895ad3d390a547e0361}
 
 
-Gets the value from the fine maps, including linear interpolating between the pristine and present maps. 
+Gets the value from the fine maps, including linear interpolating between the historical and present maps. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -744,19 +762,119 @@ Gets the value at a particular coordinate from the correct map. Takes in to acco
 \begin{DoxyReturn}{Returns}
 the value on the correct map at the correct space. 
 \end{DoxyReturn}
-\index{Landscape@{Landscape}!is\+Pristine@{is\+Pristine}}
-\index{is\+Pristine@{is\+Pristine}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{is\+Pristine()}{isPristine()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+Pristine (
+\index{Landscape@{Landscape}!has\+Historical@{has\+Historical}}
+\index{has\+Historical@{has\+Historical}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{has\+Historical()}{hasHistorical()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::has\+Historical (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_a264624ebb17fe757f4e7c9e082592b79}{}\label{class_landscape_a264624ebb17fe757f4e7c9e082592b79}
+)}\hypertarget{class_landscape_ad8e9a0520be7426592aa1d8c91227f3e}{}\label{class_landscape_ad8e9a0520be7426592aa1d8c91227f3e}
 
 
-Gets the pristine boolean. 
+Returns if the simulation is using historical maps. 
 
 \begin{DoxyReturn}{Returns}
-the pristine map state. 
+true if using historical maps 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+Historical@{is\+Historical}}
+\index{is\+Historical@{is\+Historical}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+Historical()}{isHistorical()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+Historical (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_ab302f8a4ae779d20df94cb2525187cac}{}\label{class_landscape_ab302f8a4ae779d20df94cb2525187cac}
+
+
+Gets the historical boolean. 
+
+\begin{DoxyReturn}{Returns}
+the historical map state. 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+On\+Coarse@{is\+On\+Coarse}}
+\index{is\+On\+Coarse@{is\+On\+Coarse}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+On\+Coarse(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{isOnCoarse(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+On\+Coarse (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{x, }
+\item[{const double \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a88b7191cdc10684eb6a851350d2f7a01}{}\label{class_landscape_a88b7191cdc10684eb6a851350d2f7a01}
+
+
+Checks whether the point comes from the coarse grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position \\
+\hline
+{\em y} & the y position \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean of whether the location is on the fine map 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+On\+Fine@{is\+On\+Fine}}
+\index{is\+On\+Fine@{is\+On\+Fine}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+On\+Fine(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{isOnFine(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+On\+Fine (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{x, }
+\item[{const double \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a92cd54efe4722ee0c40434875043d6c7}{}\label{class_landscape_a92cd54efe4722ee0c40434875043d6c7}
+
+
+Checks whether the point comes from the fine grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position \\
+\hline
+{\em y} & the y position \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean of whether the location is on the fine map 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+On\+Map@{is\+On\+Map}}
+\index{is\+On\+Map@{is\+On\+Map}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+On\+Map(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{isOnMap(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+On\+Map (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{x, }
+\item[{const double \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_abe24da20e362bd88f3794e4d8d5ccafb}{}\label{class_landscape_abe24da20e362bd88f3794e4d8d5ccafb}
+
+
+Checks that the point supplied is within map limits. If the map is inifite, returns true. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position \\
+\hline
+{\em y} & the y position \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean of whether the location is on the fine map 
+
+true if the point is within the map limits 
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!print\+Vars@{print\+Vars}}
 \index{print\+Vars@{print\+Vars}!Landscape@{Landscape}}
@@ -767,12 +885,23 @@ the pristine map state.
 )}\hypertarget{class_landscape_a9b867a59c88f754bae6788451845b698}{}\label{class_landscape_a9b867a59c88f754bae6788451845b698}
 
 
-Prints some selected Map variables to the terminal. 
+Prints some selected \hyperlink{class_map}{Map} variables to the terminal. 
 
 \begin{DoxyReturn}{Returns}
 the string containing the map variables to print 
 \end{DoxyReturn}
-\index{Landscape@{Landscape}!run\+Dispersal@{run\+Dispersal}}
+\index{Landscape@{Landscape}!reset\+Historical@{reset\+Historical}}
+\index{reset\+Historical@{reset\+Historical}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{reset\+Historical()}{resetHistorical()}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::reset\+Historical (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a03e35a3a42e40a683be01e75413d30d2}{}\label{class_landscape_a03e35a3a42e40a683be01e75413d30d2}
+
+
+Resets the historical variables to recalculate historical maps. 
+
+Required for rcoalescence compatability. \index{Landscape@{Landscape}!run\+Dispersal@{run\+Dispersal}}
 \index{run\+Dispersal@{run\+Dispersal}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{run\+Dispersal(const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)}{runDispersal(const double &dist, const double &angle, long &startx, long &starty, long &startxwrap, long &startywrap, bool &disp_comp, const double &generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Landscape\+::run\+Dispersal (
 \begin{DoxyParamCaption}
@@ -828,6 +957,22 @@ Sets the dimensions of the grid, the area where the species are initially sample
 {\em mapvarsin} & the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object containing the map variables to import \\
 \hline
 \end{DoxyParams}
+\index{Landscape@{Landscape}!set\+Historical@{set\+Historical}}
+\index{set\+Historical@{set\+Historical}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{set\+Historical(const bool \&historical\+\_\+in)}{setHistorical(const bool &historical_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Historical (
+\begin{DoxyParamCaption}
+\item[{const bool \&}]{historical\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_a7b1c5459e1ecf8d11c1dd12299a53c61}{}\label{class_landscape_a7b1c5459e1ecf8d11c1dd12299a53c61}
+
+
+Sets the historical state of the system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em historical\+\_\+in} & the historical state. \\
+\hline
+\end{DoxyParams}
 \index{Landscape@{Landscape}!set\+Landscape@{set\+Landscape}}
 \index{set\+Landscape@{set\+Landscape}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{set\+Landscape(string is\+\_\+infinite)}{setLandscape(string is_infinite)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Landscape (
@@ -844,41 +989,44 @@ Sets the landscape functions to either infinite or finite.
 {\em is\+\_\+infinite} & a string of either closed, infinite, tiled\+\_\+fine or tiled\+\_\+coarse, corresponding to the relevant landscape type. \\
 \hline
 \end{DoxyParams}
-\index{Landscape@{Landscape}!set\+Pristine@{set\+Pristine}}
-\index{set\+Pristine@{set\+Pristine}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{set\+Pristine(const bool \&b\+Pristinein)}{setPristine(const bool &bPristinein)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Pristine (
-\begin{DoxyParamCaption}
-\item[{const bool \&}]{b\+Pristinein}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_landscape_a04efbb8d2470b1c4990694f0b92e3476}{}\label{class_landscape_a04efbb8d2470b1c4990694f0b92e3476}
-
-
-Sets the pristine state of the system. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em b\+Pristinein} & the pristine state. \\
-\hline
-\end{DoxyParams}
 \index{Landscape@{Landscape}!set\+Time\+Vars@{set\+Time\+Vars}}
 \index{set\+Time\+Vars@{set\+Time\+Vars}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{set\+Time\+Vars(double gen\+\_\+since\+\_\+pristine\+\_\+in, double habitat\+\_\+change\+\_\+rate\+\_\+in)}{setTimeVars(double gen_since_pristine_in, double habitat_change_rate_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Time\+Vars (
+\subsubsection[{\texorpdfstring{set\+Time\+Vars(double gen\+\_\+since\+\_\+historical\+\_\+in, double habitat\+\_\+change\+\_\+rate\+\_\+in)}{setTimeVars(double gen_since_historical_in, double habitat_change_rate_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Time\+Vars (
 \begin{DoxyParamCaption}
-\item[{double}]{gen\+\_\+since\+\_\+pristine\+\_\+in, }
+\item[{double}]{gen\+\_\+since\+\_\+historical\+\_\+in, }
 \item[{double}]{habitat\+\_\+change\+\_\+rate\+\_\+in}
 \end{DoxyParamCaption}
-)}\hypertarget{class_landscape_aecca7c3f17087922283f63ce6148ddb4}{}\label{class_landscape_aecca7c3f17087922283f63ce6148ddb4}
+)}\hypertarget{class_landscape_ac8aa9b3c8003cbc52c929e7532c0b0aa}{}\label{class_landscape_ac8aa9b3c8003cbc52c929e7532c0b0aa}
 
 
 Sets the time variables. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em gen\+\_\+since\+\_\+pristine\+\_\+in} & the time (in generations) since a pristine habitat state was achieved. \\
+{\em gen\+\_\+since\+\_\+historical\+\_\+in} & the time (in generations) since a historical habitat state was achieved. \\
 \hline
-{\em habitat\+\_\+change\+\_\+rate\+\_\+in} & the rate of transform of the habitat up until the pristine time. A value of 0.\+2 would mean 20\% of the change occurs linearlly up until the pristine time and the remaining 80\% occurs in a jump to the pristine state. \\
+{\em habitat\+\_\+change\+\_\+rate\+\_\+in} & the rate of transform of the habitat up until the historical time. A value of 0.\+2 would mean 20\% of the change occurs linearlly up until the historical time and the remaining 80\% occurs in a jump to the historical state. \\
 \hline
 \end{DoxyParams}
+\index{Landscape@{Landscape}!update\+Map@{update\+Map}}
+\index{update\+Map@{update\+Map}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{update\+Map(double generation)}{updateMap(double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::update\+Map (
+\begin{DoxyParamCaption}
+\item[{double}]{generation}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a568d5338ce85c35a66461033ced3cb05}{}\label{class_landscape_a568d5338ce85c35a66461033ced3cb05}
+
+
+Checks if an update needs to be performed to the map configuration, and if it does, performs the update. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em generation} & the current generation timer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the map has been updated 
+\end{DoxyReturn}
 
 
 \subsection{Friends And Related Function Documentation}
@@ -892,13 +1040,13 @@ Sets the time variables.
 )\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_landscape_a1c309185f0c3a601f27c932f1f2fa886}{}\label{class_landscape_a1c309185f0c3a601f27c932f1f2fa886}
 
 
-Operator for outputting the Map object variables to an output stream. This is used for storing the Map object to file. 
+Operator for outputting the \hyperlink{class_map}{Map} object variables to an output stream. This is used for storing the \hyperlink{class_map}{Map} object to file. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em os} & the output stream. \\
 \hline
-{\em r} & the Map object to output. \\
+{\em r} & the \hyperlink{class_map}{Map} object to output. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -914,13 +1062,13 @@ the output stream.
 )\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}{}\label{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}
 
 
-Operator for inputting the Map object variables from an input stream. This is used for reading the Map object from file. 
+Operator for inputting the \hyperlink{class_map}{Map} object variables from an input stream. This is used for reading the \hyperlink{class_map}{Map} object from file. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em is} & the input stream. \\
 \hline
-{\em r} & the Map object to input to. \\
+{\em r} & the \hyperlink{class_map}{Map} object to input to. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

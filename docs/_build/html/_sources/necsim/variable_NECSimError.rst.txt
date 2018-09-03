@@ -3,7 +3,7 @@
 Variable NECSimError
 ====================
 
-- Defined in :ref:`file_necsimmodule.h`
+- Defined in :ref:`file_necsim.h`
 
 
 Variable Documentation

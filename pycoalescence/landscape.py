@@ -1,5 +1,5 @@
 """
-Contains the landscape class for performing the key operations on a landscape object
+Generate landscapes and check map file combinations.
 """
 import logging
 
@@ -11,7 +11,7 @@ from .map import Map
 
 class Landscape:
 	"""
-	Contains routines for calculating offsets and dimensions of a selection of tif files making up a landscape.
+	Calculates offsets and dimensions of a selection of tif files making up a landscape.
 	"""
 
 	def __init__(self):
@@ -20,60 +20,71 @@ class Landscape:
 		"""
 		self.coarse_scale = 1
 		self.is_setup_map = False
+		self.setup_complete = False
 		self.fine_map = Map()
 		self.coarse_map = Map()
 		self.sample_map = Map()
-		# Pristine map parameters
-		self.pristine_fine_map_file = None
-		self.pristine_coarse_map_file = None
-		self.pristine_fine_list = []
-		self.pristine_coarse_list = []
+		# Historical map parameters
+		# Rate of habitat change that occurs before historical state
+		self.habitat_change_rate = 0
+		self.gen_since_historical = 1  # The number of generations ago a habitat was historical
+		self.historical_fine_map_file = None
+		self.historical_coarse_map_file = None
+		self.historical_fine_list = []
+		self.historical_coarse_list = []
 		self.times_list = []
 		self.rates_list = []
-		self.logger = logging.Logger("landscapelogger")
+		self.logging_level = 10
+		self.logger = logging.Logger("pycoalescence.landscape")
 		self.landscape_type = False
 
-	def _create_logger(self, file=None, logging_level=None):
+	def _create_logger(self, file=None, logging_level=None, **kwargs):
 		"""
 		Creates the logger for use with NECSim simulation. Note you can supply your own logger by over-riding
 		self.logger. This function should only be run during self.__init__()
 
 		:param file: file to write output to. If None, outputs to terminal
 		:param logging_level: the logging level to use (defaults to INFO)
+		:param kwargs: additional keyword arguments to write out to
 
 		:return: None
 		"""
 		if logging_level is None:
 			logging_level = self.logging_level
-		self.logger = create_logger(self.logger, file, logging_level)
+		self.logger = create_logger(self.logger, file, logging_level, **kwargs)
 
-	def add_pristine_map(self, fine_map, coarse_map, time, rate):
+	def add_historical_map(self, fine_map, coarse_map, time, rate):
 		"""
-		Adds an extra map to the list of pristine maps.
+		Adds an extra map to the list of historical maps.
 
-		:param fine_map: the pristine fine map file to add
-		:param coarse_map: the pristine coarse map file to add
+		:param fine_map: the historical fine map file to add
+		:param coarse_map: the historical coarse map file to add
 		:param time: the time to add (when the map is accurate)
 		:param rate: the rate to add (the rate of habitat change at this time)
 		"""
-		self.pristine_fine_list.append(fine_map)
-		self.pristine_coarse_list.append(coarse_map)
+		if not self.historical_fine_map_file or self.historical_fine_map_file == "none":
+			self.historical_fine_map_file = fine_map
+			self.historical_coarse_map_file = coarse_map
+			self.gen_since_historical = time
+			self.habitat_change_rate = rate
+		self.historical_fine_list.append(fine_map)
+		self.historical_coarse_list.append(coarse_map)
 		self.times_list.append(time)
 		self.rates_list.append(rate)
 
-	def sort_pristine_maps(self):
+	def sort_historical_maps(self):
 		"""
-		Sorts the pristine maps by time.
+		Sorts the historical maps by time.
 		"""
-		if len(self.pristine_fine_list) > 0 and len(self.pristine_coarse_list) > 0:
-			self.times_list, self.pristine_fine_list, self.pristine_coarse_list, self.rates_list = \
-				[list(x) for x in zip(*sorted(zip(self.times_list, self.pristine_fine_list,
-												  self.pristine_coarse_list, self.rates_list)))]
+		if len(self.historical_fine_list) > 0 and len(self.historical_coarse_list) > 0:
+			self.times_list, self.historical_fine_list, self.historical_coarse_list, self.rates_list = \
+				[list(x) for x in zip(*sorted(zip(self.times_list, self.historical_fine_list,
+												  self.historical_coarse_list, self.rates_list)))]
 
 	def set_map(self, map_file, x_size=None, y_size=None):
 		"""
 		Quick function for setting a single map file for both the sample map and fine map, of dimensions x and y.
-		Sets the sample file to "null" and coarse file and pristine files to "none".
+		Sets the sample file to "null" and coarse file and historical files to "none".
 
 		:param str map_file: path to the map file
 		:param int x_size: the x dimension, or None to detect automatically from the ".tif" file
@@ -90,8 +101,8 @@ class Landscape:
 		self.is_setup_map = True
 		self.coarse_scale = 1.0
 
-	def set_map_files(self, sample_file, fine_file=None, coarse_file=None, pristine_fine_file=None,
-					  pristine_coarse_file=None):
+	def set_map_files(self, sample_file, fine_file=None, coarse_file=None, historical_fine_file=None,
+					  historical_coarse_file=None):
 		"""
 		Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
 		the specified dimensions.
@@ -99,13 +110,13 @@ class Landscape:
 		If sample_file is "null", dimension values will remain at 0.
 		If coarse_file is "null", it will default to the size of fine_file with zero offset.
 		If the coarse file is "none", it will not be used.
-		If the pristine fine or coarse files are "none", they will not be used.
+		If the historical fine or coarse files are "none", they will not be used.
 
 		:param str sample_file: the sample map file. Provide "null" if on samplemask is required
 		:param str fine_file: the fine map file. Defaults to "null" if none provided
 		:param str coarse_file: the coarse map file. Defaults to "none" if none provided
-		:param str pristine_fine_file: the pristine fine map file. Defaults to "none" if none provided
-		:param str pristine_coarse_file: the pristine coarse map file. Defaults to "none" if none provided
+		:param str historical_fine_file: the historical fine map file. Defaults to "none" if none provided
+		:param str historical_coarse_file: the historical coarse map file. Defaults to "none" if none provided
 
 		:rtype: None
 
@@ -116,12 +127,12 @@ class Landscape:
 							 "Use set_map_parameters() instead.")
 		if coarse_file is None:
 			coarse_file = "none"
-		if pristine_fine_file is None:
-			pristine_fine_file = "none"
-		if pristine_coarse_file is None:
-			pristine_coarse_file = "none"
+		if historical_fine_file is None:
+			historical_fine_file = "none"
+		if historical_coarse_file is None:
+			historical_coarse_file = "none"
 		self.set_map_parameters(sample_file, 0, 0, fine_file, 0, 0, 0, 0, coarse_file, 0, 0, 0, 0, 0,
-								pristine_fine_file, pristine_coarse_file)
+								historical_fine_file, historical_coarse_file)
 		try:
 			self.detect_map_dimensions()
 		except Exception as e:
@@ -130,7 +141,7 @@ class Landscape:
 
 	def set_map_parameters(self, sample_file, sample_x, sample_y, fine_file, fine_x, fine_y, fine_x_offset,
 						   fine_y_offset, coarse_file, coarse_x, coarse_y,
-						   coarse_x_offset, coarse_y_offset, coarse_scale, pristine_fine_map, pristine_coarse_map):
+						   coarse_x_offset, coarse_y_offset, coarse_scale, historical_fine_map, historical_coarse_map):
 		"""
 
 		Set up the map objects with the required parameters. This is required for csv file usage.
@@ -152,16 +163,16 @@ class Landscape:
 		:param coarse_x_offset: the x offset of the coarse map file at the resolution of the fine map
 		:param coarse_y_offset: the y offset of the coarse map file at the resoultion of the fine map
 		:param coarse_scale: the relative scale of the coarse map compared to the fine map (must match x and y scaling)
-		:param pristine_fine_map: the pristine fine map file to use (must have dimensions equal to fine map)
-		:param pristine_coarse_map: the pristine coarse map file to use (must have dimensions equal to coarse map)
+		:param historical_fine_map: the historical fine map file to use (must have dimensions equal to fine map)
+		:param historical_coarse_map: the historical coarse map file to use (must have dimensions equal to coarse map)
 		"""
 		if not self.is_setup_map:
 			self.sample_map.set_dimensions(sample_file, sample_x, sample_y)
 			self.fine_map.set_dimensions(fine_file, fine_x, fine_y, fine_x_offset, fine_y_offset)
 			self.coarse_map.set_dimensions(coarse_file, coarse_x, coarse_y, coarse_x_offset, coarse_y_offset)
 			self.coarse_scale = coarse_scale
-			self.pristine_fine_map_file = pristine_fine_map
-			self.pristine_coarse_map_file = pristine_coarse_map
+			self.historical_fine_map_file = historical_fine_map
+			self.historical_coarse_map_file = historical_coarse_map
 			self.is_setup_map = True
 		else:
 			err = "Map objects are already set up."
@@ -173,12 +184,12 @@ class Landscape:
 		This is intended to be run after set_map_files()
 
 		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but
-		not a coarse map.
+						   not a coarse map.
 
 		:raises IOError: if one of the required maps does not exist
 
 		:raises ValueError: if the dimensions of the dispersal map do not make sense when used with the fine map
-		provided
+							provided
 
 		:return: None
 		"""
@@ -220,26 +231,26 @@ class Landscape:
 		"""
 		for map_file in [self.coarse_map, self.fine_map, self.sample_map]:
 			map_file.check_map()
-		for map_file in [self.pristine_fine_map_file, self.pristine_fine_map_file]:
+		for map_file in [self.historical_fine_map_file, self.historical_fine_map_file]:
 			check_file_exists(map_file)
 		# Now check that the rest of the map naming structures make sense.
-		if self.pristine_fine_map_file in {"none", None} and len(self.pristine_fine_list) == 0:
-			if self.pristine_coarse_map_file not in {"none", None} or len(self.pristine_coarse_list) > 1:
+		if self.historical_fine_map_file in {"none", None} and len(self.historical_fine_list) == 0:
+			if self.historical_coarse_map_file not in {"none", None} or len(self.historical_coarse_list) > 1:
 				self.logger.warning(
-					"Pristine fine file is 'none' but pristine coarse file is not none. Check file names.")
-				self.logger.warning("Defaulting to pristine_coarse_map_file = 'none'")
-				self.pristine_coarse_map_file = "none"
-				self.pristine_coarse_list = []
-			if len(self.pristine_fine_list) > 1:
+					"Historical fine file is 'none' but historical coarse file is not none. Check file names.")
+				self.logger.warning("Defaulting to historical_coarse_map_file = 'none'")
+				self.historical_coarse_map_file = "none"
+				self.historical_coarse_list = []
+			if len(self.historical_fine_list) > 1:
 				self.logger.warning(
-					"Set pristine fine map file to 'none', but then added other pristine maps. Changing.")
-				self.pristine_fine_list = []
+					"Set historical fine map file to 'none', but then added other historical maps. Changing.")
+				self.historical_fine_list = []
 		if self.coarse_map.file_name in {"none", None}:
-			if self.pristine_coarse_map_file not in {"none", None}:
-				self.logger.warning("Coarse file is 'none' but pristine coarse file is not none. Check file names.")
-				self.logger.warning("Defaulting to pristine_coarse_map_file = 'none'")
-				self.pristine_coarse_map_file = "none"
-				self.pristine_coarse_list = []
+			if self.historical_coarse_map_file not in {"none", None}:
+				self.logger.warning("Coarse file is 'none' but historical coarse file is not none. Check file names.")
+				self.logger.warning("Defaulting to historical_coarse_map_file = 'none'")
+				self.historical_coarse_map_file = "none"
+				self.historical_coarse_list = []
 		else:
 			if self.coarse_map.file_name != "null" and not self.fine_map.is_within(self.coarse_map):
 				raise ValueError("Offsets mean that coarse map does not fully encompass fine map. Check that your"

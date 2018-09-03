@@ -8,18 +8,22 @@ Program Listing for File Filesystem.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #include <string>
    #include <sstream>
-   #include <zconf.h>
    #include <boost/filesystem.hpp>
+   #ifdef WIN_INSTALL
+   #include <windows.h>
+   #define sleep Sleep
+   #endif
    #include "Filesystem.h"
    #include "CustomExceptions.h"
-   #include "Logging.h"
+   #include "Logger.h"
    
-   void openSQLiteDatabase(const string &database_name, sqlite3 * &database)
+   
+   void openSQLiteDatabase(const string &database_name, sqlite3 *&database)
    {
        int rc;
        if(database_name == ":memory:")
@@ -33,7 +37,11 @@ Program Listing for File Filesystem.cpp
                throw FatalException(ss.str());
            }
        }
+   #ifdef WIN_INSTALL
+       rc = sqlite3_open_v2(database_name.c_str(), &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "win32");
+   #else
        rc = sqlite3_open_v2(database_name.c_str(), &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "unix-dotfile");
+   #endif
        if(rc != SQLITE_OK && rc != SQLITE_DONE)
        {
            int i = 0;
@@ -56,27 +64,39 @@ Program Listing for File Filesystem.cpp
            {
                stringstream ss;
                ss << "ERROR_SQL_010: SQLite database file could not be opened. Check the folder exists and you "
-                       "have write permissions. (REF1) Error code: "
-                    << rc << endl;
+                     "have write permissions. (REF1) Error code: "
+                  << rc << endl;
                ss << " Attempted call " << max(i, j) << " times" << endl;
                throw FatalException(ss.str());
            }
        }
    }
    
-   void createParent(const string &file)
+   void createParent(string file)
    {
+       // Boost < 1.59 support
        boost::filesystem::path file_path(file);
-       if(!boost::filesystem::exists(file_path.parent_path()))
+       auto parent = file_path.parent_path().string();
+       if (parent.length() > 0)
        {
-           if(!boost::filesystem::create_directories(file_path.parent_path()))
+           std::string::iterator it = parent.end() - 1;
+           if (*it == '/')
            {
-               throw FatalException("Cannot create parent folder for " + file);
+               parent.erase(it);
+           }
+           boost::filesystem::path parent_path(parent);
+           if(!boost::filesystem::exists(parent_path))
+           {
+               if(!parent_path.empty())
+               {
+                   if(!boost::filesystem::create_directories(parent_path))
+                   {
+                       throw runtime_error("Cannot create parent folder for " + file);
+                   }
+               }
            }
        }
    }
-   
-   
    
    bool doesExist(string testfile)
    {
@@ -100,24 +120,24 @@ Program Listing for File Filesystem.cpp
    
    unsigned long cantorPairing(unsigned long x1, unsigned long x2)
    {
-       return ((x1 + x2) * (x1 + x2 + 1)/2) + x2;
+       return ((x1 + x2) * (x1 + x2 + 1) / 2) + x2;
    }
    
    vector<string> getCsvLineAndSplitIntoTokens(istream &str)
    {
        vector<string> result;
        string line;
-       getline(str,line);
+       getline(str, line);
    
        stringstream lineStream(line);
        string cell;
    
-       while(getline(lineStream,cell, ','))
+       while(getline(lineStream, cell, ','))
        {
            result.push_back(cell);
        }
        // This checks for a trailing comma with no data after it.
-       if (!lineStream && cell.empty())
+       if(!lineStream && cell.empty())
        {
            // If there was a trailing comma then add an empty element.
            result.emplace_back("");

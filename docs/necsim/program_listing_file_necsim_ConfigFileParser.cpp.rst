@@ -8,13 +8,13 @@ Program Listing for File ConfigFileParser.cpp
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    // 
    #include <boost/filesystem/operations.hpp>
    #include "ConfigFileParser.h"
    #include "CustomExceptions.h"
-   #include "Logging.h"
+   #include "Logger.h"
    
    void importArgs(const unsigned int &argc, char *argv[], vector<string> &comargs)
    {
@@ -25,7 +25,7 @@ Program Listing for File ConfigFileParser.cpp
        // check size is correct
        if(comargs.size() != argc)
        {
-           cerr << "ERROR_MAIN_010: Incorrect command line parsing." << endl;
+           writeError("ERROR_MAIN_010: Incorrect command line parsing.");
        }
    }
    
@@ -40,7 +40,7 @@ Program Listing for File ConfigFileParser.cpp
        }
    #ifdef DEBUG
        stringstream ss;
-           ss << "Reference " << refval << " not found in keyoption." << endl;
+       ss << "Reference " << refval << " not found in keyoption." << endl;
        writeInfo(ss.str());
    #endif
        return ("null");
@@ -113,13 +113,25 @@ Program Listing for File ConfigFileParser.cpp
            throw ConfigException(
                    "ERROR_CONF_004c: Could not open the config file. Check file exists and is readable.");
        }
-       if(!is_file.fail() || !is_file.good())
+       parseConfig(is_file);
+       if(is_file.eof())
+       {
+           is_file.close();
+       }
+       else
+       {
+           throw ConfigException("ERROR_CONF_002: End of file not reached. Check input file formatting.");
+       }
+   }
+   
+   void ConfigOption::parseConfig(istream &istream1)
+   {
+       if(!istream1.fail() || !istream1.good())
        {
            string line;
            // Get the first line of the file.
-           while(getline(is_file, line))
+           while(getline(istream1, line))
            {
-   //              os << line << endl;
                istringstream is_line(line);
                string key;
                string val;
@@ -135,10 +147,9 @@ Program Listing for File ConfigFileParser.cpp
                    {
                        section = section.erase(0, 1);
                        tempSections.section = section;
-   //                      os << section << endl;
                    }
                    // read each line
-                   while(getline(is_file, line))
+                   while(getline(istream1, line))
                    {
                        // end the section when a new one starts.
                        if(line[0] == '[' || line.size() == 0)
@@ -154,7 +165,6 @@ Program Listing for File ConfigFileParser.cpp
                        }
                        if(!is_line2)
                        {
-   //                          os << is_line2 << endl;
                            throw ConfigException("ERROR_CONF_001: Read error in config file.");
                        }
                        if(getline(is_line2, val))
@@ -165,7 +175,6 @@ Program Listing for File ConfigFileParser.cpp
                            {
                                val.erase(val.begin(), val.begin() + 1);
                            }
-   
                        }
                        if(!is_line2)
                        {
@@ -183,14 +192,6 @@ Program Listing for File ConfigFileParser.cpp
            throw ConfigException(
                    "ERROR_CONF_004b: Could not open the config file " + configfile +
                    ". Check file exists and is readable.");
-       }
-       if(is_file.eof())
-       {
-           is_file.close();
-       }
-       else
-       {
-           throw ConfigException("ERROR_CONF_002: End of file not reached. Check input file formatting.");
        }
    }
    

@@ -8,14 +8,14 @@ Program Listing for File Tree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef TREE_H
    #define TREE_H
-   #ifndef sql_ram
-   #define sql_ram
-   #endif
+   //#ifndef sql_ram
+   //#define sql_ram
+   //#endif
    
    #include <sqlite3.h>
    #include <string>
@@ -40,7 +40,7 @@ Program Listing for File Tree.h
        // Stores the command line parameters and parses the required information.
        SimParameters sim_parameters;
        // random number generator
-       NRrand NR;
+       shared_ptr<NRrand> NR;
        // Storing the speciation rates for later reference.
        vector<long double> speciation_rates;
        // flag for having set the simulation seed.
@@ -96,9 +96,9 @@ Program Listing for File Tree.h
        // Create the step object that will be retained for the whole simulation.
        // Does not need saving on simulation pause.
        Step this_step;
-       string sqloutname;
+       string sql_output_database;
        // If true, means the command-line imports were under the (deprecated) fullmode.
-       bool bFullmode;
+       bool bFullMode;
        // If true, the simulation is to be resumed.
        bool bResume;
        // If true, a config file contains the simulation variables.
@@ -109,48 +109,20 @@ Program Listing for File Tree.h
        bool bIsProtracted;
        // variable for storing the paused sim location if files have been moved during paused/resumed simulations!
        string pause_sim_directory;
-   #ifdef DEBUG
-       // For debugging purposes
-       unsigned long count_dispersal_fails, count_density_fails;
-   #endif
    public:
-       Tree() : community(&data), this_step()
+       Tree() : data(), enddata(0), sim_parameters(), NR(make_shared<NRrand>()), speciation_rates(), seeded(false),
+                the_seed(-1), the_task(-1), times_file("null"), reference_times(), uses_temporal_sampling(false),
+                start(0), sim_start(0), sim_end(0), now(0), sim_finish(0), out_finish(0), time_taken(0), active(),
+                endactive(0), startendactive(0), maxsimsize(0), community(&data), steps(0), maxtime(0), generation(0.0),
+                deme(0), deme_sample(0.0), spec(0.0), out_directory(""), database(nullptr), sim_complete(false),
+                has_imported_vars(false),
+   #ifdef sql_ram
+                outdatabase(nullptr),
+   #endif //sql_ram
+                this_step(), sql_output_database("null"), bFullMode(false), bResume(false), bConfig(true),
+                has_paused(false), has_imported_pause(false), bIsProtracted(false), pause_sim_directory("null")
        {
-           has_imported_vars = false;
-           enddata = 0;
-           seeded = false;
-           the_seed = -10;
-           // set this equal to true if you want to log every 5 seconds to a logfile.
-           the_task = -1;
-           sqloutname = "null";
-           sim_complete = false;
-           time_taken = 0;  // the time taken starts at 0, unless imported from file.
-           maxtime = 0;
-           // Set the database to NULL pointers.
-           database = nullptr;
-           outdatabase = nullptr;
-           uses_temporal_sampling = false;
-           start = 0;
-           sim_start = 0;
-           sim_end = 0;
-           now = 0;
-           sim_finish = 0;
-           out_finish = 0;
-           endactive = 0;
-           startendactive = 0;
-           maxsimsize = 0;
-           steps = 0;
-           generation = 0.0;
-           spec = 0.0;
-           deme_sample = 0.0;
-           deme = 0;
-           bFullmode = false;
-           bResume = false;
-           bConfig = true;
-           has_paused = false;
-           has_imported_pause = false;
-           bIsProtracted = false;
-           pause_sim_directory = "null";
+   
        }
    
        virtual ~Tree()
@@ -162,8 +134,12 @@ Program Listing for File Tree.h
        }
    
    
-       virtual void importSimulationVariables(const string &configfile);
+       void importSimulationVariables(const string &configfile);
    
+       void importSimulationVariables(ConfigOption config);
+       virtual void runFileChecks();
+   
+       void wipeSimulationVariables();
        void internalSetup(const SimParameters &sim_parameters_in);
    
        bool checkOutputDirectory();
@@ -201,6 +177,7 @@ Program Listing for File Tree.h
    
        void determineSpeciationRates();
    
+       void addSpeciationRates(vector<long double> spec_rates_in);
        void generateObjects();
    
        virtual unsigned long fillObjects(const unsigned long &initial_count);
@@ -236,12 +213,14 @@ Program Listing for File Tree.h
    
        virtual void addLineages(double generation_in);
    
+       bool checkProportionAdded(const double & proportion_added);
+   
        void checkSimSize(unsigned long req_data, unsigned long req_active);
    
    
-       void makeTip(const unsigned long &tmp_active, const double &generation_in);
+       void makeTip(const unsigned long &tmp_active, const double &generation_in, vector<TreeNode> &data_added);
    
-       void convertTip(unsigned long i, double generationin);
+       void convertTip(unsigned long i, double generationin, vector<TreeNode> &data_added);
    
        bool stopSimulation();
    
@@ -275,6 +254,7 @@ Program Listing for File Tree.h
    
        void writeTimes();
    
+       void openSQLDatabase();
    
        void sqlCreate();
    
@@ -287,26 +267,28 @@ Program Listing for File Tree.h
    
        virtual void simPause();
    
-       string initiatePause();
+       ofstream initiatePause();
    
-       void dumpMain(string pause_folder);
+       void dumpMain(ofstream &out);
    
-       void dumpActive(string pause_folder);
+       void dumpActive(ofstream &out);
    
-       void dumpData(string pause_folder);
+       void dumpData(ofstream &out);
    
-       void completePause();
+       void completePause(ofstream &out);
    
        void setResumeParameters(string pausedir, string outdir, unsigned long seed, unsigned long task,
                                 unsigned long new_max_time);
    
        void setResumeParameters();
    
-       virtual void loadMainSave();
+       ifstream openSaveFile();
    
-       void loadDataSave();
+       virtual void loadMainSave(ifstream &in1);
    
-       void loadActiveSave();
+       void loadDataSave(ifstream &in1);
+   
+       void loadActiveSave(ifstream &in1);
    
        void initiateResume();
    

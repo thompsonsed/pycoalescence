@@ -7,6 +7,8 @@ File PyImports.cpp
 
 
 
+Routines for importing python objects to c++ vectors. 
+
 
 .. contents:: Contents
    :local:
@@ -21,6 +23,13 @@ Definition (``PyImports.cpp``)
 
    program_listing_file_PyImports.cpp.rst
 
+
+
+Detailed Description
+--------------------
+
+Samuel Thompson
+MIT Licence. 
 
 
 

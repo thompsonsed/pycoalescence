@@ -8,8 +8,8 @@ Program Listing for File Map.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef MAP_H
    #define MAP_H
    #ifdef with_gdal
@@ -17,20 +17,21 @@ Program Listing for File Map.h
    #include <string>
    #include <cstring>
    #include <sstream>
-   #include "Logging.h"
+   #include "Logger.h"
    #include <gdal_priv.h>
    #include <cpl_conv.h> // for CPLMalloc()
    #include <sstream>
    #include "Matrix.h"
-   #include "Logging.h"
+   #include "Logger.h"
    #include "CustomExceptions.h"
+   #include "CPLCustomHandlerNecsim.h"
    
    using namespace std;
    #ifdef DEBUG
    #include "CustomExceptions.h"
    #endif // DEBUG
    
-   template<typename T>
+   template<class T>
    class Map : public virtual Matrix<T>
    {
    protected:
@@ -57,7 +58,7 @@ Program Listing for File Map.h
        using Matrix<T>::operator+=;
        using Matrix<T>::operator[];
    
-       Map() : Matrix<T>()
+       Map() : Matrix<T>(0, 0)
        {
            GDALAllRegister();
            poDataset = nullptr;
@@ -66,7 +67,7 @@ Program Listing for File Map.h
            blockXSize = 0;
            blockYSize = 0;
            noDataValue = 0.0;
-           CPLSetErrorHandler(cplCustomErrorHandler);
+           CPLSetErrorHandler(cplNecsimCustomErrorHandler);
        }
    
        ~Map()
@@ -131,12 +132,20 @@ Program Listing for File Map.h
        {
            try
            {
-               noDataValue = poBand->GetNoDataValue();
+               int pbSuccess;
+               noDataValue = poBand->GetNoDataValue(&pbSuccess);
+               if(!pbSuccess)
+               {
+                   noDataValue = 0.0;
+               }
            }
            catch(out_of_range &out_of_range1)
            {
-               noDataValue = 0;
+               noDataValue = 0.0;
            }
+           stringstream ss;
+           ss << "No data value is: " << noDataValue << endl;
+           writeInfo(ss.str());
            // Check sizes match
            dt = poBand->GetRasterDataType();
            double geoTransform[6];
@@ -176,6 +185,16 @@ Program Listing for File Map.h
    
        }
    #endif //DEBUG
+   
+       double getUpperLeftX()
+       {
+           return upper_left_x;
+       }
+   
+       double getUpperLeftY()
+       {
+           return upper_left_y;
+       }
    
        void import(const string &filename) override
        {
@@ -247,6 +266,7 @@ Program Listing for File Map.h
                opened_here = true;
                offset_map.open();
            }
+           offset_map.getRasterBand();
            offset_map.getMetaData();
            return opened_here;
        }
@@ -262,15 +282,14 @@ Program Listing for File Map.h
        void calculateOffset(Map &offset_map, long &offset_x, long &offset_y)
        {
            auto opened_here = openOffsetMap(offset_map);
-           offset_x = static_cast<long>(round(offset_map.upper_left_x - upper_left_x / x_res));
-           offset_y = static_cast<long>(round(offset_map.upper_left_y - upper_left_y / y_res));
+           offset_x = static_cast<long>(round((upper_left_x - offset_map.upper_left_x) / x_res));
+           offset_y = static_cast<long>(round((offset_map.upper_left_y - upper_left_y )/ y_res));
            closeOffsetMap(offset_map, opened_here);
        }
    
        unsigned long roundedScale(Map &offset_map)
        {
            auto opened_here = openOffsetMap(offset_map);
-           double offset_scale = offset_map.x_res;
            closeOffsetMap(offset_map, opened_here);
            return static_cast<unsigned long>(floor(offset_map.x_res / x_res));
        }
@@ -387,14 +406,32 @@ Program Listing for File Map.h
            }
        }
    
-       friend ostream &operator>>(ostream& os, const Map &m)
+       friend ostream &operator>>(ostream &os, const Map &m)
        {
            return Matrix<T>::writeOut(os, m);
        }
    
-       friend istream &operator<<(istream& is, Map &m)
+       friend istream &operator<<(istream &is, Map &m)
        {
            return Matrix<T>::readIn(is, m);
+       }
+   
+       Map &operator=(const Map &m)
+       {
+           Matrix<T>::operator=(m);
+           this->poDataset = m.poDataset;
+           this->poBand = m.poBand;
+           this->blockXSize = m.blockXSize;
+           this->blockYSize = m.blockYSize;
+           this->noDataValue = m.noDataValue;
+           this->filename = m.filename;
+           this->dt = m.dt;
+           this->cplErr = m.cplErr;
+           this->upper_left_x = m.upper_left_x;
+           this->upper_left_y = m.upper_left_y;
+           this->x_res = m.x_res;
+           this->y_res = m.y_res;
+           return *this;
        }
    
    };
@@ -455,8 +492,6 @@ Program Listing for File Map.h
        dt = GDT_UInt32;
        defaultImport();
    }
-   
-   
    
    template<>
    inline void Map<float>::internalImport()

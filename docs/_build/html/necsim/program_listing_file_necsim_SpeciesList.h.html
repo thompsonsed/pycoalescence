@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SpeciesList.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SpeciesList.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_SpeciesList.h.html" title="File SpeciesList.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpeciesList.h.html" accesskey="U">File SpeciesList.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,52 +66,43 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_SpeciesList.h.html#file-necsim-specieslist-h"><span class="std std-ref">File SpeciesList.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
  <span class="cp">#ifndef SPECIESLIST</span>
  <span class="cp">#define SPECIESLIST</span>
 
-
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
-
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">SpeciesList</span>
 <span class="p">{</span>
 <span class="k">private</span><span class="o">:</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">list_size</span><span class="p">,</span><span class="n">maxsize</span><span class="p">;</span> <span class="c1">// List size and maximum size of the cell (based on percentage cover).</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">list_size</span><span class="p">,</span> <span class="n">maxsize</span><span class="p">;</span> <span class="c1">// List size and maximum size of the cell (based on percentage cover).</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">next_active</span><span class="p">;</span> <span class="c1">// For calculating the wrapping, using the next and last system.</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">list</span><span class="p">;</span> <span class="c1">// list of the active reference number, with zeros for empty cells.</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">species_id_list</span><span class="p">;</span> <span class="c1">// list of the active reference number, with zeros for empty cells.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">nwrap</span><span class="p">;</span> <span class="c1">// The number of wrapping (next and last possibilities) that there are.</span>
 <span class="k">public</span><span class="o">:</span>
     <span class="n">SpeciesList</span><span class="p">();</span>
 
     <span class="o">~</span><span class="n">SpeciesList</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-    <span class="c1">// Sets the list size to the required length.</span>
-    <span class="c1">// Note this will delete any species currently stored in the list</span>
 
-    <span class="c1">// Fill the list with empty 0s.</span>
-    <span class="kt">void</span> <span class="nf">fillList</span><span class="p">();</span>
-
-    <span class="c1">// Standard setters</span>
     <span class="kt">void</span> <span class="nf">initialise</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">maxsizein</span><span class="p">);</span>
 
-    <span class="c1">// special case if just the maxsize wants to be change, but want to maintain the list variables.</span>
+    <span class="c1">// special case if just the maxsize wants to be change, but want to maintain the species_id_list variables.</span>
     <span class="kt">void</span> <span class="nf">setMaxsize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">maxsizein</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_val</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">setSpeciesEmpty</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_val</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setSpeciesEmpty</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_val</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setNext</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">);</span>
 
 
     <span class="kt">void</span> <span class="nf">setNwrap</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">nr</span><span class="p">);</span>
 
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">addSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_spec</span><span class="p">);</span>
-
-    <span class="kt">void</span> <span class="nf">addSpeciesSilent</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_spec</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">addSpecies</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">new_spec</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">deleteSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">);</span>
 
@@ -122,7 +113,7 @@
 
     <span class="kt">void</span> <span class="nf">changePercentCover</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newmaxsize</span><span class="p">);</span>
 
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getRandLineage</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">rand_no</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getRandLineage</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">rand_no</span><span class="p">);</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">);</span>
 
@@ -130,9 +121,12 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getNwrap</span><span class="p">();</span>
 
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getListsize</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getListSize</span><span class="p">();</span>
 
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getMaxsize</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getMaxSize</span><span class="p">();</span>
+
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getListLength</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">wipeList</span><span class="p">();</span>
 
@@ -197,14 +191,14 @@
         <li class="right" >
           <a href="file_necsim_SpeciesList.h.html" title="File SpeciesList.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpeciesList.h.html" >File SpeciesList.h</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

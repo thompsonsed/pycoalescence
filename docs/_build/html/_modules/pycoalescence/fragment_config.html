@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pycoalescence.fragment_config &#8212; pycoalescence 1.2.6rc38 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.6rc38',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycoalescence.fragment_config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generate the fragment config files from a supplied shapefile and a raster file to offset from.</span>
+
+<span class="sd">The function :func:`generate_fragment_csv()` contains the full pipeline to generate the fragment csv.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">ogr</span><span class="p">,</span> <span class="n">osr</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span> <span class="nn">gdal</span>
+		<span class="kn">from</span> <span class="nn">gdal</span> <span class="kn">import</span> <span class="n">ogr</span><span class="p">,</span> <span class="n">osr</span>
+	<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+		<span class="n">gdal</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="k">raise</span> <span class="n">ie</span>
+
+<span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span><span class="p">,</span> <span class="n">FileExistsError</span>
+<span class="kn">from</span> <span class="nn">.map</span> <span class="kn">import</span> <span class="n">Map</span>
+
+<div class="viewcode-block" id="generate_fragment_csv"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragment_config.generate_fragment_csv">[docs]</a><span class="k">def</span> <span class="nf">generate_fragment_csv</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">,</span> <span class="n">output_csv</span><span class="p">,</span> <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;fragment&quot;</span><span class="p">,</span> <span class="n">field_area</span><span class="o">=</span><span class="s2">&quot;area&quot;</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Generates the fragment csv from the provided shapefile and raster file. Coordinates for outputted to the csv are</span>
+<span class="sd">	calculated from the extent of each polygon in the shapefile as their relative position on the input raster.</span>
+
+<span class="sd">	The fragment extents are used solely, so overlapping extents of fragments results in individuals in those areas</span>
+<span class="sd">	appearing in both fragments. Therefore, rectangular fragments alone should be used.</span>
+
+<span class="sd">	.. important:: The input shapefile and raster must have the same projection.</span>
+
+<span class="sd">	:param input_shapefile: the shapefile containing polygons defining fragments. Should contain fields of field_name</span>
+<span class="sd">							and field_area</span>
+<span class="sd">	:param input_raster: raster file to calculate the relative coordinates on</span>
+<span class="sd">	:param output_csv: output csv to create</span>
+<span class="sd">	:param field_name: name of the field in the shapefile to acquire fragment names from</span>
+<span class="sd">	:param field_area: name of the field in the shapefile to acquire the number of individuals from</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">f</span> <span class="o">=</span> <span class="n">FragmentConfigHandler</span><span class="p">()</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">generate_config</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_area</span><span class="p">)</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">output_csv</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FragmentConfigHandler"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragment_config.FragmentConfigHandler">[docs]</a><span class="k">class</span> <span class="nc">FragmentConfigHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Contains routines for calculating the offsets from a config file.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fragment_list</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="FragmentConfigHandler.generate_config"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragment_config.FragmentConfigHandler.generate_config">[docs]</a>	<span class="k">def</span> <span class="nf">generate_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shapefile</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">,</span> <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;fragment&quot;</span><span class="p">,</span> <span class="n">field_area</span><span class="o">=</span><span class="s2">&quot;area&quot;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generates the config file from the shapefile containing the fragments, writing the coordinates of the extent of</span>
+<span class="sd">		each fragment to the output csv. The coordinates are calculated from their relevant position on the input</span>
+<span class="sd">		raster.</span>
+
+<span class="sd">		:param str input_shapefile: shapefile containing the fragments in a &quot;fragments&quot; field, with each defined as a</span>
+<span class="sd">							    polygon.</span>
+<span class="sd">		:param str input_raster: the raster to calculate the coordinates from</span>
+<span class="sd">		:param str field_name: optionally provide a field to extract fragment names from</span>
+<span class="sd">		:param str field_area: optionally provide a field to extract fragment areas from (the number of individuals that</span>
+<span class="sd">							   exist in the fragment.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">input_shapefile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.shp&quot;</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input file {} is not a shape file (.shp).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">))</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">input_raster</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.tif&quot;</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input raster {} is not a tif file (.tif).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_raster</span><span class="p">))</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="n">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Input shapefile {} does not exist.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">))</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">input_raster</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="n">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;input raster {} does not exist.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_raster</span><span class="p">))</span>
+		<span class="n">m</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span><span class="n">input_raster</span><span class="p">)</span>
+		<span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get_x_y</span><span class="p">()</span>
+		<span class="c1"># Read the input Layer</span>
+		<span class="n">src_driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;ESRI Shapefile&quot;</span><span class="p">)</span>
+		<span class="n">src_ds</span> <span class="o">=</span> <span class="n">src_driver</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">,</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GA_ReadOnly</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">src_ds</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not open {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_shapefile</span><span class="p">))</span>
+		<span class="n">src_layer</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">src_layer</span><span class="p">:</span>
+			<span class="n">geom</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+			<span class="n">fragment</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+			<span class="n">area</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">field_area</span><span class="p">)</span>
+			<span class="n">min_long</span><span class="p">,</span> <span class="n">max_long</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">GetEnvelope</span><span class="p">()</span>
+			<span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">convert_lat_long</span><span class="p">(</span><span class="n">max_lat</span><span class="p">,</span> <span class="n">min_long</span><span class="p">)</span>
+			<span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">convert_lat_long</span><span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_long</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">min_x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">min_y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">max_x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">max_y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> \
+					<span class="n">min_x</span> <span class="o">&gt;</span> <span class="n">dim_x</span> <span class="ow">or</span> <span class="n">min_y</span> <span class="o">&gt;</span> <span class="n">dim_y</span> <span class="ow">or</span> <span class="n">max_x</span> <span class="o">&gt;</span> <span class="n">dim_x</span> <span class="ow">or</span> <span class="n">max_y</span> <span class="o">&gt;</span> <span class="n">dim_y</span><span class="p">:</span>
+				<span class="n">src_ds</span> <span class="o">=</span> <span class="bp">None</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Shapefile is not contained within the raster - cannot generate fragment config.&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fragment_list</span><span class="p">[</span><span class="n">fragment</span><span class="p">]</span> <span class="o">=</span>  <span class="p">{</span><span class="s2">&quot;min_x&quot;</span> <span class="p">:</span> <span class="n">min_x</span><span class="p">,</span> <span class="s2">&quot;max_x&quot;</span> <span class="p">:</span> <span class="n">max_x</span><span class="p">,</span> <span class="s2">&quot;min_y&quot;</span> <span class="p">:</span> <span class="n">min_y</span><span class="p">,</span> <span class="s2">&quot;max_y&quot;</span> <span class="p">:</span> <span class="n">max_y</span><span class="p">,</span>
+											 <span class="s2">&quot;area&quot;</span> <span class="p">:</span> <span class="n">area</span><span class="p">}</span>
+		<span class="n">src_ds</span> <span class="o">=</span> <span class="bp">None</span></div>
+
+<div class="viewcode-block" id="FragmentConfigHandler.write_csv"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.fragment_config.FragmentConfigHandler.write_csv">[docs]</a>	<span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_csv</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Writes the fragments to the output csv.</span>
+
+<span class="sd">		:param str output_csv: the csv to write the output to</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_csv</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="n">FileExistsError</span><span class="p">(</span><span class="s2">&quot;Output csv {} already exists. Please remove first.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_csv</span><span class="p">))</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_csv</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+			<span class="n">csv_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_list</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+				<span class="n">csv_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;min_x&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;min_y&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;max_x&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;max_y&quot;</span><span class="p">],</span>
+									 <span class="n">value</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]])</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

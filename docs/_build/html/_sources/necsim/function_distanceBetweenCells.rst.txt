@@ -3,7 +3,7 @@
 Function distanceBetweenCells
 =============================
 
-- Defined in :ref:`file_necsim_SimulateDispersal.h`
+- Defined in :ref:`file_necsim_Cell.h`
 
 
 Function Documentation

@@ -7,7 +7,7 @@ File SpatialTree.h
 
 
 
-Contains the :ref:`class_SpatialTree` class for running simulations and outputting the phylogenetic tree. 
+Contains :ref:`class_SpatialTree` for running simulations and outputting the phylogenetic tree. 
 
 
 .. contents:: Contents
@@ -28,9 +28,7 @@ Definition (``necsim/SpatialTree.h``)
 Detailed Description
 --------------------
 
-Sam Thompson 
-31/08/2016
-Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com BSD-3 Licence. 
+Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 
 
@@ -39,7 +37,9 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``ActivityMap.h`` (:ref:`file_necsim_ActivityMap.h`)
+
+- ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``DataPoint.h`` (:ref:`file_necsim_DataPoint.h`)
 
@@ -47,13 +47,11 @@ Includes
 
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``Matrix.h`` (:ref:`file_necsim_Matrix.h`)
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
-
-- ``ReproductionMap.h`` (:ref:`file_necsim_ReproductionMap.h`)
 
 - ``Setup.h`` (:ref:`file_necsim_Setup.h`)
 
@@ -82,6 +80,8 @@ Includes
 - ``iomanip``
 
 - ``iostream``
+
+- ``memory``
 
 - ``sqlite3.h``
 
@@ -115,11 +115,4 @@ Classes
 
 
 - :ref:`class_SpatialTree`
-
-
-Defines
--------
-
-
-- :ref:`define_sql_ram`
 

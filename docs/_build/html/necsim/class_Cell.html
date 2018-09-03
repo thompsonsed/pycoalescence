@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Class Cell &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Class Cell &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,14 +25,14 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Class CommunitiesArray" href="class_CommunitiesArray.html" />
-    <link rel="prev" title="Struct SpeciesException" href="struct_SpeciesException.html" /> 
+    <link rel="next" title="Class Community" href="class_Community.html" />
+    <link rel="prev" title="Class ActivityMap" href="class_ActivityMap.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -45,13 +45,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="class_CommunitiesArray.html" title="Class CommunitiesArray"
+          <a href="class_Community.html" title="Class Community"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="struct_SpeciesException.html" title="Struct SpeciesException"
+          <a href="class_ActivityMap.html" title="Class ActivityMap"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -69,13 +69,13 @@
 <h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="_CPPv24Cell">
-<span id="Cell"></span><span class="target" id="necsimstruct_cell"></span><em class="property">class </em><code class="descclassname"></code><code class="descname">Cell</code><a class="headerlink" href="#_CPPv24Cell" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimstruct_cell"></span><em class="property">class </em><code class="descclassname"></code><code class="descname">Cell</code><a class="headerlink" href="#_CPPv24Cell" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Simple structure containing the x and y positions of a cell. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
 <dt id="_CPPv2N4CellaSER4Cell">
-<span id="Cell::assign-operator__CellCR"></span><span class="target" id="necsimstruct_cell_1ac1f905d4cd626cc32963ab7a6f76634e"></span><a class="reference internal" href="#_CPPv24Cell" title="Cell">Cell</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv24Cell" title="Cell">Cell</a> <em class="property">const</em> &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4CellaSER4Cell" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimstruct_cell_1ac1f905d4cd626cc32963ab7a6f76634e"></span><a class="reference internal" href="#_CPPv24Cell" title="Cell">Cell</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv24Cell" title="Cell">Cell</a> <em class="property">const</em> &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4CellaSER4Cell" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Overloading equality operator. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -89,17 +89,49 @@
 </p>
 </dd></dl>
 
+<dl class="function">
+<dt id="_CPPv2N4CelleqER4Cell">
+<span class="target" id="necsimstruct_cell_1abd251051519de0c0b3f2cdace1a2c684"></span>bool <code class="descname">operator==</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv24Cell" title="Cell">Cell</a> <em class="property">const</em> &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4CelleqER4Cell" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Equality operator for <a class="reference internal" href="#necsimstruct_cell"><span class="std std-ref">Cell</span></a>. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the x and y locations are identical </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">c</span></code>: the <a class="reference internal" href="#necsimstruct_cell"><span class="std std-ref">Cell</span></a> object to compare against </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4CellneER4Cell">
+<span class="target" id="necsimstruct_cell_1ac3b83bb33eb11dd036a4acecc7fa62d0"></span>bool <code class="descname">operator!=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv24Cell" title="Cell">Cell</a> <em class="property">const</em> &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4CellneER4Cell" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inequality operator for <a class="reference internal" href="#necsimstruct_cell"><span class="std std-ref">Cell</span></a>. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the x and y locations are not identical </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">c</span></code>: the <a class="reference internal" href="#necsimstruct_cell"><span class="std std-ref">Cell</span></a> object to compare against </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Members</p>
 <dl class="member">
 <dt id="_CPPv2N4Cell1xE">
-<span id="Cell::x__l"></span><span class="target" id="necsimstruct_cell_1a20ccaf4c7a18ce06930f961ed4fe3851"></span>long <code class="descname">x</code><a class="headerlink" href="#_CPPv2N4Cell1xE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimstruct_cell_1a20ccaf4c7a18ce06930f961ed4fe3851"></span>long <code class="descname">x</code><a class="headerlink" href="#_CPPv2N4Cell1xE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
 <dt id="_CPPv2N4Cell1yE">
-<span id="Cell::y__l"></span><span class="target" id="necsimstruct_cell_1a05aaf17f035c254584190b8ada505efc"></span>long <code class="descname">y</code><a class="headerlink" href="#_CPPv2N4Cell1yE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimstruct_cell_1a05aaf17f035c254584190b8ada505efc"></span>long <code class="descname">y</code><a class="headerlink" href="#_CPPv2N4Cell1yE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -126,11 +158,11 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="struct_SpeciesException.html"
-                        title="previous chapter">Struct SpeciesException</a></p>
+  <p class="topless"><a href="class_ActivityMap.html"
+                        title="previous chapter">Class ActivityMap</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="class_CommunitiesArray.html"
-                        title="next chapter">Class CommunitiesArray</a></p>
+  <p class="topless"><a href="class_Community.html"
+                        title="next chapter">Class Community</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -162,18 +194,18 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="class_CommunitiesArray.html" title="Class CommunitiesArray"
+          <a href="class_Community.html" title="Class Community"
              >next</a> |</li>
         <li class="right" >
-          <a href="struct_SpeciesException.html" title="Struct SpeciesException"
+          <a href="class_ActivityMap.html" title="Class ActivityMap"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

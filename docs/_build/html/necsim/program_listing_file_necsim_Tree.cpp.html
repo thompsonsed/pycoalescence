@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Tree.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Tree.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Tree.cpp.html" title="File Tree.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Tree.cpp.html" accesskey="U">File Tree.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,18 +66,43 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Tree.cpp.html#file-necsim-tree-cpp"><span class="std std-ref">File Tree.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
+
+<span class="cp">#ifdef WIN_INSTALL</span>
+<span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp"></span>
+<span class="cp">#define sleep Sleep</span>
+<span class="cp">#endif</span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;Tree.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;LogFile.h&quot;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">importSimulationVariables</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">configfile</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">sim_parameters</span><span class="p">.</span><span class="n">importParameters</span><span class="p">(</span><span class="n">configfile</span><span class="p">);</span>
+    <span class="n">runFileChecks</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">importSimulationVariables</span><span class="p">(</span><span class="n">ConfigOption</span> <span class="n">config</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">sim_parameters</span><span class="p">.</span><span class="n">importParameters</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+    <span class="n">runFileChecks</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">runFileChecks</span><span class="p">()</span>
+<span class="p">{</span>
     <span class="n">checkOutputDirectory</span><span class="p">();</span>
     <span class="c1">// Now check for paused simulations</span>
     <span class="n">checkSims</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">wipeSimulationVariables</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">SimParameters</span> <span class="n">tmpSimParameters</span><span class="p">;</span>
+    <span class="n">sim_parameters</span> <span class="o">=</span> <span class="n">tmpSimParameters</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">internalSetup</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">sim_parameters_in</span><span class="p">)</span>
@@ -98,7 +123,7 @@
         <span class="p">{</span>
             <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;Output folder does not exist... creating...&quot;</span><span class="p">);</span>
             <span class="kt">bool</span> <span class="n">bOutputFolder</span> <span class="o">=</span> <span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directory</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span><span class="p">);</span>
-            <span class="k">if</span><span class="p">(</span> <span class="n">bOutputFolder</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">bOutputFolder</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;done!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
             <span class="p">}</span>
@@ -115,7 +140,6 @@
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 
-
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">checkSims</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">checkSims</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">the_seed</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">the_task</span><span class="p">);</span>
@@ -130,7 +154,8 @@
     <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
 <span class="c1">//  char file_to_open[100];</span>
 <span class="c1">//  sprintf (file_to_open, &quot;%s/Pause/Data_%i.csv&quot;,outdirect,int(the_task));</span>
-    <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_active_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">task_in</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="n">to_string</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">seed_in</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
+    <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_main_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">task_in</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span>
+                   <span class="n">to_string</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">seed_in</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
     <span class="n">out</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="n">out</span><span class="p">.</span><span class="n">good</span><span class="p">())</span>
     <span class="p">{</span>
@@ -138,8 +163,9 @@
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">has_imported_pause</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">setResumeParameters</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">the_seed</span><span class="p">,</span>
-                                <span class="n">sim_parameters</span><span class="p">.</span><span class="n">the_task</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">max_time</span><span class="p">);</span>
+            <span class="n">setResumeParameters</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span><span class="p">,</span>
+                                <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">the_seed</span><span class="p">),</span>
+                                <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">the_task</span><span class="p">),</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">max_time</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="n">has_paused</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
@@ -178,7 +204,6 @@
 <span class="p">{</span>
 <span class="p">}</span>
 
-
 <span class="kt">bool</span> <span class="n">Tree</span><span class="o">::</span><span class="n">hasPaused</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">has_paused</span><span class="p">;</span>
@@ -197,6 +222,7 @@
         <span class="k">return</span> <span class="n">tmp</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
 <span class="kt">long</span> <span class="kt">long</span> <span class="n">Tree</span><span class="o">::</span><span class="n">getSeed</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">the_seed</span><span class="p">;</span>
@@ -206,7 +232,7 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">seeded</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">NR</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">seed_in</span><span class="p">);</span>
+        <span class="n">NR</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="n">seed_in</span><span class="p">);</span>
         <span class="n">the_seed</span> <span class="o">=</span> <span class="n">seed_in</span><span class="p">;</span>
         <span class="n">seeded</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
@@ -216,7 +242,6 @@
 <span class="p">{</span>
     <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">deme</span> <span class="o">*</span> <span class="n">deme_sample</span><span class="p">));</span>
 <span class="p">}</span>
-
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Tree</span><span class="o">::</span><span class="n">setObjectSizes</span><span class="p">()</span>
 <span class="p">{</span>
@@ -286,25 +311,22 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">setTimes</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">uses_temporal_sampling</span><span class="p">)</span>
+    <span class="c1">// Import the time sample points</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reference_times</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
     <span class="p">{</span>
-        <span class="c1">// Import the time sample points</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Reference times have already been set.&quot;</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;set&quot;</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">uses_temporal_sampling</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-            <span class="n">reference_times</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times</span><span class="p">;</span>
-            <span class="n">sort</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">reference_times</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
-        <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
-            <span class="n">reference_times</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-            <span class="n">reference_times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
-        <span class="p">}</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Reference times have already been set.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;set&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">uses_temporal_sampling</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">reference_times</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times</span><span class="p">;</span>
+        <span class="n">sort</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">reference_times</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">reference_times</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">times_file</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+        <span class="n">reference_times</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">reference_times</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -328,6 +350,35 @@
     <span class="n">sort</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">speciation_rates</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
 <span class="p">}</span>
 
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">addSpeciationRates</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">spec_rates_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">spec</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span> <span class="p">:</span> <span class="n">spec_rates_in</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">item</span> <span class="o">&gt;</span> <span class="n">spec</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">item</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">spec</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_018b: Speciation rate of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is less than the minimum possible (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">spec</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;) - skipping.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="nf">SpeciesException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// Sort the speciation rates remove duplicates</span>
+    <span class="n">sort</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">speciation_rates</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="n">speciation_rates</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">speciation_rates</span><span class="p">.</span><span class="n">end</span><span class="p">()),</span> <span class="n">speciation_rates</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="p">}</span>
+
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">generateObjects</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">initial_count</span> <span class="o">=</span> <span class="n">setObjectSizes</span><span class="p">();</span>
@@ -348,7 +399,7 @@
         <span class="k">else</span>
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-            <span class="n">ss</span> <span class="o">&lt;&lt;</span><span class="s">&quot;ERROR_MAIN_007: FATAL. Sizing error - endactive is greater than the size of active. &quot;</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_MAIN_007: FATAL. Sizing error - endactive is greater than the size of active. &quot;</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Please report this bug&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;endactive: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endactive</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;active.size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">active</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
@@ -378,7 +429,7 @@
         <span class="c1">// end of the simulation.</span>
         <span class="c1">// This also contains the start x and y position of the species.</span>
         <span class="n">data</span><span class="p">[</span><span class="n">number_start</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">number_start</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="p">.</span><span class="n">d01</span><span class="p">());</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">number_start</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">());</span>
         <span class="n">endactive</span><span class="o">++</span><span class="p">;</span>
         <span class="n">enddata</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>
@@ -400,7 +451,6 @@
 <span class="cp">#endif</span>
     <span class="k">return</span> <span class="n">number_start</span><span class="p">;</span>
 <span class="p">}</span>
-
 
 <span class="kt">bool</span> <span class="n">Tree</span><span class="o">::</span><span class="n">runSimulation</span><span class="p">()</span>
 <span class="p">{</span>
@@ -426,14 +476,14 @@
             <span class="c1">// increase the counter of the number of moves (or generations) the lineage has undergone.</span>
             <span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">increaseGen</span><span class="p">();</span>
             <span class="c1">// Check if speciation happens</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">calcSpeciation</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">getSpecRate</span><span class="p">(),</span> <span class="mf">0.99999</span><span class="o">*</span><span class="n">spec</span><span class="p">,</span>
-                               <span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">getGenRate</span><span class="p">()))</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">calcSpeciation</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">getSpecRate</span><span class="p">(),</span> <span class="mf">0.99999</span> <span class="o">*</span> <span class="n">spec</span><span class="p">,</span>
+                              <span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">getGenRate</span><span class="p">()))</span>
             <span class="p">{</span>
                 <span class="n">speciation</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span>
             <span class="p">{</span>
-                <span class="c1">// remove the species data from the species list to be placed somewhere new.</span>
+                <span class="c1">// remove the species data from the species species_id_list to be placed somewhere new.</span>
                 <span class="n">removeOldPosition</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">);</span>
                 <span class="n">calcNextStep</span><span class="p">();</span>
 <span class="cp">#ifdef DEBUG</span>
@@ -570,7 +620,7 @@
 <span class="p">{</span>
     <span class="n">incrementGeneration</span><span class="p">();</span>
     <span class="c1">// choose a random lineage to die and be reborn out of those currently active</span>
-    <span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span> <span class="o">=</span> <span class="n">NR</span><span class="p">.</span><span class="n">i0</span><span class="p">(</span><span class="n">endactive</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// cannot be 0</span>
+    <span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">i0</span><span class="p">(</span><span class="n">endactive</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// cannot be 0</span>
     <span class="c1">// Rejection sample based on reproductive potential</span>
     <span class="n">updateStepCoalescenceVariables</span><span class="p">();</span>
 <span class="p">}</span>
@@ -581,7 +631,7 @@
     <span class="n">this_step</span><span class="p">.</span><span class="n">coal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">speciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">chosen</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">speciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// alter the data such that it reflects the speciation event.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">data_position</span> <span class="o">=</span> <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getReference</span><span class="p">();</span>
@@ -645,7 +695,7 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">calcNextStep</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">random_lineage</span> <span class="o">=</span> <span class="n">NR</span><span class="p">.</span><span class="n">i0</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">deme</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">random_lineage</span> <span class="o">=</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">i0</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">deme</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="n">random_lineage</span> <span class="o">!=</span> <span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span> <span class="o">&amp;&amp;</span> <span class="n">random_lineage</span> <span class="o">&lt;=</span> <span class="n">endactive</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="c1">// then we have a coalescence event</span>
@@ -661,7 +711,7 @@
     <span class="k">return</span> <span class="n">checkSpeciation</span><span class="p">(</span><span class="n">random_number</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">no_generations</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">coalescenceEvent</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">chosen</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">coalchosen</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">coalescenceEvent</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">coalchosen</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// coalescence occured, so we need to adjust the data appropriatedly</span>
     <span class="c1">// our chosen lineage has merged with the coalchosen lineage, so we need to sync up the data.</span>
@@ -677,13 +727,12 @@
                 <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">getMinmax</span><span class="p">()));</span>  <span class="c1">// set the new minmax to the maximum of the two minimums.</span>
     <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">setMinmax</span><span class="p">(</span><span class="n">active</span><span class="p">[</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getMinmax</span><span class="p">());</span>
     <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setGenerationRate</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="p">.</span><span class="n">d01</span><span class="p">());</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">());</span>
     <span class="n">active</span><span class="p">[</span><span class="n">chosen</span><span class="p">].</span><span class="n">setReference</span><span class="p">(</span><span class="n">enddata</span><span class="p">);</span>
     <span class="n">active</span><span class="p">[</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">setReference</span><span class="p">(</span><span class="n">enddata</span><span class="p">);</span>
     <span class="c1">//      removeOldPosition(chosen);</span>
     <span class="n">switchPositions</span><span class="p">(</span><span class="n">chosen</span><span class="p">);</span>
 <span class="p">}</span>
-
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">checkTimeUpdate</span><span class="p">()</span>
 <span class="p">{</span>
@@ -707,53 +756,65 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">addLineages</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation_in</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">auto</span> <span class="n">added_data</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">deme_sample</span> <span class="o">*</span> <span class="n">deme</span><span class="p">));</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">added_active</span> <span class="o">=</span> <span class="n">added_data</span> <span class="o">-</span> <span class="n">endactive</span><span class="p">;</span>
-    <span class="n">checkSimSize</span><span class="p">(</span><span class="n">added_data</span><span class="p">,</span> <span class="n">added_active</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">number_added</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">deme_sample</span> <span class="o">*</span> <span class="n">deme</span><span class="p">));</span>
+    <span class="c1">// Store all the data lineages to add in a vector</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">data_to_add</span><span class="p">{};</span>
     <span class="c1">// change those that already exist to tips</span>
     <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">endactive</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">makeTip</span><span class="p">(</span><span class="n">endactive</span><span class="p">,</span> <span class="n">generation_in</span><span class="p">);</span>
+        <span class="c1">// With probability deme_sample, just change the active lineage to a tip.</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">checkProportionAdded</span><span class="p">(</span><span class="n">deme_sample</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">number_added</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">number_added</span> <span class="o">--</span><span class="p">;</span>
+            <span class="n">makeTip</span><span class="p">(</span><span class="n">endactive</span><span class="p">,</span> <span class="n">generation_in</span><span class="p">,</span> <span class="n">data_to_add</span><span class="p">);</span>
+        <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">added_active</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="n">checkSimSize</span><span class="p">(</span><span class="n">data_to_add</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="n">number_added</span><span class="p">,</span> <span class="n">number_added</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span> <span class="nl">item</span> <span class="p">:</span> <span class="n">data_to_add</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">enddata</span> <span class="o">++</span><span class="p">;</span>
-        <span class="n">endactive</span> <span class="o">++</span><span class="p">;</span>
-        <span class="n">active</span><span class="p">[</span><span class="n">endactive</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="n">enddata</span><span class="p">,</span> <span class="n">endactive</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation_in</span><span class="p">);</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="p">.</span><span class="n">d01</span><span class="p">());</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">endactive</span> <span class="o">!=</span> <span class="n">added_data</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">number_added</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Error whilst adding lineages. Please report this bug.&quot;</span><span class="p">);</span>
+        <span class="n">enddata</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">endactive</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">active</span><span class="p">[</span><span class="n">endactive</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="n">enddata</span><span class="p">,</span> <span class="n">endactive</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">generation_in</span><span class="p">);</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">());</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
+<span class="kt">bool</span> <span class="n">Tree</span><span class="o">::</span><span class="n">checkProportionAdded</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">proportion_added</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">proportion_added</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">checkSimSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_active</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// need to be triple the size of the maximum number of individuals plus enddata</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">min_data</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">req_data</span><span class="p">)</span> <span class="o">+</span> <span class="n">enddata</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">min_active</span> <span class="o">=</span> <span class="n">endactive</span> <span class="o">+</span> <span class="n">req_active</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">min_data</span><span class="p">)</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">min_data</span> <span class="o">=</span> <span class="n">enddata</span> <span class="o">+</span> <span class="n">req_data</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="c1">// Take into account future coalescence events</span>
+    <span class="n">min_data</span> <span class="o">+=</span> <span class="n">min_active</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">min_data</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="c1">// change the size of data</span>
         <span class="n">data</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">min_data</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">if</span><span class="p">(</span><span class="n">active</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">min_active</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">active</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">min_active</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="c1">// change the size of active.</span>
         <span class="n">active</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">min_active</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">makeTip</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">tmp_active</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generationin</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">makeTip</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">tmp_active</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generationin</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">active</span><span class="p">[</span><span class="n">tmp_active</span><span class="p">].</span><span class="n">getReference</span><span class="p">();</span>
     <span class="k">if</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">reference</span><span class="p">].</span><span class="n">isTip</span><span class="p">())</span>
     <span class="p">{</span>
-        <span class="n">convertTip</span><span class="p">(</span><span class="n">tmp_active</span><span class="p">,</span> <span class="n">generationin</span><span class="p">);</span>
+        <span class="n">convertTip</span><span class="p">(</span><span class="n">tmp_active</span><span class="p">,</span> <span class="n">generationin</span><span class="p">,</span> <span class="n">data_added</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
@@ -762,23 +823,20 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">convertTip</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">convertTip</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">enddata</span><span class="o">++</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">enddata</span> <span class="o">&gt;=</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Cannot add tip - no space in data. Check size calculations.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setup</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getXpos</span><span class="p">(),</span> <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getYpos</span><span class="p">(),</span>
+    <span class="n">TreeNode</span> <span class="n">tmp_tree_node</span><span class="p">;</span>
+    <span class="n">tmp_tree_node</span><span class="p">.</span><span class="n">setup</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getXpos</span><span class="p">(),</span> <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getYpos</span><span class="p">(),</span>
                         <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getXwrap</span><span class="p">(),</span>
                         <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getYwrap</span><span class="p">(),</span> <span class="n">generationin</span><span class="p">);</span>
     <span class="c1">// Now link the old tip to the new tip</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">setParent</span><span class="p">(</span><span class="n">enddata</span><span class="p">);</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setGenerationRate</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">enddata</span><span class="p">].</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="p">.</span><span class="n">d01</span><span class="p">());</span>
-    <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setReference</span><span class="p">(</span><span class="n">enddata</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">data_pos</span> <span class="o">=</span> <span class="n">enddata</span> <span class="o">+</span> <span class="n">data_added</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getReference</span><span class="p">()].</span><span class="n">setParent</span><span class="p">(</span><span class="n">data_pos</span><span class="p">);</span>
+    <span class="n">tmp_tree_node</span><span class="p">.</span><span class="n">setGenerationRate</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">tmp_tree_node</span><span class="p">.</span><span class="n">setSpec</span><span class="p">(</span><span class="n">NR</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">());</span>
+    <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setReference</span><span class="p">(</span><span class="n">data_pos</span><span class="p">);</span>
+    <span class="n">data_added</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_tree_node</span><span class="p">);</span>
 <span class="p">}</span>
-
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">applySpecRate</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">sr</span><span class="p">,</span> <span class="kt">double</span> <span class="n">t</span><span class="p">)</span>
 <span class="p">{</span>
@@ -796,7 +854,7 @@
     <span class="n">community</span><span class="p">.</span><span class="n">calcSpeciesAbundance</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">Tree</span><span class="o">::</span><span class="n">getCumulativeAbundances</span><span class="p">()</span>
+<span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">Tree</span><span class="o">::</span><span class="n">getCumulativeAbundances</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">community</span><span class="p">.</span><span class="n">getCumulativeAbundances</span><span class="p">();</span>
 <span class="p">}</span>
@@ -805,13 +863,17 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">community</span><span class="p">.</span><span class="n">hasImportedData</span><span class="p">())</span>
     <span class="p">{</span>
+        <span class="n">community</span><span class="p">.</span><span class="n">setSimParameters</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sim_parameters</span><span class="p">);</span>
         <span class="n">community</span><span class="p">.</span><span class="n">setDatabase</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="n">community</span><span class="p">.</span><span class="n">resetTree</span><span class="p">();</span>
     <span class="n">community</span><span class="p">.</span><span class="n">internalOption</span><span class="p">();</span>
-    <span class="n">community</span><span class="p">.</span><span class="n">overrideProtractedParameters</span><span class="p">(</span><span class="n">getProtractedGenerationMin</span><span class="p">(),</span> <span class="n">getProtractedGenerationMax</span><span class="p">());</span>
+    <span class="n">ProtractedSpeciationParameters</span> <span class="n">tmp</span><span class="p">;</span>
+    <span class="n">tmp</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="n">getProtractedGenerationMin</span><span class="p">();</span>
+    <span class="n">tmp</span><span class="p">.</span><span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="n">getProtractedGenerationMax</span><span class="p">();</span>
+    <span class="n">community</span><span class="p">.</span><span class="n">overrideProtractedParameters</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
     <span class="n">community</span><span class="p">.</span><span class="n">setProtracted</span><span class="p">(</span><span class="n">getProtracted</span><span class="p">());</span>
-    <span class="n">community</span><span class="p">.</span><span class="n">addCalculationPerformed</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="n">community</span><span class="p">.</span><span class="n">addCalculationPerformed</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">tmp</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">applySpecRate</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">sr</span><span class="p">)</span>
@@ -821,20 +883,24 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">applyMultipleRates</span><span class="p">()</span>
 <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">sim_complete</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulation is not complete - cannot apply speciation rates.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No additional speciation rates to apply.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">speciation_rates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">spec</span><span class="p">);</span>
     <span class="c1">// Get only unique speciation rates</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">unique_speciation_rates</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="nl">s</span> <span class="p">:</span> <span class="n">speciation_rates</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="nl">s</span> <span class="p">:</span> <span class="n">speciation_rates</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">bool</span> <span class="n">add</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-        <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="nl">u</span> <span class="p">:</span> <span class="n">unique_speciation_rates</span><span class="p">)</span>
+        <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="nl">u</span> <span class="p">:</span> <span class="n">unique_speciation_rates</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="o">*</span><span class="mf">0.00001</span><span class="p">))</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s</span> <span class="o">*</span> <span class="mf">0.00001</span><span class="p">))</span>
             <span class="p">{</span>
                 <span class="n">add</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
             <span class="p">}</span>
@@ -890,11 +956,6 @@
                 <span class="c1">// Use the run spec if the rates are very close to equal</span>
                 <span class="n">applySpecRate</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
             <span class="p">}</span>
-            <span class="k">else</span>
-            <span class="p">{</span>
-                <span class="n">writeWarning</span><span class="p">(</span><span class="s">&quot;Speciation rate &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span>
-                                     <span class="s">&quot; less than simulation minimum (&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-            <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="n">community</span><span class="p">.</span><span class="n">writeNewCommunityParameters</span><span class="p">();</span>
@@ -927,13 +988,13 @@
 <span class="p">{</span>
 <span class="cp">#ifdef sql_ram</span>
     <span class="c1">// open connection to the database file</span>
-    <span class="n">remove</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sqloutname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....     &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sql_output_database</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....     &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">,</span> <span class="n">outdatabase</span><span class="p">);</span>
+    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">,</span> <span class="n">outdatabase</span><span class="p">);</span>
     <span class="c1">// create the backup object to write data to the file from memory.</span>
-    <span class="n">sqlite3_backup</span><span class="o">*</span> <span class="n">backupdb</span><span class="p">;</span>
+    <span class="n">sqlite3_backup</span> <span class="o">*</span><span class="n">backupdb</span><span class="p">;</span>
     <span class="n">backupdb</span> <span class="o">=</span> <span class="n">sqlite3_backup_init</span><span class="p">(</span><span class="n">outdatabase</span><span class="p">,</span> <span class="s">&quot;main&quot;</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="s">&quot;main&quot;</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">backupdb</span><span class="p">)</span>
     <span class="p">{</span>
@@ -954,15 +1015,15 @@
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_010: SQLite database file could not be opened. Check the folder exists and you &quot;</span>
-                    <span class="s">&quot;have write permissions. (REF3) Error code: &quot;</span>
-                 <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;have write permissions. (REF3) Error code: &quot;</span>
+               <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Attempted call &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; times&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeWarning</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="n">sqlite3_backup_finish</span><span class="p">(</span><span class="n">backupdb</span><span class="p">);</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sqloutname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....  done!              &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Writing to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sql_output_database</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ....  done!              &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="cp">#endif</span>
 <span class="p">}</span>
@@ -988,7 +1049,7 @@
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Tree</span><span class="o">::</span><span class="n">sortData</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="c1">// Sort and process the species list so that the useful information can be extracted from it.</span>
+    <span class="c1">// Sort and process the species species_id_list so that the useful information can be extracted from it.</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Finalising data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
@@ -1026,7 +1087,7 @@
         <span class="p">{</span>
             <span class="k">if</span><span class="p">((</span><span class="o">!</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">hasSpeciated</span><span class="p">()))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getParent</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getExistence</span><span class="p">()))</span>
             <span class="p">{</span>
-                <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;ERROR_MAIN_004: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span>
+                <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;ERROR_MAIN_004: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span>
                                             <span class="s">&quot; has not speciated and parent is 0.&quot;</span><span class="p">));</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -1047,7 +1108,7 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span><span class="o">&amp;</span> <span class="n">me</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span> <span class="o">&amp;</span><span class="n">me</span><span class="p">)</span>
     <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
         <span class="n">writeLog</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">me</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
@@ -1063,11 +1124,6 @@
 <span class="p">{</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Total generations simulated (steps): &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">generation</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">steps</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-<span class="cp">#ifdef DEBUG</span>
-    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Count dispersal, density fails: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">count_dispersal_fails</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">count_density_fails</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
-<span class="cp">#endif</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Setup time was &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">floor</span><span class="p">((</span><span class="n">sim_start</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; minutes &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">sim_start</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds&quot;</span>
        <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Simulation time was &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">floor</span><span class="p">((</span><span class="n">sim_finish</span> <span class="o">-</span> <span class="n">sim_start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; hours &quot;</span>
@@ -1077,13 +1133,25 @@
        <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">out_finish</span> <span class="o">-</span> <span class="n">sim_finish</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SQL output time was &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">floor</span><span class="p">((</span><span class="n">sim_end</span> <span class="o">-</span> <span class="n">out_finish</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; minutes &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">sim_end</span> <span class="o">-</span> <span class="n">out_finish</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span>
        <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-    <span class="n">time_taken</span> <span class="o">+=</span> <span class="p">(</span><span class="n">sim_end</span> <span class="o">-</span> <span class="n">out_finish</span><span class="p">);</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Total time taken was &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">floor</span><span class="p">((</span><span class="n">time_taken</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; hours &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
+    <span class="n">time_taken</span> <span class="o">+=</span> <span class="p">(</span><span class="n">sim_end</span> <span class="o">-</span> <span class="n">sim_finish</span><span class="p">);</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Total simulation and output time was &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">floor</span><span class="p">((</span><span class="n">time_taken</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; hours &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">floor</span><span class="p">((</span><span class="n">time_taken</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span> <span class="o">-</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">floor</span><span class="p">((</span><span class="n">time_taken</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; minutes &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">time_taken</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; seconds&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="p">}</span>
 
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">openSQLDatabase</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">database</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#ifdef sql_ram</span>
+        <span class="n">sqlite3_open</span><span class="p">(</span><span class="s">&quot;:memory:&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef sql_ram</span>
+        <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">,</span> <span class="n">database</span><span class="p">);</span>
+<span class="cp">#endif</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">sqlCreate</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1094,41 +1162,39 @@
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
     <span class="c1">// Create the folder if it doesn&#39;t exist</span>
-    <span class="n">sqloutname</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
-    <span class="n">string</span> <span class="n">sqlfolder</span> <span class="o">=</span> <span class="n">out_directory</span> <span class="o">+</span> <span class="s">&quot;/SQL_data/&quot;</span><span class="p">;</span>
+    <span class="n">sql_output_database</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">sqlfolder</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
     <span class="k">try</span>
     <span class="p">{</span>
-        <span class="n">createParent</span><span class="p">(</span><span class="n">sqlfolder</span><span class="p">);</span>
-        <span class="n">sqloutname</span> <span class="o">+=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/SQL_data/data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="p">(</span><span class="n">sqlfolder</span><span class="p">)))</span>
+        <span class="p">{</span>
+            <span class="n">createParent</span><span class="p">(</span><span class="n">sqlfolder</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">sql_output_database</span> <span class="o">+=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span> <span class="o">&amp;</span><span class="n">fe</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeWarning</span><span class="p">(</span><span class="n">fe</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
-        <span class="n">sqloutname</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
+        <span class="n">sql_output_database</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.db&quot;</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="n">remove</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">    Generating species list....              &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="c1">// for outputting the full data from the simulation in to a SQL file.</span>
-    <span class="n">sqlite3_stmt</span><span class="o">*</span> <span class="n">stmt</span><span class="p">;</span>
-    <span class="kt">char</span><span class="o">*</span> <span class="n">sErrMsg</span><span class="p">;</span>
+    <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">sErrMsg</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="c1">// Open a SQL database in memory. This will be written to disk later.</span>
 <span class="c1">// A check here can be done to write to disc directly instead to massively reduce RAM consumption</span>
-<span class="cp">#ifdef sql_ram</span>
-    <span class="n">sqlite3_open</span><span class="p">(</span><span class="s">&quot;:memory:&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="cp">#ifndef sql_ram</span>
-    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">,</span> <span class="n">database</span><span class="p">);</span>
-<span class="cp">#endif</span>
+    <span class="n">openSQLDatabase</span><span class="p">();</span>
     <span class="c1">// Create the command to be executed by adding to the string.</span>
     <span class="n">string</span> <span class="n">all_commands</span><span class="p">;</span>
     <span class="n">all_commands</span> <span class="o">=</span>
             <span class="s">&quot;CREATE TABLE SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, xval INT NOT NULL,&quot;</span><span class="p">;</span>
     <span class="n">all_commands</span> <span class="o">+=</span> <span class="s">&quot;yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, speciated INT NOT &quot;</span>
-            <span class="s">&quot;NULL, parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT &quot;</span>
-            <span class="s">&quot;NULL, gen_added DOUBLE NOT NULL);&quot;</span><span class="p">;</span>
+                    <span class="s">&quot;NULL, parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT &quot;</span>
+                    <span class="s">&quot;NULL, gen_added DOUBLE NOT NULL);&quot;</span><span class="p">;</span>
 
     <span class="c1">// Create the table within the SQL database</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">all_commands</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
@@ -1138,8 +1204,8 @@
         <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
         <span class="c1">// delete any old database files - this is risky, but there isn&#39;t a better way of ensuring that the file</span>
         <span class="c1">// actually gets created.</span>
-        <span class="n">remove</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-        <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open</span><span class="p">(</span><span class="n">sqloutname</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
+        <span class="n">remove</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open</span><span class="p">(</span><span class="n">sql_output_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">);</span>
         <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">all_commands</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
         <span class="p">{</span>
@@ -1152,8 +1218,8 @@
     <span class="p">}</span>
     <span class="c1">// Now create the prepared statement into which we shall insert the values from the table</span>
     <span class="n">all_commands</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO SPECIES_LIST &quot;</span>
-            <span class="s">&quot;(ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence,randnum,gen_alive,gen_added) &quot;</span>
-            <span class="s">&quot;VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)&quot;</span><span class="p">;</span>
+                   <span class="s">&quot;(ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence,randnum,gen_alive,gen_added) &quot;</span>
+                   <span class="s">&quot;VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)&quot;</span><span class="p">;</span>
     <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">all_commands</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">all_commands</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
 
     <span class="c1">// Start the transaction</span>
@@ -1190,8 +1256,8 @@
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                <span class="s">&quot;commands. Ensure SQL statements are properly cleared.&quot;</span>
-             <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+              <span class="s">&quot;commands. Ensure SQL statements are properly cleared.&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="c1">// try again</span>
         <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -1202,7 +1268,7 @@
             <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="s">&quot;END TRANSACTION;&quot;</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Attempt &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; failed...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                    <span class="s">&quot;commands. Ensure SQL statements are properly cleared.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                  <span class="s">&quot;commands. Ensure SQL statements are properly cleared.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
@@ -1212,8 +1278,8 @@
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL &quot;</span>
-                <span class="s">&quot;commands. Ensure SQL statements are properly cleared.&quot;</span>
-             <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+              <span class="s">&quot;commands. Ensure SQL statements are properly cleared.&quot;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="c1">// Vacuum the file so that the file size is reduced (reduces by around 3%)</span>
@@ -1230,22 +1296,22 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">sqlCreateSimulationParameters</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="kt">char</span><span class="o">*</span> <span class="n">sErrMsg</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">sErrMsg</span><span class="p">;</span>
 <span class="c1">// Now additionally store the simulation parameters (extremely useful data)</span>
     <span class="n">string</span> <span class="n">to_execute</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE SIMULATION_PARAMETERS (seed INT PRIMARY KEY not null, job_type INT NOT NULL,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT &quot;</span>
-            <span class="s">&quot;NULL, deme INT NOT NULL, &quot;</span><span class="p">;</span>
+                  <span class="s">&quot;NULL, deme INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;sample_size DOUBLE NOT NULL, max_time INT NOT NULL, dispersal_relative_cost DOUBLE NOT NULL, &quot;</span>
-            <span class="s">&quot;min_num_species &quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;INT NOT NULL, habitat_change_rate DOUBLE NOT NULL, gen_since_pristine DOUBLE NOT NULL, &quot;</span><span class="p">;</span>
+                  <span class="s">&quot;min_num_species &quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;INT NOT NULL, habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, &quot;</span>
-            <span class="s">&quot;coarse_map_y INT NOT NULL,&quot;</span><span class="p">;</span>
+                  <span class="s">&quot;coarse_map_y INT NOT NULL,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, coarse_map_scale DOUBLE NOT &quot;</span>
-            <span class="s">&quot;NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL,&quot;</span><span class="p">;</span>
+                  <span class="s">&quot;NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, &quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;pristine_coarse_map TEXT NOT NULL, pristine_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, &quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, &quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, dispersal_map TEXT NOT NULL);&quot;</span><span class="p">;</span>
@@ -1254,7 +1320,7 @@
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_SQL_008: Cannot start SQL transaction. Check memory database assignment and SQL commands.&quot;</span>
-             <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+           <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rc</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
@@ -1273,15 +1339,16 @@
 <span class="n">string</span> <span class="n">Tree</span><span class="o">::</span><span class="n">simulationParametersSqlInsertion</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">string</span> <span class="n">to_execute</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO SIMULATION_PARAMETERS VALUES(&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span>
-                 <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">the_task</span><span class="p">);</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">out_directory</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span> <span class="o">+</span> <span class="n">boost</span><span class="o">::</span><span class="n">lexical_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">spec</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span>
+    <span class="n">to_execute</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO SIMULATION_PARAMETERS VALUES(&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span>
+                 <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">the_task</span><span class="p">);</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">out_directory</span> <span class="o">+</span> <span class="s">&quot;&#39;,&quot;</span> <span class="o">+</span> <span class="n">boost</span><span class="o">::</span><span class="n">lexical_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">spec</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span>
                   <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">deme</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">deme_sample</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">maxtime</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">deme</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">deme_sample</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">maxtime</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">habitat_change_rate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">gen_since_pristine</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times_file</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">habitat_change_rate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+    <span class="n">to_execute</span> <span class="o">+=</span>
+            <span class="n">to_string</span><span class="p">((</span><span class="kt">long</span> <span class="kt">double</span><span class="p">)</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">gen_since_historical</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;,&#39;&quot;</span> <span class="o">+</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">times_file</span> <span class="o">+</span> <span class="s">&quot;&#39;,&#39;&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;none&#39;, 0, 0, 0, 0, 0, &#39;null&#39;, 0, 0, 0, 0, &#39;none&#39;, 1, 1, 1, 1, 0, 0, &#39;none&#39;, &#39;none&#39;,&quot;</span><span class="p">;</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">sim_complete</span><span class="p">);</span>
     <span class="n">to_execute</span> <span class="o">+=</span> <span class="s">&quot;, &#39;none&#39;, 0.0, 0, 0, &#39;none&#39;, &quot;</span><span class="p">;</span>
@@ -1307,22 +1374,19 @@
     <span class="c1">// This function saves the data to 4 files. One contains the main simulation parameters, the other 3 contain the</span>
     <span class="c1">// simulation results thus far</span>
     <span class="c1">// including the grid object, data object and active object.</span>
-    <span class="n">string</span> <span class="n">pause_folder</span> <span class="o">=</span> <span class="n">initiatePause</span><span class="p">();</span>
-    <span class="n">dumpMain</span><span class="p">(</span><span class="n">pause_folder</span><span class="p">);</span>
-    <span class="n">dumpActive</span><span class="p">(</span><span class="n">pause_folder</span><span class="p">);</span>
-    <span class="n">dumpData</span><span class="p">(</span><span class="n">pause_folder</span><span class="p">);</span>
-    <span class="n">completePause</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">out1</span> <span class="o">=</span> <span class="n">initiatePause</span><span class="p">();</span>
+    <span class="n">dumpMain</span><span class="p">(</span><span class="n">out1</span><span class="p">);</span>
+    <span class="n">dumpActive</span><span class="p">(</span><span class="n">out1</span><span class="p">);</span>
+    <span class="n">dumpData</span><span class="p">(</span><span class="n">out1</span><span class="p">);</span>
+    <span class="n">completePause</span><span class="p">(</span><span class="n">out1</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="n">string</span> <span class="n">Tree</span><span class="o">::</span><span class="n">initiatePause</span><span class="p">()</span>
+<span class="n">ofstream</span> <span class="n">Tree</span><span class="o">::</span><span class="n">initiatePause</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Pausing simulation...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Saving data to temp file in &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">out_directory</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;/Pause/ ...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-    <span class="n">ofstream</span> <span class="n">out</span><span class="p">;</span>
-    <span class="n">out</span><span class="p">.</span><span class="n">precision</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
-    <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
     <span class="c1">// Create the pause directory</span>
     <span class="n">string</span> <span class="n">pause_folder</span> <span class="o">=</span> <span class="n">out_directory</span> <span class="o">+</span> <span class="s">&quot;/Pause/&quot;</span><span class="p">;</span>
     <span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span> <span class="n">pause_dir</span><span class="p">(</span><span class="n">pause_folder</span><span class="p">);</span>
@@ -1332,22 +1396,27 @@
         <span class="p">{</span>
             <span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directory</span><span class="p">(</span><span class="n">pause_dir</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failure to create &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">out_directory</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;/Pause/&quot;</span>
-                 <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+               <span class="o">&lt;&lt;</span> <span class="s">&quot;.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Writing directly to output directory.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
             <span class="n">pause_folder</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="n">pause_folder</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_folder</span> <span class="o">+</span> <span class="s">&quot;Dump_main_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.csv&quot;</span><span class="p">;</span>
+    <span class="n">ofstream</span> <span class="n">out</span><span class="p">;</span>
+    <span class="n">out</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">completePause</span><span class="p">()</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">completePause</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span>
 <span class="p">{</span>
+    <span class="n">out</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
     <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;done!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SQL dump started&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
@@ -1362,14 +1431,10 @@
     <span class="n">writeTimes</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">dumpMain</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">dumpMain</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">try</span>
     <span class="p">{</span>
-        <span class="n">string</span> <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_folder</span> <span class="o">+</span> <span class="s">&quot;Dump_main_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.csv&quot;</span><span class="p">;</span>
-        <span class="n">ofstream</span> <span class="n">out</span><span class="p">;</span>
-        <span class="n">out</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
         <span class="c1">// Save that this simulation was not a protracted speciation sim</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">bIsProtracted</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="c1">// Saving the initial data to one file.</span>
@@ -1381,58 +1446,44 @@
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">endactive</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">startendactive</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">maxsimsize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">steps</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">generation</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">maxtime</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">deme_sample</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">spec</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">deme</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">sqloutname</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">NR</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sim_parameters</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">sql_output_database</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">NR</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sim_parameters</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
         <span class="c1">// now output the protracted speciation variables (there should be two of these).</span>
         <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">getProtractedVariables</span><span class="p">();</span>
-        <span class="n">out</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to perform main dump to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pause_folder</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to perform dump of main: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">dumpActive</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">dumpActive</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="c1">// Output the active object</span>
-        <span class="n">ofstream</span> <span class="n">out3</span><span class="p">;</span>
-        <span class="n">string</span> <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_folder</span> <span class="o">+</span> <span class="s">&quot;Dump_active_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.csv&quot;</span><span class="p">;</span>
-        <span class="n">out3</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
-        <span class="n">out3</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-        <span class="n">out3</span> <span class="o">&lt;&lt;</span> <span class="n">active</span><span class="p">;</span>
-        <span class="n">out3</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">active</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to perform active dump to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pause_folder</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to perform dump of active: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">dumpData</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">dumpData</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="c1">// Output the data object</span>
-        <span class="n">ofstream</span> <span class="n">out4</span><span class="p">;</span>
-        <span class="n">string</span> <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_folder</span> <span class="o">+</span> <span class="s">&quot;Dump_data_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.csv&quot;</span><span class="p">;</span>
-        <span class="n">out4</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
-        <span class="n">out4</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-        <span class="n">out4</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">;</span>
-        <span class="n">out4</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to perform data dump to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pause_folder</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to perform dump of data: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="n">writeError</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -1444,6 +1495,21 @@
         <span class="n">pause_sim_directory</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
         <span class="n">has_imported_pause</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">ifstream</span> <span class="n">Tree</span><span class="o">::</span><span class="n">openSaveFile</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">ifstream</span> <span class="n">in1</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_sim_directory</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_main_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span>
+                          <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
+    <span class="n">in1</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">in1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="n">es</span><span class="p">;</span>
+        <span class="n">es</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Cannot open file at &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">file_to_open</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">es</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">in1</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">setResumeParameters</span><span class="p">(</span>
@@ -1460,19 +1526,14 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadMainSave</span><span class="p">()</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadMainSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Loading data from temp file...main...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
-        <span class="n">ifstream</span> <span class="n">in1</span><span class="p">;</span>
-        <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_sim_directory</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_main_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span>
-                       <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
-        <span class="n">in1</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">);</span>
         <span class="c1">// Reading the initial data</span>
         <span class="n">string</span> <span class="n">string1</span><span class="p">;</span>
         <span class="c1">// First read our boolean which just determines whether the simulation is a protracted simulation or not.</span>
@@ -1484,12 +1545,12 @@
             <span class="k">if</span><span class="p">(</span><span class="n">getProtracted</span><span class="p">())</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Paused simulation is not a protracted speciation simulation. &quot;</span>
-                                              <span class="s">&quot;Cannot be resumed by this program. Please report this bug&quot;</span><span class="p">);</span>
+                                     <span class="s">&quot;Cannot be resumed by this program. Please report this bug&quot;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Paused simulation is a protracted speciation simulation. &quot;</span>
-                                              <span class="s">&quot;Cannot be resumed by this program. Please report this bug&quot;</span><span class="p">);</span>
+                                     <span class="s">&quot;Cannot be resumed by this program. Please report this bug&quot;</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">enddata</span> <span class="o">&gt;&gt;</span> <span class="n">seeded</span> <span class="o">&gt;&gt;</span> <span class="n">the_seed</span> <span class="o">&gt;&gt;</span> <span class="n">the_task</span><span class="p">;</span>
@@ -1507,8 +1568,8 @@
         <span class="n">has_imported_vars</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">deme_sample</span> <span class="o">&gt;&gt;</span> <span class="n">spec</span> <span class="o">&gt;&gt;</span> <span class="n">deme</span><span class="p">;</span>
         <span class="n">in1</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span>
-        <span class="n">getline</span><span class="p">(</span><span class="n">in1</span><span class="p">,</span> <span class="n">sqloutname</span><span class="p">);</span>
-        <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">NR</span><span class="p">;</span>
+        <span class="n">getline</span><span class="p">(</span><span class="n">in1</span><span class="p">,</span> <span class="n">sql_output_database</span><span class="p">);</span>
+        <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="o">*</span><span class="n">NR</span><span class="p">;</span>
         <span class="n">in1</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">sim_parameters</span><span class="p">;</span>
         <span class="k">if</span><span class="p">(</span><span class="n">maxtime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -1521,7 +1582,7 @@
             <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Time set to 0 on resume!&quot;</span><span class="p">);</span>
         <span class="p">}</span>
 <span class="cp">#endif</span>
-        <span class="n">NR</span><span class="p">.</span><span class="n">setDispersalMethod</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">m_prob</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">cutoff</span><span class="p">);</span>
+        <span class="n">NR</span><span class="o">-&gt;</span><span class="n">setDispersalMethod</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">m_prob</span><span class="p">,</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">cutoff</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">has_imported_pause</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">sim_parameters</span><span class="p">.</span><span class="n">output_directory</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
@@ -1530,7 +1591,6 @@
         <span class="kt">double</span> <span class="n">tmp1</span><span class="p">,</span> <span class="n">tmp2</span><span class="p">;</span>
         <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">tmp1</span> <span class="o">&gt;&gt;</span> <span class="n">tmp2</span><span class="p">;</span>
         <span class="n">setProtractedVariables</span><span class="p">(</span><span class="n">tmp1</span><span class="p">,</span> <span class="n">tmp2</span><span class="p">);</span>
-        <span class="n">in1</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
         <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="k">if</span><span class="p">(</span><span class="n">uses_temporal_sampling</span><span class="p">)</span>
@@ -1555,42 +1615,32 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">string</span> <span class="n">msg</span><span class="p">;</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">())</span> <span class="o">+</span> <span class="s">&quot;Failure to import parameters from &quot;</span> <span class="o">+</span> <span class="n">file_to_open</span><span class="p">;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Failure to import parameters from temp main: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadDataSave</span><span class="p">()</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadDataSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
-    <span class="c1">// Input the data object</span>
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Loading data from temp file...data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
-        <span class="n">ifstream</span> <span class="n">in4</span><span class="p">;</span>
-        <span class="c1">//      sprintf(file_to_open,&quot;%s/Pause/Data_%i_data.csv&quot;,out_directory,int(the_task));</span>
-        <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_sim_directory</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_data_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span>
-                       <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
-        <span class="n">in4</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">);</span>
-        <span class="n">in4</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
-        <span class="c1">//          os &lt;&lt; data[0] &lt;&lt; endl;</span>
-        <span class="c1">//          os &lt;&lt; data[1] &lt;&lt; endl;</span>
-        <span class="n">in4</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">string</span> <span class="n">msg</span><span class="p">;</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">())</span> <span class="o">+</span> <span class="s">&quot;Failure to import data from &quot;</span> <span class="o">+</span> <span class="n">file_to_open</span><span class="p">;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Failure to import data from temp data: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadActiveSave</span><span class="p">()</span>
+<span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">loadActiveSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">string</span> <span class="n">file_to_open</span><span class="p">;</span>
     <span class="k">try</span>
@@ -1599,17 +1649,12 @@
         <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">Loading data from temp file...active...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span>
         <span class="n">writeInfo</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="c1">// Input the active object</span>
-        <span class="n">ifstream</span> <span class="n">in3</span><span class="p">;</span>
-        <span class="n">file_to_open</span> <span class="o">=</span> <span class="n">pause_sim_directory</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;/Pause/Dump_active_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">the_task</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span>
-                       <span class="n">to_string</span><span class="p">(</span><span class="n">the_seed</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;.csv&quot;</span><span class="p">);</span>
-        <span class="n">in3</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_to_open</span><span class="p">);</span>
-        <span class="n">in3</span> <span class="o">&gt;&gt;</span> <span class="n">active</span><span class="p">;</span>
-        <span class="n">in3</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="n">in1</span> <span class="o">&gt;&gt;</span> <span class="n">active</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">string</span> <span class="n">msg</span><span class="p">;</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">())</span> <span class="o">+</span> <span class="s">&quot;Failure to import active from &quot;</span> <span class="o">+</span> <span class="n">file_to_open</span><span class="p">;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Failure to import data from temp active: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -1641,14 +1686,19 @@
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">simResume</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">initiateResume</span><span class="p">();</span>
+    <span class="c1">// open the save file</span>
+    <span class="k">auto</span> <span class="n">is</span> <span class="o">=</span> <span class="n">openSaveFile</span><span class="p">();</span>
     <span class="c1">// now load the objects</span>
-    <span class="n">loadMainSave</span><span class="p">();</span>
+    <span class="n">loadMainSave</span><span class="p">(</span><span class="n">is</span><span class="p">);</span>
     <span class="n">setObjectSizes</span><span class="p">();</span>
-    <span class="n">loadActiveSave</span><span class="p">();</span>
-    <span class="n">loadDataSave</span><span class="p">();</span>
+    <span class="n">loadActiveSave</span><span class="p">(</span><span class="n">is</span><span class="p">);</span>
+    <span class="n">loadDataSave</span><span class="p">(</span><span class="n">is</span><span class="p">);</span>
     <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sim_start</span><span class="p">);</span>
     <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\r</span><span class="s">Loading data from temp file...done!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="p">}</span>
+
+
+
 <span class="cp">#ifdef DEBUG</span>
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">validateLineages</span><span class="p">()</span>
@@ -1682,7 +1732,6 @@
     <span class="n">writeInfo</span><span class="p">(</span><span class="s">&quot;done</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
-
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">debugEndStep</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">try</span>
@@ -1697,7 +1746,7 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span><span class="o">&amp;</span> <span class="n">fe</span><span class="p">)</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">FatalException</span> <span class="o">&amp;</span><span class="n">fe</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Logging chosen:&quot;</span><span class="p">);</span>
         <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">chosen</span><span class="p">].</span><span class="n">logActive</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
@@ -1718,7 +1767,7 @@
 
 <span class="kt">void</span> <span class="n">Tree</span><span class="o">::</span><span class="n">debugCoalescence</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span> <span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span><span class="p">;</span>
     <span class="p">}</span>
@@ -1735,8 +1784,8 @@
         <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ERROR_MOVE_006: NON FATAL. Nwrap not set correctly. Check move programming function.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
         <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getXpos</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">||</span>
-       <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getYpos</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">||</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getXpos</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldx</span> <span class="o">||</span>
+       <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getYpos</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldy</span> <span class="o">||</span>
        <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getXwrap</span><span class="p">()</span> <span class="o">!=</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldxwrap</span> <span class="o">||</span>
        <span class="n">active</span><span class="p">[</span><span class="n">this_step</span><span class="p">.</span><span class="n">coalchosen</span><span class="p">].</span><span class="n">getYwrap</span><span class="p">()</span> <span class="o">!=</span> <span class="n">this_step</span><span class="p">.</span><span class="n">oldywrap</span><span class="p">)</span>
     <span class="p">{</span>
@@ -1772,7 +1821,6 @@
         <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Parent not set to 0 for active lineage.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
-
 
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 </pre></div>
@@ -1830,14 +1878,14 @@
         <li class="right" >
           <a href="file_necsim_Tree.cpp.html" title="File Tree.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Tree.cpp.html" >File Tree.cpp</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

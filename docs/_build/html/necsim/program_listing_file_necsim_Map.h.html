@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Map.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Map.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Map.h.html" title="File Map.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Map.h.html" accesskey="U">File Map.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,8 +66,8 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Map.h.html#file-necsim-map-h"><span class="std std-ref">File Map.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#ifndef MAP_H</span>
 <span class="cp">#define MAP_H</span>
 <span class="cp">#ifdef with_gdal</span>
@@ -75,20 +75,21 @@
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;gdal_priv.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;cpl_conv.h&gt; // for CPLMalloc()</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;CPLCustomHandlerNecsim.h&quot;</span><span class="cp"></span>
 
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 <span class="cp">#ifdef DEBUG</span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 
-<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 <span class="k">class</span> <span class="nc">Map</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
@@ -115,7 +116,7 @@
     <span class="k">using</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="k">operator</span><span class="o">+=</span><span class="p">;</span>
     <span class="k">using</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="k">operator</span><span class="p">[];</span>
 
-    <span class="n">Map</span><span class="p">()</span> <span class="o">:</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="n">Map</span><span class="p">()</span> <span class="o">:</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">GDALAllRegister</span><span class="p">();</span>
         <span class="n">poDataset</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
@@ -124,7 +125,7 @@
         <span class="n">blockXSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">blockYSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">noDataValue</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">CPLSetErrorHandler</span><span class="p">(</span><span class="n">cplCustomErrorHandler</span><span class="p">);</span>
+        <span class="n">CPLSetErrorHandler</span><span class="p">(</span><span class="n">cplNecsimCustomErrorHandler</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="o">~</span><span class="n">Map</span><span class="p">()</span>
@@ -189,12 +190,20 @@
     <span class="p">{</span>
         <span class="k">try</span>
         <span class="p">{</span>
-            <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetNoDataValue</span><span class="p">();</span>
+            <span class="kt">int</span> <span class="n">pbSuccess</span><span class="p">;</span>
+            <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetNoDataValue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pbSuccess</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">pbSuccess</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">noDataValue</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="n">out_of_range</span> <span class="o">&amp;</span><span class="n">out_of_range1</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">noDataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">noDataValue</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
         <span class="p">}</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No data value is: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">noDataValue</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="c1">// Check sizes match</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">poBand</span><span class="o">-&gt;</span><span class="n">GetRasterDataType</span><span class="p">();</span>
         <span class="kt">double</span> <span class="n">geoTransform</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
@@ -234,6 +243,16 @@
 
     <span class="p">}</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
+
+    <span class="kt">double</span> <span class="n">getUpperLeftX</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">upper_left_x</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">getUpperLeftY</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">upper_left_y</span><span class="p">;</span>
+    <span class="p">}</span>
 
     <span class="kt">void</span> <span class="n">import</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">filename</span><span class="p">)</span> <span class="k">override</span>
     <span class="p">{</span>
@@ -305,6 +324,7 @@
             <span class="n">opened_here</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
             <span class="n">offset_map</span><span class="p">.</span><span class="n">open</span><span class="p">();</span>
         <span class="p">}</span>
+        <span class="n">offset_map</span><span class="p">.</span><span class="n">getRasterBand</span><span class="p">();</span>
         <span class="n">offset_map</span><span class="p">.</span><span class="n">getMetaData</span><span class="p">();</span>
         <span class="k">return</span> <span class="n">opened_here</span><span class="p">;</span>
     <span class="p">}</span>
@@ -320,15 +340,14 @@
     <span class="kt">void</span> <span class="n">calculateOffset</span><span class="p">(</span><span class="n">Map</span> <span class="o">&amp;</span><span class="n">offset_map</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">offset_x</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">offset_y</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">auto</span> <span class="n">opened_here</span> <span class="o">=</span> <span class="n">openOffsetMap</span><span class="p">(</span><span class="n">offset_map</span><span class="p">);</span>
-        <span class="n">offset_x</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">round</span><span class="p">(</span><span class="n">offset_map</span><span class="p">.</span><span class="n">upper_left_x</span> <span class="o">-</span> <span class="n">upper_left_x</span> <span class="o">/</span> <span class="n">x_res</span><span class="p">));</span>
-        <span class="n">offset_y</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">round</span><span class="p">(</span><span class="n">offset_map</span><span class="p">.</span><span class="n">upper_left_y</span> <span class="o">-</span> <span class="n">upper_left_y</span> <span class="o">/</span> <span class="n">y_res</span><span class="p">));</span>
+        <span class="n">offset_x</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">round</span><span class="p">((</span><span class="n">upper_left_x</span> <span class="o">-</span> <span class="n">offset_map</span><span class="p">.</span><span class="n">upper_left_x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_res</span><span class="p">));</span>
+        <span class="n">offset_y</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">round</span><span class="p">((</span><span class="n">offset_map</span><span class="p">.</span><span class="n">upper_left_y</span> <span class="o">-</span> <span class="n">upper_left_y</span> <span class="p">)</span><span class="o">/</span> <span class="n">y_res</span><span class="p">));</span>
         <span class="n">closeOffsetMap</span><span class="p">(</span><span class="n">offset_map</span><span class="p">,</span> <span class="n">opened_here</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">roundedScale</span><span class="p">(</span><span class="n">Map</span> <span class="o">&amp;</span><span class="n">offset_map</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">auto</span> <span class="n">opened_here</span> <span class="o">=</span> <span class="n">openOffsetMap</span><span class="p">(</span><span class="n">offset_map</span><span class="p">);</span>
-        <span class="kt">double</span> <span class="n">offset_scale</span> <span class="o">=</span> <span class="n">offset_map</span><span class="p">.</span><span class="n">x_res</span><span class="p">;</span>
         <span class="n">closeOffsetMap</span><span class="p">(</span><span class="n">offset_map</span><span class="p">,</span> <span class="n">opened_here</span><span class="p">);</span>
         <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">offset_map</span><span class="p">.</span><span class="n">x_res</span> <span class="o">/</span> <span class="n">x_res</span><span class="p">));</span>
     <span class="p">}</span>
@@ -445,14 +464,32 @@
         <span class="p">}</span>
     <span class="p">}</span>
 
-    <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Map</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Map</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">writeOut</span><span class="p">(</span><span class="n">os</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">friend</span> <span class="n">istream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span> <span class="n">Map</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">friend</span> <span class="n">istream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">Map</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">readIn</span><span class="p">(</span><span class="n">is</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Map</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">poDataset</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">poDataset</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">poBand</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">poBand</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">blockXSize</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">blockXSize</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">blockYSize</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">blockYSize</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">noDataValue</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">noDataValue</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">filename</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">filename</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">dt</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">dt</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">cplErr</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">cplErr</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">upper_left_x</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">upper_left_x</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">upper_left_y</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">upper_left_y</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">x_res</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">x_res</span><span class="p">;</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">y_res</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">y_res</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
     <span class="p">}</span>
 
 <span class="p">};</span>
@@ -513,8 +550,6 @@
     <span class="n">dt</span> <span class="o">=</span> <span class="n">GDT_UInt32</span><span class="p">;</span>
     <span class="n">defaultImport</span><span class="p">();</span>
 <span class="p">}</span>
-
-
 
 <span class="k">template</span><span class="o">&lt;&gt;</span>
 <span class="kr">inline</span> <span class="kt">void</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;::</span><span class="n">internalImport</span><span class="p">()</span>
@@ -587,14 +622,14 @@
         <li class="right" >
           <a href="file_necsim_Map.h.html" title="File Map.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Map.h.html" >File Map.h</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

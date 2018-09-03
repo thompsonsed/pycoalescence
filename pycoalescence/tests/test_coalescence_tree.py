@@ -1,14 +1,17 @@
 """
 
 """
+import os
+import random
+import shutil
 import sqlite3
+import sys
 import unittest
 
 import numpy as np
-import random
+from setupTests import setUpAll, tearDownAll
 
 from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description
-from pycoalescence.tests.setup import setUpAll, tearDownAll
 
 
 def setUpModule():
@@ -19,11 +22,13 @@ def setUpModule():
 	t = CoalescenceTree("sample/sample.db")
 	t.clear_calculations()
 
+
 def tearDownModule():
 	"""
 	Removes the output directory
 	"""
 	tearDownAll()
+
 
 class TestNullSimulationErrors(unittest.TestCase):
 	"""
@@ -98,14 +103,14 @@ class TestParameterDescriptions(unittest.TestCase):
 					"grid_y": "the simulated grid y dimension",
 					"dispersal_relative_cost": "the relative rate of moving through non-habitat compared to habitat",
 					"fine_map_y_offset": "the number of cells the fine map is offset from the sample map in the y dimension, at the fine resolution",
-					"gen_since_pristine": "the number of generations that occur before the pristine, or historic, state is reached",
+					"gen_since_historical": "the number of generations that occur before the historical, or historic, state is reached",
 					"dispersal_method": "the dispersal method used. Can be one of 'normal', 'norm-uniform' or 'fat-tail'.",
-					"pristine_fine_map": "the pristine, or historic, coarse density map file location",
+					"historical_fine_map": "the historical, or historic, coarse density map file location",
 					"coarse_map_scale": "the scale of the coarse density map compared to the fine density map. 1 means equal density",
 					"grid_x": "the simulated grid x dimension",
 					"coarse_map_file": "the density map file location at the coarser resolution, covering a larger area",
 					"min_num_species": "the minimum number of species known to exist (currently has no effect)",
-					"pristine_coarse_map": "the pristine, or historic, coarse density map file location",
+					"historical_coarse_map": "the historical, or historic, coarse density map file location",
 					"m_probability": "the probability of choosing from the uniform dispersal kernel in normal-uniform dispersal",
 					"sigma": "the sigma dispersal value for normal, fat-tailed and normal-uniform dispersals",
 					"deme": "the number of individuals inhabiting a cell at a map density of 1",
@@ -149,12 +154,15 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-
-		cls.test = CoalescenceTree("sample/sample.db")
-		cls.test.clear_calculations()
+		dst = "output/sampledb0.db"
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copyfile("sample/sample.db", dst)
 		random.seed(2)
+		cls.test = CoalescenceTree(dst)
+		cls.test.clear_calculations()
 		cls.test.import_comparison_data("sample/PlotBiodiversityMetrics.db")
-		cls.test.calculate_comparison_octaves(True)
+		# cls.test.calculate_comparison_octaves(False)
 		cls.test.calculate_fragment_richness()
 		cls.test.calculate_fragment_octaves()
 		cls.test.calculate_octaves_error()
@@ -169,7 +177,13 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		Removes the files from output."
 		"""
 		cls.test.clear_calculations()
-		# pass
+
+	# pass
+
+	def testComparisonDataNoExistError(self):
+		c = CoalescenceTree("sample/sample.db")
+		with self.assertRaises(IOError):
+			c.import_comparison_data("sample/doesnotexist.db")
 
 	def testFragmentOctaves(self):
 		num = self.test.cursor.execute(
@@ -272,14 +286,28 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		with self.assertRaises(RuntimeError):
 			self.test2.calculate_fragment_octaves()
 
-	def testModelFitting(self):
+	@unittest.skipIf(sys.version[0] != '3', "Skipping python 3.x tests")
+	def testModelFitting2(self):
 		"""
 		Tests that the goodness-of-fit calculations are correctly performed.
 		"""
+		random.seed(2)
 		self.test.calculate_goodness_of_fit()
-		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.3014, places=3)
-		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.066, places=3)
-		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.924, places=3)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.30140801329929373, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
+
+	@unittest.skipIf(sys.version[0] == '3', "Skipping python 2.x tests")
+	def testModelFitting3(self):
+		"""
+		Tests that the goodness-of-fit calculations are correctly performed.
+		"""
+		random.seed(2)
+		self.test.calculate_goodness_of_fit()
+		self.assertAlmostEqual(self.test.get_goodness_of_fit(), 0.30140801329929373, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
+		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
+
 
 class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 	"""
@@ -291,8 +319,11 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-
-		cls.test = CoalescenceTree("sample/sample.db")
+		dst = "output/sampledb1.db"
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copyfile("sample/sample.db", dst)
+		cls.test = CoalescenceTree(dst)
 		cls.test.clear_calculations()
 		cls.test.import_comparison_data("sample/PlotBiodiversityMetrics.db")
 		cls.test.calculate_species_distance_similarity()
@@ -312,6 +343,7 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 		self.assertListEqual(species_distances[1], [1, 274])
 		self.assertListEqual(species_distances[2], [2, 289])
 
+
 class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 	"""
 	Tests errors are raised correctly for incorrect comparison data.
@@ -323,10 +355,14 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		random.seed(10)
+		dst = "output/sampledb2.db"
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copyfile("sample/sample.db", dst)
 		cls.test = CoalescenceTree()
-		cls.test.set_database("sample/sample.db")
+		cls.test.set_database(dst)
 		cls.test.import_comparison_data("sample/PlotBiodiversityMetricsNoAlpha.db")
-		cls.test.calculate_comparison_octaves(True)
+		cls.test.calculate_comparison_octaves(False)
 		cls.test.clear_calculations()
 		cls.test.calculate_fragment_richness()
 		cls.test.calculate_fragment_octaves()
@@ -351,6 +387,30 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 			self.test.calculate_goodness_of_fit()
 
 
+class TestSimulationAnalysisTemporal(unittest.TestCase):
+	"""Tests that applying multiple times works as expected."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Generates the analysis object."""
+		src = os.path.join("sample", "sample2.db")
+		dst = os.path.join("output", "sample2.db")
+		if not os.path.exists(dst):
+			shutil.copy(src, dst)
+		cls.tree = CoalescenceTree()
+		cls.tree.set_database(dst)
+		cls.tree.wipe_data()
+
+	def testTimesWrongFormatError(self):
+		"""Tests that an error is raised when the times are in the wrong format."""
+		with self.assertRaises(TypeError):
+			self.tree.set_speciation_parameters([0.4, 0.6], times=[0.1, 0.2, "notafloat"])
+		with self.assertRaises(TypeError):
+			self.tree.set_speciation_parameters([0.4, 0.6], times="notafloat")
+		self.tree.times = []
+		self.tree.set_speciation_parameters([0.4, 0.6], times=[0, 1, 10])
+		self.assertEqual([0.0, 1.0, 10.0], self.tree.times)
+
 
 class TestSimulationAnalysis(unittest.TestCase):
 	"""
@@ -360,16 +420,33 @@ class TestSimulationAnalysis(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
+		src = os.path.join("sample", "sample2.db")
+		dst = os.path.join("output", "sample2.db")
+		if not os.path.exists(dst):
+			shutil.copy(src, dst)
 		cls.tree = CoalescenceTree()
-		cls.tree.set_database("sample/sample2.db")
+		cls.tree.set_database(dst)
 		cls.tree.wipe_data()
-		cls.tree.set_speciation_params(record_spatial="T",
-									   record_fragments="sample/FragmentsTest.csv", speciation_rates=[0.5, 0.7],
-									   sample_file="sample/SA_samplemaskINT.tif")
-		cls.tree.apply_speciation()
+		cls.tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
+										   record_fragments=os.path.join("sample", "FragmentsTest.csv"),
+										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+		cls.tree.apply()
 		cls.tree.calculate_fragment_richness()
 		cls.tree.calculate_fragment_octaves()
 		np.random.seed(100)
+
+	def testFragmentConfigNoExistError(self):
+		"""Tests that an error is raised if the fragment config file does not exist."""
+		tree = CoalescenceTree(self.tree.file)
+		with self.assertRaises(IOError):
+			tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
+										   record_fragments=os.path.join("sample", "notafragmentconfig.csv"),
+										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+		with self.assertRaises(IOError):
+			tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
+										   record_fragments=os.path.join("sample", "example_historical_fine.tif"),
+										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+
 
 	def testReadsFragmentsRichness(self):
 		"""
@@ -378,14 +455,14 @@ class TestSimulationAnalysis(unittest.TestCase):
 		sim_params = self.tree.get_simulation_parameters()
 		expected_params = dict(seed=9, job_type=1, output_dir='output', speciation_rate=0.5, sigma=2.828427, tau=2.0,
 							   deme=1, sample_size=0.1, max_time=2.0, dispersal_relative_cost=1.0,
-							   min_num_species=1, habitat_change_rate=0.0, gen_since_pristine=200.0,
+							   min_num_species=1, habitat_change_rate=0.0, gen_since_historical=200.0,
 							   time_config_file='null', coarse_map_file='sample/SA_sample_coarse.tif',
 							   coarse_map_x=35, coarse_map_y=41, coarse_map_x_offset=11, coarse_map_y_offset=14,
 							   coarse_map_scale=1.0, fine_map_file='sample/SA_sample_fine.tif', fine_map_x=13,
 							   fine_map_y=13, fine_map_x_offset=0, fine_map_y_offset=0,
 							   sample_file='sample/SA_samplemaskINT.tif', grid_x=13, grid_y=13,
 							   sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
-							   pristine_coarse_map='none', pristine_fine_map='none', sim_complete=1,
+							   historical_coarse_map='none', historical_fine_map='none', sim_complete=1,
 							   dispersal_method='normal', m_probability=0.0, cutoff=0.0, landscape_type='closed',
 							   protracted=0, min_speciation_gen=0.0, max_speciation_gen=0.0, dispersal_map="none")
 		for key in sim_params.keys():
@@ -490,7 +567,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		"""
 		Tests that the sampling from the landscape works as intended
 		"""
-		number_dict = {"fragment1" : 3, "fragment2" : 10}
+		number_dict = {"fragment1": 3, "fragment2": 10}
 		np.random.seed(100)
 		self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1,
 																 community_reference=2))

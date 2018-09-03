@@ -8,8 +8,8 @@ Program Listing for File ProtractedTree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    //
    #include <vector>
    #include <string>
@@ -33,11 +33,9 @@ Program Listing for File ProtractedTree.h
        double speciation_generation_max;
    public:
        
-       ProtractedTree() : Tree()
+       ProtractedTree() : Tree(), speciation_generation_min(0.0), speciation_generation_max(0.0)
        {
            bIsProtracted = true;
-           speciation_generation_min = 0.0;
-           speciation_generation_max = 0.0;
        }
    
        bool calcSpeciation(const long double & random_number,

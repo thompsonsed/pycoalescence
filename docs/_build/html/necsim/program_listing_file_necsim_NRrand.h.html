@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File NRrand.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File NRrand.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_NRrand.h.html" title="File NRrand.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_NRrand.h.html" accesskey="U">File NRrand.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,42 +66,30 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_NRrand.h.html#file-necsim-nrrand-h"><span class="std std-ref">File NRrand.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#ifndef FATTAIL_H</span>
 <span class="cp">#define FATTAIL_H</span>
 
-<span class="c1">//</span>
-<span class="c1">//#define IM1 2147483563</span>
-<span class="c1">//#define IM2 2147483399</span>
-<span class="c1">//#define AM (1.0/IM1)</span>
-<span class="c1">//#define IMM1 (IM1-1)</span>
-<span class="c1">//#define IA1 40014</span>
-<span class="c1">//#define IA2 40692</span>
-<span class="c1">//#define IQ1 53668</span>
-<span class="c1">//#define IQ2 5277</span>
-<span class="c1">//#define IR1 12211</span>
-<span class="c1">//#define IR2 3791</span>
-<span class="c1">//#define NTAB 32</span>
-<span class="c1">//#define NDIV (1+IMM1/NTAB)</span>
-<span class="c1">//#define EPS 1.2e-8</span>
-<span class="c1">//#define RNMX (1.0-EPS)</span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iomanip&gt;</span><span class="cp"></span>
 
-<span class="cp"># include &lt;cstdio&gt;</span>
-<span class="cp"># include &lt;string&gt;</span>
-<span class="cp"># include &lt;iomanip&gt;</span>
-<span class="cp"># include &lt;cmath&gt;</span>
-<span class="cp"># include &lt;vector&gt;</span>
-<span class="cp"># include &lt;iostream&gt;</span>
-<span class="cp"># include &lt;fstream&gt;</span>
+<span class="cp">#define _USE_MATH_DEFINES</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;climits&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IM1</span> <span class="o">=</span> <span class="mi">2147483563</span><span class="p">;</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IM2</span> <span class="o">=</span> <span class="mi">2147483399</span><span class="p">;</span>
-<span class="k">const</span> <span class="kt">double</span> <span class="n">AM</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">IM1</span><span class="p">);</span>
+<span class="k">const</span> <span class="kt">double</span> <span class="n">AM</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">IM1</span><span class="p">);</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IMM1</span> <span class="o">=</span> <span class="p">(</span><span class="n">IM1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IA1</span> <span class="o">=</span> <span class="mi">40014</span><span class="p">;</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IA2</span> <span class="o">=</span> <span class="mi">40692</span><span class="p">;</span>
@@ -110,9 +98,10 @@
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IR1</span> <span class="o">=</span> <span class="mi">12211</span><span class="p">;</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">IR2</span> <span class="o">=</span> <span class="mi">3791</span><span class="p">;</span>
 <span class="k">const</span> <span class="kt">long</span> <span class="n">NTAB</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
-<span class="k">const</span> <span class="kt">double</span> <span class="n">NDIV</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">IMM1</span><span class="o">/</span><span class="n">NTAB</span><span class="p">);</span>
+<span class="k">const</span> <span class="kt">double</span> <span class="n">NDIV</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">IMM1</span> <span class="o">/</span> <span class="n">NTAB</span><span class="p">);</span>
 <span class="k">const</span> <span class="kt">double</span> <span class="n">EPS</span> <span class="o">=</span> <span class="mf">1.2e-8</span><span class="p">;</span>
-<span class="k">const</span> <span class="kt">double</span> <span class="nf">RNMX</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">EPS</span><span class="p">);</span>
+<span class="k">const</span> <span class="kt">double</span> <span class="nf">RNMX</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">EPS</span><span class="p">);</span>
+
 <span class="k">class</span> <span class="nc">NRrand</span>
 <span class="p">{</span>
 
@@ -135,6 +124,9 @@
 
     <span class="k">typedef</span> <span class="nf">double</span> <span class="p">(</span><span class="n">NRrand</span><span class="o">::*</span><span class="n">fptr</span><span class="p">)();</span> <span class="c1">// once setup will contain the dispersal function to use for this simulation.</span>
     <span class="n">fptr</span> <span class="n">dispersalFunction</span><span class="p">;</span>
+    <span class="c1">// once setup will contain the dispersal function for the minimum dispersal distance.</span>
+    <span class="k">typedef</span> <span class="nf">double</span> <span class="p">(</span><span class="n">NRrand</span><span class="o">::*</span><span class="n">fptr2</span><span class="p">)(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">);</span>
+    <span class="n">fptr2</span> <span class="n">dispersalFunctionMinDistance</span><span class="p">;</span>
     <span class="c1">// the probability that dispersal comes from the uniform distribution. This is only relevant for uniform dispersals.</span>
     <span class="kt">double</span> <span class="n">m_prob</span><span class="p">{};</span>
     <span class="c1">// the cutoff for the uniform dispersal function i.e. the maximum value to be drawn from the uniform distribution.</span>
@@ -146,6 +138,7 @@
         <span class="n">seeded</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">normflag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
         <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">dispersalFunctionMinDistance</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
@@ -177,6 +170,11 @@
         <span class="p">}</span>
     <span class="p">}</span>
 
+    <span class="kt">void</span> <span class="n">wipeSeed</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">seeded</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
     <span class="kt">double</span> <span class="n">d01</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">idum</span><span class="p">)</span> <span class="o">/</span> <span class="n">IQ1</span><span class="p">;</span>
@@ -196,7 +194,6 @@
         <span class="k">if</span><span class="p">(</span><span class="n">iy</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">iy</span> <span class="o">+=</span> <span class="n">IMM1</span><span class="p">;</span>
         <span class="k">if</span><span class="p">((</span><span class="n">temp</span> <span class="o">=</span> <span class="n">AM</span> <span class="o">*</span> <span class="n">iy</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">RNMX</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="c1">//os &lt;&lt; &quot;random call = &quot; &lt;&lt; &quot;RNMAX&quot; &lt;&lt; &quot;\n&quot;;</span>
             <span class="k">return</span> <span class="n">RNMX</span><span class="p">;</span> <span class="c1">//Because users don&#39;t expect endpoint values.</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">temp</span><span class="p">;</span>
@@ -205,7 +202,7 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i0</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
     <span class="p">}</span>
 
     <span class="kt">double</span> <span class="n">norm</span><span class="p">()</span>
@@ -234,12 +231,29 @@
         <span class="p">}</span>
     <span class="p">}</span>
 
-    <span class="kt">double</span> <span class="n">norm2D</span><span class="p">()</span>
+    <span class="kt">double</span> <span class="n">rayleigh</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="kt">double</span> <span class="n">distx</span><span class="p">,</span> <span class="n">disty</span><span class="p">;</span>
-        <span class="n">distx</span> <span class="o">=</span> <span class="n">norm</span><span class="p">();</span>
-        <span class="n">disty</span> <span class="o">=</span> <span class="n">norm</span><span class="p">();</span>
-        <span class="k">return</span> <span class="nf">pow</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">distx</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">disty</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">d01</span><span class="p">()),</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">rayleighMinDist</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">min_prob</span> <span class="o">=</span> <span class="n">rayleighCDF</span><span class="p">(</span><span class="n">dist</span><span class="p">);</span>
+        <span class="kt">double</span> <span class="n">rand_prob</span> <span class="o">=</span> <span class="n">min_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">min_prob</span><span class="p">)</span> <span class="o">*</span> <span class="n">d01</span><span class="p">();</span>
+        <span class="kt">double</span> <span class="n">out</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">rand_prob</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">out</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// This probably means that the rayleigh distribution has a less-than-machine-precision probability of</span>
+            <span class="c1">// producing this distance.</span>
+            <span class="c1">// Therefore, we just return the distance</span>
+            <span class="k">return</span> <span class="n">dist</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">rayleighCDF</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">pow</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)));</span>
     <span class="p">}</span>
 
     <span class="kt">void</span> <span class="n">setDispersalParams</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">sigmain</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">tauin</span><span class="p">)</span>
@@ -248,12 +262,23 @@
         <span class="n">tau</span> <span class="o">=</span> <span class="n">tauin</span><span class="p">;</span> <span class="c1">// used to invert the sign here, doesn&#39;t any more.</span>
     <span class="p">}</span>
 
-
     <span class="kt">double</span> <span class="n">fattail</span><span class="p">(</span><span class="kt">double</span> <span class="n">z</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">double</span> <span class="n">result</span><span class="p">;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">pow</span><span class="p">((</span><span class="n">pow</span><span class="p">(</span><span class="n">d01</span><span class="p">(),</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">z</span><span class="p">)))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">);</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">fattailCDF</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">distance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">M_PI</span><span class="o">*</span><span class="n">sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">))</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">distance</span><span class="o">*</span><span class="n">distance</span><span class="o">/</span><span class="p">(</span><span class="n">tau</span><span class="o">*</span><span class="n">sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)),</span> <span class="o">-</span><span class="p">(</span><span class="n">tau</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">fattailMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">prob</span> <span class="o">=</span> <span class="n">fattailCDF</span><span class="p">(</span><span class="n">min_distance</span><span class="p">);</span>
+        <span class="kt">double</span> <span class="n">random_number</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">+</span> <span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">prob</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">pow</span><span class="p">((</span><span class="n">tau</span> <span class="o">*</span> <span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">random_number</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">tau</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">));</span>
     <span class="p">}</span>
 
     <span class="c1">// this new version corrects the 1.0 to 2.0 and doesn&#39;t require the values to be passed every time.</span>
@@ -275,7 +300,7 @@
 
     <span class="kt">double</span> <span class="n">direction</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span><span class="kt">double</span> <span class="n">event_probability</span><span class="p">)</span>
@@ -294,7 +319,6 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">event_probability</span><span class="p">);</span>
 
-
     <span class="p">}</span>
 
     <span class="kt">double</span> <span class="n">normUniform</span><span class="p">()</span>
@@ -303,28 +327,70 @@
         <span class="k">if</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_prob</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="c1">// Then it does come from the uniform distribution</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cutoff</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">uniform</span><span class="p">();</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="n">norm2D</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">rayleigh</span><span class="p">();</span>
     <span class="p">}</span>
 
+    <span class="kt">double</span> <span class="n">normUniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_prob</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Then it does come from the uniform distribution</span>
+            <span class="k">return</span> <span class="n">uniformMinDistance</span><span class="p">(</span><span class="n">min_distance</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">rayleighMinDist</span><span class="p">(</span><span class="n">min_distance</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">uniform</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cutoff</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">uniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">min_distance</span> <span class="o">&gt;</span> <span class="n">cutoff</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Note this may introduce problems for studies of extremely isolated islands</span>
+            <span class="c1">// I&#39;ve left this in to make it much easier to deal with scenarios where the</span>
+            <span class="c1">// disappearing habitat pixel is further from the nearest habitat pixel than</span>
+            <span class="c1">// the maximum dispersal distance</span>
+            <span class="k">return</span> <span class="n">min_distance</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">min_distance</span> <span class="o">+</span> <span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">cutoff</span> <span class="o">-</span> <span class="n">min_distance</span><span class="p">);</span>
+    <span class="p">}</span>
 
     <span class="kt">double</span> <span class="n">uniformUniform</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="c1">// Then value comes from the first uniform distribution</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cutoff</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">);</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">uniform</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="c1">// Then the value comes from the second uniform distribution</span>
-        <span class="k">return</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">cutoff</span> <span class="o">+</span> <span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cutoff</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">cutoff</span> <span class="o">+</span> <span class="p">(</span><span class="n">uniform</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">uniformUniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Then value comes from the first uniform distribution</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">min_distance</span> <span class="o">&gt;</span> <span class="n">cutoff</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">uniformMinDistance</span><span class="p">(</span><span class="n">min_distance</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">// Then the value comes from the second uniform distribution</span>
+        <span class="k">return</span> <span class="n">uniformMinDistance</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">min_distance</span><span class="p">,</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">cutoff</span><span class="p">));</span>
     <span class="p">}</span>
 
     <span class="kt">void</span> <span class="n">setDispersalMethod</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">m_probin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">cutoffin</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;normal&quot;</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">norm2D</span><span class="p">;</span>
+            <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">rayleigh</span><span class="p">;</span>
+            <span class="n">dispersalFunctionMinDistance</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">rayleighMinDist</span><span class="p">;</span>
             <span class="k">if</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">invalid_argument</span><span class="p">(</span><span class="s">&quot;Cannot have negative sigma with normal dispersal&quot;</span><span class="p">);</span>
@@ -333,6 +399,7 @@
         <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;fat-tail&quot;</span> <span class="o">||</span> <span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;fat-tailed&quot;</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">fattail</span><span class="p">;</span>
+            <span class="n">dispersalFunctionMinDistance</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">fattailMinDistance</span><span class="p">;</span>
             <span class="k">if</span><span class="p">(</span><span class="n">tau</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">invalid_argument</span><span class="p">(</span><span class="s">&quot;Cannot have negative sigma or tau with fat-tailed dispersal&quot;</span><span class="p">);</span>
@@ -341,6 +408,7 @@
         <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;norm-uniform&quot;</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">normUniform</span><span class="p">;</span>
+            <span class="n">dispersalFunctionMinDistance</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">normUniformMinDistance</span><span class="p">;</span>
             <span class="k">if</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">invalid_argument</span><span class="p">(</span><span class="s">&quot;Cannot have negative sigma with normal dispersal&quot;</span><span class="p">);</span>
@@ -350,11 +418,14 @@
         <span class="p">{</span>
             <span class="c1">// This is just here for testing purposes</span>
             <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">uniformUniform</span><span class="p">;</span>
+            <span class="n">dispersalFunctionMinDistance</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">uniformUniformMinDistance</span><span class="p">;</span>
         <span class="p">}</span>
             <span class="c1">// Also provided the old version of the fat-tailed dispersal kernel</span>
         <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dispersal_method</span> <span class="o">==</span> <span class="s">&quot;fat-tail-old&quot;</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">dispersalFunction</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">fattail_old</span><span class="p">;</span>
+            <span class="n">dispersalFunctionMinDistance</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">NRrand</span><span class="o">::</span><span class="n">fattailMinDistance</span><span class="p">;</span>
+
             <span class="k">if</span><span class="p">(</span><span class="n">tau</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">2</span> <span class="o">||</span> <span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">invalid_argument</span><span class="p">(</span>
@@ -369,10 +440,14 @@
         <span class="n">cutoff</span> <span class="o">=</span> <span class="n">cutoffin</span><span class="p">;</span>
     <span class="p">}</span>
 
-
     <span class="kt">double</span> <span class="n">dispersal</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="n">min</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">LONG_MAX</span><span class="p">),</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">dispersalFunction</span><span class="p">)());</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">dispersalMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">min</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">LONG_MAX</span><span class="p">),</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">dispersalFunctionMinDistance</span><span class="p">)(</span><span class="n">min_distance</span><span class="p">));</span>
     <span class="p">}</span>
 
     <span class="c1">// to reconstruct distribution, use x = fattail/squrt(1+direction) , y = fattail/squrt(1+(direction^-1))</span>
@@ -491,14 +566,14 @@
         <li class="right" >
           <a href="file_necsim_NRrand.h.html" title="File NRrand.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_NRrand.h.html" >File NRrand.h</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

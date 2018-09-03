@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 James Rosindell
-The definitions for the constants defined here should not be altered. BSD-3 Licence. 
+The definitions for the constants defined here should not be altered. MIT Licence. 
 
 
 
@@ -38,7 +38,9 @@ Includes
 --------
 
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``algorithm``
 
 - ``climits``
 
@@ -62,6 +64,8 @@ Included By
 -----------
 
 
+- :ref:`file_necsim_ActivityMap.h`
+
 - :ref:`file_necsim_DispersalCoordinator.h`
 
 - :ref:`file_necsim_Tree.h`
@@ -69,8 +73,6 @@ Included By
 - :ref:`file_necsim_SpatialTree.h`
 
 - :ref:`file_necsim_SpeciesList.h`
-
-- :ref:`file_necsim_ReproductionMap.h`
 
 - :ref:`file_necsim_Metacommunity.h`
 
@@ -91,6 +93,13 @@ Functions
 
 
 - :ref:`function_RNMX`
+
+
+Defines
+-------
+
+
+- :ref:`define__USE_MATH_DEFINES`
 
 
 Variables

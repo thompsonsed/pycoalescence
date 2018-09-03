@@ -7,7 +7,7 @@ File SpatialTree.cpp
 
 
 
-Contains the :ref:`class_SpatialTree` class implementation as the main simulation object for spatially-explicit coalescence simulations. 
+Contains :ref:`class_SpatialTree` implementation as the main simulation object for spatially-explicit coalescence simulations. 
 
 
 .. contents:: Contents
@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 24/03/17
-BSD-3 Licence. 
+MIT Licence. 
 
 
 

@@ -1,8 +1,8 @@
-\hypertarget{class_map}{}\section{Map Class Reference}
-\label{class_map}\index{Map@{Map}}
+\hypertarget{class_map}{}\section{Map$<$ T $>$ Class Template Reference}
+\label{class_map}\index{Map$<$ T $>$@{Map$<$ T $>$}}
 
 
-Contains all maps and provides the functions for accessing a grid cell in the correct temporal and spacial location.  
+Read a a tif file to a matrix and obtain spatial metadata.  
 
 
 
@@ -11,824 +11,685 @@ Contains all maps and provides the functions for accessing a grid cell in the co
 
 
 
-Collaboration diagram for Map\+:\nopagebreak
+Inheritance diagram for Map$<$ T $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_map__coll__graph}
+\includegraphics[width=146pt]{class_map__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Map$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{class_map__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_map_a0f5ad0fd4563497b4214038cbca8b582}{Map} ()\hypertarget{class_map_a0f5ad0fd4563497b4214038cbca8b582}{}\label{class_map_a0f5ad0fd4563497b4214038cbca8b582}
+void \hyperlink{class_map_aa2764c9ae1c54c1821fa4f63b88fe0f3}{open} (const string \&filename\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Opens the provided filename to the po\+Dataset object. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a2389e09950706ef49640976837186c79}{open} ()\hypertarget{class_map_a2389e09950706ef49640976837186c79}{}\label{class_map_a2389e09950706ef49640976837186c79}
 
-\begin{DoxyCompactList}\small\item\em The default constructor. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a28f72a430bee372e855139adff0bc597}{get\+Habitat\+Max} ()
-\begin{DoxyCompactList}\small\item\em Gets the maximum habitat value from any map. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a4265717341e63a4662bf7ada49cc0c3d}{set\+Dims} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} mapvarsin)
-\begin{DoxyCompactList}\small\item\em Sets the dimensions of the grid, the area where the species are initially sampled from. This function must be run before any of the calc map functions to allow for the correct deme allocation. \end{DoxyCompactList}\item 
-bool {\bfseries check\+Map\+Exists} ()\hypertarget{class_map_ab74d57e0de40b6e16c7bb62489ecff5c}{}\label{class_map_ab74d57e0de40b6e16c7bb62489ecff5c}
+\begin{DoxyCompactList}\small\item\em Overloaded open for using the preset file name. \end{DoxyCompactList}\item 
+bool \hyperlink{class_map_a19f6874b008fcbfac213341d05c2f443}{is\+Open} ()
+\begin{DoxyCompactList}\small\item\em Checks if the connection to the map file has already been opened. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ad73fafd17ff95872e9b63945584ae81f}{close} ()\hypertarget{class_map_ad73fafd17ff95872e9b63945584ae81f}{}\label{class_map_ad73fafd17ff95872e9b63945584ae81f}
 
-\item 
-void \hyperlink{class_map_ab3c9e77675ad9ca1d34e9ff8e861901d}{calc\+Fine\+Map} ()\hypertarget{class_map_ab3c9e77675ad9ca1d34e9ff8e861901d}{}\label{class_map_ab3c9e77675ad9ca1d34e9ff8e861901d}
+\begin{DoxyCompactList}\small\item\em Destroys the connection to the dataset. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ade2338d7a8d598c343208b633f8a3a93}{get\+Raster\+Band} ()\hypertarget{class_map_ade2338d7a8d598c343208b633f8a3a93}{}\label{class_map_ade2338d7a8d598c343208b633f8a3a93}
 
-\begin{DoxyCompactList}\small\item\em Imports the fine map object from file and calculates the correct values at each point. Without a map to input, the fine map will simply be a matrix of 1s. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_ab1d1bac59d3e1518deaa2ebc561a7f82}{calc\+Pristine\+Fine\+Map} ()\hypertarget{class_map_ab1d1bac59d3e1518deaa2ebc561a7f82}{}\label{class_map_ab1d1bac59d3e1518deaa2ebc561a7f82}
+\begin{DoxyCompactList}\small\item\em Sets the raster band to the first raster. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a4e441dcda33d78bef193b1ad1265b5e8}{get\+Block\+Sizes} ()\hypertarget{class_map_a4e441dcda33d78bef193b1ad1265b5e8}{}\label{class_map_a4e441dcda33d78bef193b1ad1265b5e8}
 
-\begin{DoxyCompactList}\small\item\em Imports the pristine fine map object from file and calculates the correct values at each point. Without a map to input, the pristine fine map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_ac0b46ec7e4792d6ad3d7bdcf358ecabf}{calc\+Coarse\+Map} ()\hypertarget{class_map_ac0b46ec7e4792d6ad3d7bdcf358ecabf}{}\label{class_map_ac0b46ec7e4792d6ad3d7bdcf358ecabf}
+\begin{DoxyCompactList}\small\item\em Obtains the x and y dimensions from the tif file for reading in blocks. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a180284cfba3442eb3d62fc41d0d8f546}{get\+Meta\+Data} ()\hypertarget{class_map_a180284cfba3442eb3d62fc41d0d8f546}{}\label{class_map_a180284cfba3442eb3d62fc41d0d8f546}
 
-\begin{DoxyCompactList}\small\item\em Imports the coarse map object from file and calculates the correct values at each point. Without a map to input, the coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a4efc51f5d4e2bb562cf4126a7f291f33}{calc\+Pristine\+Coarse\+Map} ()\hypertarget{class_map_a4efc51f5d4e2bb562cf4126a7f291f33}{}\label{class_map_a4efc51f5d4e2bb562cf4126a7f291f33}
-
-\begin{DoxyCompactList}\small\item\em Imports the pristine coarse map object from file and calculates the correct values at each point. Without a map to input, the pristine coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a1b3b545f5435170d29820b061a924378}{set\+Time\+Vars} (double gen\+\_\+since\+\_\+pristine\+\_\+in, double habitat\+\_\+change\+\_\+rate\+\_\+in)
-\begin{DoxyCompactList}\small\item\em Sets the time variables. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a7615f4c20da51b3a96d60f9fa89ec73e}{calc\+Offset} ()
-\begin{DoxyCompactList}\small\item\em Calculates the offset and extremeties of the fine map. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a123d710095a549030f2c801ccf9645f1}{validate\+Maps} ()\hypertarget{class_map_a123d710095a549030f2c801ccf9645f1}{}\label{class_map_a123d710095a549030f2c801ccf9645f1}
-
-\begin{DoxyCompactList}\small\item\em Checks that the map file sizes are correct and that each value on the fragmented maps is less than the pristine maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a0c71277515f9f2fc5e2ae586ae9d07f8}{update\+Map} (double generation)\hypertarget{class_map_a0c71277515f9f2fc5e2ae586ae9d07f8}{}\label{class_map_a0c71277515f9f2fc5e2ae586ae9d07f8}
-
-\begin{DoxyCompactList}\small\item\em Updates the maps to the newer map. \end{DoxyCompactList}\item 
-bool \hyperlink{class_map_a7c4ca1306850126bf6c040f1c0cc0754}{is\+Pristine} ()
-\begin{DoxyCompactList}\small\item\em Gets the pristine boolean. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_aff6628e343532689d5bdcee2433ac041}{set\+Pristine} (const bool \&b\+Pristinein)
-\begin{DoxyCompactList}\small\item\em Sets the pristine state of the system. \end{DoxyCompactList}\item 
-double \hyperlink{class_map_a56f158adbe67d3eea95e2537493851f1}{get\+Pristine} ()
-\begin{DoxyCompactList}\small\item\em Get the pristine map time. \end{DoxyCompactList}\item 
-string {\bfseries get\+Landscape\+Type} ()\hypertarget{class_map_a89f96e39e9111c0c6a05a1ee59e7a5d5}{}\label{class_map_a89f96e39e9111c0c6a05a1ee59e7a5d5}
+\begin{DoxyCompactList}\small\item\em Sets the no data, data type and data type name values from the tif file. \end{DoxyCompactList}\item 
+double \hyperlink{class_map_afd32790ea28d0c5aa99b582b2d474933}{get\+Upper\+LeftX} ()
+\begin{DoxyCompactList}\small\item\em Gets the upper left x (longitude) coordinate. \end{DoxyCompactList}\item 
+double \hyperlink{class_map_a2d7b63836d06b2710192e7c8afd38641}{get\+Upper\+LeftY} ()
+\begin{DoxyCompactList}\small\item\em Gets the upper left y (latitude) coordinate. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_ad1a25204dce37addc3453e091552b014}{import} (const string \&filename) override
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a csv file. \end{DoxyCompactList}\item 
+bool \hyperlink{class_map_a2306683b0b3b4ddb7d776d1ff60d4491}{import\+Tif} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a tif file using the gdal library functions. \end{DoxyCompactList}\item 
+bool \hyperlink{class_map_ade20cc1876ba2774f0f8274d432d89c3}{open\+Offset\+Map} (\hyperlink{class_map}{Map} \&offset\+\_\+map)
+\begin{DoxyCompactList}\small\item\em Opens the offset map and fetches the metadata. \end{DoxyCompactList}\item 
+void {\bfseries close\+Offset\+Map} (\hyperlink{class_map}{Map} \&offset\+\_\+map, const bool \&opened\+\_\+here)\hypertarget{class_map_a39d76e341e0f817d65ddf0100cfe5f26}{}\label{class_map_a39d76e341e0f817d65ddf0100cfe5f26}
 
 \item 
-void \hyperlink{class_map_af7067d6d076eb10b735dc08750dbf924}{check\+Pristine} (double generation)
-\begin{DoxyCompactList}\small\item\em Checks if the pristine state has been reached. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_acaff6d6881f7547b824cb1a9086f8094}{set\+Landscape} (string is\+\_\+infinite)
-\begin{DoxyCompactList}\small\item\em Sets the landscape functions to either infinite or finite. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{get\+Val} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version involves a call to the function pointer, $\ast$get\+Val\+Func, so that the correct call to either \hyperlink{class_map_a2c01cd7869a9500204381cdc231df27f}{get\+Val\+Finite()} or get\+Val\+Infinite is made. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a901ae65dbd0c471acde50a5425ae6a69}{get\+Val\+Coarse} (const double \&xval, const double \&yval, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value from the coarse maps, including linear interpolating between the pristine and present maps. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_adb6f68f81f080b0ff798a2b375e1563b}{get\+Val\+Fine} (const double \&xval, const double \&yval, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value from the fine maps, including linear interpolating between the pristine and present maps. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a2c01cd7869a9500204381cdc231df27f}{get\+Val\+Finite} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes finite landscape. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a89d1a01f4e88146dd6860f7d3c71a43b}{get\+Val\+Infinite} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes an infinite landscape. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a40ddaa602e7b0e65995638025234de64}{get\+Val\+Coarse\+Tiled} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes an infinite landscape of tiled coarse maps. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_ac9af706dce7adc8d8db17a6189abd1bd}{get\+Val\+Fine\+Tiled} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)
-\begin{DoxyCompactList}\small\item\em Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes an infinite landscape of tiled fine maps. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a12d17532ea880afc77b729f1005b6e4f}{convert\+Sample\+X\+To\+FineX} (const unsigned long \&x, const long \&xwrap)
-\begin{DoxyCompactList}\small\item\em Gets the x position on the fine map, given an x and x wrapping. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a69ba72442bd3cbf7ee892ea0d2b6e4a1}{convert\+Sample\+Y\+To\+FineY} (const unsigned long \&y, const long \&ywrap)
-\begin{DoxyCompactList}\small\item\em Gets the y position on the fine map, given a y and y wrapping. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_abd472c52b8aa58027621187de4a65683}{convert\+Fine\+To\+Sample} (long \&x, long \&xwrap, long \&y, long \&ywrap)
-\begin{DoxyCompactList}\small\item\em Converts the fine map coordinates to the sample grid coordinates. Main conversion is in a call to convert\+Coordinates, but also makes sure the returned types are long integers. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a5f31e18dd51244f51625b28e5314c68e}{get\+Initial\+Count} (double d\+Sample, \hyperlink{class_data_mask}{Data\+Mask} \&samplemask)
-\begin{DoxyCompactList}\small\item\em Counts the number of spaces available in the initial species space. Requires the samplemask to check the sampling area. \end{DoxyCompactList}\item 
-\hyperlink{struct_sim_parameters}{Sim\+Parameters} \hyperlink{class_map_ac560f241eb5a392d2599e11b00328964}{get\+Sim\+Parameters} ()
-\begin{DoxyCompactList}\small\item\em Gets the mapvars object for referencing simulation parameters. \end{DoxyCompactList}\item 
-bool \hyperlink{class_map_ac5e842ad3f8d76f2293a6b1be44071ca}{check\+Map} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double generation)
-\begin{DoxyCompactList}\small\item\em Checks whether the point is habitat or non-\/habitat. \end{DoxyCompactList}\item 
-bool \hyperlink{class_map_aae9663c2b5bb78e89e2c476d1d1a409b}{check\+Fine} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
-\begin{DoxyCompactList}\small\item\em Checks whether the point comes from the fine grid. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_af0f4a6a41c91e915614b56b2422d6d5a}{convert\+Coordinates} (double \&x, double \&y, long \&xwrap, long \&ywrap)
-\begin{DoxyCompactList}\small\item\em Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{class_map_a7c5b0623134a33511d7c17626c967176}{run\+Dispersal} (const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)
-\begin{DoxyCompactList}\small\item\em The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn\textquotesingle{}t need to perform all the checks until the edge of the fine grid. \end{DoxyCompactList}\item 
-string \hyperlink{class_map_af25b0713e794dfa189f0445ffcd511b8}{print\+Vars} ()
-\begin{DoxyCompactList}\small\item\em Prints some selected \hyperlink{class_map}{Map} variables to the terminal. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a7ded655c7db0e9d72816430b4f2c83a5}{clear\+Map} ()\hypertarget{class_map_a7ded655c7db0e9d72816430b4f2c83a5}{}\label{class_map_a7ded655c7db0e9d72816430b4f2c83a5}
+void \hyperlink{class_map_a200701b23560dd38238801522b234e78}{calculate\+Offset} (\hyperlink{class_map}{Map} \&offset\+\_\+map, long \&offset\+\_\+x, long \&offset\+\_\+y)
+\begin{DoxyCompactList}\small\item\em Calculates the offset between the two maps. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_map_a9862291ea99fe1718d758213b3687bd8}{rounded\+Scale} (\hyperlink{class_map}{Map} \&offset\+\_\+map)
+\begin{DoxyCompactList}\small\item\em Calculates the relative scale of this map compared to the offset map. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a0c17360ca7fa935d59f2169fd0007630}{internal\+Import} ()
+\begin{DoxyCompactList}\small\item\em Default importer when we rely on the default gdal method of converting between values. Note that importing doubles to ints results in the values being rounded down. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a414e6bc9305ab830836cf817cb4a0d60}{default\+Import} ()\hypertarget{class_map_a414e6bc9305ab830836cf817cb4a0d60}{}\label{class_map_a414e6bc9305ab830836cf817cb4a0d60}
 
-\begin{DoxyCompactList}\small\item\em Wipes the map of all variables. Only really useful for testing purposes. \end{DoxyCompactList}\item 
-void \hyperlink{class_map_a9610a8ee9c5baa8624074fc1ef6ba3e4}{recalculate\+Habitat\+Max} ()\hypertarget{class_map_a9610a8ee9c5baa8624074fc1ef6ba3e4}{}\label{class_map_a9610a8ee9c5baa8624074fc1ef6ba3e4}
+\begin{DoxyCompactList}\small\item\em Default import routine for any type. Provided as a separate function so implementation can be called from any template class type. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_aaefe833ab35a68ce54e7eec996c48971}{import\+From\+Double\+And\+Make\+Bool} ()\hypertarget{class_map_aaefe833ab35a68ce54e7eec996c48971}{}\label{class_map_aaefe833ab35a68ce54e7eec996c48971}
 
-\begin{DoxyCompactList}\small\item\em Recalculates the habitat map maximum by checking the maximums for each of the relevant map files (fine, coarse and pristines). \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Protected Types}
-\begin{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Imports from the supplied filename into the Geo\+Tiff object, converting doubles to booleans. The threshold for conversion is x$>$0.\+5 -\/$>$ true, false otherwise. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T2 $>$ }\\void \hyperlink{class_map_ae88574927ad3a38fc0a9bc253a9e4a7a}{import\+Using\+Buffer} (G\+D\+A\+L\+Data\+Type dt\+\_\+buff)
+\begin{DoxyCompactList}\small\item\em Imports from the supplied filename into the Geo\+Tiff object, converting doubles to booleans. The threshold for conversion is x$>$0.\+5 -\/$>$ true, false otherwise. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a03e0486e704090765d253b18a9dde0f5}{print\+Number\+Complete} (const uint32\+\_\+t \&j, unsigned int \&number\+\_\+printed)
+\begin{DoxyCompactList}\small\item\em Print the percentage complete during import. \end{DoxyCompactList}\item 
+void \hyperlink{class_map_a6387185da6dc3063cd2311ffab0a5fba}{check\+Tif\+Import\+Failure} ()\hypertarget{class_map_a6387185da6dc3063cd2311ffab0a5fba}{}\label{class_map_a6387185da6dc3063cd2311ffab0a5fba}
+
+\begin{DoxyCompactList}\small\item\em Checks the error code of the C\+P\+L\+Err object and formats the error. \end{DoxyCompactList}\item 
+\hyperlink{class_map}{Map} \& \hyperlink{class_map_a00f73ad13cb67e3c4836fae9614d6b40}{operator=} (const \hyperlink{class_map}{Map} \&m)
+\begin{DoxyCompactList}\small\item\em Equality operator. \end{DoxyCompactList}\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_map_aad03012fb1c3e434747e62804f3149e9}{internal\+Import} ()
+\begin{DoxyCompactList}\small\item\em Overloaded functions for importing from tifs and matching between gdal and C types. \end{DoxyCompactList}\item 
+{\footnotesize template$<$$>$ }\\void {\bfseries internal\+Import} ()\hypertarget{class_map_a32564b4934b1523465e5e3d7145af8f3}{}\label{class_map_a32564b4934b1523465e5e3d7145af8f3}
+
 \item 
-typedef unsigned long(Map\+::$\ast$ {\bfseries fptr}) (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&d\+Current\+Gen)\hypertarget{class_map_a0080b09c39d18cad51d83d5ec2bc2ce7}{}\label{class_map_a0080b09c39d18cad51d83d5ec2bc2ce7}
+{\footnotesize template$<$$>$ }\\void {\bfseries internal\+Import} ()\hypertarget{class_map_a2147ce914ccd1715f3630fea7684ffcb}{}\label{class_map_a2147ce914ccd1715f3630fea7684ffcb}
 
-\end{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\void {\bfseries internal\+Import} ()\hypertarget{class_map_a8cd164b26f77a264c266fa4a3d851885}{}\label{class_map_a8cd164b26f77a264c266fa4a3d851885}
+
+\item 
+{\footnotesize template$<$$>$ }\\void {\bfseries internal\+Import} ()\hypertarget{class_map_a483abbb9addc71bcd6afdece77956bb4}{}\label{class_map_a483abbb9addc71bcd6afdece77956bb4}
+
+\item 
+{\footnotesize template$<$$>$ }\\void {\bfseries internal\+Import} ()\hypertarget{class_map_a3d33777a41f2e3a3c818c6b24264a2df}{}\label{class_map_a3d33777a41f2e3a3c818c6b24264a2df}
+
+\item 
+void \hyperlink{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}{set\+Size} (unsigned long rows, unsigned long cols)
+\begin{DoxyCompactList}\small\item\em Sets the matrix size. Similar concept to that for Rows. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}{get\+Cols} () const 
+\begin{DoxyCompactList}\small\item\em Getter for the number of columns. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_matrix_a442879db6473eeab202928dc47992206}{get\+Rows} () const 
+\begin{DoxyCompactList}\small\item\em Getter for the number of rows. \end{DoxyCompactList}\item 
+\hyperlink{class_row}{Row}$<$ T $>$ \& \hyperlink{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{operator\mbox{[}$\,$\mbox{]}} (unsigned long index)
+\begin{DoxyCompactList}\small\item\em Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{operator+} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the + operator. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{operator-\/} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/ operator. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{operator+=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the += operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+\hyperlink{class_matrix}{Matrix} \& \hyperlink{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{operator-\/=} (const \hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the -\/= operator so that the new object is written to the current object. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{operator$\ast$} (const double s)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for scaling. \end{DoxyCompactList}\item 
+const \hyperlink{class_matrix}{Matrix} \hyperlink{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{operator$\ast$} (\hyperlink{class_matrix}{Matrix} \&m)
+\begin{DoxyCompactList}\small\item\em Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. \end{DoxyCompactList}\item 
+void \hyperlink{class_matrix_ae511e2f5874e7602fc968541efeefca1}{set\+Value} (const unsigned long \&x, const unsigned long \&y, const char $\ast$value)
+\begin{DoxyCompactList}\small\item\em Sets the value at the specified indices, including handling type conversion from char to the template class. \end{DoxyCompactList}\item 
+bool \hyperlink{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}{import\+Csv} (const string \&filename)
+\begin{DoxyCompactList}\small\item\em Imports the matrix from a csv file using the fast-\/csv-\/parser method. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_matrix}{Matrix}$<$ uint32\+\_\+t $>$ {\bfseries fine\+\_\+map}\hypertarget{class_map_a4579c0a75f27777739b8f13ec620fa21}{}\label{class_map_a4579c0a75f27777739b8f13ec620fa21}
+G\+D\+A\+L\+Dataset $\ast$ {\bfseries po\+Dataset}\hypertarget{class_map_ab25f4ed0c6612065dbda19cc1db10b75}{}\label{class_map_ab25f4ed0c6612065dbda19cc1db10b75}
 
 \item 
-\hyperlink{class_matrix}{Matrix}$<$ uint32\+\_\+t $>$ {\bfseries pristine\+\_\+fine\+\_\+map}\hypertarget{class_map_a807b35e2a3822cb98f92cf545cb85cf6}{}\label{class_map_a807b35e2a3822cb98f92cf545cb85cf6}
+G\+D\+A\+L\+Raster\+Band $\ast$ {\bfseries po\+Band}\hypertarget{class_map_ac6cbdae357af04320bb5d90aee486e33}{}\label{class_map_ac6cbdae357af04320bb5d90aee486e33}
 
 \item 
-\hyperlink{class_matrix}{Matrix}$<$ uint32\+\_\+t $>$ {\bfseries coarse\+\_\+map}\hypertarget{class_map_a67045641f66beb1d3689726cb23fbc29}{}\label{class_map_a67045641f66beb1d3689726cb23fbc29}
+unsigned long {\bfseries block\+X\+Size}\hypertarget{class_map_a929de1f15110afceeec89b47da506e67}{}\label{class_map_a929de1f15110afceeec89b47da506e67}
 
 \item 
-\hyperlink{class_matrix}{Matrix}$<$ uint32\+\_\+t $>$ {\bfseries pristine\+\_\+coarse\+\_\+map}\hypertarget{class_map_a6d2258eb1652f5d411d88a02efaf4862}{}\label{class_map_a6d2258eb1652f5d411d88a02efaf4862}
+unsigned long {\bfseries block\+Y\+Size}\hypertarget{class_map_ab02c8f5022c1835c135f202fe9b2eebd}{}\label{class_map_ab02c8f5022c1835c135f202fe9b2eebd}
 
 \item 
-\hyperlink{struct_sim_parameters}{Sim\+Parameters} {\bfseries mapvars}\hypertarget{class_map_afc7243e4b89be2a6e7340e8fa84c6679}{}\label{class_map_afc7243e4b89be2a6e7340e8fa84c6679}
+double {\bfseries no\+Data\+Value}\hypertarget{class_map_ac7c12737fe97556a4d03487716fa4f45}{}\label{class_map_ac7c12737fe97556a4d03487716fa4f45}
 
 \item 
-long {\bfseries fine\+\_\+x\+\_\+min}\hypertarget{class_map_ad1a45a6a48740e4ea0f0e02f7370318e}{}\label{class_map_ad1a45a6a48740e4ea0f0e02f7370318e}
+string {\bfseries filename}\hypertarget{class_map_a193db5e3339832c878c37336d39122e0}{}\label{class_map_a193db5e3339832c878c37336d39122e0}
 
 \item 
-long {\bfseries fine\+\_\+y\+\_\+min}\hypertarget{class_map_adb389e9c031b9f5d2eea869792ed4860}{}\label{class_map_adb389e9c031b9f5d2eea869792ed4860}
+G\+D\+A\+L\+Data\+Type {\bfseries dt} \{\}\hypertarget{class_map_a3dc928c65262f0c8f20f0f64e6cde40f}{}\label{class_map_a3dc928c65262f0c8f20f0f64e6cde40f}
 
 \item 
-long {\bfseries coarse\+\_\+x\+\_\+min}\hypertarget{class_map_ad7df363b8838c3ba53c1271b6567f446}{}\label{class_map_ad7df363b8838c3ba53c1271b6567f446}
+C\+P\+L\+Err {\bfseries cpl\+Err} \{C\+E\+\_\+\+None\}\hypertarget{class_map_a388da4db48d63ab579b600294a600c9d}{}\label{class_map_a388da4db48d63ab579b600294a600c9d}
 
 \item 
-long {\bfseries coarse\+\_\+y\+\_\+min}\hypertarget{class_map_a5156c05799e2281562e1903fdb256069}{}\label{class_map_a5156c05799e2281562e1903fdb256069}
+double {\bfseries upper\+\_\+left\+\_\+x} \{\}\hypertarget{class_map_ae3b72e22a19277aa531ae90f47c461b2}{}\label{class_map_ae3b72e22a19277aa531ae90f47c461b2}
 
 \item 
-long {\bfseries fine\+\_\+x\+\_\+max}\hypertarget{class_map_a9113839ec16bbea73081ed9f8f45bb69}{}\label{class_map_a9113839ec16bbea73081ed9f8f45bb69}
+double {\bfseries upper\+\_\+left\+\_\+y} \{\}\hypertarget{class_map_a37d531f2f186f90d3f4563e91f2623cb}{}\label{class_map_a37d531f2f186f90d3f4563e91f2623cb}
 
 \item 
-long {\bfseries fine\+\_\+y\+\_\+max}\hypertarget{class_map_a39fea920dc4900cfad9eb866926b52ee}{}\label{class_map_a39fea920dc4900cfad9eb866926b52ee}
+double {\bfseries x\+\_\+res} \{\}\hypertarget{class_map_ad385ffe20fb2ae2dc5fa1c6edf72649f}{}\label{class_map_ad385ffe20fb2ae2dc5fa1c6edf72649f}
 
 \item 
-long {\bfseries coarse\+\_\+x\+\_\+max}\hypertarget{class_map_aa0482e6238755990a0cbfae535c28145}{}\label{class_map_aa0482e6238755990a0cbfae535c28145}
+double {\bfseries y\+\_\+res} \{\}\hypertarget{class_map_aea5d0fe583fdc11aa94fb5eae6766644}{}\label{class_map_aea5d0fe583fdc11aa94fb5eae6766644}
 
 \item 
-long {\bfseries coarse\+\_\+y\+\_\+max}\hypertarget{class_map_a4d4031effac0eef4bc40e97e6bd0d4a1}{}\label{class_map_a4d4031effac0eef4bc40e97e6bd0d4a1}
+unsigned long {\bfseries num\+Cols} \{\}\hypertarget{class_matrix_a341aaedcfaac978957087bd0467dc527}{}\label{class_matrix_a341aaedcfaac978957087bd0467dc527}
 
 \item 
-long {\bfseries fine\+\_\+x\+\_\+offset}\hypertarget{class_map_ac28dd97be2767f531282ab16f1082201}{}\label{class_map_ac28dd97be2767f531282ab16f1082201}
+unsigned long {\bfseries num\+Rows} \{\}\hypertarget{class_matrix_ac1e96667d48c7845708f978ddd17475d}{}\label{class_matrix_ac1e96667d48c7845708f978ddd17475d}
 
 \item 
-long {\bfseries fine\+\_\+y\+\_\+offset}\hypertarget{class_map_a119d4f97bdfac4971a06e59f4f213e4c}{}\label{class_map_a119d4f97bdfac4971a06e59f4f213e4c}
-
-\item 
-long {\bfseries coarse\+\_\+x\+\_\+offset}\hypertarget{class_map_a4632cd90a5268e09e56dfb6b598b5cbd}{}\label{class_map_a4632cd90a5268e09e56dfb6b598b5cbd}
-
-\item 
-long {\bfseries coarse\+\_\+y\+\_\+offset}\hypertarget{class_map_ad08ca9fa985b9f04655bd72f33b4ff0f}{}\label{class_map_ad08ca9fa985b9f04655bd72f33b4ff0f}
-
-\item 
-unsigned long {\bfseries scale} \{\}\hypertarget{class_map_ab02a8112322ed5d3ca32212708542118}{}\label{class_map_ab02a8112322ed5d3ca32212708542118}
-
-\item 
-long {\bfseries x\+\_\+dim}\hypertarget{class_map_a1cb67128cea447224d2bcd7bf776e27d}{}\label{class_map_a1cb67128cea447224d2bcd7bf776e27d}
-
-\item 
-long {\bfseries y\+\_\+dim}\hypertarget{class_map_a77bfceb8443f3c5765d4925032346899}{}\label{class_map_a77bfceb8443f3c5765d4925032346899}
-
-\item 
-unsigned long {\bfseries deme} \{\}\hypertarget{class_map_a6e4e471035966189b5085bb6b82c2227}{}\label{class_map_a6e4e471035966189b5085bb6b82c2227}
-
-\item 
-bool {\bfseries check\+\_\+set\+\_\+dim}\hypertarget{class_map_ae1dfe0677a730f4389c299da9dd56598}{}\label{class_map_ae1dfe0677a730f4389c299da9dd56598}
-
-\item 
-double {\bfseries dispersal\+\_\+relative\+\_\+cost} \{\}\hypertarget{class_map_aeb8e8114c1bfa253379098978b50f603}{}\label{class_map_aeb8e8114c1bfa253379098978b50f603}
-
-\item 
-double {\bfseries update\+\_\+time}\hypertarget{class_map_aa61ad7fb290102bc5aa085b2b2a0db9e}{}\label{class_map_aa61ad7fb290102bc5aa085b2b2a0db9e}
-
-\item 
-double {\bfseries habitat\+\_\+change\+\_\+rate}\hypertarget{class_map_a7b408911660e9bdea9bd600f0149808d}{}\label{class_map_a7b408911660e9bdea9bd600f0149808d}
-
-\item 
-double {\bfseries gen\+\_\+since\+\_\+pristine}\hypertarget{class_map_aecea7aa734ff27cd11d362f3d6cf1f5b}{}\label{class_map_aecea7aa734ff27cd11d362f3d6cf1f5b}
-
-\item 
-double {\bfseries current\+\_\+map\+\_\+time}\hypertarget{class_map_a398f4c492eaceb4478745fb80f622d2b}{}\label{class_map_a398f4c492eaceb4478745fb80f622d2b}
-
-\item 
-bool {\bfseries is\+\_\+pristine}\hypertarget{class_map_a2310b482b9986a6a8e04e99c1b622bed}{}\label{class_map_a2310b482b9986a6a8e04e99c1b622bed}
-
-\item 
-bool {\bfseries has\+\_\+pristine}\hypertarget{class_map_a121203a1e2f05d718dbefcc086d3d7c0}{}\label{class_map_a121203a1e2f05d718dbefcc086d3d7c0}
-
-\item 
-unsigned long {\bfseries habitat\+\_\+max}\hypertarget{class_map_a023ee2f1943e4951c90b6432c4727b6e}{}\label{class_map_a023ee2f1943e4951c90b6432c4727b6e}
-
-\item 
-unsigned long {\bfseries fine\+\_\+max}\hypertarget{class_map_a22c982a0ab401a604f1b3f70084236aa}{}\label{class_map_a22c982a0ab401a604f1b3f70084236aa}
-
-\item 
-unsigned long {\bfseries coarse\+\_\+max}\hypertarget{class_map_a63bc1bd83bf9d720c1e73ac8d05f2ea0}{}\label{class_map_a63bc1bd83bf9d720c1e73ac8d05f2ea0}
-
-\item 
-unsigned long {\bfseries pristine\+\_\+fine\+\_\+max}\hypertarget{class_map_a53f737ddc03cf354a0e4d4fb676b2073}{}\label{class_map_a53f737ddc03cf354a0e4d4fb676b2073}
-
-\item 
-unsigned long {\bfseries pristine\+\_\+coarse\+\_\+max}\hypertarget{class_map_af92e8eded3e1d8113ea733d4ef24b5c0}{}\label{class_map_af92e8eded3e1d8113ea733d4ef24b5c0}
-
-\item 
-string {\bfseries landscape\+\_\+type}\hypertarget{class_map_a81e886ea2c2168c3d8b33a3e9502901a}{}\label{class_map_a81e886ea2c2168c3d8b33a3e9502901a}
-
-\item 
-string {\bfseries Next\+Map}\hypertarget{class_map_a8346e76eb734528fc6cffc2170517c3d}{}\label{class_map_a8346e76eb734528fc6cffc2170517c3d}
-
-\item 
-bool {\bfseries b\+Coarse}\hypertarget{class_map_aa2478803a3e80e91042d054de88e9ee1}{}\label{class_map_aa2478803a3e80e91042d054de88e9ee1}
-
-\item 
-unsigned int {\bfseries n\+Update} \{\}\hypertarget{class_map_ae91de9d71b1aa841d73adcacaf1777d8}{}\label{class_map_ae91de9d71b1aa841d73adcacaf1777d8}
-
-\item 
-fptr {\bfseries get\+Val\+Func}\hypertarget{class_map_af2ed0369327fb4dbe0e7f7fc5088920d}{}\label{class_map_af2ed0369327fb4dbe0e7f7fc5088920d}
+\hyperlink{class_row}{Row}$<$ T $>$ $\ast$ {\bfseries matrix}\hypertarget{class_matrix_a7a143ae112112155c9622ba17dc434c7}{}\label{class_matrix_a7a143ae112112155c9622ba17dc434c7}
 
 \end{DoxyCompactItemize}
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-ostream \& \hyperlink{class_map_a0da37af2cd547fa045e06a2da3c1039f}{operator$<$$<$} (ostream \&os, const \hyperlink{class_map}{Map} \&r)
-\begin{DoxyCompactList}\small\item\em Operator for outputting the \hyperlink{class_map}{Map} object variables to an output stream. This is used for storing the \hyperlink{class_map}{Map} object to file. \end{DoxyCompactList}\item 
-istream \& \hyperlink{class_map_a480da4c3f474c0af7eacdde650546dc1}{operator$>$$>$} (istream \&is, \hyperlink{class_map}{Map} \&r)
-\begin{DoxyCompactList}\small\item\em Operator for inputting the \hyperlink{class_map}{Map} object variables from an input stream. This is used for reading the \hyperlink{class_map}{Map} object from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+ostream \& \hyperlink{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}{operator$>$$>$} (ostream \&os, const \hyperlink{class_map}{Map} \&m)
+\begin{DoxyCompactList}\small\item\em Output operator. \end{DoxyCompactList}\item 
+istream \& \hyperlink{class_map_a2cb87ce0bbf263326a632b9537725d96}{operator$<$$<$} (istream \&is, \hyperlink{class_map}{Map} \&m)
+\begin{DoxyCompactList}\small\item\em Input operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-Contains all maps and provides the functions for accessing a grid cell in the correct temporal and spacial location. 
+\subsubsection*{template$<$class T$>$\\*
+class Map$<$ T $>$}
 
-The function \hyperlink{class_map_a7c5b0623134a33511d7c17626c967176}{run\+Dispersal()} also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with \hyperlink{class_map_a4265717341e63a4662bf7ada49cc0c3d}{set\+Dims()}, import the map files with \hyperlink{class_map_ab3c9e77675ad9ca1d34e9ff8e861901d}{calc\+Fine\+Map()}, \hyperlink{class_map_ac0b46ec7e4792d6ad3d7bdcf358ecabf}{calc\+Coarse\+Map()} etc, then set up the landscape type using \hyperlink{class_map_acaff6d6881f7547b824cb1a9086f8094}{set\+Landscape()} and \hyperlink{class_map_aff6628e343532689d5bdcee2433ac041}{set\+Pristine()}. Usage is then by \hyperlink{class_map_a7c5b0623134a33511d7c17626c967176}{run\+Dispersal()} for running a dispersal kernel on the landscape, and then \hyperlink{class_map_ab96b3097832c620a024184ed54d5e2d1}{get\+Val()} to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. 
+Read a a tif file to a matrix and obtain spatial metadata. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of the \hyperlink{class_matrix}{Matrix} to create. \\
+\hline
+\end{DoxyTemplParams}
+
 
 \subsection{Member Function Documentation}
-\index{Map@{Map}!calc\+Offset@{calc\+Offset}}
-\index{calc\+Offset@{calc\+Offset}!Map@{Map}}
-\subsubsection[{\texorpdfstring{calc\+Offset()}{calcOffset()}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::calc\+Offset (
+\index{Map@{Map}!calculate\+Offset@{calculate\+Offset}}
+\index{calculate\+Offset@{calculate\+Offset}!Map@{Map}}
+\subsubsection[{\texorpdfstring{calculate\+Offset(\+Map \&offset\+\_\+map, long \&offset\+\_\+x, long \&offset\+\_\+y)}{calculateOffset(Map &offset_map, long &offset_x, long &offset_y)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Map}$<$ T $>$\+::calculate\+Offset (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}$<$ T $>$ \&}]{offset\+\_\+map, }
+\item[{long \&}]{offset\+\_\+x, }
+\item[{long \&}]{offset\+\_\+y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a200701b23560dd38238801522b234e78}{}\label{class_map_a200701b23560dd38238801522b234e78}
+
+
+Calculates the offset between the two maps. 
+
+The offset\+\_\+map should be larger and contain this map, otherwise returned values will be negative
+
+\begin{DoxyNote}{Note}
+Opens a connection to the tif file (if it has not already been opened), which is then closed. If the connection is already open, then it will not be closed and it is assumed logic elsewhere achieves this.
+
+Offsets are returned as rounded integers at the resolution of the smaller map.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em offset\+\_\+map} & the offset map to read from \\
+\hline
+{\em offset\+\_\+x} & the x offset variable to fill \\
+\hline
+{\em offset\+\_\+y} & the y offset variable to fill \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!get\+Cols@{get\+Cols}}
+\index{get\+Cols@{get\+Cols}!Map@{Map}}
+\subsubsection[{\texorpdfstring{get\+Cols() const }{getCols() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ unsigned long {\bf Matrix}$<$ T $>$\+::get\+Cols (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\hypertarget{class_map_a7615f4c20da51b3a96d60f9fa89ec73e}{}\label{class_map_a7615f4c20da51b3a96d60f9fa89ec73e}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}{}\label{class_matrix_a9b4ce445c65dcea66c66dda875cc39d8}
 
 
-Calculates the offset and extremeties of the fine map. 
+Getter for the number of columns. 
 
-Note that setting dispersal\+\_\+relative\+\_\+cost to a value other than 1 can massively increase simulation time. \index{Map@{Map}!check\+Fine@{check\+Fine}}
-\index{check\+Fine@{check\+Fine}!Map@{Map}}
-\subsubsection[{\texorpdfstring{check\+Fine(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{checkFine(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Map\+::check\+Fine (
+\begin{DoxyReturn}{Returns}
+the number of columns. 
+\end{DoxyReturn}
+\index{Map@{Map}!get\+Rows@{get\+Rows}}
+\index{get\+Rows@{get\+Rows}!Map@{Map}}
+\subsubsection[{\texorpdfstring{get\+Rows() const }{getRows() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ unsigned long {\bf Matrix}$<$ T $>$\+::get\+Rows (
 \begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap}
+{}
 \end{DoxyParamCaption}
-)}\hypertarget{class_map_aae9663c2b5bb78e89e2c476d1d1a409b}{}\label{class_map_aae9663c2b5bb78e89e2c476d1d1a409b}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a442879db6473eeab202928dc47992206}{}\label{class_matrix_a442879db6473eeab202928dc47992206}
 
 
-Checks whether the point comes from the fine grid. 
+Getter for the number of rows. 
+
+\begin{DoxyReturn}{Returns}
+the number of rows. 
+\end{DoxyReturn}
+\index{Map@{Map}!get\+Upper\+LeftX@{get\+Upper\+LeftX}}
+\index{get\+Upper\+LeftX@{get\+Upper\+LeftX}!Map@{Map}}
+\subsubsection[{\texorpdfstring{get\+Upper\+Left\+X()}{getUpperLeftX()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ double {\bf Map}$<$ T $>$\+::get\+Upper\+LeftX (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_afd32790ea28d0c5aa99b582b2d474933}{}\label{class_map_afd32790ea28d0c5aa99b582b2d474933}
+
+
+Gets the upper left x (longitude) coordinate. 
+
+\begin{DoxyReturn}{Returns}
+upper left x of the map 
+\end{DoxyReturn}
+\index{Map@{Map}!get\+Upper\+LeftY@{get\+Upper\+LeftY}}
+\index{get\+Upper\+LeftY@{get\+Upper\+LeftY}!Map@{Map}}
+\subsubsection[{\texorpdfstring{get\+Upper\+Left\+Y()}{getUpperLeftY()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ double {\bf Map}$<$ T $>$\+::get\+Upper\+LeftY (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a2d7b63836d06b2710192e7c8afd38641}{}\label{class_map_a2d7b63836d06b2710192e7c8afd38641}
+
+
+Gets the upper left y (latitude) coordinate. 
+
+\begin{DoxyReturn}{Returns}
+upper left y of the map 
+\end{DoxyReturn}
+\index{Map@{Map}!import@{import}}
+\index{import@{import}!Map@{Map}}
+\subsubsection[{\texorpdfstring{import(const string \&filename) override}{import(const string &filename) override}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Map}$<$ T $>$\+::import (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_map_ad1a25204dce37addc3453e091552b014}{}\label{class_map_ad1a25204dce37addc3453e091552b014}
+
+
+Imports the matrix from a csv file. 
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em runtime\+\_\+error} & if type detection for the filename fails. \\
+\hline
+\end{DoxyExceptions}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the file to import. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_matrix_a2476517be70c810ad586d0f0cf4ec121}{Matrix$<$ T $>$}.
+
+\index{Map@{Map}!import\+Csv@{import\+Csv}}
+\index{import\+Csv@{import\+Csv}!Map@{Map}}
+\subsubsection[{\texorpdfstring{import\+Csv(const string \&filename)}{importCsv(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ bool {\bf Matrix}$<$ T $>$\+::import\+Csv (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}{}\label{class_matrix_a0a5d9135e9807b81ddc3cf05e777a902}
+
+
+Imports the matrix from a csv file using the fast-\/csv-\/parser method. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em x} & the x position. \\
+{\em filename} & the path to the file to import. Imports the matrix from a csv file using the standard, slower method. \\
 \hline
-{\em y} & the y position. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension. \\
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000003}{Deprecated}]this function should not be used any more as it is much slower. \end{DoxyRefDesc}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-a boolean of whether the location is on the fine map. 
+true if the csv can be imported. 
 \end{DoxyReturn}
-\index{Map@{Map}!check\+Map@{check\+Map}}
-\index{check\+Map@{check\+Map}!Map@{Map}}
-\subsubsection[{\texorpdfstring{check\+Map(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double generation)}{checkMap(const double &x, const double &y, const long &xwrap, const long &ywrap, const double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Map\+::check\+Map (
+\index{Map@{Map}!import\+Tif@{import\+Tif}}
+\index{import\+Tif@{import\+Tif}!Map@{Map}}
+\subsubsection[{\texorpdfstring{import\+Tif(const string \&filename)}{importTif(const string &filename)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ bool {\bf Map}$<$ T $>$\+::import\+Tif (
 \begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap, }
-\item[{const double}]{generation}
+\item[{const string \&}]{filename}
 \end{DoxyParamCaption}
-)}\hypertarget{class_map_ac5e842ad3f8d76f2293a6b1be44071ca}{}\label{class_map_ac5e842ad3f8d76f2293a6b1be44071ca}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a2306683b0b3b4ddb7d776d1ff60d4491}{}\label{class_map_a2306683b0b3b4ddb7d776d1ff60d4491}
 
 
-Checks whether the point is habitat or non-\/habitat. 
+Imports the matrix from a tif file using the gdal library functions. 
+
+\begin{DoxyNote}{Note}
+Opens a connection to the file object, which should be closed. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the file to import. \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!import\+Using\+Buffer@{import\+Using\+Buffer}}
+\index{import\+Using\+Buffer@{import\+Using\+Buffer}!Map@{Map}}
+\subsubsection[{\texorpdfstring{import\+Using\+Buffer(\+G\+D\+A\+L\+Data\+Type dt\+\_\+buff)}{importUsingBuffer(GDALDataType dt_buff)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ template$<$typename T2 $>$ void {\bf Map}$<$ T $>$\+::import\+Using\+Buffer (
+\begin{DoxyParamCaption}
+\item[{G\+D\+A\+L\+Data\+Type}]{dt\+\_\+buff}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_ae88574927ad3a38fc0a9bc253a9e4a7a}{}\label{class_map_ae88574927ad3a38fc0a9bc253a9e4a7a}
+
+
+Imports from the supplied filename into the Geo\+Tiff object, converting doubles to booleans. The threshold for conversion is x$>$0.\+5 -\/$>$ true, false otherwise. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em x} & the x position on the grid. \\
+{\em dt\+\_\+buff} & the buffer type for the data \\
 \hline
-{\em y} & the y position on the grid. \\
+\end{DoxyParams}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T2} & the template type for data reading. \\
 \hline
-{\em xwrap} & the number of wraps in the x dimension. \\
+\end{DoxyTemplParams}
+\index{Map@{Map}!internal\+Import@{internal\+Import}}
+\index{internal\+Import@{internal\+Import}!Map@{Map}}
+\subsubsection[{\texorpdfstring{internal\+Import()}{internalImport()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Map}$<$ T $>$\+::internal\+Import (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a0c17360ca7fa935d59f2169fd0007630}{}\label{class_map_a0c17360ca7fa935d59f2169fd0007630}
+
+
+Default importer when we rely on the default gdal method of converting between values. Note that importing doubles to ints results in the values being rounded down. 
+
+\begin{DoxyReturn}{Returns}
+true if a tif file exists and can be imported, false otherwise. 
+\end{DoxyReturn}
+\index{Map@{Map}!internal\+Import@{internal\+Import}}
+\index{internal\+Import@{internal\+Import}!Map@{Map}}
+\subsubsection[{\texorpdfstring{internal\+Import()}{internalImport()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Map}$<$ int8\+\_\+t $>$\+::internal\+Import (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_aad03012fb1c3e434747e62804f3149e9}{}\label{class_map_aad03012fb1c3e434747e62804f3149e9}
+
+
+Overloaded functions for importing from tifs and matching between gdal and C types. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the path to the filename \\
 \hline
-{\em ywrap} & the number of wraps in the y dimension. \\
+{\em po\+Band} & the G\+D\+A\+L\+Raster\+Band pointer to import from \\
 \hline
-{\em generation} & the current generation time. \\
+{\em n\+Block\+X\+Size} & the number of elements per row \\
+\hline
+{\em dt} & the datatype (not required, exists for function overloading) \\
+\hline
+{\em r} & the error reference object \\
+\hline
+{\em ndv} & the no data value \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!is\+Open@{is\+Open}}
+\index{is\+Open@{is\+Open}!Map@{Map}}
+\subsubsection[{\texorpdfstring{is\+Open()}{isOpen()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ bool {\bf Map}$<$ T $>$\+::is\+Open (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a19f6874b008fcbfac213341d05c2f443}{}\label{class_map_a19f6874b008fcbfac213341d05c2f443}
+
+
+Checks if the connection to the map file has already been opened. 
+
+All this does is check if po\+Dataset is a null pointer. \begin{DoxyReturn}{Returns}
+true if po\+Dataset is a null pointer. 
+\end{DoxyReturn}
+\index{Map@{Map}!open@{open}}
+\index{open@{open}!Map@{Map}}
+\subsubsection[{\texorpdfstring{open(const string \&filename\+\_\+in)}{open(const string &filename_in)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Map}$<$ T $>$\+::open (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_aa2764c9ae1c54c1821fa4f63b88fe0f3}{}\label{class_map_aa2764c9ae1c54c1821fa4f63b88fe0f3}
+
+
+Opens the provided filename to the po\+Dataset object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & file to open in read-\/only mode. \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!open\+Offset\+Map@{open\+Offset\+Map}}
+\index{open\+Offset\+Map@{open\+Offset\+Map}!Map@{Map}}
+\subsubsection[{\texorpdfstring{open\+Offset\+Map(\+Map \&offset\+\_\+map)}{openOffsetMap(Map &offset_map)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ bool {\bf Map}$<$ T $>$\+::open\+Offset\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}$<$ T $>$ \&}]{offset\+\_\+map}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_ade20cc1876ba2774f0f8274d432d89c3}{}\label{class_map_ade20cc1876ba2774f0f8274d432d89c3}
+
+
+Opens the offset map and fetches the metadata. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset\+\_\+map} & the offset map to open (should be the larger map). \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-a boolean of whether the map is habitat or non-\/habitat. 
+true if the offset map is opened within this function 
 \end{DoxyReturn}
-\index{Map@{Map}!check\+Pristine@{check\+Pristine}}
-\index{check\+Pristine@{check\+Pristine}!Map@{Map}}
-\subsubsection[{\texorpdfstring{check\+Pristine(double generation)}{checkPristine(double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::check\+Pristine (
+\index{Map@{Map}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const double s)}{operator*(const double s)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator$\ast$ (
 \begin{DoxyParamCaption}
-\item[{double}]{generation}
+\item[{const double}]{s}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_af7067d6d076eb10b735dc08750dbf924}{}\label{class_map_af7067d6d076eb10b735dc08750dbf924}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}{}\label{class_matrix_ac4e94b307c56a15fb47a9255855f94a9}
 
 
-Checks if the pristine state has been reached. 
-
-If there are no pristine maps, this function will do nothing. 
-\begin{DoxyParams}{Parameters}
-{\em generation} & the time to check at. \\
-\hline
-\end{DoxyParams}
-\index{Map@{Map}!convert\+Coordinates@{convert\+Coordinates}}
-\index{convert\+Coordinates@{convert\+Coordinates}!Map@{Map}}
-\subsubsection[{\texorpdfstring{convert\+Coordinates(double \&x, double \&y, long \&xwrap, long \&ywrap)}{convertCoordinates(double &x, double &y, long &xwrap, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::convert\+Coordinates (
-\begin{DoxyParamCaption}
-\item[{double \&}]{x, }
-\item[{double \&}]{y, }
-\item[{long \&}]{xwrap, }
-\item[{long \&}]{ywrap}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_af0f4a6a41c91e915614b56b2422d6d5a}{}\label{class_map_af0f4a6a41c91e915614b56b2422d6d5a}
-
-
-Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. 
+Overloading the $\ast$ operator for scaling. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em x} & the x position. \\
-\hline
-{\em y} & the y position. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension. \\
+{\em s} & the constant to scale the matrix by. \\
 \hline
 \end{DoxyParams}
-\index{Map@{Map}!convert\+Fine\+To\+Sample@{convert\+Fine\+To\+Sample}}
-\index{convert\+Fine\+To\+Sample@{convert\+Fine\+To\+Sample}!Map@{Map}}
-\subsubsection[{\texorpdfstring{convert\+Fine\+To\+Sample(long \&x, long \&xwrap, long \&y, long \&ywrap)}{convertFineToSample(long &x, long &xwrap, long &y, long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::convert\+Fine\+To\+Sample (
+\begin{DoxyReturn}{Returns}
+the scaled matrix. 
+\end{DoxyReturn}
+\index{Map@{Map}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator$\ast$(\+Matrix \&m)}{operator*(Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator$\ast$ (
 \begin{DoxyParamCaption}
-\item[{long \&}]{x, }
-\item[{long \&}]{xwrap, }
-\item[{long \&}]{y, }
-\item[{long \&}]{ywrap}
+\item[{{\bf Matrix}$<$ T $>$ \&}]{m}
 \end{DoxyParamCaption}
-)}\hypertarget{class_map_abd472c52b8aa58027621187de4a65683}{}\label{class_map_abd472c52b8aa58027621187de4a65683}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}{}\label{class_matrix_ac396cdd2d98e1b4d99f7e17c1c26b1ec}
 
 
-Converts the fine map coordinates to the sample grid coordinates. Main conversion is in a call to convert\+Coordinates, but also makes sure the returned types are long integers. 
+Overloading the $\ast$ operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em x} & the x coordinate to modify \\
-\hline
-{\em xwrap} & the x wrapping to modify \\
-\hline
-{\em y} & the y coordinate to modify \\
-\hline
-{\em ywrap} & the y wrapping to modify \\
+{\em m} & the matrix to multiply with \\
 \hline
 \end{DoxyParams}
-\index{Map@{Map}!convert\+Sample\+X\+To\+FineX@{convert\+Sample\+X\+To\+FineX}}
-\index{convert\+Sample\+X\+To\+FineX@{convert\+Sample\+X\+To\+FineX}!Map@{Map}}
-\subsubsection[{\texorpdfstring{convert\+Sample\+X\+To\+Fine\+X(const unsigned long \&x, const long \&xwrap)}{convertSampleXToFineX(const unsigned long &x, const long &xwrap)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::convert\+Sample\+X\+To\+FineX (
+\begin{DoxyReturn}{Returns}
+the product of each ith,jth value of the matrix. 
+\end{DoxyReturn}
+\index{Map@{Map}!operator+@{operator+}}
+\index{operator+@{operator+}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator+(const Matrix \&m)}{operator+(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}{}\label{class_matrix_a311f3649e41cb4a3155f3f71a65829cb}
+
+
+Overloading the + operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the sum of the two matrices. 
+\end{DoxyReturn}
+\index{Map@{Map}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator+=(const Matrix \&m)}{operator+=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}\& {\bf Matrix}$<$ T $>$\+::operator+= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}{}\label{class_matrix_a480a72298ae1fc8443b0edfaa66d7c46}
+
+
+Overloading the += operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to add to this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator-\/(const Matrix \&m)}{operator-(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Matrix} {\bf Matrix}$<$ T $>$\+::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a08e75978ea8288083ef36f53b4ac115d}{}\label{class_matrix_a08e75978ea8288083ef36f53b4ac115d}
+
+
+Overloading the -\/ operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the matrix to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix object which is the subtraction of the two matrices. 
+\end{DoxyReturn}
+\index{Map@{Map}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator-\/=(const Matrix \&m)}{operator-=(const Matrix &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Matrix}\& {\bf Matrix}$<$ T $>$\+::operator-\/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}{}\label{class_matrix_a0e459fd035b2435ea016dc93c55ccac0}
+
+
+Overloading the -\/= operator so that the new object is written to the current object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_matrix}{Matrix} object to subtract from this matrix. \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!operator=@{operator=}}
+\index{operator=@{operator=}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator=(const Map \&m)}{operator=(const Map &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Map}\& {\bf Map}$<$ T $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Map}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a00f73ad13cb67e3c4836fae9614d6b40}{}\label{class_map_a00f73ad13cb67e3c4836fae9614d6b40}
+
+
+Equality operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_map}{Map} object to copy from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the self \hyperlink{class_map}{Map} object 
+\end{DoxyReturn}
+\index{Map@{Map}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator[](unsigned long index)}{operator[](unsigned long index)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Row}$<$T$>$\& {\bf Matrix}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}{}\label{class_matrix_ae7e14b4bd8bb570260a4e578e4a601b7}
+
+
+Overoads the \mbox{[}\mbox{]} operator for \hyperlink{class_matrix}{Matrix}. Allows referencing of a value i,j using \hyperlink{class_matrix}{Matrix}\mbox{[}i\mbox{]}\mbox{[}j\mbox{]}. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & the row number to get the value from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the matrix row object. 
+\end{DoxyReturn}
+\index{Map@{Map}!print\+Number\+Complete@{print\+Number\+Complete}}
+\index{print\+Number\+Complete@{print\+Number\+Complete}!Map@{Map}}
+\subsubsection[{\texorpdfstring{print\+Number\+Complete(const uint32\+\_\+t \&j, unsigned int \&number\+\_\+printed)}{printNumberComplete(const uint32_t &j, unsigned int &number_printed)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Map}$<$ T $>$\+::print\+Number\+Complete (
+\begin{DoxyParamCaption}
+\item[{const uint32\+\_\+t \&}]{j, }
+\item[{unsigned int \&}]{number\+\_\+printed}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a03e0486e704090765d253b18a9dde0f5}{}\label{class_map_a03e0486e704090765d253b18a9dde0f5}
+
+
+Print the percentage complete during import. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em j} & the reference for the counter \\
+\hline
+{\em number\+\_\+printed} & the number of previously printed lines \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!rounded\+Scale@{rounded\+Scale}}
+\index{rounded\+Scale@{rounded\+Scale}!Map@{Map}}
+\subsubsection[{\texorpdfstring{rounded\+Scale(\+Map \&offset\+\_\+map)}{roundedScale(Map &offset_map)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ unsigned long {\bf Map}$<$ T $>$\+::rounded\+Scale (
+\begin{DoxyParamCaption}
+\item[{{\bf Map}$<$ T $>$ \&}]{offset\+\_\+map}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a9862291ea99fe1718d758213b3687bd8}{}\label{class_map_a9862291ea99fe1718d758213b3687bd8}
+
+
+Calculates the relative scale of this map compared to the offset map. 
+
+The offset map should be larger and contain this map.
+
+\begin{DoxyNote}{Note}
+Only the x resolution is checked, it is assumed the x and y resolutions of both maps is the same (i.\+e. each cell on the map is a square.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em offset\+\_\+map} & the offset map object to read from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the relative scale of the offset map 
+\end{DoxyReturn}
+\index{Map@{Map}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!Map@{Map}}
+\subsubsection[{\texorpdfstring{set\+Size(unsigned long rows, unsigned long cols)}{setSize(unsigned long rows, unsigned long cols)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Matrix}$<$ T $>$\+::set\+Size (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{rows, }
+\item[{unsigned long}]{cols}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}{}\label{class_matrix_aa393296d4132d7aafc4e236ddfe59f06}
+
+
+Sets the matrix size. Similar concept to that for Rows. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & the number of rows. \\
+\hline
+{\em cols} & the number of columns. \\
+\hline
+\end{DoxyParams}
+\index{Map@{Map}!set\+Value@{set\+Value}}
+\index{set\+Value@{set\+Value}!Map@{Map}}
+\subsubsection[{\texorpdfstring{set\+Value(const unsigned long \&x, const unsigned long \&y, const char $\ast$value)}{setValue(const unsigned long &x, const unsigned long &y, const char *value)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Matrix}$<$ T $>$\+::set\+Value (
 \begin{DoxyParamCaption}
 \item[{const unsigned long \&}]{x, }
-\item[{const long \&}]{xwrap}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a12d17532ea880afc77b729f1005b6e4f}{}\label{class_map_a12d17532ea880afc77b729f1005b6e4f}
-
-
-Gets the x position on the fine map, given an x and x wrapping. 
-
-Note that this function will not check if the value is actually within bounds of the fine map, and an error will likely be thrown by the matrix referencing if this is the case. 
-\begin{DoxyParams}{Parameters}
-{\em x} & the x coordinate on the sample mask \\
-\hline
-{\em xwrap} & the x wrapping of the sample mask. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the x location on the fine map 
-\end{DoxyReturn}
-\index{Map@{Map}!convert\+Sample\+Y\+To\+FineY@{convert\+Sample\+Y\+To\+FineY}}
-\index{convert\+Sample\+Y\+To\+FineY@{convert\+Sample\+Y\+To\+FineY}!Map@{Map}}
-\subsubsection[{\texorpdfstring{convert\+Sample\+Y\+To\+Fine\+Y(const unsigned long \&y, const long \&ywrap)}{convertSampleYToFineY(const unsigned long &y, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::convert\+Sample\+Y\+To\+FineY (
-\begin{DoxyParamCaption}
 \item[{const unsigned long \&}]{y, }
-\item[{const long \&}]{ywrap}
+\item[{const char $\ast$}]{value}
 \end{DoxyParamCaption}
-)}\hypertarget{class_map_a69ba72442bd3cbf7ee892ea0d2b6e4a1}{}\label{class_map_a69ba72442bd3cbf7ee892ea0d2b6e4a1}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [inherited]}}\hypertarget{class_matrix_ae511e2f5874e7602fc968541efeefca1}{}\label{class_matrix_ae511e2f5874e7602fc968541efeefca1}
 
 
-Gets the y position on the fine map, given a y and y wrapping. 
-
-Note that this function will not check if the value is actually within bounds of the fine map, and an error will likely be thrown by the matrix referencing if this is the case. 
-\begin{DoxyParams}{Parameters}
-{\em y} & the y coordinate on the sample mask \\
-\hline
-{\em ywrap} & the y wrapping of the sample mask. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the y location on the fine map 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Habitat\+Max@{get\+Habitat\+Max}}
-\index{get\+Habitat\+Max@{get\+Habitat\+Max}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Habitat\+Max()}{getHabitatMax()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Habitat\+Max (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a28f72a430bee372e855139adff0bc597}{}\label{class_map_a28f72a430bee372e855139adff0bc597}
-
-
-Gets the maximum habitat value from any map. 
-
-\begin{DoxyReturn}{Returns}
-the maximum habitat value 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Initial\+Count@{get\+Initial\+Count}}
-\index{get\+Initial\+Count@{get\+Initial\+Count}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Initial\+Count(double d\+Sample, Data\+Mask \&samplemask)}{getInitialCount(double dSample, DataMask &samplemask)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Initial\+Count (
-\begin{DoxyParamCaption}
-\item[{double}]{d\+Sample, }
-\item[{{\bf Data\+Mask} \&}]{samplemask}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a5f31e18dd51244f51625b28e5314c68e}{}\label{class_map_a5f31e18dd51244f51625b28e5314c68e}
-
-
-Counts the number of spaces available in the initial species space. Requires the samplemask to check the sampling area. 
+Sets the value at the specified indices, including handling type conversion from char to the template class. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em d\+Sample} & the sample proportion (from 0 to 1). \\
+{\em x} & the x index. \\
 \hline
-{\em samplemask} & the \hyperlink{class_data_mask}{Data\+Mask} object to sample from. \\
+{\em y} & the y index. \\
 \hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the total number of individuals predicted to initially exist on the map. 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Pristine@{get\+Pristine}}
-\index{get\+Pristine@{get\+Pristine}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Pristine()}{getPristine()}}]{\setlength{\rightskip}{0pt plus 5cm}double Map\+::get\+Pristine (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a56f158adbe67d3eea95e2537493851f1}{}\label{class_map_a56f158adbe67d3eea95e2537493851f1}
-
-
-Get the pristine map time. 
-
-\begin{DoxyReturn}{Returns}
-double the pristine map time 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Sim\+Parameters@{get\+Sim\+Parameters}}
-\index{get\+Sim\+Parameters@{get\+Sim\+Parameters}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Sim\+Parameters()}{getSimParameters()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sim\+Parameters} Map\+::get\+Sim\+Parameters (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_ac560f241eb5a392d2599e11b00328964}{}\label{class_map_ac560f241eb5a392d2599e11b00328964}
-
-
-Gets the mapvars object for referencing simulation parameters. 
-
-\begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val@{get\+Val}}
-\index{get\+Val@{get\+Val}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)}{getVal(const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_ab96b3097832c620a024184ed54d5e2d1}{}\label{class_map_ab96b3097832c620a024184ed54d5e2d1}
-
-
-Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version involves a call to the function pointer, $\ast$get\+Val\+Func, so that the correct call to either \hyperlink{class_map_a2c01cd7869a9500204381cdc231df27f}{get\+Val\+Finite()} or get\+Val\+Infinite is made. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position on the grid. \\
-\hline
-{\em y} & the y position on the grid. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension.. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension.. \\
-\hline
-{\em current\+\_\+generation} & the current generation time. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value on the correct map at the correct space. 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val\+Coarse@{get\+Val\+Coarse}}
-\index{get\+Val\+Coarse@{get\+Val\+Coarse}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val\+Coarse(const double \&xval, const double \&yval, const double \&current\+\_\+generation)}{getValCoarse(const double &xval, const double &yval, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val\+Coarse (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{xval, }
-\item[{const double \&}]{yval, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a901ae65dbd0c471acde50a5425ae6a69}{}\label{class_map_a901ae65dbd0c471acde50a5425ae6a69}
-
-
-Gets the value from the coarse maps, including linear interpolating between the pristine and present maps. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em xval} & the x coordinate \\
-\hline
-{\em yval} & the y coordinate \\
-\hline
-{\em current\+\_\+generation} & the current generation timer \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value of the map at the given coordinates and time 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val\+Coarse\+Tiled@{get\+Val\+Coarse\+Tiled}}
-\index{get\+Val\+Coarse\+Tiled@{get\+Val\+Coarse\+Tiled}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val\+Coarse\+Tiled(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)}{getValCoarseTiled(const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val\+Coarse\+Tiled (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a40ddaa602e7b0e65995638025234de64}{}\label{class_map_a40ddaa602e7b0e65995638025234de64}
-
-
-Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes an infinite landscape of tiled coarse maps. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position on the grid. \\
-\hline
-{\em y} & the y position on the grid. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension.. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension.. \\
-\hline
-{\em current\+\_\+generation} & the current generation time. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value on the correct map at the correct space. 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val\+Fine@{get\+Val\+Fine}}
-\index{get\+Val\+Fine@{get\+Val\+Fine}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val\+Fine(const double \&xval, const double \&yval, const double \&current\+\_\+generation)}{getValFine(const double &xval, const double &yval, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val\+Fine (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{xval, }
-\item[{const double \&}]{yval, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_adb6f68f81f080b0ff798a2b375e1563b}{}\label{class_map_adb6f68f81f080b0ff798a2b375e1563b}
-
-
-Gets the value from the fine maps, including linear interpolating between the pristine and present maps. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em xval} & the x coordinate \\
-\hline
-{\em yval} & the y coordinate \\
-\hline
-{\em current\+\_\+generation} & the current generation timer \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value of the map at the given coordinates and time 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val\+Fine\+Tiled@{get\+Val\+Fine\+Tiled}}
-\index{get\+Val\+Fine\+Tiled@{get\+Val\+Fine\+Tiled}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val\+Fine\+Tiled(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)}{getValFineTiled(const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val\+Fine\+Tiled (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_ac9af706dce7adc8d8db17a6189abd1bd}{}\label{class_map_ac9af706dce7adc8d8db17a6189abd1bd}
-
-
-Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes an infinite landscape of tiled fine maps. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position on the grid. \\
-\hline
-{\em y} & the y position on the grid. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension.. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension.. \\
-\hline
-{\em current\+\_\+generation} & the current generation time. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value on the correct map at the correct space. 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val\+Finite@{get\+Val\+Finite}}
-\index{get\+Val\+Finite@{get\+Val\+Finite}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val\+Finite(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)}{getValFinite(const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val\+Finite (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a2c01cd7869a9500204381cdc231df27f}{}\label{class_map_a2c01cd7869a9500204381cdc231df27f}
-
-
-Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes finite landscape. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position on the grid. \\
-\hline
-{\em y} & the y position on the grid. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension.. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension.. \\
-\hline
-{\em current\+\_\+generation} & the current generation time. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value on the correct map at the correct space. 
-\end{DoxyReturn}
-\index{Map@{Map}!get\+Val\+Infinite@{get\+Val\+Infinite}}
-\index{get\+Val\+Infinite@{get\+Val\+Infinite}!Map@{Map}}
-\subsubsection[{\texorpdfstring{get\+Val\+Infinite(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double \&current\+\_\+generation)}{getValInfinite(const double &x, const double &y, const long &xwrap, const long &ywrap, const double &current_generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::get\+Val\+Infinite (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap, }
-\item[{const double \&}]{current\+\_\+generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a89d1a01f4e88146dd6860f7d3c71a43b}{}\label{class_map_a89d1a01f4e88146dd6860f7d3c71a43b}
-
-
-Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes an infinite landscape. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position on the grid. \\
-\hline
-{\em y} & the y position on the grid. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension.. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension.. \\
-\hline
-{\em current\+\_\+generation} & the current generation time. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the value on the correct map at the correct space. 
-\end{DoxyReturn}
-\index{Map@{Map}!is\+Pristine@{is\+Pristine}}
-\index{is\+Pristine@{is\+Pristine}!Map@{Map}}
-\subsubsection[{\texorpdfstring{is\+Pristine()}{isPristine()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Map\+::is\+Pristine (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a7c4ca1306850126bf6c040f1c0cc0754}{}\label{class_map_a7c4ca1306850126bf6c040f1c0cc0754}
-
-
-Gets the pristine boolean. 
-
-\begin{DoxyReturn}{Returns}
-the pristine map state. 
-\end{DoxyReturn}
-\index{Map@{Map}!print\+Vars@{print\+Vars}}
-\index{print\+Vars@{print\+Vars}!Map@{Map}}
-\subsubsection[{\texorpdfstring{print\+Vars()}{printVars()}}]{\setlength{\rightskip}{0pt plus 5cm}string Map\+::print\+Vars (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_af25b0713e794dfa189f0445ffcd511b8}{}\label{class_map_af25b0713e794dfa189f0445ffcd511b8}
-
-
-Prints some selected \hyperlink{class_map}{Map} variables to the terminal. 
-
-\begin{DoxyReturn}{Returns}
-the string containing the map variables to print 
-\end{DoxyReturn}
-\index{Map@{Map}!run\+Dispersal@{run\+Dispersal}}
-\index{run\+Dispersal@{run\+Dispersal}!Map@{Map}}
-\subsubsection[{\texorpdfstring{run\+Dispersal(const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)}{runDispersal(const double &dist, const double &angle, long &startx, long &starty, long &startxwrap, long &startywrap, bool &disp_comp, const double &generation)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Map\+::run\+Dispersal (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{dist, }
-\item[{const double \&}]{angle, }
-\item[{long \&}]{startx, }
-\item[{long \&}]{starty, }
-\item[{long \&}]{startxwrap, }
-\item[{long \&}]{startywrap, }
-\item[{bool \&}]{disp\+\_\+comp, }
-\item[{const double \&}]{generation}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a7c5b0623134a33511d7c17626c967176}{}\label{class_map_a7c5b0623134a33511d7c17626c967176}
-
-
-The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn\textquotesingle{}t need to perform all the checks until the edge of the fine grid. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em dist} & the distance travelled (or \char`\"{}distance energy\char`\"{} if dispersal\+\_\+relative\+\_\+cost is not 1). \\
-\hline
-{\em angle} & the angle of movement. \\
-\hline
-{\em startx} & the start x position. \\
-\hline
-{\em starty} & the start y position. \\
-\hline
-{\em startxwrap} & the start number of wraps in the x dimension. \\
-\hline
-{\em startywrap} & the start number of wraps in the y dimension. \\
-\hline
-{\em disp\+\_\+comp} & a boolean of whether the dispersal was complete or not. This value is returned true if dispersal is to habitat, false otherwise. \\
-\hline
-{\em generation} & the time in generations since the start of the simulation. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the density value at the end dispersal point 
-\end{DoxyReturn}
-\index{Map@{Map}!set\+Dims@{set\+Dims}}
-\index{set\+Dims@{set\+Dims}!Map@{Map}}
-\subsubsection[{\texorpdfstring{set\+Dims(\+Sim\+Parameters mapvarsin)}{setDims(SimParameters mapvarsin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::set\+Dims (
-\begin{DoxyParamCaption}
-\item[{{\bf Sim\+Parameters}}]{mapvarsin}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a4265717341e63a4662bf7ada49cc0c3d}{}\label{class_map_a4265717341e63a4662bf7ada49cc0c3d}
-
-
-Sets the dimensions of the grid, the area where the species are initially sampled from. This function must be run before any of the calc map functions to allow for the correct deme allocation. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em mapvarsin} & the \hyperlink{struct_sim_parameters}{Sim\+Parameters} object containing the map variables to import \\
-\hline
-\end{DoxyParams}
-\index{Map@{Map}!set\+Landscape@{set\+Landscape}}
-\index{set\+Landscape@{set\+Landscape}!Map@{Map}}
-\subsubsection[{\texorpdfstring{set\+Landscape(string is\+\_\+infinite)}{setLandscape(string is_infinite)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::set\+Landscape (
-\begin{DoxyParamCaption}
-\item[{string}]{is\+\_\+infinite}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_acaff6d6881f7547b824cb1a9086f8094}{}\label{class_map_acaff6d6881f7547b824cb1a9086f8094}
-
-
-Sets the landscape functions to either infinite or finite. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em is\+\_\+infinite} & a string of either closed, infinite, tiled\+\_\+fine or tiled\+\_\+coarse, corresponding to the relevant landscape type. \\
-\hline
-\end{DoxyParams}
-\index{Map@{Map}!set\+Pristine@{set\+Pristine}}
-\index{set\+Pristine@{set\+Pristine}!Map@{Map}}
-\subsubsection[{\texorpdfstring{set\+Pristine(const bool \&b\+Pristinein)}{setPristine(const bool &bPristinein)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::set\+Pristine (
-\begin{DoxyParamCaption}
-\item[{const bool \&}]{b\+Pristinein}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_aff6628e343532689d5bdcee2433ac041}{}\label{class_map_aff6628e343532689d5bdcee2433ac041}
-
-
-Sets the pristine state of the system. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em b\+Pristinein} & the pristine state. \\
-\hline
-\end{DoxyParams}
-\index{Map@{Map}!set\+Time\+Vars@{set\+Time\+Vars}}
-\index{set\+Time\+Vars@{set\+Time\+Vars}!Map@{Map}}
-\subsubsection[{\texorpdfstring{set\+Time\+Vars(double gen\+\_\+since\+\_\+pristine\+\_\+in, double habitat\+\_\+change\+\_\+rate\+\_\+in)}{setTimeVars(double gen_since_pristine_in, double habitat_change_rate_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Map\+::set\+Time\+Vars (
-\begin{DoxyParamCaption}
-\item[{double}]{gen\+\_\+since\+\_\+pristine\+\_\+in, }
-\item[{double}]{habitat\+\_\+change\+\_\+rate\+\_\+in}
-\end{DoxyParamCaption}
-)}\hypertarget{class_map_a1b3b545f5435170d29820b061a924378}{}\label{class_map_a1b3b545f5435170d29820b061a924378}
-
-
-Sets the time variables. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em gen\+\_\+since\+\_\+pristine\+\_\+in} & the time (in generations) since a pristine habitat state was achieved. \\
-\hline
-{\em habitat\+\_\+change\+\_\+rate\+\_\+in} & the rate of transform of the habitat up until the pristine time. A value of 0.\+2 would mean 20\% of the change occurs linearlly up until the pristine time and the remaining 80\% occurs in a jump to the pristine state. \\
+{\em value} & the value to set \\
 \hline
 \end{DoxyParams}
 
@@ -836,51 +697,50 @@ Sets the time variables.
 \subsection{Friends And Related Function Documentation}
 \index{Map@{Map}!operator$<$$<$@{operator$<$$<$}}
 \index{operator$<$$<$@{operator$<$$<$}!Map@{Map}}
-\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ istream\& operator$<$$<$ (
 \begin{DoxyParamCaption}
-\item[{ostream \&}]{os, }
-\item[{const {\bf Map} \&}]{r}
+\item[{istream \&}]{is, }
+\item[{{\bf Map}$<$ T $>$ \&}]{m}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_map_a0da37af2cd547fa045e06a2da3c1039f}{}\label{class_map_a0da37af2cd547fa045e06a2da3c1039f}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_map_a2cb87ce0bbf263326a632b9537725d96}{}\label{class_map_a2cb87ce0bbf263326a632b9537725d96}
 
 
-Operator for outputting the \hyperlink{class_map}{Map} object variables to an output stream. This is used for storing the \hyperlink{class_map}{Map} object to file. 
+Input operator. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em os} & the output stream. \\
+{\em is} & the input stream \\
 \hline
-{\em r} & the \hyperlink{class_map}{Map} object to output. \\
+{\em m} & the object to write in \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-the output stream. 
+the modified input stream 
 \end{DoxyReturn}
 \index{Map@{Map}!operator$>$$>$@{operator$>$$>$}}
 \index{operator$>$$>$@{operator$>$$>$}!Map@{Map}}
-\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}istream\& operator$>$$>$ (
+\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ ostream\& operator$>$$>$ (
 \begin{DoxyParamCaption}
-\item[{istream \&}]{is, }
-\item[{{\bf Map} \&}]{r}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Map}$<$ T $>$ \&}]{m}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_map_a480da4c3f474c0af7eacdde650546dc1}{}\label{class_map_a480da4c3f474c0af7eacdde650546dc1}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}{}\label{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}
 
 
-Operator for inputting the \hyperlink{class_map}{Map} object variables from an input stream. This is used for reading the \hyperlink{class_map}{Map} object from file. 
+Output operator. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em is} & the input stream. \\
+{\em os} & the output stream \\
 \hline
-{\em r} & the \hyperlink{class_map}{Map} object to input to. \\
+{\em m} & the object to write out \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-the input stream. 
+the modified output stream 
 \end{DoxyReturn}
 
 
-The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-necsim/Map.\+h\item 
-necsim/Map.\+cpp\end{DoxyCompactItemize}
+necsim/Map.\+h\end{DoxyCompactItemize}

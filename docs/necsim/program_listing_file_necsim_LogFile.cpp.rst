@@ -8,8 +8,8 @@ Program Listing for File LogFile.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #include <sstream>
    #include <iomanip>
    #include <boost/filesystem.hpp>
@@ -34,7 +34,8 @@ Program Listing for File LogFile.cpp
        time_t now = time(0);
        static char name[30];
        strftime(name, sizeof(name), LOGNAME_FORMAT, localtime(&now));
-       string out = "log/" + string(name) + ".log";
+       boost::filesystem::path full_path(boost::filesystem::current_path());
+       string out = full_path.string() + "/log/" + string(name) + ".log";
        return out;
    }
    
@@ -44,7 +45,7 @@ Program Listing for File LogFile.cpp
        const string file_name = basic_string.substr(0, basic_string.find('.'));
        const string file_extension = basic_string.substr(basic_string.find('.'));
        unsigned long iterator = 0;
-       while(boost::filesystem::exists(file_path) && iterator < 10000000)
+       while(boost::filesystem::exists(file_path))
        {
            if(iterator > 10000000)
            {
@@ -61,7 +62,7 @@ Program Listing for File LogFile.cpp
        init(getDefaultLogFile());
    }
    
-   LogFile::LogFile(const string &file_name_in)
+   LogFile::LogFile(string file_name_in)
    {
        init(file_name_in);
    }
@@ -75,7 +76,7 @@ Program Listing for File LogFile.cpp
    }
    
    
-   void LogFile::init(const string &file_name_in)
+   void LogFile::init(string file_name_in)
    {
        createParent(file_name_in);
        file_name = file_name_in;
@@ -83,7 +84,8 @@ Program Listing for File LogFile.cpp
        output_stream.open(file_name);
        if(!output_stream)
        {
-           throw FatalException("Could not create log file at " + file_name_in + ".");
+           // Throw runtime error to avoid problems of attempting to write py object out before the logger has been set.
+           throw runtime_error("Could not create log file at " + file_name_in + ".");
        }
        levels_map[0] = "noneset";
        levels_map[10] = "debug";

@@ -3,7 +3,7 @@
 Function set_dispersal_parameters
 =================================
 
-- Defined in :ref:`file_dispersalmodule.cpp`
+- Defined in :ref:`file_CSimulateDispersal.h`
 
 
 Function Documentation

@@ -1,0 +1,462 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_py_logger" kind="class" language="C++" prot="public">
+    <compoundname>PyLogger</compoundname>
+    <basecompoundref refid="class_logger" prot="public" virt="non-virtual">Logger</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_py_logger_1ab7727834e809c2683860c70b643a6f21" prot="private" static="no" mutable="no">
+        <type>PyObject *</type>
+        <definition>PyObject* PyLogger::py_logger</definition>
+        <argsstring></argsstring>
+        <name>py_logger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="23" column="1" bodyfile="PyLogger.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_py_logger_1acc84eeb62deb50f6fef5f8ae557f0a9f" prot="private" static="no" mutable="no">
+        <type>PyObject *</type>
+        <definition>PyObject* PyLogger::py_log_function</definition>
+        <argsstring></argsstring>
+        <name>py_log_function</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="24" column="1" bodyfile="PyLogger.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_py_logger_1a035926ad7f10e242962fc5968d7e6c66" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PyLogger::logger_set</definition>
+        <argsstring></argsstring>
+        <name>logger_set</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="25" column="1" bodyfile="PyLogger.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_py_logger_1a33d4587bf09089d8ca1c1542aded67eb" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool PyLogger::log_function_set</definition>
+        <argsstring></argsstring>
+        <name>log_function_set</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="26" column="1" bodyfile="PyLogger.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_py_logger_1a83df7d583fb69bd21652009b74100ab8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PyLogger::PyLogger</definition>
+        <argsstring>()</argsstring>
+        <name>PyLogger</name>
+        <briefdescription>
+<para>Default constructor for <ref refid="class_py_logger" kindref="compound">PyLogger</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="32" column="1" bodyfile="PyLogger.h" bodystart="32" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1a442dd3cfcec84d57f9c5b7570efe0568" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PyLogger::~PyLogger</definition>
+        <argsstring>() override</argsstring>
+        <name>~PyLogger</name>
+        <briefdescription>
+<para>Safely deletes the python references. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="41" column="1" bodyfile="PyLogger.h" bodystart="41" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1abedc912ce779111d343a739b72316498" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::setLogger</definition>
+        <argsstring>(PyObject *logger)</argsstring>
+        <name>setLogger</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>logger</declname>
+        </param>
+        <briefdescription>
+<para>Sets the logger object. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>logger</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the log object that is written out to </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="51" column="1" bodyfile="PyLogger.cpp" bodystart="18" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1afee8574d4db27060530daf1c54daf4ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::setLogFunction</definition>
+        <argsstring>(PyObject *log_function)</argsstring>
+        <name>setLogFunction</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>log_function</declname>
+        </param>
+        <briefdescription>
+<para>Sets the logger function. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>log_function</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the function that will be used for writing out logs </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="57" column="1" bodyfile="PyLogger.cpp" bodystart="30" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1a1c9735d6b83c1fad66bb6560cd753616" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::writeInfo</definition>
+        <argsstring>(string message) override</argsstring>
+        <name>writeInfo</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Writes a message to the log object with level 20. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="63" column="1" bodyfile="PyLogger.cpp" bodystart="43" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1acba053c66f9e6d2c3fd83a83b495afe4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::writeWarning</definition>
+        <argsstring>(string message) override</argsstring>
+        <name>writeWarning</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Writes a message to the log object with level 30. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="69" column="1" bodyfile="PyLogger.cpp" bodystart="49" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1a445bc845376cd5abd65b25c534192a47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::writeError</definition>
+        <argsstring>(string message) override</argsstring>
+        <name>writeError</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Writes a message to the log object with level 40. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="75" column="1" bodyfile="PyLogger.cpp" bodystart="54" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1aa71e9531bf2bc4084427a78016407666" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::writeCritical</definition>
+        <argsstring>(string message) override</argsstring>
+        <name>writeCritical</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Writes a message to the log object with level 50. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="81" column="1" bodyfile="PyLogger.cpp" bodystart="59" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1a251422c4f32349547cac003379459be7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::write</definition>
+        <argsstring>(const int &amp;level, string message)</argsstring>
+        <name>write</name>
+        <param>
+          <type>const int &amp;</type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Writes a message to the log object with the supplied leve. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the logging level to write out at </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="88" column="1" bodyfile="PyLogger.cpp" bodystart="65" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="class_py_logger_1a4f9933b5a2aed3c067d4074dbacbae3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PyLogger::write</definition>
+        <argsstring>(const int &amp;level, stringstream &amp;message)</argsstring>
+        <name>write</name>
+        <param>
+          <type>const int &amp;</type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>stringstream &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Writes a message to the log object with the supplied leve. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the logging level to write out at </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogger.h" line="95" column="1" bodyfile="PyLogger.cpp" bodystart="106" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_logger_1af0f328114c079a74bbe248e0bb2e3c88" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Logger::writeInfo</definition>
+        <argsstring>(string message)</argsstring>
+        <name>writeInfo</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Logs an information message. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Logger.h" line="40" column="1" bodyfile="necsim/Logger.cpp" bodystart="19" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_logger_1a58e0b78e7be20e3769d58b5b8a2686bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Logger::writeWarning</definition>
+        <argsstring>(string message)</argsstring>
+        <name>writeWarning</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Logs a warning message. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Logger.h" line="46" column="1" bodyfile="necsim/Logger.cpp" bodystart="27" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_logger_1aed1644bc348e328cf0c3dc3e199ce908" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Logger::writeError</definition>
+        <argsstring>(string message)</argsstring>
+        <name>writeError</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Logs an error message. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Logger.h" line="52" column="1" bodyfile="necsim/Logger.cpp" bodystart="35" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_logger_1afb8e520f94b5438bc39013c14549f271" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Logger::writeCritical</definition>
+        <argsstring>(string message)</argsstring>
+        <name>writeCritical</name>
+        <param>
+          <type>string</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Logs a critical message. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Logger.h" line="58" column="1" bodyfile="necsim/Logger.cpp" bodystart="43" bodyend="49"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="703">
+        <label>PyLogger</label>
+        <link refid="class_py_logger"/>
+        <childnode refid="704" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="704">
+        <label>Logger</label>
+        <link refid="class_logger"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="705">
+        <label>PyLogger</label>
+        <link refid="class_py_logger"/>
+        <childnode refid="706" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="706">
+        <label>Logger</label>
+        <link refid="class_logger"/>
+      </node>
+    </collaborationgraph>
+    <location file="PyLogger.h" line="21" column="1" bodyfile="PyLogger.h" bodystart="20" bodyend="97"/>
+    <listofallmembers>
+      <member refid="class_py_logger_1a33d4587bf09089d8ca1c1542aded67eb" prot="private" virt="non-virtual"><scope>PyLogger</scope><name>log_function_set</name></member>
+      <member refid="class_logger_1ac45b6ef7069b222c094da3724d1aa8fb" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>Logger</name></member>
+      <member refid="class_py_logger_1a035926ad7f10e242962fc5968d7e6c66" prot="private" virt="non-virtual"><scope>PyLogger</scope><name>logger_set</name></member>
+      <member refid="class_py_logger_1acc84eeb62deb50f6fef5f8ae557f0a9f" prot="private" virt="non-virtual"><scope>PyLogger</scope><name>py_log_function</name></member>
+      <member refid="class_py_logger_1ab7727834e809c2683860c70b643a6f21" prot="private" virt="non-virtual"><scope>PyLogger</scope><name>py_logger</name></member>
+      <member refid="class_py_logger_1a83df7d583fb69bd21652009b74100ab8" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>PyLogger</name></member>
+      <member refid="class_py_logger_1afee8574d4db27060530daf1c54daf4ce" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>setLogFunction</name></member>
+      <member refid="class_py_logger_1abedc912ce779111d343a739b72316498" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>setLogger</name></member>
+      <member refid="class_py_logger_1a251422c4f32349547cac003379459be7" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>write</name></member>
+      <member refid="class_py_logger_1a4f9933b5a2aed3c067d4074dbacbae3f" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>write</name></member>
+      <member refid="class_py_logger_1aa71e9531bf2bc4084427a78016407666" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>writeCritical</name></member>
+      <member refid="class_logger_1afb8e520f94b5438bc39013c14549f271" prot="public" virt="virtual" ambiguityscope="Logger::"><scope>PyLogger</scope><name>writeCritical</name></member>
+      <member refid="class_py_logger_1a445bc845376cd5abd65b25c534192a47" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>writeError</name></member>
+      <member refid="class_logger_1aed1644bc348e328cf0c3dc3e199ce908" prot="public" virt="virtual" ambiguityscope="Logger::"><scope>PyLogger</scope><name>writeError</name></member>
+      <member refid="class_py_logger_1a1c9735d6b83c1fad66bb6560cd753616" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>writeInfo</name></member>
+      <member refid="class_logger_1af0f328114c079a74bbe248e0bb2e3c88" prot="public" virt="virtual" ambiguityscope="Logger::"><scope>PyLogger</scope><name>writeInfo</name></member>
+      <member refid="class_py_logger_1acba053c66f9e6d2c3fd83a83b495afe4" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>writeWarning</name></member>
+      <member refid="class_logger_1a58e0b78e7be20e3769d58b5b8a2686bb" prot="public" virt="virtual" ambiguityscope="Logger::"><scope>PyLogger</scope><name>writeWarning</name></member>
+      <member refid="class_logger_1a68cafca721107a954d85043a553dd217" prot="public" virt="virtual"><scope>PyLogger</scope><name>~Logger</name></member>
+      <member refid="class_py_logger_1a442dd3cfcec84d57f9c5b7570efe0568" prot="public" virt="non-virtual"><scope>PyLogger</scope><name>~PyLogger</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

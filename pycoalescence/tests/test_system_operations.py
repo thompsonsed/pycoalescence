@@ -1,14 +1,13 @@
-"""
-Tests system_operations module for basic system routines.
-"""
+"""Tests system_operations module for basic system routines."""
 import logging
 import unittest
 
 import os
 
-from pycoalescence.system_operations import cantor_pairing, check_file_exists, check_parent, create_logger,\
+from pycoalescence.system_operations import cantor_pairing, check_file_exists, check_parent, create_logger, \
 	elegant_pairing
-from pycoalescence.tests.setup import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll, skipLongTest
+
 
 def setUpModule():
 	"""
@@ -16,16 +15,20 @@ def setUpModule():
 	"""
 	setUpAll()
 
+
 def tearDownModule():
 	"""
 	Removes the output directory
 	"""
 	tearDownAll()
 
+
+@skipLongTest
 class TestCantorPairing(unittest.TestCase):
 	"""
 	Tests that cantor pairing successfully creates unique numbers for a very large set of guilds and species
 	"""
+
 	def testCantorCreatesUniqueIds(self):
 		"""
 		Tests that the cantor pairing function creates unique ids for any given pair of numbers.
@@ -39,18 +42,18 @@ class TestCantorPairing(unittest.TestCase):
 				unique_ids.add(ref)
 
 
-
 class TestSystemOperations(unittest.TestCase):
 	"""
 	Tests the functions associated with the system operations.
 	"""
+
 	def testFileExistence(self):
 		"""
 		Tests that the file existence checks work
 		"""
 		check_file_exists("null")
 		check_file_exists("sample/null.tif")
-		check_file_exists("system_operations.py")
+		check_file_exists("test_merger.py")
 
 	def testFileExistenceErrors(self):
 		"""
@@ -88,7 +91,7 @@ class TestSystemOperations(unittest.TestCase):
 		with open(file_name, 'r') as f:
 			s = f.readline()
 			self.assertTrue("test output" in s)
-		handlers = logger.handlers.copy()
+		handlers = logger.handlers[:]
 		for handler in handlers:
 			handler.close()
 			logger.removeHandler(handler)

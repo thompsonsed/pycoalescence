@@ -8,15 +8,18 @@ Program Listing for File DataPoint.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef DATAPOINT_H
    #define DATAPOINT_H
    
    #include <iostream>
-   #include "Logging.h"
+   #include "Logger.h"
    
    using namespace std;
+   
+   
+   
    class DataPoint
    {
        
@@ -35,7 +38,7 @@ Program Listing for File DataPoint.h
        unsigned long reference;
        // points to the position in the SpeciesList file.
        unsigned long list_position;
-       // the reference number within the linked list of wrapped lineages
+       // the reference number within the linked species_id_list of wrapped lineages
        unsigned long nwrap;
        // the max-min number
        double min_max;
@@ -91,16 +94,7 @@ Program Listing for File DataPoint.h
        friend istream& operator>>(istream& is, DataPoint& d);
    
    #ifdef DEBUG
-       void logActive(const int &level)
-       {
-           writeLog(50, "x, y, (x wrap, y wrap): " + to_string(xpos) + ", " + to_string(ypos) + ", (" +
-                   to_string(xwrap) + ", " + to_string(ywrap) + ")");
-           writeLog(50, "Lineage next: " + to_string(next_lineage));
-           writeLog(50, "Reference: " + to_string(reference));
-           writeLog(50, "List position: " + to_string(list_position));
-           writeLog(50, "Number in wrapped lineages: " + to_string(nwrap));
-           writeLog(50, "Minimum maximum: " + to_string(min_max));
-       }
+       void logActive(const int &level);
    #endif // DEBUG
    };
    

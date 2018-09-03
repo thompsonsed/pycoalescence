@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 30/08/2016
-BSD-3 Licence. This class is only used during simulation runs and is not outputted to a database. A :ref:`template_class_Row` of Datapoint objects is utilised by the main :ref:`class_Tree` objects. 
+MIT Licence. This class is only used during simulation runs and is not outputted to a database. A :ref:`template_class_Row` of Datapoint objects is utilised by the main :ref:`class_Tree` objects. 
 
 
 
@@ -40,6 +40,8 @@ Includes
 
 
 - ``DataPoint.h`` (:ref:`file_necsim_DataPoint.h`)
+
+- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
 
 
 

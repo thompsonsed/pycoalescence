@@ -17,18 +17,29 @@ Contains the functions for random number generation.
 \begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
 void \hyperlink{class_n_rrand_a23325b4d35ee0b5b580726db05e2b8a3}{set\+Seed} (long seed)
 \begin{DoxyCompactList}\small\item\em Sets the seed to the given input. Is only seeded if the seed hasn\textquotesingle{}t already been provided. \end{DoxyCompactList}\item 
+void \hyperlink{class_n_rrand_a34238557ccd72ee3e58712b7140a649a}{wipe\+Seed} ()\hypertarget{class_n_rrand_a34238557ccd72ee3e58712b7140a649a}{}\label{class_n_rrand_a34238557ccd72ee3e58712b7140a649a}
+
+\begin{DoxyCompactList}\small\item\em Clears the seed, if it has already been set. Keeps other simulation parameters, such as sigma and tau. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_a0043ba1c33b3dcb3b98210fb432f9f6c}{d01} ()
 \begin{DoxyCompactList}\small\item\em The random number generator. Uses Schrage\textquotesingle{}s method and a shuffle table to generate the output. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_n_rrand_abb6db53dd1fdd9388b39e5dcd26c13ac}{i0} (unsigned long max)
 \begin{DoxyCompactList}\small\item\em Generates a random number uniformly from 0 to the maximum value provided. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_aa57a6e9bae94c2df5a00473ba6fa900d}{norm} ()
 \begin{DoxyCompactList}\small\item\em Generates a normally distributed number Uses the standard normal distribution from a Box-\/\+Muller transform. \end{DoxyCompactList}\item 
-double \hyperlink{class_n_rrand_a754e5083299d12c1b33e8c66519d057e}{norm2D} ()
-\begin{DoxyCompactList}\small\item\em Returns a 2 dimensional call from a normal distribution, giving a distance in cartesian space This way is slightly inefficient for normal distributions, but it\textquotesingle{}s kept this way to make the Map\+::run\+Dispersal() function applicable with any dispersal type. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a39576a34204f90b6cda7dfd92561c0b0}{rayleigh} ()
+\begin{DoxyCompactList}\small\item\em Returns a random distance from a 2 dimensional normal distribution, also called the rayleigh distribution. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_aefdaf5521b01658bdd1c206bbe1e855f}{rayleigh\+Min\+Dist} (const double \&dist)
+\begin{DoxyCompactList}\small\item\em Generates a random distance from a rayleigh distribution, given that the distance is more than some minimum. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a2723a59dd63c61886238c2d466831985}{rayleigh\+C\+DF} (const double \&dist)
+\begin{DoxyCompactList}\small\item\em Gets the cumulative probability of a distance from the rayleigh distribution. \end{DoxyCompactList}\item 
 void \hyperlink{class_n_rrand_a5679f458940de730f527772ca27db5ad}{set\+Dispersal\+Params} (const double sigmain, const double tauin)
 \begin{DoxyCompactList}\small\item\em Sets the dispersal parameters, avoiding requirement to provide these numbers each function call. This is only relevant for fat-\/tailed dispersal calls. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_a464101f3def678477f9156d0bd1aab54}{fattail} (double z)
 \begin{DoxyCompactList}\small\item\em Call from the fat-\/tailed dispersal kernel with the provided sigma. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a66a9362387e7421623d5e987a68b186e}{fattail\+C\+DF} (const double \&distance)
+\begin{DoxyCompactList}\small\item\em Gets the cumulative probability density of travelling the distance. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a67490e1351fd3f81d1e904a69e81ecdb}{fattail\+Min\+Distance} (const double \&min\+\_\+distance)
+\begin{DoxyCompactList}\small\item\em Gets a fat-\/tailed random distance greater than some minimum. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_a3ec8aae87ae486ddfb5ad481a7972c27}{fattail} ()
 \begin{DoxyCompactList}\small\item\em Call from fat-\/tailed dispersal kernel. This function requires \hyperlink{class_n_rrand_a5679f458940de730f527772ca27db5ad}{set\+Dispersal\+Params()} has already been called. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_aab0ec97e2c0f74cf38cc7047356cae5c}{fattail\+\_\+old} ()
@@ -39,12 +50,22 @@ bool \hyperlink{class_n_rrand_a7c7a2dc1b3f14ebaaa0e6edd6c1d517a}{event} (double 
 \begin{DoxyCompactList}\small\item\em For a given event probability, returns the probability that the event has occured. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_ab18277b2f873878602e82672b272c9be}{norm\+Uniform} ()
 \begin{DoxyCompactList}\small\item\em Normal distribution, with percentage chance to choose a uniform distribution instead. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_ad8c9f54d596e01624505c765172d8328}{norm\+Uniform\+Min\+Distance} (const double \&min\+\_\+distance)
+\begin{DoxyCompactList}\small\item\em Generates a random distance from a norm-\/uniform distribution, given that the distance is more than some minimum. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_ac89740fa57b3f92e30ca46b3d467a480}{uniform} ()
+\begin{DoxyCompactList}\small\item\em Draws a random number from a uniform distribution between 0 and cutoff. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a34fb5fae8e81f5073b6ec63988338c07}{uniform\+Min\+Distance} (const double \&min\+\_\+distance)
+\begin{DoxyCompactList}\small\item\em Generates a random distance from a uniform distribution, given that the distance is more than some minimum. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_a799f55c57dc238f094a20e882e3abb51}{uniform\+Uniform} ()
 \begin{DoxyCompactList}\small\item\em Two uniform distributions, the first between 0 and 0.\+1$\ast$cutoff, and the second between 0.\+9$\ast$cutoff and cutoff. Selects from both distributions equally. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a31cfb60ce2a776bb81479b80f585202f}{uniform\+Uniform\+Min\+Distance} (const double \&min\+\_\+distance)
+\begin{DoxyCompactList}\small\item\em Generates a random distance from a uniform-\/uniform distribution, given that the distance is more than some minimum. \end{DoxyCompactList}\item 
 void \hyperlink{class_n_rrand_a432b648073ccd3cb7f8215bb5c299619}{set\+Dispersal\+Method} (const string \&dispersal\+\_\+method, const double \&m\+\_\+probin, const double \&cutoffin)
 \begin{DoxyCompactList}\small\item\em Sets the dispersal method by creating the link between dispersal\+Function() and the correct dispersal character. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_a1e15746ff8398488245b750325f37b08}{dispersal} ()
-\begin{DoxyCompactList}\small\item\em Runs the dispersal with the allocated dispersal function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Runs the dispersal with the allocated dispersal function. \end{DoxyCompactList}\item 
+double \hyperlink{class_n_rrand_a3cb0629d54b54865403738edd84ba883}{dispersal\+Min\+Distance} (const double \&min\+\_\+distance)
+\begin{DoxyCompactList}\small\item\em Get a dispersal distance with some minimum. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
@@ -102,6 +123,25 @@ This function will never return a value larger than the size of L\+O\+N\+G\+\_\+
 \end{DoxyNote}
 \begin{DoxyReturn}{Returns}
 distance the dispersal distance 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!dispersal\+Min\+Distance@{dispersal\+Min\+Distance}}
+\index{dispersal\+Min\+Distance@{dispersal\+Min\+Distance}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{dispersal\+Min\+Distance(const double \&min\+\_\+distance)}{dispersalMinDistance(const double &min_distance)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::dispersal\+Min\+Distance (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{min\+\_\+distance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a3cb0629d54b54865403738edd84ba883}{}\label{class_n_rrand_a3cb0629d54b54865403738edd84ba883}
+
+
+Get a dispersal distance with some minimum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em min\+\_\+distance} & the minimum distance to disperse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the random dispersal distance greater than or equal to the minimum 
 \end{DoxyReturn}
 \index{N\+Rrand@{N\+Rrand}!event@{event}}
 \index{event@{event}!N\+Rrand@{N\+Rrand}}
@@ -175,6 +215,44 @@ Old version of the function call reparameterised for different nu and sigma.
 \begin{DoxyReturn}{Returns}
 a random number drawn from the fat-\/tailed dispersal kernel. 
 \end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!fattail\+C\+DF@{fattail\+C\+DF}}
+\index{fattail\+C\+DF@{fattail\+C\+DF}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{fattail\+C\+D\+F(const double \&distance)}{fattailCDF(const double &distance)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::fattail\+C\+DF (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{distance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a66a9362387e7421623d5e987a68b186e}{}\label{class_n_rrand_a66a9362387e7421623d5e987a68b186e}
+
+
+Gets the cumulative probability density of travelling the distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the distance to obtain the cumulative probability for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the probability of dispersing less than or equal to distance 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!fattail\+Min\+Distance@{fattail\+Min\+Distance}}
+\index{fattail\+Min\+Distance@{fattail\+Min\+Distance}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{fattail\+Min\+Distance(const double \&min\+\_\+distance)}{fattailMinDistance(const double &min_distance)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::fattail\+Min\+Distance (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{min\+\_\+distance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a67490e1351fd3f81d1e904a69e81ecdb}{}\label{class_n_rrand_a67490e1351fd3f81d1e904a69e81ecdb}
+
+
+Gets a fat-\/tailed random distance greater than some minimum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em min\+\_\+distance} & the minimum distance to return \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a fat-\/tailed distance greater than the minimum 
+\end{DoxyReturn}
 \index{N\+Rrand@{N\+Rrand}!i0@{i0}}
 \index{i0@{i0}!N\+Rrand@{N\+Rrand}}
 \subsubsection[{\texorpdfstring{i0(unsigned long max)}{i0(unsigned long max)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long N\+Rrand\+::i0 (
@@ -208,20 +286,6 @@ Generates a normally distributed number Uses the standard normal distribution fr
 \begin{DoxyReturn}{Returns}
 the random number from a normal distribution. 
 \end{DoxyReturn}
-\index{N\+Rrand@{N\+Rrand}!norm2D@{norm2D}}
-\index{norm2D@{norm2D}!N\+Rrand@{N\+Rrand}}
-\subsubsection[{\texorpdfstring{norm2\+D()}{norm2D()}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::norm2D (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a754e5083299d12c1b33e8c66519d057e}{}\label{class_n_rrand_a754e5083299d12c1b33e8c66519d057e}
-
-
-Returns a 2 dimensional call from a normal distribution, giving a distance in cartesian space This way is slightly inefficient for normal distributions, but it\textquotesingle{}s kept this way to make the Map\+::run\+Dispersal() function applicable with any dispersal type. 
-
-\begin{DoxyReturn}{Returns}
-dispersal distance of a normal distribution 
-\end{DoxyReturn}
 \index{N\+Rrand@{N\+Rrand}!norm\+Uniform@{norm\+Uniform}}
 \index{norm\+Uniform@{norm\+Uniform}!N\+Rrand@{N\+Rrand}}
 \subsubsection[{\texorpdfstring{norm\+Uniform()}{normUniform()}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::norm\+Uniform (
@@ -238,6 +302,77 @@ This function will not produce the same output as \hyperlink{class_n_rrand_aa57a
 \end{DoxyNote}
 \begin{DoxyReturn}{Returns}
 normally (or uniformly) distributed number 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!norm\+Uniform\+Min\+Distance@{norm\+Uniform\+Min\+Distance}}
+\index{norm\+Uniform\+Min\+Distance@{norm\+Uniform\+Min\+Distance}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{norm\+Uniform\+Min\+Distance(const double \&min\+\_\+distance)}{normUniformMinDistance(const double &min_distance)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::norm\+Uniform\+Min\+Distance (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{min\+\_\+distance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_ad8c9f54d596e01624505c765172d8328}{}\label{class_n_rrand_ad8c9f54d596e01624505c765172d8328}
+
+
+Generates a random distance from a norm-\/uniform distribution, given that the distance is more than some minimum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the minimum distance to generate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random distance greater than the minimum provided 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!rayleigh@{rayleigh}}
+\index{rayleigh@{rayleigh}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{rayleigh()}{rayleigh()}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::rayleigh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a39576a34204f90b6cda7dfd92561c0b0}{}\label{class_n_rrand_a39576a34204f90b6cda7dfd92561c0b0}
+
+
+Returns a random distance from a 2 dimensional normal distribution, also called the rayleigh distribution. 
+
+\begin{DoxyReturn}{Returns}
+dispersal distance of a rayleigh distribution 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!rayleigh\+C\+DF@{rayleigh\+C\+DF}}
+\index{rayleigh\+C\+DF@{rayleigh\+C\+DF}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{rayleigh\+C\+D\+F(const double \&dist)}{rayleighCDF(const double &dist)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::rayleigh\+C\+DF (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{dist}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a2723a59dd63c61886238c2d466831985}{}\label{class_n_rrand_a2723a59dd63c61886238c2d466831985}
+
+
+Gets the cumulative probability of a distance from the rayleigh distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the distance to obtain the probability of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the probability of producing the given distance 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!rayleigh\+Min\+Dist@{rayleigh\+Min\+Dist}}
+\index{rayleigh\+Min\+Dist@{rayleigh\+Min\+Dist}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{rayleigh\+Min\+Dist(const double \&dist)}{rayleighMinDist(const double &dist)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::rayleigh\+Min\+Dist (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{dist}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_aefdaf5521b01658bdd1c206bbe1e855f}{}\label{class_n_rrand_aefdaf5521b01658bdd1c206bbe1e855f}
+
+
+Generates a random distance from a rayleigh distribution, given that the distance is more than some minimum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the minimum distance to generate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random distance greater than the minimum provided 
 \end{DoxyReturn}
 \index{N\+Rrand@{N\+Rrand}!set\+Dispersal\+Method@{set\+Dispersal\+Method}}
 \index{set\+Dispersal\+Method@{set\+Dispersal\+Method}!N\+Rrand@{N\+Rrand}}
@@ -296,6 +431,39 @@ Sets the seed to the given input. Is only seeded if the seed hasn\textquotesingl
 {\em seed} & the input seed. \\
 \hline
 \end{DoxyParams}
+\index{N\+Rrand@{N\+Rrand}!uniform@{uniform}}
+\index{uniform@{uniform}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{uniform()}{uniform()}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::uniform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_ac89740fa57b3f92e30ca46b3d467a480}{}\label{class_n_rrand_ac89740fa57b3f92e30ca46b3d467a480}
+
+
+Draws a random number from a uniform distribution between 0 and cutoff. 
+
+\begin{DoxyReturn}{Returns}
+a random number in (0, cutoff) 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!uniform\+Min\+Distance@{uniform\+Min\+Distance}}
+\index{uniform\+Min\+Distance@{uniform\+Min\+Distance}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{uniform\+Min\+Distance(const double \&min\+\_\+distance)}{uniformMinDistance(const double &min_distance)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::uniform\+Min\+Distance (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{min\+\_\+distance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a34fb5fae8e81f5073b6ec63988338c07}{}\label{class_n_rrand_a34fb5fae8e81f5073b6ec63988338c07}
+
+
+Generates a random distance from a uniform distribution, given that the distance is more than some minimum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the minimum distance to generate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random distance greater than the minimum provided 
+\end{DoxyReturn}
 \index{N\+Rrand@{N\+Rrand}!uniform\+Uniform@{uniform\+Uniform}}
 \index{uniform\+Uniform@{uniform\+Uniform}!N\+Rrand@{N\+Rrand}}
 \subsubsection[{\texorpdfstring{uniform\+Uniform()}{uniformUniform()}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::uniform\+Uniform (
@@ -312,6 +480,25 @@ The mean for this function should be identical to a uniform distribution between
 \end{DoxyNote}
 \begin{DoxyReturn}{Returns}
 uniformly distributed number 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!uniform\+Uniform\+Min\+Distance@{uniform\+Uniform\+Min\+Distance}}
+\index{uniform\+Uniform\+Min\+Distance@{uniform\+Uniform\+Min\+Distance}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{uniform\+Uniform\+Min\+Distance(const double \&min\+\_\+distance)}{uniformUniformMinDistance(const double &min_distance)}}]{\setlength{\rightskip}{0pt plus 5cm}double N\+Rrand\+::uniform\+Uniform\+Min\+Distance (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{min\+\_\+distance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a31cfb60ce2a776bb81479b80f585202f}{}\label{class_n_rrand_a31cfb60ce2a776bb81479b80f585202f}
+
+
+Generates a random distance from a uniform-\/uniform distribution, given that the distance is more than some minimum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dist} & the minimum distance to generate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a random distance greater than the minimum provided 
 \end{DoxyReturn}
 
 

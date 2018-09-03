@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File DataPoint.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File DataPoint.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_DataPoint.h.html" title="File DataPoint.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_DataPoint.h.html" accesskey="U">File DataPoint.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -66,15 +66,18 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_DataPoint.h.html#file-necsim-datapoint-h"><span class="std std-ref">File DataPoint.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under BSD-3 license.</span>
-<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 <span class="cp">#ifndef DATAPOINT_H</span>
 <span class="cp">#define DATAPOINT_H</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+
 <span class="k">class</span> <span class="nc">DataPoint</span>
 <span class="p">{</span>
 
@@ -93,7 +96,7 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">;</span>
     <span class="c1">// points to the position in the SpeciesList file.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">list_position</span><span class="p">;</span>
-    <span class="c1">// the reference number within the linked list of wrapped lineages</span>
+    <span class="c1">// the reference number within the linked species_id_list of wrapped lineages</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">nwrap</span><span class="p">;</span>
     <span class="c1">// the max-min number</span>
     <span class="kt">double</span> <span class="n">min_max</span><span class="p">;</span>
@@ -149,16 +152,7 @@
     <span class="k">friend</span> <span class="n">istream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">is</span><span class="p">,</span> <span class="n">DataPoint</span><span class="o">&amp;</span> <span class="n">d</span><span class="p">);</span>
 
 <span class="cp">#ifdef DEBUG</span>
-    <span class="kt">void</span> <span class="nf">logActive</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">level</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;x, y, (x wrap, y wrap): &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">ypos</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, (&quot;</span> <span class="o">+</span>
-                <span class="n">to_string</span><span class="p">(</span><span class="n">xwrap</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">ywrap</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">);</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Lineage next: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">next_lineage</span><span class="p">));</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Reference: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">reference</span><span class="p">));</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;List position: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">list_position</span><span class="p">));</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Number in wrapped lineages: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">nwrap</span><span class="p">));</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Minimum maximum: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">min_max</span><span class="p">));</span>
-    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">logActive</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">level</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 <span class="p">};</span>
 
@@ -218,14 +212,14 @@
         <li class="right" >
           <a href="file_necsim_DataPoint.h.html" title="File DataPoint.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_DataPoint.h.html" >File DataPoint.h</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

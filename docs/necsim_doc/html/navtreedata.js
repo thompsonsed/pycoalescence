@@ -1,8 +1,6 @@
 var NAVTREE =
 [
   [ "necsim", "index.html", [
-    [ "Fast C++ CSV Parser", "md_necsim_fast-cpp-csv-parser2_README.html", null ],
-    [ "necsim", "md_necsim_README.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Bug List", "bug.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -22,13 +20,13 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
-"class_landscape.html#abd51cdc30074be8d7fb1a1ceeb0d4a08",
-"class_protracted_spatial_tree.html#a95360a2f62ef0eb436d586552b299e1f",
-"class_samplematrix.html#ab971fd5a14a17e850cd92c79c3a1543e",
-"class_tree.html#a1f7515f16d99a9748ab2c4c667f1ffc4",
-"group___d_e_f_i_n_e_s.html#ga063c2e626b5c0dcf65522d05574349a6",
-"structio_1_1error_1_1invalid__single__character.html#aa92778a81778abc676ec6ee9952bba8c"
+"annotated.html",
+"class_landscape.html#a33a1d5c3fba6c895ad3d390a547e0361",
+"class_metacommunity.html#a2557f1dc48f4a7aba97431ac8a8c7dbd",
+"class_protracted_spatial_tree.html#ae07761c0a91a44ebe459904b1b8ffb43",
+"class_simulate_dispersal.html#a72f4b5ec8d52f080f2c9df991fb546ef",
+"class_tree.html#a61b4349fe78d09ac06eff4b7d6833105",
+"struct_sim_parameters.html#a5265cab3c1560ae4133b04a3a434a892"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

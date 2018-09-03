@@ -30,7 +30,7 @@ Detailed Description
 
 Sam Thompson 
 02/01/2018
-Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com BSD-3 Licence. 
+Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com MIT Licence. 
 
 
 
@@ -41,7 +41,7 @@ Includes
 
 - ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``sstream``
 

@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Sam Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -38,11 +38,13 @@ Includes
 --------
 
 
+- ``PyLogger.h`` (:ref:`file_PyLogger.h`)
+
 - ``PyLogging.h`` (:ref:`file_PyLogging.h`)
 
 - ``Python.h``
 
-- ``necsim/Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``necsim/Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``sstream``
 
@@ -57,21 +59,9 @@ Functions
 ---------
 
 
-- :ref:`function_set_log_function`
+- :ref:`function_getGlobalLogger`
 
-- :ref:`function_set_logger`
-
-- :ref:`function_write_log`
-
-- :ref:`function_write_log`
-
-- :ref:`function_writeCritical`
-
-- :ref:`function_writeError`
-
-- :ref:`function_writeInfo`
-
-- :ref:`function_writeWarning`
+- :ref:`function_removeGlobalLogger`
 
 
 Defines
@@ -79,4 +69,11 @@ Defines
 
 
 - :ref:`define_PYTHON_COMPILE`
+
+
+Variables
+---------
+
+
+- :ref:`variable_pyLogger`
 

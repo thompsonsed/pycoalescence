@@ -27,6 +27,8 @@ def generate_fragment_csv(input_shapefile, input_raster, output_csv, field_name=
 	The fragment extents are used solely, so overlapping extents of fragments results in individuals in those areas
 	appearing in both fragments. Therefore, rectangular fragments alone should be used.
 
+	.. important:: The input shapefile and raster must have the same projection.
+
 	:param input_shapefile: the shapefile containing polygons defining fragments. Should contain fields of field_name
 							and field_area
 	:param input_raster: raster file to calculate the relative coordinates on
@@ -40,7 +42,7 @@ def generate_fragment_csv(input_shapefile, input_raster, output_csv, field_name=
 
 class FragmentConfigHandler(object):
 	"""
-	Class containing the routines for calculating the offsets from a config file.
+	Contains routines for calculating the offsets from a config file.
 	"""
 
 	def __init__(self):

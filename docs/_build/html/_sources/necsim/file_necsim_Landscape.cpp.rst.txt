@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -42,6 +42,8 @@ Includes
 
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
+- ``cmath``
+
 
 
 
@@ -51,5 +53,16 @@ Functions
 ---------
 
 
+- :ref:`function_archimedesSpiralX`
+
+- :ref:`function_archimedesSpiralY`
+
 - :ref:`function_importToMapAndRound`
+
+
+Defines
+-------
+
+
+- :ref:`define__USE_MATH_DEFINES`
 

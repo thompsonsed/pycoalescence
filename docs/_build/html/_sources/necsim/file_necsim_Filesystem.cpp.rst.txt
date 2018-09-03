@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 19/07/2017
-BSD-3 Licence. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
+MIT Licence. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
 
 
 
@@ -43,15 +43,13 @@ Includes
 
 - ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
-- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``boost/filesystem.hpp``
 
 - ``sstream``
 
 - ``string``
-
-- ``zconf.h``
 
 
 

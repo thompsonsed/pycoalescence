@@ -8,8 +8,8 @@ Program Listing for File SpatialTree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    //
    #ifndef SPATIALTREE_H
    #define SPATIALTREE_H
@@ -26,9 +26,16 @@ Program Listing for File SpatialTree.h
    #include <ctime>
    #include <ctime>
    #include <sqlite3.h>
+   
+   #ifndef WIN_INSTALL
+   
    #include <unistd.h>
+   
+   #endif
+   
    #include <algorithm>
    #include <stdexcept>
+   #include <memory>
    //#define with_gdal
    // extra boost include - this requires the installation of boost on the system
    // note that this requires compilation with the -lboost_filesystem and -lboost_system linkers.
@@ -36,13 +43,14 @@ Program Listing for File SpatialTree.h
    
    // include fast-csv-parser by Ben Strasser (available from https://github.com/ben-strasser/fast-cpp-csv-parser)
    // for fast file reading
+   
    #ifdef use_csv
    #include "fast-cpp-csv-parser/csv.h"
    #endif
    
-   #ifndef sql_ram
-   #define sql_ram
-   #endif
+   //#ifndef sql_ram
+   //#define sql_ram
+   //#endif
    
    // other includes for required files
    #include "Tree.h"
@@ -56,8 +64,8 @@ Program Listing for File SpatialTree.h
    #include "Community.h"
    #include "Setup.h"
    #include "DispersalCoordinator.h"
-   #include "ReproductionMap.h"
-   #include "Logging.h"
+   #include "ActivityMap.h"
+   #include "Logger.h"
    
    using namespace std;
    
@@ -66,33 +74,35 @@ Program Listing for File SpatialTree.h
    protected:
        // Our dispersal coordinator for getting dispersal distances and managing calls from the landscape
        DispersalCoordinator dispersal_coordinator;
-       // The reproduction map object
-       ReproductionMap rep_map;
-       // A list of new variables which will contain the relevant information for maps and grids.
+       // Death probability values across the landscape
+       shared_ptr<ActivityMap> death_map;
+       // Reproduction probability values across the landscape
+       shared_ptr<ActivityMap> reproduction_map;
+       // A species_id_list of new variables which will contain the relevant information for maps and grids.
        //  strings containing the file names to be imported.
        string fine_map_input, coarse_map_input;
-       string pristine_fine_map_input, pristine_coarse_map_input;
-       // the variables for the grid containing the initial individuals.
-       unsigned long grid_x_size, grid_y_size;
+       string historical_fine_map_input, historical_coarse_map_input;
        // Landscape object containing both the coarse and fine maps for checking whether or not there is habitat at a
        // particular location.
-       Landscape landscape;
+       shared_ptr<Landscape> landscape;
        // An indexing spatial positioning of the lineages
        Matrix<SpeciesList> grid;
        unsigned long desired_specnum;
        // contains the DataMask for where we should start lineages from.
        DataMask samplegrid;
    public:
-       SpatialTree() : Tree()
+       SpatialTree() : Tree(), dispersal_coordinator(), death_map(make_shared<ActivityMap>()),
+                       reproduction_map(make_shared<ActivityMap>()),
+                       fine_map_input("none"), coarse_map_input("none"), historical_fine_map_input("none"),
+                       historical_coarse_map_input("none"), landscape(make_shared<Landscape>()),
+                       grid(), desired_specnum(1), samplegrid()
        {
-           outdatabase = nullptr;
-           grid_x_size = 0;
-           grid_y_size = 0;
-           desired_specnum = 1;
+   
        }
    
        ~SpatialTree() override = default;
-       void importSimulationVariables(const string &configfile) override;
+   
+       void runFileChecks() override;
    
        void parseArgs(vector<string> &comargs);
    
@@ -105,7 +115,7 @@ Program Listing for File SpatialTree.h
        // order to function correctly.
        void importMaps();
    
-       void importReproductionMap();
+       void importActivityMaps();
    
        unsigned long getInitialCount() override;
    
@@ -116,7 +126,8 @@ Program Listing for File SpatialTree.h
        unsigned long fillObjects(const unsigned long &initial_count) override;
    
        unsigned long getIndividualsSampled(const long &x, const long &y,
-                                    const long &x_wrap, const long &y_wrap, const double &current_gen);
+                                           const long &x_wrap, const long &y_wrap, const double &current_gen);
+   
        void removeOldPosition(const unsigned long &chosen) override;
    
        void calcMove();
@@ -137,13 +148,12 @@ Program Listing for File SpatialTree.h
    
        unsigned long estSpecnum();
    
-   #ifdef pristine_mode
+   #ifdef historical_mode
    
-       void pristineStepChecks();
+       void historicalStepChecks();
    #endif
    
-   
-       void incrementGeneration() override ;
+       void incrementGeneration() override;
    
        void updateStepCoalescenceVariables() override;
    
@@ -151,37 +161,38 @@ Program Listing for File SpatialTree.h
    
        string simulationParametersSqlInsertion() override;
    
-   
        void simPause() override;
    
-       void dumpMap(string pause_folder);
+       void dumpMap(ofstream &out);
+   
+       void dumpGrid(ofstream &out);
    
        void simResume() override;
    
-       void loadGridSave();
+       void loadGridSave(ifstream &in1);
    
-       void loadMapSave();
+       void loadMapSave(ifstream &in1);
    
-       void verifyReproductionMap();
+       void verifyActivityMaps();
    
        void addWrappedLineage(unsigned long numstart, long x, long y);
    
        unsigned long countCellExpansion(const long &x, const long &y, const long &xwrap, const long &ywrap,
-                                        const double &generationin, const bool &make_tips);
+                                        const double &generationin, vector<TreeNode> &data_added);
    
-       void expandCell(long x, long y, long x_wrap, long y_wrap, double generation_in, unsigned long add);
-   
-   
-   
+       void expandCell(long x, long y, long x_wrap, long y_wrap, double generation_in, unsigned long add,
+                       vector<TreeNode> &data_added, vector<DataPoint> &active_added);
    
    #ifdef DEBUG
    
        void validateLineages() override;
    
        void debugDispersal();
+   
        void debugAddingLineage(unsigned long numstart, long x, long y);
    
        void runChecks(const unsigned long &chosen, const unsigned long &coalchosen) override;
+   
    #endif
    };
    

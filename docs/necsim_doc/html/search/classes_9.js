@@ -1,10 +1,13 @@
 var searchData=
 [
-  ['matrix',['Matrix',['../class_matrix.html',1,'']]],
-  ['matrix_3c_20specieslist_20_3e',['Matrix&lt; SpeciesList &gt;',['../class_matrix.html',1,'']]],
-  ['metacommunitiesarray',['MetacommunitiesArray',['../struct_metacommunities_array.html',1,'']]],
-  ['metacommunity',['Metacommunity',['../class_metacommunity.html',1,'']]],
-  ['metacommunityparameters',['MetacommunityParameters',['../struct_metacommunity_parameters.html',1,'']]],
-  ['missing_5fcolumn_5fin_5fheader',['missing_column_in_header',['../structio_1_1error_1_1missing__column__in__header.html',1,'io::error']]],
-  ['module_5fstate',['module_state',['../structmodule__state.html',1,'']]]
+  ['samplematrix',['Samplematrix',['../class_samplematrix.html',1,'']]],
+  ['sectionoption',['SectionOption',['../struct_section_option.html',1,'']]],
+  ['simparameters',['SimParameters',['../struct_sim_parameters.html',1,'']]],
+  ['simulatedispersal',['SimulateDispersal',['../class_simulate_dispersal.html',1,'']]],
+  ['spatialtree',['SpatialTree',['../class_spatial_tree.html',1,'']]],
+  ['speciationcommands',['SpeciationCommands',['../class_speciation_commands.html',1,'']]],
+  ['speciesexception',['SpeciesException',['../struct_species_exception.html',1,'']]],
+  ['specieslist',['SpeciesList',['../class_species_list.html',1,'']]],
+  ['specsimparameters',['SpecSimParameters',['../struct_spec_sim_parameters.html',1,'']]],
+  ['step',['Step',['../struct_step.html',1,'']]]
 ];

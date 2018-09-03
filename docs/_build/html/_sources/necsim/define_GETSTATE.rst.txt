@@ -3,7 +3,7 @@
 Define GETSTATE
 ===============
 
-- Defined in :ref:`file_necsimmodule.h`
+- Defined in :ref:`file_necsim.h`
 
 
 Define Documentation

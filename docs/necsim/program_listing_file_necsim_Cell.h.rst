@@ -8,8 +8,8 @@ Program Listing for File Cell.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef CELL_H
    #define CELL_H
@@ -20,6 +20,19 @@ Program Listing for File Cell.h
        long y;
        Cell &operator=(Cell const& c)
        = default;
+   
+       bool operator==(Cell const&c)
+       {
+           return x == c.x && y == c.y;
+       }
+   
+       bool operator!=(Cell const&c)
+       {
+           return !(this->operator==(c));
+       }
    };
+   
+   
+   double distanceBetweenCells(Cell &c1, Cell &c2);
    
    #endif // CELL_H

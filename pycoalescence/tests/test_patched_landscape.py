@@ -1,14 +1,13 @@
-"""
-Tests the patched landscape routines for generating islands with distinct dispersal probabilities.
-"""
+"""Tests the patched landscape routines for generating islands with distinct dispersal probabilities."""
+import csv
+import os
 import unittest
 
-import os
 import numpy as np
+from setupTests import setUpAll, tearDownAll
 
 from pycoalescence.map import Map
 from pycoalescence.patched_landscape import Patch, PatchedLandscape, convert_index_to_x_y
-from pycoalescence.tests.setup import setUpAll, tearDownAll
 
 
 def setUpModule():
@@ -24,10 +23,12 @@ def tearDownModule():
 	"""
 	tearDownAll()
 
-class TestPatchedLandscapeFunctions(unittest.TestCase):
+
+class TestPatchedLandscapeBasicFunctions(unittest.TestCase):
 	"""
 	Tests the free functions within the patched_landscapes file.
 	"""
+
 	def testConvertIndices(self):
 		"""
 		Tests that indices are correctly converted in a range of parameters.
@@ -41,6 +42,7 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		x, y = convert_index_to_x_y(100, 10)
 		self.assertEqual(0, x)
 		self.assertEqual(10, y)
+
 
 class TestPatch(unittest.TestCase):
 	def testAddingPatches(self):
@@ -80,7 +82,7 @@ class TestPatch(unittest.TestCase):
 
 	def testAddingErrors(self):
 		p = Patch(1, 10)
-		p.dispersal_probabilities = {1 : 0,  2 : 0}
+		p.dispersal_probabilities = {1: 0, 2: 0}
 		with self.assertRaises(ValueError):
 			p.re_scale_probabilities()
 		p.dispersal_probabilities = {}
@@ -97,9 +99,7 @@ class TestPatch(unittest.TestCase):
 
 
 class TestPatchedLandscapeFunctions(unittest.TestCase):
-	"""
-	Tests that the patched landscape generation works correctly.
-	"""
+	"""Tests that the patched landscape generation works correctly."""
 
 	def testPatchedLandscapeInit(self):
 		"""
@@ -107,29 +107,22 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		appropriately set up.
 		"""
 		with self.assertRaises(IOError):
-			pl = PatchedLandscape(output_fine_map="sample/SA_sample_fine.tif", output_dispersal_map="notexist")
+			pl = PatchedLandscape(output_fine_map=os.path.join("sample", "SA_sample_fine.tif"),
+								  output_dispersal_map="notexist")
 		with self.assertRaises(IOError):
-			pl = PatchedLandscape(output_dispersal_map="sample/SA_sample_fine.tif", output_fine_map="notexist")
-		pl = PatchedLandscape(output_fine_map="output/patched1/patched1.tif",
-							  output_dispersal_map="output/patched2/patched2.tif")
-		self.assertTrue(os.path.exists("output/patched1"))
-		self.assertTrue(os.path.exists("output/patched2"))
+			pl = PatchedLandscape(output_dispersal_map=os.path.join("sample", "SA_sample_fine.tif"),
+								  output_fine_map="notexist")
+		pl = PatchedLandscape(output_fine_map=os.path.join("output", "patched1", "patched1.tif"),
+							  output_dispersal_map=os.path.join("output", "patched2", "patched2.tif"))
+		self.assertTrue(os.path.exists(os.path.join("output", "patched2")))
+		self.assertTrue(os.path.exists(os.path.join("output", "patched2")))
 
 	def testAddPatch(self):
-		"""
-		Asserts that adding a patch works correctly.
-		:return:
-		"""
+		"""Asserts that adding a patch works correctly."""
 		pl = PatchedLandscape("not_exist", "not_exist")
 		pl.add_patch(1, 1, 0.1)
 		with self.assertRaises(KeyError):
 			pl.add_patch(1, 1, 0.1)
-		with self.assertRaises(ValueError):
-			pl.add_patch(2, 2, -0.1)
-		with self.assertRaises(ValueError):
-			pl.add_patch(2, -2, 0.1)
-		with self.assertRaises(TypeError):
-			pl.add_patch(3, 1, 0.1, "not a dict")
 		pl.add_patch(2, 1, 0.5, dispersal_probabilities={1: 0.3})
 		expected_dict = {1: {1: 0.1}, 2: {1: 0.3, 2: 0.5}}
 		for k1, v1 in expected_dict.items():
@@ -138,16 +131,10 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		self.assertEqual(expected_dict.keys(), pl.patches.keys())
 
 	def testAddDispersal(self):
-		"""
-		Tests that dispersal values are correctly added.
-		"""
+		"""Tests that dispersal values are correctly added."""
 		pl = PatchedLandscape("not_exist", "not_exist")
-		with self.assertRaises(ValueError):
-			pl.add_dispersal(1, 2, 0.1)
-		pl.add_patch(1, 10, 0.1)
-		with self.assertRaises(ValueError):
-			pl.add_dispersal(1, 2, 0.7)
 		pl.add_patch(2, 10, 0.3)
+		pl.add_patch(1, 10, 0.1)
 		pl.add_dispersal(1, 2, 0.4)
 		pl.add_dispersal(2, 1, 0.7)
 		expected_dict = {1: {1: 0.1, 2: 0.4}, 2: {1: 0.7, 2: 0.3}}
@@ -157,35 +144,41 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		self.assertEqual(expected_dict.keys(), pl.patches.keys())
 
 	def testGenerateFromMatrix(self):
-		"""
-		Tests that the patched landscapes are correctly generated from matrices.
-		"""
-		m_fine = "output/matrix_pl_fine.tif"
-		m_dispersal = "output/matrix_pl_dispersal.tif"
+		"""Tests that the patched landscapes are correctly generated from matrices."""
+		m_fine = os.path.join("output", "matrix_pl_fine.tif")
+		m_dispersal = os.path.join("output", "matrix_pl_dispersal.tif")
 		pl = PatchedLandscape(m_fine, m_dispersal)
-		density_matrix = np.array([[1, 2, 3],
-								  [40, 50, 60],
-								  [700, 800, 900]])
-		density_matrix_out = np.array([[1, 2, 3, 40, 50, 60, 700, 800, 900]])
-		dispersal_matrix = np.array([[1, 0, 0, 1, 1, 0, 1, 1, 1],
-									 [1, 1, 0, 0, 0, 0, 0, 0, 0],
-									 [0, 0, 1, 1, 1, 1, 0, 0, 0],
-								 	 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1],
-									 [0, 0, 0, 1, 1, 1, 1, 1, 1]])
-		dispersal_matrix_out = np.array([[0.1666666, 0.1666666, 0.1666666, 0.3333333333,
-										  0.5, 0.5, 0.6666666, 0.8333333333, 1.0],
-										 [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-										 [0, 0, 0.25, 0.5, 0.75, 1.0, 1.0, 1.0, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0],
-										 [0, 0, 0, 0.1666666, 0.3333333333, 0.5, 0.6666666, 0.8333333, 1.0]])
+		density_matrix = np.asarray([[1, 2, 3],
+									 [40, 50, 60],
+									 [700, 800, 900]])
+		density_matrix_out = np.asarray([[1, 2, 3, 40, 50, 60, 700, 800, 900]])
+		dispersal_matrix = np.asarray([[1, 0, 0, 1, 1, 0, 1, 1, 1],
+									   [1, 1, 0, 0, 0, 0, 0, 0, 0],
+									   [0, 0, 1, 1, 1, 1, 0, 0, 0],
+									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
+									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
+									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
+									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
+									   [0, 0, 0, 1, 1, 1, 1, 1, 1],
+									   [0, 0, 0, 1, 1, 1, 1, 1, 1]])
+		dispersal_matrix_out = np.asarray([[0.1666666, 0., 0., 0.16666673, 0.16666667,
+											0., 0.1666666, 0.16666673, 0.16666667],
+										   [0.5, 0.5, 0., 0., 0.,
+											0., 0., 0., 0.],
+										   [0., 0., 0.25, 0.25, 0.25,
+											0.25, 0., 0., 0.],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667],
+										   [0., 0., 0., 0.1666666, 0.16666673,
+											0.16666667, 0.1666666, 0.1666667, 0.1666667]])
 		pl.generate_from_matrix(density_matrix, dispersal_matrix)
 		fine_map = Map(m_fine)
 		dispersal_map = Map(m_dispersal)
@@ -198,23 +191,67 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
 		self.assertEqual(9, x)
 		self.assertEqual(9, y)
 		for i in range(9):
-			self.assertEqual(density_matrix_out[0, i], fine_map.data[0,i])
+			self.assertEqual(density_matrix_out[0, i], fine_map.data[0, i])
 		for i in range(9):
 			for j in range(9):
 				self.assertAlmostEqual(dispersal_matrix_out[j, i], dispersal_map.data[j, i], places=4)
 
+	def testPatchesDispersalProbabilitiesUsingDictOnly(self):
+		"""Tests that the patched landscape is correctly generated using a dictionary of dispersal probabilities only"""
+		pl = PatchedLandscape("not_exist", "not_exist")
+		pl.add_patch(1, 10, dispersal_probabilities={1: 0.7, 2: 0.3})
+		pl.add_patch(2, 10, dispersal_probabilities={1: 0.1, 2: 0.4})
+		expected_dict = {1: {1: 0.1, 2: 0.4}, 2: {1: 0.7, 2: 0.3}}
+		for k1, v1 in pl.patches.items():
+			for k2, v2 in v1.dispersal_probabilities.items():
+				self.assertEqual(v2, pl.patches[k1].dispersal_probabilities[k2])
+
+	def testErrorGeneration(self):
+		"""Tests that the appropriate errors are thrown when using the different methods of providing self-dispersal."""
+		pl = PatchedLandscape("not_exist", "not_exist")
+		with self.assertRaises(KeyError):
+			pl.add_patch(1, 10, dispersal_probabilities={2: 5, 3: 4})
+		with self.assertRaises(ValueError):
+			pl.add_dispersal(1, 2, 0.1)
+		with self.assertRaises(ValueError):
+			pl.add_dispersal(1, 2, 0.7)
+		with self.assertRaises(ValueError):
+			pl.add_patch(2, 2, -0.1)
+		with self.assertRaises(ValueError):
+			pl.add_patch(2, -2, 0.1)
+		with self.assertRaises(TypeError):
+			pl.add_patch(3, 1, 0.1, "not a dict")
+		with self.assertRaises(TypeError):
+			pl.add_patch(2, 10)
+
+	def testPatchedLandscapeFragmentGeneration(self):
+		"""Tests that fragments are correctly generated from the patched landscape."""
+		pl = PatchedLandscape("not_exist", "not_exist")
+		patch1 = Patch("patch1", 10)
+		patch1.index = 1
+		patch2 = Patch("patch2", 200)
+		patch2.index = 2
+		pl.patches = {"patch1": patch1, "patch2": patch2}
+		output_csv = os.path.join("output", "fragment_csv", "generated_fragment.csv")
+		pl.generate_fragment_csv(output_csv)
+		self.assertTrue(os.path.exists(os.path.dirname(output_csv)))
+		self.assertTrue(os.path.exists(output_csv))
+		expected_output = [[str(x) for x in ["patch1", 1, 0, 1, 0, 10]],
+						   [str(x) for x in ["patch2", 2, 0, 2, 0, 200]]]
+		with open(output_csv, "r") as csvfile:
+			csv_reader = csv.reader(csvfile)
+			for i, row in enumerate(csv_reader):
+				self.assertEqual(expected_output[i], row)
 
 
-class TestPatchedLandscapeGeneration(unittest.TestCase):
+class TestPatchedLandscapeSystems(unittest.TestCase):
 	"""
 	Tests that the patched landscape correctly generates the desired files.
 	"""
 
 	@classmethod
 	def setUpClass(cls):
-		"""
-		Generates the patched landscape files.
-		"""
+		"""Generates the patched landscape files."""
 		cls.fine = Map("output/patched_fine.tif")
 		cls.dispersal = Map("output/patched_dispersal.tif")
 		pl = PatchedLandscape(cls.fine.file_name, cls.dispersal.file_name)
@@ -231,6 +268,7 @@ class TestPatchedLandscapeGeneration(unittest.TestCase):
 		cls.pl = pl
 
 	def testPatchGeneration(self):
+		"""Tests that patches are generated correctly."""
 		expected_dict = {1: {1: 0.4, 2: 0.6, 3: 0.0},
 						 2: {1: 0.7, 2: 0.3, 3: 0.0},
 						 3: {1: 0.9, 2: 0.05, 3: 0.05}}
@@ -240,16 +278,12 @@ class TestPatchedLandscapeGeneration(unittest.TestCase):
 		self.assertEqual(expected_dict.keys(), self.pl.patches.keys())
 
 	def testGeneratesFilesExist(self):
-		"""
-		Tests that patches landscape files are correctly created and have the desired dimensions.
-		"""
+		"""Tests that patches landscape files are correctly created and have the desired dimensions."""
 		self.assertTrue(os.path.exists(self.fine.file_name))
 		self.assertTrue(os.path.exists(self.dispersal.file_name))
 
 	def testMapDimensions(self):
-		"""
-		Tests that the fine file is 1x3 and the dispersal file is 3x3
-		"""
+		"""Tests that the fine file is 1x3 and the dispersal file is 3x3"""
 		x, y = self.fine.get_x_y()
 		self.assertEqual(3, x)
 		self.assertEqual(1, y)
@@ -258,24 +292,18 @@ class TestPatchedLandscapeGeneration(unittest.TestCase):
 		self.assertEqual(3, y)
 
 	def testFineMapValues(self):
-		"""
-		Tests that the fine map values are correct.
-		"""
+		"""Tests that the fine map values are correct."""
 		self.fine.open()
 		expected_data = np.array([[10, 20, 10]])
 		for i in range(3):
 			self.assertEqual(expected_data[0, i], self.fine.data[0, i])
 
 	def testDispersalMapValues(self):
-		"""
-		Tests that the dispersal map values are correct.
-		"""
+		"""Tests that the dispersal map values are correct."""
 		self.dispersal.open()
-		expected_data = np.array([[0.4, 1.0, 1.0],
-								  [0.7, 1.0, 1.0],
-								  [0.9, 0.95, 1.0]])
+		expected_data = np.array([[0.4, 0.6, 0.0],
+								  [0.7, 0.3, 0.0],
+								  [0.9, 0.05, 0.05]])
 		for x in range(3):
 			for y in range(3):
 				self.assertAlmostEqual(expected_data[y, x], self.dispersal.data[y, x], places=5)
-
-

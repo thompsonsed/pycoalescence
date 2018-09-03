@@ -8,18 +8,18 @@ Program Listing for File CustomExceptions.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    // Author: Samuel Thompson
    // Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com
    #ifndef CUSTOM_EXCEPTION_H
    #define CUSTOM_EXCEPTION_H
    
    #include <stdexcept>
+   #include <utility>
    #include "Logging.h"
    
    using namespace std;
-   
    
    struct FatalException : public runtime_error
    {
@@ -35,9 +35,9 @@ Program Listing for File CustomExceptions.h
    
    struct ConfigException : public FatalException
    {
-       ConfigException() : FatalException("Exception thrown at run time in config: "){}
+       ConfigException() : FatalException("Exception thrown at run time in config: "){};
    
-       explicit ConfigException(string msg) : FatalException(msg){}
+       explicit ConfigException(string msg) : FatalException(std::move(msg)){}
    };
    
    

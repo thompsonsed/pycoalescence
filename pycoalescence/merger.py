@@ -1,16 +1,18 @@
 """
-Contains the :py:class:`~Merger` class for combining simulation outputs into a single simulation, merging the
-various biodiversity tables into one.
+Combine simulation outputs from separate guilds. Detailed :ref:`here <merging_simulations>`.
+
+:py:class:`~Merger` will output a single database file, merging the various biodiversity tables into one.
 
 Metrics are also calculated for the entire system, with a guild reference of 0.
 
-All standard routines provided in :py:class:`~PyCoalescence.coal_analyse.Tree` can then be performed on the combined
-database.
+All standard routines provided in :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` can then be performed on the
+combined database.
 """
 from __future__ import absolute_import
-import os
 
 import logging
+import os
+
 try:
 	import sqlite3
 except ImportError:
@@ -22,14 +24,14 @@ except ImportError:
 	from .system_operations import isclose
 
 from .coalescence_tree import CoalescenceTree
-from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, sql_get_max_from_column
+from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql
 from .system_operations import cantor_pairing, check_parent
 
 
 class Merger(CoalescenceTree):
 	"""
-	Merges simulation outputs into a single database. Inherits from :py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to
-	provide all routines in the same object.
+	Merges simulation outputs into a single database. Inherits from
+	:py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to provide all routines in the same object.
 	"""
 	def __init__(self, database=None, logging_level=logging.WARNING, log_output=None):
 		super(Merger, self).__init__(database, logging_level, log_output)
@@ -64,8 +66,10 @@ class Merger(CoalescenceTree):
 		Assumes no database currently exists, and will create one.
 
 		:raises IOError: if the output database already exists
+
 		:param filename: the filename to output merged simulations into
-		:return:
+
+		:rtype: None
 		"""
 		if os.path.exists(filename):
 			raise IOError("Database already exists at {}".format(filename))
@@ -96,14 +100,14 @@ class Merger(CoalescenceTree):
 					 "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT " \
 					 "NULL, deme INT NOT NULL, sample_size DOUBLE NOT NULL, max_time INT NOT NULL, " \
 					 "dispersal_relative_cost DOUBLE NOT NULL, min_num_species INT NOT NULL, " \
-					 "habitat_change_rate DOUBLE NOT NULL, gen_since_pristine DOUBLE NOT NULL, " \
+					 "habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, " \
 					 "time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, " \
 					 "coarse_map_y INT NOT NULL, coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, " \
 					 "coarse_map_scale DOUBLE NOT NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL, " \
 					 "fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, " \
 					 "sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, " \
 					 "sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, " \
-					 "pristine_coarse_map TEXT NOT NULL, pristine_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
+					 "historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
 					 "dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, " \
 					 "restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, " \
 					 "min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, " \

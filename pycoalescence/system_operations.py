@@ -1,27 +1,21 @@
 """
-Contains the general purpose operations that will be used by multiple modules, including calling subprocess properly,
-logging methods and file management.
+Basic system-level operations required for package functionality, including subprocess calls, logging methods and file
+management.
 
 The functions are contained here as they are required by many different modules. Note that logging will not raise an
 exception if there has been no call to set_logging_method()
 
 """
 
-import subprocess
 import logging
-import sys
 import os
-
-if sys.version[0] == "3":
-	from subprocess import STDOUT, check_output
-
+import subprocess
+import sys
 
 # Logging will not raise an exception if there has been no logging file set.
 logging.raiseExceptions = True
-# Set up the module directory
-mod_directory = os.path.dirname(os.path.abspath(__file__))
-
 logging_set = False
+mod_directory = os.path.dirname(os.path.abspath(__file__))
 
 try:
 	from math import isclose
@@ -29,13 +23,17 @@ except ImportError:
 	# Python 2 compatibility
 	def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
 		"""
-		:param a: value 1
-		:param b: value 2
-		:param rel_tol: percentage relative to larger value
-		:param abs_tol: absolute value for similarity
+		Checks if the two floats are close.
+
+		:param float a: value 1
+		:param float b: value 2
+		:param float rel_tol: percentage relative to larger value
+		:param float abs_tol: absolute value for similarity
+
 		:return: true for significantly different a and b, false otherwise
 		"""
 		return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
 
 def check_parent(file_path):
 	"""
@@ -44,7 +42,8 @@ def check_parent(file_path):
 	.. note:: if file_path is a directory, it will be created
 
 	:param file_path: the file or directory to check if the parent exists
-	:rtype None
+
+	:rtype: None
 	"""
 	if file_path:
 		if not os.path.exists(file_path):
@@ -56,6 +55,7 @@ def check_parent(file_path):
 					os.makedirs(os.path.dirname(file_path))
 	else:
 		raise ValueError("File path is None")
+
 
 def check_file_exists(file_name):
 	"""
@@ -72,6 +72,7 @@ def check_file_exists(file_name):
 										"file check"
 		raise IOError(err)
 
+
 def execute(cmd, silent=False, **kwargs):
 	"""
 	Calls the command using subprocess and yields the running output for printing to terminal. Any errors produced by
@@ -79,6 +80,7 @@ def execute(cmd, silent=False, **kwargs):
 
 	:param cmd: the command to execute using subprocess.Popen()
 	:param silent: if true, does not log any warnings
+
 	:return a line from the execution output
 	"""
 	popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -111,10 +113,13 @@ def execute_log_info(cmd, **kwargs):
 
 	:param cmd: the command to execute using subprocess.Popen()
 	:param kwargs: keyword arguments to be passed to subprocess.Popen()
+
 	:return: None
+	:rtype: None
 	"""
 	for line in execute(cmd, **kwargs):
 		logging.info(line.strip("\n"))
+
 
 def execute_silent(cmd, **kwargs):
 	"""
@@ -124,11 +129,12 @@ def execute_silent(cmd, **kwargs):
 
 	:param cmd: the command to execute using subprocess.Popen()
 	:param kwargs: keyword arguments to be passed to subprocess.Popen()
+
 	:return: None
+	:rtype: None
 	"""
 	for _ in execute(cmd, silent=True, **kwargs):
 		continue
-
 
 
 def set_logging_method(logging_level=logging.INFO, output=None, **kwargs):
@@ -169,19 +175,20 @@ def write_to_log(i, message, logger):
 	logger.log(level=i, msg=message)
 
 
-def create_logger(logger, file = None, logging_level=logging.WARNING):
+def create_logger(logger, file=None, logging_level=logging.WARNING, **kwargs):
 	"""
 	Creates a logger object to be assigned to NECSim sims and dispersal tests.
 
 	:param logger: the logger to alter
 	:param file: the file to write out to, defaults to None, writing to terminal
 	:param logging_level: the logging level to write out at (defaults to INFO)
+	:param kwargs: optionally provide additional arguments for logging to
 
 	:return:
 	"""
 	formatter = logging.Formatter('%(message)s')
 	if file is None:
-		sh = logging.StreamHandler()
+		sh = logging.StreamHandler(kwargs.get("stream", None))
 	else:
 		sh = logging.FileHandler(file)
 	sh.setLevel(logging_level)
@@ -190,6 +197,7 @@ def create_logger(logger, file = None, logging_level=logging.WARNING):
 		sh.terminator = ""
 	logger.addHandler(sh)
 	return logger
+
 
 def elegant_pairing(x1, x2):
 	"""
@@ -200,11 +208,13 @@ def elegant_pairing(x1, x2):
 
 	:param x1: the first number
 	:param x2: the second number
+
 	:return: a unique reference combining the two integers.
 	"""
 	if x1 > x2:
-		return x1**2 + x1 + x2
-	return x2**2 + x1
+		return x1 ** 2 + x1 + x2
+	return x2 ** 2 + x1
+
 
 def cantor_pairing(x1, x2):
 	"""
@@ -221,6 +231,7 @@ def cantor_pairing(x1, x2):
 
 	:param x1: the first number
 	:param x2: the second number
+
 	:return: a unique reference combining the two integers
 	"""
-	return ((x1 + x2) * (x1 + x2 + 1)/2) + x2
+	return ((x1 + x2) * (x1 + x2 + 1) / 2) + x2

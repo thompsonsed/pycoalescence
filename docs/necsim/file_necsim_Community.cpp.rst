@@ -7,7 +7,7 @@ File Community.cpp
 
 
 
-Contains the :ref:`class_Community` class implementation, which is used for reconstructing the coalescence tree after simulations are complete. 
+Contains various objects used for reconstructing the coalescence tree after simulations are complete. 
 
 
 .. contents:: Contents
@@ -28,8 +28,7 @@ Definition (``necsim/Community.cpp``)
 Detailed Description
 --------------------
 
-Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -38,7 +37,9 @@ Includes
 --------
 
 
-- ``Community.h`` (:ref:`file_necsim_Community.h`)
+- ``Community.h`` (:ref:`file_CCommunity.h`)
+
+- ``DoubleComparison.h`` (:ref:`file_necsim_DoubleComparison.h`)
 
 - ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
@@ -58,10 +59,4 @@ Functions
 
 
 - :ref:`function_checkSpeciation`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
-
-- :ref:`function_doubleCompare`
 

@@ -1,9 +1,10 @@
+"""Tests the sqlite connection handler object for pycoalescence"""
 import sqlite3
 import unittest
 
-from pycoalescence.tests.setup import setUpAll, tearDownAll
-from sqlite_connection import check_sql_table_exist, fetch_table_from_sql, SQLiteConnection, sql_get_max_from_column, \
-	check_sql_column_exists
+from setupTests import setUpAll, tearDownAll
+from pycoalescence.sqlite_connection import check_sql_table_exist, fetch_table_from_sql, SQLiteConnection, \
+	sql_get_max_from_column, check_sql_column_exists
 
 
 def setUpModule():
@@ -70,7 +71,6 @@ class TestSqlConnection(unittest.TestCase):
 		d = None
 
 
-
 class TestSqlFetchAndCheck(unittest.TestCase):
 	"""
 	Tests that fetches and checks on the SQL databases work as intended.
@@ -81,13 +81,13 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		Test that community parameters are correctly read from the database.
 		"""
 		community_parameters = fetch_table_from_sql(database="sample/mergers/data_0_0.db",
-													table_name="COMMUNITY_PARAMETERS")
+		                                            table_name="COMMUNITY_PARAMETERS")
 		expected_community_parameters = [[1, 0.5, 0.0, 0, 0],
-										 [2, 0.5, 0.5, 0, 0],
-										 [3, 0.6, 0.0, 0, 0],
-										 [4, 0.6, 0.5, 0, 0],
-										 [5, 0.7, 0.0, 0, 0],
-										 [6, 0.7, 0.5, 0, 0]]
+		                                 [2, 0.5, 0.5, 0, 0],
+		                                 [3, 0.6, 0.0, 0, 0],
+		                                 [4, 0.6, 0.5, 0, 0],
+		                                 [5, 0.7, 0.0, 0, 0],
+		                                 [6, 0.7, 0.5, 0, 0]]
 		for i, row in enumerate(expected_community_parameters):
 			self.assertListEqual(row, community_parameters[i])
 
@@ -96,24 +96,23 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		Checks that check_sql_table_exist correctly detects the existence of tables
 		"""
 		self.assertFalse(check_sql_table_exist(database="sample/mergers/data_0_0.db",
-											   table_name="notarealtable"))
+		                                       table_name="notarealtable"))
 		self.assertTrue(check_sql_table_exist(database="sample/mergers/data_0_0.db",
-											  table_name="COMMUNITY_PARAMETERS"))
+		                                      table_name="COMMUNITY_PARAMETERS"))
 
 	def testDetectsColumnCorrectly(self):
 		"""
 		Checks that detection of the column names works as intended.
 		"""
 		self.assertTrue(check_sql_column_exists(database="sample/mergers/data_0_0.db",
-											    table_name="COMMUNITY_PARAMETERS",
-												column_name="reference"))
+		                                        table_name="COMMUNITY_PARAMETERS",
+		                                        column_name="reference"))
 		self.assertFalse(check_sql_column_exists(database="sample/mergers/data_0_0.db",
-												table_name="COMMUNITY_PARAMETERS",
-												column_name="referencenot"))
+		                                         table_name="COMMUNITY_PARAMETERS",
+		                                         column_name="referencenot"))
 		self.assertFalse(check_sql_column_exists(database="sample/mergers/data_0_0.db",
-												 table_name="COMMUNITY_PARAMET2ERS",
-												 column_name="referencenot"))
-
+		                                         table_name="COMMUNITY_PARAMET2ERS",
+		                                         column_name="referencenot"))
 
 	def testGetMaxValue(self):
 		"""
@@ -122,7 +121,7 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db", "COMMUNITY_PARAMETERS", "reference"))
 		with self.assertRaises(sqlite3.OperationalError):
 			self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db",
-														"COMMUNITY_PARAMETERS", "reference2"))
+			                                            "COMMUNITY_PARAMETERS", "reference2"))
 		with self.assertRaises(sqlite3.OperationalError):
 			self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db",
-														"COMMUNITY_PARAMETERS2", "reference"))
+			                                            "COMMUNITY_PARAMETERS2", "reference"))

@@ -8,8 +8,8 @@ Program Listing for File Community.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under BSD-3 license.
-   //See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   //This file is part of NECSim project which is released under MIT license.
+   //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef TREELIST
    #define TREELIST
    
@@ -34,12 +34,6 @@ Program Listing for File Community.h
    bool checkSpeciation(const long double &random_number, const long double &speciation_rate,
                         const unsigned long &no_generations);
    
-   bool doubleCompare(double d1, double d2, double epsilon);
-   
-   bool doubleCompare(long double d1, long double d2, long double epsilon);
-   
-   bool doubleCompare(long double d1, long double d2, double epsilon);
-   
    struct CommunityParameters
    {
        unsigned long reference;
@@ -47,45 +41,48 @@ Program Listing for File Community.h
        long double time;
        bool fragment;
        unsigned long metacommunity_reference; // will be 0 if no metacommunity used.
+       // protracted speciation parameters
+       ProtractedSpeciationParameters protracted_parameters;
        bool updated; // set to true if the fragment reference needs updating in the database
    
-       CommunityParameters()
-       {
-           reference = 0;
-           speciation_rate = 0.0;
-           time = 0.0;
-           fragment = false;
-           metacommunity_reference = 0;
-           updated = false;
-       }
+       CommunityParameters() : reference(0), speciation_rate(0.0), time(0), fragment(false), metacommunity_reference(0),
+                               protracted_parameters(), updated(false){}
    
        CommunityParameters(unsigned long reference_in, long double speciation_rate_in, long double time_in,
-                           bool fragment_in, unsigned long metacommunity_reference_in);
+                           bool fragment_in, unsigned long metacommunity_reference_in,
+                           const ProtractedSpeciationParameters &protracted_params);
    
-       void setup(unsigned long reference_in, long double speciation_rate_in, long double time_in,
-                  bool fragment_in, unsigned long metacommunity_reference_in);
+       void setup(unsigned long reference_in, long double speciation_rate_in, long double time_in, bool fragment_in,
+                  unsigned long metacommunity_reference_in, const ProtractedSpeciationParameters &protracted_params);
    
        bool compare(long double speciation_rate_in, long double time_in, bool fragment_in,
-                    unsigned long metacommunity_reference_in);
+                    unsigned long metacommunity_reference_in,
+                    const ProtractedSpeciationParameters &protracted_params);
    
-       bool compare(long double speciation_rate_in, long double time_in, unsigned long metacommunity_reference_in);
+       bool compare(long double speciation_rate_in, long double time_in,
+                    unsigned long metacommunity_reference_in,
+                    const ProtractedSpeciationParameters &protracted_params);
    
        bool compare(unsigned long reference_in);
    };
    
    struct CommunitiesArray
    {
-       vector<CommunityParameters> calc_array;
+       vector<CommunityParameters> communityParameters;
    
        void pushBack(unsigned long reference, long double speciation_rate, long double time, bool fragment,
-                     unsigned long metacommunity_reference);
+                     unsigned long metacommunity_reference,
+                     const ProtractedSpeciationParameters &protracted_params);
    
        void pushBack(CommunityParameters tmp_param);
    
        CommunityParameters &addNew(long double speciation_rate, long double time, bool fragment,
-                                   unsigned long metacommunity_reference);
+                                   unsigned long metacommunity_reference,
+                                   const ProtractedSpeciationParameters &protracted_params);
    
-       bool hasPair(long double speciation_rate, double time, bool fragment, unsigned long metacommunity_reference);
+       bool hasPair(long double speciation_rate, double time, bool fragment,
+                    unsigned long metacommunity_reference,
+                    const ProtractedSpeciationParameters &protracted_params);
    
    };
    
@@ -120,7 +117,6 @@ Program Listing for File Community.h
        unsigned long getReference(long double speciation_rate, unsigned long metacommunity_size);
    };
    
-   
    struct Fragment
    {
        // the name for the fragment (for reference purposes)
@@ -131,7 +127,6 @@ Program Listing for File Community.h
        unsigned long num;
        double area;
    };
-   
    
    class Samplematrix : public DataMask
    {
@@ -163,16 +158,15 @@ Program Listing for File Community.h
    class Community
    {
    protected:
-       bool bMem; // boolean for whether the database is in memory or not.
-       bool bFileSet; // boolean for whether the database has been set already.
+       bool in_mem; // boolean for whether the database is in memory or not.
+       bool database_set; // boolean for whether the database has been set already.
        sqlite3 *database; // stores the in-memory database connection.
-       sqlite3 *outdatabase; // stores the file database connection
        bool bSqlConnection; // true if the data connection has been established.
-       Row<TreeNode> *nodes; // in older versions this was called list. Changed to avoid confusion with the built-in class.
+       Row<TreeNode> *nodes; // in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.
        Row<unsigned long> row_out;
        unsigned long iSpecies;
-       bool bSample; // checks whether the samplemask has already been imported.
-       bool bDataImport; // checks whether the main sim data has been imported.
+       bool has_imported_samplemask; // checks whether the samplemask has already been imported.
+       bool has_imported_data; // checks whether the main sim data has been imported.
        Samplematrix samplemask; // the samplemask object for defining the areas we want to sample from.
        vector<Fragment> fragments; // a vector of fragments for storing each fragment's coordinates.
        CommunityParameters *current_community_parameters;
@@ -187,50 +181,34 @@ Program Listing for File Community.h
        MetacommunitiesArray past_metacommunities;
        // Protracted speciation parameters
        bool protracted;
-       double min_speciation_gen, max_speciation_gen, applied_min_speciation_gen, applied_max_speciation_gen;
+       double min_speciation_gen, max_speciation_gen;
+       ProtractedSpeciationParameters applied_protracted_parameters;
        unsigned long max_species_id, max_fragment_id, max_locations_id;
        // Does not need to be stored during simulation pause
        SpecSimParameters *spec_sim_parameters;
    public:
    
-       Community(Row<TreeNode> *r) : nodes(r)
+       Community(Row<TreeNode> *r) : in_mem(false), database_set(false), database(nullptr),
+                                     bSqlConnection(false), nodes(r), row_out(), iSpecies(0),
+                                     has_imported_samplemask(false), has_imported_data(false), samplemask(),
+                                     fragments(), current_community_parameters(nullptr), min_spec_rate(0.0),
+                                     grid_x_size(0), grid_y_size(0), samplemask_x_size(0), samplemask_y_size(0),
+                                     samplemask_x_offset(0), samplemask_y_offset(0), past_communities(),
+                                     past_metacommunities(), protracted(false), min_speciation_gen(0.0),
+                                     max_speciation_gen(0.0), applied_protracted_parameters(), max_species_id(0),
+                                     max_fragment_id(0), max_locations_id(0), spec_sim_parameters(nullptr)
        {
-           bMem = false;
-           iSpecies = 0;
-           bSample = false;
-           bSqlConnection = false;
-           bFileSet = false;
-           bDataImport = false;
-           min_speciation_gen = 0.0;
-           max_speciation_gen = 0.0;
-           applied_max_speciation_gen = 0.0;
-           protracted = false;
-           current_community_parameters = nullptr;
-           max_species_id = 0;
-           max_locations_id = 0;
    
        }
    
-       Community()
+       Community() : Community(nullptr)
        {
-           bMem = false;
-           iSpecies = 0;
-           bSample = false;
-           bSqlConnection = false;
-           bFileSet = false;
-           bDataImport = false;
-           min_speciation_gen = 0.0;
-           max_speciation_gen = 0.0;
-           applied_max_speciation_gen = 0.0;
-           protracted = false;
-           current_community_parameters = nullptr;
-           max_species_id = 0;
-           max_locations_id = 0;
        }
    
-       ~Community()
+        virtual ~Community()
        {
            nodes = nullptr;
+           sqlite3_close(database);
        }
    
        void setList(Row<TreeNode> *l);
@@ -256,17 +234,23 @@ Program Listing for File Community.h
        void detectDimensions(string db);
    
        void openSqlConnection(string inputfile);
+   
+       void closeSqlConnection();
        void setInternalDatabase();
    
        void internalOption();
    
        void importData(string inputfile);
    
+       void setSimParameters(const SimParameters *sim_parameters);
+   
        void importSimParameters(string file);
+   
+       bool isSetDatabase();
    
        void getMaxSpeciesAbundancesID();
    
-       Row<unsigned long> * getCumulativeAbundances();
+       Row<unsigned long> *getCumulativeAbundances();
    
        Row<unsigned long> getRowOut();
    
@@ -276,11 +260,9 @@ Program Listing for File Community.h
    
        void getMaxSpeciesLocationsID();
    
-       void setProtractedParameters(double max_speciation_gen_in);
+       void setProtractedParameters(const ProtractedSpeciationParameters &protracted_params);
    
-       void setProtractedParameters(const double &max_speciation_gen_in, const double &mix_speciation_gen_in);
-   
-       void overrideProtractedParameters(const double &min_speciation_gen_in, const double &max_speciation_gen_in);
+       void overrideProtractedParameters(const ProtractedSpeciationParameters &protracted_params);
    
        void setProtracted(bool protracted_in);
    
@@ -291,10 +273,12 @@ Program Listing for File Community.h
        void outputSpeciesAbundances();
    
        bool checkCalculationsPerformed(long double speciation_rate, double time, bool fragments,
-                                       unsigned long metacommunity_size, long double metacommunity_speciation_rate);
+                                       unsigned long metacommunity_size, long double metacommunity_speciation_rate,
+                                       ProtractedSpeciationParameters proc_parameters);
    
        void addCalculationPerformed(long double speciation_rate, double time, bool fragments,
-                                    unsigned long metacommunity_size, long double metacommunity_speciation_rate);
+                                    unsigned long metacommunity_size, long double metacommunity_speciation_rate,
+                                    const ProtractedSpeciationParameters &protracted_params);
    
        void createFragmentDatabase(const Fragment &f);
    
@@ -320,7 +304,6 @@ Program Listing for File Community.h
    
        void writeNewMetacommuntyParameters();
    
-   
        void updateCommunityParameters();
    
        void writeSpeciationRates();
@@ -331,7 +314,9 @@ Program Listing for File Community.h
    
        void printEndTimes(time_t tStart, time_t tEnd);
    
-       virtual void apply(SpecSimParameters *sp);
+       void apply(SpecSimParameters *sp);
+   
+       virtual void applyNoOutput(SpecSimParameters *sp);
    
        void doApplication(SpecSimParameters *sp);
    

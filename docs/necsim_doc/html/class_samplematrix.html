@@ -136,9 +136,15 @@ Collaboration diagram for Samplematrix:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_samplematrix__coll__graph.jpg" border="0" usemap="#_samplematrix_coll__map" alt="Collaboration graph"/></div>
 <map name="_samplematrix_coll__map" id="_samplematrix_coll__map">
-<area shape="rect" id="node2" href="class_data_mask.html" title="Contains the DataMask object, a Matrix of booleans describing the spatial sampling pattern..." alt="" coords="27,180,109,205"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="28,93,108,119"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="5,5,131,44"/>
+<area shape="rect" id="node2" href="class_data_mask.html" title="Contains the DataMask object, a Matrix of booleans describing the spatial sampling pattern..." alt="" coords="147,279,229,304"/>
+<area shape="rect" id="node3" href="class_map.html" title="Map\&lt; bool \&gt;" alt="" coords="35,192,130,217"/>
+<area shape="rect" id="node4" href="class_matrix.html" title="Matrix\&lt; bool \&gt;" alt="" coords="9,105,114,131"/>
+<area shape="rect" id="node5" href="class_row.html" title="Row\&lt; bool \&gt;" alt="" coords="5,12,102,37"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="149,105,228,131"/>
+<area shape="rect" id="node8" href="class_map.html" title="Map\&lt; double \&gt;" alt="" coords="262,192,373,217"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="125,5,251,44"/>
+<area shape="rect" id="node9" href="class_matrix.html" title="Matrix\&lt; double \&gt;" alt="" coords="268,105,388,131"/>
+<area shape="rect" id="node10" href="class_row.html" title="Row\&lt; double \&gt;" alt="" coords="275,12,386,37"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -161,19 +167,30 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_samplematrix.html#a9b796f2279f1716c2a555ff3d641ea0b">removeFragment</a> ()</td></tr>
 <tr class="memdesc:a9b796f2279f1716c2a555ff3d641ea0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the fragment. <br /></td></tr>
 <tr class="separator:a9b796f2279f1716c2a555ff3d641ea0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a093364b6da9442f7c4945b5a06cfe3af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a093364b6da9442f7c4945b5a06cfe3af">getDefault</a> ()</td></tr>
-<tr class="memdesc:a093364b6da9442f7c4945b5a06cfe3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory.  <a href="#a093364b6da9442f7c4945b5a06cfe3af">More...</a><br /></td></tr>
-<tr class="separator:a093364b6da9442f7c4945b5a06cfe3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73922a90e7f491ec3dcf90fdd400fdf8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a73922a90e7f491ec3dcf90fdd400fdf8">setup</a> (const string &amp;sample_mask_file, const unsigned long &amp;x_in, const unsigned long &amp;y_in, const unsigned long &amp;mask_x_in, const unsigned long &amp;mask_y_in, const unsigned long &amp;x_offset_in, const unsigned long &amp;y_offset_in)</td></tr>
-<tr class="memdesc:a73922a90e7f491ec3dcf90fdd400fdf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates.  <a href="#a73922a90e7f491ec3dcf90fdd400fdf8">More...</a><br /></td></tr>
-<tr class="separator:a73922a90e7f491ec3dcf90fdd400fdf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a819eacf6968b0384a0221599dac09122"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a819eacf6968b0384a0221599dac09122">importBooleanMask</a> (unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim, unsigned long xoffset, unsigned long yoffset, string inputfile)</td></tr>
-<tr class="memdesc:a819eacf6968b0384a0221599dac09122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions.  <a href="#a819eacf6968b0384a0221599dac09122">More...</a><br /></td></tr>
-<tr class="separator:a819eacf6968b0384a0221599dac09122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa4ee43e6c20f4b7c3e8404ee12345b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a9aa4ee43e6c20f4b7c3e8404ee12345b">isNull</a> ()</td></tr>
+<tr class="memdesc:a9aa4ee43e6c20f4b7c3e8404ee12345b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory.  <a href="#a9aa4ee43e6c20f4b7c3e8404ee12345b">More...</a><br /></td></tr>
+<tr class="separator:a9aa4ee43e6c20f4b7c3e8404ee12345b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6a4e6f63856f96805ddc79022c47104"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#ab6a4e6f63856f96805ddc79022c47104">setup</a> (const <a class="el" href="struct_sim_parameters.html">SimParameters</a> &amp;sim_parameters)</td></tr>
+<tr class="memdesc:ab6a4e6f63856f96805ddc79022c47104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates.  <a href="#ab6a4e6f63856f96805ddc79022c47104">More...</a><br /></td></tr>
+<tr class="separator:ab6a4e6f63856f96805ddc79022c47104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5bf5df7975431338e3ea757e6f2fac9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5bf5df7975431338e3ea757e6f2fac9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>checkCanUseDefault</b> (const <a class="el" href="struct_sim_parameters.html">SimParameters</a> &amp;sim_parameters)</td></tr>
+<tr class="separator:ae5bf5df7975431338e3ea757e6f2fac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac63b47c3688db359760f6134d30f239"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#aac63b47c3688db359760f6134d30f239">importBooleanMask</a> (unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim, unsigned long xoffset, unsigned long yoffset, string inputfile_in)</td></tr>
+<tr class="memdesc:aac63b47c3688db359760f6134d30f239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. Should only be called if the import is actually required (i.e. the map is not null or none).  <a href="#aac63b47c3688db359760f6134d30f239">More...</a><br /></td></tr>
+<tr class="separator:aac63b47c3688db359760f6134d30f239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85f7b85bb4ac54aa884a8a06f1d35d1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85f7b85bb4ac54aa884a8a06f1d35d1b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a85f7b85bb4ac54aa884a8a06f1d35d1b">doImport</a> ()</td></tr>
 <tr class="memdesc:a85f7b85bb4ac54aa884a8a06f1d35d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the boolean map object. <br /></td></tr>
 <tr class="separator:a85f7b85bb4ac54aa884a8a06f1d35d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09a24a15ad49851e8f344150a9109dd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09a24a15ad49851e8f344150a9109dd2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a09a24a15ad49851e8f344150a9109dd2">completeBoolImport</a> ()</td></tr>
+<tr class="memdesc:a09a24a15ad49851e8f344150a9109dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the map dimensions and the getVal function pointer. <br /></td></tr>
+<tr class="separator:a09a24a15ad49851e8f344150a9109dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a1071a51c4114cda3f73eeb98992fb4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a1071a51c4114cda3f73eeb98992fb4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a8a1071a51c4114cda3f73eeb98992fb4">setupNull</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> &amp;mapvarin)</td></tr>
+<tr class="memdesc:a8a1071a51c4114cda3f73eeb98992fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the null sampling map. <br /></td></tr>
+<tr class="separator:a8a1071a51c4114cda3f73eeb98992fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac756e21b1c8d9412d565fb020eec9a06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#ac756e21b1c8d9412d565fb020eec9a06">importSampleMask</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> &amp;mapvarin)</td></tr>
 <tr class="memdesc:ac756e21b1c8d9412d565fb020eec9a06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the specified file for the sampling percentage within each cell.  <a href="#ac756e21b1c8d9412d565fb020eec9a06">More...</a><br /></td></tr>
 <tr class="separator:ac756e21b1c8d9412d565fb020eec9a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,23 +209,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a2738d996bf7ee99d44a2833b2bed15ef"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a2738d996bf7ee99d44a2833b2bed15ef">getExactValue</a> (const long &amp;x, const long &amp;y, const long &amp;xwrap, const long &amp;ywrap)</td></tr>
 <tr class="memdesc:a2738d996bf7ee99d44a2833b2bed15ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the exact value from the spatial sampling map, as returned by the pointer function.  <a href="#a2738d996bf7ee99d44a2833b2bed15ef">More...</a><br /></td></tr>
 <tr class="separator:a2738d996bf7ee99d44a2833b2bed15ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a881c2393b1506d5dd026750405613bdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a881c2393b1506d5dd026750405613bdd">convertBoolean</a> (<a class="el" href="class_landscape.html">Landscape</a> &amp;map1, const double &amp;deme_sampling, const double &amp;generation)</td></tr>
-<tr class="memdesc:a881c2393b1506d5dd026750405613bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the spatial map into the boolean grid required for continued simulation. This is done so that the faster boolean accesses are possible.  <a href="#a881c2393b1506d5dd026750405613bdd">More...</a><br /></td></tr>
-<tr class="separator:a881c2393b1506d5dd026750405613bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0b9245784515c0a2a005c9881551e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a5d0b9245784515c0a2a005c9881551e1">convertBoolean</a> (shared_ptr&lt; <a class="el" href="class_landscape.html">Landscape</a> &gt; map1, const double &amp;deme_sampling, const double &amp;generation)</td></tr>
+<tr class="memdesc:a5d0b9245784515c0a2a005c9881551e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the spatial map into the boolean grid required for continued simulation. This is done so that the faster boolean accesses are possible.  <a href="#a5d0b9245784515c0a2a005c9881551e1">More...</a><br /></td></tr>
+<tr class="separator:a5d0b9245784515c0a2a005c9881551e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d152bcb13820a9061ea85c984e042a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d152bcb13820a9061ea85c984e042a7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a2d152bcb13820a9061ea85c984e042a7">clearSpatialMask</a> ()</td></tr>
 <tr class="memdesc:a2d152bcb13820a9061ea85c984e042a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the spatial mask from memory. This should be performed if no more map expansions are required. <br /></td></tr>
 <tr class="separator:a2d152bcb13820a9061ea85c984e042a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab96af629241f61a4d7122c6b7a91a3ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#ab96af629241f61a4d7122c6b7a91a3ef">recalculate_coordinates</a> (long &amp;x, long &amp;y, long &amp;x_wrap, long &amp;y_wrap)</td></tr>
-<tr class="memdesc:ab96af629241f61a4d7122c6b7a91a3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the coordinates back into the grid format. Changes the values in the provided variables to be correct.  <a href="#ab96af629241f61a4d7122c6b7a91a3ef">More...</a><br /></td></tr>
-<tr class="separator:ab96af629241f61a4d7122c6b7a91a3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eaef817c1baf4ac14d06d0e92bd4787"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a5eaef817c1baf4ac14d06d0e92bd4787">recalculateCoordinates</a> (long &amp;x, long &amp;y, long &amp;x_wrap, long &amp;y_wrap)</td></tr>
+<tr class="memdesc:a5eaef817c1baf4ac14d06d0e92bd4787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the coordinates back into the grid format. Changes the values in the provided variables to be correct.  <a href="#a5eaef817c1baf4ac14d06d0e92bd4787">More...</a><br /></td></tr>
+<tr class="separator:a5eaef817c1baf4ac14d06d0e92bd4787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0ebe741d4b22824f93dacddd175d2c96"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ebe741d4b22824f93dacddd175d2c96"></a>
-Map&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sample_mask</b></td></tr>
+<tr class="memitem:a0ebe741d4b22824f93dacddd175d2c96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_map.html">Map</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#a0ebe741d4b22824f93dacddd175d2c96">sample_mask</a></td></tr>
 <tr class="separator:a0ebe741d4b22824f93dacddd175d2c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc231ebddc3e5db0103220b20d968a4f"><td class="memItemLeft" align="right" valign="top">Map&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#acc231ebddc3e5db0103220b20d968a4f">sample_mask_exact</a></td></tr>
+<tr class="memitem:acc231ebddc3e5db0103220b20d968a4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_map.html">Map</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_mask.html#acc231ebddc3e5db0103220b20d968a4f">sample_mask_exact</a></td></tr>
 <tr class="separator:acc231ebddc3e5db0103220b20d968a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
@@ -222,9 +238,12 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:acde16cc845a6102a8b2ee0aa9b8917cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acde16cc845a6102a8b2ee0aa9b8917cb"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>inputfile</b></td></tr>
 <tr class="separator:acde16cc845a6102a8b2ee0aa9b8917cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5d895b50f04eceac1e473dee6f36703"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5d895b50f04eceac1e473dee6f36703"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>bDefault</b></td></tr>
-<tr class="separator:af5d895b50f04eceac1e473dee6f36703"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32ba5989de78dd5a08a3b805c2d62d05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32ba5989de78dd5a08a3b805c2d62d05"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isNullSample</b></td></tr>
+<tr class="separator:a32ba5989de78dd5a08a3b805c2d62d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5d2e1724e76f785987fcb324b7ac75"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a5d2e1724e76f785987fcb324b7ac75"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isGridOffset</b></td></tr>
+<tr class="separator:a8a5d2e1724e76f785987fcb324b7ac75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70178c907b2dc072b62f4bfb8f690823"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70178c907b2dc072b62f4bfb8f690823"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>x_offset</b></td></tr>
 <tr class="separator:a70178c907b2dc072b62f4bfb8f690823"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,7 +269,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A child of the <a class="el" href="class_matrix.html" title="A class containing the Matrix object, set up as an array of Row objects. Includes basic operations...">Matrix</a> class as booleans. Used for determining where to sample species from. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a881c2393b1506d5dd026750405613bdd"></a>
+<a class="anchor" id="a5d0b9245784515c0a2a005c9881551e1"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -260,7 +279,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
         <tr>
           <td class="memname">void DataMask::convertBoolean </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_landscape.html">Landscape</a> &amp;&#160;</td>
+          <td class="paramtype">shared_ptr&lt; <a class="el" href="class_landscape.html">Landscape</a> &gt;&#160;</td>
           <td class="paramname"><em>map1</em>, </td>
         </tr>
         <tr>
@@ -356,32 +375,6 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the sample_mask_exact value at (x, y) </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a093364b6da9442f7c4945b5a06cfe3af"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool DataMask::getDefault </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if using a null samplemask </dd></dl>
 
 </div>
 </div>
@@ -484,6 +477,8 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
   <table class="params">
     <tr><td class="paramname">x1</td><td>the x coordinate. </td></tr>
     <tr><td class="paramname">y1</td><td>the y coordinate </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the x wrapping </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the y wrapping </td></tr>
   </table>
   </dd>
 </dl>
@@ -707,8 +702,8 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
   <table class="params">
     <tr><td class="paramname">x</td><td>the x position on the grid </td></tr>
     <tr><td class="paramname">y</td><td>the y position on the grid </td></tr>
-    <tr><td class="paramname">xval</td><td>the number of x wraps </td></tr>
-    <tr><td class="paramname">yval</td><td>the number of y wraps </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the number of x wraps </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the number of y wraps </td></tr>
   </table>
   </dd>
 </dl>
@@ -716,7 +711,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 
 </div>
 </div>
-<a class="anchor" id="a819eacf6968b0384a0221599dac09122"></a>
+<a class="anchor" id="aac63b47c3688db359760f6134d30f239"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -763,7 +758,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>inputfile</em>&#160;</td>
+          <td class="paramname"><em>inputfile_in</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -778,7 +773,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 </table>
 </div><div class="memdoc">
 
-<p>Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. </p>
+<p>Imports the sample mask as a boolean mask and sets the relevant sample mask dimensions. Should only be called if the import is actually required (i.e. the map is not null or none). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xdim</td><td>the x dimension of the grid area </td></tr>
@@ -787,7 +782,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
     <tr><td class="paramname">mask_ydim</td><td>the y dimension of the sample map file </td></tr>
     <tr><td class="paramname">xoffset</td><td>the x offset of the grid area from the sample map file </td></tr>
     <tr><td class="paramname">yoffset</td><td>the y offset of the grid area from the sample map file </td></tr>
-    <tr><td class="paramname">inputfile</td><td>the path to the sample map file </td></tr>
+    <tr><td class="paramname">inputfile_in</td><td>the path to the sample map file </td></tr>
   </table>
   </dd>
 </dl>
@@ -826,7 +821,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 
 </div>
 </div>
-<a class="anchor" id="ab96af629241f61a4d7122c6b7a91a3ef"></a>
+<a class="anchor" id="a9aa4ee43e6c20f4b7c3e8404ee12345b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -834,7 +829,33 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DataMask::recalculate_coordinates </td>
+          <td class="memname">bool DataMask::isNull </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if using a null samplemask </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5eaef817c1baf4ac14d06d0e92bd4787"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataMask::recalculateCoordinates </td>
           <td>(</td>
           <td class="paramtype">long &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
@@ -900,14 +921,14 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 <p>Set the fragment for the samplemask to some calculated fragment. This can be set multiple times. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fragment_in</td><td>the <a class="el" href="struct_fragment.html" title="Contains the information needed for defining a fragment. Fragments can be detected from the Samplemat...">Fragment</a> to set the samplemask to. </td></tr>
+    <tr><td class="paramname">fragment_in</td><td>the <a class="el" href="struct_fragment.html" title="Contains the information needed for defining a fragment. ">Fragment</a> to set the samplemask to. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a73922a90e7f491ec3dcf90fdd400fdf8"></a>
+<a class="anchor" id="ab6a4e6f63856f96805ddc79022c47104"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -915,51 +936,11 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool DataMask::setup </td>
+          <td class="memname">void DataMask::setup </td>
           <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>sample_mask_file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="struct_sim_parameters.html">SimParameters</a> &amp;&#160;</td>
+          <td class="paramname"><em>sim_parameters</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const unsigned long &amp;&#160;</td>
-          <td class="paramname"><em>x_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const unsigned long &amp;&#160;</td>
-          <td class="paramname"><em>y_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const unsigned long &amp;&#160;</td>
-          <td class="paramname"><em>mask_x_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const unsigned long &amp;&#160;</td>
-          <td class="paramname"><em>mask_y_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const unsigned long &amp;&#160;</td>
-          <td class="paramname"><em>x_offset_in</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const unsigned long &amp;&#160;</td>
-          <td class="paramname"><em>y_offset_in</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -972,22 +953,15 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 <p>Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sample_mask_file</td><td>the file to import the samplemask from (or "null") </td></tr>
-    <tr><td class="paramname">x_in</td><td>x dimension of the grid </td></tr>
-    <tr><td class="paramname">y_in</td><td>y dimension of the grid </td></tr>
-    <tr><td class="paramname">mask_x_in</td><td>x dimension of the sample mask </td></tr>
-    <tr><td class="paramname">mask_y_in</td><td>y dimension of the sample mask </td></tr>
-    <tr><td class="paramname">x_offset_in</td><td>x offset of the sample mask from the grid </td></tr>
-    <tr><td class="paramname">y_offset_in</td><td>y offset of the sample mask from the grid </td></tr>
+    <tr><td class="paramname">sim_parameters</td><td>Simulation parameter to set the data mask from </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if using a "null" samplemask </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="acc231ebddc3e5db0103220b20d968a4f"></a>
+<a class="anchor" id="a0ebe741d4b22824f93dacddd175d2c96"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -995,7 +969,7 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Map&lt;double&gt; DataMask::sample_mask_exact</td>
+          <td class="memname"><a class="el" href="class_map.html">Map</a>&lt;bool&gt; DataMask::sample_mask</td>
         </tr>
       </table>
   </td>
@@ -1005,6 +979,27 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getProportionfptr</b>
 </table>
 </div><div class="memdoc">
 <p>A binary grid telling whether or not the cell should be sampled. </p>
+
+</div>
+</div>
+<a class="anchor" id="acc231ebddc3e5db0103220b20d968a4f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_map.html">Map</a>&lt;double&gt; DataMask::sample_mask_exact</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Exact grid for determining sampling proportion. </p>
 
 </div>
 </div>

@@ -128,10 +128,13 @@ Collaboration diagram for Landscape:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_landscape__coll__graph.jpg" border="0" usemap="#_landscape_coll__map" alt="Collaboration graph"/></div>
 <map name="_landscape_coll__map" id="_landscape_coll__map">
-<area shape="rect" id="node2" title="STL class. " alt="" coords="327,93,406,119"/>
-<area shape="rect" id="node4" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m..." alt="" coords="178,341,292,366"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="304,5,430,44"/>
-<area shape="rect" id="node5" href="class_config_option.html" title="Config option class to store and import options from a file. " alt="" coords="5,93,104,119"/>
+<area shape="rect" id="node2" href="class_map.html" title="Map\&lt; uint32_t \&gt;" alt="" coords="11,353,128,378"/>
+<area shape="rect" id="node3" href="class_matrix.html" title="Matrix\&lt; uint32_t \&gt;" alt="" coords="5,105,133,131"/>
+<area shape="rect" id="node4" href="class_row.html" title="Row\&lt; uint32_t \&gt;" alt="" coords="10,12,129,37"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="179,105,258,131"/>
+<area shape="rect" id="node7" href="struct_sim_parameters.html" title="Stores and imports the variables required by the Map object. Used to setting the Map variables in a m..." alt="" coords="343,353,457,378"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="156,5,281,44"/>
+<area shape="rect" id="node8" href="class_config_option.html" title="Config option class to store and import options from a file. " alt="" coords="358,105,458,131"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -144,6 +147,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99fac44043825a97e2e7fbc71caeb8e2"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a99fac44043825a97e2e7fbc71caeb8e2">getHabitatMax</a> ()</td></tr>
 <tr class="memdesc:a99fac44043825a97e2e7fbc71caeb8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum habitat value from any map.  <a href="#a99fac44043825a97e2e7fbc71caeb8e2">More...</a><br /></td></tr>
 <tr class="separator:a99fac44043825a97e2e7fbc71caeb8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e9a0520be7426592aa1d8c91227f3e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#ad8e9a0520be7426592aa1d8c91227f3e">hasHistorical</a> ()</td></tr>
+<tr class="memdesc:ad8e9a0520be7426592aa1d8c91227f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the simulation is using historical maps.  <a href="#ad8e9a0520be7426592aa1d8c91227f3e">More...</a><br /></td></tr>
+<tr class="separator:ad8e9a0520be7426592aa1d8c91227f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc47e50bdad6af7f2bbed57db73f6730"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#acc47e50bdad6af7f2bbed57db73f6730">setDims</a> (<a class="el" href="struct_sim_parameters.html">SimParameters</a> *mapvarsin)</td></tr>
 <tr class="memdesc:acc47e50bdad6af7f2bbed57db73f6730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the dimensions of the grid, the area where the species are initially sampled from. This function must be run before any of the calc map functions to allow for the correct deme allocation.  <a href="#acc47e50bdad6af7f2bbed57db73f6730">More...</a><br /></td></tr>
 <tr class="separator:acc47e50bdad6af7f2bbed57db73f6730"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,21 +160,21 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#ad500af94a2afd577e682b3c042cab217">calcFineMap</a> ()</td></tr>
 <tr class="memdesc:ad500af94a2afd577e682b3c042cab217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the fine map object from file and calculates the correct values at each point. Without a map to input, the fine map will simply be a matrix of 1s. <br /></td></tr>
 <tr class="separator:ad500af94a2afd577e682b3c042cab217"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43ef527fd2272381ba20c6f6d8e471bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43ef527fd2272381ba20c6f6d8e471bd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a43ef527fd2272381ba20c6f6d8e471bd">calcPristineFineMap</a> ()</td></tr>
-<tr class="memdesc:a43ef527fd2272381ba20c6f6d8e471bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the pristine fine map object from file and calculates the correct values at each point. Without a map to input, the pristine fine map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. <br /></td></tr>
-<tr class="separator:a43ef527fd2272381ba20c6f6d8e471bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1861f8971b5dad0904284f8d873da3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1861f8971b5dad0904284f8d873da3a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#aa1861f8971b5dad0904284f8d873da3a">calcHistoricalFineMap</a> ()</td></tr>
+<tr class="memdesc:aa1861f8971b5dad0904284f8d873da3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the historical fine map object from file and calculates the correct values at each point. Without a map to input, the historical fine map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. <br /></td></tr>
+<tr class="separator:aa1861f8971b5dad0904284f8d873da3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b34dcd828e0006dde9e60315cbddac8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b34dcd828e0006dde9e60315cbddac8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a2b34dcd828e0006dde9e60315cbddac8">calcCoarseMap</a> ()</td></tr>
 <tr class="memdesc:a2b34dcd828e0006dde9e60315cbddac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the coarse map object from file and calculates the correct values at each point. Without a map to input, the coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. <br /></td></tr>
 <tr class="separator:a2b34dcd828e0006dde9e60315cbddac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dec3f0568fd393b197c7c42878744b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4dec3f0568fd393b197c7c42878744b0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a4dec3f0568fd393b197c7c42878744b0">calcPristineCoarseMap</a> ()</td></tr>
-<tr class="memdesc:a4dec3f0568fd393b197c7c42878744b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the pristine coarse map object from file and calculates the correct values at each point. Without a map to input, the pristine coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. <br /></td></tr>
-<tr class="separator:a4dec3f0568fd393b197c7c42878744b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecca7c3f17087922283f63ce6148ddb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#aecca7c3f17087922283f63ce6148ddb4">setTimeVars</a> (double gen_since_pristine_in, double habitat_change_rate_in)</td></tr>
-<tr class="memdesc:aecca7c3f17087922283f63ce6148ddb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the time variables.  <a href="#aecca7c3f17087922283f63ce6148ddb4">More...</a><br /></td></tr>
-<tr class="separator:aecca7c3f17087922283f63ce6148ddb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ac3d30b203ecb73d0b2a126a4ed8acf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ac3d30b203ecb73d0b2a126a4ed8acf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a2ac3d30b203ecb73d0b2a126a4ed8acf">calcHistoricalCoarseMap</a> ()</td></tr>
+<tr class="memdesc:a2ac3d30b203ecb73d0b2a126a4ed8acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Imports the historical coarse map object from file and calculates the correct values at each point. Without a map to input, the historical coarse map will simply be a matrix of 1s. This has the potential to be changed easily in future versions. <br /></td></tr>
+<tr class="separator:a2ac3d30b203ecb73d0b2a126a4ed8acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8aa9b3c8003cbc52c929e7532c0b0aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#ac8aa9b3c8003cbc52c929e7532c0b0aa">setTimeVars</a> (double gen_since_historical_in, double habitat_change_rate_in)</td></tr>
+<tr class="memdesc:ac8aa9b3c8003cbc52c929e7532c0b0aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the time variables.  <a href="#ac8aa9b3c8003cbc52c929e7532c0b0aa">More...</a><br /></td></tr>
+<tr class="separator:ac8aa9b3c8003cbc52c929e7532c0b0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d6050ab25b5c0dca01446b0e59bfb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#ae4d6050ab25b5c0dca01446b0e59bfb1">calcOffset</a> ()</td></tr>
 <tr class="memdesc:ae4d6050ab25b5c0dca01446b0e59bfb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the offset and extremeties of the fine map.  <a href="#ae4d6050ab25b5c0dca01446b0e59bfb1">More...</a><br /></td></tr>
 <tr class="separator:ae4d6050ab25b5c0dca01446b0e59bfb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,27 +190,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a739549f09fbfbc36674e1a27ad8e9363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9181afc2546082c9d4798e16e033b0f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9181afc2546082c9d4798e16e033b0f1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a9181afc2546082c9d4798e16e033b0f1">validateMaps</a> ()</td></tr>
-<tr class="memdesc:a9181afc2546082c9d4798e16e033b0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the map file sizes are correct and that each value on the fragmented maps is less than the pristine maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. <br /></td></tr>
+<tr class="memdesc:a9181afc2546082c9d4798e16e033b0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the map file sizes are correct and that each value on the fragmented maps is less than the historical maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. <br /></td></tr>
 <tr class="separator:a9181afc2546082c9d4798e16e033b0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa96c5208ad89b2e620b52f80b0937dff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa96c5208ad89b2e620b52f80b0937dff"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#aa96c5208ad89b2e620b52f80b0937dff">updateMap</a> (double generation)</td></tr>
-<tr class="memdesc:aa96c5208ad89b2e620b52f80b0937dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the maps to the newer map. <br /></td></tr>
-<tr class="separator:aa96c5208ad89b2e620b52f80b0937dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a264624ebb17fe757f4e7c9e082592b79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a264624ebb17fe757f4e7c9e082592b79">isPristine</a> ()</td></tr>
-<tr class="memdesc:a264624ebb17fe757f4e7c9e082592b79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pristine boolean.  <a href="#a264624ebb17fe757f4e7c9e082592b79">More...</a><br /></td></tr>
-<tr class="separator:a264624ebb17fe757f4e7c9e082592b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04efbb8d2470b1c4990694f0b92e3476"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a04efbb8d2470b1c4990694f0b92e3476">setPristine</a> (const bool &amp;bPristinein)</td></tr>
-<tr class="memdesc:a04efbb8d2470b1c4990694f0b92e3476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pristine state of the system.  <a href="#a04efbb8d2470b1c4990694f0b92e3476">More...</a><br /></td></tr>
-<tr class="separator:a04efbb8d2470b1c4990694f0b92e3476"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af76f7e71318f9ef5cac060de7351fdbc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#af76f7e71318f9ef5cac060de7351fdbc">getPristine</a> ()</td></tr>
-<tr class="memdesc:af76f7e71318f9ef5cac060de7351fdbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pristine map time.  <a href="#af76f7e71318f9ef5cac060de7351fdbc">More...</a><br /></td></tr>
-<tr class="separator:af76f7e71318f9ef5cac060de7351fdbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a568d5338ce85c35a66461033ced3cb05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a568d5338ce85c35a66461033ced3cb05">updateMap</a> (double generation)</td></tr>
+<tr class="memdesc:a568d5338ce85c35a66461033ced3cb05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an update needs to be performed to the map configuration, and if it does, performs the update.  <a href="#a568d5338ce85c35a66461033ced3cb05">More...</a><br /></td></tr>
+<tr class="separator:a568d5338ce85c35a66461033ced3cb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1669ae6563ef5ed11ce1da30fb28214b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1669ae6563ef5ed11ce1da30fb28214b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a1669ae6563ef5ed11ce1da30fb28214b">doUpdate</a> ()</td></tr>
+<tr class="memdesc:a1669ae6563ef5ed11ce1da30fb28214b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the historical map configuration. <br /></td></tr>
+<tr class="separator:a1669ae6563ef5ed11ce1da30fb28214b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e35a3a42e40a683be01e75413d30d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a03e35a3a42e40a683be01e75413d30d2">resetHistorical</a> ()</td></tr>
+<tr class="memdesc:a03e35a3a42e40a683be01e75413d30d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the historical variables to recalculate historical maps.  <a href="#a03e35a3a42e40a683be01e75413d30d2">More...</a><br /></td></tr>
+<tr class="separator:a03e35a3a42e40a683be01e75413d30d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab302f8a4ae779d20df94cb2525187cac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#ab302f8a4ae779d20df94cb2525187cac">isHistorical</a> ()</td></tr>
+<tr class="memdesc:ab302f8a4ae779d20df94cb2525187cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the historical boolean.  <a href="#ab302f8a4ae779d20df94cb2525187cac">More...</a><br /></td></tr>
+<tr class="separator:ab302f8a4ae779d20df94cb2525187cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b1c5459e1ecf8d11c1dd12299a53c61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a7b1c5459e1ecf8d11c1dd12299a53c61">setHistorical</a> (const bool &amp;historical_in)</td></tr>
+<tr class="memdesc:a7b1c5459e1ecf8d11c1dd12299a53c61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the historical state of the system.  <a href="#a7b1c5459e1ecf8d11c1dd12299a53c61">More...</a><br /></td></tr>
+<tr class="separator:a7b1c5459e1ecf8d11c1dd12299a53c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b15e6748d7d776deaa489e618750983"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a6b15e6748d7d776deaa489e618750983">getHistorical</a> ()</td></tr>
+<tr class="memdesc:a6b15e6748d7d776deaa489e618750983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the historical map time.  <a href="#a6b15e6748d7d776deaa489e618750983">More...</a><br /></td></tr>
+<tr class="separator:a6b15e6748d7d776deaa489e618750983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dec397270e8278478f807660e43d565"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5dec397270e8278478f807660e43d565"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>getLandscapeType</b> ()</td></tr>
 <tr class="separator:a5dec397270e8278478f807660e43d565"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5131b05f34a66951d63ec575a4aedb82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a5131b05f34a66951d63ec575a4aedb82">checkPristine</a> (double generation)</td></tr>
-<tr class="memdesc:a5131b05f34a66951d63ec575a4aedb82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the pristine state has been reached.  <a href="#a5131b05f34a66951d63ec575a4aedb82">More...</a><br /></td></tr>
-<tr class="separator:a5131b05f34a66951d63ec575a4aedb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4a7ae12f299407d5c379fd20ed2ccbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#ae4a7ae12f299407d5c379fd20ed2ccbc">checkHistorical</a> (double generation)</td></tr>
+<tr class="memdesc:ae4a7ae12f299407d5c379fd20ed2ccbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the historical state has been reached.  <a href="#ae4a7ae12f299407d5c379fd20ed2ccbc">More...</a><br /></td></tr>
+<tr class="separator:ae4a7ae12f299407d5c379fd20ed2ccbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63150f634d7936439bc5a1d20b84a7b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a63150f634d7936439bc5a1d20b84a7b2">setLandscape</a> (string is_infinite)</td></tr>
 <tr class="memdesc:a63150f634d7936439bc5a1d20b84a7b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the landscape functions to either infinite or finite.  <a href="#a63150f634d7936439bc5a1d20b84a7b2">More...</a><br /></td></tr>
 <tr class="separator:a63150f634d7936439bc5a1d20b84a7b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,10 +224,10 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>getLandscapeType</b
 <tr class="memdesc:a06dbce690810d8d771490c310cb96310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version involves a call to the function pointer, *getValFunc, so that the correct call to either <a class="el" href="class_landscape.html#a736605cefe34af236a4f8da38276a12e" title="Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spat...">getValFinite()</a> or getValInfinite is made.  <a href="#a06dbce690810d8d771490c310cb96310">More...</a><br /></td></tr>
 <tr class="separator:a06dbce690810d8d771490c310cb96310"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa98fad5a154486dbb0bca6056e19399c"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#aa98fad5a154486dbb0bca6056e19399c">getValCoarse</a> (const double &amp;xval, const double &amp;yval, const double &amp;current_generation)</td></tr>
-<tr class="memdesc:aa98fad5a154486dbb0bca6056e19399c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value from the coarse maps, including linear interpolating between the pristine and present maps.  <a href="#aa98fad5a154486dbb0bca6056e19399c">More...</a><br /></td></tr>
+<tr class="memdesc:aa98fad5a154486dbb0bca6056e19399c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value from the coarse maps, including linear interpolating between the historical and present maps.  <a href="#aa98fad5a154486dbb0bca6056e19399c">More...</a><br /></td></tr>
 <tr class="separator:aa98fad5a154486dbb0bca6056e19399c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33a1d5c3fba6c895ad3d390a547e0361"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a33a1d5c3fba6c895ad3d390a547e0361">getValFine</a> (const double &amp;xval, const double &amp;yval, const double &amp;current_generation)</td></tr>
-<tr class="memdesc:a33a1d5c3fba6c895ad3d390a547e0361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value from the fine maps, including linear interpolating between the pristine and present maps.  <a href="#a33a1d5c3fba6c895ad3d390a547e0361">More...</a><br /></td></tr>
+<tr class="memdesc:a33a1d5c3fba6c895ad3d390a547e0361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value from the fine maps, including linear interpolating between the historical and present maps.  <a href="#a33a1d5c3fba6c895ad3d390a547e0361">More...</a><br /></td></tr>
 <tr class="separator:a33a1d5c3fba6c895ad3d390a547e0361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a736605cefe34af236a4f8da38276a12e"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a736605cefe34af236a4f8da38276a12e">getValFinite</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap, const double &amp;current_generation)</td></tr>
 <tr class="memdesc:a736605cefe34af236a4f8da38276a12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spatial referencing. This version assumes finite landscape.  <a href="#a736605cefe34af236a4f8da38276a12e">More...</a><br /></td></tr>
@@ -247,17 +259,26 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>getLandscapeType</b
 <tr class="memitem:a24de83f1e8f762b9640cdba35793a404"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a24de83f1e8f762b9640cdba35793a404">checkMap</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap, const double generation)</td></tr>
 <tr class="memdesc:a24de83f1e8f762b9640cdba35793a404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the point is habitat or non-habitat.  <a href="#a24de83f1e8f762b9640cdba35793a404">More...</a><br /></td></tr>
 <tr class="separator:a24de83f1e8f762b9640cdba35793a404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0545765b734539f622804bb3aa72e38c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a0545765b734539f622804bb3aa72e38c">checkFine</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap)</td></tr>
-<tr class="memdesc:a0545765b734539f622804bb3aa72e38c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the point comes from the fine grid.  <a href="#a0545765b734539f622804bb3aa72e38c">More...</a><br /></td></tr>
-<tr class="separator:a0545765b734539f622804bb3aa72e38c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5ba56f29b355c5dd7226231144d147e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#af5ba56f29b355c5dd7226231144d147e">convertCoordinates</a> (double &amp;x, double &amp;y, long &amp;xwrap, long &amp;ywrap)</td></tr>
-<tr class="memdesc:af5ba56f29b355c5dd7226231144d147e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently.  <a href="#af5ba56f29b355c5dd7226231144d147e">More...</a><br /></td></tr>
-<tr class="separator:af5ba56f29b355c5dd7226231144d147e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92cd54efe4722ee0c40434875043d6c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a92cd54efe4722ee0c40434875043d6c7">isOnFine</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap)</td></tr>
+<tr class="memdesc:a92cd54efe4722ee0c40434875043d6c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the point comes from the fine grid.  <a href="#a92cd54efe4722ee0c40434875043d6c7">More...</a><br /></td></tr>
+<tr class="separator:a92cd54efe4722ee0c40434875043d6c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88b7191cdc10684eb6a851350d2f7a01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a88b7191cdc10684eb6a851350d2f7a01">isOnCoarse</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap)</td></tr>
+<tr class="memdesc:a88b7191cdc10684eb6a851350d2f7a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the point comes from the coarse grid.  <a href="#a88b7191cdc10684eb6a851350d2f7a01">More...</a><br /></td></tr>
+<tr class="separator:a88b7191cdc10684eb6a851350d2f7a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe24da20e362bd88f3794e4d8d5ccafb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#abe24da20e362bd88f3794e4d8d5ccafb">isOnMap</a> (const double &amp;x, const double &amp;y, const long &amp;xwrap, const long &amp;ywrap)</td></tr>
+<tr class="memdesc:abe24da20e362bd88f3794e4d8d5ccafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the point supplied is within map limits. If the map is inifite, returns true.  <a href="#abe24da20e362bd88f3794e4d8d5ccafb">More...</a><br /></td></tr>
+<tr class="separator:abe24da20e362bd88f3794e4d8d5ccafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aa0fca1b87ab838ebab933ef6daf4a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a5aa0fca1b87ab838ebab933ef6daf4a2">fixGridCoordinates</a> (double &amp;x, double &amp;y, long &amp;xwrap, long &amp;ywrap)</td></tr>
+<tr class="memdesc:a5aa0fca1b87ab838ebab933ef6daf4a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently.  <a href="#a5aa0fca1b87ab838ebab933ef6daf4a2">More...</a><br /></td></tr>
+<tr class="separator:a5aa0fca1b87ab838ebab933ef6daf4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedc33de89997456d53cceb3e4e424e64"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#aedc33de89997456d53cceb3e4e424e64">runDispersal</a> (const double &amp;dist, const double &amp;angle, long &amp;startx, long &amp;starty, long &amp;startxwrap, long &amp;startywrap, bool &amp;disp_comp, const double &amp;generation)</td></tr>
 <tr class="memdesc:aedc33de89997456d53cceb3e4e424e64"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn't need to perform all the checks until the edge of the fine grid.  <a href="#aedc33de89997456d53cceb3e4e424e64">More...</a><br /></td></tr>
 <tr class="separator:aedc33de89997456d53cceb3e4e424e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a552903c925b9769ecc2cad5b051682"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a3a552903c925b9769ecc2cad5b051682">distanceToNearestHabitat</a> (const long &amp;start_x, const long &amp;start_y, const long &amp;start_x_wrap, const long &amp;start_y_wrap, const double &amp;generation)</td></tr>
+<tr class="memdesc:a3a552903c925b9769ecc2cad5b051682"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the distance from the start position to the nearest habitat cell.  <a href="#a3a552903c925b9769ecc2cad5b051682">More...</a><br /></td></tr>
+<tr class="separator:a3a552903c925b9769ecc2cad5b051682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b867a59c88f754bae6788451845b698"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a9b867a59c88f754bae6788451845b698">printVars</a> ()</td></tr>
-<tr class="memdesc:a9b867a59c88f754bae6788451845b698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints some selected Map variables to the terminal.  <a href="#a9b867a59c88f754bae6788451845b698">More...</a><br /></td></tr>
+<tr class="memdesc:a9b867a59c88f754bae6788451845b698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints some selected <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> variables to the terminal.  <a href="#a9b867a59c88f754bae6788451845b698">More...</a><br /></td></tr>
 <tr class="separator:a9b867a59c88f754bae6788451845b698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28d01a593cbaf9d8fde9c2e1da996f91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28d01a593cbaf9d8fde9c2e1da996f91"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a28d01a593cbaf9d8fde9c2e1da996f91">clearMap</a> ()</td></tr>
@@ -265,7 +286,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a28d01a593cbaf9d8fde9c2e1da996f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abaf14ac4da88cd26f6593bdaa88d999f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abaf14ac4da88cd26f6593bdaa88d999f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#abaf14ac4da88cd26f6593bdaa88d999f">recalculateHabitatMax</a> ()</td></tr>
-<tr class="memdesc:abaf14ac4da88cd26f6593bdaa88d999f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculates the habitat map maximum by checking the maximums for each of the relevant map files (fine, coarse and pristines). <br /></td></tr>
+<tr class="memdesc:abaf14ac4da88cd26f6593bdaa88d999f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculates the habitat map maximum by checking the maximums for each of the relevant map files (fine, coarse and historicals). <br /></td></tr>
 <tr class="separator:abaf14ac4da88cd26f6593bdaa88d999f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
@@ -277,17 +298,17 @@ typedef unsigned long(Landscape::*&#160;</td><td class="memItemRight" valign="bo
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a8947e46b9be54b42a93fb0792d4a9ed4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8947e46b9be54b42a93fb0792d4a9ed4"></a>
-Map&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>fine_map</b></td></tr>
+<a class="el" href="class_map.html">Map</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>fine_map</b></td></tr>
 <tr class="separator:a8947e46b9be54b42a93fb0792d4a9ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e2e62cbb3abfde813d7e4f07a79d44f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e2e62cbb3abfde813d7e4f07a79d44f"></a>
-Map&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pristine_fine_map</b></td></tr>
-<tr class="separator:a7e2e62cbb3abfde813d7e4f07a79d44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e34fe2e75c3b84657a4edc75f9fcdec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e34fe2e75c3b84657a4edc75f9fcdec"></a>
+<a class="el" href="class_map.html">Map</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>historical_fine_map</b></td></tr>
+<tr class="separator:a5e34fe2e75c3b84657a4edc75f9fcdec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58c8bb6432b578dac46bdbdba9e759c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58c8bb6432b578dac46bdbdba9e759c9"></a>
-Map&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>coarse_map</b></td></tr>
+<a class="el" href="class_map.html">Map</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>coarse_map</b></td></tr>
 <tr class="separator:a58c8bb6432b578dac46bdbdba9e759c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1d40884f7423c474afae4e39b850387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1d40884f7423c474afae4e39b850387"></a>
-Map&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pristine_coarse_map</b></td></tr>
-<tr class="separator:aa1d40884f7423c474afae4e39b850387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac41db1c48869d974c97393eb548dd8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ac41db1c48869d974c97393eb548dd8"></a>
+<a class="el" href="class_map.html">Map</a>&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>historical_coarse_map</b></td></tr>
+<tr class="separator:a5ac41db1c48869d974c97393eb548dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3de03e94cea3c560df40bfa78b79f54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3de03e94cea3c560df40bfa78b79f54"></a>
 <a class="el" href="struct_sim_parameters.html">SimParameters</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>mapvars</b></td></tr>
 <tr class="separator:aa3de03e94cea3c560df40bfa78b79f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -351,18 +372,18 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>update_time</b> {}<
 <tr class="memitem:af58f378233b6143a4b38987573a2ea98"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af58f378233b6143a4b38987573a2ea98"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>habitat_change_rate</b> {}</td></tr>
 <tr class="separator:af58f378233b6143a4b38987573a2ea98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b8b74a728b52d46fdb2c120351f5100"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b8b74a728b52d46fdb2c120351f5100"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>gen_since_pristine</b> {}</td></tr>
-<tr class="separator:a5b8b74a728b52d46fdb2c120351f5100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a780302ea1b4320e137c31e766bb8a1ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a780302ea1b4320e137c31e766bb8a1ae"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>gen_since_historical</b> {}</td></tr>
+<tr class="separator:a780302ea1b4320e137c31e766bb8a1ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addbe4d0513a863384085e839d47d78ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addbe4d0513a863384085e839d47d78ad"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>current_map_time</b></td></tr>
 <tr class="separator:addbe4d0513a863384085e839d47d78ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96d7b521dddccd6239b6ea81d21e10ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96d7b521dddccd6239b6ea81d21e10ea"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_pristine</b></td></tr>
-<tr class="separator:a96d7b521dddccd6239b6ea81d21e10ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac75b3fb928b0974e0f351bc57112899e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac75b3fb928b0974e0f351bc57112899e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_pristine</b></td></tr>
-<tr class="separator:ac75b3fb928b0974e0f351bc57112899e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d45f993b8d922286b349bcd0a679843"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d45f993b8d922286b349bcd0a679843"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_historical</b></td></tr>
+<tr class="separator:a6d45f993b8d922286b349bcd0a679843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c92406ace422080c978fbf6c2b8d4ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c92406ace422080c978fbf6c2b8d4ab"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_historical</b></td></tr>
+<tr class="separator:a7c92406ace422080c978fbf6c2b8d4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f64209a3747b1f023da89254683490"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0f64209a3747b1f023da89254683490"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>habitat_max</b></td></tr>
 <tr class="separator:ae0f64209a3747b1f023da89254683490"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -372,15 +393,18 @@ unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>fine_max</b>
 <tr class="memitem:a4ce133d5e07e46f127bfa4f47597dcec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ce133d5e07e46f127bfa4f47597dcec"></a>
 unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>coarse_max</b></td></tr>
 <tr class="separator:a4ce133d5e07e46f127bfa4f47597dcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4353a23f1a363ef200b89a3100612cb5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4353a23f1a363ef200b89a3100612cb5"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>pristine_fine_max</b></td></tr>
-<tr class="separator:a4353a23f1a363ef200b89a3100612cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7326e82982ff2397b3a7fc90f945d62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7326e82982ff2397b3a7fc90f945d62"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>pristine_coarse_max</b></td></tr>
-<tr class="separator:ad7326e82982ff2397b3a7fc90f945d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86e67628c5ad3426f1f258e35ab5e4df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86e67628c5ad3426f1f258e35ab5e4df"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>historical_fine_max</b></td></tr>
+<tr class="separator:a86e67628c5ad3426f1f258e35ab5e4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa79ae2cca59b135591c3cb978f14ee2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa79ae2cca59b135591c3cb978f14ee2a"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>historical_coarse_max</b></td></tr>
+<tr class="separator:aa79ae2cca59b135591c3cb978f14ee2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bed03fc250afab4f9341da6f1f6c0da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bed03fc250afab4f9341da6f1f6c0da"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>landscape_type</b></td></tr>
 <tr class="separator:a2bed03fc250afab4f9341da6f1f6c0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4cf6ac6f87d0253d50b2738bb57087e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4cf6ac6f87d0253d50b2738bb57087e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>infinite_boundaries</b></td></tr>
+<tr class="separator:ad4cf6ac6f87d0253d50b2738bb57087e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e16bed309816971071c17ad0ebf94e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e16bed309816971071c17ad0ebf94e5"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>NextMap</b></td></tr>
 <tr class="separator:a7e16bed309816971071c17ad0ebf94e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -397,15 +421,15 @@ fptr&#160;</td><td class="memItemRight" valign="bottom"><b>getValFunc</b></td></
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:a1c309185f0c3a601f27c932f1f2fa886"><td class="memItemLeft" align="right" valign="top">ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a1c309185f0c3a601f27c932f1f2fa886">operator&lt;&lt;</a> (ostream &amp;os, const <a class="el" href="class_landscape.html">Landscape</a> &amp;r)</td></tr>
-<tr class="memdesc:a1c309185f0c3a601f27c932f1f2fa886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator for outputting the Map object variables to an output stream. This is used for storing the Map object to file.  <a href="#a1c309185f0c3a601f27c932f1f2fa886">More...</a><br /></td></tr>
+<tr class="memdesc:a1c309185f0c3a601f27c932f1f2fa886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator for outputting the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object variables to an output stream. This is used for storing the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object to file.  <a href="#a1c309185f0c3a601f27c932f1f2fa886">More...</a><br /></td></tr>
 <tr class="separator:a1c309185f0c3a601f27c932f1f2fa886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b9beb241ad534346dc98d24f6bb9279"><td class="memItemLeft" align="right" valign="top">istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_landscape.html#a8b9beb241ad534346dc98d24f6bb9279">operator&gt;&gt;</a> (istream &amp;is, <a class="el" href="class_landscape.html">Landscape</a> &amp;r)</td></tr>
-<tr class="memdesc:a8b9beb241ad534346dc98d24f6bb9279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator for inputting the Map object variables from an input stream. This is used for reading the Map object from file.  <a href="#a8b9beb241ad534346dc98d24f6bb9279">More...</a><br /></td></tr>
+<tr class="memdesc:a8b9beb241ad534346dc98d24f6bb9279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator for inputting the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object variables from an input stream. This is used for reading the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object from file.  <a href="#a8b9beb241ad534346dc98d24f6bb9279">More...</a><br /></td></tr>
 <tr class="separator:a8b9beb241ad534346dc98d24f6bb9279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains all maps and provides the functions for accessing a grid cell in the correct temporal and spacial location. </p>
-<p>The function <a class="el" href="class_landscape.html#aedc33de89997456d53cceb3e4e424e64" title="The function that actually performs the dispersal. It is included here for easier programming and eff...">runDispersal()</a> also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with <a class="el" href="class_landscape.html#acc47e50bdad6af7f2bbed57db73f6730" title="Sets the dimensions of the grid, the area where the species are initially sampled from...">setDims()</a>, import the map files with <a class="el" href="class_landscape.html#ad500af94a2afd577e682b3c042cab217" title="Imports the fine map object from file and calculates the correct values at each point. Without a map to input, the fine map will simply be a matrix of 1s. ">calcFineMap()</a>, <a class="el" href="class_landscape.html#a2b34dcd828e0006dde9e60315cbddac8" title="Imports the coarse map object from file and calculates the correct values at each point...">calcCoarseMap()</a> etc, then set up the landscape type using <a class="el" href="class_landscape.html#a63150f634d7936439bc5a1d20b84a7b2" title="Sets the landscape functions to either infinite or finite. ">setLandscape()</a> and <a class="el" href="class_landscape.html#a04efbb8d2470b1c4990694f0b92e3476" title="Sets the pristine state of the system. ">setPristine()</a>. Usage is then by <a class="el" href="class_landscape.html#aedc33de89997456d53cceb3e4e424e64" title="The function that actually performs the dispersal. It is included here for easier programming and eff...">runDispersal()</a> for running a dispersal kernel on the landscape, and then <a class="el" href="class_landscape.html#a06dbce690810d8d771490c310cb96310" title="Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spat...">getVal()</a> to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. </p>
+<p>The function <a class="el" href="class_landscape.html#aedc33de89997456d53cceb3e4e424e64" title="The function that actually performs the dispersal. It is included here for easier programming and eff...">runDispersal()</a> also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with <a class="el" href="class_landscape.html#acc47e50bdad6af7f2bbed57db73f6730" title="Sets the dimensions of the grid, the area where the species are initially sampled from...">setDims()</a>, import the map files with <a class="el" href="class_landscape.html#ad500af94a2afd577e682b3c042cab217" title="Imports the fine map object from file and calculates the correct values at each point. Without a map to input, the fine map will simply be a matrix of 1s. ">calcFineMap()</a>, <a class="el" href="class_landscape.html#a2b34dcd828e0006dde9e60315cbddac8" title="Imports the coarse map object from file and calculates the correct values at each point...">calcCoarseMap()</a> etc, then set up the landscape type using <a class="el" href="class_landscape.html#a63150f634d7936439bc5a1d20b84a7b2" title="Sets the landscape functions to either infinite or finite. ">setLandscape()</a> and sethistorical(). Usage is then by <a class="el" href="class_landscape.html#aedc33de89997456d53cceb3e4e424e64" title="The function that actually performs the dispersal. It is included here for easier programming and eff...">runDispersal()</a> for running a dispersal kernel on the landscape, and then <a class="el" href="class_landscape.html#a06dbce690810d8d771490c310cb96310" title="Gets the value at a particular coordinate from the correct map. Takes in to account temporal and spat...">getVal()</a> to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ae4d6050ab25b5c0dca01446b0e59bfb1"></a>
 <div class="memitem">
@@ -462,53 +486,35 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0545765b734539f622804bb3aa72e38c"></a>
+<a class="anchor" id="ae4a7ae12f299407d5c379fd20ed2ccbc"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Landscape::checkFine </td>
+          <td class="memname">void Landscape::checkHistorical </td>
           <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>generation</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const long &amp;&#160;</td>
-          <td class="paramname"><em>xwrap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const long &amp;&#160;</td>
-          <td class="paramname"><em>ywrap</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Checks whether the point comes from the fine grid. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Checks if the historical state has been reached. </p>
+<p>If there are no historical maps, this function will do nothing. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>the x position. </td></tr>
-    <tr><td class="paramname">y</td><td>the y position. </td></tr>
-    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension. </td></tr>
-    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension. </td></tr>
+    <tr><td class="paramname">generation</td><td>the time to check at. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a boolean of whether the location is on the fine map. </dd></dl>
 
 </div>
 </div>
@@ -584,87 +590,6 @@ Friends</h2></td></tr>
 
 <p>Checks that the map files exist (or are none/null). </p>
 <dl class="section return"><dt>Returns</dt><dd>true if all the paths exist in configs </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a5131b05f34a66951d63ec575a4aedb82"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Landscape::checkPristine </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>generation</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if the pristine state has been reached. </p>
-<p>If there are no pristine maps, this function will do nothing. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">generation</td><td>the time to check at. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="af5ba56f29b355c5dd7226231144d147e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Landscape::convertCoordinates </td>
-          <td>(</td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long &amp;&#160;</td>
-          <td class="paramname"><em>xwrap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long &amp;&#160;</td>
-          <td class="paramname"><em>ywrap</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Converts the coordinates to within the original grid, altering the xwrap and ywrap consequently. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td>the x position. </td></tr>
-    <tr><td class="paramname">y</td><td>the y position. </td></tr>
-    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension. </td></tr>
-    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -789,6 +714,112 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3a552903c925b9769ecc2cad5b051682"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Landscape::distanceToNearestHabitat </td>
+          <td>(</td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>start_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>start_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>start_x_wrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>start_y_wrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>generation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the distance from the start position to the nearest habitat cell. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start_x</td><td>the start x coordinate </td></tr>
+    <tr><td class="paramname">start_y</td><td>the start y coordinate </td></tr>
+    <tr><td class="paramname">start_x_wrap</td><td>the starting x wrapping </td></tr>
+    <tr><td class="paramname">start_y_wrap</td><td>the starting y wrapping </td></tr>
+    <tr><td class="paramname">generation</td><td>the generation timer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the distance from the start position to the nearest habitat cell </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5aa0fca1b87ab838ebab933ef6daf4a2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Landscape::fixGridCoordinates </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long &amp;&#160;</td>
+          <td class="paramname"><em>xwrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long &amp;&#160;</td>
+          <td class="paramname"><em>ywrap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the x position. </td></tr>
+    <tr><td class="paramname">y</td><td>the y position. </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension. </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a99fac44043825a97e2e7fbc71caeb8e2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -804,6 +835,32 @@ Friends</h2></td></tr>
 
 <p>Gets the maximum habitat value from any map. </p>
 <dl class="section return"><dt>Returns</dt><dd>the maximum habitat value </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6b15e6748d7d776deaa489e618750983"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Landscape::getHistorical </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the historical map time. </p>
+<dl class="section return"><dt>Returns</dt><dd>double the historical map time </dd></dl>
 
 </div>
 </div>
@@ -840,32 +897,6 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the total number of individuals predicted to initially exist on the map. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="af76f7e71318f9ef5cac060de7351fdbc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double Landscape::getPristine </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the pristine map time. </p>
-<dl class="section return"><dt>Returns</dt><dd>double the pristine map time </dd></dl>
 
 </div>
 </div>
@@ -974,7 +1005,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the value from the coarse maps, including linear interpolating between the pristine and present maps. </p>
+<p>Gets the value from the coarse maps, including linear interpolating between the historical and present maps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xval</td><td>the x coordinate </td></tr>
@@ -1074,7 +1105,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the value from the fine maps, including linear interpolating between the pristine and present maps. </p>
+<p>Gets the value from the fine maps, including linear interpolating between the historical and present maps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xval</td><td>the x coordinate </td></tr>
@@ -1258,7 +1289,25 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a264624ebb17fe757f4e7c9e082592b79"></a>
+<a class="anchor" id="ad8e9a0520be7426592aa1d8c91227f3e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Landscape::hasHistorical </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns if the simulation is using historical maps. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if using historical maps </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab302f8a4ae779d20df94cb2525187cac"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1266,7 +1315,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Landscape::isPristine </td>
+          <td class="memname">bool Landscape::isHistorical </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1279,8 +1328,160 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the pristine boolean. </p>
-<dl class="section return"><dt>Returns</dt><dd>the pristine map state. </dd></dl>
+<p>Gets the historical boolean. </p>
+<dl class="section return"><dt>Returns</dt><dd>the historical map state. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a88b7191cdc10684eb6a851350d2f7a01"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Landscape::isOnCoarse </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>xwrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>ywrap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether the point comes from the coarse grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the x position </td></tr>
+    <tr><td class="paramname">y</td><td>the y position </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a boolean of whether the location is on the fine map </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a92cd54efe4722ee0c40434875043d6c7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Landscape::isOnFine </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>xwrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>ywrap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether the point comes from the fine grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the x position </td></tr>
+    <tr><td class="paramname">y</td><td>the y position </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a boolean of whether the location is on the fine map </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abe24da20e362bd88f3794e4d8d5ccafb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Landscape::isOnMap </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>xwrap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>ywrap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks that the point supplied is within map limits. If the map is inifite, returns true. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the x position </td></tr>
+    <tr><td class="paramname">y</td><td>the y position </td></tr>
+    <tr><td class="paramname">xwrap</td><td>the number of wraps in the x dimension </td></tr>
+    <tr><td class="paramname">ywrap</td><td>the number of wraps in the y dimension </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a boolean of whether the location is on the fine map </dd>
+<dd>
+true if the point is within the map limits </dd></dl>
 
 </div>
 </div>
@@ -1297,8 +1498,26 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Prints some selected Map variables to the terminal. </p>
+<p>Prints some selected <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> variables to the terminal. </p>
 <dl class="section return"><dt>Returns</dt><dd>the string containing the map variables to print </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a03e35a3a42e40a683be01e75413d30d2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Landscape::resetHistorical </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets the historical variables to recalculate historical maps. </p>
+<p>Required for rcoalescence compatability. </p>
 
 </div>
 </div>
@@ -1404,6 +1623,38 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7b1c5459e1ecf8d11c1dd12299a53c61"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Landscape::setHistorical </td>
+          <td>(</td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>historical_in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the historical state of the system. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">historical_in</td><td>the historical state. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a63150f634d7936439bc5a1d20b84a7b2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1428,39 +1679,7 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a04efbb8d2470b1c4990694f0b92e3476"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Landscape::setPristine </td>
-          <td>(</td>
-          <td class="paramtype">const bool &amp;&#160;</td>
-          <td class="paramname"><em>bPristinein</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the pristine state of the system. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bPristinein</td><td>the pristine state. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="aecca7c3f17087922283f63ce6148ddb4"></a>
+<a class="anchor" id="ac8aa9b3c8003cbc52c929e7532c0b0aa"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1468,7 +1687,7 @@ Friends</h2></td></tr>
           <td class="memname">void Landscape::setTimeVars </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>gen_since_pristine_in</em>, </td>
+          <td class="paramname"><em>gen_since_historical_in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1487,11 +1706,36 @@ Friends</h2></td></tr>
 <p>Sets the time variables. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gen_since_pristine_in</td><td>the time (in generations) since a pristine habitat state was achieved. </td></tr>
-    <tr><td class="paramname">habitat_change_rate_in</td><td>the rate of transform of the habitat up until the pristine time. A value of 0.2 would mean 20% of the change occurs linearlly up until the pristine time and the remaining 80% occurs in a jump to the pristine state. </td></tr>
+    <tr><td class="paramname">gen_since_historical_in</td><td>the time (in generations) since a historical habitat state was achieved. </td></tr>
+    <tr><td class="paramname">habitat_change_rate_in</td><td>the rate of transform of the habitat up until the historical time. A value of 0.2 would mean 20% of the change occurs linearlly up until the historical time and the remaining 80% occurs in a jump to the historical state. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a568d5338ce85c35a66461033ced3cb05"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Landscape::updateMap </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>generation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if an update needs to be performed to the map configuration, and if it does, performs the update. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">generation</td><td>the current generation timer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the map has been updated </dd></dl>
 
 </div>
 </div>
@@ -1528,11 +1772,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Operator for outputting the Map object variables to an output stream. This is used for storing the Map object to file. </p>
+<p>Operator for outputting the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object variables to an output stream. This is used for storing the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object to file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>the output stream. </td></tr>
-    <tr><td class="paramname">r</td><td>the Map object to output. </td></tr>
+    <tr><td class="paramname">r</td><td>the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object to output. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1572,11 +1816,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Operator for inputting the Map object variables from an input stream. This is used for reading the Map object from file. </p>
+<p>Operator for inputting the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object variables from an input stream. This is used for reading the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object from file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">is</td><td>the input stream. </td></tr>
-    <tr><td class="paramname">r</td><td>the Map object to input to. </td></tr>
+    <tr><td class="paramname">r</td><td>the <a class="el" href="class_map.html" title="Read a a tif file to a matrix and obtain spatial metadata. ">Map</a> object to input to. </td></tr>
   </table>
   </dd>
 </dl>

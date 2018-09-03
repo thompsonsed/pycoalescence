@@ -8,9 +8,11 @@ Program Listing for File Filesystem.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under BSD-3 license.
-   // See file **LICENSE.txt** or visit https://opensource.org/licenses/BSD-3-Clause) for full license details.
+   // This file is part of NECSim project which is released under MIT license.
+   // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
+   #define _USE_MATH_DEFINES
+   #include <cmath>
    #include <sqlite3.h>
    #include <string>
    
@@ -21,7 +23,7 @@ Program Listing for File Filesystem.h
    
    void openSQLiteDatabase(const string &database_name, sqlite3 *& database);
    
-   void createParent(const string &file);
+   void createParent(string file);
    
    
    bool doesExist(string testfile);

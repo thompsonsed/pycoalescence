@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -42,6 +42,8 @@ Includes
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
 
+- ``memory``
+
 
 
 Included By
@@ -49,8 +51,6 @@ Included By
 
 
 - :ref:`file_necsim_SpatialTree.h`
-
-- :ref:`file_necsim_SpeciesGrid.h`
 
 - :ref:`file_necsim_SpeciesList.cpp`
 

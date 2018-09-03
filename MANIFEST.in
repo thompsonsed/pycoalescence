@@ -1,0 +1,23 @@
+include pycoalescence/*.py
+graft pycoalescence/reference
+graft pycoalescence/sample
+graft pycoalescence/necsim
+include pycoalescence/lib/configure.ac
+include pycoalescence/lib/configure
+include pycoalescence/lib/Makefile.in
+include pycoalescence/lib/Makefile
+recursive-include pycoalescence/lib *.m4
+recursive-include pycoalescence/lib *.cpp *.h
+recursive-include pycoalescence/lib/cmake *.cmake
+include pycoalescence/lib/depends_default
+global-exclude *.pyc
+exclude pycoalescence/lib/necsim/main.cpp
+prune pycoalescence/lib/cmake-*
+prune pycoalescence/lib/necsim/cmake-*
+prune pycoalescence/lib/SimTest
+include LICENSE.txt
+include pycoalescence/necsim/libnecsim.so
+include setup.cfg
+include pycoalescence/lib/CMakeLists.txt
+include requirements.txt
+global-exclude *DS_Store

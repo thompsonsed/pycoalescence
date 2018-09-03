@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
   <compounddef id="_filesystem_8h" kind="file" language="C++">
     <compoundname>Filesystem.h</compoundname>
+    <includes local="no">cmath</includes>
     <includes local="no">sqlite3.h</includes>
     <includes local="no">string</includes>
     <includedby refid="_community_8cpp" local="yes">necsim/Community.cpp</includedby>
@@ -11,59 +12,86 @@
     <includedby refid="_tree_8h" local="yes">necsim/Tree.h</includedby>
     <includedby refid="_simulate_dispersal_8cpp" local="yes">necsim/SimulateDispersal.cpp</includedby>
     <incdepgraph>
-      <node id="388">
+      <node id="537">
+        <label>cmath</label>
+      </node>
+      <node id="539">
         <label>string</label>
       </node>
-      <node id="386">
+      <node id="536">
         <label>necsim/Filesystem.h</label>
         <link refid="Filesystem.h"/>
-        <childnode refid="387" relation="include">
+        <childnode refid="537" relation="include">
         </childnode>
-        <childnode refid="388" relation="include">
+        <childnode refid="538" relation="include">
+        </childnode>
+        <childnode refid="539" relation="include">
         </childnode>
       </node>
-      <node id="387">
+      <node id="538">
         <label>sqlite3.h</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="390">
+      <node id="541">
         <label>necsim/Tree.h</label>
         <link refid="_tree_8h_source"/>
-        <childnode refid="391" relation="include">
+        <childnode refid="542" relation="include">
         </childnode>
-        <childnode refid="394" relation="include">
+        <childnode refid="545" relation="include">
         </childnode>
       </node>
-      <node id="389">
+      <node id="540">
         <label>necsim/Filesystem.h</label>
         <link refid="Filesystem.h"/>
-        <childnode refid="390" relation="include">
+        <childnode refid="541" relation="include">
         </childnode>
       </node>
-      <node id="392">
+      <node id="543">
         <label>necsim/ProtractedSpatialTree.h</label>
         <link refid="_protracted_spatial_tree_8h_source"/>
       </node>
-      <node id="391">
+      <node id="542">
         <label>necsim/SpatialTree.h</label>
         <link refid="_spatial_tree_8h_source"/>
-        <childnode refid="392" relation="include">
+        <childnode refid="543" relation="include">
         </childnode>
-        <childnode refid="393" relation="include">
+        <childnode refid="544" relation="include">
         </childnode>
       </node>
-      <node id="393">
+      <node id="544">
         <label>necsim/ProtractedTree.h</label>
         <link refid="_protracted_tree_8h_source"/>
-        <childnode refid="392" relation="include">
+        <childnode refid="543" relation="include">
         </childnode>
       </node>
-      <node id="394">
+      <node id="545">
         <label>necsim/Metacommunity.h</label>
         <link refid="_metacommunity_8h_source"/>
       </node>
     </invincdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="_filesystem_8h_1a525335710b53cb064ca56b936120431e" prot="public" static="no">
+        <name>_USE_MATH_DEFINES</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="16" column="9" bodyfile="necsim/Filesystem.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="_filesystem_8h_1aa045270f48927dae2700f6207584b9c8" prot="public" static="no">
+        <name>SPECIATIONCOUNTER_FILESYSTEM_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Filesystem.h" line="22" column="9" bodyfile="necsim/Filesystem.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
       <sectiondef kind="func">
       <memberdef kind="function" id="_filesystem_8h_1a2dd35a078ed71b998730c8af8f4788f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -99,15 +127,15 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Filesystem.h" line="30" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="23" bodyend="66"/>
+        <location file="necsim/Filesystem.h" line="33" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="28" bodyend="75"/>
       </memberdef>
-      <memberdef kind="function" id="_filesystem_8h_1adc3ac635764997d6023cbb00f7664196" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_filesystem_8h_1a2323ae41e0f9ed5173015ea3bd87037d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void createParent</definition>
-        <argsstring>(const string &amp;file)</argsstring>
+        <argsstring>(string file)</argsstring>
         <name>createParent</name>
         <param>
-          <type>const string &amp;</type>
+          <type>string</type>
           <declname>file</declname>
         </param>
         <briefdescription>
@@ -124,7 +152,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Filesystem.h" line="36" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="68" bodyend="78"/>
+        <location file="necsim/Filesystem.h" line="39" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="77" bodyend="101"/>
       </memberdef>
       <memberdef kind="function" id="_filesystem_8h_1af836e59d723600545dfdfe76b0c14b94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -150,7 +178,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Filesystem.h" line="44" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="82" bodyend="95"/>
+        <location file="necsim/Filesystem.h" line="47" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="103" bodyend="116"/>
       </memberdef>
       <memberdef kind="function" id="_filesystem_8h_1a0b70d536db024e2f65c377c02fa596ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -176,7 +204,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Filesystem.h" line="52" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="97" bodyend="100"/>
+        <location file="necsim/Filesystem.h" line="55" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="118" bodyend="121"/>
       </memberdef>
       <memberdef kind="function" id="_filesystem_8h_1a494775fbade46418f7584db133d85762" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -213,7 +241,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Filesystem.h" line="67" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="102" bodyend="105"/>
+        <location file="necsim/Filesystem.h" line="70" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="123" bodyend="126"/>
       </memberdef>
       <memberdef kind="function" id="_filesystem_8h_1a9e12562fb15ce7c6462457551d293d66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>vector&lt; string &gt;</type>
@@ -239,7 +267,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Filesystem.h" line="75" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="107" bodyend="127"/>
+        <location file="necsim/Filesystem.h" line="78" column="1" bodyfile="necsim/Filesystem.cpp" bodystart="128" bodyend="148"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -247,34 +275,36 @@
     <detaileddescription>
 <para><simplesect kind="author"><para>Samuel Thompson </para></simplesect>
 <simplesect kind="date"><para>19/07/2017</para></simplesect>
-<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/BSD-3-Clause">BSD-3 Licence.</ulink> Contact: <ulink url="mailto:samuel.thompson14@imperial.ac.uk">samuel.thompson14@imperial.ac.uk</ulink> or <ulink url="mailto:thompsonsed@gmail.com">thompsonsed@gmail.com</ulink> </para></simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> Contact: <ulink url="mailto:samuel.thompson14@imperial.ac.uk">samuel.thompson14@imperial.ac.uk</ulink> or <ulink url="mailto:thompsonsed@gmail.com">thompsonsed@gmail.com</ulink> </para></simplesect>
 </para>    </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>BSD-3<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/BSD-3-Clause)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="3"><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="preprocessor">#include<sp/>&lt;sqlite3.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="17"><highlight class="normal"></highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SPECIATIONCOUNTER_FILESYSTEM_H</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SPECIATIONCOUNTER_FILESYSTEM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="preprocessor">#define<sp/>_USE_MATH_DEFINES</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sqlite3.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="20"><highlight class="normal"></highlight></codeline>
-<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>openSQLiteDatabase(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;database_name,<sp/>sqlite3<sp/>*&amp;<sp/>database);</highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createParent(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;file);</highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="44"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>doesExist(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>testfile);</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>doesExistNull(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>testfile);</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>cantorPairing(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x1,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x2);</highlight></codeline>
-<codeline lineno="68"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal">vector&lt;string&gt;<sp/>getCsvLineAndSplitIntoTokens(istream&amp;<sp/>str);</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//SPECIATIONCOUNTER_FILESYSTEM_H</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SPECIATIONCOUNTER_FILESYSTEM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SPECIATIONCOUNTER_FILESYSTEM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>openSQLiteDatabase(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;database_name,<sp/>sqlite3<sp/>*&amp;<sp/>database);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createParent(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>file);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>doesExist(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>testfile);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>doesExistNull(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>testfile);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>cantorPairing(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x1,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>x2);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal">vector&lt;string&gt;<sp/>getCsvLineAndSplitIntoTokens(istream&amp;<sp/>str);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//SPECIATIONCOUNTER_FILESYSTEM_H</highlight></codeline>
     </programlisting>
     <location file="necsim/Filesystem.h"/>
   </compounddef>

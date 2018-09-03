@@ -30,7 +30,7 @@ Detailed Description
 
 Samuel Thompson 
 19/07/2017
-BSD-3 Licence. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
+MIT Licence. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.com 
 
 
 
@@ -38,6 +38,8 @@ BSD-3 Licence. Contact: samuel.thompson14@imperial.ac.uk or thompsonsed@gmail.co
 Includes
 --------
 
+
+- ``cmath``
 
 - ``sqlite3.h``
 
@@ -79,4 +81,13 @@ Functions
 - :ref:`function_getCsvLineAndSplitIntoTokens`
 
 - :ref:`function_openSQLiteDatabase`
+
+
+Defines
+-------
+
+
+- :ref:`define__USE_MATH_DEFINES`
+
+- :ref:`define_SPECIATIONCOUNTER_FILESYSTEM_H`
 

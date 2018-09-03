@@ -3,7 +3,7 @@
 Struct module_state
 ===================
 
-- Defined in :ref:`file_applyspecmodule.h`
+- Defined in :ref:`file_necsim.h`
 
 
 Struct Documentation

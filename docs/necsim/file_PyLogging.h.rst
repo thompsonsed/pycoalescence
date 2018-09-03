@@ -29,7 +29,7 @@ Detailed Description
 --------------------
 
 Sam Thompson
-BSD-3 Licence. 
+MIT Licence. 
 
 
 
@@ -37,6 +37,8 @@ BSD-3 Licence.
 Includes
 --------
 
+
+- ``PyLogger.h`` (:ref:`file_PyLogger.h`)
 
 - ``Python.h``
 
@@ -50,11 +52,11 @@ Included By
 -----------
 
 
-- :ref:`file_applyspecmodule.cpp`
+- :ref:`file_CLandscapeMetricsCalculator.h`
 
-- :ref:`file_dispersalmodule.cpp`
+- :ref:`file_CSimulation.h`
 
-- :ref:`file_necsimmodule.cpp`
+- :ref:`file_necsim.cpp`
 
 - :ref:`file_PyLogging.cpp`
 
@@ -65,24 +67,7 @@ Functions
 ---------
 
 
-- :ref:`function_set_log_function`
+- :ref:`function_getGlobalLogger`
 
-- :ref:`function_set_logger`
-
-- :ref:`function_write_log`
-
-- :ref:`function_write_log`
-
-
-Variables
----------
-
-
-- :ref:`variable_call_logging`
-
-- :ref:`variable_log_set`
-
-- :ref:`variable_logger`
-
-- :ref:`variable_logger_set`
+- :ref:`function_removeGlobalLogger`
 

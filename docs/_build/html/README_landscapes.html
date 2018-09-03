@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Simulating and generating landscapes &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Simulating and generating landscapes &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,13 +25,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="next" title="Merging simulation outputs" href="README_merger.html" />
     <link rel="prev" title="Program Listing for File TreeNode.h" href="necsim/program_listing_file_necsim_TreeNode.h.html" /> 
   </head>
   <body role="document">
@@ -45,12 +45,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="modules.html" title="Modules"
+          <a href="README_merger.html" title="Merging simulation outputs"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="necsim/program_listing_file_necsim_TreeNode.h.html" title="Program Listing for File TreeNode.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -60,16 +60,16 @@
           <div class="body" role="main">
             
   <div class="section" id="simulating-and-generating-landscapes">
-<h1>Simulating and generating landscapes<a class="headerlink" href="#simulating-and-generating-landscapes" title="Permalink to this headline">¶</a></h1>
+<span id="simulate-and-generate-landscapes"></span><h1>Simulating and generating landscapes<a class="headerlink" href="#simulating-and-generating-landscapes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p><strong>pycoalescence</strong> provides functionality for generating fragmented landscapes for simulations, and simulating dispersal
 kernels to produce a variety of landscape-level dispersal metrics. Generation of landscapes is provided through the
 <a class="reference internal" href="pycoalescence.html#pycoalescence.fragments.FragmentedLandscape" title="pycoalescence.fragments.FragmentedLandscape"><code class="xref py py-class docutils literal"><span class="pre">FragmentedLandscape</span> <span class="pre">class</span></code></a>. Simulations of dispersal kernels is
-provided through the <code class="xref py py-class docutils literal"><span class="pre">DispersalSimulation</span> <span class="pre">class</span></code>.</p>
+provided through the <a class="reference internal" href="pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation" title="pycoalescence.dispersal_simulation.DispersalSimulation"><code class="xref py py-class docutils literal"><span class="pre">DispersalSimulation</span> <span class="pre">class</span></code></a>.</p>
 </div>
 <div class="section" id="generating-landscapes">
-<h2>Generating landscapes<a class="headerlink" href="#generating-landscapes" title="Permalink to this headline">¶</a></h2>
+<span id="generate-landscapes"></span><h2>Generating landscapes<a class="headerlink" href="#generating-landscapes" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="fragmented-landscapes">
 <h3>Fragmented Landscapes<a class="headerlink" href="#fragmented-landscapes" title="Permalink to this headline">¶</a></h3>
 <p>For our purposes, we define fragmented landscapes as continuous, fully spatial landscapes of a particular size, with n
@@ -92,7 +92,7 @@ individuals (the patch&#8217;s density) and every patch is has some probability 
 be 0). Another imagination of this concept is of a series of connected islands, where each island is modelled
 non-spatially, and every island has a probability of dispersing to all other islands.
 <strong>pycoalescence</strong> provides the routines for generating these landscapes within
-<code class="xref py py-class docutils literal"><span class="pre">PatchedLandscape</span> <span class="pre">class</span></code>.</p>
+<a class="reference internal" href="pycoalescence.html#pycoalescence.patched_landscape.PatchedLandscape" title="pycoalescence.patched_landscape.PatchedLandscape"><code class="xref py py-class docutils literal"><span class="pre">PatchedLandscape</span> <span class="pre">class</span></code></a>.</p>
 <p>Creation of a patched landscape requires first defining all the patches that exist in the landscape, and then setting
 the dispersal probability between each island. If any dispersal probability is not set, it is assumed to be 0. The
 dispersal probability from one patch to itself must be provided (but can be 0). The probability values provided are then
@@ -143,6 +143,49 @@ file can also be read into a numpy array using <a class="reference internal" hre
 <p class="last">All processing is done using the gdal module.</p>
 </div>
 </div>
+<div class="section" id="obtaining-landscape-metrics">
+<h2>Obtaining landscape metrics<a class="headerlink" href="#obtaining-landscape-metrics" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="pycoalescence.html#pycoalescence.landscape_metrics.LandscapeMetrics" title="pycoalescence.landscape_metrics.LandscapeMetrics"><code class="xref py py-class docutils literal"><span class="pre">LandscapeMetrics</span></code></a> contains methods for calculating some
+landscape metrics on a map file. This is a work in progress, and additional metrics may be added later.</p>
+<p>MNN here refers to the mean distance from each cell to its nearest neighbouring habitat cell. The distance can be
+calculated for a landscape using the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span> <span class="o">=</span> <span class="n">LandscapeMetrics</span><span class="p">(</span><span class="s2">&quot;map_file.tif&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span><span class="o">.</span><span class="n">get_mnn</span><span class="p">()</span>
+<span class="mf">1.50</span>
+</pre></div>
+</div>
+<p>The clumpiness metric is a measure of the proportional deviation of proportion of like adjacencies involving the
+corresponding class from that expected under a spatially random distribution. It produces a <span class="math">\(\text{CLUMPY}\)</span> value,
+where <span class="math">\(-1 &lt;= \text{CLUMPY} &lt;= 1\)</span>. -1 represents a perfectly disaggregated landscape. 1 represents a perfectly
+aggregated landscape. 0 represents a random landscape. The formula outlined below works where there are <span class="math">\(k\)</span>
+patches; in our scenario there <span class="math">\(k=2\)</span> as we have just habitat or non-habitat.</p>
+<p>We have:</p>
+<blockquote>
+<div><ul class="simple">
+<li><span class="math">\(g_ii\)</span>, the number of adjacencies between pixels of patch type <span class="math">\(i\)</span> using the the double count method.</li>
+<li><span class="math">\(g_ik\)</span>, the number of adjacencies between pixels of patches <span class="math">\(i\)</span> and <span class="math">\(j\)</span></li>
+<li><span class="math">\(\text{min}e_i\)</span>, the minimum perimeter (in cell surfaces) for a maximally-clumped class <span class="math">\(i\)</span></li>
+<li><span class="math">\(P_i\)</span>, the proportion of the landscape occupied by class <span class="math">\(i\)</span>.</li>
+</ul>
+</div></blockquote>
+<p>Given</p>
+<div class="math">
+\[G_i = (\frac{g_{ii}}{(\sum_{k=1}^{n} g_{ik}) - \text{min} e_i}\]</div>
+<p>then</p>
+<div class="math">
+\[\begin{split}\text{CLUMPY} = \begin{cases}
+  \frac{G_i - P_i}{P_i}, &amp; \text{if}\ G_i &lt; P_i\ \&amp;\ P_i &lt; 0.5 \\
+  \frac{G_i - P_i}{1-P_i}, &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+<p>The <span class="math">\(\text{CLUMPY}\)</span> metric can be calculated similarly as</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">LandscapeMetrics</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span> <span class="o">=</span> <span class="n">LandscapeMetrics</span><span class="p">(</span><span class="s2">&quot;map_file.tif&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">lm</span><span class="o">.</span><span class="n">get_clumpiness</span><span class="p">()</span>
+<span class="mf">0.8</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -165,6 +208,7 @@ file can also be read into a numpy array using <a class="reference internal" hre
 </li>
 <li><a class="reference internal" href="#simulated-landscapes">Simulated landscapes</a></li>
 <li><a class="reference internal" href="#reading-and-writing-tif-files">Reading and writing tif files</a></li>
+<li><a class="reference internal" href="#obtaining-landscape-metrics">Obtaining landscape metrics</a></li>
 </ul>
 </li>
 </ul>
@@ -173,8 +217,8 @@ file can also be read into a numpy array using <a class="reference internal" hre
   <p class="topless"><a href="necsim/program_listing_file_necsim_TreeNode.h.html"
                         title="previous chapter">Program Listing for File TreeNode.h</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="modules.html"
-                        title="next chapter">Modules</a></p>
+  <p class="topless"><a href="README_merger.html"
+                        title="next chapter">Merging simulation outputs</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -206,17 +250,17 @@ file can also be read into a numpy array using <a class="reference internal" hre
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="modules.html" title="Modules"
+          <a href="README_merger.html" title="Merging simulation outputs"
              >next</a> |</li>
         <li class="right" >
           <a href="necsim/program_listing_file_necsim_TreeNode.h.html" title="Program Listing for File TreeNode.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Samuel Thompson.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

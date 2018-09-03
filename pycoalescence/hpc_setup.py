@@ -1,14 +1,13 @@
 """
-Sets up pycoalescence for usage on HPC systems, including providing intel compiler flags for optimisation, and specific
-verbose patterns to add support for certain types of file systems.
+Compile **necsim** with a number of intel compiler optimisations for running on high-performance computing systems.
 """
 from __future__ import absolute_import
 import logging
 
 try:
-	from .setup import configure_and_compile
+	from .installer import Installer
 except (ImportError, SystemError, ValueError):
-	from setup import configure_and_compile
+	from installer import Installer
 
 
 def build_hpc():
@@ -17,7 +16,11 @@ def build_hpc():
 	and provides a selection of optimisation flags for high-performance systems.
 	:return:
 	"""
-	configure_and_compile(argv=["--with-hpc", "--with-verbose"], logging_level=logging.INFO)
+	from distutils.dist import Distribution
+	dist = Distribution()
+	installer = Installer(dist)
+
+	installer.configure_and_compile(argv=["--with-hpc", "--with-verbose"], logging_level=logging.INFO)
 
 
 if __name__ == "__main__":
