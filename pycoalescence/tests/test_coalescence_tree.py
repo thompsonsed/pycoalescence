@@ -404,11 +404,11 @@ class TestSimulationAnalysisTemporal(unittest.TestCase):
 	def testTimesWrongFormatError(self):
 		"""Tests that an error is raised when the times are in the wrong format."""
 		with self.assertRaises(TypeError):
-			self.tree.set_speciation_params([0.4, 0.6], times=[0.1, 0.2, "notafloat"])
+			self.tree.set_speciation_parameters([0.4, 0.6], times=[0.1, 0.2, "notafloat"])
 		with self.assertRaises(TypeError):
-			self.tree.set_speciation_params([0.4, 0.6], times="notafloat")
+			self.tree.set_speciation_parameters([0.4, 0.6], times="notafloat")
 		self.tree.times = []
-		self.tree.set_speciation_params([0.4, 0.6], times=[0, 1, 10])
+		self.tree.set_speciation_parameters([0.4, 0.6], times=[0, 1, 10])
 		self.assertEqual([0.0, 1.0, 10.0], self.tree.times)
 
 
@@ -427,9 +427,9 @@ class TestSimulationAnalysis(unittest.TestCase):
 		cls.tree = CoalescenceTree()
 		cls.tree.set_database(dst)
 		cls.tree.wipe_data()
-		cls.tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
-									   record_fragments=os.path.join("sample", "FragmentsTest.csv"),
-									   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+		cls.tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
+										   record_fragments=os.path.join("sample", "FragmentsTest.csv"),
+										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
 		cls.tree.apply()
 		cls.tree.calculate_fragment_richness()
 		cls.tree.calculate_fragment_octaves()
@@ -439,13 +439,13 @@ class TestSimulationAnalysis(unittest.TestCase):
 		"""Tests that an error is raised if the fragment config file does not exist."""
 		tree = CoalescenceTree(self.tree.file)
 		with self.assertRaises(IOError):
-			tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
-									   record_fragments=os.path.join("sample", "notafragmentconfig.csv"),
-									   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+			tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
+										   record_fragments=os.path.join("sample", "notafragmentconfig.csv"),
+										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
 		with self.assertRaises(IOError):
-			tree.set_speciation_params(speciation_rates=[0.5, 0.7], record_spatial="T",
-									   record_fragments=os.path.join("sample", "example_historical_fine.tif"),
-									   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+			tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
+										   record_fragments=os.path.join("sample", "example_historical_fine.tif"),
+										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
 
 
 	def testReadsFragmentsRichness(self):

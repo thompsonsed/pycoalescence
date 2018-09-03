@@ -20,7 +20,7 @@ Program Listing for File CCommunity.h
    #include "necsim/Community.h"
    #include "necsim/Metacommunity.h"
    #include "PyTemplates.h"
-   #include "necsimmodule.h"
+   #include "necsim.h"
    
    using namespace std;
    
@@ -283,21 +283,22 @@ Program Listing for File CCommunity.h
    template<class T>
    static PyTypeObject genCommunityType(char *tp_name, char *tp_doc)
    {
-       static PyTypeObject ret_Community_Type = {
+       PyTypeObject ret_Community_Type = {
                PyVarObject_HEAD_INIT(nullptr, 0)
-               .tp_name = tp_name,
-               .tp_doc = tp_doc,
-               .tp_basicsize = sizeof(PyCommunityTemplate<T>),
-               .tp_itemsize = 0,
-               .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
-               .tp_new = PyTemplate_new<T>,
-               .tp_init = (initproc) PyCommunity_init<T>,
-               .tp_dealloc = (destructor) PyCommunity_dealloc<T>,
-               .tp_traverse = (traverseproc) PyTemplate_traverse<T>,
-   //      .tp_members = PyTemplate_members<T>,
-               .tp_methods = genCommunityMethods<T>(),
-               .tp_getset = PyTemplate_gen_getsetters<T>()
        };
+       ret_Community_Type.tp_name = tp_name;
+       ret_Community_Type.tp_doc = tp_doc;
+       ret_Community_Type.tp_basicsize = sizeof(PyCommunityTemplate<T>);
+       ret_Community_Type.tp_itemsize = 0;
+       ret_Community_Type.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
+       ret_Community_Type.tp_new = PyTemplate_new<T>;
+       ret_Community_Type.tp_init = (initproc) PyCommunity_init<T>;
+       ret_Community_Type.tp_dealloc = (destructor) PyCommunity_dealloc<T>;
+       ret_Community_Type.tp_traverse = (traverseproc) PyTemplate_traverse<T>;
+   //      .tp_members = PyTemplate_members<T>,
+       ret_Community_Type.tp_methods = genCommunityMethods<T>();
+       ret_Community_Type.tp_getset = PyTemplate_gen_getsetters<T>();
+   //  static PyTypeObject outType = ret_Community_Type;
        return ret_Community_Type;
    }
    
@@ -308,9 +309,9 @@ Program Listing for File CCommunity.h
    }
    
    static PyTypeObject
-           C_CommunityType = genCommunityType<Community>((char *) "necsimmodule.CCommunity",
+           C_CommunityType = genCommunityType<Community>((char *) "libnecsim.CCommunity",
                                                          (char *) "C class for generating communities from neutral simulations");
-   static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "necsimmodule.CMetacommunity",
+   static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "libnecsim.CMetacommunity",
                                                                              (char *) "C class for generating communities from neutral simulations");
    
    #endif //NECSIM_C_COMMUNITY_H

@@ -20,6 +20,7 @@ Class Hierarchy
          <li>Struct <a href="struct_SectionOption.html#struct-SectionOption">SectionOption</a></li>
          <li>Struct <a href="struct_SimParameters.html#struct-SimParameters">SimParameters</a></li>
          <li>Struct <a href="struct_SpeciesException.html#struct-SpeciesException">SpeciesException</a></li>
+         <li>Class <a href="class_ActivityMap.html#class-ActivityMap">ActivityMap</a></li>
          <li>Class <a href="class_Cell.html#class-Cell">Cell</a></li>
          <li>Class <a href="class_Community.html#class-Community">Community</a></li>
          <li>Class <a href="class_ConfigOption.html#class-ConfigOption">ConfigOption</a></li>
@@ -41,7 +42,6 @@ Class Hierarchy
          <li>Class <a href="class_PyLogger.html#class-PyLogger">PyLogger</a></li>
          <li>Class <a href="class_PySimulateDispersal.html#class-PySimulateDispersal">PySimulateDispersal</a></li>
          <li>Template Class <a href="class_PyTemplate.html#template-class-PyTemplate">PyTemplate</a></li>
-         <li>Class <a href="class_ReproductionMap.html#class-ReproductionMap">ReproductionMap</a></li>
          <li>Template Class <a href="class_Row.html#template-class-Row">Row</a></li>
          <li>Class <a href="class_Samplematrix.html#class-Samplematrix">Samplematrix</a></li>
          <li>Class <a href="class_SimulateDispersal.html#class-SimulateDispersal">SimulateDispersal</a></li>

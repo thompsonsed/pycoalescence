@@ -56,7 +56,7 @@ Included By
 
 - :ref:`file_CSimulation.h`
 
-- :ref:`file_necsimmodule.cpp`
+- :ref:`file_necsim.cpp`
 
 - :ref:`file_PyLogging.cpp`
 

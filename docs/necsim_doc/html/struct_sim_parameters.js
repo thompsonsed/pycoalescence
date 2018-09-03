@@ -25,6 +25,7 @@ var struct_sim_parameters =
     [ "coarse_map_y_size", "struct_sim_parameters.html#aeab1bf5577592c3bafb36b5b15a54919", null ],
     [ "configs", "struct_sim_parameters.html#a8fd9196201c4e49d844f8a028936926f", null ],
     [ "cutoff", "struct_sim_parameters.html#a92d960aaf1e219077939fee652477c6f", null ],
+    [ "death_file", "struct_sim_parameters.html#ab973cb055a43e30987245e9c4e1e5cb3", null ],
     [ "deme", "struct_sim_parameters.html#a769999e2ea3ab2dff10ea085dda7582f", null ],
     [ "deme_sample", "struct_sim_parameters.html#a14db55cf335c4bf539d6ad8c029a3010", null ],
     [ "desired_specnum", "struct_sim_parameters.html#a9def538c1416f7318c4cc264cfcb3897", null ],

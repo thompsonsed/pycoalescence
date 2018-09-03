@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SpeciesList.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SpeciesList.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_SpeciesList.cpp.html" title="File SpeciesList.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpeciesList.cpp.html" accesskey="U">File SpeciesList.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -73,20 +73,9 @@
 <span class="cp">#include</span> <span class="cpf">&quot;SpeciesList.h&quot;</span><span class="cp"></span>
 
 
-<span class="n">SpeciesList</span><span class="o">::</span><span class="n">SpeciesList</span><span class="p">()</span> <span class="o">:</span> <span class="n">list_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxsize</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">next_active</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">nwrap</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">SpeciesList</span><span class="o">::</span><span class="n">SpeciesList</span><span class="p">()</span> <span class="o">:</span> <span class="n">list_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxsize</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">next_active</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">species_id_list</span><span class="p">(),</span> <span class="n">nwrap</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">list</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">fillList</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">maxsize</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">maxsize</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">initialise</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">maxsizein</span><span class="p">)</span>
@@ -94,7 +83,6 @@
     <span class="n">maxsize</span> <span class="o">=</span> <span class="n">maxsizein</span><span class="p">;</span>
     <span class="n">nwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">list_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">list</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">maxsize</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">setMaxsize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">maxsizein</span><span class="p">)</span>
@@ -104,20 +92,32 @@
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">setSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_val</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
     <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_027: List position to be replaced is zero. Check list assignment.&quot;</span><span class="p">);</span>
+        <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;List index to change value is out of range of vector size. Please report this bug.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span><span class="p">;</span>
+<span class="cp">#endif </span><span class="c1">//DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;List position to be replaced is zero. Check species_id_list assignment.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">setSpeciesEmpty</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_val</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
     <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_027b: List position to be replaced is not zero. Check list assignment.&quot;</span><span class="p">);</span>
+        <span class="n">species_id_list</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;List position to be replaced is not zero. Check species_id_list assignment.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span><span class="p">;</span>
+    <span class="n">list_size</span> <span class="o">++</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">setNext</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">)</span>
@@ -130,55 +130,56 @@
     <span class="n">nwrap</span> <span class="o">=</span> <span class="n">nr</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">addSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_spec</span><span class="p">)</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">addSpecies</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">new_spec</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="k">if</span><span class="p">(</span><span class="n">list_size</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">maxsize</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;Could not add species - no empty space&quot;</span><span class="p">);</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;species_id_list size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">list_size</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;max size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">maxsize</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="k">throw</span> <span class="nf">out_of_range</span><span class="p">(</span><span class="s">&quot;Could not add species - species_id_list size greater than max size.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="cp">#endif</span>
-    <span class="c1">// First loop from the list size value</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list_size</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="c1">// Check if there are empty spaces</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">list_size</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1">// First loop from the species_id_list size value</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list_size</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">list_size</span><span class="o">++</span><span class="p">;</span>
-            <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_spec</span><span class="p">;</span>
-            <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">list_size</span><span class="o">++</span><span class="p">;</span>
+                <span class="n">species_id_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_spec</span><span class="p">;</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">// Now loop over the rest of the lineages</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list_size</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">list_size</span><span class="o">++</span><span class="p">;</span>
+                <span class="n">species_id_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_spec</span><span class="p">;</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="c1">// Now loop over the rest of the lineages</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list_size</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+    <span class="k">else</span>
     <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">list_size</span><span class="o">++</span><span class="p">;</span>
-            <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_spec</span><span class="p">;</span>
-            <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
-        <span class="p">}</span>
+        <span class="c1">// Just need to append to the vector</span>
+        <span class="n">species_id_list</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">new_spec</span><span class="p">);</span>
+        <span class="n">list_size</span> <span class="o">++</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;Could not add species - no empty space&quot;</span><span class="p">);</span>
-<span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">addSpeciesSilent</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_spec</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">maxsize</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">list_size</span><span class="o">++</span><span class="p">;</span>
-            <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_spec</span><span class="p">;</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
-
-    <span class="p">}</span>
     <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;Could not add species - no empty space&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">deleteSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">list_size</span> <span class="o">--</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -210,62 +211,42 @@
 
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">changePercentCover</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">newmaxsize</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">templist</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
     <span class="n">maxsize</span> <span class="o">=</span> <span class="n">newmaxsize</span><span class="p">;</span>
-    <span class="n">list</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">newmaxsize</span><span class="p">);</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">newmaxsize</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">templist</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
-        <span class="p">{</span>
-            <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">templist</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="cp">#ifdef DEBUG</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">maxsize</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;List size not equal to maxsize&quot;</span><span class="p">);</span>
-        <span class="p">}</span>
-<span class="cp">#endif</span>
 <span class="p">}</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">getRandLineage</span><span class="p">(</span><span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">rand_no</span><span class="p">)</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">getRandLineage</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">rand_no</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">double</span> <span class="n">rand_index</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="n">maxsize</span> <span class="o">&lt;=</span> <span class="n">list_size</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="c1">// Then the list size is larger than the actual size. This means we must return a lineage.</span>
+        <span class="c1">// Then the species_id_list size is larger than the actual size. This means we must return a lineage.</span>
         <span class="k">try</span>
         <span class="p">{</span>
             <span class="k">do</span>
             <span class="p">{</span>
-                <span class="n">rand_index</span> <span class="o">=</span> <span class="n">rand_no</span><span class="p">.</span><span class="n">d01</span><span class="p">();</span>
-                <span class="n">rand_index</span> <span class="o">*=</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-                <span class="c1">//os &lt;&lt; &quot;ref: &quot; &lt;&lt; rand_index &lt;&lt; &quot;, &quot; &lt;&lt; list[round(rand_index)] &lt;&lt; endl;</span>
-            <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">floor</span><span class="p">(</span><span class="n">rand_index</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="n">rand_index</span> <span class="o">=</span> <span class="n">rand_no</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">();</span>
+                <span class="n">rand_index</span> <span class="o">*=</span> <span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+                <span class="c1">//os &lt;&lt; &quot;ref: &quot; &lt;&lt; rand_index &lt;&lt; &quot;, &quot; &lt;&lt; species_id_list[round(rand_index)] &lt;&lt; endl;</span>
+            <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">[</span><span class="n">floor</span><span class="p">(</span><span class="n">rand_index</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
             <span class="c1">//os &lt;&lt; &quot;RETURNING!&quot; &lt;&lt; endl;</span>
-            <span class="k">return</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">floor</span><span class="p">(</span><span class="n">rand_index</span><span class="p">)]);</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">species_id_list</span><span class="p">[</span><span class="n">floor</span><span class="p">(</span><span class="n">rand_index</span><span class="p">)]);</span>
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="n">out_of_range</span> <span class="o">&amp;</span><span class="n">oor</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;ERROR_MOVE_001b: Listpos outside maxsize.&quot;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Listpos outside maxsize.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
-        <span class="n">rand_index</span> <span class="o">=</span>  <span class="n">rand_no</span><span class="p">.</span><span class="n">d01</span><span class="p">();</span>
+        <span class="n">rand_index</span> <span class="o">=</span>  <span class="n">rand_no</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">();</span>
 <span class="c1">//      os &lt;&lt; &quot;rand_index: &quot; &lt;&lt; rand_index &lt;&lt; endl;</span>
         <span class="n">rand_index</span>  <span class="o">*=</span> <span class="n">maxsize</span><span class="p">;</span>
-        <span class="c1">// Dynamically resize the list if required. Otherwise, to save memory, the list will not be resized;</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">rand_index</span><span class="o">&gt;=</span><span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">rand_index</span> <span class="o">&gt;=</span> <span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
         <span class="p">{</span>
-            <span class="n">changePercentCover</span><span class="p">(</span><span class="n">maxsize</span><span class="p">);</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">rand_index</span><span class="p">));</span>
+        <span class="k">auto</span> <span class="n">i</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">rand_index</span><span class="p">));</span>
 
 <span class="cp">#ifdef DEBUG</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rand_index</span><span class="o">&gt;</span><span class="n">maxsize</span><span class="p">)</span>
@@ -275,13 +256,13 @@
                 <span class="k">throw</span> <span class="nf">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
             <span class="p">}</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
-        <span class="k">return</span> <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">return</span> <span class="n">species_id_list</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">getSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">index</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">return</span> <span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">species_id_list</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
 <span class="p">}</span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">getNext</span><span class="p">()</span>
@@ -304,9 +285,13 @@
     <span class="k">return</span> <span class="n">maxsize</span><span class="p">;</span>
 <span class="p">}</span>
 
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">getListLength</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
 <span class="kt">void</span> <span class="n">SpeciesList</span><span class="o">::</span><span class="n">wipeList</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">fillList</span><span class="p">();</span>
     <span class="n">next_active</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
     <span class="n">nwrap</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
     <span class="n">list_size</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
@@ -314,30 +299,15 @@
 
 <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">SpeciesList</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">//os &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">list</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">list_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">maxsize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">next_active</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
-    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">nwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">species_id_list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
     <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="n">istream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">SpeciesList</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="kt">char</span> <span class="n">delim</span><span class="p">;</span>
-    <span class="c1">//double temp1,temp2;</span>
-    <span class="c1">//is &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">list</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">list_size</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">maxsize</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">next_active</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">nwrap</span><span class="p">;</span>
-    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">species_id_list</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -395,8 +365,8 @@
         <li class="right" >
           <a href="file_necsim_SpeciesList.cpp.html" title="File SpeciesList.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpeciesList.cpp.html" >File SpeciesList.cpp</a> &#187;</li> 
       </ul>
     </div>

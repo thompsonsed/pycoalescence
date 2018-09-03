@@ -32,7 +32,7 @@ Collaboration diagram for Metacommunity\+:
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{class_metacommunity_af9407da2a2e99848ac11ce3a426d4c8a}{set\+Community\+Parameters} (unsigned long community\+\_\+size\+\_\+in, long double speciation\+\_\+rate\+\_\+in, string database\+\_\+name\+\_\+in)
+void \hyperlink{class_metacommunity_ab26954f616ddd374243febf8e243a564}{set\+Community\+Parameters} (unsigned long community\+\_\+size\+\_\+in, long double speciation\+\_\+rate\+\_\+in)
 \begin{DoxyCompactList}\small\item\em Sets the parameters for the metacommunity. \end{DoxyCompactList}\item 
 void \hyperlink{class_metacommunity_ad3775b6cecab860b008d15cc9c7650ea}{check\+Simulation\+Parameters} ()
 \begin{DoxyCompactList}\small\item\em Gets the seed and the task from the S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS database and stores them in the relevant variables. \end{DoxyCompactList}\item 
@@ -69,6 +69,9 @@ void \hyperlink{class_community_a579c5f423fc2461838a80baf6b396310}{detect\+Dimen
 \begin{DoxyCompactList}\small\item\em This function detects the maximum x and y values of the sql database. This allows for the dimensions before opening the map file. \end{DoxyCompactList}\item 
 void \hyperlink{class_community_a389c35f39ed73eb1e5dc1476c220c140}{open\+Sql\+Connection} (string inputfile)
 \begin{DoxyCompactList}\small\item\em Opens the connection to the sql database file Note that this imports the database to memory, so functionality should be changed for extremely large database files. \end{DoxyCompactList}\item 
+void \hyperlink{class_community_ade889a6305f23cd5fd034a65134d7408}{close\+Sql\+Connection} ()\hypertarget{class_community_ade889a6305f23cd5fd034a65134d7408}{}\label{class_community_ade889a6305f23cd5fd034a65134d7408}
+
+\begin{DoxyCompactList}\small\item\em Safely destroys the S\+QL connection. \end{DoxyCompactList}\item 
 void \hyperlink{class_community_acba6b894e62ad4ecccbcf86f064ebc46}{set\+Internal\+Database} ()\hypertarget{class_community_acba6b894e62ad4ecccbcf86f064ebc46}{}\label{class_community_acba6b894e62ad4ecccbcf86f064ebc46}
 
 \begin{DoxyCompactList}\small\item\em Opens a connection to an in-\/memory database. This will eventually be written to the output file. \end{DoxyCompactList}\item 
@@ -199,9 +202,6 @@ bool {\bfseries database\+\_\+set}\hypertarget{class_community_a7e00bcb1c5a24280
 
 \item 
 sqlite3 $\ast$ {\bfseries database}\hypertarget{class_community_a382c0e6e90ca8055d3192bfe2af4d741}{}\label{class_community_a382c0e6e90ca8055d3192bfe2af4d741}
-
-\item 
-sqlite3 $\ast$ {\bfseries outdatabase}\hypertarget{class_community_a884634e98e0aacb082968664acd5a32e}{}\label{class_community_a884634e98e0aacb082968664acd5a32e}
 
 \item 
 bool {\bfseries b\+Sql\+Connection}\hypertarget{class_community_aa9fe335ff9e94c626d1e0d41ff145524}{}\label{class_community_aa9fe335ff9e94c626d1e0d41ff145524}
@@ -888,13 +888,12 @@ the species id for the lineage
 \end{DoxyReturn}
 \index{Metacommunity@{Metacommunity}!set\+Community\+Parameters@{set\+Community\+Parameters}}
 \index{set\+Community\+Parameters@{set\+Community\+Parameters}!Metacommunity@{Metacommunity}}
-\subsubsection[{\texorpdfstring{set\+Community\+Parameters(unsigned long community\+\_\+size\+\_\+in, long double speciation\+\_\+rate\+\_\+in, string database\+\_\+name\+\_\+in)}{setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in, string database_name_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::set\+Community\+Parameters (
+\subsubsection[{\texorpdfstring{set\+Community\+Parameters(unsigned long community\+\_\+size\+\_\+in, long double speciation\+\_\+rate\+\_\+in)}{setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunity\+::set\+Community\+Parameters (
 \begin{DoxyParamCaption}
 \item[{unsigned long}]{community\+\_\+size\+\_\+in, }
-\item[{long double}]{speciation\+\_\+rate\+\_\+in, }
-\item[{string}]{database\+\_\+name\+\_\+in}
+\item[{long double}]{speciation\+\_\+rate\+\_\+in}
 \end{DoxyParamCaption}
-)}\hypertarget{class_metacommunity_af9407da2a2e99848ac11ce3a426d4c8a}{}\label{class_metacommunity_af9407da2a2e99848ac11ce3a426d4c8a}
+)}\hypertarget{class_metacommunity_ab26954f616ddd374243febf8e243a564}{}\label{class_metacommunity_ab26954f616ddd374243febf8e243a564}
 
 
 Sets the parameters for the metacommunity. 

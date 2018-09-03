@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Filesystem.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Filesystem.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Filesystem.cpp.html" title="File Filesystem.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Filesystem.cpp.html" accesskey="U">File Filesystem.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -71,11 +71,15 @@
 
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;zconf.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;boost/filesystem.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#ifdef WIN_INSTALL</span>
+<span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp"></span>
+<span class="cp">#define sleep Sleep</span>
+<span class="cp">#endif</span>
 <span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
+
 
 <span class="kt">void</span> <span class="nf">openSQLiteDatabase</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">database_name</span><span class="p">,</span> <span class="n">sqlite3</span> <span class="o">*&amp;</span><span class="n">database</span><span class="p">)</span>
 <span class="p">{</span>
@@ -91,7 +95,11 @@
             <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
     <span class="p">}</span>
+<span class="cp">#ifdef WIN_INSTALL</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open_v2</span><span class="p">(</span><span class="n">database_name</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">,</span> <span class="n">SQLITE_OPEN_READWRITE</span> <span class="o">|</span> <span class="n">SQLITE_OPEN_CREATE</span><span class="p">,</span> <span class="s">&quot;win32&quot;</span><span class="p">);</span>
+<span class="cp">#else</span>
     <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_open_v2</span><span class="p">(</span><span class="n">database_name</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">,</span> <span class="n">SQLITE_OPEN_READWRITE</span> <span class="o">|</span> <span class="n">SQLITE_OPEN_CREATE</span><span class="p">,</span> <span class="s">&quot;unix-dotfile&quot;</span><span class="p">);</span>
+<span class="cp">#endif</span>
     <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -134,15 +142,15 @@
         <span class="p">{</span>
             <span class="n">parent</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">it</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span> <span class="n">parent_path</span><span class="p">(</span><span class="n">parent</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">parent_path</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">parent_path</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span> <span class="n">parent_path</span><span class="p">(</span><span class="n">parent</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">exists</span><span class="p">(</span><span class="n">parent_path</span><span class="p">))</span>
         <span class="p">{</span>
-            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="n">parent_path</span><span class="p">))</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">parent_path</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
             <span class="p">{</span>
-                <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Cannot create parent folder for &quot;</span> <span class="o">+</span> <span class="n">file</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">create_directories</span><span class="p">(</span><span class="n">parent_path</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="k">throw</span> <span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Cannot create parent folder for &quot;</span> <span class="o">+</span> <span class="n">file</span><span class="p">);</span>
+                <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -249,8 +257,8 @@
         <li class="right" >
           <a href="file_necsim_Filesystem.cpp.html" title="File Filesystem.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Filesystem.cpp.html" >File Filesystem.cpp</a> &#187;</li> 
       </ul>
     </div>

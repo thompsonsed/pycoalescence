@@ -35,7 +35,7 @@ Program Listing for File SimulateDispersal.h
    {
    protected:
        // The density map object
-       Landscape density_landscape;
+       shared_ptr<Landscape> density_landscape;
        // The samplemask object
        DataMask dataMask;
        // Dispersal coordinator
@@ -43,7 +43,7 @@ Program Listing for File SimulateDispersal.h
        // Stores all key simulation parameters for the Landscape object
        SimParameters  * simParameters;
        // The random number generator object
-       NRrand random;
+       shared_ptr<NRrand> random;
        // The random number seed
        unsigned long seed;
        // The sqlite3 database object for storing outputs
@@ -65,7 +65,8 @@ Program Listing for File SimulateDispersal.h
        // Reference number for this set of parameters in the database output
        unsigned long max_parameter_reference;
    public:
-       SimulateDispersal() : num_steps(), distances()
+       SimulateDispersal() : density_landscape(make_shared<Landscape>()), random(make_shared<NRrand>()), distances(),
+                             num_steps()
        {
            simParameters = nullptr;
            num_repeats = 0;
@@ -94,8 +95,8 @@ Program Listing for File SimulateDispersal.h
        void setSeed(unsigned long s)
        {
            seed = s;
-           random.wipeSeed();
-           random.setSeed(s);
+           random->wipeSeed();
+           random->setSeed(s);
        }
    
        void setOutputDatabase(string out_database);

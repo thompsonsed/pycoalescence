@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Class Landscape &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Class Landscape &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="class_DispersalCoordinator.html" title="Class DispersalCoordinator"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -206,9 +206,11 @@
 
 <dl class="function">
 <dt id="_CPPv2N9Landscape9updateMapEd">
-<span class="target" id="necsimclass_landscape_1aa96c5208ad89b2e620b52f80b0937dff"></span>void <code class="descname">updateMap</code><span class="sig-paren">(</span>double <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape9updateMapEd" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimclass_landscape_1a568d5338ce85c35a66461033ced3cb05"></span>bool <code class="descname">updateMap</code><span class="sig-paren">(</span>double <em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape9updateMapEd" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Checks if an update needs to be performed to the map configuration, and if it does, performs the update. </p>
 <p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the map has been updated </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
 <li><code class="docutils literal"><span class="pre">generation</span></code>: the current generation timer </li>
@@ -536,18 +538,58 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N9Landscape9checkFineERKdRKdRKlRKl">
-<span class="target" id="necsimclass_landscape_1a0545765b734539f622804bb3aa72e38c"></span>bool <code class="descname">checkFine</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>x</em>, <em class="property">const</em> double &amp;<em>y</em>, <em class="property">const</em> long &amp;<em>xwrap</em>, <em class="property">const</em> long &amp;<em>ywrap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape9checkFineERKdRKdRKlRKl" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N9Landscape8isOnFineERKdRKdRKlRKl">
+<span class="target" id="necsimclass_landscape_1a92cd54efe4722ee0c40434875043d6c7"></span>bool <code class="descname">isOnFine</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>x</em>, <em class="property">const</em> double &amp;<em>y</em>, <em class="property">const</em> long &amp;<em>xwrap</em>, <em class="property">const</em> long &amp;<em>ywrap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape8isOnFineERKdRKdRKlRKl" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Checks whether the point comes from the fine grid. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>a boolean of whether the location is on the fine map. </dd>
+<dd>a boolean of whether the location is on the fine map </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">x</span></code>: the x position. </li>
-<li><code class="docutils literal"><span class="pre">y</span></code>: the y position. </li>
-<li><code class="docutils literal"><span class="pre">xwrap</span></code>: the number of wraps in the x dimension. </li>
-<li><code class="docutils literal"><span class="pre">ywrap</span></code>: the number of wraps in the y dimension. </li>
+<li><code class="docutils literal"><span class="pre">x</span></code>: the x position </li>
+<li><code class="docutils literal"><span class="pre">y</span></code>: the y position </li>
+<li><code class="docutils literal"><span class="pre">xwrap</span></code>: the number of wraps in the x dimension </li>
+<li><code class="docutils literal"><span class="pre">ywrap</span></code>: the number of wraps in the y dimension </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N9Landscape10isOnCoarseERKdRKdRKlRKl">
+<span class="target" id="necsimclass_landscape_1a88b7191cdc10684eb6a851350d2f7a01"></span>bool <code class="descname">isOnCoarse</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>x</em>, <em class="property">const</em> double &amp;<em>y</em>, <em class="property">const</em> long &amp;<em>xwrap</em>, <em class="property">const</em> long &amp;<em>ywrap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape10isOnCoarseERKdRKdRKlRKl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks whether the point comes from the coarse grid. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a boolean of whether the location is on the fine map </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">x</span></code>: the x position </li>
+<li><code class="docutils literal"><span class="pre">y</span></code>: the y position </li>
+<li><code class="docutils literal"><span class="pre">xwrap</span></code>: the number of wraps in the x dimension </li>
+<li><code class="docutils literal"><span class="pre">ywrap</span></code>: the number of wraps in the y dimension </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N9Landscape7isOnMapERKdRKdRKlRKl">
+<span class="target" id="necsimclass_landscape_1abe24da20e362bd88f3794e4d8d5ccafb"></span>bool <code class="descname">isOnMap</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>x</em>, <em class="property">const</em> double &amp;<em>y</em>, <em class="property">const</em> long &amp;<em>xwrap</em>, <em class="property">const</em> long &amp;<em>ywrap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape7isOnMapERKdRKdRKlRKl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks that the point supplied is within map limits. If the map is inifite, returns true. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a boolean of whether the location is on the fine map </dd>
+<dt><strong>Return</strong></dt>
+<dd>true if the point is within the map limits </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">x</span></code>: the x position </li>
+<li><code class="docutils literal"><span class="pre">y</span></code>: the y position </li>
+<li><code class="docutils literal"><span class="pre">xwrap</span></code>: the number of wraps in the x dimension </li>
+<li><code class="docutils literal"><span class="pre">ywrap</span></code>: the number of wraps in the y dimension </li>
 </ul>
 </dd>
 </dl>
@@ -588,6 +630,26 @@
 <li><code class="docutils literal"><span class="pre">startywrap</span></code>: the start number of wraps in the y dimension. </li>
 <li><code class="docutils literal"><span class="pre">disp_comp</span></code>: a boolean of whether the dispersal was complete or not. This value is returned false if dispersal is to habitat, false otherwise. </li>
 <li><code class="docutils literal"><span class="pre">generation</span></code>: the time in generations since the start of the simulation. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N9Landscape24distanceToNearestHabitatERKlRKlRKlRKlRKd">
+<span class="target" id="necsimclass_landscape_1a3a552903c925b9769ecc2cad5b051682"></span>double <code class="descname">distanceToNearestHabitat</code><span class="sig-paren">(</span><em class="property">const</em> long &amp;<em>start_x</em>, <em class="property">const</em> long &amp;<em>start_y</em>, <em class="property">const</em> long &amp;<em>start_x_wrap</em>, <em class="property">const</em> long &amp;<em>start_y_wrap</em>, <em class="property">const</em> double &amp;<em>generation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N9Landscape24distanceToNearestHabitatERKlRKlRKlRKlRKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculates the distance from the start position to the nearest habitat cell. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the distance from the start position to the nearest habitat cell </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">start_x</span></code>: the start x coordinate </li>
+<li><code class="docutils literal"><span class="pre">start_y</span></code>: the start y coordinate </li>
+<li><code class="docutils literal"><span class="pre">start_x_wrap</span></code>: the starting x wrapping </li>
+<li><code class="docutils literal"><span class="pre">start_y_wrap</span></code>: the starting y wrapping </li>
+<li><code class="docutils literal"><span class="pre">generation</span></code>: the generation timer </li>
 </ul>
 </dd>
 </dl>
@@ -804,6 +866,11 @@
 <dd></dd></dl>
 
 <dl class="member">
+<dt id="_CPPv2N9Landscape19infinite_boundariesE">
+<span class="target" id="necsimclass_landscape_1ad4cf6ac6f87d0253d50b2738bb57087e"></span>bool <code class="descname">infinite_boundaries</code><a class="headerlink" href="#_CPPv2N9Landscape19infinite_boundariesE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
 <dt id="_CPPv2N9Landscape7NextMapE">
 <span class="target" id="necsimclass_landscape_1a7e16bed309816971071c17ad0ebf94e5"></span>string <code class="descname">NextMap</code><a class="headerlink" href="#_CPPv2N9Landscape7NextMapE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
@@ -925,8 +992,8 @@
         <li class="right" >
           <a href="class_DispersalCoordinator.html" title="Class DispersalCoordinator"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

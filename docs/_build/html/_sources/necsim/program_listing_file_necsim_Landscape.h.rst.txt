@@ -31,6 +31,12 @@ Program Listing for File Landscape.h
    uint32_t importToMapAndRound(string map_file, Map<uint32_t> &map_in, unsigned long map_x,
                                 unsigned long map_y, unsigned long scalar);
    
+   unsigned long archimedesSpiralX(const double &centre_x, const double &centre_y, const double &radius,
+                                   const double &theta);
+   
+   unsigned long archimedesSpiralY(const double &centre_x, const double &centre_y, const double &radius,
+                                   const double &theta);
+   
    class Landscape
    {
    protected:
@@ -47,7 +53,7 @@ Program Listing for File Landscape.h
        // the historical coarser map.
        Map<uint32_t> historical_coarse_map;
        // for importing and storing the simulation set-up options.
-       SimParameters * mapvars;
+       SimParameters *mapvars;
        // the minimum values for each dimension for offsetting.
        long fine_x_min{}, fine_y_min{}, coarse_x_min{}, coarse_y_min{};
        // the maximum values for each dimension for offsetting.
@@ -88,8 +94,10 @@ Program Listing for File Landscape.h
        unsigned long historical_fine_max;
        // the maximum value on the historical coarse map file
        unsigned long historical_coarse_max;
-       // if true, dispersal is possible from anywhere, only the fine map spatial structure is preserved
+       // the landscape structure type
        string landscape_type;
+       // true if the landscapes boundaries are infinite
+       bool infinite_boundaries;
        string NextMap;
        // If this is false, there is no coarse map defined, so ignore the boundaries.
        bool has_coarse;
@@ -117,13 +125,14 @@ Program Listing for File Landscape.h
            coarse_max = 0;
            historical_fine_max = 0;
            historical_coarse_max = 0;
+           infinite_boundaries = false;
        }
    
        unsigned long getHabitatMax();
    
        bool hasHistorical();
-       void setDims(SimParameters * mapvarsin);
    
+       void setDims(SimParameters *mapvarsin);
    
        bool checkMapExists();
    
@@ -147,9 +156,10 @@ Program Listing for File Landscape.h
    
        void validateMaps();
    
-       void updateMap(double generation);
+       bool updateMap(double generation);
    
        void doUpdate();
+   
        void resetHistorical();
    
        bool isHistorical()
@@ -216,16 +226,23 @@ Program Listing for File Landscape.h
    
        unsigned long getInitialCount(double dSample, DataMask &samplemask);
    
-       SimParameters * getSimParameters();
+       SimParameters *getSimParameters();
    
        bool checkMap(const double &x, const double &y, const long &xwrap, const long &ywrap, const double generation);
    
-       bool checkFine(const double &x, const double &y, const long &xwrap, const long &ywrap);
+       bool isOnFine(const double &x, const double &y, const long &xwrap, const long &ywrap);
+   
+       bool isOnCoarse(const double &x, const double &y, const long &xwrap, const long &ywrap);
+   
+       bool isOnMap(const double &x, const double &y, const long &xwrap, const long &ywrap);
    
        void fixGridCoordinates(double &x, double &y, long &xwrap, long &ywrap);
    
        unsigned long runDispersal(const double &dist, const double &angle, long &startx, long &starty, long &startxwrap,
                                   long &startywrap, bool &disp_comp, const double &generation);
+   
+       double distanceToNearestHabitat(const long &start_x, const long &start_y, const long &start_x_wrap,
+                                       const long &start_y_wrap, const double &generation);
    
        friend ostream &operator<<(ostream &os, const Landscape &r)
        {

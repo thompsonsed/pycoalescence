@@ -26,7 +26,7 @@ var class_simulate_dispersal =
     [ "cells", "class_simulate_dispersal.html#abcb3ce61b835cbd007d09726302d692a", null ],
     [ "database", "class_simulate_dispersal.html#afd3f96f169715aacbcc2939614a6a910", null ],
     [ "dataMask", "class_simulate_dispersal.html#a06456ecb5cde83be793855a735c196f0", null ],
-    [ "density_landscape", "class_simulate_dispersal.html#a3538ef66eedcee56817aabb26a1d9d27", null ],
+    [ "density_landscape", "class_simulate_dispersal.html#af69dbb932efef10441d1acf219416c0f", null ],
     [ "dispersal_coordinator", "class_simulate_dispersal.html#a55da369d57d854168ff6e851b0d7892a", null ],
     [ "distances", "class_simulate_dispersal.html#a87359ce728efca1ece43f52c7aa4ce9c", null ],
     [ "generation", "class_simulate_dispersal.html#ae9f8100eaf9faf01a482342f605a8091", null ],
@@ -35,7 +35,7 @@ var class_simulate_dispersal =
     [ "num_repeats", "class_simulate_dispersal.html#a36ca3df92a79e284cdeb84ea0dfb3c9a", null ],
     [ "num_steps", "class_simulate_dispersal.html#a83c9ad2500bead84ce2d377bc73ae65d", null ],
     [ "parameter_references", "class_simulate_dispersal.html#a9d6fb5998b4b31837ff214b0bd216b18", null ],
-    [ "random", "class_simulate_dispersal.html#a5f6389fc4116b52622a900c55532f86b", null ],
+    [ "random", "class_simulate_dispersal.html#a1b66ec7506a0cadab13f802de2d4d2c2", null ],
     [ "seed", "class_simulate_dispersal.html#af9ab2fa8b2c3e1bb1ba49b31679ae0d7", null ],
     [ "simParameters", "class_simulate_dispersal.html#a6d11b4ed3e3942d2bb42e66116fffd2d", null ]
 ];

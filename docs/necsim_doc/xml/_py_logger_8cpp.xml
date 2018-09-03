@@ -5,42 +5,48 @@
     <includes local="yes">necsim/CustomExceptions.h</includes>
     <includes local="yes">necsim/Logger.h</includes>
     <includes refid="_py_logger_8h" local="yes">PyLogger.h</includes>
+    <includes local="no">utility</includes>
     <incdepgraph>
-      <node id="2065">
+      <node id="2107">
         <label>necsim/Logger.h</label>
       </node>
-      <node id="2068">
+      <node id="2110">
         <label>string</label>
       </node>
-      <node id="2066">
+      <node id="2108">
         <label>PyLogger.h</label>
         <link refid="_py_logger_8h_source"/>
-        <childnode refid="2067" relation="include">
+        <childnode refid="2109" relation="include">
         </childnode>
-        <childnode refid="2068" relation="include">
+        <childnode refid="2110" relation="include">
         </childnode>
-        <childnode refid="2069" relation="include">
+        <childnode refid="2111" relation="include">
         </childnode>
-        <childnode refid="2065" relation="include">
+        <childnode refid="2107" relation="include">
         </childnode>
       </node>
-      <node id="2067">
+      <node id="2109">
         <label>Python.h</label>
       </node>
-      <node id="2063">
+      <node id="2105">
         <label>PyLogger.cpp</label>
         <link refid="PyLogger.cpp"/>
-        <childnode refid="2064" relation="include">
+        <childnode refid="2106" relation="include">
         </childnode>
-        <childnode refid="2065" relation="include">
+        <childnode refid="2107" relation="include">
         </childnode>
-        <childnode refid="2066" relation="include">
+        <childnode refid="2108" relation="include">
+        </childnode>
+        <childnode refid="2112" relation="include">
         </childnode>
       </node>
-      <node id="2069">
+      <node id="2112">
+        <label>utility</label>
+      </node>
+      <node id="2111">
         <label>sstream</label>
       </node>
-      <node id="2064">
+      <node id="2106">
         <label>necsim/CustomExceptions.h</label>
       </node>
     </incdepgraph>
@@ -109,7 +115,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="PyLogger.cpp" line="124" column="1" bodyfile="PyLogger.cpp" bodystart="124" bodyend="127"/>
+        <location file="PyLogger.cpp" line="124" column="1" bodyfile="PyLogger.cpp" bodystart="124" bodyend="134"/>
       </memberdef>
       <memberdef kind="function" id="_py_logger_8cpp_1ae237237ebe013cbaa842ee6b43db15ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -126,7 +132,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="PyLogger.cpp" line="129" column="1" bodyfile="PyLogger.cpp" bodystart="129" bodyend="132"/>
+        <location file="PyLogger.cpp" line="136" column="1" bodyfile="PyLogger.cpp" bodystart="136" bodyend="139"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -141,7 +147,7 @@
 <codeline lineno="10"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/CustomExceptions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/Logger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyLogger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="class_py_logger" kindref="compound">PyLogger</ref><sp/>*<sp/>pyLogger;</highlight></codeline>
 <codeline lineno="16"><highlight class="normal"></highlight></codeline>
@@ -244,35 +250,42 @@
 <codeline lineno="113"><highlight class="normal"></highlight></codeline>
 <codeline lineno="114"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_py_logger_1a1c9735d6b83c1fad66bb6560cd753616" kindref="member">writeInfo</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
 <codeline lineno="115"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1a1c9735d6b83c1fad66bb6560cd753616" kindref="member">writeInfo</ref>(message);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1a1c9735d6b83c1fad66bb6560cd753616" kindref="member">writeInfo</ref>(std::move(message));</highlight></codeline>
 <codeline lineno="117"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="118"><highlight class="normal"></highlight></codeline>
 <codeline lineno="119"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_py_logger_1acba053c66f9e6d2c3fd83a83b495afe4" kindref="member">writeWarning</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
 <codeline lineno="120"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1acba053c66f9e6d2c3fd83a83b495afe4" kindref="member">writeWarning</ref>(message);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1acba053c66f9e6d2c3fd83a83b495afe4" kindref="member">writeWarning</ref>(std::move(message));</highlight></codeline>
 <codeline lineno="122"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="123"><highlight class="normal"></highlight></codeline>
 <codeline lineno="124"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_py_logger_1a445bc845376cd5abd65b25c534192a47" kindref="member">writeError</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
 <codeline lineno="125"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1a445bc845376cd5abd65b25c534192a47" kindref="member">writeError</ref>(message);</highlight></codeline>
-<codeline lineno="127"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="128"><highlight class="normal"></highlight></codeline>
-<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_py_logger_1aa71e9531bf2bc4084427a78016407666" kindref="member">writeCritical</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
-<codeline lineno="130"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1aa71e9531bf2bc4084427a78016407666" kindref="member">writeCritical</ref>(message);</highlight></codeline>
-<codeline lineno="132"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="134"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
-<codeline lineno="135"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;writeLog(level,<sp/>message);</highlight></codeline>
-<codeline lineno="137"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="138"><highlight class="normal"></highlight></codeline>
-<codeline lineno="139"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/>stringstream<sp/>&amp;message)</highlight></codeline>
-<codeline lineno="140"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(level,<sp/>message.str());</highlight></codeline>
-<codeline lineno="142"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="143"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(pyLogger<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Pylogger<sp/>is<sp/>nullptr!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>runtime_error(</highlight><highlight class="stringliteral">&quot;Pylogger<sp/>is<sp/>nullptr&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1a445bc845376cd5abd65b25c534192a47" kindref="member">writeError</ref>(std::move(message));</highlight></codeline>
+<codeline lineno="134"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_py_logger_1aa71e9531bf2bc4084427a78016407666" kindref="member">writeCritical</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
+<codeline lineno="137"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1aa71e9531bf2bc4084427a78016407666" kindref="member">writeCritical</ref>(std::move(message));</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message)</highlight></codeline>
+<codeline lineno="142"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;writeLog(level,<sp/>message);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/>stringstream<sp/>&amp;message)</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>writeLog(level,<sp/>message.str());</highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="PyLogger.cpp"/>
   </compounddef>

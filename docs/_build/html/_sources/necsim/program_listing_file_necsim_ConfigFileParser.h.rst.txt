@@ -24,7 +24,9 @@ Program Listing for File ConfigFileParser.h
    #include <stdexcept>
    #include <vector>
    #include <cstring>
+   #ifndef WIN_INSTALL
    #include <unistd.h>
+   #endif
    #include <cmath>
    #include <cctype>
    #include <algorithm>

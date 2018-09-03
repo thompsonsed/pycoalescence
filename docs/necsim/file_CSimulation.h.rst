@@ -46,6 +46,8 @@ Includes
 
 - ``Python.h``
 
+- ``necsim.h`` (:ref:`file_necsim.h`)
+
 - ``necsim/ConfigFileParser.h`` (:ref:`file_necsim_ConfigFileParser.h`)
 
 - ``necsim/ProtractedSpatialTree.h`` (:ref:`file_necsim_ProtractedSpatialTree.h`)
@@ -55,8 +57,6 @@ Includes
 - ``necsim/SpatialTree.h`` (:ref:`file_necsim_SpatialTree.h`)
 
 - ``necsim/Tree.h`` (:ref:`file_necsim_Tree.h`)
-
-- ``necsimmodule.h`` (:ref:`file_necsimmodule.h`)
 
 - ``structmember.h``
 
@@ -68,7 +68,7 @@ Included By
 
 - :ref:`file_CSimulateDispersal.h`
 
-- :ref:`file_necsimmodule.cpp`
+- :ref:`file_necsim.cpp`
 
 
 

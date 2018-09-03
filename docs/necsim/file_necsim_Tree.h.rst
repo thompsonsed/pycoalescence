@@ -81,10 +81,3 @@ Classes
 
 - :ref:`class_Tree`
 
-
-Defines
--------
-
-
-- :ref:`define_sql_ram`
-

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SpecSimParameters.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SpecSimParameters.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_SpecSimParameters.h.html" title="File SpecSimParameters.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpecSimParameters.h.html" accesskey="U">File SpecSimParameters.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -107,7 +107,15 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">;</span>
 
-    <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="n">string</span> <span class="n">file_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_spatial_in</span><span class="p">,</span> <span class="n">string</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">times</span><span class="p">,</span> <span class="n">string</span> <span class="n">use_fragments_in</span><span class="p">,</span>
+    <span class="n">SpecSimParameters</span><span class="p">()</span><span class="o">:</span> <span class="n">use_spatial</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">bMultiRun</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">use_fragments</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">filename</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span>
+                         <span class="n">all_speciation_rates</span><span class="p">(),</span> <span class="n">samplemask</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span> <span class="n">times_file</span><span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">),</span> <span class="n">all_times</span><span class="p">(),</span>
+                         <span class="n">fragment_config_file</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span> <span class="n">protracted_parameters</span><span class="p">(),</span> <span class="n">metacommunity_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                         <span class="n">metacommunity_speciation_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="p">{</span>
+
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setup</span><span class="p">(</span><span class="n">string</span> <span class="n">file_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_spatial_in</span><span class="p">,</span> <span class="n">string</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">times</span><span class="p">,</span> <span class="n">string</span> <span class="n">use_fragments_in</span><span class="p">,</span>
                <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">min_speciation_gen_in</span><span class="p">,</span>
                <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">max_speciation_gen_in</span><span class="p">)</span>
     <span class="p">{</span>
@@ -115,7 +123,7 @@
               <span class="n">min_speciation_gen_in</span><span class="p">,</span> <span class="n">max_speciation_gen_in</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="n">string</span> <span class="n">file_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_spatial_in</span><span class="p">,</span> <span class="n">string</span> <span class="n">sample_file</span><span class="p">,</span> <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">times</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="n">setup</span><span class="p">(</span><span class="n">string</span> <span class="n">file_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">use_spatial_in</span><span class="p">,</span> <span class="n">string</span> <span class="n">sample_file</span><span class="p">,</span> <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">times</span><span class="p">,</span>
                <span class="n">string</span> <span class="n">use_fragments_in</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">min_speciation_gen_in</span><span class="p">,</span>
                <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">max_speciation_gen_in</span><span class="p">,</span>
                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate_in</span><span class="p">)</span>
@@ -163,7 +171,7 @@
         <span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="n">metacommunity_speciation_rate_in</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="kt">void</span> <span class="nf">importTimeConfig</span><span class="p">()</span>
+    <span class="kt">void</span> <span class="n">importTimeConfig</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">times_file</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
         <span class="p">{</span>
@@ -182,7 +190,7 @@
         <span class="p">}</span>
     <span class="p">}</span>
 
-    <span class="kt">void</span> <span class="nf">wipe</span><span class="p">()</span>
+    <span class="kt">void</span> <span class="n">wipe</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">use_spatial</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">bMultiRun</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
@@ -198,12 +206,12 @@
         <span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="kt">void</span> <span class="nf">addTime</span><span class="p">(</span><span class="kt">double</span> <span class="n">time</span><span class="p">)</span>
+    <span class="kt">void</span> <span class="n">addTime</span><span class="p">(</span><span class="kt">double</span> <span class="n">time</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">all_times</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">time</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="kt">void</span> <span class="nf">addProtractedParameters</span><span class="p">(</span><span class="kt">double</span> <span class="n">proc_spec_min</span><span class="p">,</span> <span class="kt">double</span> <span class="n">proc_spec_max</span><span class="p">)</span>
+    <span class="kt">void</span> <span class="n">addProtractedParameters</span><span class="p">(</span><span class="kt">double</span> <span class="n">proc_spec_min</span><span class="p">,</span> <span class="kt">double</span> <span class="n">proc_spec_max</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">ProtractedSpeciationParameters</span> <span class="n">tmp</span><span class="p">;</span>
         <span class="n">tmp</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="n">proc_spec_min</span><span class="p">;</span>
@@ -269,8 +277,8 @@
         <li class="right" >
           <a href="file_necsim_SpecSimParameters.h.html" title="File SpecSimParameters.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpecSimParameters.h.html" >File SpecSimParameters.h</a> &#187;</li> 
       </ul>
     </div>

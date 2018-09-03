@@ -19,6 +19,7 @@ Program Listing for File DataMask.h
    class Landscape;
    
    #include <string>
+   #include <memory>
    
    #include "SimParameters.h"
    #include "Map.h"
@@ -30,9 +31,12 @@ Program Listing for File DataMask.h
    protected:
        // the file to read in from
        string inputfile;
-       bool bDefault;
+       // True if the sample mask is true everywhere
+       bool isNullSample;
+       // True if the grid is smaller than the sample mask
+       bool isGridOffset;
        unsigned long x_offset, y_offset;
-       // Stores the size of the grid which is stored as a full species list
+       // Stores the size of the grid which is stored as a full species species_id_list
        unsigned long x_dim, y_dim;
        // Stores the size of the samplemask from which spatially sampling is read
        unsigned long mask_x_dim, mask_y_dim;
@@ -47,7 +51,7 @@ Program Listing for File DataMask.h
    
        ~DataMask() = default;
    
-       bool getDefault();
+       bool isNull();
    
        void setup(const SimParameters &sim_parameters);
    
@@ -74,11 +78,11 @@ Program Listing for File DataMask.h
    
        double getExactValue(const long &x, const long &y, const long &xwrap, const long &ywrap);
    
-       void convertBoolean(Landscape &map1, const double &deme_sampling, const double &generation);
+       void convertBoolean(shared_ptr<Landscape> map1, const double &deme_sampling, const double &generation);
    
        void clearSpatialMask();
    
-       void recalculate_coordinates(long &x, long &y, long &x_wrap, long &y_wrap);
+       void recalculateCoordinates(long &x, long &y, long &x_wrap, long &y_wrap);
    };
    
    

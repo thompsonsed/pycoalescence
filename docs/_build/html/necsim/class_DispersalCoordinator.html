@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Class DispersalCoordinator &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Class DispersalCoordinator &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="class_DataPoint.html" title="Class DataPoint"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -86,8 +86,8 @@
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N20DispersalCoordinator15setRandomNumberEP6NRrand">
-<span class="target" id="necsimclass_dispersal_coordinator_1a3cfdb18edbf4dd1c45d0cf6af47f91fe"></span>void <code class="descname">setRandomNumber</code><span class="sig-paren">(</span><a class="reference internal" href="class_NRrand.html#_CPPv26NRrand" title="NRrand">NRrand</a> *<em>NR_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator15setRandomNumberEP6NRrand" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N20DispersalCoordinator15setRandomNumberE10shared_ptrI6NRrandE">
+<span class="target" id="necsimclass_dispersal_coordinator_1a921c3a830d5cd1663f702932874420d2"></span>void <code class="descname">setRandomNumber</code><span class="sig-paren">(</span>shared_ptr&lt;<a class="reference internal" href="class_NRrand.html#_CPPv26NRrand" title="NRrand">NRrand</a>&gt; <em>NR_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator15setRandomNumberE10shared_ptrI6NRrandE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets the random number pointer to an <a class="reference internal" href="class_NRrand.html#necsimclass_n_rrand"><span class="std std-ref">NRrand</span></a> instance. </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
@@ -100,13 +100,28 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N20DispersalCoordinator13setHabitatMapEP9Landscape">
-<span class="target" id="necsimclass_dispersal_coordinator_1a0db146f56de14e0b4a095526a7b6c779"></span>void <code class="descname">setHabitatMap</code><span class="sig-paren">(</span><a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a> *<em>map_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator13setHabitatMapEP9Landscape" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N20DispersalCoordinator7setMapsE10shared_ptrI9LandscapeE10shared_ptrI11ActivityMapE">
+<span class="target" id="necsimclass_dispersal_coordinator_1a7564bbc5e1d03f5a6f1e268c5c6db5aa"></span>void <code class="descname">setMaps</code><span class="sig-paren">(</span>shared_ptr&lt;<a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a>&gt; <em>landscape_ptr</em>, shared_ptr&lt;<a class="reference internal" href="class_ActivityMap.html#_CPPv211ActivityMap" title="ActivityMap">ActivityMap</a>&gt; <em>repr_map_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator7setMapsE10shared_ptrI9LandscapeE10shared_ptrI11ActivityMapE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets the pointer to the <a class="reference internal" href="class_Landscape.html#necsimclass_landscape"><span class="std std-ref">Landscape</span></a> object. </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">map_ptr</span></code>: pointer to a <a class="reference internal" href="class_Landscape.html#necsimclass_landscape"><span class="std std-ref">Landscape</span></a> object </li>
+<li><code class="docutils literal"><span class="pre">landscape_ptr</span></code>: pointer to a <a class="reference internal" href="class_Landscape.html#necsimclass_landscape"><span class="std std-ref">Landscape</span></a> object </li>
+<li><code class="docutils literal"><span class="pre">repr_map_ptr</span></code>: pointer to the reproduction probability map </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator7setMapsE10shared_ptrI9LandscapeE">
+<span class="target" id="necsimclass_dispersal_coordinator_1a854e8a4c31ae301721c38e4f8581fe83"></span>void <code class="descname">setMaps</code><span class="sig-paren">(</span>shared_ptr&lt;<a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a>&gt; <em>landscape_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator7setMapsE10shared_ptrI9LandscapeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the pointer to the <a class="reference internal" href="class_Landscape.html#necsimclass_landscape"><span class="std std-ref">Landscape</span></a> object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">landscape_ptr</span></code>: pointer to a <a class="reference internal" href="class_Landscape.html#necsimclass_landscape"><span class="std std-ref">Landscape</span></a> object </li>
 </ul>
 </dd>
 </dl>
@@ -164,6 +179,47 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator15importDispersalERKmRK6string">
+<span class="target" id="necsimclass_dispersal_coordinator_1afe53c51858899e9918e95ff120813fa8"></span>void <code class="descname">importDispersal</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>dispersal_dim</em>, <em class="property">const</em> string &amp;<em>dispersal_file</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator15importDispersalERKmRK6string" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Imports the dispersal map and fixes the values based on the density and reproduction probabilities. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dispersal_dim</span></code>: pointer x and y dimension of the dispersal map </li>
+<li><code class="docutils literal"><span class="pre">dispersal_file</span></code>: name of the dispersal file </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator18setRawDispersalMapEv">
+<span class="target" id="necsimclass_dispersal_coordinator_1a87155f185490f98569723eb867440c51"></span>void <code class="descname">setRawDispersalMap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator18setRawDispersalMapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Saves the raw dispersal data to another memory object to save reading from disk multiple times later on. This is slightly more RAM intensive which may cause issues for certain simulations. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator10addDensityEv">
+<span class="target" id="necsimclass_dispersal_coordinator_1af73768c49f869a89cccaa203e7b6e423"></span>void <code class="descname">addDensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator10addDensityEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Adds the density values to the dispersal map. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">generation</span></code>: the current generation counter </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator15addReproductionEv">
+<span class="target" id="necsimclass_dispersal_coordinator_1a4f3c173f02fc9fcfad73a5cc470e7994"></span>void <code class="descname">addReproduction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator15addReproductionEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Adds the reproduction rates to the dispersal map. </p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N20DispersalCoordinator12fixDispersalEv">
 <span class="target" id="necsimclass_dispersal_coordinator_1a588b959feff178953c37bfeae7aa8529"></span>void <code class="descname">fixDispersal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator12fixDispersalEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Fixes the dispersal map by generating cumulative probability distributions across each row. </p>
@@ -200,23 +256,21 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N20DispersalCoordinator18verifyDispersalMapEv">
-<span class="target" id="necsimclass_dispersal_coordinator_1a5f6d3782cf8b528d591d17c77072924a"></span>void <code class="descname">verifyDispersalMap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator18verifyDispersalMapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N20DispersalCoordinator25verifyDispersalMapDensityEv">
+<span class="target" id="necsimclass_dispersal_coordinator_1a3c06336711cae0b250992ce6f539d8c1"></span>void <code class="descname">verifyDispersalMapDensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator25verifyDispersalMapDensityEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Ensures that the dispersal map makes sense given the density. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator23verifyDispersalMapSetupEv">
+<span class="target" id="necsimclass_dispersal_coordinator_1af3c9c634367050476ed17ec7dd85c885"></span>void <code class="descname">verifyDispersalMapSetup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator23verifyDispersalMapSetupEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Checks that the dispersal map makes sense with dispersal to and from only cells which have a non-zero density. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N20DispersalCoordinator22assertReferenceMatchesEm">
-<span class="target" id="necsimclass_dispersal_coordinator_1a210c821cc36e08829fbfbfe640a5ccb2"></span>void <code class="descname">assertReferenceMatches</code><span class="sig-paren">(</span>unsigned long <em>expected</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator22assertReferenceMatchesEm" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Asserts that the cell reference is correct for the provided coordinates. </p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">expected</span></code>: the expected cell reference. </li>
-</ul>
-</dd>
-</dl>
-</p>
+<dt id="_CPPv2N20DispersalCoordinator18updateDispersalMapEv">
+<span class="target" id="necsimclass_dispersal_coordinator_1a491225bee8586b2a3f0bf2dcbf747043"></span>void <code class="descname">updateDispersalMap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator18updateDispersalMapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Updates the dispersal map, if there is one, to reflect changes in landscape density. </p>
 </dd></dl>
 
 <dl class="function">
@@ -380,6 +434,54 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator32checkEndPointDensityReproductionERKmRlRlRlRlRKlRKlRKlRKl">
+<span class="target" id="necsimclass_dispersal_coordinator_1adf58975d0fd9cd45c6b9c7fe9006abcc"></span>bool <code class="descname">checkEndPointDensityReproduction</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>density</em>, long &amp;<em>oldx</em>, long &amp;<em>oldy</em>, long &amp;<em>oldxwrap</em>, long &amp;<em>oldywrap</em>, <em class="property">const</em> long &amp;<em>startx</em>, <em class="property">const</em> long &amp;<em>starty</em>, <em class="property">const</em> long &amp;<em>startxwrap</em>, <em class="property">const</em> long &amp;<em>startywrap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator32checkEndPointDensityReproductionERKmRlRlRlRlRKlRKlRKlRKl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check the end point for the given coordinates and density. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the end point passes the density and restricted checks </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">density</span></code>: the density at the end point - avoids an extra call to Map::getVal() </li>
+<li><code class="docutils literal"><span class="pre">oldx</span></code>: the old x position </li>
+<li><code class="docutils literal"><span class="pre">oldy</span></code>: the old y position </li>
+<li><code class="docutils literal"><span class="pre">oldxwrap</span></code>: the old x wrap </li>
+<li><code class="docutils literal"><span class="pre">oldywrap</span></code>: the old y wrap </li>
+<li><code class="docutils literal"><span class="pre">startx</span></code>: the starting x position </li>
+<li><code class="docutils literal"><span class="pre">starty</span></code>: the starting y position </li>
+<li><code class="docutils literal"><span class="pre">startxwrap</span></code>: the starting x wrap </li>
+<li><code class="docutils literal"><span class="pre">startywrap</span></code>: the ending y wrap </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N20DispersalCoordinator42checkEndPointDensityRestrictedReproductionERKmRlRlRlRlRKlRKlRKlRKl">
+<span class="target" id="necsimclass_dispersal_coordinator_1a1d1f583f94be1ea5fc0bcebc4d586e38"></span>bool <code class="descname">checkEndPointDensityRestrictedReproduction</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>density</em>, long &amp;<em>oldx</em>, long &amp;<em>oldy</em>, long &amp;<em>oldxwrap</em>, long &amp;<em>oldywrap</em>, <em class="property">const</em> long &amp;<em>startx</em>, <em class="property">const</em> long &amp;<em>starty</em>, <em class="property">const</em> long &amp;<em>startxwrap</em>, <em class="property">const</em> long &amp;<em>startywrap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator42checkEndPointDensityRestrictedReproductionERKmRlRlRlRlRKlRKlRKlRKl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check the end point for the given coordinates and density. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the end point passes the density and restricted checks </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">density</span></code>: the density at the end point - avoids an extra call to Map::getVal() </li>
+<li><code class="docutils literal"><span class="pre">oldx</span></code>: the old x position </li>
+<li><code class="docutils literal"><span class="pre">oldy</span></code>: the old y position </li>
+<li><code class="docutils literal"><span class="pre">oldxwrap</span></code>: the old x wrap </li>
+<li><code class="docutils literal"><span class="pre">oldywrap</span></code>: the old y wrap </li>
+<li><code class="docutils literal"><span class="pre">startx</span></code>: the starting x position </li>
+<li><code class="docutils literal"><span class="pre">starty</span></code>: the starting y position </li>
+<li><code class="docutils literal"><span class="pre">startxwrap</span></code>: the starting x wrap </li>
+<li><code class="docutils literal"><span class="pre">startywrap</span></code>: the ending y wrap </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N20DispersalCoordinator8disperseER4Step">
 <span class="target" id="necsimclass_dispersal_coordinator_1a08e7c2e1882bd2f83ffd33eed2491fa0"></span>void <code class="descname">disperse</code><span class="sig-paren">(</span><a class="reference internal" href="class_Step.html#_CPPv24Step" title="Step">Step</a> &amp;<em>this_step</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N20DispersalCoordinator8disperseER4Step" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Performs the dispersal routine using the <a class="reference internal" href="class_Step.html#necsimstruct_step"><span class="std std-ref">Step</span></a> object to read starting positions and record the end positions. </p>
@@ -415,13 +517,23 @@
 <dd></dd></dl>
 
 <dl class="member">
+<dt id="_CPPv2N20DispersalCoordinator22raw_dispersal_prob_mapE">
+<span class="target" id="necsimclass_dispersal_coordinator_1a7813e9d02d42c9326199cad342744592"></span><a class="reference internal" href="class_Map.html#_CPPv23Map" title="Map">Map</a>&lt;double&gt; <code class="descname">raw_dispersal_prob_map</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator22raw_dispersal_prob_mapE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
 <dt id="_CPPv2N20DispersalCoordinator2NRE">
-<span class="target" id="necsimclass_dispersal_coordinator_1ac4c17447257ed00e1b5610e0e35a5443"></span><a class="reference internal" href="class_NRrand.html#_CPPv26NRrand" title="NRrand">NRrand</a> *<code class="descname">NR</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator2NRE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimclass_dispersal_coordinator_1ae5c7864710a88da0bdb27bd7e21fd894"></span>shared_ptr&lt;<a class="reference internal" href="class_NRrand.html#_CPPv26NRrand" title="NRrand">NRrand</a>&gt; <code class="descname">NR</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator2NRE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
 <dt id="_CPPv2N20DispersalCoordinator9landscapeE">
-<span class="target" id="necsimclass_dispersal_coordinator_1a316f067e84937650316f47b219e2cb76"></span><a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a> *<code class="descname">landscape</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator9landscapeE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="necsimclass_dispersal_coordinator_1a2f13a2fa99be8283efb2c29637ed5e9f"></span>shared_ptr&lt;<a class="reference internal" href="class_Landscape.html#_CPPv29Landscape" title="Landscape">Landscape</a>&gt; <code class="descname">landscape</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator9landscapeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N20DispersalCoordinator16reproduction_mapE">
+<span class="target" id="necsimclass_dispersal_coordinator_1abcb6ca3c2ff84a07fe9324231317c5ca"></span>shared_ptr&lt;<a class="reference internal" href="class_ActivityMap.html#_CPPv211ActivityMap" title="ActivityMap">ActivityMap</a>&gt; <code class="descname">reproduction_map</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator16reproduction_mapE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="member">
@@ -442,6 +554,11 @@
 <dl class="member">
 <dt id="_CPPv2N20DispersalCoordinator4xdimE">
 <span class="target" id="necsimclass_dispersal_coordinator_1a66668e6ceec55afa61c1e99719bc6146"></span>unsigned long <code class="descname">xdim</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator4xdimE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N20DispersalCoordinator4ydimE">
+<span class="target" id="necsimclass_dispersal_coordinator_1af4ac8eb94f393cf650a9709a55a112c7"></span>unsigned long <code class="descname">ydim</code><a class="headerlink" href="#_CPPv2N20DispersalCoordinator4ydimE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -509,8 +626,8 @@
         <li class="right" >
           <a href="class_DataPoint.html" title="Class DataPoint"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

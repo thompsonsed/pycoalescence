@@ -161,9 +161,8 @@ Program Listing for File Community.h
        bool in_mem; // boolean for whether the database is in memory or not.
        bool database_set; // boolean for whether the database has been set already.
        sqlite3 *database; // stores the in-memory database connection.
-       sqlite3 *outdatabase; // stores the file database connection
        bool bSqlConnection; // true if the data connection has been established.
-       Row<TreeNode> *nodes; // in older versions this was called list. Changed to avoid confusion with the built-in class.
+       Row<TreeNode> *nodes; // in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.
        Row<unsigned long> row_out;
        unsigned long iSpecies;
        bool has_imported_samplemask; // checks whether the samplemask has already been imported.
@@ -189,42 +188,27 @@ Program Listing for File Community.h
        SpecSimParameters *spec_sim_parameters;
    public:
    
-       Community(Row<TreeNode> *r) : nodes(r), applied_protracted_parameters()
+       Community(Row<TreeNode> *r) : in_mem(false), database_set(false), database(nullptr),
+                                     bSqlConnection(false), nodes(r), row_out(), iSpecies(0),
+                                     has_imported_samplemask(false), has_imported_data(false), samplemask(),
+                                     fragments(), current_community_parameters(nullptr), min_spec_rate(0.0),
+                                     grid_x_size(0), grid_y_size(0), samplemask_x_size(0), samplemask_y_size(0),
+                                     samplemask_x_offset(0), samplemask_y_offset(0), past_communities(),
+                                     past_metacommunities(), protracted(false), min_speciation_gen(0.0),
+                                     max_speciation_gen(0.0), applied_protracted_parameters(), max_species_id(0),
+                                     max_fragment_id(0), max_locations_id(0), spec_sim_parameters(nullptr)
        {
-           in_mem = false;
-           iSpecies = 0;
-           has_imported_samplemask = false;
-           bSqlConnection = false;
-           database_set = false;
-           has_imported_data = false;
-           min_speciation_gen = 0.0;
-           max_speciation_gen = 0.0;
-           protracted = false;
-           current_community_parameters = nullptr;
-           max_species_id = 0;
-           max_locations_id = 0;
    
        }
    
-       Community() : applied_protracted_parameters()
+       Community() : Community(nullptr)
        {
-           in_mem = false;
-           iSpecies = 0;
-           has_imported_samplemask = false;
-           bSqlConnection = false;
-           database_set = false;
-           has_imported_data = false;
-           min_speciation_gen = 0.0;
-           max_speciation_gen = 0.0;
-           protracted = false;
-           current_community_parameters = nullptr;
-           max_species_id = 0;
-           max_locations_id = 0;
        }
    
         virtual ~Community()
        {
            nodes = nullptr;
+           sqlite3_close(database);
        }
    
        void setList(Row<TreeNode> *l);
@@ -251,6 +235,7 @@ Program Listing for File Community.h
    
        void openSqlConnection(string inputfile);
    
+       void closeSqlConnection();
        void setInternalDatabase();
    
        void internalOption();

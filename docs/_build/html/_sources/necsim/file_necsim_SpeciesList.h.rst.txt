@@ -42,6 +42,8 @@ Includes
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
 
+- ``memory``
+
 
 
 Included By

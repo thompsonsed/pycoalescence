@@ -70,7 +70,7 @@ class CoalescenceTree(object):
 	* Import the database (:py:meth:`~set_database`) and import the comparison data,
 	  if required (:py:meth:`~import_comparison_data`)
 
-	* Apply additional speciation rates (if required) using :py:meth:`~set_speciation_params` and then
+	* Apply additional speciation rates (if required) using :py:meth:`~set_speciation_parameters` and then
 	  :py:meth:`~apply`
 
 	* Calculate required metrics (such as :py:meth:`~calculate_fragment_richness`)
@@ -435,9 +435,9 @@ class CoalescenceTree(object):
 		else:
 			raise IOError("File " + filename + " does not exist.")
 
-	def set_speciation_params(self, speciation_rates, record_spatial=False, record_fragments=False, sample_file=None,
-							  times=None, protracted_speciation_min=None, protracted_speciation_max=None,
-							  metacommunity_size=None, metacommunity_speciation_rate=None):
+	def set_speciation_parameters(self, speciation_rates, record_spatial=False, record_fragments=False, sample_file=None,
+								  times=None, protracted_speciation_min=None, protracted_speciation_max=None,
+								  metacommunity_size=None, metacommunity_speciation_rate=None):
 		"""
 
 		Set the parameters for the application of speciation rates. If no config files or time_config files are provided,

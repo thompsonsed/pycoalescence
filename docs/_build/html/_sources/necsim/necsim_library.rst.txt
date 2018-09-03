@@ -1,6 +1,6 @@
 
-necim
-=====
+necsim
+======
 
 
 **A Neutral Ecology Coalescence Simulator**
@@ -29,7 +29,7 @@ Neutral theory in ecology refers to the idea that individuals can be modelled as
 undergoing dispersal, drift and speciation without niche effects or other competitive elements.
 
 Whilst obviously not realistic, the patterns produced by such models can often give a surprisingly accurate portrayal of
-real-world systems. For more information on the topic, please see [Hubbell2001]_.
+real-world systems. For more information on the topic, please see :ref:`Hubbell (2001)<Hubbell2001>`.
 
 
 

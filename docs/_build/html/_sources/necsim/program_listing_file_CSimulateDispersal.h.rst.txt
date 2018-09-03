@@ -21,7 +21,7 @@ Program Listing for File CSimulateDispersal.h
    #include <string>
    #include "PyImports.h"
    #include "PyTemplates.h"
-   #include "necsimmodule.h"
+   #include "necsim.h"
    #include "necsim/SimParameters.h"
    #include "necsim/SimulateDispersal.h"
    #include "CSimulation.h"
@@ -67,6 +67,80 @@ Program Listing for File CSimulateDispersal.h
            }
        }
    };
+   
+   static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *args)
+   {
+       char *landscape_type;
+       char *fine_map_file;
+       char *coarse_map_file;
+       vector<string> path_fine;
+       vector<unsigned long> number_fine;
+       vector<double> rate_fine;
+       vector<double> time_fine;
+       vector<string> path_coarse;
+       vector<unsigned long> number_coarse;
+       vector<double> rate_coarse;
+       vector<double> time_coarse;
+       PyObject *p_path_fine;
+       PyObject *p_number_fine;
+       PyObject *p_rate_fine;
+       PyObject *p_time_fine;
+       PyObject *p_path_coarse;
+       PyObject *p_number_coarse;
+       PyObject *p_rate_coarse;
+       PyObject *p_time_coarse;
+       if(!PyArg_ParseTuple(args, "isiiiiiisiiiiisO!O!O!O!O!O!O!O!", &self->dispersalParameters->deme, &fine_map_file,
+                            &self->dispersalParameters->fine_map_x_size, &self->dispersalParameters->fine_map_y_size,
+                            &self->dispersalParameters->fine_map_x_offset, &self->dispersalParameters->fine_map_y_offset,
+                            &self->dispersalParameters->sample_x_size, &self->dispersalParameters->sample_y_size,
+                            &coarse_map_file, &self->dispersalParameters->coarse_map_x_size,
+                            &self->dispersalParameters->coarse_map_y_size, &self->dispersalParameters->coarse_map_x_offset,
+                            &self->dispersalParameters->coarse_map_y_offset, &self->dispersalParameters->coarse_map_scale,
+                            &landscape_type, &PyList_Type, &p_path_fine, &PyList_Type, &p_number_fine,
+                            &PyList_Type, &p_rate_fine, &PyList_Type, &p_time_fine, &PyList_Type, &p_path_coarse,
+                            &PyList_Type, &p_number_coarse, &PyList_Type, &p_rate_coarse, &PyList_Type, &p_time_coarse))
+       {
+           return nullptr;
+       }
+       if(self->has_imported_maps)
+       {
+           PyErr_SetString(NECSimError, (char *) "Maps have already been imported");
+           return nullptr;
+       }
+       try
+       {
+   
+           getGlobalLogger(self->logger, self->log_function);
+           self->dispersalParameters->sample_x_offset = 0;
+           self->dispersalParameters->sample_y_offset = 0;
+           self->dispersalParameters->grid_x_size = self->dispersalParameters->sample_x_size;
+           self->dispersalParameters->grid_y_size = self->dispersalParameters->sample_y_size;
+           self->dispersalParameters->fine_map_file = fine_map_file;
+           self->dispersalParameters->coarse_map_file = coarse_map_file;
+           self->dispersalParameters->landscape_type = landscape_type;
+           importPyListToVectorString(p_path_fine, path_fine, "Fine map paths must be strings.");
+           importPyListToVectorULong(p_number_fine, number_fine, "Fine map numbers must be integers.");
+           importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats.");
+           importPyListToVectorDouble(p_time_fine, time_fine, "Fine map times must be floats.");
+           importPyListToVectorString(p_path_coarse, path_coarse, "Coarse map paths must be strings.");
+           importPyListToVectorULong(p_number_coarse, number_coarse, "Coarse map numbers must be integers.");
+           importPyListToVectorDouble(p_rate_coarse, rate_coarse, "Coarse map rates must be floats.");
+           importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats.");
+           self->dispersalParameters->setHistoricalMapParameters(path_fine, number_fine, rate_fine, time_fine, path_coarse,
+                                                                 number_coarse, rate_coarse, time_coarse);
+           self->setDispersalParameters();
+           self->base_object->importMaps();
+           self->has_imported_maps = true;
+   
+       }
+       catch(exception &e)
+       {
+           removeGlobalLogger();
+           PyErr_SetString(NECSimError, e.what());
+           return nullptr;
+       }
+       Py_RETURN_NONE;
+   }
    
    PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
    {
@@ -245,7 +319,7 @@ Program Listing for File CSimulateDispersal.h
        try
        {
            int num_repeats, seed, is_sequential;
-           PyObject * p_num_steps;
+           PyObject *p_num_steps;
            vector<unsigned long> num_steps;
            // parse arguments
            if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps,
@@ -254,7 +328,10 @@ Program Listing for File CSimulateDispersal.h
                return nullptr;
            }
            getGlobalLogger(self->logger, self->log_function);
-           importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers.");
+           if(!importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers."))
+           {
+               return nullptr;
+           }
            self->setDispersalParameters();
            self->base_object->setSequential(static_cast<bool>(is_sequential));
            self->base_object->setSeed(static_cast<unsigned long>(seed));
@@ -357,24 +434,32 @@ Program Listing for File CSimulateDispersal.h
                                                                  "Runs the dispersal simulation for the set parameters, calculating the mean distance travelled."},
                    {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS,
                                                                  "Imports the map files for the simulation. Should only be run once."},
+                   {"import_all_maps", (PyCFunction) set_all_map_parameters, METH_VARARGS,
+                           "Imports all the map files with a single import."},
                    {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS,
                                                                  "Sets the historical map parameters."},
                    {nullptr,                         nullptr, 0, nullptr}
            };
    
-   static PyTypeObject C_SimulateDispersalType = {
-           PyVarObject_HEAD_INIT(nullptr, 0)
-           .tp_name = (char *) "necsimmodule.CDispersalSimulation",
-           .tp_doc = (char *) "Simulate a dispersal kernel on a landscape.",
-           .tp_basicsize = sizeof(PySimulateDispersal),
-           .tp_itemsize = 0,
-           .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
-           .tp_new = PySimulateDispersal_new,
-           .tp_init = (initproc) PySimulateDispersal_init,
-           .tp_dealloc = (destructor) PySimulateDispersal_dealloc,
-           .tp_traverse = (traverseproc) PyTemplate_traverse<SimulateDispersal>,
-   //      .tp_members = PyTemplate_members<T>,
-           .tp_methods = SimulateDispersalMethods,
-           .tp_getset = PyTemplate_gen_getsetters<SimulateDispersal>()
-   };
+   static PyTypeObject genSimulateDispersalType()
+   {
+       PyTypeObject retSimulateDispersalType = {
+               PyVarObject_HEAD_INIT(nullptr, 0)
+       };
+       retSimulateDispersalType.tp_name = (char *) "libnecsim.CDispersalSimulation";
+       retSimulateDispersalType.tp_basicsize = sizeof(PySimulateDispersal);
+       retSimulateDispersalType.tp_itemsize = 0;
+       retSimulateDispersalType.tp_dealloc = (destructor) PySimulateDispersal_dealloc;
+       retSimulateDispersalType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
+       retSimulateDispersalType.tp_doc = (char *) "Simulate a dispersal kernel on a landscape.";
+       retSimulateDispersalType.tp_traverse = (traverseproc) PyTemplate_traverse<SimulateDispersal>;
+       retSimulateDispersalType.tp_methods = SimulateDispersalMethods;
+       //      .tp_members = PyTemplate_members<T>,
+       retSimulateDispersalType.tp_getset = PyTemplate_gen_getsetters<SimulateDispersal>();
+       retSimulateDispersalType.tp_init = (initproc) PySimulateDispersal_init;
+       retSimulateDispersalType.tp_new = PySimulateDispersal_new;
+       return retSimulateDispersalType;
+   }
+   
+   static PyTypeObject C_SimulateDispersalType = genSimulateDispersalType();
    #endif //NECSIM_CSIMULATEDISPERSAL_H

@@ -11,7 +11,9 @@ Program Listing for File PyImports.cpp
    // This file is part of NECSim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #include <cstring>
+   #ifndef WIN_INSTALL
    #include <unistd.h>
+   #endif
    #include <csignal>
    #include "PyImports.h"
    
@@ -32,7 +34,7 @@ Program Listing for File PyImports.cpp
                return false;
            }
    #if PY_MAJOR_VERSION >= 3
-           char * tmpspec = PyUnicode_AsUTF8(item);
+           const char * tmpspec = PyUnicode_AsUTF8(item);
    #else
            char * tmpspec = PyString_AsString(item);
    #endif
@@ -48,7 +50,11 @@ Program Listing for File PyImports.cpp
        for(int i=0; i<n; i++)
        {
            item = PyList_GetItem(list_input, i);
-           if(!PyLong_Check(item))
+           if(!PyLong_Check(item)
+   #if PY_MAJOR_VERSION < 3
+              && !PyInt_Check(item)
+   #endif // PY_MAJOR_VERSION < 3
+                   )
            {
                PyErr_SetString(PyExc_TypeError, err_msg.c_str());
                return false;

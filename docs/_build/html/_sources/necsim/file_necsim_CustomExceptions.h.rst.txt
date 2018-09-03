@@ -50,9 +50,9 @@ Included By
 -----------
 
 
-- :ref:`file_necsim_SimParameters.h`
-
 - :ref:`file_necsim_Map.h`
+
+- :ref:`file_necsim_SimParameters.h`
 
 - :ref:`file_necsim_SpecSimParameters.h`
 

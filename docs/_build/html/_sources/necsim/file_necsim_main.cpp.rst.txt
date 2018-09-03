@@ -49,6 +49,10 @@ Includes
 --------
 
 
+- ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``Logging.h`` (:ref:`file_necsim_Logging.h`)
+
 - ``SimulationTemplates.h`` (:ref:`file_necsim_SimulationTemplates.h`)
 
 - ``SpatialTree.h`` (:ref:`file_necsim_ProtractedSpatialTree.h`)

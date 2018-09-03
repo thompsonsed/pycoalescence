@@ -16,7 +16,7 @@ Version\+: 1.\+0 This project is released under M\+IT licence See file {\bfserie
 
 \subsection*{I\+N\+T\+R\+O\+D\+U\+C\+T\+I\+ON}
 
-necsim is a generic spatial coalescence simulator for neutral systems. It applies the model to map objects, which can change over time, for a specific set of supplied parameters, and outputs information for each individual to a S\+QL database.
+necsim is a generic spatial coalescence simulator for neutral systems. It applies the model to temporally and spatially varying density maps for a specific set of supplied parameters, and outputs information for each individual to a S\+QL database.
 
 necsim includes functionality for applying varying speciation rates after simulations are complete. This enables the main simulation to be run with the {\itshape minimum} speciation rate required and afterwards analysis can be completed using different speciation rates.
 
@@ -28,7 +28,7 @@ You are free to modify and distribute the code as per the license specified in {
 
 \subsubsection*{Compiling the program}
 
-See the Requirements section for a full list of the necessary prerequisites. Once these are installed, compiling the program should be relatively easy. N\+E\+C\+Sim requires a linker to the boost libraries, as well as the sqlite3 library. It is recommended to run with the maximum optimisation possible.
+See the Requirements section for a full species\+\_\+id\+\_\+list of the necessary prerequisites. Once these are installed, compiling the program should be relatively easy. necsim requires a linker to the boost libraries, as well as the sqlite3 library. It is recommended to run with the maximum optimisation possible.
 
 Additionally, if support is required for tif files (an alternative to importing csv files), the \href{http://www.gdal.org/}{\tt gdal library} is required. See the online documentation for help compiling gdal for your operating system. When compiling using gdal, use the {\ttfamily -\/D with\+\_\+gdal} compilation flag.
 
@@ -36,11 +36,11 @@ For compilation on High Performance Computing (H\+PC) systems, they will likely 
 
 \subsubsection*{Running simulations}
 
-The routine relies on supplying command line arguments (see below) for all the major simulation variables. Alternatively, supplying a config .txt file and using the command line arguments {\ttfamily ./necsim -\/c /path/to/config.txt} can be used for parsing command line arguments from the text file.
+Note that the recommended method of running and analysing simulations is through the \href{https://pycoalescence.readthedocs.io}{\tt {\bfseries pycoalescence}} python package. The routine relies on supplying command line arguments (see below) for all the major simulation variables. Alternatively, supplying a config .txt file and using the command line arguments {\ttfamily ./necsim -\/c /path/to/config.txt} can be used for parsing command line arguments from the text file.
 
 \paragraph*{Command Line Arguments}
 
-The following command line arguments are required. This list can be accessed by running {\ttfamily “./necsim -\/h”} or {\ttfamily ./necsim -\/help}
+The following command line arguments are required. This species\+\_\+id\+\_\+list can be accessed by running {\ttfamily “./necsim -\/h”} or {\ttfamily ./necsim -\/help}
 
 The command line options to be specified are\+:
 
@@ -99,7 +99,7 @@ Alternatively, by specifying the -\/f flag, (full mode) as the first argument, t
 \item the time (in generations) since the historical forest was seen.
 \item the dispersal tau value (the width of the kernel.
 \item the sample mask, with binary 1\+:0 values for areas that we want to sample from. If this is not provided then this will default to mapping the whole area.
-\item the link to the file containing every generation that the list should be expanded. This should be in the format of a list.
+\item the link to the file containing every generation that the species\+\_\+id\+\_\+list should be expanded. This should be in the format of a species\+\_\+id\+\_\+list.
 \item (and onwards) -\/ speciation rates to apply after the simulation is complete.
 \end{DoxyEnumerate}
 
@@ -150,7 +150,7 @@ Upon successful completion of a simulation, necsim will produce an S\+Q\+Lite da
 
 \begin{DoxyItemize}
 \item The main table within the database is the S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+I\+ST table, which is the location and inheritence of every lineage recorded. Several other important data structures (such as whether it is a \char`\"{}tip\char`\"{} of the phylogenetic tree of not) which are used when re-\/constructing the species identity.
-\item A secondary output from necims is a S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table for identifying the exact parameters with which the model is run.
+\item A secondary output from necsims is a S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table for identifying the exact parameters with which the model is run.
 \item Speciation\+Counter also produces a S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table containing species abundances across the whole sample map, plus (optionally) a table of S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS (containing the x,y location of every individual) and F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES (species abundances for each habitat fragment separately).
 \end{DoxyItemize}
 
@@ -207,14 +207,14 @@ A brief description of the important classes is given below. Some classes also c
 \end{DoxyItemize}
 \item The {\ttfamily \hyperlink{class_species_list}{Species\+List}} class
 \begin{DoxyItemize}
-\item Contains the list of individuals, for application in a matrix, to essentially create a 3D array.
+\item Contains the species\+\_\+id\+\_\+list of individuals, for application in a matrix, to essentially create a 3D array.
 \item Handles the positioning of individuals in space within a grid cell.
 \end{DoxyItemize}
 \item The {\ttfamily \hyperlink{class_config_option}{Config\+Option}} class
 \begin{DoxyItemize}
 \item Contains basic functions for importing command line arguments from a config file, providing an alternative way of setting up simulations.
 \end{DoxyItemize}
-\item The {\ttfamily Tree\+List} class
+\item The {\ttfamily \hyperlink{class_community}{Community}} class
 \begin{DoxyItemize}
 \item Provides the routines for applying different speciation rates to a phylogenetic tree, to be used either immediately after simulation within necsim, or at a later time using Speciation\+Counter.\+cpp
 \end{DoxyItemize}

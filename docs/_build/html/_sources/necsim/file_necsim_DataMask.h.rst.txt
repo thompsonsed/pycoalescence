@@ -38,9 +38,11 @@ Includes
 --------
 
 
-- ``Map.h`` (:ref:`file_necsim_Map.h`)
+- ``Map.h`` (:ref:`file_necsim_ActivityMap.h`)
 
 - ``SimParameters.h`` (:ref:`file_necsim_SimParameters.h`)
+
+- ``memory``
 
 - ``string``
 

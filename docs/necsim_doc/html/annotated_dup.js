@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "ActivityMap", "class_activity_map.html", "class_activity_map" ],
     [ "Cell", "struct_cell.html", "struct_cell" ],
     [ "CommunitiesArray", "struct_communities_array.html", "struct_communities_array" ],
     [ "Community", "class_community.html", "class_community" ],
@@ -30,7 +31,6 @@ var annotated_dup =
     [ "PyLogger", "class_py_logger.html", "class_py_logger" ],
     [ "PySimulateDispersal", "class_py_simulate_dispersal.html", "class_py_simulate_dispersal" ],
     [ "PyTemplate", "class_py_template.html", "class_py_template" ],
-    [ "ReproductionMap", "class_reproduction_map.html", "class_reproduction_map" ],
     [ "Row", "class_row.html", "class_row" ],
     [ "Samplematrix", "class_samplematrix.html", "class_samplematrix" ],
     [ "SectionOption", "struct_section_option.html", "struct_section_option" ],

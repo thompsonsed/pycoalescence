@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.patched_landscape &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence.patched_landscape &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -61,9 +61,13 @@
 <span class="sd">Dispersal probabilities are defined between different patches, and each patch will be contain n individuals.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">.map</span> <span class="kn">import</span> <span class="n">Map</span>
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">check_parent</span>
 
@@ -181,7 +185,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="s2">&quot;PatchedLandscape({}, {})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PatchedLandscape.add_patch"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.patched_landscape.PatchedLandscape.add_patch">[docs]</a>	<span class="k">def</span> <span class="nf">add_patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">self_dispersal</span><span class="p">,</span> <span class="n">dispersal_probabilities</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PatchedLandscape.add_patch"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.patched_landscape.PatchedLandscape.add_patch">[docs]</a>	<span class="k">def</span> <span class="nf">add_patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">self_dispersal</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dispersal_probabilities</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Add a patch with the given parameters.</span>
 
@@ -195,14 +199,22 @@
 			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Patch with id of {} already in patch list.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
 		<span class="k">if</span> <span class="n">density</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Density cannot be less than 0.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">self_dispersal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">dispersal_probabilities</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Must provide self-dispersal value.&quot;</span><span class="p">)</span>
 		<span class="n">patch</span> <span class="o">=</span> <span class="n">Patch</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
-		<span class="n">patch</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">self_dispersal</span><span class="p">)</span>
+		<span class="n">patch</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">self_dispersal</span> <span class="k">if</span> <span class="n">self_dispersal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">dispersal_probabilities</span><span class="p">:</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dispersal_probabilities</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
 				<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Dispersal probabilities must be provided as a dictionary of &quot;</span>
 								<span class="s2">&quot;ids-&gt;relative probabilities.&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">self_dispersal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dispersal_probabilities</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Must provide self dispersal value either separately or within dictionary.&quot;</span><span class="p">)</span>
+				<span class="n">patch</span><span class="o">.</span><span class="n">dispersal_probabilities</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispersal_probabilities</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
 			<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dispersal_probabilities</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-				<span class="n">patch</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="nb">id</span><span class="p">:</span>
+					<span class="n">patch</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">patches</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">patch</span></div>
 
 <div class="viewcode-block" id="PatchedLandscape.has_patch"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.patched_landscape.PatchedLandscape.has_patch">[docs]</a>	<span class="k">def</span> <span class="nf">has_patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
@@ -238,7 +250,7 @@
 
 <span class="sd">		The fine map file will be dimensions 1xN where N is the number of patches in the landscape.</span>
 <span class="sd">	 	The dispersal probability map will be dimensions NxN, where dispersal occurs from the y index cell to the x</span>
-<span class="sd">	 	index cell. Dispersal probabilities are stored as cumulative probabilities.</span>
+<span class="sd">	 	index cell.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">map_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patches</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">map_size</span><span class="p">))</span>
@@ -260,14 +272,25 @@
 					<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">src_index</span><span class="p">,</span> <span class="n">dst_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 				<span class="k">else</span><span class="p">:</span>
 					<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">src_index</span><span class="p">,</span> <span class="n">dst_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">src_patch</span><span class="o">.</span><span class="n">dispersal_probabilities</span><span class="p">[</span><span class="n">k2</span><span class="p">]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">map_size</span><span class="p">):</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">map_size</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dispersal map does not sum to 1 &quot;</span>
-								 <span class="s2">&quot;across rows: {} != {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">map_size</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PatchedLandscape.generate_fragment_csv"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.patched_landscape.PatchedLandscape.generate_fragment_csv">[docs]</a>	<span class="k">def</span> <span class="nf">generate_fragment_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment_csv</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generates a fragment csv for usage within a coalescence simulation, with each patch becomming one fragment on</span>
+<span class="sd">		the landscape.</span>
+
+<span class="sd">		:param fragment_csv: the path to the output csv to create</span>
+
+<span class="sd">		:raises IOError: if the output fragment csv already exists</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fragment_csv</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Output file already exists at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragment_csv</span><span class="p">))</span>
+		<span class="n">check_parent</span><span class="p">(</span><span class="n">fragment_csv</span><span class="p">)</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fragment_csv</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+			<span class="n">csv_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">k1</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">patches</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+				<span class="n">csv_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">k1</span><span class="p">,</span> <span class="n">patch</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">patch</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">patch</span><span class="o">.</span><span class="n">density</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="PatchedLandscape.generate_from_matrix"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.patched_landscape.PatchedLandscape.generate_from_matrix">[docs]</a>	<span class="k">def</span> <span class="nf">generate_from_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density_matrix</span><span class="p">,</span> <span class="n">dispersal_matrix</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -288,7 +311,7 @@
 			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Supplied matrices must be numpy arrays.&quot;</span><span class="p">)</span>
 		<span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span> <span class="o">=</span> <span class="n">dispersal_matrix</span><span class="o">.</span><span class="n">shape</span>
 		<span class="n">x_density</span><span class="p">,</span> <span class="n">y_density</span> <span class="o">=</span> <span class="n">density_matrix</span><span class="o">.</span><span class="n">shape</span>
-		<span class="k">if</span> <span class="ow">not</span> <span class="n">x_density</span><span class="o">*</span><span class="n">y_density</span> <span class="o">==</span> <span class="n">x_dim</span> <span class="ow">or</span> <span class="n">x_dim</span> <span class="o">!=</span> <span class="n">y_dim</span><span class="p">:</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">x_density</span> <span class="o">*</span> <span class="n">y_density</span> <span class="o">==</span> <span class="n">x_dim</span> <span class="ow">or</span> <span class="n">x_dim</span> <span class="o">!=</span> <span class="n">y_dim</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Density matrix should have dimensions x by y and dispersal matrix xy by xy.&quot;</span><span class="p">)</span>
 		<span class="c1"># create the patches first</span>
 		<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_dim</span><span class="p">):</span>
@@ -310,11 +333,13 @@
 
 <span class="sd">	:param index: the index to convert from</span>
 <span class="sd">	:param dim: the x dimension of the matrix</span>
-<span class="sd">	:return:</span>
+
+<span class="sd">	:return: a tuple of integers containing the x and y coordinates</span>
+<span class="sd">	:rtype: tuple</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">density_x</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="n">dim</span>
 	<span class="n">density_y</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="n">dim</span><span class="p">)</span>
-	<span class="k">return</span> <span class="n">density_x</span><span class="p">,</span> <span class="n">density_y</span></div>
+	<span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">density_x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">density_y</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -348,7 +373,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

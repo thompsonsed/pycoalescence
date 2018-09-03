@@ -45,16 +45,16 @@ Program Listing for File SimulateDispersal.cpp
        {
            throw FatalException("Simulation parameters have not been set.");
        }
+       density_landscape->setDims(simParameters);
+       dispersal_coordinator.setMaps(density_landscape);
        setDispersalParameters();
-       density_landscape.setDims(simParameters);
-       dispersal_coordinator.setHabitatMap(&density_landscape);
-       density_landscape.calcFineMap();
-       density_landscape.calcCoarseMap();
-       density_landscape.calcOffset();
-       density_landscape.calcHistoricalFineMap();
-       density_landscape.calcHistoricalCoarseMap();
-       density_landscape.setLandscape(simParameters->landscape_type);
-       density_landscape.recalculateHabitatMax();
+       density_landscape->calcFineMap();
+       density_landscape->calcCoarseMap();
+       density_landscape->calcOffset();
+       density_landscape->calcHistoricalFineMap();
+       density_landscape->calcHistoricalCoarseMap();
+       density_landscape->setLandscape(simParameters->landscape_type);
+       density_landscape->recalculateHabitatMax();
        dataMask.importSampleMask(*simParameters);
    }
    
@@ -78,7 +78,7 @@ Program Listing for File SimulateDispersal.cpp
    
    void SimulateDispersal::setDispersalParameters()
    {
-       dispersal_coordinator.setRandomNumber(&random);
+       dispersal_coordinator.setRandomNumber(random);
        dispersal_coordinator.setGenerationPtr(&generation);
        dispersal_coordinator.setDispersal(simParameters);
    
@@ -92,11 +92,12 @@ Program Listing for File SimulateDispersal.cpp
            throw FatalException("Output database is not a .db file, check file name.");
        }
        // Open our SQL connection to the database
-       int o2 = sqlite3_open_v2(out_database.c_str(), &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "unix-dotfile");
-       if(o2 != SQLITE_OK && o2 != SQLITE_DONE)
-       {
-           throw FatalException("Database file cannot be opened or created.");
-       }
+       openSQLiteDatabase(out_database, database);
+   //  int o2 = sqlite3_open_v2(out_database.c_str(), &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "unix-dotfile");
+   //  if(o2 != SQLITE_OK && o2 != SQLITE_DONE)
+   //  {
+   //      throw FatalException("Database file cannot be opened or created.");
+   //  }
        checkMaxParameterReference();
    }
    
@@ -139,7 +140,7 @@ Program Listing for File SimulateDispersal.cpp
                if(dataMask.getVal(j, i, 0, 0))
                {
                    cell_total++;
-                   total += density_landscape.getVal(j, i, 0, 0, 0.0);
+                   total += density_landscape->getVal(j, i, 0, 0, 0.0);
                }
            }
        }
@@ -150,7 +151,7 @@ Program Listing for File SimulateDispersal.cpp
        {
            for(unsigned long j = 0; j < simParameters->sample_x_size; j++)
            {
-               for(unsigned long k = 0; k < density_landscape.getVal(j, i, 0, 0, 0.0); k++)
+               for(unsigned long k = 0; k < density_landscape->getVal(j, i, 0, 0, 0.0); k++)
                {
                    cells[ref].x = j;
                    cells[ref].y = i;
@@ -162,7 +163,7 @@ Program Listing for File SimulateDispersal.cpp
    
    const Cell& SimulateDispersal::getRandomCell()
    {
-       auto index = static_cast<unsigned long>(floor(random.d01() * cells.size()));
+       auto index = static_cast<unsigned long>(floor(random->d01() * cells.size()));
        return cells[index];
    }
    
@@ -269,8 +270,8 @@ Program Listing for File SimulateDispersal.cpp
            writeParameters(table_name);
            // Do the sql output
            // First create the table
-           char* sErrMsg;
-           sqlite3_stmt* stmt;
+           char* sErrMsg = nullptr;
+           sqlite3_stmt *stmt = nullptr;
            string create_table = "CREATE TABLE IF NOT EXISTS " + table_name + " (id INT PRIMARY KEY not null, ";
            create_table += " distance DOUBLE not null, parameter_reference INT NOT NULL);";
            int rc = sqlite3_exec(database, create_table.c_str(), nullptr, nullptr, &sErrMsg);
@@ -296,12 +297,12 @@ Program Listing for File SimulateDispersal.cpp
                sqlite3_bind_int(stmt, 1, static_cast<int>(max_id + i));
                auto iter = parameter_references.find(distances[i].first);
    
-   //#ifdef DEBUG // TODO move to debug
+   #ifdef DEBUG
                if(iter == parameter_references.end())
                {
                    throw FatalException("Cannot find parameter reference. Please report this bug.");
                }
-   //#endif // DEBUG
+   #endif // DEBUG
                unsigned long reference = iter->second;
                if(reference > max_parameter_reference)
                {
@@ -397,7 +398,7 @@ Program Listing for File SimulateDispersal.cpp
    void SimulateDispersal::checkMaxParameterReference()
    {
        string to_exec = "SELECT CASE WHEN COUNT(1) > 0 THEN MAX(ref) ELSE 0 END AS [Value] FROM PARAMETERS;";
-       sqlite3_stmt *stmt;
+       sqlite3_stmt *stmt = nullptr;
        sqlite3_prepare_v2(database, to_exec.c_str(), static_cast<int>(strlen(to_exec.c_str())), &stmt, nullptr);
        int rc = sqlite3_step(stmt);
        max_parameter_reference = static_cast<unsigned long>(sqlite3_column_int(stmt, 0) + 1);
@@ -414,7 +415,7 @@ Program Listing for File SimulateDispersal.cpp
    unsigned long SimulateDispersal::checkMaxIdNumber(string table_name)
    {
        string to_exec = "SELECT CASE WHEN COUNT(1) > 0 THEN MAX(id) ELSE 0 END AS [Value] FROM " + table_name +";";
-       sqlite3_stmt *stmt;
+       sqlite3_stmt *stmt = nullptr;
        sqlite3_prepare_v2(database, to_exec.c_str(), static_cast<int>(strlen(to_exec.c_str())), &stmt, nullptr);
        int rc = sqlite3_step(stmt);
        auto max_id = static_cast<unsigned long>(sqlite3_column_int(stmt, 0) + 1);

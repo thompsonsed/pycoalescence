@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Community.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Community.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Community.h.html" title="File Community.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Community.h.html" accesskey="U">File Community.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -219,9 +219,8 @@
     <span class="kt">bool</span> <span class="n">in_mem</span><span class="p">;</span> <span class="c1">// boolean for whether the database is in memory or not.</span>
     <span class="kt">bool</span> <span class="n">database_set</span><span class="p">;</span> <span class="c1">// boolean for whether the database has been set already.</span>
     <span class="n">sqlite3</span> <span class="o">*</span><span class="n">database</span><span class="p">;</span> <span class="c1">// stores the in-memory database connection.</span>
-    <span class="n">sqlite3</span> <span class="o">*</span><span class="n">outdatabase</span><span class="p">;</span> <span class="c1">// stores the file database connection</span>
     <span class="kt">bool</span> <span class="n">bSqlConnection</span><span class="p">;</span> <span class="c1">// true if the data connection has been established.</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">nodes</span><span class="p">;</span> <span class="c1">// in older versions this was called list. Changed to avoid confusion with the built-in class.</span>
+    <span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">nodes</span><span class="p">;</span> <span class="c1">// in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.</span>
     <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">row_out</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">iSpecies</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">has_imported_samplemask</span><span class="p">;</span> <span class="c1">// checks whether the samplemask has already been imported.</span>
@@ -247,42 +246,27 @@
     <span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">spec_sim_parameters</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
 
-    <span class="n">Community</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">nodes</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">applied_protracted_parameters</span><span class="p">()</span>
+    <span class="n">Community</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">in_mem</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">database_set</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">database</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+                                  <span class="n">bSqlConnection</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">nodes</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">row_out</span><span class="p">(),</span> <span class="n">iSpecies</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                  <span class="n">has_imported_samplemask</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">has_imported_data</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">samplemask</span><span class="p">(),</span>
+                                  <span class="n">fragments</span><span class="p">(),</span> <span class="n">current_community_parameters</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">min_spec_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+                                  <span class="n">grid_x_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">grid_y_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_x_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_y_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                  <span class="n">samplemask_x_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_y_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">past_communities</span><span class="p">(),</span>
+                                  <span class="n">past_metacommunities</span><span class="p">(),</span> <span class="n">protracted</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">min_speciation_gen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+                                  <span class="n">max_speciation_gen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">applied_protracted_parameters</span><span class="p">(),</span> <span class="n">max_species_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                  <span class="n">max_fragment_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">max_locations_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">spec_sim_parameters</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">in_mem</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">iSpecies</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">has_imported_samplemask</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">database_set</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">has_imported_data</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">protracted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">current_community_parameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">max_species_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">max_locations_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
     <span class="p">}</span>
 
-    <span class="n">Community</span><span class="p">()</span> <span class="o">:</span> <span class="n">applied_protracted_parameters</span><span class="p">()</span>
+    <span class="n">Community</span><span class="p">()</span> <span class="o">:</span> <span class="n">Community</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">in_mem</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">iSpecies</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">has_imported_samplemask</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">database_set</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">has_imported_data</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">min_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">max_speciation_gen</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">protracted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">current_community_parameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">max_species_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">max_locations_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
 
      <span class="k">virtual</span> <span class="o">~</span><span class="n">Community</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="kt">void</span> <span class="n">setList</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">l</span><span class="p">);</span>
@@ -309,6 +293,7 @@
 
     <span class="kt">void</span> <span class="nf">openSqlConnection</span><span class="p">(</span><span class="n">string</span> <span class="n">inputfile</span><span class="p">);</span>
 
+    <span class="kt">void</span> <span class="nf">closeSqlConnection</span><span class="p">();</span>
     <span class="kt">void</span> <span class="nf">setInternalDatabase</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">internalOption</span><span class="p">();</span>
@@ -455,8 +440,8 @@
         <li class="right" >
           <a href="file_necsim_Community.h.html" title="File Community.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Community.h.html" >File Community.h</a> &#187;</li> 
       </ul>
     </div>

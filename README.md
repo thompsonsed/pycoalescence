@@ -3,21 +3,22 @@
 
 
 
-##INTRODUCTION
+###Introduction
 pycoalescence is a python package for spatially-explicit coalescence neutral simulations. pycoalescence provides a
 pythonic interface for setting up, running and analysing spatially-explicit neutral simulations. Simulations themselves
 are performed in c++ using [necsim](https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html) for 
-excellent performance. Usage of python allows for easier setup of simulation parameters. 
+excellent performance, whilst the python interface provides a simple solution for
+setting up and analysing simulations.
 
 For full documentation please see [here](https://pycoalescence.readthedocs.io/en/release/).
 
-##INSTALLATION
+###Installation
 
 Installation is available through pip, conda or a manual installation.
 For full installation instructions, see [here](https://pycoalescence.readthedocs.io/en/release/README_pycoalescence.html#installation).
 
 Currently, pip is supported on Mac OS X and Linux and conda is supported on
-Linux and Windows. 
+Mac OS X, Linux and Windows. 
 
 Using pip, make sure all the prerequisites are installed and run
 `pip install pycoalescence`.
@@ -32,12 +33,12 @@ necsim directory.
 Make sure compilation is performed under the same python version
 simulations will be performed in.
 
-##BASIC USAGE
+###Basic Usage
 
 The Simulation class contains most of the operations required for setting up a coalescence simulation.
 The important set up functions are:
 
-* `set_simulation_params()` sets a variety of key simulation variables, including the seed, output directory, dispersal
+* `set_simulation_parameters()` sets a variety of key simulation variables, including the seed, output directory, dispersal
   parameters and speciation rate.
 * `set_map()` is used to specify a map file to use. More complex map file set-ups can be provided using
   `set_map_files`. `set_map_parameters()` can also be used to customise parameters, instead of detecting from the
@@ -53,7 +54,7 @@ post-simulation, or calculating species abundances for fragments within the main
 The basic procedure for this procedure is
 
 * `set_database()` to provide the path to the completed simulation database
-* `set_speciation_params()` which takes as arguments 
+* `set_speciation_parameters()` which takes as arguments 
 	* T/F of recording full spatial data
 	*  either a csv file containing fragment data, or T/F for whether fragments should be 
 		calculated from squares of continuous habitat.
@@ -64,10 +65,10 @@ The basic procedure for this procedure is
   The calculations will be stored in extra tables within the same SQL file as originally specified.
 
 
-##REQUIREMENTS
+###Requirements
 
 
-### Essential
+#### Essential
 
 
 -  Python version 2 >= 2.7.9 or 3 >= 3.4.1
@@ -82,7 +83,7 @@ The basic procedure for this procedure is
   the gdal documentation for more help installing gdal properly.
 
 
-### Recommended
+#### Recommended
 
 
 
@@ -95,7 +96,7 @@ The basic procedure for this procedure is
 
 - Matplotlib package for plotting fragmented landscapes (``pip install matplotlib``).
 
-##CONTACTS
+###CONTACTS
 
 Author: Samuel Thompson
 

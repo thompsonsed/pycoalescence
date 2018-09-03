@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File main.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File main.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_main.cpp.html" title="File main.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_main.cpp.html" accesskey="U">File main.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -74,6 +74,8 @@
 <span class="cp">#endif</span>
 <span class="cp">#endif</span>
 
+<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;SpatialTree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;SimulationTemplates.h&quot;</span><span class="cp"></span>
 
@@ -93,10 +95,12 @@
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 <span class="p">{</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Logger</span><span class="p">();</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">comargs</span><span class="p">;</span>
     <span class="n">importArgs</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">argc</span><span class="p">),</span> <span class="n">argv</span><span class="p">,</span> <span class="n">comargs</span><span class="p">);</span>
     <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">config_file</span> <span class="o">=</span> <span class="n">getConfigFileFromCmdArgs</span><span class="p">(</span><span class="n">comargs</span><span class="p">);</span>
     <span class="n">runMain</span><span class="o">&lt;</span><span class="n">SpatialTree</span><span class="o">&gt;</span><span class="p">(</span><span class="n">config_file</span><span class="p">);</span>
+    <span class="k">delete</span> <span class="n">logger</span><span class="p">;</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -154,8 +158,8 @@
         <li class="right" >
           <a href="file_necsim_main.cpp.html" title="File main.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_main.cpp.html" >File main.cpp</a> &#187;</li> 
       </ul>
     </div>

@@ -5,11 +5,14 @@ to assert simulation outputs are as expected.
 import logging
 import os
 import unittest
+from configparser import ConfigParser
 
 try:
-	from cStringIO import StringIO  # Python 2 string support
-except ImportError:
+	import configparser as ConfigParser
 	from io import StringIO
+except ImportError as ie:  # python 2.x support
+	import ConfigParser
+	from cStringIO import StringIO
 
 from pycoalescence import Simulation
 from setupTests import setUpAll, tearDownAll, skipLongTest
@@ -41,10 +44,10 @@ class TestFileCreation(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		self.coal = Simulation(logging_level=logging.CRITICAL)
-		self.coal.set_simulation_params(0, 0, "output/test_output/test_output2/", 0.1, 4, 4, deme=1, sample_size=1.0,
-										max_time=2,
-										dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-										gen_since_historical=2, dispersal_method="normal")
+		self.coal.set_simulation_parameters(0, 0, "output/test_output/test_output2/", 0.1, 4, 4, deme=1, sample_size=1.0,
+											max_time=2,
+											dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
+											gen_since_historical=2, dispersal_method="normal")
 		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.run()
@@ -69,9 +72,9 @@ class TestFileNaming(unittest.TestCase):
 		:return:
 		"""
 		coal = Simulation()
-		coal.set_simulation_params(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
-								   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
-								   gen_since_historical=2, dispersal_method="normal")
+		coal.set_simulation_parameters(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
+									   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
+									   gen_since_historical=2, dispersal_method="normal")
 		with self.assertRaises(ValueError):
 			coal.set_map_files(sample_file="null", fine_file="null")
 
@@ -88,15 +91,15 @@ class TestOffsetMismatch(unittest.TestCase):
 		Sets up the class by creating simulation object with the desired map structure.
 		"""
 		cls.coal1 = Simulation(logging_level=logging.CRITICAL)
-		cls.coal1.set_simulation_params(seed=1, job_type=38, output_directory="output", min_speciation_rate=0.1,
-										sigma=4, max_time=2, dispersal_relative_cost=1,
-										min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-										cutoff=0.0)
+		cls.coal1.set_simulation_parameters(seed=1, job_type=38, output_directory="output", min_speciation_rate=0.1,
+											sigma=4, max_time=2, dispersal_relative_cost=1,
+											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+											cutoff=0.0)
 		cls.coal2 = Simulation()
-		cls.coal2.set_simulation_params(seed=1, job_type=38, output_directory="output", min_speciation_rate=0.1,
-										sigma=4, max_time=2, dispersal_relative_cost=1,
-										min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-										cutoff=0.0)
+		cls.coal2.set_simulation_parameters(seed=1, job_type=38, output_directory="output", min_speciation_rate=0.1,
+											sigma=4, max_time=2, dispersal_relative_cost=1,
+											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+											cutoff=0.0)
 
 	def testRaisesErrorFineSampleOffset(self):
 		"""
@@ -120,7 +123,7 @@ class TestOffsetMismatch(unittest.TestCase):
 		Checks that setting incorrect limits for the sample grid outside of the fine map causes an error to be thrown.
 		"""
 		sim = Simulation()
-		sim.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.001, sigma=2)
+		sim.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.001, sigma=2)
 		sim.set_map_files(sample_file="null", fine_file="sample/SA_sample_fine_offset.tif",
 						  coarse_file="none")
 		sim.sample_map.x_offset = 10000
@@ -143,9 +146,9 @@ class TestSimulationRaisesErrors(unittest.TestCase):
 		Tests a normal simulation raises an error when no files exist
 		"""
 		c = Simulation()
-		c.set_simulation_params(5, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
-								min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-								dispersal_method="fat-tail")
+		c.set_simulation_parameters(5, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
+									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+									dispersal_method="fat-tail")
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 						coarse_file="sample/SA_sample_coarse.tif")
 		# Now change map name to something that doesn't exist
@@ -161,9 +164,9 @@ class TestSimulationRaisesErrors(unittest.TestCase):
 		Tests a protracted simulation raises an error if there is a problem
 		"""
 		c = Simulation(logging_level=logging.ERROR)
-		c.set_simulation_params(6, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
-								min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-								dispersal_method="fat-tail", protracted=True)
+		c.set_simulation_parameters(6, 4, "output", 0.1, 4, 4, 1, 0.01, 2, dispersal_relative_cost=1,
+									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+									dispersal_method="fat-tail", protracted=True)
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 						coarse_file="sample/SA_sample_coarse.tif")
 		# Now change map name to something that doesn't exist
@@ -187,18 +190,18 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		self.coal = Simulation(logging_level=logging.CRITICAL)
-		self.coal.set_simulation_params(1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, dispersal_relative_cost=1,
-										min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-										dispersal_method="fat-tail")
+		self.coal.set_simulation_parameters(1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, dispersal_relative_cost=1,
+											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+											dispersal_method="fat-tail")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal.add_sample_time(0.0)
 		self.coal.add_sample_time(1.0)
-		self.coal.full_config_file = "output/conf1.txt"
 		self.coal.set_speciation_rates([0.1, 0.2])
-		self.coal.create_config()
+		self.coal.create_config("output/conf1.txt")
 
-	def testConfigWrite(self):
+
+	def testConfigWriteMain(self):
 		"""
 		Tests that the main configuration file has been correctly generated.
 		"""
@@ -245,6 +248,23 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
 			self.assertEqual(lines[18], "time0=0.0", msg="Time config file doesn't produce expected output.")
 			self.assertEqual(lines[19], "time1=1.0", msg="Time config file doesn't produce expected output.")
 
+	def testConfigWrite(self):
+		"""Tests that the config parser correctly writes all simulation parameters to memory."""
+		coal = Simulation(logging_level=logging.CRITICAL)
+		coal.set_simulation_parameters(1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, dispersal_relative_cost=1,
+											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+											dispersal_method="fat-tail")
+		coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+								coarse_file="sample/SA_sample_coarse.tif")
+		coal.add_sample_time(0.0)
+		coal.add_sample_time(1.0)
+		coal.set_speciation_rates([0.1, 0.2])
+		coal.write_config("output/conf1b.txt")
+		self.assertTrue(os.path.exists("output/conf1b.txt"))
+		ref_config_parser = ConfigParser.ConfigParser()
+		ref_config_parser.read("output/conf1b.txt")
+		for section in ["sample_grid", "fine_map", "coarse_map", "main"]:
+			self.assertTrue(ref_config_parser.has_section(section))
 
 class TestSimulationSetMaps(unittest.TestCase):
 	"""
@@ -258,7 +278,7 @@ class TestSimulationSetMaps(unittest.TestCase):
 		"""
 		cls.c = Simulation()
 		cls.c.set_map("null", 10, 10)
-		cls.c.set_simulation_params(seed=1, job_type=12, output_directory="output", min_speciation_rate=0.01, sigma=2)
+		cls.c.set_simulation_parameters(seed=1, job_type=12, output_directory="output", min_speciation_rate=0.01, sigma=2)
 		cls.c.run()
 
 	def testMapFilesSetCorrectly(self):
@@ -318,7 +338,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		with open("sample/log_12_2.txt", "r") as content_file:
 			expected_log = content_file.read().replace('\r', '').replace('\n', '')
 		s = Simulation(logging_level=logging.INFO, stream=log_stream)
-		s.set_simulation_params(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_simulation_parameters(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map("null", 10, 10)
 		s.run()
 		log = log_stream.getvalue().replace('\r', '').replace('\n', '')
@@ -330,7 +350,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		"""
 		log_stream = StringIO()
 		s = Simulation(logging_level=logging.WARNING, stream=log_stream)
-		s.set_simulation_params(seed=3, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_simulation_parameters(seed=3, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map("null", 10, 10)
 		s.finalise_setup()
 		s.run_coalescence()
@@ -342,7 +362,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
 		"""
 		log_stream = StringIO()
 		s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-		s.set_simulation_params(seed=4, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_simulation_parameters(seed=4, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map("null", 10, 10)
 		s.finalise_setup()
 		s.run_coalescence()
@@ -361,7 +381,7 @@ class TestInitialCountSuccess(unittest.TestCase):
 		"""
 		log_stream = StringIO()
 		s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-		s.set_simulation_params(seed=5, job_type=12, output_directory="output", min_speciation_rate=0.1)
+		s.set_simulation_parameters(seed=5, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map_files(sample_file="null", fine_file="sample/large_fine.tif")
 		s.sample_map.x_size = 10
 		s.sample_map.y_size = 10
@@ -450,12 +470,12 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 		Tests that running a simulation with a zero speciation rate produces a single species.
 		"""
 		c = Simulation()
-		c.set_simulation_params(seed=1, job_type=17, output_directory="output", min_speciation_rate=0.0,
-								sigma=2.0, tau=1, deme=1, sample_size=1, max_time=4,
-								dispersal_relative_cost=1,
-								min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-								dispersal_method="normal",
-								landscape_type=False)
+		c.set_simulation_parameters(seed=1, job_type=17, output_directory="output", min_speciation_rate=0.0,
+									sigma=2.0, tau=1, deme=1, sample_size=1, max_time=4,
+									dispersal_relative_cost=1,
+									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+									dispersal_method="normal",
+									landscape_type=False)
 		c.set_map("null", 10, 10)
 		c.run()
 		self.assertEqual(c.get_richness(), 1)
@@ -465,12 +485,12 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 		Tests that running a simulation with a zero speciation rate produces a single species.
 		"""
 		c = Simulation()
-		c.set_simulation_params(seed=1, job_type=18, output_directory="output", min_speciation_rate=1.0,
-								sigma=2.0, tau=1, deme=1, sample_size=1, max_time=4,
-								dispersal_relative_cost=1,
-								min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-								dispersal_method="normal",
-								landscape_type=False)
+		c.set_simulation_parameters(seed=1, job_type=18, output_directory="output", min_speciation_rate=1.0,
+									sigma=2.0, tau=1, deme=1, sample_size=1, max_time=4,
+									dispersal_relative_cost=1,
+									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
+									dispersal_method="normal",
+									landscape_type=False)
 		c.set_map("null", 10, 10)
 		c.run()
 		self.assertEqual(c.get_richness(), 100)
@@ -487,10 +507,10 @@ class TestSimulationMapDensityReading(unittest.TestCase):
 		Sets up the coalescence object for referencing the map objects
 		"""
 		cls.c = Simulation()
-		cls.c.set_simulation_params(seed=1, job_type=36, output_directory="output", min_speciation_rate=0.5,
-									sigma=2, tau=2, deme=64000, sample_size=0.00005, max_time=10,
-									dispersal_relative_cost=1,
-									min_num_species=1, habitat_change_rate=0, gen_since_historical=200)
+		cls.c.set_simulation_parameters(seed=1, job_type=36, output_directory="output", min_speciation_rate=0.5,
+										sigma=2, tau=2, deme=64000, sample_size=0.00005, max_time=10,
+										dispersal_relative_cost=1,
+										min_num_species=1, habitat_change_rate=0, gen_since_historical=200)
 		cls.c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 
 	def testActualDensity(self):
@@ -527,19 +547,19 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 	def setUpClass(cls):
 		cls.base_sim = Simulation()
 		cls.hist_sim = Simulation()
-		cls.base_sim.set_simulation_params(seed=4, job_type=17, output_directory="output",
-										   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
+		cls.base_sim.set_simulation_parameters(seed=4, job_type=17, output_directory="output",
+											   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
 		cls.base_sim.set_map("sample/SA_sample_fine.tif")
 		cls.base_sim.run()
-		cls.hist_sim.set_simulation_params(seed=4, job_type=18, output_directory="output",
-										   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
+		cls.hist_sim.set_simulation_parameters(seed=4, job_type=18, output_directory="output",
+											   min_speciation_rate=0.1, sigma=2, sample_size=0.1)
 		cls.hist_sim.set_map("sample/SA_sample_fine.tif")
 		cls.hist_sim.add_historical_map(fine_map="sample/example_historical_fine.tif", coarse_map="none",
 										time=10, rate=0.2)
 		cls.hist_sim.run()
 		cls.hist_sim2 = Simulation()
-		cls.hist_sim2.set_simulation_params(seed=4, job_type=19, output_directory="output",
-											min_speciation_rate=0.1, sigma=2, sample_size=0.1)
+		cls.hist_sim2.set_simulation_parameters(seed=4, job_type=19, output_directory="output",
+												min_speciation_rate=0.1, sigma=2, sample_size=0.1)
 		cls.hist_sim2.set_map("sample/SA_sample_fine.tif")
 		cls.hist_sim2.add_historical_map(fine_map="sample/example_historical_fine.tif", coarse_map="none",
 										 time=10, rate=0.2)
@@ -565,8 +585,8 @@ class TestExpansionOverTime(unittest.TestCase):
 	def setUpClass(cls):
 		"""Run the simulation for expansion over time."""
 		cls.sim = Simulation(logging_level=50)
-		cls.sim.set_simulation_params(seed=5, job_type=17, output_directory="output", min_speciation_rate=0.0001,
-									  sigma=1, deme=100, sample_size=1.0, landscape_type="infinite")
+		cls.sim.set_simulation_parameters(seed=5, job_type=17, output_directory="output", min_speciation_rate=0.0001,
+										  sigma=1, deme=100, sample_size=1.0, landscape_type="infinite")
 		cls.sim.set_map_files("null", "sample/null.tif", "sample/null_large.tif")
 		cls.sim.add_historical_map("sample/null.tif", "sample/null_large.tif", time=500, rate=0.5)
 		cls.sim.add_sample_time([0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])

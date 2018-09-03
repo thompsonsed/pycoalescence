@@ -14,30 +14,25 @@ Program Listing for File SpeciesList.h
     #ifndef SPECIESLIST
     #define SPECIESLIST
    
+   #include <memory>
    #include "Matrix.h"
    #include "NRrand.h"
    using namespace std;
    class SpeciesList
    {
    private:
-       unsigned long list_size,maxsize; // List size and maximum size of the cell (based on percentage cover).
+       unsigned long list_size, maxsize; // List size and maximum size of the cell (based on percentage cover).
        unsigned long next_active; // For calculating the wrapping, using the next and last system.
-       Row<unsigned long> list; // list of the active reference number, with zeros for empty cells.
+       vector<unsigned long> species_id_list; // list of the active reference number, with zeros for empty cells.
        unsigned long nwrap; // The number of wrapping (next and last possibilities) that there are.
    public:
        SpeciesList();
    
        ~SpeciesList() = default;
-       // Sets the list size to the required length.
-       // Note this will delete any species currently stored in the list
    
-       // Fill the list with empty 0s.
-       void fillList();
-       
-       // Standard setters
        void initialise(unsigned long maxsizein);
        
-       // special case if just the maxsize wants to be change, but want to maintain the list variables.
+       // special case if just the maxsize wants to be change, but want to maintain the species_id_list variables.
        void setMaxsize(unsigned long maxsizein);
        
        void setSpecies(unsigned long index, unsigned long new_val);
@@ -49,10 +44,8 @@ Program Listing for File SpeciesList.h
        
        void setNwrap(unsigned long nr);
        
-       unsigned long addSpecies(unsigned long new_spec);
-       
-       void addSpeciesSilent(unsigned long new_spec);
-       
+       unsigned long addSpecies(const unsigned long &new_spec);
+   
        void deleteSpecies(unsigned long index);
        
        void decreaseNwrap();
@@ -62,7 +55,7 @@ Program Listing for File SpeciesList.h
        
        void changePercentCover(unsigned long newmaxsize);
        
-       unsigned long getRandLineage(NRrand &rand_no);
+       unsigned long getRandLineage(shared_ptr<NRrand> rand_no);
        
        unsigned long getSpecies(unsigned long index);
        
@@ -73,7 +66,10 @@ Program Listing for File SpeciesList.h
        unsigned long getListSize();
        
        unsigned long getMaxSize();
-       
+   
+   
+       unsigned long getListLength();
+   
        void wipeList();
        
        friend ostream& operator<<(ostream& os,const SpeciesList& r);

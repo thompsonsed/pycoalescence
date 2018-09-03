@@ -83,6 +83,8 @@ void \hyperlink{class_map_a03e0486e704090765d253b18a9dde0f5}{print\+Number\+Comp
 void \hyperlink{class_map_a6387185da6dc3063cd2311ffab0a5fba}{check\+Tif\+Import\+Failure} ()\hypertarget{class_map_a6387185da6dc3063cd2311ffab0a5fba}{}\label{class_map_a6387185da6dc3063cd2311ffab0a5fba}
 
 \begin{DoxyCompactList}\small\item\em Checks the error code of the C\+P\+L\+Err object and formats the error. \end{DoxyCompactList}\item 
+\hyperlink{class_map}{Map} \& \hyperlink{class_map_a00f73ad13cb67e3c4836fae9614d6b40}{operator=} (const \hyperlink{class_map}{Map} \&m)
+\begin{DoxyCompactList}\small\item\em Equality operator. \end{DoxyCompactList}\item 
 {\footnotesize template$<$$>$ }\\void \hyperlink{class_map_aad03012fb1c3e434747e62804f3149e9}{internal\+Import} ()
 \begin{DoxyCompactList}\small\item\em Overloaded functions for importing from tifs and matching between gdal and C types. \end{DoxyCompactList}\item 
 {\footnotesize template$<$$>$ }\\void {\bfseries internal\+Import} ()\hypertarget{class_map_a32564b4934b1523465e5e3d7145af8f3}{}\label{class_map_a32564b4934b1523465e5e3d7145af8f3}
@@ -175,12 +177,10 @@ unsigned long {\bfseries num\+Rows} \{\}\hypertarget{class_matrix_ac1e96667d48c7
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-ostream \& {\bfseries operator$>$$>$} (ostream \&os, const \hyperlink{class_map}{Map} \&m)\hypertarget{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}{}\label{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}
-
-\item 
-istream \& {\bfseries operator$<$$<$} (istream \&is, \hyperlink{class_map}{Map} \&m)\hypertarget{class_map_a2cb87ce0bbf263326a632b9537725d96}{}\label{class_map_a2cb87ce0bbf263326a632b9537725d96}
-
-\end{DoxyCompactItemize}
+ostream \& \hyperlink{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}{operator$>$$>$} (ostream \&os, const \hyperlink{class_map}{Map} \&m)
+\begin{DoxyCompactList}\small\item\em Output operator. \end{DoxyCompactList}\item 
+istream \& \hyperlink{class_map_a2cb87ce0bbf263326a632b9537725d96}{operator$<$$<$} (istream \&is, \hyperlink{class_map}{Map} \&m)
+\begin{DoxyCompactList}\small\item\em Input operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -570,6 +570,25 @@ Overloading the -\/= operator so that the new object is written to the current o
 {\em m} & the \hyperlink{class_matrix}{Matrix} object to subtract from this matrix. \\
 \hline
 \end{DoxyParams}
+\index{Map@{Map}!operator=@{operator=}}
+\index{operator=@{operator=}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator=(const Map \&m)}{operator=(const Map &m)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Map}\& {\bf Map}$<$ T $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Map}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_map_a00f73ad13cb67e3c4836fae9614d6b40}{}\label{class_map_a00f73ad13cb67e3c4836fae9614d6b40}
+
+
+Equality operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & the \hyperlink{class_map}{Map} object to copy from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the self \hyperlink{class_map}{Map} object 
+\end{DoxyReturn}
 \index{Map@{Map}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
 \index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Map@{Map}}
 \subsubsection[{\texorpdfstring{operator[](unsigned long index)}{operator[](unsigned long index)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Row}$<$T$>$\& {\bf Matrix}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (
@@ -673,6 +692,53 @@ Sets the value at the specified indices, including handling type conversion from
 {\em value} & the value to set \\
 \hline
 \end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\index{Map@{Map}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ istream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{istream \&}]{is, }
+\item[{{\bf Map}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_map_a2cb87ce0bbf263326a632b9537725d96}{}\label{class_map_a2cb87ce0bbf263326a632b9537725d96}
+
+
+Input operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is} & the input stream \\
+\hline
+{\em m} & the object to write in \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the modified input stream 
+\end{DoxyReturn}
+\index{Map@{Map}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Map@{Map}}
+\subsubsection[{\texorpdfstring{operator$>$$>$}{operator>>}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ ostream\& operator$>$$>$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Map}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}{}\label{class_map_a5f8b100f4f0ca3215429cc9c46cdd90a}
+
+
+Output operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & the output stream \\
+\hline
+{\em m} & the object to write out \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the modified output stream 
+\end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}

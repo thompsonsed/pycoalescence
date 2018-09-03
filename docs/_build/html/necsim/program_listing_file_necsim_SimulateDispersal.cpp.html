@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SimulateDispersal.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SimulateDispersal.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_SimulateDispersal.cpp.html" title="File SimulateDispersal.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.cpp.html" accesskey="U">File SimulateDispersal.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -103,16 +103,16 @@
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulation parameters have not been set.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">setDims</span><span class="p">(</span><span class="n">simParameters</span><span class="p">);</span>
+    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setMaps</span><span class="p">(</span><span class="n">density_landscape</span><span class="p">);</span>
     <span class="n">setDispersalParameters</span><span class="p">();</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">setDims</span><span class="p">(</span><span class="n">simParameters</span><span class="p">);</span>
-    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setHabitatMap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">density_landscape</span><span class="p">);</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcFineMap</span><span class="p">();</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcCoarseMap</span><span class="p">();</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcOffset</span><span class="p">();</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcHistoricalFineMap</span><span class="p">();</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">calcHistoricalCoarseMap</span><span class="p">();</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">landscape_type</span><span class="p">);</span>
-    <span class="n">density_landscape</span><span class="p">.</span><span class="n">recalculateHabitatMax</span><span class="p">();</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">calcFineMap</span><span class="p">();</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">calcCoarseMap</span><span class="p">();</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">calcOffset</span><span class="p">();</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">calcHistoricalFineMap</span><span class="p">();</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">calcHistoricalCoarseMap</span><span class="p">();</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">setLandscape</span><span class="p">(</span><span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">landscape_type</span><span class="p">);</span>
+    <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">recalculateHabitatMax</span><span class="p">();</span>
     <span class="n">dataMask</span><span class="p">.</span><span class="n">importSampleMask</span><span class="p">(</span><span class="o">*</span><span class="n">simParameters</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -136,7 +136,7 @@
 
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">setDispersalParameters</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="o">&amp;</span><span class="n">random</span><span class="p">);</span>
+    <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setRandomNumber</span><span class="p">(</span><span class="n">random</span><span class="p">);</span>
     <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setGenerationPtr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">generation</span><span class="p">);</span>
     <span class="n">dispersal_coordinator</span><span class="p">.</span><span class="n">setDispersal</span><span class="p">(</span><span class="n">simParameters</span><span class="p">);</span>
 
@@ -150,11 +150,12 @@
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Output database is not a .db file, check file name.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="c1">// Open our SQL connection to the database</span>
-    <span class="kt">int</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">sqlite3_open_v2</span><span class="p">(</span><span class="n">out_database</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">,</span> <span class="n">SQLITE_OPEN_READWRITE</span> <span class="o">|</span> <span class="n">SQLITE_OPEN_CREATE</span><span class="p">,</span> <span class="s">&quot;unix-dotfile&quot;</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">o2</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span> <span class="o">&amp;&amp;</span> <span class="n">o2</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Database file cannot be opened or created.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="n">openSQLiteDatabase</span><span class="p">(</span><span class="n">out_database</span><span class="p">,</span> <span class="n">database</span><span class="p">);</span>
+<span class="c1">//  int o2 = sqlite3_open_v2(out_database.c_str(), &amp;database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, &quot;unix-dotfile&quot;);</span>
+<span class="c1">//  if(o2 != SQLITE_OK &amp;&amp; o2 != SQLITE_DONE)</span>
+<span class="c1">//  {</span>
+<span class="c1">//      throw FatalException(&quot;Database file cannot be opened or created.&quot;);</span>
+<span class="c1">//  }</span>
     <span class="n">checkMaxParameterReference</span><span class="p">();</span>
 <span class="p">}</span>
 
@@ -197,7 +198,7 @@
             <span class="k">if</span><span class="p">(</span><span class="n">dataMask</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
             <span class="p">{</span>
                 <span class="n">cell_total</span><span class="o">++</span><span class="p">;</span>
-                <span class="n">total</span> <span class="o">+=</span> <span class="n">density_landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -208,7 +209,7 @@
     <span class="p">{</span>
         <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">simParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">density_landscape</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">density_landscape</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="n">cells</span><span class="p">[</span><span class="n">ref</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
                 <span class="n">cells</span><span class="p">[</span><span class="n">ref</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
@@ -220,7 +221,7 @@
 
 <span class="k">const</span> <span class="n">Cell</span><span class="o">&amp;</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">getRandomCell</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">auto</span> <span class="n">index</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cells</span><span class="p">.</span><span class="n">size</span><span class="p">()));</span>
+    <span class="k">auto</span> <span class="n">index</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">random</span><span class="o">-&gt;</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cells</span><span class="p">.</span><span class="n">size</span><span class="p">()));</span>
     <span class="k">return</span> <span class="n">cells</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
 <span class="p">}</span>
 
@@ -327,8 +328,8 @@
         <span class="n">writeParameters</span><span class="p">(</span><span class="n">table_name</span><span class="p">);</span>
         <span class="c1">// Do the sql output</span>
         <span class="c1">// First create the table</span>
-        <span class="kt">char</span><span class="o">*</span> <span class="n">sErrMsg</span><span class="p">;</span>
-        <span class="n">sqlite3_stmt</span><span class="o">*</span> <span class="n">stmt</span><span class="p">;</span>
+        <span class="kt">char</span><span class="o">*</span> <span class="n">sErrMsg</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">string</span> <span class="n">create_table</span> <span class="o">=</span> <span class="s">&quot;CREATE TABLE IF NOT EXISTS &quot;</span> <span class="o">+</span> <span class="n">table_name</span> <span class="o">+</span> <span class="s">&quot; (id INT PRIMARY KEY not null, &quot;</span><span class="p">;</span>
         <span class="n">create_table</span> <span class="o">+=</span> <span class="s">&quot; distance DOUBLE not null, parameter_reference INT NOT NULL);&quot;</span><span class="p">;</span>
         <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">create_table</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sErrMsg</span><span class="p">);</span>
@@ -354,12 +355,12 @@
             <span class="n">sqlite3_bind_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">max_id</span> <span class="o">+</span> <span class="n">i</span><span class="p">));</span>
             <span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">parameter_references</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">);</span>
 
-<span class="c1">//#ifdef DEBUG // TODO move to debug</span>
+<span class="cp">#ifdef DEBUG</span>
             <span class="k">if</span><span class="p">(</span><span class="n">iter</span> <span class="o">==</span> <span class="n">parameter_references</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
             <span class="p">{</span>
                 <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Cannot find parameter reference. Please report this bug.&quot;</span><span class="p">);</span>
             <span class="p">}</span>
-<span class="c1">//#endif // DEBUG</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
             <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
             <span class="k">if</span><span class="p">(</span><span class="n">reference</span> <span class="o">&gt;</span> <span class="n">max_parameter_reference</span><span class="p">)</span>
             <span class="p">{</span>
@@ -455,7 +456,7 @@
 <span class="kt">void</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">checkMaxParameterReference</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">string</span> <span class="n">to_exec</span> <span class="o">=</span> <span class="s">&quot;SELECT CASE WHEN COUNT(1) &gt; 0 THEN MAX(ref) ELSE 0 END AS [Value] FROM PARAMETERS;&quot;</span><span class="p">;</span>
-    <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
+    <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
     <span class="n">max_parameter_reference</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
@@ -472,7 +473,7 @@
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">SimulateDispersal</span><span class="o">::</span><span class="n">checkMaxIdNumber</span><span class="p">(</span><span class="n">string</span> <span class="n">table_name</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">string</span> <span class="n">to_exec</span> <span class="o">=</span> <span class="s">&quot;SELECT CASE WHEN COUNT(1) &gt; 0 THEN MAX(id) ELSE 0 END AS [Value] FROM &quot;</span> <span class="o">+</span> <span class="n">table_name</span> <span class="o">+</span><span class="s">&quot;;&quot;</span><span class="p">;</span>
-    <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
+    <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">to_exec</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
     <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
     <span class="k">auto</span> <span class="n">max_id</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
@@ -541,8 +542,8 @@
         <li class="right" >
           <a href="file_necsim_SimulateDispersal.cpp.html" title="File SimulateDispersal.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.cpp.html" >File SimulateDispersal.cpp</a> &#187;</li> 
       </ul>
     </div>

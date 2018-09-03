@@ -5,7 +5,6 @@ pycoalescence
 .. role:: pycode(code)
    :language: python
 
-.. _example_notebook: src/examples.ipynb
 
 Introduction
 ------------
@@ -41,8 +40,8 @@ Installation
 ~~~~~~~~~~~~
 
 Two methods of installation are recommended: using conda to handle package management, including installation of all
-dependencies, or using `pip <https://pypi.org/project/pip/>` into python virtual environments
-(see `here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>` for good advice).
+dependencies, or using `pip <https://pypi.org/project/pip/>`__ into python virtual environments
+(see `here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__ for good advice).
 
 The other methods of installing listed here are provided as references to the install process itself, and to provide
 finer control over installation methods if difficulties are encountered. Note that pip and conda both internally call
@@ -60,9 +59,9 @@ Installing via conda
 ''''''''''''''''''''
 
 Conda is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
-manner. As such, installation of **pycoalescence**, and all its dependencies including boost, gdal, cmake and the
-relevant c++ compiler, simply requires ``conda install pycoalescence``. Note that conda installs the dependencies into
-its own environment, and as such may ignore system installs.
+manner. **pycoalescence** is provided on conda-forge. Installation of the package and all dependencies including boost,
+gdal, cmake and the relevant c++ compiler, simply requires ``conda install -c conda-forge pycoalescence``. Note that
+conda installs the dependencies into its own environment and may ignore system installs.
 
 Installing via pip
 ''''''''''''''''''
@@ -145,7 +144,7 @@ For issues related to missing boost headers, make sure that your system has boos
 Performing simulations
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Check out the full simulation examples in `this jupyter notebook <example_notebook>`_.
+Check out the full simulation examples in `this jupyter notebook <src/examples.ipynb>`_.
 
 Setting up simulations
 ''''''''''''''''''''''
@@ -159,7 +158,7 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
 
 #. Specify simulation parameters
 
-   - Use :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`
+   - Use :func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>`
      to set the job number, task number, output directory and other key simulation variables.
    - Set the map variables by one of the following:
 
@@ -197,7 +196,7 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
     #. Apply speciation rates and output database
 
         - Generate a coalescence tree for each speciation rate using
-         :func:`apply_speciation_rates() <pycoalescence.simulation.Simulation.apply_speciation_rates`
+          :func:`apply_speciation_rates() <pycoalescence.simulation.Simulation.apply_speciation_rates`
         - This function also writes the output to the simulation file.
 
 .. important:: The last three steps can be combined using :func:`run() <pycoalescence.simulation.Simulation.run>`,
@@ -218,16 +217,17 @@ Some of key simulation features are listed below.
   :func:`add_historical_map() <pycoalescence.landscape.Landscape.add_historical_map>`).
 - **Specify a sampling mask**, as a binary sampling mask defining areas to sample from (the sample map). Alternatively,
   for varying sampling effort across space choose `uses_spatial_sampling=True` in
-  :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`.
+  :func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>`.
 - **Multiple sampling points in time** using
   :func:`add_sample_time() <pycoalescence.simulation.Simulation.add_sample_time>`.
 - **Protracted speciation simulations** using `protracted=True` in
-  :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`.
+  :func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>`.
 - **Non-spatial simulations** using `spatial=False` in
-  :func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>`.
+  :func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>`.
 - **Spatial simulations using a variety of dispersal kernels**. This is the default, using a normally-distributed
   dispersal kernel. For other kernels see :ref:`here <disp_kernels>`.
 - **Varying reproductive rates across space** using a map of relative reproductive rates. See :ref:`here <rep_map>`.
+- **Varying death rates across space** using a map of relative death rates. See :ref:`here <rep_map>`.
 - **Varying landscape types** including infinite landscapes, infinitely tiled landscapes of the coarse or fine density
   map and closed landscapes with hard boundaries. See :ref:`here <inf_land>`.
 
@@ -244,8 +244,8 @@ A simple simulation
     # set logging level to "info" (from logging module)
     c = Simulation(logging_level=20)
     # set the main simulation parameters - use default values for other keyword arguments
-    c.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
-                            sigma=4, deme=10, sample_size=0.1, max_time=1)
+    c.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
+                                sigma=4, deme=10, sample_size=0.1, max_time=1)
     # optionally add a set of speciation rates to apply at the end of the simulation
     c.set_speciation_rates([0.1, 0.2, 0.3])
     # set the map parameters - null means the map will be generated with 100% cover everywhere (no file input).
@@ -265,12 +265,12 @@ inputted map files.
     from pycoalescence import Simulation
     c = Simulation()
     # set the main simulation parameters
-    c.set_simulation_params(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
-                            sigma=4, tau=4, deme=1, sample_size=0.1
-                            max_time=100, dispersal_method="fat-tailed", m_prob=0.0, cutoff=0,
-                            dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.2,
-                            gen_since_historical=200, time_config_file="null", restrict_self=False,
-                            landscape_type=False)
+    c.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
+                                sigma=4, tau=4, deme=1, sample_size=0.1
+                                max_time=100, dispersal_method="fat-tailed", m_prob=0.0, cutoff=0,
+                                dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.2,
+                                gen_since_historical=200, time_config_file="null", restrict_self=False,
+                                landscape_type=False)
     # add a set of speciation rates to be applied at the end of the simulation
     c.set_speciation_rates([0.2, 0.3, 0.4])
     # set the map files - note that dimensions and offsets are detected automatically from the files
@@ -320,22 +320,27 @@ dispersal map can be set by using
 :func:`set_map_files(dispersal_map="/path/to/dispersal.tif") <pycoalescence.simulation.Simulation.set_map_files>`.
 
 **pycoalescence** has the ability to simulate a dispersal kernel on a landscape. For more information about that
-process, see :ref:`here <simulate_landscapes>`
+process, see :ref:`here <simulate_landscapes>`.
 
 .. important:: In this scenario, it is not possible to use a coarse map, which should be "none".
 
 .. _`rep_map`:
-Differing reproductive rates
-''''''''''''''''''''''''''''
+Differing demographic rates
+'''''''''''''''''''''''''''
 
-Simulations can use varying reproductive rates across the landscape, but using
-:func:`set_map_files(reproduction_map="/path/to/rep.tif") <pycoalescence.simulation.Simulation.set_map_files>`. In this
-scenario, all species have different per-capita reproduction rates across the landscape.
+Simulations can use varying reproductive and/or death rates across the landscape, but using
+:func:`set_map_files(reproduction_map="/path/to/rep.tif", death_map="/path/to/death.tif") <pycoalescence.simulation.Simulation.set_map_files>`.
+In this scenario, all species have different per-capita reproduction and death rates across the landscape.
 
 .. note:: Density is already taken into account during simulations for reproduction rates, so the reproduction map
           should be solely for the *per-capita* differences in reproductive rate.
 
-.. important:: A reproduction map can only be used with a fine map, and coarse map should be set to "none".
+.. note:: In a neutral model, each death event is followed by a birth event. The death map therefore represents both the
+          relative number of deaths, and the relative number of maturations in each cell. The reproduction map instead
+          indicates the relative number of propagules generated by each cell which may end up dispersing and maturing at
+          other locations.
+
+.. important:: The reproduction and death maps can only be used with a fine map, and coarse map should be set to "none".
 
 
 Limitations of simulation variables
@@ -370,8 +375,8 @@ Certain simulation variables have limitations, depending on the method of settin
     .. hint:: Scalings and offsets between maps should also work correctly, but if problems are encountered, try manually
               specifying offsets and dimensions to identify any problems.
 
-    - Both the reproduction map and dispersal map (if provided) must match the dimensions of the fine map. No coarse map
-      should be provided in either scenario.
+    - The reproduction map, death map and dispersal map (if provided) must match the dimensions of the fine map. No
+      coarse map should be provided in these scenarios.
 
 An example of how the map files are related is shown below. Black arrows indicate the offsets for the fine map (in the x
 and y dimensions) and purple arrows indicate the offsets for the coarse map.
@@ -384,7 +389,7 @@ Infinite Landscapes
 '''''''''''''''''''
 
 Simulations can also be run on infinite landscapes. Set ``landscape_types=opt`` in
-:func:`set_simulation_params() <pycoalescence.simulation.Simulation.set_simulation_params>` where *opt* is one of the
+:func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>` where *opt* is one of the
 following:
 
 - "closed" (default)
@@ -522,9 +527,9 @@ rates is provided within the :class:`CoalescenceTree class<pycoalescence.coalesc
 
 The two functions for this routine are
 
--  :func:`set_speciation_params() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>` which
+-  :func:`set_speciation_parameters() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>` which
    primarily takes a list of speciation rates to apply (for other arguments see
-   :func:`documentation <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>`.
+   :func:`documentation <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>`.
 
 -  :func:`apply() <pycoalescence.coalescence_tree.CoalescenceTree.apply>` performs the analysis and writes to the output
    file. This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations
@@ -532,7 +537,7 @@ The two functions for this routine are
 
 Instead of speciation events always contributing a new species, they can instead draw from a metacommunity. This is
 achieved by supplying a metacommunity speciation rate and metacommunity size to
-:func:`set_speciation_params() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params>`. A non-spatial
+:func:`set_speciation_parameters() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>`. A non-spatial
 neutral model is run to generate the metacommunity, which is then sampled from every time a speciation event occurs in
 the spatial model. As such the "speciation rate" from the spatial model can be intepretted as immigration from a
 metacommunity.
@@ -548,7 +553,7 @@ A basic application procedure is
     t = CoalescenceTree()
     speciation_rates = [0.1, 0.2 ,0.3]
     t.set_database("output/data_1_1.db")
-    t.set_speciation_params(speciation_rates)
+    t.set_speciation_parameters(speciation_rates)
     t.apply()
 
 The :class:`CoalescenceTree class<pycoalescence.coalescence_tree.CoalescenceTree>` object can also be set up from a
@@ -563,6 +568,7 @@ The :class:`CoalescenceTree class<pycoalescence.coalescence_tree.CoalescenceTree
     t = CoalescenceTree(sim)
 
 Example application with more complicated parameters
+
 .. code-block:: python
 
     from pycoalescence import Simulation, CoalescenceTree
@@ -572,7 +578,7 @@ Example application with more complicated parameters
     speciation_rates = [0.1, 0.2, 0.3]
     times = [0.0, 1.0, 2.0]
     t = CoalescenceTree(sim)
-    t.set_speciation_params(speciation_rates=speciation_rates, record_spatial=True,
+    t.set_speciation_parameters(speciation_rates=speciation_rates, record_spatial=True,
     record_fragments="path/to/fragments.csv", sample_file="path/to/sample/file.tif",
     times=times)
     t.apply()
@@ -587,7 +593,7 @@ of having to generate these manually. These include
 - species octave (2^n) classes for generating species abundance distributions,
   using :func:`get_octaves() <pycoalescence.coalescence_tree.CoalescenceTree.get_octaves>`
 
-Check out other full examples in `this jupyter notebook <example_notebook>`_.
+Check out other full examples in `this jupyter notebook <src/examples.ipynb>`_.
 
 .. note:: The above functions require supplying a speciation rate and time, otherwise will output data for all
           speciation rates and times.
@@ -629,6 +635,10 @@ Additionally, one can provide the following if comparisons between fragments are
 
 Additional Package Features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These features are not required for spatially-explicit coalescence models, as they are utilised internally by the
+package. However, there are some features that could be of great convenience to users, especially for generating and
+manipulating landscapes using tif files.
 
 - Read tif files and perform a number of operations taking into account georeferencing of the data.
   Functionality is contained within the :class:`Map class <pycoalescence.map.Map>` (see :ref:`here <map_reading>`).
@@ -705,3 +715,4 @@ This project is released under MIT See file
 **LICENSE.txt** or go to
 `here <https://opensource.org/licenses/MIT>`__ for full license
 details.
+

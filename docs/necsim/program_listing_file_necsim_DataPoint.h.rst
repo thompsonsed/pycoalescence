@@ -38,7 +38,7 @@ Program Listing for File DataPoint.h
        unsigned long reference;
        // points to the position in the SpeciesList file.
        unsigned long list_position;
-       // the reference number within the linked list of wrapped lineages
+       // the reference number within the linked species_id_list of wrapped lineages
        unsigned long nwrap;
        // the max-min number
        double min_max;

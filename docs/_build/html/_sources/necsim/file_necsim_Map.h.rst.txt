@@ -38,7 +38,7 @@ Includes
 --------
 
 
-- ``CPLCustomHandler.h`` (:ref:`file_necsim_CPLCustomHandler.h`)
+- ``CPLCustomHandlerNecsim.h`` (:ref:`file_necsim_CPLCustomHandlerNecsim.h`)
 
 - ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
 
@@ -62,13 +62,13 @@ Included By
 -----------
 
 
+- :ref:`file_necsim_ActivityMap.h`
+
 - :ref:`file_necsim_DataMask.h`
 
 - :ref:`file_necsim_Landscape.h`
 
 - :ref:`file_necsim_DispersalCoordinator.h`
-
-- :ref:`file_necsim_ReproductionMap.h`
 
 
 

@@ -39,6 +39,8 @@ Includes
 --------
 
 
+- ``cmath``
+
 - ``sqlite3.h``
 
 - ``string``
@@ -79,4 +81,13 @@ Functions
 - :ref:`function_getCsvLineAndSplitIntoTokens`
 
 - :ref:`function_openSQLiteDatabase`
+
+
+Defines
+-------
+
+
+- :ref:`define__USE_MATH_DEFINES`
+
+- :ref:`define_SPECIATIONCOUNTER_FILESYSTEM_H`
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Landscape.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Landscape.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.h.html" accesskey="U">File Landscape.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -89,6 +89,12 @@
 <span class="kt">uint32_t</span> <span class="nf">importToMapAndRound</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">map_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_x</span><span class="p">,</span>
                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_y</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">scalar</span><span class="p">);</span>
 
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">archimedesSpiralX</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">centre_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">centre_y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">radius</span><span class="p">,</span>
+                                <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">theta</span><span class="p">);</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">archimedesSpiralY</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">centre_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">centre_y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">radius</span><span class="p">,</span>
+                                <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">theta</span><span class="p">);</span>
+
 <span class="k">class</span> <span class="nc">Landscape</span>
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
@@ -105,7 +111,7 @@
     <span class="c1">// the historical coarser map.</span>
     <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">historical_coarse_map</span><span class="p">;</span>
     <span class="c1">// for importing and storing the simulation set-up options.</span>
-    <span class="n">SimParameters</span> <span class="o">*</span> <span class="n">mapvars</span><span class="p">;</span>
+    <span class="n">SimParameters</span> <span class="o">*</span><span class="n">mapvars</span><span class="p">;</span>
     <span class="c1">// the minimum values for each dimension for offsetting.</span>
     <span class="kt">long</span> <span class="n">fine_x_min</span><span class="p">{},</span> <span class="n">fine_y_min</span><span class="p">{},</span> <span class="n">coarse_x_min</span><span class="p">{},</span> <span class="n">coarse_y_min</span><span class="p">{};</span>
     <span class="c1">// the maximum values for each dimension for offsetting.</span>
@@ -146,8 +152,10 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">historical_fine_max</span><span class="p">;</span>
     <span class="c1">// the maximum value on the historical coarse map file</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">historical_coarse_max</span><span class="p">;</span>
-    <span class="c1">// if true, dispersal is possible from anywhere, only the fine map spatial structure is preserved</span>
+    <span class="c1">// the landscape structure type</span>
     <span class="n">string</span> <span class="n">landscape_type</span><span class="p">;</span>
+    <span class="c1">// true if the landscapes boundaries are infinite</span>
+    <span class="kt">bool</span> <span class="n">infinite_boundaries</span><span class="p">;</span>
     <span class="n">string</span> <span class="n">NextMap</span><span class="p">;</span>
     <span class="c1">// If this is false, there is no coarse map defined, so ignore the boundaries.</span>
     <span class="kt">bool</span> <span class="n">has_coarse</span><span class="p">;</span>
@@ -175,13 +183,14 @@
         <span class="n">coarse_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">historical_fine_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">historical_coarse_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">infinite_boundaries</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">getHabitatMax</span><span class="p">();</span>
 
     <span class="kt">bool</span> <span class="nf">hasHistorical</span><span class="p">();</span>
-    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">mapvarsin</span><span class="p">);</span>
 
+    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span><span class="n">mapvarsin</span><span class="p">);</span>
 
     <span class="kt">bool</span> <span class="nf">checkMapExists</span><span class="p">();</span>
 
@@ -205,9 +214,10 @@
 
     <span class="kt">void</span> <span class="nf">validateMaps</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">updateMap</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="nf">updateMap</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">doUpdate</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">resetHistorical</span><span class="p">();</span>
 
     <span class="kt">bool</span> <span class="nf">isHistorical</span><span class="p">()</span>
@@ -274,16 +284,23 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getInitialCount</span><span class="p">(</span><span class="kt">double</span> <span class="n">dSample</span><span class="p">,</span> <span class="n">DataMask</span> <span class="o">&amp;</span><span class="n">samplemask</span><span class="p">);</span>
 
-    <span class="n">SimParameters</span> <span class="o">*</span> <span class="nf">getSimParameters</span><span class="p">();</span>
+    <span class="n">SimParameters</span> <span class="o">*</span><span class="nf">getSimParameters</span><span class="p">();</span>
 
     <span class="kt">bool</span> <span class="nf">checkMap</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
 
-    <span class="kt">bool</span> <span class="nf">checkFine</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="nf">isOnFine</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">isOnCoarse</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="nf">isOnMap</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">fixGridCoordinates</span><span class="p">(</span><span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">);</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">runDispersal</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">angle</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startx</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">starty</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startxwrap</span><span class="p">,</span>
                                <span class="kt">long</span> <span class="o">&amp;</span><span class="n">startywrap</span><span class="p">,</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">disp_comp</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation</span><span class="p">);</span>
+
+    <span class="kt">double</span> <span class="nf">distanceToNearestHabitat</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">start_x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">start_y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">start_x_wrap</span><span class="p">,</span>
+                                    <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">start_y_wrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation</span><span class="p">);</span>
 
     <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">Landscape</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
     <span class="p">{</span>
@@ -393,8 +410,8 @@
         <li class="right" >
           <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.h.html" >File Landscape.h</a> &#187;</li> 
       </ul>
     </div>

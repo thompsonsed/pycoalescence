@@ -45,6 +45,8 @@ Includes
 
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
+- ``utility``
+
 
 
 

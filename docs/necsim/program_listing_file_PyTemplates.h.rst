@@ -22,8 +22,8 @@ Program Listing for File PyTemplates.h
    {
    public:
        PyObject_HEAD
-       PyObject *logger;
-       PyObject *log_function;
+       PyObject *logger = nullptr;
+       PyObject *log_function = nullptr;
        unique_ptr<T> base_object = nullptr;
    
    //  virtual void init()

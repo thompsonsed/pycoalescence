@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "ActivityMap", "class_activity_map.html", null ],
     [ "Cell", "struct_cell.html", null ],
     [ "CommunitiesArray", "struct_communities_array.html", null ],
     [ "Community", "class_community.html", [
@@ -55,7 +56,6 @@ var hierarchy =
     [ "PyTemplate< SimulateDispersal >", "class_py_template.html", [
       [ "PySimulateDispersal", "class_py_simulate_dispersal.html", null ]
     ] ],
-    [ "ReproductionMap", "class_reproduction_map.html", null ],
     [ "Row< T >", "class_row.html", null ],
     [ "Row< bool >", "class_row.html", null ],
     [ "Row< DataPoint >", "class_row.html", null ],

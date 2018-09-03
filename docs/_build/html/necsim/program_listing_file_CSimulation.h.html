@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File CSimulation.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File CSimulation.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_CSimulation.h.html" title="File CSimulation.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CSimulation.h.html" accesskey="U">File CSimulation.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -79,7 +79,7 @@
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/ProtractedTree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/ProtractedSpatialTree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyLogging.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;necsimmodule.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyImports.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyTemplates.h&quot;</span><span class="cp"></span>
 
@@ -274,7 +274,7 @@
 <span class="p">}</span>
 
 <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
-<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">genSimulationType</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">tp_name</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">tp_doc</span><span class="p">)</span>
+<span class="n">PyTypeObject</span> <span class="n">genSimulationType</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">tp_name</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">tp_doc</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">auto</span> <span class="n">genPyTemplateGetSetters</span> <span class="o">=</span> <span class="n">PyTemplate_gen_getsetters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">();</span>
     <span class="k">auto</span> <span class="n">genPyTemplateNew</span> <span class="o">=</span> <span class="n">PyTemplate_new</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
@@ -282,33 +282,34 @@
     <span class="k">auto</span> <span class="n">genPyTemplateDealloc</span> <span class="o">=</span> <span class="n">PyTemplate_dealloc</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
     <span class="k">auto</span> <span class="n">genPyTemplateTraverse</span> <span class="o">=</span> <span class="n">PyTemplate_traverse</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
     <span class="k">auto</span> <span class="n">genPyTemplateMethods</span> <span class="o">=</span> <span class="n">genPySimulationMethods</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">();</span>
-    <span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">ret_Simulation_Type</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">PyTypeObject</span> <span class="n">ret_Simulation_Type</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="n">tp_name</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="n">tp_doc</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">),</span>
-            <span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">genPyTemplateNew</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">genPyTemplateInit</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">genPyTemplateDealloc</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">genPyTemplateTraverse</span><span class="p">,</span>
-<span class="c1">//      .tp_members = PyTemplate_members&lt;T&gt;,</span>
-            <span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">genPyTemplateMethods</span><span class="p">,</span>
-            <span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">genPyTemplateGetSetters</span>
     <span class="p">};</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="n">tp_name</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="n">tp_doc</span><span class="p">;</span>
+
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">genPyTemplateNew</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">genPyTemplateInit</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">genPyTemplateDealloc</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">genPyTemplateTraverse</span><span class="p">;</span>
+<span class="c1">//      .tp_members = PyTemplate_members&lt;T&gt;,</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">genPyTemplateMethods</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">genPyTemplateGetSetters</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">ret_Simulation_Type</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_SpatialSimulationType</span> <span class="o">=</span> <span class="n">genSimulationType</span><span class="o">&lt;</span><span class="n">SpatialTree</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;necsimmodule.CSpatialSimulation&quot;</span><span class="p">,</span>
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_SpatialSimulationType</span> <span class="o">=</span> <span class="n">genSimulationType</span><span class="o">&lt;</span><span class="n">SpatialTree</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CSpatialSimulation&quot;</span><span class="p">,</span>
                                                                              <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;C class for spatial simulations.&quot;</span><span class="p">);</span>
-<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_NSESimulationType</span> <span class="o">=</span> <span class="n">genSimulationType</span><span class="o">&lt;</span><span class="n">Tree</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;necsimmodule.CNSESimulation&quot;</span><span class="p">,</span>
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_NSESimulationType</span> <span class="o">=</span> <span class="n">genSimulationType</span><span class="o">&lt;</span><span class="n">Tree</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CNSESimulation&quot;</span><span class="p">,</span>
                                                                   <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;C class for non-spatial simulations.&quot;</span><span class="p">);</span>
 <span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_ProtractedSpatialSimulationType</span> <span class="o">=</span> <span class="n">genSimulationType</span><span class="o">&lt;</span><span class="n">ProtractedSpatialTree</span><span class="o">&gt;</span><span class="p">(</span>
-        <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;necsimmodule.CPSpatialSimulation&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CPSpatialSimulation&quot;</span><span class="p">,</span>
         <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;C class for protracted spatial simulations.&quot;</span><span class="p">);</span>
 <span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_ProtractedNSESimulationType</span> <span class="o">=</span> <span class="n">genSimulationType</span><span class="o">&lt;</span><span class="n">ProtractedTree</span><span class="o">&gt;</span><span class="p">(</span>
-        <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;necsimmodule.CPNSESimulation&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CPNSESimulation&quot;</span><span class="p">,</span>
         <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;C class for protracted non-spatial simulations.&quot;</span><span class="p">);</span>
 
 <span class="cp">#endif </span><span class="c1">// PY_TREE_NECSIM</span>
@@ -367,8 +368,8 @@
         <li class="right" >
           <a href="file_CSimulation.h.html" title="File CSimulation.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CSimulation.h.html" >File CSimulation.h</a> &#187;</li> 
       </ul>
     </div>

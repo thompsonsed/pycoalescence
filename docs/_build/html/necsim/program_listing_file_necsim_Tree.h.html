@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Tree.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Tree.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Tree.h.html" title="File Tree.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Tree.h.html" accesskey="U">File Tree.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -71,9 +71,9 @@
 
 <span class="cp">#ifndef TREE_H</span>
 <span class="cp">#define TREE_H</span>
-<span class="cp">#ifndef sql_ram</span>
-<span class="cp">#define sql_ram</span>
-<span class="cp">#endif</span>
+<span class="c1">//#ifndef sql_ram</span>
+<span class="c1">//#define sql_ram</span>
+<span class="c1">//#endif</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
@@ -98,7 +98,7 @@
     <span class="c1">// Stores the command line parameters and parses the required information.</span>
     <span class="n">SimParameters</span> <span class="n">sim_parameters</span><span class="p">;</span>
     <span class="c1">// random number generator</span>
-    <span class="n">NRrand</span> <span class="n">NR</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">NR</span><span class="p">;</span>
     <span class="c1">// Storing the speciation rates for later reference.</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">speciation_rates</span><span class="p">;</span>
     <span class="c1">// flag for having set the simulation seed.</span>
@@ -156,7 +156,7 @@
     <span class="n">Step</span> <span class="n">this_step</span><span class="p">;</span>
     <span class="n">string</span> <span class="n">sql_output_database</span><span class="p">;</span>
     <span class="c1">// If true, means the command-line imports were under the (deprecated) fullmode.</span>
-    <span class="kt">bool</span> <span class="n">bFullmode</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">bFullMode</span><span class="p">;</span>
     <span class="c1">// If true, the simulation is to be resumed.</span>
     <span class="kt">bool</span> <span class="n">bResume</span><span class="p">;</span>
     <span class="c1">// If true, a config file contains the simulation variables.</span>
@@ -168,43 +168,19 @@
     <span class="c1">// variable for storing the paused sim location if files have been moved during paused/resumed simulations!</span>
     <span class="n">string</span> <span class="n">pause_sim_directory</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">Tree</span><span class="p">()</span> <span class="o">:</span> <span class="n">community</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">),</span> <span class="n">this_step</span><span class="p">()</span>
+    <span class="n">Tree</span><span class="p">()</span> <span class="o">:</span> <span class="n">data</span><span class="p">(),</span> <span class="n">enddata</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_parameters</span><span class="p">(),</span> <span class="n">NR</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">speciation_rates</span><span class="p">(),</span> <span class="n">seeded</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+             <span class="n">the_seed</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">the_task</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">times_file</span><span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">),</span> <span class="n">reference_times</span><span class="p">(),</span> <span class="n">uses_temporal_sampling</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+             <span class="n">start</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_start</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_end</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">now</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_finish</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">out_finish</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">time_taken</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">active</span><span class="p">(),</span>
+             <span class="n">endactive</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">startendactive</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxsimsize</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">community</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">),</span> <span class="n">steps</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxtime</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">generation</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+             <span class="n">deme</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">deme_sample</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">spec</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">out_directory</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">),</span> <span class="n">database</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">sim_complete</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+             <span class="n">has_imported_vars</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+<span class="cp">#ifdef sql_ram</span>
+             <span class="n">outdatabase</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+<span class="cp">#endif </span><span class="c1">//sql_ram</span>
+             <span class="n">this_step</span><span class="p">(),</span> <span class="n">sql_output_database</span><span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">),</span> <span class="n">bFullMode</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">bResume</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">bConfig</span><span class="p">(</span><span class="nb">true</span><span class="p">),</span>
+             <span class="n">has_paused</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">has_imported_pause</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">bIsProtracted</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">pause_sim_directory</span><span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">has_imported_vars</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">enddata</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">seeded</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">the_seed</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">;</span>
-        <span class="c1">// set this equal to true if you want to log every 5 seconds to a logfile.</span>
-        <span class="n">the_task</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-        <span class="n">sql_output_database</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
-        <span class="n">sim_complete</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">time_taken</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// the time taken starts at 0, unless imported from file.</span>
-        <span class="n">maxtime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="c1">// Set the database to NULL pointers.</span>
-        <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">outdatabase</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">uses_temporal_sampling</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">sim_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">sim_end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">now</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">sim_finish</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">out_finish</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">endactive</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">startendactive</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">maxsimsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">generation</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">deme_sample</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-        <span class="n">deme</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">bFullmode</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">bResume</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">bConfig</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-        <span class="n">has_paused</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">has_imported_pause</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">bIsProtracted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        <span class="n">pause_sim_directory</span> <span class="o">=</span> <span class="s">&quot;null&quot;</span><span class="p">;</span>
+
     <span class="p">}</span>
 
     <span class="k">virtual</span> <span class="o">~</span><span class="n">Tree</span><span class="p">()</span>
@@ -295,12 +271,14 @@
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">addLineages</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation_in</span><span class="p">);</span>
 
+    <span class="kt">bool</span> <span class="nf">checkProportionAdded</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">proportion_added</span><span class="p">);</span>
+
     <span class="kt">void</span> <span class="nf">checkSimSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_active</span><span class="p">);</span>
 
 
-    <span class="kt">void</span> <span class="nf">makeTip</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">tmp_active</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation_in</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">makeTip</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">tmp_active</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation_in</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">convertTip</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">convertTip</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generationin</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">);</span>
 
     <span class="kt">bool</span> <span class="nf">stopSimulation</span><span class="p">();</span>
 
@@ -347,26 +325,28 @@
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">simPause</span><span class="p">();</span>
 
-    <span class="n">string</span> <span class="nf">initiatePause</span><span class="p">();</span>
+    <span class="n">ofstream</span> <span class="nf">initiatePause</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">dumpMain</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpMain</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">dumpActive</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpActive</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">dumpData</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpData</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">completePause</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">completePause</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setResumeParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">pausedir</span><span class="p">,</span> <span class="n">string</span> <span class="n">outdir</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">task</span><span class="p">,</span>
                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_max_time</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setResumeParameters</span><span class="p">();</span>
 
-    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">loadMainSave</span><span class="p">();</span>
+    <span class="n">ifstream</span> <span class="nf">openSaveFile</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">loadDataSave</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">loadMainSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">loadActiveSave</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">loadDataSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">loadActiveSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">initiateResume</span><span class="p">();</span>
 
@@ -442,8 +422,8 @@
         <li class="right" >
           <a href="file_necsim_Tree.h.html" title="File Tree.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Tree.h.html" >File Tree.h</a> &#187;</li> 
       </ul>
     </div>

@@ -22,16 +22,16 @@ from __future__ import print_function
 import copy
 import logging
 import os
-import sys
 import types
 
 import numpy as np
 
 global sqlite_import
-if sys.version_info[0] == 3:
+
+try:
 	import configparser as ConfigParser
 	from io import StringIO
-else:
+except ImportError as ie:  # python 2.x support
 	import ConfigParser
 	from cStringIO import StringIO
 
@@ -203,7 +203,7 @@ class Simulation(Landscape):
 			self.config.read_file(f)
 		self.seed = self.config.getint("main", "seed")
 		self.job_type = self.config.getint("main", "job_type")
-		self.output_directory = self.config.get("main", "output_directory")
+		self.output_directory = self.config.get("main", "result_directory")
 		self.min_speciation_rate = self.config.getfloat("main", "min_spec_rate")
 		self.sigma = self.config.getfloat("main", "sigma")
 		self.tau = self.config.getfloat("main", "tau")
@@ -226,6 +226,9 @@ class Simulation(Landscape):
 
 		:rtype: None
 		"""
+		if not self.config.has_section("main"):
+			self.create_config()
+			self.create_map_config()
 		if config_file is not None:
 			check_parent(config_file)
 			if os.path.exists(config_file) and not self.config_open:
@@ -414,10 +417,10 @@ class Simulation(Landscape):
 
 		:return: the species richness in the simulation
 		"""
-		self.set_simulation_params(seed=seed, job_type=task, output_directory=output, min_speciation_rate=alpha,
-								   sigma=sigma, tau=1, deme=1, sample_size=1.0, max_time=36000,
-								   dispersal_relative_cost=1,
-								   min_num_species=1, habitat_change_rate=0.0, gen_since_historical=1)
+		self.set_simulation_parameters(seed=seed, job_type=task, output_directory=output, min_speciation_rate=alpha,
+									   sigma=sigma, tau=1, deme=1, sample_size=1.0, max_time=36000,
+									   dispersal_relative_cost=1,
+									   min_num_species=1, habitat_change_rate=0.0, gen_since_historical=1)
 		self.set_map_parameters("null", size, size, "null", size, size, 0, 0, "null", size, size, 0, 0, 1, "null",
 								"null")
 		self.set_speciation_rates([alpha])
@@ -564,12 +567,12 @@ class Simulation(Landscape):
 					raise ValueError("Dimensions of the {} map do not match the fine map. This is currently "
 									 "unsupported.".format(name))
 
-	def set_simulation_params(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0, deme=1,
-							  sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
-							  dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.0,
-							  gen_since_historical=1, restrict_self=False, landscape_type=False,
-							  protracted=False, min_speciation_gen=None, max_speciation_gen=None,
-							  spatial=True, uses_spatial_sampling=False, times=None):
+	def set_simulation_parameters(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0,
+								  deme=1, sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
+								  dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.0,
+								  gen_since_historical=1, restrict_self=False, landscape_type=False,
+								  protracted=False, min_speciation_gen=None, max_speciation_gen=None,
+								  spatial=True, uses_spatial_sampling=False, times=None):
 		"""
 		Set all the simulation parameters apart from the map objects.
 
@@ -654,7 +657,7 @@ class Simulation(Landscape):
 		else:
 			self.logger.warning("Parameters already set up.")
 
-	def check_simulation_params(self):
+	def check_simulation_parameters(self):
 		"""
 		Checks that simulation parameters have been correctly set and the program is ready for running.
 		Note that these checks have not been fully tested and are probably unnecessary in a large number of cases.
@@ -893,7 +896,7 @@ class Simulation(Landscape):
 		:raises MemoryError: if the desired simulation cannot be compressed into available RAM
 		"""
 		if self.sample_size <= 0 or self.deme <= 0:
-			raise ValueError("Sample size is 0, or deme is 0. set_simulation_params() before optimising RAM.")
+			raise ValueError("Sample size is 0, or deme is 0. set_simulation_parameters() before optimising RAM.")
 		self.grid = copy.deepcopy(self.sample_map)
 		# Over-estimate static usage slightly
 		static_usage = 1.1 * self.persistent_ram_usage() / 1024 ** 3
@@ -1005,7 +1008,7 @@ class Simulation(Landscape):
 		:param expected: set to true if we expect the output file to exist
 
 		"""
-		self.check_simulation_params()
+		self.check_simulation_parameters()
 		try:
 			self.run_checks(expected=expected)
 		except (FileExistsError, FileNotFoundError) as err:

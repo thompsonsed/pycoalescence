@@ -1,5 +1,6 @@
 var struct_spec_sim_parameters =
 [
+    [ "SpecSimParameters", "struct_spec_sim_parameters.html#aa89c005a8e5ad40a0dc2b852bd9c19a4", null ],
     [ "addProtractedParameters", "struct_spec_sim_parameters.html#af88d55fcc175d52519a6c2a0843173eb", null ],
     [ "addTime", "struct_spec_sim_parameters.html#a78e27888e92d1b1ddfd9d9a8e129b618", null ],
     [ "importTimeConfig", "struct_spec_sim_parameters.html#ae0196a50a551a821b75b6e92a35534a7", null ],

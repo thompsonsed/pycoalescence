@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Example simulations and analysis using pycoalescence &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Example simulations and analysis using pycoalescence &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="../README_merger.html" title="Merging simulation outputs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -249,11 +249,11 @@ from pycoalescence import Simulation, CoalescenceTree
 <p>Define our input and output directories - <strong>change these as required</strong></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>input_dir = &quot;pycoalescence/sample&quot;
+<span></span>input_dir = &quot;pycoalescence/tests/sample&quot;
 output_dir = &quot;output&quot;
 </pre></div>
 </div>
@@ -269,13 +269,13 @@ individuals per cell (deme).</p>
 <p>The output will be stored in <em>output/data_1_1.db</em></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
 <span></span>sim1 = Simulation(logging_level=10)
-sim1.set_simulation_params(seed=1, job_type=1, output_directory=output_dir, min_speciation_rate=0.1,
-                                               sigma=2.0, deme=10)
+sim1.set_simulation_parameters(seed=1, job_type=1, output_directory=output_dir, min_speciation_rate=0.1,
+                                                       sigma=2.0, deme=10)
 # Use automatic detection of the map file dimensions
 sim1.set_map(os.path.join(input_dir, &quot;SA_sample_fine.tif&quot;))
 sim1.run()
@@ -287,8 +287,8 @@ sim1.run()
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Checking folder existance...pycoalescence/sample/SA_sample_fine.tif exists!
-Checking folder existance...output exists!
+Checking folder existance...pycoalescence/tests/sample/SA_sample_fine.tif exists!
+Output folder does not exist... creating...done!
 Checking folder existance...done!
 Checking for unfinished simulations...done!
 No files found containing unfinished simulations.
@@ -297,7 +297,7 @@ Setting up simulation...
 Dispersal (tau, sigma): 1, 2
 Dispersal method: normal
 Fine map
--file: pycoalescence/sample/SA_sample_fine.tif
+-file: pycoalescence/tests/sample/SA_sample_fine.tif
 -dimensions: (13, 13)
 -offset: (0, 0)
 Coarse map
@@ -318,16 +318,16 @@ Max time: 3600
 Output directory: output
 Disp Rel Cost: 1
 Times:  0.0
-Checking folder existance...pycoalescence/sample/SA_sample_fine.tif exists!
-Importing pycoalescence/sample/SA_sample_fine.tif No data value is: 0
-Importing pycoalescence/sample/SA_sample_fine.tif ...................done!
+Checking folder existance...pycoalescence/tests/sample/SA_sample_fine.tif exists!
+Importing pycoalescence/tests/sample/SA_sample_fine.tif No data value is: 0
+Importing pycoalescence/tests/sample/SA_sample_fine.tif ...................done!
 No data value is: 0
 Using dispersal kernel.
 Initial count is 380980
 Setting up simulation...done!
 Number of individuals simulating: 380980
 *************************************************
-Beginning simulations...................done!
+Beginning simulations...done!
 No additional speciation rates to apply.
 Speciation rate is: 0.1.
 Finalising data...done!
@@ -335,26 +335,26 @@ Creating SQL database file...
     Executing SQL commands....done!
 0.000000,Calculating generation 0.000000
 Calculating tree structure...done!
-Number of species: 96121
+Number of species: 96371
 Generating new SQL table for speciation rate 0.1...done!
     Writing to output/data_1_1.db ....  done!
-Total generations simulated (steps): 197.821 (963721)
+Total generations simulated (steps): 223.285 (964919)
 Setup time was 0 minutes 0 seconds
-Simulation time was 0 hours 0 minutes 1 seconds
-File output and species calculation time was 0 minutes 3 seconds
+Simulation time was 0 hours 0 minutes 2 seconds
+File output and species calculation time was 0 minutes 5 seconds
 SQL output time was 0 minutes 0 seconds
-Total time taken was 0 hours 0 minutes 1 seconds
+Total simulation and output time was 0 hours 0 minutes 7 seconds
 </pre></div></div>
 </div>
 <p>Re-create the coalescence tree for different speciation rates</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
 <span></span>tree1 = CoalescenceTree(sim1, logging_level=10)
-tree1.set_speciation_params(speciation_rates=[0.1, 0.2, 0.4])
+tree1.set_speciation_parameters(speciation_rates=[0.1, 0.2, 0.4])
 tree1.apply()
 </pre></div>
 </div>
@@ -378,13 +378,13 @@ calculation already performed for 0.1 at time 0
 Calculating speciation rate 0.2
 Calculating generation 0
 Calculating tree structure...done!
-Number of species: 152080
+Number of species: 152584
 Generating new SQL table for speciation rate 0.2...done!
 Calculating generation 0
 Calculating speciation rate 0.4
 Calculating generation 0
 Calculating tree structure...done!
-Number of species: 232033
+Number of species: 232829
 Generating new SQL table for speciation rate 0.4...done!
 Writing out to output/data_1_1.db...done!
 </pre></div></div>
@@ -393,7 +393,7 @@ Writing out to output/data_1_1.db...done!
 our community parameters.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
@@ -409,9 +409,9 @@ our community parameters.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Species richness for speciation rate of 0.1 is 96121
-Species richness for speciation rate of 0.2 is 152080
-Species richness for speciation rate of 0.4 is 232033
+Species richness for speciation rate of 0.1 is 96371
+Species richness for speciation rate of 0.2 is 152584
+Species richness for speciation rate of 0.4 is 232829
 </pre></div></div>
 </div>
 </div>
@@ -429,7 +429,7 @@ generations in the past.</p>
 <p>Define our file paths</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
@@ -445,13 +445,13 @@ pristine_coarse_file2 = os.path.join(input_dir, &quot;SA_sample_coarse_pristine2
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
 <span></span>sim2 = Simulation(logging_level=50)
-sim2.set_simulation_params(seed=2, job_type=1, output_directory=output_dir, min_speciation_rate=0.1,
-                                               sigma=2.0, deme=1)
+sim2.set_simulation_parameters(seed=2, job_type=1, output_directory=output_dir, min_speciation_rate=0.1,
+                                                       sigma=2.0, deme=1)
 sim2.set_speciation_rates([0.1, 0.2, 0.3])
 # Use automatic detection of the map file dimensions
 sim2.set_map_files(sample_file=sample_file, fine_file=fine_file, coarse_file=coarse_file)
@@ -468,7 +468,7 @@ sim2.run()
 <p>Print the species richness for each time and speciation rate.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
@@ -489,15 +489,15 @@ for reference in tree2.get_community_references():
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Species richness at time 0.0 with speciation rate of 0.1 is 7358.
-Species richness at time 50.0 with speciation rate of 0.1 is 7424.
-Species richness at time 100.0 with speciation rate of 0.1 is 7397.
-Species richness at time 0.0 with speciation rate of 0.2 is 8776.
-Species richness at time 50.0 with speciation rate of 0.2 is 8788.
-Species richness at time 100.0 with speciation rate of 0.2 is 8810.
-Species richness at time 0.0 with speciation rate of 0.3 is 9597.
-Species richness at time 50.0 with speciation rate of 0.3 is 9575.
-Species richness at time 100.0 with speciation rate of 0.3 is 9677.
+Species richness at time 0.0 with speciation rate of 0.1 is 7392.
+Species richness at time 50.0 with speciation rate of 0.1 is 7312.
+Species richness at time 100.0 with speciation rate of 0.1 is 7456.
+Species richness at time 0.0 with speciation rate of 0.2 is 8808.
+Species richness at time 50.0 with speciation rate of 0.2 is 8691.
+Species richness at time 100.0 with speciation rate of 0.2 is 8764.
+Species richness at time 0.0 with speciation rate of 0.3 is 9656.
+Species richness at time 50.0 with speciation rate of 0.3 is 9515.
+Species richness at time 100.0 with speciation rate of 0.3 is 9647.
 </pre></div></div>
 </div>
 </div>
@@ -510,14 +510,14 @@ speciation to occur at 10000 generations.</p>
 well.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
 <span></span>sim3 = Simulation(logging_level=50)
-sim3.set_simulation_params(seed=3, job_type=1, output_directory=output_dir,
-                                               min_speciation_rate=0.1, sigma=2.0, deme=1,
-                                               protracted=True, min_speciation_gen=1000, max_speciation_gen=10000)
+sim3.set_simulation_parameters(seed=3, job_type=1, output_directory=output_dir,
+                                                       min_speciation_rate=0.1, sigma=2.0, deme=1,
+                                                       protracted=True, min_speciation_gen=1000, max_speciation_gen=10000)
 sim3.set_speciation_rates([0.1, 0.2, 0.3])
 # Use automatic detection of the map file dimensions
 sim3.set_map(os.path.join(input_dir, &quot;SA_sample_fine.tif&quot;))
@@ -529,14 +529,14 @@ sim3.run()
 instead of a speciation rate.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
 <span></span>tree3 = CoalescenceTree(sim3)
-tree3.set_speciation_params(speciation_rates=[0.1, 0.2, 0.3], protracted_speciation_min=1000,
-                                                    protracted_speciation_max=10000, metacommunity_speciation_rate=0.001,
-                                                    metacommunity_size=100000)
+tree3.set_speciation_parameters(speciation_rates=[0.1, 0.2, 0.3], protracted_speciation_min=1000,
+                                                            protracted_speciation_max=10000, metacommunity_speciation_rate=0.001,
+                                                            metacommunity_size=100000)
 tree3.add_protracted_parameters(10, 5000)
 tree3.add_protracted_parameters(50, 800)
 tree3.apply()
@@ -692,7 +692,7 @@ tree3 = None
         <li class="right" >
           <a href="../README_merger.html" title="Merging simulation outputs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

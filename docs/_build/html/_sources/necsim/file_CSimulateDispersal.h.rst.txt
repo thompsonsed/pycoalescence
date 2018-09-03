@@ -29,6 +29,8 @@ Includes
 --------
 
 
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ActivityMap.h``
+
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Cell.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Community.h``
@@ -50,8 +52,6 @@ Includes
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/NRrand.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ProtractedTree.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ReproductionMap.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Setup.h``
 
@@ -93,11 +93,13 @@ Includes
 
 - ``iostream``
 
+- ``memory``
+
+- ``necsim.h`` (:ref:`file_necsim.h`)
+
 - ``necsim/SimParameters.h`` (:ref:`file_necsim_SimParameters.h`)
 
 - ``necsim/SimulateDispersal.h`` (:ref:`file_necsim_SimulateDispersal.h`)
-
-- ``necsimmodule.h`` (:ref:`file_necsimmodule.h`)
 
 - ``set``
 
@@ -121,7 +123,7 @@ Included By
 -----------
 
 
-- :ref:`file_necsimmodule.cpp`
+- :ref:`file_necsim.cpp`
 
 
 
@@ -137,6 +139,8 @@ Functions
 ---------
 
 
+- :ref:`function_genSimulateDispersalType`
+
 - :ref:`function_PySimulateDispersal_dealloc`
 
 - :ref:`function_PySimulateDispersal_init`
@@ -146,6 +150,8 @@ Functions
 - :ref:`function_runMDT`
 
 - :ref:`function_runMeanDispersal`
+
+- :ref:`function_set_all_map_parameters`
 
 - :ref:`function_set_dispersal_parameters`
 

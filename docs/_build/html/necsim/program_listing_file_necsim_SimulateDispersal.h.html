@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SimulateDispersal.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SimulateDispersal.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_SimulateDispersal.h.html" title="File SimulateDispersal.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.h.html" accesskey="U">File SimulateDispersal.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -93,7 +93,7 @@
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
     <span class="c1">// The density map object</span>
-    <span class="n">Landscape</span> <span class="n">density_landscape</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span> <span class="n">density_landscape</span><span class="p">;</span>
     <span class="c1">// The samplemask object</span>
     <span class="n">DataMask</span> <span class="n">dataMask</span><span class="p">;</span>
     <span class="c1">// Dispersal coordinator</span>
@@ -101,7 +101,7 @@
     <span class="c1">// Stores all key simulation parameters for the Landscape object</span>
     <span class="n">SimParameters</span>  <span class="o">*</span> <span class="n">simParameters</span><span class="p">;</span>
     <span class="c1">// The random number generator object</span>
-    <span class="n">NRrand</span> <span class="n">random</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">random</span><span class="p">;</span>
     <span class="c1">// The random number seed</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">;</span>
     <span class="c1">// The sqlite3 database object for storing outputs</span>
@@ -123,7 +123,8 @@
     <span class="c1">// Reference number for this set of parameters in the database output</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_parameter_reference</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">SimulateDispersal</span><span class="p">()</span> <span class="o">:</span> <span class="n">num_steps</span><span class="p">(),</span> <span class="n">distances</span><span class="p">()</span>
+    <span class="n">SimulateDispersal</span><span class="p">()</span> <span class="o">:</span> <span class="n">density_landscape</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">random</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">distances</span><span class="p">(),</span>
+                          <span class="n">num_steps</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">simParameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">num_repeats</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -152,8 +153,8 @@
     <span class="kt">void</span> <span class="nf">setSeed</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">s</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
-        <span class="n">random</span><span class="p">.</span><span class="n">wipeSeed</span><span class="p">();</span>
-        <span class="n">random</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+        <span class="n">random</span><span class="o">-&gt;</span><span class="n">wipeSeed</span><span class="p">();</span>
+        <span class="n">random</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="kt">void</span> <span class="nf">setOutputDatabase</span><span class="p">(</span><span class="n">string</span> <span class="n">out_database</span><span class="p">);</span>
@@ -243,8 +244,8 @@
         <li class="right" >
           <a href="file_necsim_SimulateDispersal.h.html" title="File SimulateDispersal.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.h.html" >File SimulateDispersal.h</a> &#187;</li> 
       </ul>
     </div>

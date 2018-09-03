@@ -59,7 +59,7 @@ void \hyperlink{class_landscape_a739549f09fbfbc36674e1a27ad8e9363}{calculate\+Of
 void \hyperlink{class_landscape_a9181afc2546082c9d4798e16e033b0f1}{validate\+Maps} ()\hypertarget{class_landscape_a9181afc2546082c9d4798e16e033b0f1}{}\label{class_landscape_a9181afc2546082c9d4798e16e033b0f1}
 
 \begin{DoxyCompactList}\small\item\em Checks that the map file sizes are correct and that each value on the fragmented maps is less than the historical maps. This should be disabled in simulations where habitat sizes are expected to shrink as well as grow. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}{update\+Map} (double generation)
+bool \hyperlink{class_landscape_a568d5338ce85c35a66461033ced3cb05}{update\+Map} (double generation)
 \begin{DoxyCompactList}\small\item\em Checks if an update needs to be performed to the map configuration, and if it does, performs the update. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{do\+Update} ()\hypertarget{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}{}\label{class_landscape_a1669ae6563ef5ed11ce1da30fb28214b}
 
@@ -105,12 +105,18 @@ unsigned long \hyperlink{class_landscape_ae8d533d9a8fff3a96c240aadaeac3f04}{get\
 \begin{DoxyCompactList}\small\item\em Gets the mapvars object pointer for referencing simulation parameters. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_a24de83f1e8f762b9640cdba35793a404}{check\+Map} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double generation)
 \begin{DoxyCompactList}\small\item\em Checks whether the point is habitat or non-\/habitat. \end{DoxyCompactList}\item 
-bool \hyperlink{class_landscape_a0545765b734539f622804bb3aa72e38c}{check\+Fine} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
+bool \hyperlink{class_landscape_a92cd54efe4722ee0c40434875043d6c7}{is\+On\+Fine} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
 \begin{DoxyCompactList}\small\item\em Checks whether the point comes from the fine grid. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_a88b7191cdc10684eb6a851350d2f7a01}{is\+On\+Coarse} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Checks whether the point comes from the coarse grid. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landscape_abe24da20e362bd88f3794e4d8d5ccafb}{is\+On\+Map} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)
+\begin{DoxyCompactList}\small\item\em Checks that the point supplied is within map limits. If the map is inifite, returns true. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a5aa0fca1b87ab838ebab933ef6daf4a2}{fix\+Grid\+Coordinates} (double \&x, double \&y, long \&xwrap, long \&ywrap)
 \begin{DoxyCompactList}\small\item\em Fixes the coordinates to be correctly within the original grid, altering the xwrap and ywrap consequently. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal} (const double \&dist, const double \&angle, long \&startx, long \&starty, long \&startxwrap, long \&startywrap, bool \&disp\+\_\+comp, const double \&generation)
 \begin{DoxyCompactList}\small\item\em The function that actually performs the dispersal. It is included here for easier programming and efficiency as the function doesn\textquotesingle{}t need to perform all the checks until the edge of the fine grid. \end{DoxyCompactList}\item 
+double \hyperlink{class_landscape_a3a552903c925b9769ecc2cad5b051682}{distance\+To\+Nearest\+Habitat} (const long \&start\+\_\+x, const long \&start\+\_\+y, const long \&start\+\_\+x\+\_\+wrap, const long \&start\+\_\+y\+\_\+wrap, const double \&generation)
+\begin{DoxyCompactList}\small\item\em Calculates the distance from the start position to the nearest habitat cell. \end{DoxyCompactList}\item 
 string \hyperlink{class_landscape_a9b867a59c88f754bae6788451845b698}{print\+Vars} ()
 \begin{DoxyCompactList}\small\item\em Prints some selected \hyperlink{class_map}{Map} variables to the terminal. \end{DoxyCompactList}\item 
 void \hyperlink{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}{clear\+Map} ()\hypertarget{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}{}\label{class_landscape_a28d01a593cbaf9d8fde9c2e1da996f91}
@@ -233,6 +239,9 @@ unsigned long {\bfseries historical\+\_\+coarse\+\_\+max}\hypertarget{class_land
 string {\bfseries landscape\+\_\+type}\hypertarget{class_landscape_a2bed03fc250afab4f9341da6f1f6c0da}{}\label{class_landscape_a2bed03fc250afab4f9341da6f1f6c0da}
 
 \item 
+bool {\bfseries infinite\+\_\+boundaries}\hypertarget{class_landscape_ad4cf6ac6f87d0253d50b2738bb57087e}{}\label{class_landscape_ad4cf6ac6f87d0253d50b2738bb57087e}
+
+\item 
 string {\bfseries Next\+Map}\hypertarget{class_landscape_a7e16bed309816971071c17ad0ebf94e5}{}\label{class_landscape_a7e16bed309816971071c17ad0ebf94e5}
 
 \item 
@@ -297,34 +306,6 @@ If this is true, then it means we can calculate actual offsets and dimensions fr
 
 \begin{DoxyReturn}{Returns}
 true if all map offsets are zero 
-\end{DoxyReturn}
-\index{Landscape@{Landscape}!check\+Fine@{check\+Fine}}
-\index{check\+Fine@{check\+Fine}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{check\+Fine(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{checkFine(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::check\+Fine (
-\begin{DoxyParamCaption}
-\item[{const double \&}]{x, }
-\item[{const double \&}]{y, }
-\item[{const long \&}]{xwrap, }
-\item[{const long \&}]{ywrap}
-\end{DoxyParamCaption}
-)}\hypertarget{class_landscape_a0545765b734539f622804bb3aa72e38c}{}\label{class_landscape_a0545765b734539f622804bb3aa72e38c}
-
-
-Checks whether the point comes from the fine grid. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x} & the x position. \\
-\hline
-{\em y} & the y position. \\
-\hline
-{\em xwrap} & the number of wraps in the x dimension. \\
-\hline
-{\em ywrap} & the number of wraps in the y dimension. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-a boolean of whether the location is on the fine map. 
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!check\+Historical@{check\+Historical}}
 \index{check\+Historical@{check\+Historical}!Landscape@{Landscape}}
@@ -455,6 +436,37 @@ Note that this function will not check if the value is actually within bounds of
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 the y location on the fine map 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!distance\+To\+Nearest\+Habitat@{distance\+To\+Nearest\+Habitat}}
+\index{distance\+To\+Nearest\+Habitat@{distance\+To\+Nearest\+Habitat}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{distance\+To\+Nearest\+Habitat(const long \&start\+\_\+x, const long \&start\+\_\+y, const long \&start\+\_\+x\+\_\+wrap, const long \&start\+\_\+y\+\_\+wrap, const double \&generation)}{distanceToNearestHabitat(const long &start_x, const long &start_y, const long &start_x_wrap, const long &start_y_wrap, const double &generation)}}]{\setlength{\rightskip}{0pt plus 5cm}double Landscape\+::distance\+To\+Nearest\+Habitat (
+\begin{DoxyParamCaption}
+\item[{const long \&}]{start\+\_\+x, }
+\item[{const long \&}]{start\+\_\+y, }
+\item[{const long \&}]{start\+\_\+x\+\_\+wrap, }
+\item[{const long \&}]{start\+\_\+y\+\_\+wrap, }
+\item[{const double \&}]{generation}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a3a552903c925b9769ecc2cad5b051682}{}\label{class_landscape_a3a552903c925b9769ecc2cad5b051682}
+
+
+Calculates the distance from the start position to the nearest habitat cell. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+\_\+x} & the start x coordinate \\
+\hline
+{\em start\+\_\+y} & the start y coordinate \\
+\hline
+{\em start\+\_\+x\+\_\+wrap} & the starting x wrapping \\
+\hline
+{\em start\+\_\+y\+\_\+wrap} & the starting y wrapping \\
+\hline
+{\em generation} & the generation timer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the distance from the start position to the nearest habitat cell 
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}}
 \index{fix\+Grid\+Coordinates@{fix\+Grid\+Coordinates}!Landscape@{Landscape}}
@@ -778,6 +790,92 @@ Gets the historical boolean.
 \begin{DoxyReturn}{Returns}
 the historical map state. 
 \end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+On\+Coarse@{is\+On\+Coarse}}
+\index{is\+On\+Coarse@{is\+On\+Coarse}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+On\+Coarse(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{isOnCoarse(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+On\+Coarse (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{x, }
+\item[{const double \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a88b7191cdc10684eb6a851350d2f7a01}{}\label{class_landscape_a88b7191cdc10684eb6a851350d2f7a01}
+
+
+Checks whether the point comes from the coarse grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position \\
+\hline
+{\em y} & the y position \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean of whether the location is on the fine map 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+On\+Fine@{is\+On\+Fine}}
+\index{is\+On\+Fine@{is\+On\+Fine}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+On\+Fine(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{isOnFine(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+On\+Fine (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{x, }
+\item[{const double \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_a92cd54efe4722ee0c40434875043d6c7}{}\label{class_landscape_a92cd54efe4722ee0c40434875043d6c7}
+
+
+Checks whether the point comes from the fine grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position \\
+\hline
+{\em y} & the y position \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean of whether the location is on the fine map 
+\end{DoxyReturn}
+\index{Landscape@{Landscape}!is\+On\+Map@{is\+On\+Map}}
+\index{is\+On\+Map@{is\+On\+Map}!Landscape@{Landscape}}
+\subsubsection[{\texorpdfstring{is\+On\+Map(const double \&x, const double \&y, const long \&xwrap, const long \&ywrap)}{isOnMap(const double &x, const double &y, const long &xwrap, const long &ywrap)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::is\+On\+Map (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{x, }
+\item[{const double \&}]{y, }
+\item[{const long \&}]{xwrap, }
+\item[{const long \&}]{ywrap}
+\end{DoxyParamCaption}
+)}\hypertarget{class_landscape_abe24da20e362bd88f3794e4d8d5ccafb}{}\label{class_landscape_abe24da20e362bd88f3794e4d8d5ccafb}
+
+
+Checks that the point supplied is within map limits. If the map is inifite, returns true. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x position \\
+\hline
+{\em y} & the y position \\
+\hline
+{\em xwrap} & the number of wraps in the x dimension \\
+\hline
+{\em ywrap} & the number of wraps in the y dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean of whether the location is on the fine map 
+
+true if the point is within the map limits 
+\end{DoxyReturn}
 \index{Landscape@{Landscape}!print\+Vars@{print\+Vars}}
 \index{print\+Vars@{print\+Vars}!Landscape@{Landscape}}
 \subsubsection[{\texorpdfstring{print\+Vars()}{printVars()}}]{\setlength{\rightskip}{0pt plus 5cm}string Landscape\+::print\+Vars (
@@ -912,11 +1010,11 @@ Sets the time variables.
 \end{DoxyParams}
 \index{Landscape@{Landscape}!update\+Map@{update\+Map}}
 \index{update\+Map@{update\+Map}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{update\+Map(double generation)}{updateMap(double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::update\+Map (
+\subsubsection[{\texorpdfstring{update\+Map(double generation)}{updateMap(double generation)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Landscape\+::update\+Map (
 \begin{DoxyParamCaption}
 \item[{double}]{generation}
 \end{DoxyParamCaption}
-)}\hypertarget{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}{}\label{class_landscape_aa96c5208ad89b2e620b52f80b0937dff}
+)}\hypertarget{class_landscape_a568d5338ce85c35a66461033ced3cb05}{}\label{class_landscape_a568d5338ce85c35a66461033ced3cb05}
 
 
 Checks if an update needs to be performed to the map configuration, and if it does, performs the update. 
@@ -926,6 +1024,9 @@ Checks if an update needs to be performed to the map configuration, and if it do
 {\em generation} & the current generation timer \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the map has been updated 
+\end{DoxyReturn}
 
 
 \subsection{Friends And Related Function Documentation}

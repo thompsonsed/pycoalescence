@@ -126,11 +126,13 @@ void \hyperlink{class_tree_afcbe72c55b38c94ae17de9c2e1dd3a7f}{check\+Time\+Updat
 \begin{DoxyCompactList}\small\item\em Checks if the number of lineages should be expanded at another sample point. \end{DoxyCompactList}\item 
 virtual void \hyperlink{class_tree_a8bfa9a86f122b21900ec33ab4b1e323f}{add\+Lineages} (double generation\+\_\+in)
 \begin{DoxyCompactList}\small\item\em Adds the required lineages at the generation time. \end{DoxyCompactList}\item 
+bool \hyperlink{class_tree_aa3eef7c7e66a975d1dfd1a0a0148e037}{check\+Proportion\+Added} (const double \&proportion\+\_\+added)
+\begin{DoxyCompactList}\small\item\em Randomly checks if a lineage should be added, based on the proportion added. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_ab8a62d0ca2b1746676073e3f33e2a949}{check\+Sim\+Size} (unsigned long req\+\_\+data, unsigned long req\+\_\+active)
 \begin{DoxyCompactList}\small\item\em Checks the size of the main active and data objects is large enough. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_a0973cc37d9b95144db76d36cb363caca}{make\+Tip} (const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in)
+void \hyperlink{class_tree_a3fa6fbeeb00d1661958f8e358796251c}{make\+Tip} (const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in, vector$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ \&data\+\_\+added)
 \begin{DoxyCompactList}\small\item\em Sets the active reference to a tip, if it isn\textquotesingle{}t one already. Otherwise, creates a new tip for the new generation time. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_a6af2aaa691ffbb9899e3f070a715e371}{convert\+Tip} (unsigned long i, double generationin)
+void \hyperlink{class_tree_a370a23cfb08fd27ed1862bdfa605c5b8}{convert\+Tip} (unsigned long i, double generationin, vector$<$ \hyperlink{class_tree_node}{Tree\+Node} $>$ \&data\+\_\+added)
 \begin{DoxyCompactList}\small\item\em Creates a new reference in data containing the tip with a new generation counter. \end{DoxyCompactList}\item 
 bool \hyperlink{class_tree_afd6bd75c301d2f57c4997fcfc92f192e}{stop\+Simulation} ()
 \begin{DoxyCompactList}\small\item\em Finalises the simulation, and performs the correct tasks depending if the sim has been paused or finished. \end{DoxyCompactList}\item 
@@ -183,30 +185,31 @@ virtual string \hyperlink{class_tree_aa8bb5d93c7992404ede0a49bb69ccd1f}{protract
 virtual void \hyperlink{class_tree_ae5308f74e982485ac444aa394b952152}{sim\+Pause} ()\hypertarget{class_tree_ae5308f74e982485ac444aa394b952152}{}\label{class_tree_ae5308f74e982485ac444aa394b952152}
 
 \begin{DoxyCompactList}\small\item\em Pause the simulation and dump data from memory. \end{DoxyCompactList}\item 
-string \hyperlink{class_tree_a9b2df7fd1b61d3d70ac630f7fbfd683d}{initiate\+Pause} ()\hypertarget{class_tree_a9b2df7fd1b61d3d70ac630f7fbfd683d}{}\label{class_tree_a9b2df7fd1b61d3d70ac630f7fbfd683d}
-
+ofstream \hyperlink{class_tree_a768b9c46fbbc1e49257ab96a66491058}{initiate\+Pause} ()
 \begin{DoxyCompactList}\small\item\em Checks the output folder exists and initiates the pause. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_a4c2988184328a5236ca61f16744cfac2}{dump\+Main} (string pause\+\_\+folder)
+void \hyperlink{class_tree_a687613834d41ec340fc6f62708368f84}{dump\+Main} (ofstream \&out)
 \begin{DoxyCompactList}\small\item\em Saves the main simulation variables to file. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_aca99503f49b91baae7401423fe547daf}{dump\+Active} (string pause\+\_\+folder)
+void \hyperlink{class_tree_a3cb2d92afc1943796ad6663cc97fc07d}{dump\+Active} (ofstream \&out)
 \begin{DoxyCompactList}\small\item\em Saves the active object to file. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_acd23fa139c7d097315c9479187b1a674}{dump\+Data} (string pause\+\_\+folder)
+void \hyperlink{class_tree_af94976f439abe0a141a4ab56fac91627}{dump\+Data} (ofstream \&out)
 \begin{DoxyCompactList}\small\item\em Saves the data object to file. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_a3fddb18a5d19b64dec378dca3d3fea31}{complete\+Pause} ()\hypertarget{class_tree_a3fddb18a5d19b64dec378dca3d3fea31}{}\label{class_tree_a3fddb18a5d19b64dec378dca3d3fea31}
-
+void \hyperlink{class_tree_a9339bf7bfb7ae81ab78d47a328bc5ad0}{complete\+Pause} (ofstream \&out)
 \begin{DoxyCompactList}\small\item\em Completes the pause routine and outputs the sql dump. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_ac545d844141db977920fc9fd76ce9dbb}{set\+Resume\+Parameters} (string pausedir, string outdir, unsigned long seed, unsigned long task, unsigned long new\+\_\+max\+\_\+time)
 \begin{DoxyCompactList}\small\item\em Sets the resume variables so that the simulation can be resumed. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_aeade4bccb8394937a53bc4fbcf2b4300}{set\+Resume\+Parameters} ()\hypertarget{class_tree_aeade4bccb8394937a53bc4fbcf2b4300}{}\label{class_tree_aeade4bccb8394937a53bc4fbcf2b4300}
 
 \begin{DoxyCompactList}\small\item\em Sets the resume variables to the defaults. \end{DoxyCompactList}\item 
-virtual void \hyperlink{class_tree_af57075728924141c7b6d311822a22dc0}{load\+Main\+Save} ()\hypertarget{class_tree_af57075728924141c7b6d311822a22dc0}{}\label{class_tree_af57075728924141c7b6d311822a22dc0}
+ifstream {\bfseries open\+Save\+File} ()\hypertarget{class_tree_ad0093ade6fd9c47c35b309010cfdf62f}{}\label{class_tree_ad0093ade6fd9c47c35b309010cfdf62f}
+
+\item 
+virtual void \hyperlink{class_tree_adbebd341b5d4c2c7685c728a2cb46a61}{load\+Main\+Save} (ifstream \&in1)\hypertarget{class_tree_adbebd341b5d4c2c7685c728a2cb46a61}{}\label{class_tree_adbebd341b5d4c2c7685c728a2cb46a61}
 
 \begin{DoxyCompactList}\small\item\em Loads the main simulation parameters from the save file into memory. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_af7db53d4870d845741d3159f57b73b30}{load\+Data\+Save} ()\hypertarget{class_tree_af7db53d4870d845741d3159f57b73b30}{}\label{class_tree_af7db53d4870d845741d3159f57b73b30}
+void \hyperlink{class_tree_ac6483904c8b94797fdb4c51fed39a2ac}{load\+Data\+Save} (ifstream \&in1)\hypertarget{class_tree_ac6483904c8b94797fdb4c51fed39a2ac}{}\label{class_tree_ac6483904c8b94797fdb4c51fed39a2ac}
 
 \begin{DoxyCompactList}\small\item\em Loads the data object from the save file into memory. \end{DoxyCompactList}\item 
-void \hyperlink{class_tree_af145148202f11654d6d6a15a6c021924}{load\+Active\+Save} ()\hypertarget{class_tree_af145148202f11654d6d6a15a6c021924}{}\label{class_tree_af145148202f11654d6d6a15a6c021924}
+void \hyperlink{class_tree_a2fa8cf49a891654ff9316460ba6d9991}{load\+Active\+Save} (ifstream \&in1)\hypertarget{class_tree_a2fa8cf49a891654ff9316460ba6d9991}{}\label{class_tree_a2fa8cf49a891654ff9316460ba6d9991}
 
 \begin{DoxyCompactList}\small\item\em Loads the active object from the save file into memory. \end{DoxyCompactList}\item 
 void \hyperlink{class_tree_a8cfe5d30d53d702f18cd67981e2c9acb}{initiate\+Resume} ()\hypertarget{class_tree_a8cfe5d30d53d702f18cd67981e2c9acb}{}\label{class_tree_a8cfe5d30d53d702f18cd67981e2c9acb}
@@ -226,7 +229,7 @@ unsigned long {\bfseries enddata}\hypertarget{class_tree_a50344999e6b64d15eef935
 \hyperlink{struct_sim_parameters}{Sim\+Parameters} {\bfseries sim\+\_\+parameters}\hypertarget{class_tree_a63c399793a209332ad0f5da7fc830d56}{}\label{class_tree_a63c399793a209332ad0f5da7fc830d56}
 
 \item 
-\hyperlink{class_n_rrand}{N\+Rrand} {\bfseries NR}\hypertarget{class_tree_aa7df162306777b040a9a2aac543e6801}{}\label{class_tree_aa7df162306777b040a9a2aac543e6801}
+shared\+\_\+ptr$<$ \hyperlink{class_n_rrand}{N\+Rrand} $>$ {\bfseries NR}\hypertarget{class_tree_a20790866da998f8cb7d0f1455d9fbcc5}{}\label{class_tree_a20790866da998f8cb7d0f1455d9fbcc5}
 
 \item 
 vector$<$ long double $>$ {\bfseries speciation\+\_\+rates}\hypertarget{class_tree_a61b4349fe78d09ac06eff4b7d6833105}{}\label{class_tree_a61b4349fe78d09ac06eff4b7d6833105}
@@ -316,16 +319,13 @@ bool {\bfseries sim\+\_\+complete}\hypertarget{class_tree_a07f9982fd6f6243c78ef4
 bool {\bfseries has\+\_\+imported\+\_\+vars}\hypertarget{class_tree_a97bde28466a098bb9e58c1bd5610fd68}{}\label{class_tree_a97bde28466a098bb9e58c1bd5610fd68}
 
 \item 
-sqlite3 $\ast$ {\bfseries outdatabase}\hypertarget{class_tree_afd585c8a4bdb86461780418f7b886abd}{}\label{class_tree_afd585c8a4bdb86461780418f7b886abd}
-
-\item 
 \hyperlink{struct_step}{Step} {\bfseries this\+\_\+step}\hypertarget{class_tree_af7de4d4f04360edcbe2a20db882b1f87}{}\label{class_tree_af7de4d4f04360edcbe2a20db882b1f87}
 
 \item 
 string {\bfseries sql\+\_\+output\+\_\+database}\hypertarget{class_tree_a80d3e92108eb472df49640a661ef4f7d}{}\label{class_tree_a80d3e92108eb472df49640a661ef4f7d}
 
 \item 
-bool {\bfseries b\+Fullmode}\hypertarget{class_tree_a9379466b9fc0f25bd28543743000e700}{}\label{class_tree_a9379466b9fc0f25bd28543743000e700}
+bool {\bfseries b\+Full\+Mode}\hypertarget{class_tree_a7a32ee0d04641ae745c08f7278c36c13}{}\label{class_tree_a7a32ee0d04641ae745c08f7278c36c13}
 
 \item 
 bool {\bfseries b\+Resume}\hypertarget{class_tree_ac9cbd7d17fb511c1fcc70c765f6440b0}{}\label{class_tree_ac9cbd7d17fb511c1fcc70c765f6440b0}
@@ -485,6 +485,25 @@ Asserts that the output directory is not null and exists. If it doesn\textquotes
 \begin{DoxyReturn}{Returns}
 true if output creates successfully 
 \end{DoxyReturn}
+\index{Tree@{Tree}!check\+Proportion\+Added@{check\+Proportion\+Added}}
+\index{check\+Proportion\+Added@{check\+Proportion\+Added}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{check\+Proportion\+Added(const double \&proportion\+\_\+added)}{checkProportionAdded(const double &proportion_added)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Tree\+::check\+Proportion\+Added (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{proportion\+\_\+added}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_aa3eef7c7e66a975d1dfd1a0a0148e037}{}\label{class_tree_aa3eef7c7e66a975d1dfd1a0a0148e037}
+
+
+Randomly checks if a lineage should be added, based on the proportion added. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em proportion\+\_\+added} & the proportion of lineages that should be added \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the lineage should be added, false otherwise 
+\end{DoxyReturn}
 \index{Tree@{Tree}!check\+Sims@{check\+Sims}}
 \index{check\+Sims@{check\+Sims}!Tree@{Tree}}
 \subsubsection[{\texorpdfstring{check\+Sims()}{checkSims()}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::check\+Sims (
@@ -571,14 +590,31 @@ Perform the coalescence between lineages. Once coalesced, lineages are removed f
 {\em coalchosen} & the target lineage for coalscence \\
 \hline
 \end{DoxyParams}
+\index{Tree@{Tree}!complete\+Pause@{complete\+Pause}}
+\index{complete\+Pause@{complete\+Pause}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{complete\+Pause(ofstream \&out)}{completePause(ofstream &out)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::complete\+Pause (
+\begin{DoxyParamCaption}
+\item[{ofstream \&}]{out}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a9339bf7bfb7ae81ab78d47a328bc5ad0}{}\label{class_tree_a9339bf7bfb7ae81ab78d47a328bc5ad0}
+
+
+Completes the pause routine and outputs the sql dump. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em out} & the output stream to close up \\
+\hline
+\end{DoxyParams}
 \index{Tree@{Tree}!convert\+Tip@{convert\+Tip}}
 \index{convert\+Tip@{convert\+Tip}!Tree@{Tree}}
-\subsubsection[{\texorpdfstring{convert\+Tip(unsigned long i, double generationin)}{convertTip(unsigned long i, double generationin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::convert\+Tip (
+\subsubsection[{\texorpdfstring{convert\+Tip(unsigned long i, double generationin, vector$<$ Tree\+Node $>$ \&data\+\_\+added)}{convertTip(unsigned long i, double generationin, vector< TreeNode > &data_added)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::convert\+Tip (
 \begin{DoxyParamCaption}
 \item[{unsigned long}]{i, }
-\item[{double}]{generationin}
+\item[{double}]{generationin, }
+\item[{vector$<$ {\bf Tree\+Node} $>$ \&}]{data\+\_\+added}
 \end{DoxyParamCaption}
-)}\hypertarget{class_tree_a6af2aaa691ffbb9899e3f070a715e371}{}\label{class_tree_a6af2aaa691ffbb9899e3f070a715e371}
+)}\hypertarget{class_tree_a370a23cfb08fd27ed1862bdfa605c5b8}{}\label{class_tree_a370a23cfb08fd27ed1862bdfa605c5b8}
 
 
 Creates a new reference in data containing the tip with a new generation counter. 
@@ -588,6 +624,8 @@ Creates a new reference in data containing the tip with a new generation counter
 {\em i} & the reference in active of the lineage to make a tip \\
 \hline
 {\em generationin} & the generation to make the lineage a tip at \\
+\hline
+{\em data\+\_\+added} & vector of lineages to add to the data object \\
 \hline
 \end{DoxyParams}
 \index{Tree@{Tree}!determine\+Speciation\+Rates@{determine\+Speciation\+Rates}}
@@ -603,50 +641,50 @@ Determines the speciation rates to apply and then applies them to the coalescenc
 
 Detects speciation rates from the config files supplied. \index{Tree@{Tree}!dump\+Active@{dump\+Active}}
 \index{dump\+Active@{dump\+Active}!Tree@{Tree}}
-\subsubsection[{\texorpdfstring{dump\+Active(string pause\+\_\+folder)}{dumpActive(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Active (
+\subsubsection[{\texorpdfstring{dump\+Active(ofstream \&out)}{dumpActive(ofstream &out)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Active (
 \begin{DoxyParamCaption}
-\item[{string}]{pause\+\_\+folder}
+\item[{ofstream \&}]{out}
 \end{DoxyParamCaption}
-)}\hypertarget{class_tree_aca99503f49b91baae7401423fe547daf}{}\label{class_tree_aca99503f49b91baae7401423fe547daf}
+)}\hypertarget{class_tree_a3cb2d92afc1943796ad6663cc97fc07d}{}\label{class_tree_a3cb2d92afc1943796ad6663cc97fc07d}
 
 
 Saves the active object to file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em pause\+\_\+folder} & the folder to save files into \\
+{\em out} & the output file stream to save the object to \\
 \hline
 \end{DoxyParams}
 \index{Tree@{Tree}!dump\+Data@{dump\+Data}}
 \index{dump\+Data@{dump\+Data}!Tree@{Tree}}
-\subsubsection[{\texorpdfstring{dump\+Data(string pause\+\_\+folder)}{dumpData(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Data (
+\subsubsection[{\texorpdfstring{dump\+Data(ofstream \&out)}{dumpData(ofstream &out)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Data (
 \begin{DoxyParamCaption}
-\item[{string}]{pause\+\_\+folder}
+\item[{ofstream \&}]{out}
 \end{DoxyParamCaption}
-)}\hypertarget{class_tree_acd23fa139c7d097315c9479187b1a674}{}\label{class_tree_acd23fa139c7d097315c9479187b1a674}
+)}\hypertarget{class_tree_af94976f439abe0a141a4ab56fac91627}{}\label{class_tree_af94976f439abe0a141a4ab56fac91627}
 
 
 Saves the data object to file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em pause\+\_\+folder} & the folder to save files into \\
+{\em out} & the output file stream to save the object to \\
 \hline
 \end{DoxyParams}
 \index{Tree@{Tree}!dump\+Main@{dump\+Main}}
 \index{dump\+Main@{dump\+Main}!Tree@{Tree}}
-\subsubsection[{\texorpdfstring{dump\+Main(string pause\+\_\+folder)}{dumpMain(string pause_folder)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Main (
+\subsubsection[{\texorpdfstring{dump\+Main(ofstream \&out)}{dumpMain(ofstream &out)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::dump\+Main (
 \begin{DoxyParamCaption}
-\item[{string}]{pause\+\_\+folder}
+\item[{ofstream \&}]{out}
 \end{DoxyParamCaption}
-)}\hypertarget{class_tree_a4c2988184328a5236ca61f16744cfac2}{}\label{class_tree_a4c2988184328a5236ca61f16744cfac2}
+)}\hypertarget{class_tree_a687613834d41ec340fc6f62708368f84}{}\label{class_tree_a687613834d41ec340fc6f62708368f84}
 
 
 Saves the main simulation variables to file. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em pause\+\_\+folder} & the folder to save files into \\
+{\em out} & the output file stream to save the object to \\
 \hline
 \end{DoxyParams}
 \index{Tree@{Tree}!fill\+Objects@{fill\+Objects}}
@@ -839,6 +877,20 @@ This function parses the simulation variables, imports them (from either the com
 {\em config} & the set of config parameters to import \\
 \hline
 \end{DoxyParams}
+\index{Tree@{Tree}!initiate\+Pause@{initiate\+Pause}}
+\index{initiate\+Pause@{initiate\+Pause}!Tree@{Tree}}
+\subsubsection[{\texorpdfstring{initiate\+Pause()}{initiatePause()}}]{\setlength{\rightskip}{0pt plus 5cm}ofstream Tree\+::initiate\+Pause (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_tree_a768b9c46fbbc1e49257ab96a66491058}{}\label{class_tree_a768b9c46fbbc1e49257ab96a66491058}
+
+
+Checks the output folder exists and initiates the pause. 
+
+\begin{DoxyReturn}{Returns}
+the output file stream to save objects to 
+\end{DoxyReturn}
 \index{Tree@{Tree}!internal\+Setup@{internal\+Setup}}
 \index{internal\+Setup@{internal\+Setup}!Tree@{Tree}}
 \subsubsection[{\texorpdfstring{internal\+Setup(const Sim\+Parameters \&sim\+\_\+parameters\+\_\+in)}{internalSetup(const SimParameters &sim_parameters_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::internal\+Setup (
@@ -857,12 +909,13 @@ Intended for usage with metacommunity application. No output directory is expect
 \end{DoxyParams}
 \index{Tree@{Tree}!make\+Tip@{make\+Tip}}
 \index{make\+Tip@{make\+Tip}!Tree@{Tree}}
-\subsubsection[{\texorpdfstring{make\+Tip(const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in)}{makeTip(const unsigned long &tmp_active, const double &generation_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::make\+Tip (
+\subsubsection[{\texorpdfstring{make\+Tip(const unsigned long \&tmp\+\_\+active, const double \&generation\+\_\+in, vector$<$ Tree\+Node $>$ \&data\+\_\+added)}{makeTip(const unsigned long &tmp_active, const double &generation_in, vector< TreeNode > &data_added)}}]{\setlength{\rightskip}{0pt plus 5cm}void Tree\+::make\+Tip (
 \begin{DoxyParamCaption}
 \item[{const unsigned long \&}]{tmp\+\_\+active, }
-\item[{const double \&}]{generation\+\_\+in}
+\item[{const double \&}]{generation\+\_\+in, }
+\item[{vector$<$ {\bf Tree\+Node} $>$ \&}]{data\+\_\+added}
 \end{DoxyParamCaption}
-)}\hypertarget{class_tree_a0973cc37d9b95144db76d36cb363caca}{}\label{class_tree_a0973cc37d9b95144db76d36cb363caca}
+)}\hypertarget{class_tree_a3fa6fbeeb00d1661958f8e358796251c}{}\label{class_tree_a3fa6fbeeb00d1661958f8e358796251c}
 
 
 Sets the active reference to a tip, if it isn\textquotesingle{}t one already. Otherwise, creates a new tip for the new generation time. 
@@ -872,6 +925,8 @@ Sets the active reference to a tip, if it isn\textquotesingle{}t one already. Ot
 {\em tmp\+\_\+active} & the reference in active \\
 \hline
 {\em generation\+\_\+in} & the generation to set for the new lineage \\
+\hline
+{\em data\+\_\+added} & vector of lineages to add to data \\
 \hline
 \end{DoxyParams}
 \index{Tree@{Tree}!output\+Data@{output\+Data}}

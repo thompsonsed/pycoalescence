@@ -37,6 +37,8 @@ Includes
 --------
 
 
+- ``ActivityMap.h`` (:ref:`file_necsim_ActivityMap.h`)
+
 - ``Community.h`` (:ref:`file_CCommunity.h`)
 
 - ``DataPoint.h`` (:ref:`file_necsim_DataPoint.h`)
@@ -50,8 +52,6 @@ Includes
 - ``Matrix.h`` (:ref:`file_necsim_Matrix.h`)
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
-
-- ``ReproductionMap.h`` (:ref:`file_necsim_ReproductionMap.h`)
 
 - ``Setup.h`` (:ref:`file_necsim_Setup.h`)
 
@@ -80,6 +80,8 @@ Includes
 - ``iomanip``
 
 - ``iostream``
+
+- ``memory``
 
 - ``sqlite3.h``
 
@@ -113,11 +115,4 @@ Classes
 
 
 - :ref:`class_SpatialTree`
-
-
-Defines
--------
-
-
-- :ref:`define_sql_ram`
 

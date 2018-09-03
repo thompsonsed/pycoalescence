@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -80,10 +80,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="k">try</span><span class="p">:</span>
-	<span class="kn">from</span> <span class="nn">.build</span> <span class="kn">import</span> <span class="n">necsimmodule</span>
+	<span class="kn">from</span> <span class="nn">.necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span>
 <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
 	<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ie</span><span class="p">))</span>
-	<span class="kn">from</span> <span class="nn">build</span> <span class="kn">import</span> <span class="n">necsimodule</span><span class="p">,</span> <span class="n">NECSimError</span>
+	<span class="kn">from</span> <span class="nn">necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span><span class="p">,</span> <span class="n">NECSimError</span>
 
 <span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span>
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">mod_directory</span><span class="p">,</span> <span class="n">create_logger</span><span class="p">,</span> <span class="n">write_to_log</span>
@@ -95,7 +95,7 @@
 <span class="k">try</span><span class="p">:</span>
 	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_directory</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="s2">&quot;parameter_descriptions.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 		<span class="n">_parameter_descriptions</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="k">except</span> <span class="n">FileNotFoundError</span><span class="p">:</span>
+<span class="k">except</span> <span class="p">(</span><span class="n">FileNotFoundError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">):</span>
 	<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not find parameter dictionary. Check install is complete.&quot;</span><span class="p">)</span>
 
 
@@ -125,7 +125,7 @@
 <span class="sd">	* Import the database (:py:meth:`~set_database`) and import the comparison data,</span>
 <span class="sd">	  if required (:py:meth:`~import_comparison_data`)</span>
 
-<span class="sd">	* Apply additional speciation rates (if required) using :py:meth:`~set_speciation_params` and then</span>
+<span class="sd">	* Apply additional speciation rates (if required) using :py:meth:`~set_speciation_parameters` and then</span>
 <span class="sd">	  :py:meth:`~apply`</span>
 
 <span class="sd">	* Calculate required metrics (such as :py:meth:`~calculate_fragment_richness`)</span>
@@ -490,9 +490,9 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;File &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; does not exist.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoalescenceTree.set_speciation_params"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_params">[docs]</a>	<span class="k">def</span> <span class="nf">set_speciation_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">record_spatial</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">record_fragments</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-							  <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-							  <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoalescenceTree.set_speciation_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">set_speciation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">record_spatial</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">record_fragments</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+								  <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+								  <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">		Set the parameters for the application of speciation rates. If no config files or time_config files are provided,</span>
@@ -520,6 +520,11 @@
 				<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
 		<span class="k">if</span> <span class="n">record_fragments</span> <span class="ow">is</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
 			<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+		<span class="k">if</span> <span class="n">record_fragments</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">]:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Fragment config does not exist at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">))</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">record_fragments</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record_fragments</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)):</span>
+				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Supplied fragment config file is not a csv or txt file: {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">))</span>
 		<span class="k">if</span> <span class="n">speciation_rates</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No speciation rates supplied: requires at least 1 for analysis.&quot;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">record_spatial</span> <span class="ow">is</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
@@ -555,12 +560,21 @@
 		<span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No times provided, defaulting to 0.0.&quot;</span><span class="p">)</span>
 			<span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+				<span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">times</span><span class="p">]</span>
+			<span class="n">out_times</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+					<span class="n">out_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">each</span><span class="p">))</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">out_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
+			<span class="n">times</span> <span class="o">=</span> <span class="n">out_times</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">times</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span> <span class="o">=</span> <span class="n">speciation_rates</span>
-
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot specify a null samplemask and expect automatic fragment detection; &quot;</span>
 							 <span class="s2">&quot;provide a samplemask or set record_fragments=False.&quot;</span><span class="p">)</span>
@@ -579,9 +593,9 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">necsimmodule</span><span class="o">.</span><span class="n">CCommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CCommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">necsimmodule</span><span class="o">.</span><span class="n">CMetacommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span></div>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CMetacommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.add_time"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_time">[docs]</a>	<span class="k">def</span> <span class="nf">add_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -1368,6 +1382,8 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="k">if</span> <span class="n">fragment</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="n">reference</span> <span class="o">=</span> <span class="mi">1</span>
 			<span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
 					<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES WHERE &quot;</span>
 										<span class="s2">&quot;community_reference==?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
@@ -2245,7 +2261,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

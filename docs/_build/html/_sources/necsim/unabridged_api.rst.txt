@@ -79,6 +79,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_ActivityMap.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_Cell.rst
 
 .. toctree::
@@ -184,11 +189,6 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_ReproductionMap.rst
-
-.. toctree::
-   :maxdepth: 5
-
    class_Row.rst
 
 .. toctree::
@@ -263,6 +263,26 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_archimedesSpiralX.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_archimedesSpiralX.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_archimedesSpiralY.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_archimedesSpiralY.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_calculateCLUMPY.rst
 
 .. toctree::
@@ -293,12 +313,12 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_cplCustomErrorHandler.rst
+   function_cplNecsimCustomErrorHandler.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_cplCustomErrorHandler.rst
+   function_cplNecsimCustomErrorHandler.rst
 
 .. toctree::
    :maxdepth: 5
@@ -388,7 +408,17 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_genLMCType.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_genPySimulationMethods.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_genSimulateDispersalType.rst
 
 .. toctree::
    :maxdepth: 5
@@ -513,12 +543,12 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_initnecsimmodule.rst
+   function_initlibnecsim.rst
 
 .. toctree::
    :maxdepth: 5
 
-   function_initnecsimmodule.rst
+   function_initlibnecsim.rst
 
 .. toctree::
    :maxdepth: 5
@@ -759,6 +789,11 @@ Functions
    :maxdepth: 5
 
    function_runXL.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_set_all_map_parameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1046,6 +1081,21 @@ Defines
 .. toctree::
    :maxdepth: 5
 
+   define__USE_MATH_DEFINES.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define__USE_MATH_DEFINES.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   define__USE_MATH_DEFINES.rst
+
+.. toctree::
+   :maxdepth: 5
+
    define_GETSTATE.rst
 
 .. toctree::
@@ -1091,17 +1141,12 @@ Defines
 .. toctree::
    :maxdepth: 5
 
+   define_SPECIATIONCOUNTER_FILESYSTEM_H.rst
+
+.. toctree::
+   :maxdepth: 5
+
    define_SPECIATIONCOUNTER_PROTRACTEDSPATIALTREE_H.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_sql_ram.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   define_sql_ram.rst
 
 Directories
 ***********
@@ -1115,6 +1160,16 @@ Directories
 Files
 *****
 
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_ActivityMap.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_ActivityMap.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1159,12 +1214,12 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_CPLCustomHandler.cpp.rst
+   file_necsim_CPLCustomHandlerNecsim.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_CPLCustomHandler.h.rst
+   file_necsim_CPLCustomHandlerNecsim.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1314,12 +1369,12 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsimmodule.cpp.rst
+   file_necsim.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsimmodule.h.rst
+   file_necsim.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1380,16 +1435,6 @@ Files
    :maxdepth: 5
 
    file_necsim_README.md.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_necsim_ReproductionMap.cpp.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   file_necsim_ReproductionMap.h.rst
 
 .. toctree::
    :maxdepth: 5

@@ -63,9 +63,9 @@ Included By
 -----------
 
 
-- :ref:`file_necsim_Community.h`
-
 - :ref:`file_necsim_Map.h`
+
+- :ref:`file_necsim_Community.h`
 
 - :ref:`file_necsim_Tree.h`
 

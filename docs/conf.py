@@ -139,6 +139,7 @@ language = None
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README_necsim.rst', 'README.md',
+					'*/cmake-*/*'
 					 # '*class_view_hierarchy.rst',
 					'**.ipynb_checkpoints']
 
@@ -587,7 +588,7 @@ with codecs.open("README_necsim.rst", "r", "utf8") as readme:
 exhale_args = {
 	"containmentFolder": "./necsim",
 	"rootFileName": "necsim_library.rst",
-	"rootFileTitle": "necim",
+	"rootFileTitle": "necsim",
 	"doxygenStripFromPath": stripPath,
 	"afterTitleDescription": data,
 	"createTreeView": True,

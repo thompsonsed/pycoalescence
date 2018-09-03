@@ -38,7 +38,7 @@ Includes
 --------
 
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CPLCustomHandler.h``
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CPLCustomHandlerNecsim.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Cell.h``
 
@@ -120,11 +120,13 @@ Includes
 
 - ``map``
 
+- ``memory``
+
+- ``necsim.h`` (:ref:`file_necsim.h`)
+
 - ``necsim/Community.h`` (:ref:`file_necsim_Community.h`)
 
 - ``necsim/Metacommunity.h`` (:ref:`file_necsim_Metacommunity.h`)
-
-- ``necsimmodule.h`` (:ref:`file_necsimmodule.h`)
 
 - ``set``
 
@@ -150,7 +152,7 @@ Included By
 -----------
 
 
-- :ref:`file_necsimmodule.cpp`
+- :ref:`file_necsim.cpp`
 
 
 

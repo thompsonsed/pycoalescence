@@ -9,14 +9,16 @@ Directory necsim
 Files
 -----
 
+- :ref:`file_necsim_ActivityMap.cpp`
+- :ref:`file_necsim_ActivityMap.h`
 - :ref:`file_necsim_Cell.cpp`
 - :ref:`file_necsim_Cell.h`
 - :ref:`file_necsim_Community.cpp`
 - :ref:`file_necsim_Community.h`
 - :ref:`file_necsim_ConfigFileParser.cpp`
 - :ref:`file_necsim_ConfigFileParser.h`
-- :ref:`file_necsim_CPLCustomHandler.cpp`
-- :ref:`file_necsim_CPLCustomHandler.h`
+- :ref:`file_necsim_CPLCustomHandlerNecsim.cpp`
+- :ref:`file_necsim_CPLCustomHandlerNecsim.h`
 - :ref:`file_necsim_CustomExceptions.h`
 - :ref:`file_necsim_DataMask.cpp`
 - :ref:`file_necsim_DataMask.h`
@@ -47,8 +49,6 @@ Files
 - :ref:`file_necsim_ProtractedTree.cpp`
 - :ref:`file_necsim_ProtractedTree.h`
 - :ref:`file_necsim_README.md`
-- :ref:`file_necsim_ReproductionMap.cpp`
-- :ref:`file_necsim_ReproductionMap.h`
 - :ref:`file_necsim_Setup.cpp`
 - :ref:`file_necsim_Setup.h`
 - :ref:`file_necsim_SimParameters.h`

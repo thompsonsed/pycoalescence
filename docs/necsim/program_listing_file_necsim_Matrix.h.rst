@@ -161,7 +161,8 @@ Program Listing for File Matrix.h
    protected:
    
        // number of rows and columns
-       unsigned long numCols{}, numRows{};
+       unsigned long numCols{};
+       unsigned long numRows{};
        // a matrix is an array of rows
        Row<T> *matrix;
    public:
@@ -425,6 +426,7 @@ Program Listing for File Matrix.h
                    is >> delim;
                }
            }
+           return is;
        }
    
        friend ostream &operator<<(ostream &os, const Matrix &m)

@@ -3,7 +3,7 @@
 Function readyPyTypeObject
 ==========================
 
-- Defined in :ref:`file_necsimmodule.cpp`
+- Defined in :ref:`file_necsim.cpp`
 
 
 Function Documentation

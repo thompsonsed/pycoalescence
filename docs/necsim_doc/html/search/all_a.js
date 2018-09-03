@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['maketip',['makeTip',['../class_tree.html#a0973cc37d9b95144db76d36cb363caca',1,'Tree']]],
+  ['maketip',['makeTip',['../class_tree.html#a3fa6fbeeb00d1661958f8e358796251c',1,'Tree']]],
   ['map',['Map',['../class_map.html',1,'']]],
   ['map_3c_20bool_20_3e',['Map&lt; bool &gt;',['../class_map.html',1,'']]],
   ['map_3c_20double_20_3e',['Map&lt; double &gt;',['../class_map.html',1,'']]],

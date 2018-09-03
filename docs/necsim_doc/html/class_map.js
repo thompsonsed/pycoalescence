@@ -36,6 +36,7 @@ var class_map =
     [ "operator+=", "class_map.html#a480a72298ae1fc8443b0edfaa66d7c46", null ],
     [ "operator-", "class_map.html#a08e75978ea8288083ef36f53b4ac115d", null ],
     [ "operator-=", "class_map.html#a0e459fd035b2435ea016dc93c55ccac0", null ],
+    [ "operator=", "class_map.html#a00f73ad13cb67e3c4836fae9614d6b40", null ],
     [ "operator[]", "class_map.html#ae7e14b4bd8bb570260a4e578e4a601b7", null ],
     [ "printNumberComplete", "class_map.html#a03e0486e704090765d253b18a9dde0f5", null ],
     [ "roundedScale", "class_map.html#a9862291ea99fe1718d758213b3687bd8", null ],

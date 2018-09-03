@@ -43,8 +43,7 @@ Program Listing for File Metacommunity.h
    
        ~Metacommunity() override = default;
    
-       void setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in,
-                                   string database_name_in);
+       void setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in);
    
        void checkSimulationParameters();
    

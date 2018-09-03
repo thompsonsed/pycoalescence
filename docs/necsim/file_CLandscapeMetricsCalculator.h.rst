@@ -46,9 +46,9 @@ Includes
 
 - ``Python.h``
 
-- ``necsim/CPLCustomHandler.h`` (:ref:`file_necsim_CPLCustomHandler.h`)
+- ``necsim.h`` (:ref:`file_necsim.h`)
 
-- ``necsimmodule.h`` (:ref:`file_necsimmodule.h`)
+- ``necsim/CPLCustomHandlerNecsim.h`` (:ref:`file_necsim_CPLCustomHandlerNecsim.h`)
 
 - ``string``
 
@@ -60,7 +60,7 @@ Included By
 -----------
 
 
-- :ref:`file_necsimmodule.cpp`
+- :ref:`file_necsim.cpp`
 
 
 
@@ -79,6 +79,8 @@ Functions
 - :ref:`function_calculateCLUMPY`
 
 - :ref:`function_calculateMNN`
+
+- :ref:`function_genLMCType`
 
 - :ref:`function_PyLMC_dealloc`
 

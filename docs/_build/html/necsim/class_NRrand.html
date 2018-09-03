@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Class NRrand &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Class NRrand &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="class_Metacommunity.html" title="Class Metacommunity"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -138,12 +138,44 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N6NRrand6norm2DEv">
-<span class="target" id="necsimclass_n_rrand_1a754e5083299d12c1b33e8c66519d057e"></span>double <code class="descname">norm2D</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand6norm2DEv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Returns a 2 dimensional call from a normal distribution, giving a distance in cartesian space This way is slightly inefficient for normal distributions, but it&#8217;s kept this way to make the Map::runDispersal() function applicable with any dispersal type. </p>
+<dt id="_CPPv2N6NRrand8rayleighEv">
+<span class="target" id="necsimclass_n_rrand_1a39576a34204f90b6cda7dfd92561c0b0"></span>double <code class="descname">rayleigh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand8rayleighEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a random distance from a 2 dimensional normal distribution, also called the rayleigh distribution. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>dispersal distance of a normal distribution </dd>
+<dd>dispersal distance of a rayleigh distribution </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand15rayleighMinDistERKd">
+<span class="target" id="necsimclass_n_rrand_1aefdaf5521b01658bdd1c206bbe1e855f"></span>double <code class="descname">rayleighMinDist</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand15rayleighMinDistERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generates a random distance from a rayleigh distribution, given that the distance is more than some minimum. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a random distance greater than the minimum provided </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dist</span></code>: the minimum distance to generate </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand11rayleighCDFERKd">
+<span class="target" id="necsimclass_n_rrand_1a2723a59dd63c61886238c2d466831985"></span>double <code class="descname">rayleighCDF</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>dist</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand11rayleighCDFERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the cumulative probability of a distance from the rayleigh distribution. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the probability of producing the given distance </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dist</span></code>: the distance to obtain the probability of </li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -173,6 +205,38 @@
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
 <li><code class="docutils literal"><span class="pre">z</span></code>: the desired sigma. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand10fattailCDFERKd">
+<span class="target" id="necsimclass_n_rrand_1a66a9362387e7421623d5e987a68b186e"></span>double <code class="descname">fattailCDF</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand10fattailCDFERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the cumulative probability density of travelling the distance. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the probability of dispersing less than or equal to distance </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">distance</span></code>: the distance to obtain the cumulative probability for </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand18fattailMinDistanceERKd">
+<span class="target" id="necsimclass_n_rrand_1a67490e1351fd3f81d1e904a69e81ecdb"></span>double <code class="descname">fattailMinDistance</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>min_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand18fattailMinDistanceERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets a fat-tailed random distance greater than some minimum. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a fat-tailed distance greater than the minimum </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">min_distance</span></code>: the minimum distance to return </li>
 </ul>
 </dd>
 </dl>
@@ -242,6 +306,49 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N6NRrand22normUniformMinDistanceERKd">
+<span class="target" id="necsimclass_n_rrand_1ad8c9f54d596e01624505c765172d8328"></span>double <code class="descname">normUniformMinDistance</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>min_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand22normUniformMinDistanceERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generates a random distance from a norm-uniform distribution, given that the distance is more than some minimum. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a random distance greater than the minimum provided </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dist</span></code>: the minimum distance to generate </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand7uniformEv">
+<span class="target" id="necsimclass_n_rrand_1ac89740fa57b3f92e30ca46b3d467a480"></span>double <code class="descname">uniform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand7uniformEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Draws a random number from a uniform distribution between 0 and cutoff. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a random number in (0, cutoff) </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand18uniformMinDistanceERKd">
+<span class="target" id="necsimclass_n_rrand_1a34fb5fae8e81f5073b6ec63988338c07"></span>double <code class="descname">uniformMinDistance</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>min_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand18uniformMinDistanceERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generates a random distance from a uniform distribution, given that the distance is more than some minimum. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a random distance greater than the minimum provided </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dist</span></code>: the minimum distance to generate </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N6NRrand14uniformUniformEv">
 <span class="target" id="necsimclass_n_rrand_1a799f55c57dc238f094a20e882e3abb51"></span>double <code class="descname">uniformUniform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand14uniformUniformEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Two uniform distributions, the first between 0 and 0.1*cutoff, and the second between 0.9*cutoff and cutoff. Selects from both distributions equally. </p>
@@ -250,6 +357,22 @@
 <dd>The mean for this function should be identical to a uniform distribution between 0 and cutoff. </dd>
 <dt><strong>Return</strong></dt>
 <dd>uniformly distributed number </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand25uniformUniformMinDistanceERKd">
+<span class="target" id="necsimclass_n_rrand_1a31cfb60ce2a776bb81479b80f585202f"></span>double <code class="descname">uniformUniformMinDistance</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>min_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand25uniformUniformMinDistanceERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generates a random distance from a uniform-uniform distribution, given that the distance is more than some minimum. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a random distance greater than the minimum provided </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">dist</span></code>: the minimum distance to generate </li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -279,6 +402,22 @@
 <dd>This function will never return a value larger than the size of LONG_MAX to avoid issues of converting doubles to integers. For dispersal distance within coalescence simulations, this is seemed a reasonable assumption, but may cause issues if code is re-used in later projects.</dd>
 <dt><strong>Return</strong></dt>
 <dd>distance the dispersal distance </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N6NRrand20dispersalMinDistanceERKd">
+<span class="target" id="necsimclass_n_rrand_1a3cb0629d54b54865403738edd84ba883"></span>double <code class="descname">dispersalMinDistance</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>min_distance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N6NRrand20dispersalMinDistanceERKd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a dispersal distance with some minimum. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the random dispersal distance greater than or equal to the minimum </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">min_distance</span></code>: the minimum distance to disperse </li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -385,8 +524,8 @@
         <li class="right" >
           <a href="class_Metacommunity.html" title="Class Metacommunity"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

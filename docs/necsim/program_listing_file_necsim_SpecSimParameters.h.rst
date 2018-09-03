@@ -49,6 +49,14 @@ Program Listing for File SpecSimParameters.h
        unsigned long metacommunity_size;
        double metacommunity_speciation_rate;
    
+       SpecSimParameters(): use_spatial(false), bMultiRun(false), use_fragments(false), filename("none"),
+                            all_speciation_rates(), samplemask("none"), times_file("null"), all_times(),
+                            fragment_config_file("none"), protracted_parameters(), metacommunity_size(0),
+                            metacommunity_speciation_rate(0.0)
+       {
+   
+       }
+   
        void setup(string file_in, bool use_spatial_in, string sample_file, vector<double> times, string use_fragments_in,
                   vector<double> speciation_rates, vector<double> min_speciation_gen_in,
                   vector<double> max_speciation_gen_in)

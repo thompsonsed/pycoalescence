@@ -1,10 +1,13 @@
 var searchData=
 [
-  ['recalculate_5fcoordinates',['recalculate_coordinates',['../class_data_mask.html#ab96af629241f61a4d7122c6b7a91a3ef',1,'DataMask']]],
+  ['rayleigh',['rayleigh',['../class_n_rrand.html#a39576a34204f90b6cda7dfd92561c0b0',1,'NRrand']]],
+  ['rayleighcdf',['rayleighCDF',['../class_n_rrand.html#a2723a59dd63c61886238c2d466831985',1,'NRrand']]],
+  ['rayleighmindist',['rayleighMinDist',['../class_n_rrand.html#aefdaf5521b01658bdd1c206bbe1e855f',1,'NRrand']]],
+  ['recalculatecoordinates',['recalculateCoordinates',['../class_data_mask.html#a5eaef817c1baf4ac14d06d0e92bd4787',1,'DataMask']]],
   ['recalculatehabitatmax',['recalculateHabitatMax',['../class_landscape.html#abaf14ac4da88cd26f6593bdaa88d999f',1,'Landscape']]],
   ['recordspatial',['recordSpatial',['../class_community.html#a08be240fddc6ea481014567276a84dd0',1,'Community']]],
-  ['rejectionsample',['rejectionSample',['../class_reproduction_map.html#a2dccd14c9d4cdc1b14a63e7d95eba0ae',1,'ReproductionMap']]],
-  ['rejectionsamplenull',['rejectionSampleNull',['../class_reproduction_map.html#a80dfa3194b7acabd813d9ae6b4ae3671',1,'ReproductionMap']]],
+  ['rejectionsample',['rejectionSample',['../class_activity_map.html#a19890a93eccac57093fc381dac776bb3',1,'ActivityMap']]],
+  ['rejectionsamplenull',['rejectionSampleNull',['../class_activity_map.html#aa6a93241569a51d46eee123ef386de32',1,'ActivityMap']]],
   ['removefragment',['removeFragment',['../class_samplematrix.html#a9b796f2279f1716c2a555ff3d641ea0b',1,'Samplematrix']]],
   ['removeoldposition',['removeOldPosition',['../class_spatial_tree.html#ae694bde4ab31b51c13c4a96f9a86a8ba',1,'SpatialTree::removeOldPosition()'],['../class_tree.html#ad74c05729c9e5235ab0fa6e34260093a',1,'Tree::removeOldPosition()']]],
   ['resethistorical',['resetHistorical',['../class_landscape.html#a03e35a3a42e40a683be01e75413d30d2',1,'Landscape']]],

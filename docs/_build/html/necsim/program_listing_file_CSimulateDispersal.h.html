@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File CSimulateDispersal.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File CSimulateDispersal.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_CSimulateDispersal.h.html" title="File CSimulateDispersal.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CSimulateDispersal.h.html" accesskey="U">File CSimulateDispersal.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -79,7 +79,7 @@
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyImports.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyTemplates.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;necsimmodule.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/SimParameters.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/SimulateDispersal.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;CSimulation.h&quot;</span><span class="cp"></span>
@@ -125,6 +125,80 @@
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">};</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="nf">set_all_map_parameters</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">landscape_type</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">fine_map_file</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">coarse_map_file</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">path_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">number_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">rate_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">time_fine</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">path_coarse</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">number_coarse</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">rate_coarse</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">time_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_path_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_number_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_rate_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_time_fine</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_path_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_number_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_rate_coarse</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_time_coarse</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;isiiiiiisiiiiisO!O!O!O!O!O!O!O!&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">deme</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fine_map_file</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_size</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_x_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_y_offset</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">coarse_map_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_x_size</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_x_offset</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_y_offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_scale</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">landscape_type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_path_fine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_number_fine</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_rate_fine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_time_fine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_path_coarse</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_number_coarse</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_rate_coarse</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_time_coarse</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;Maps have already been imported&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">grid_x_size</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_x_size</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">grid_y_size</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">sample_y_size</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">fine_map_file</span> <span class="o">=</span> <span class="n">fine_map_file</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">coarse_map_file</span> <span class="o">=</span> <span class="n">coarse_map_file</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="n">landscape_type</span><span class="p">;</span>
+        <span class="n">importPyListToVectorString</span><span class="p">(</span><span class="n">p_path_fine</span><span class="p">,</span> <span class="n">path_fine</span><span class="p">,</span> <span class="s">&quot;Fine map paths must be strings.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_number_fine</span><span class="p">,</span> <span class="n">number_fine</span><span class="p">,</span> <span class="s">&quot;Fine map numbers must be integers.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_rate_fine</span><span class="p">,</span> <span class="n">rate_fine</span><span class="p">,</span> <span class="s">&quot;Fine map rates must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_time_fine</span><span class="p">,</span> <span class="n">time_fine</span><span class="p">,</span> <span class="s">&quot;Fine map times must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorString</span><span class="p">(</span><span class="n">p_path_coarse</span><span class="p">,</span> <span class="n">path_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map paths must be strings.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_number_coarse</span><span class="p">,</span> <span class="n">number_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map numbers must be integers.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_rate_coarse</span><span class="p">,</span> <span class="n">rate_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map rates must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">p_time_coarse</span><span class="p">,</span> <span class="n">time_coarse</span><span class="p">,</span> <span class="s">&quot;Coarse map times must be floats.&quot;</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">dispersalParameters</span><span class="o">-&gt;</span><span class="n">setHistoricalMapParameters</span><span class="p">(</span><span class="n">path_fine</span><span class="p">,</span> <span class="n">number_fine</span><span class="p">,</span> <span class="n">rate_fine</span><span class="p">,</span> <span class="n">time_fine</span><span class="p">,</span> <span class="n">path_coarse</span><span class="p">,</span>
+                                                              <span class="n">number_coarse</span><span class="p">,</span> <span class="n">rate_coarse</span><span class="p">,</span> <span class="n">time_coarse</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importMaps</span><span class="p">();</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">has_imported_maps</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="n">PyObject</span> <span class="o">*</span><span class="nf">set_maps</span><span class="p">(</span><span class="n">PySimulateDispersal</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 <span class="p">{</span>
@@ -303,7 +377,7 @@
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="kt">int</span> <span class="n">num_repeats</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">is_sequential</span><span class="p">;</span>
-        <span class="n">PyObject</span> <span class="o">*</span> <span class="n">p_num_steps</span><span class="p">;</span>
+        <span class="n">PyObject</span> <span class="o">*</span><span class="n">p_num_steps</span><span class="p">;</span>
         <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">num_steps</span><span class="p">;</span>
         <span class="c1">// parse arguments</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;iO!ii&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num_repeats</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p_num_steps</span><span class="p">,</span>
@@ -312,7 +386,10 @@
             <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
-        <span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_num_steps</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="s">&quot;Number of steps must be integers.&quot;</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">importPyListToVectorULong</span><span class="p">(</span><span class="n">p_num_steps</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="s">&quot;Number of steps must be integers.&quot;</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">setDispersalParameters</span><span class="p">();</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSequential</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">is_sequential</span><span class="p">));</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">seed</span><span class="p">));</span>
@@ -415,26 +492,34 @@
                                                               <span class="s">&quot;Runs the dispersal simulation for the set parameters, calculating the mean distance travelled.&quot;</span><span class="p">},</span>
                 <span class="p">{</span><span class="s">&quot;import_maps&quot;</span><span class="p">,</span>                   <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_maps</span><span class="p">,</span>                      <span class="n">METH_VARARGS</span><span class="p">,</span>
                                                               <span class="s">&quot;Imports the map files for the simulation. Should only be run once.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s">&quot;import_all_maps&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_all_map_parameters</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span>
+                        <span class="s">&quot;Imports all the map files with a single import.&quot;</span><span class="p">},</span>
                 <span class="p">{</span><span class="s">&quot;set_historical_map_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">set_historical_map_parameters</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span>
                                                               <span class="s">&quot;Sets the historical map parameters.&quot;</span><span class="p">},</span>
                 <span class="p">{</span><span class="k">nullptr</span><span class="p">,</span>                         <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">}</span>
         <span class="p">};</span>
 
-<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_SimulateDispersalType</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;necsimmodule.CDispersalSimulation&quot;</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;Simulate a dispersal kernel on a landscape.&quot;</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PySimulateDispersal</span><span class="p">),</span>
-        <span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PySimulateDispersal_new</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">PySimulateDispersal_init</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">PySimulateDispersal_dealloc</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">PyTemplate_traverse</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">,</span>
-<span class="c1">//      .tp_members = PyTemplate_members&lt;T&gt;,</span>
-        <span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">SimulateDispersalMethods</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">PyTemplate_gen_getsetters</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">()</span>
-<span class="p">};</span>
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="nf">genSimulateDispersalType</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">PyTypeObject</span> <span class="n">retSimulateDispersalType</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">};</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CDispersalSimulation&quot;</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PySimulateDispersal</span><span class="p">);</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">PySimulateDispersal_dealloc</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;Simulate a dispersal kernel on a landscape.&quot;</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">PyTemplate_traverse</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">SimulateDispersalMethods</span><span class="p">;</span>
+    <span class="c1">//      .tp_members = PyTemplate_members&lt;T&gt;,</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">PyTemplate_gen_getsetters</span><span class="o">&lt;</span><span class="n">SimulateDispersal</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">PySimulateDispersal_init</span><span class="p">;</span>
+    <span class="n">retSimulateDispersalType</span><span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PySimulateDispersal_new</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">retSimulateDispersalType</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_SimulateDispersalType</span> <span class="o">=</span> <span class="n">genSimulateDispersalType</span><span class="p">();</span>
 <span class="cp">#endif </span><span class="c1">//NECSIM_CSIMULATEDISPERSAL_H</span>
 </pre></div>
 </div>
@@ -491,8 +576,8 @@
         <li class="right" >
           <a href="file_CSimulateDispersal.h.html" title="File CSimulateDispersal.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CSimulateDispersal.h.html" >File CSimulateDispersal.h</a> &#187;</li> 
       </ul>
     </div>

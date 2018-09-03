@@ -4,29 +4,29 @@ pycoalescence overview
 *A python package for coalescence-based spatially-explicit neutral
 ecology simulations*
 
-INTRODUCTION
-------------
+Introduction
+~~~~~~~~~~~~
 
 pycoalescence is a python package for spatially-explicit coalescence
 neutral simulations. pycoalescence provides a pythonic interface for
 setting up, running and analysing spatially-explicit neutral
 simulations. Simulations themselves are performed in c++ using
 `necsim <https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html>`__
-for excellent performance. Usage of python allows for easier setup of
-simulation parameters.
+for excellent performance, whilst the python interface provides a simple
+solution for setting up and analysing simulations.
 
 For full documentation please see
 `here <https://pycoalescence.readthedocs.io/en/release/>`__.
 
-INSTALLATION
-------------
+Installation
+~~~~~~~~~~~~
 
 Installation is available through pip, conda or a manual installation.
 For full installation instructions, see
 `here <https://pycoalescence.readthedocs.io/en/release/README_pycoalescence.html#installation>`__.
 
 Currently, pip is supported on Mac OS X and Linux and conda is supported
-on Linux and Windows.
+on Mac OS X, Linux and Windows.
 
 Using pip, make sure all the prerequisites are installed and run
 ``pip install pycoalescence``.
@@ -41,13 +41,13 @@ to lib/obj and the .so file is compiled to the necsim directory.
 Make sure compilation is performed under the same python version
 simulations will be performed in.
 
-BASIC USAGE
------------
+Basic Usage
+~~~~~~~~~~~
 
 The Simulation class contains most of the operations required for
 setting up a coalescence simulation. The important set up functions are:
 
--  ``set_simulation_params()`` sets a variety of key simulation
+-  ``set_simulation_parameters()`` sets a variety of key simulation
    variables, including the seed, output directory, dispersal parameters
    and speciation rate.
 -  ``set_map()`` is used to specify a map file to use. More complex map
@@ -70,7 +70,7 @@ The basic procedure for this procedure is
 
 -  ``set_database()`` to provide the path to the completed simulation
    database
--  ``set_speciation_params()`` which takes as arguments
+-  ``set_speciation_parameters()`` which takes as arguments
 
    -  T/F of recording full spatial data
    -  either a csv file containing fragment data, or T/F for whether
@@ -84,11 +84,11 @@ The basic procedure for this procedure is
    time-intensive for large simulations. The calculations will be stored
    in extra tables within the same SQL file as originally specified.
 
-REQUIREMENTS
-------------
+Requirements
+~~~~~~~~~~~~
 
 Essential
-~~~~~~~~~
+^^^^^^^^^
 
 -  Python version 2 >= 2.7.9 or 3 >= 3.4.1
 -  C++ compiler (such as GNU g++) with C++14 support.
@@ -105,7 +105,7 @@ Essential
    the gdal documentation for more help installing gdal properly.
 
 Recommended
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 -  The fast-cpp-csv-parser by Ben Strasser, available
    `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__. This
@@ -122,7 +122,7 @@ Recommended
    (``pip install matplotlib``).
 
 CONTACTS
---------
+~~~~~~~~
 
 Author: Samuel Thompson
 

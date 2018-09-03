@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Class SpeciesList &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Class SpeciesList &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="class_SpeciationCommands.html" title="Class SpeciationCommands"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -84,12 +84,6 @@
 <dt id="_CPPv2N11SpeciesListD0Ev">
 <span class="target" id="necsimclass_species_list_1a16e2d58a8643fa58eb25e8258682965c"></span><code class="descname">~SpeciesList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesListD0Ev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Default destructor. </p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N11SpeciesList8fillListEv">
-<span class="target" id="necsimclass_species_list_1ad617317047f221e64066dd851b9e8d2d"></span>void <code class="descname">fillList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList8fillListEv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Fills the list with 0, up to the specified maximum size. </p>
 </dd></dl>
 
 <dl class="function">
@@ -181,26 +175,12 @@ Note this version will throw a runtime_error if the space is not empty <dl class
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N11SpeciesList10addSpeciesEm">
-<span class="target" id="necsimclass_species_list_1a4a54fa9e6c07f8d75d9cddbf9a04da19"></span>unsigned long <code class="descname">addSpecies</code><span class="sig-paren">(</span>unsigned long <em>new_spec</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList10addSpeciesEm" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N11SpeciesList10addSpeciesERKm">
+<span class="target" id="necsimclass_species_list_1a037e254fa1c99ef08d2e3875720f8d8f"></span>unsigned long <code class="descname">addSpecies</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>new_spec</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList10addSpeciesERKm" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Add a new species to the first empty place and return the position of the lineage. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>the location the species has been added to. </dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal"><span class="pre">new_spec</span></code>: the new species reference to place in the first empty space. </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N11SpeciesList16addSpeciesSilentEm">
-<span class="target" id="necsimclass_species_list_1af84a5aa6584f16dfb8e8f2ce379cf947"></span>void <code class="descname">addSpeciesSilent</code><span class="sig-paren">(</span>unsigned long <em>new_spec</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList16addSpeciesSilentEm" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Add a new species to the first empty place. Essentially a version of <a class="reference internal" href="#necsimclass_species_list_1a4a54fa9e6c07f8d75d9cddbf9a04da19"><span class="std std-ref">addSpecies()</span></a> without returning the species location. </p>
-<p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
 <li><code class="docutils literal"><span class="pre">new_spec</span></code>: the new species reference to place in the first empty space. </li>
@@ -247,7 +227,7 @@ Note this version will throw a runtime_error if the space is not empty <dl class
 <dl class="function">
 <dt id="_CPPv2N11SpeciesList18changePercentCoverEm">
 <span class="target" id="necsimclass_species_list_1a40206bc9836f394653997a61c1c8617a"></span>void <code class="descname">changePercentCover</code><span class="sig-paren">(</span>unsigned long <em>newmaxsize</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList18changePercentCoverEm" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Changes the maximum size of the <a class="reference internal" href="#necsimclass_species_list"><span class="std std-ref">SpeciesList</span></a>. Creates a new list object with all the species in the correct place from the old list object and zeros everywhere else. </p>
+<dd><p>Changes the maximum size of the <a class="reference internal" href="#necsimclass_species_list"><span class="std std-ref">SpeciesList</span></a>. Currently identical to setMaxsize. </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last simple">
@@ -259,8 +239,8 @@ Note this version will throw a runtime_error if the space is not empty <dl class
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N11SpeciesList14getRandLineageER6NRrand">
-<span class="target" id="necsimclass_species_list_1a8e57aa257510bf61680e53c548fd4610"></span>unsigned long <code class="descname">getRandLineage</code><span class="sig-paren">(</span><a class="reference internal" href="class_NRrand.html#_CPPv26NRrand" title="NRrand">NRrand</a> &amp;<em>rand_no</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList14getRandLineageER6NRrand" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N11SpeciesList14getRandLineageE10shared_ptrI6NRrandE">
+<span class="target" id="necsimclass_species_list_1a931c33b7672e1e107cd9dc4f08cc218c"></span>unsigned long <code class="descname">getRandLineage</code><span class="sig-paren">(</span>shared_ptr&lt;<a class="reference internal" href="class_NRrand.html#_CPPv26NRrand" title="NRrand">NRrand</a>&gt; <em>rand_no</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList14getRandLineageE10shared_ptrI6NRrandE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get a random species reference number from all the potential entries. Updated alternative version returns any entry, including empty cells, giving the probability of coalescence as well. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -330,6 +310,17 @@ Note this version will throw a runtime_error if the space is not empty <dl class
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>the maximum number of lineages that can exist currently. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N11SpeciesList13getListLengthEv">
+<span class="target" id="necsimclass_species_list_1a915e688365530f9fa39f0506c9b1c29f"></span>unsigned long <code class="descname">getListLength</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N11SpeciesList13getListLengthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the length of the list object. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the length of the list object </dd>
 </dl>
 </p>
 </dd></dl>
@@ -440,8 +431,8 @@ Note this version will throw a runtime_error if the space is not empty <dl class
         <li class="right" >
           <a href="class_SpeciationCommands.html" title="Class SpeciationCommands"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

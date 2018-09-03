@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Metacommunity.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Metacommunity.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_Metacommunity.cpp.html" title="File Metacommunity.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.cpp.html" accesskey="U">File Metacommunity.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -72,23 +72,16 @@
 <span class="cp">#include</span> <span class="cpf">&quot;Metacommunity.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;LogFile.h&quot;</span><span class="cp"></span>
 
-<span class="n">Metacommunity</span><span class="o">::</span><span class="n">Metacommunity</span><span class="p">()</span>
+<span class="n">Metacommunity</span><span class="o">::</span><span class="n">Metacommunity</span><span class="p">()</span><span class="o">:</span> <span class="n">community_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">speciation_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">task</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">parameters_checked</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+                                <span class="n">metacommunity_cumulative_abundances</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">random</span><span class="p">(),</span> <span class="n">metacommunity_tree</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">community_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">parameters_checked</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-    <span class="n">metacommunity_cumulative_abundances</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">setCommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">community_size_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span>
-                                           <span class="n">string</span> <span class="n">database_name_in</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">setCommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">community_size_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">createParent</span><span class="p">(</span><span class="n">database_name_in</span><span class="p">);</span>
     <span class="n">community_size</span> <span class="o">=</span> <span class="n">community_size_in</span><span class="p">;</span>
     <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
-    <span class="c1">// open the sqlite connection to the output database</span>
-    <span class="n">openSqlConnection</span><span class="p">(</span><span class="n">database_name_in</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">checkSimulationParameters</span><span class="p">()</span>
@@ -100,7 +93,7 @@
             <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Cannot read simulation parameters as database is null pointer.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="c1">// Now do the same for times</span>
-        <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span><span class="p">;</span>
+        <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">string</span> <span class="n">sql_call</span> <span class="o">=</span> <span class="s">&quot;SELECT seed, task from SIMULATION_PARAMETERS&quot;</span><span class="p">;</span>
         <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">sql_call</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">sql_call</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
                                     <span class="k">nullptr</span><span class="p">);</span>
@@ -204,10 +197,11 @@
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;********************&quot;</span><span class="p">);</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Metacommunity application&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
-    <span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">);</span>
     <span class="c1">// Make sure that the connection is opened to file.</span>
-    <span class="n">bSqlConnection</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">openSqlConnection</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
     <span class="n">checkSimulationParameters</span><span class="p">();</span>
+    <span class="n">closeSqlConnection</span><span class="p">();</span>
     <span class="n">createMetacommunityNSENeutralModel</span><span class="p">();</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Creating coalescence tree from metacommunity...&quot;</span><span class="p">);</span>
@@ -269,8 +263,8 @@
         <li class="right" >
           <a href="file_necsim_Metacommunity.cpp.html" title="File Metacommunity.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.cpp.html" >File Metacommunity.cpp</a> &#187;</li> 
       </ul>
     </div>

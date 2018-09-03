@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.system_operations &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence.system_operations &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -62,21 +62,15 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
-
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span>
-	<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">STDOUT</span><span class="p">,</span> <span class="n">check_output</span>
-
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c1"># Logging will not raise an exception if there has been no logging file set.</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">raiseExceptions</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="c1"># Set up the module directory</span>
-<span class="n">mod_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
-
 <span class="n">logging_set</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">mod_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
 
 <span class="k">try</span><span class="p">:</span>
 	<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">isclose</span>
@@ -94,6 +88,7 @@
 <span class="sd">		:return: true for significantly different a and b, false otherwise</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rel_tol</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span> <span class="n">abs_tol</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="check_parent"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.check_parent">[docs]</a><span class="k">def</span> <span class="nf">check_parent</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -116,6 +111,7 @@
 	<span class="k">else</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File path is None&quot;</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="check_file_exists"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.check_file_exists">[docs]</a><span class="k">def</span> <span class="nf">check_file_exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Checks that the specified filename exists, if it is not &quot;null&quot; or &quot;none&quot;.</span>
@@ -130,6 +126,7 @@
 		<span class="n">err</span> <span class="o">=</span> <span class="s2">&quot;Map file &quot;</span> <span class="o">+</span> <span class="n">file_name</span> <span class="o">+</span> <span class="s2">&quot; does not exist. Check that this is an absolute path or disable map &quot;</span> \
 										<span class="s2">&quot;file check&quot;</span>
 		<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="execute"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.execute">[docs]</a><span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -173,9 +170,11 @@
 <span class="sd">	:param kwargs: keyword arguments to be passed to subprocess.Popen()</span>
 
 <span class="sd">	:return: None</span>
+<span class="sd">	:rtype: None</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 		<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="execute_silent"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.execute_silent">[docs]</a><span class="k">def</span> <span class="nf">execute_silent</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -187,10 +186,10 @@
 <span class="sd">	:param kwargs: keyword arguments to be passed to subprocess.Popen()</span>
 
 <span class="sd">	:return: None</span>
+<span class="sd">	:rtype: None</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 		<span class="k">continue</span></div>
-
 
 
 <div class="viewcode-block" id="set_logging_method"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.set_logging_method">[docs]</a><span class="k">def</span> <span class="nf">set_logging_method</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -231,7 +230,7 @@
 	<span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">message</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_logger"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.create_logger">[docs]</a><span class="k">def</span> <span class="nf">create_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="create_logger"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.create_logger">[docs]</a><span class="k">def</span> <span class="nf">create_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Creates a logger object to be assigned to NECSim sims and dispersal tests.</span>
 
@@ -254,6 +253,7 @@
 	<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">logger</span></div>
 
+
 <div class="viewcode-block" id="elegant_pairing"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.elegant_pairing">[docs]</a><span class="k">def</span> <span class="nf">elegant_pairing</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A more elegant version of cantor pairing, which allows for storing of a greater number of digits without</span>
@@ -267,8 +267,9 @@
 <span class="sd">	:return: a unique reference combining the two integers.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="n">x1</span> <span class="o">&gt;</span> <span class="n">x2</span><span class="p">:</span>
-		<span class="k">return</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span>
-	<span class="k">return</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x1</span></div>
+		<span class="k">return</span> <span class="n">x1</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span>
+	<span class="k">return</span> <span class="n">x2</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">x1</span></div>
+
 
 <div class="viewcode-block" id="cantor_pairing"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.system_operations.cantor_pairing">[docs]</a><span class="k">def</span> <span class="nf">cantor_pairing</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -288,7 +289,7 @@
 
 <span class="sd">	:return: a unique reference combining the two integers</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="p">((</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">x2</span></div>
+	<span class="k">return</span> <span class="p">((</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">x2</span></div>
 </pre></div>
 
           </div>
@@ -322,7 +323,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

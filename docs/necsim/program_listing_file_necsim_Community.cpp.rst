@@ -63,7 +63,7 @@ Program Listing for File Community.cpp
                   protracted_params == protracted_parameters;
        }
        return doubleCompare(speciation_rate, speciation_rate_in, speciation_rate * 0.000001) &&
-              doubleCompare(time, time_in, time * 0.0001) && fragment == fragment_in &&
+              doubleCompare(time, time_in, time * 0.0000000001) && fragment == fragment_in &&
               metacommunity_reference == metacommunity_reference_in &&
                protracted_params == protracted_parameters;
    }
@@ -73,7 +73,7 @@ Program Listing for File Community.cpp
                                      const ProtractedSpeciationParameters &protracted_params)
    {
        return doubleCompare(speciation_rate, speciation_rate_in, speciation_rate * 0.000001) &&
-              doubleCompare(time, time_in, 0.0001) && metacommunity_reference == metacommunity_reference_in &&
+              doubleCompare(time, time_in, 0.0000000001) && metacommunity_reference == metacommunity_reference_in &&
                protracted_params == protracted_parameters;
    }
    
@@ -649,7 +649,7 @@ Program Listing for File Community.cpp
        sqlite3 *tmpdb;
        int rc = sqlite3_open_v2(db.c_str(), &tmpdb, SQLITE_OPEN_READWRITE, "unix-dotfile");
        string to_exec = "SELECT MAX(xval),MAX(yval) FROM SPECIES_LIST;";
-       sqlite3_stmt *stmt;
+       sqlite3_stmt *stmt = nullptr;
        rc = sqlite3_prepare_v2(tmpdb, to_exec.c_str(), static_cast<int>(strlen(to_exec.c_str())), &stmt, nullptr);
        unsigned long xvalmax, yvalmax;
        rc = sqlite3_step(stmt);
@@ -669,8 +669,15 @@ Program Listing for File Community.cpp
    void Community::openSqlConnection(string inputfile)
    {
        // open the database objects
-       sqlite3_backup *backupdb;
+       sqlite3_backup *backupdb = nullptr;
+       sqlite3 *outdatabase = nullptr;
        // open one db in memory and one from the file.
+       if(!boost::filesystem::exists(inputfile))
+       {
+           stringstream ss;
+           ss << "Output database does not exist at " << inputfile << ": cannot open sql connection." << endl;
+           throw FatalException(ss.str());
+       }
        try
        {
            openSQLiteDatabase(":memory:", database);
@@ -715,6 +722,12 @@ Program Listing for File Community.cpp
        bSqlConnection = true;
    }
    
+   void Community::closeSqlConnection()
+   {
+       sqlite3_close(database);
+       bSqlConnection = false;
+   }
+   
    void Community::setInternalDatabase()
    {
        {
@@ -750,9 +763,9 @@ Program Listing for File Community.cpp
        }
        writeInfo("Beginning data import...");
        // The sql statement to store the sql statement message object
-       sqlite3_stmt *stmt;
+       sqlite3_stmt *stmt = nullptr;
    
-       // Now find out the max size of the list, so we have a count to work from
+       // Now find out the max size of the species_id_list, so we have a count to work from
        string count_command = "SELECT COUNT(*) FROM SPECIES_LIST;";
        sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
                           nullptr);
@@ -801,7 +814,7 @@ Program Listing for File Community.cpp
    //      }
    //      else
    //      {
-           // the -1 is to ensure that the list includes all lineages, but fills the output from the beginning
+           // the -1 is to ensure that the species_id_list includes all lineages, but fills the output from the beginning
            unsigned long index = i - 1 - ignored_lineages;
            (*nodes)[index].setup(tip, xval, yval, xwrap, ywrap, generationin);
            (*nodes)[index].burnSpecies(species_id);
@@ -847,8 +860,8 @@ Program Listing for File Community.cpp
        }
        if(max_species_id == 0)
        {
-           sqlite3_stmt *stmt;
-           // Now find out the max size of the list, so we have a count to work from
+           sqlite3_stmt *stmt = nullptr;
+           // Now find out the max size of the species_id_list, so we have a count to work from
            string count_command = "SELECT MAX(ID) FROM SPECIES_ABUNDANCES;";
            sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
                               nullptr);
@@ -888,8 +901,8 @@ Program Listing for File Community.cpp
        }
        if(max_locations_id == 0)
        {
-           sqlite3_stmt *stmt;
-           // Now find out the max size of the list, so we have a count to work from
+           sqlite3_stmt *stmt = nullptr;
+           // Now find out the max size of the species_id_list, so we have a count to work from
            string count_command = "SELECT MAX(ID) FROM SPECIES_LOCATIONS;";
            sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
                               nullptr);
@@ -908,8 +921,8 @@ Program Listing for File Community.cpp
        }
        if(max_fragment_id == 0)
        {
-           sqlite3_stmt *stmt;
-           // Now find out the max size of the list, so we have a count to work from
+           sqlite3_stmt *stmt = nullptr;
+           // Now find out the max size of the species_id_list, so we have a count to work from
            string count_command = "SELECT MAX(ID) FROM FRAGMENT_ABUNDANCES;";
            sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
                               nullptr);
@@ -981,7 +994,7 @@ Program Listing for File Community.cpp
                return;
            }
    //#endif // DEBUG
-           sqlite3_stmt *stmt;
+           sqlite3_stmt *stmt = nullptr;
            string table_command = "INSERT INTO SPECIES_ABUNDANCES (ID, species_id, "
                                   "no_individuals, community_reference) VALUES (?,?,?,?);";
            sqlite3_prepare_v2(database, table_command.c_str(), static_cast<int>(strlen(table_command.c_str())), &stmt,
@@ -1094,7 +1107,7 @@ Program Listing for File Community.cpp
                               "no_individuals INT NOT NULL, community_reference int NOT NULL);";
        sqlite3_exec(database, table_command.c_str(), nullptr, nullptr, nullptr);
        getMaxFragmentAbundancesID();
-       sqlite3_stmt *stmt;
+       sqlite3_stmt *stmt = nullptr;
        table_command = "INSERT INTO FRAGMENT_ABUNDANCES (ID, fragment, area, size, species_id, "
                        "no_individuals, community_reference) VALUES (?,?,?,?,?,?,?);";
        sqlite3_prepare_v2(database, table_command.c_str(), static_cast<int>(strlen(table_command.c_str())), &stmt,
@@ -1209,13 +1222,9 @@ Program Listing for File Community.cpp
                throw FatalException(ss.str());
            }
            sqlite3_close(outdatabase2);
-           sqlite3_close(database);
            writeInfo("done!\n");
        }
-       else
-       {
-           sqlite3_close(database);
-       }
+       closeSqlConnection();
    }
    
    bool Community::checkSpeciesLocationsReference()
@@ -1225,8 +1234,8 @@ Program Listing for File Community.cpp
            throw FatalException("Attempted to get from sql database without opening database connection.");
        }
    
-       sqlite3_stmt *stmt;
-       // Now find out the max size of the list, so we have a count to work from
+       sqlite3_stmt *stmt = nullptr;
+       // Now find out the max size of the species_id_list, so we have a count to work from
        string count_command = "SELECT COUNT(*) FROM SPECIES_LOCATIONS WHERE community_reference == ";
        count_command += to_string(current_community_parameters->reference) + ";";
        sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
@@ -1245,8 +1254,8 @@ Program Listing for File Community.cpp
            throw FatalException("Attempted to get from sql database without opening database connection.");
        }
    
-       sqlite3_stmt *stmt;
-       // Now find out the max size of the list, so we have a count to work from
+       sqlite3_stmt *stmt = nullptr;
+       // Now find out the max size of the species_id_list, so we have a count to work from
        string count_command = "SELECT COUNT(*) FROM SPECIES_ABUNDANCES WHERE community_reference = ";
        count_command += to_string(current_community_parameters->reference) + ";";
        sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
@@ -1265,7 +1274,7 @@ Program Listing for File Community.cpp
                               "NOT NULL, x INT NOT NULL, y INT NOT NULL, community_reference INT NOT NULL);";
        sqlite3_exec(database, table_command.c_str(), nullptr, nullptr, nullptr);
        getMaxSpeciesLocationsID();
-       sqlite3_stmt *stmt;
+       sqlite3_stmt *stmt = nullptr;
        // Checks that the SPECIES_LOCATIONS table doesn't already have a reference in matching the current reference
        if(current_community_parameters->updated)
        {
@@ -1569,6 +1578,7 @@ Program Listing for File Community.cpp
                        ss << ", requires 6 (name, x_west, y_north, x_east, y_south, area)." << endl;
                        throw FatalException(ss.str());
                    }
+                   fragments.resize(tmp_raw_read.size() - 1);
                    break;
                }
                // Fragment name and dimensions
@@ -1703,7 +1713,6 @@ Program Listing for File Community.cpp
                stringstream ss;
                ss << "ERROR_SQL_020: FATAL. Could not open simulation parameters in " << file << ". Error code: ";
                ss << sqlite3_errmsg(database);
-               sqlite3_close(outdatabase);
                sqlite3_close(database);
                throw SpeciesException(ss.str());
            }
@@ -1792,7 +1801,6 @@ Program Listing for File Community.cpp
        int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
        if(rc != SQLITE_DONE && rc != SQLITE_OK)
        {
-           sqlite3_close(outdatabase);
            sqlite3_close(database);
            throw SpeciesException("ERROR_SQL_020: FATAL. Could not check for COMMUNITY_PARAMETERS table. Error code: " +
                                   to_string(rc));
@@ -1816,7 +1824,6 @@ Program Listing for File Community.cpp
                                    nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
-               sqlite3_close(outdatabase);
                sqlite3_close(database);
                throw SpeciesException("ERROR_SQL_020: FATAL. Could not detect COMMUNITY_PARAMETERS table. Error code: " +
                                       to_string(rc));
@@ -1861,7 +1868,6 @@ Program Listing for File Community.cpp
        rc = sqlite3_prepare_v2(database, call3.c_str(), static_cast<int>(strlen(call3.c_str())), &stmt3, nullptr);
        if(rc != SQLITE_DONE && rc != SQLITE_OK)
        {
-           sqlite3_close(outdatabase);
            sqlite3_close(database);
            throw SpeciesException(
                    "ERROR_SQL_020: FATAL. Could not check for METACOMMUNITY_PARAMETERS table. Error code: " +
@@ -1881,7 +1887,6 @@ Program Listing for File Community.cpp
                                    nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
-               sqlite3_close(outdatabase);
                sqlite3_close(database);
                throw SpeciesException(
                        "ERROR_SQL_020: FATAL. Could not detect METACOMMUNITY_PARAMETERS table. Error code: " +
@@ -1952,7 +1957,6 @@ Program Listing for File Community.cpp
        int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
        if(rc != SQLITE_DONE && rc != SQLITE_OK)
        {
-           sqlite3_close(outdatabase);
            sqlite3_close(database);
            throw SpeciesException("ERROR_SQL_020: FATAL. Could not check for COMMUNITY_PARAMETERS table. Error code: " +
                                   to_string(rc));
@@ -1971,7 +1975,6 @@ Program Listing for File Community.cpp
                                    nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
-               sqlite3_close(outdatabase);
                sqlite3_close(database);
                throw SpeciesException("ERROR_SQL_020: FATAL. Could not detect COMMUNITY_PARAMETERS table. Error code: " +
                                       to_string(rc));
@@ -2001,7 +2004,6 @@ Program Listing for File Community.cpp
        int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
        if(rc != SQLITE_DONE && rc != SQLITE_OK)
        {
-           sqlite3_close(outdatabase);
            sqlite3_close(database);
            throw SpeciesException(
                    "ERROR_SQL_020: FATAL. Could not check for METACOMMUNITY_PARAMETERS table. Error code: " +
@@ -2020,7 +2022,6 @@ Program Listing for File Community.cpp
                                    nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
-               sqlite3_close(outdatabase);
                sqlite3_close(database);
                throw SpeciesException(
                        "ERROR_SQL_020: FATAL. Could not detect METACOMMUNITY_PARAMETERS table. Error code: " +
@@ -2075,7 +2076,7 @@ Program Listing for File Community.cpp
            table_command2 += ") " + table_command3 + ");";
    
            sqlite3_exec(database, table_command.c_str(), nullptr, nullptr, nullptr);
-           sqlite3_stmt *stmt;
+           sqlite3_stmt *stmt = nullptr;
    
            sqlite3_prepare_v2(database, table_command2.c_str(), static_cast<int>(strlen(table_command.c_str())), &stmt,
                               nullptr);
@@ -2164,7 +2165,7 @@ Program Listing for File Community.cpp
            string table_command = "CREATE TABLE IF NOT EXISTS METACOMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,"
                                   " speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);";
            sqlite3_exec(database, table_command.c_str(), nullptr, nullptr, nullptr);
-           sqlite3_stmt *stmt;
+           sqlite3_stmt *stmt = nullptr;
            table_command = "INSERT INTO METACOMMUNITY_PARAMETERS (reference, speciation_rate, metacommunity_size"
                            ") VALUES (?,?,?);";
            sqlite3_prepare_v2(database, table_command.c_str(), static_cast<int>(strlen(table_command.c_str())), &stmt,
@@ -2231,7 +2232,7 @@ Program Listing for File Community.cpp
                    throw FatalException("Attempted to update sql database without opening database connection.");
                }
    
-               // Now find out the max size of the list, so we have a count to work from
+               // Now find out the max size of the species_id_list, so we have a count to work from
                string count_command = "UPDATE COMMUNITY_PARAMETERS SET fragments = 1 WHERE reference = ";
                count_command += to_string(parameter.reference) + ";";
                int rc = sqlite3_exec(database, count_command.c_str(), nullptr, nullptr, nullptr);
@@ -2397,6 +2398,9 @@ Program Listing for File Community.cpp
        if(sp->use_fragments)
        {
            calcFragments(sp->fragment_config_file);
+           stringstream os;
+           os << "Total fragments: " << fragments.size() << endl;
+           writeInfo(os.str());
        }
        calculateTree();
    }

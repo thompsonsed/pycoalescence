@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File CLandscapeMetricsCalculator.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File CLandscapeMetricsCalculator.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_CLandscapeMetricsCalculator.h.html" title="File CLandscapeMetricsCalculator.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CLandscapeMetricsCalculator.h.html" accesskey="U">File CLandscapeMetricsCalculator.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -73,10 +73,10 @@
 <span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;necsimmodule.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;LandscapeMetricsCalculator.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyLogging.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;necsim/CPLCustomHandler.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;necsim/CPLCustomHandlerNecsim.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyTemplates.h&quot;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="nc">PyLMC</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span>
@@ -185,22 +185,28 @@
                 <span class="p">{</span><span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">}</span>
         <span class="p">};</span>
 
-
-<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_LMCType</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;necsimmodule.CLandscapeMetricsCalculator&quot;</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;Calculate landscape metrics from a map file.&quot;</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PyLMC</span><span class="p">),</span>
-        <span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PyTemplate_new</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">PyLMC_init</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">PyLMC_dealloc</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">PyTemplate_traverse</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="n">PyTypeObject</span> <span class="nf">genLMCType</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">PyTypeObject</span> <span class="n">ret_Simulation_Type</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">PyVarObject_HEAD_INIT</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">};</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_name</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;libnecsim.CLandscapeMetricsCalculator&quot;</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_doc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;Calculate landscape metrics from a map file.&quot;</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_basicsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PyLMC</span><span class="p">);</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_itemsize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_flags</span> <span class="o">=</span> <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_BASETYPE</span> <span class="o">|</span> <span class="n">Py_TPFLAGS_HAVE_GC</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PyTemplate_new</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_init</span> <span class="o">=</span> <span class="p">(</span><span class="n">initproc</span><span class="p">)</span> <span class="n">PyLMC_init</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_dealloc</span> <span class="o">=</span> <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">PyLMC_dealloc</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_traverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">traverseproc</span><span class="p">)</span> <span class="n">PyTemplate_traverse</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="c1">//      .tp_members = PyTemplate_members&lt;T&gt;,</span>
-        <span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">PyLMCMethods</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">PyTemplate_gen_getsetters</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">()</span>
-<span class="p">};</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_methods</span> <span class="o">=</span> <span class="n">PyLMCMethods</span><span class="p">;</span>
+    <span class="n">ret_Simulation_Type</span><span class="p">.</span><span class="n">tp_getset</span> <span class="o">=</span> <span class="n">PyTemplate_gen_getsetters</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">ret_Simulation_Type</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_LMCType</span> <span class="o">=</span> <span class="n">genLMCType</span><span class="p">();</span>
 
 
 
@@ -261,8 +267,8 @@
         <li class="right" >
           <a href="file_CLandscapeMetricsCalculator.h.html" title="File CLandscapeMetricsCalculator.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CLandscapeMetricsCalculator.h.html" >File CLandscapeMetricsCalculator.h</a> &#187;</li> 
       </ul>
     </div>

@@ -52,11 +52,13 @@ Included By
 
 - :ref:`file_necsim_CustomExceptions.h`
 
-- :ref:`file_necsim_CPLCustomHandler.cpp`
+- :ref:`file_necsim_CPLCustomHandlerNecsim.cpp`
 
 - :ref:`file_necsim_DataPoint.cpp`
 
 - :ref:`file_necsim_Logging.cpp`
+
+- :ref:`file_necsim_main.cpp`
 
 - :ref:`file_necsim_Setup.cpp`
 

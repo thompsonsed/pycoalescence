@@ -317,3 +317,13 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertAlmostEqual(4*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=2), places=0)
 		self.assertAlmostEqual(8*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=3), places=0)
 
+	def testDispersalWithHistoricalMaps(self):
+		"""Tests that a simulation with a historical map works."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal9.db", seed=2,
+									sigma=2, landscape_type="closed", number_steps=100)
+		m.set_map("sample/SA_sample_fine.tif")
+		m.add_historical_map(fine_map="sample/SA_sample_fine2.tif", coarse_map="none", time=10, rate=0.1)
+		m.run_mean_distance_travelled()
+		self.assertAlmostEqual(9.657166679793269, m.get_mean_distance_travelled(parameter_reference=1), places=6)
+

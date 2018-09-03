@@ -117,19 +117,19 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li><b>CONTACTS</b></li>
 </ul>
 <h2>INTRODUCTION</h2>
-<p>necsim is a generic spatial coalescence simulator for neutral systems. It applies the model to map objects, which can change over time, for a specific set of supplied parameters, and outputs information for each individual to a SQL database.</p>
+<p>necsim is a generic spatial coalescence simulator for neutral systems. It applies the model to temporally and spatially varying density maps for a specific set of supplied parameters, and outputs information for each individual to a SQL database.</p>
 <p>necsim includes functionality for applying varying speciation rates after simulations are complete. This enables the main simulation to be run with the <em>minimum</em> speciation rate required and afterwards analysis can be completed using different speciation rates.</p>
 <p>The recommended method of usage is through the pycoalescence package, using a python interface for installation, simulation setup and running. See <a href="http://pycoalescence.readthedocs.io/">here</a> for more details.</p>
 <p>You are free to modify and distribute the code as per the license specified in <b>LICENCE.txt</b> to suit any additional neutral simulation requirements (or any other purpose).</p>
 <h2>INSTRUCTIONS</h2>
 <h3>Compiling the program</h3>
-<p>See the Requirements section for a full list of the necessary prerequisites. Once these are installed, compiling the program should be relatively easy. NECSim requires a linker to the boost libraries, as well as the sqlite3 library. It is recommended to run with the maximum optimisation possible.</p>
+<p>See the Requirements section for a full species_id_list of the necessary prerequisites. Once these are installed, compiling the program should be relatively easy. necsim requires a linker to the boost libraries, as well as the sqlite3 library. It is recommended to run with the maximum optimisation possible.</p>
 <p>Additionally, if support is required for tif files (an alternative to importing csv files), the <a href="http://www.gdal.org/">gdal library</a> is required. See the online documentation for help compiling gdal for your operating system. When compiling using gdal, use the <code>-D with_gdal</code> compilation flag.</p>
 <p>For compilation on High Performance Computing (HPC) systems, they will likely use intel compilers. The header files for the sqlite and boost packages may need to be copied in to the working directory to avoid problems with linking to libraries. Check the service providers' documentation for whether these libraries are already installed on the HPC. for the application of different speciation rates.</p>
 <h3>Running simulations</h3>
-<p>The routine relies on supplying command line arguments (see below) for all the major simulation variables. Alternatively, supplying a config .txt file and using the command line arguments <code>./necsim -c /path/to/config.txt</code> can be used for parsing command line arguments from the text file.</p>
+<p>Note that the recommended method of running and analysing simulations is through the <a href="https://pycoalescence.readthedocs.io"><b>pycoalescence</b></a> python package. The routine relies on supplying command line arguments (see below) for all the major simulation variables. Alternatively, supplying a config .txt file and using the command line arguments <code>./necsim -c /path/to/config.txt</code> can be used for parsing command line arguments from the text file.</p>
 <h4>Command Line Arguments</h4>
-<p>The following command line arguments are required. This list can be accessed by running <code>“./necsim -h”</code> or <code>./necsim -help</code></p>
+<p>The following command line arguments are required. This species_id_list can be accessed by running <code>“./necsim -h”</code> or <code>./necsim -help</code></p>
 <p>The command line options to be specified are:</p>
 <ol type="1">
 <li>the seed for the simulation.</li>
@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li>the time (in generations) since the historical forest was seen.</li>
 <li>the dispersal tau value (the width of the kernel.</li>
 <li>the sample mask, with binary 1:0 values for areas that we want to sample from. If this is not provided then this will default to mapping the whole area.</li>
-<li>the link to the file containing every generation that the list should be expanded. This should be in the format of a list.</li>
+<li>the link to the file containing every generation that the species_id_list should be expanded. This should be in the format of a species_id_list.</li>
 <li>(and onwards) - speciation rates to apply after the simulation is complete.</li>
 </ol>
 <h4>Config Files</h4>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>Upon successful completion of a simulation, necsim will produce an SQLite database file in the output directory in an SQL_data folder. This database contains several tables, which can be accessed using a program like <a href="http://sqlitebrowser.org/">DB Browser for SQLite</a> or Microsoft Access. Alternatively, most programming languages have an SQLite interface (<a href="https://cran.r-project.org/web/packages/RSQLite/index.html">RSQlite</a>, <a href="https://docs.python.org/2/library/sqlite3.html">python sqlite3</a>)</p>
 <ul>
 <li>The main table within the database is the SPECIES_LIST table, which is the location and inheritence of every lineage recorded. Several other important data structures (such as whether it is a "tip" of the phylogenetic tree of not) which are used when re-constructing the species identity.</li>
-<li>A secondary output from necims is a SIMULATION_PARAMETERS table for identifying the exact parameters with which the model is run.</li>
+<li>A secondary output from necsims is a SIMULATION_PARAMETERS table for identifying the exact parameters with which the model is run.</li>
 <li>SpeciationCounter also produces a SPECIES_ABUNDANCES table containing species abundances across the whole sample map, plus (optionally) a table of SPECIES_LOCATIONS (containing the x,y location of every individual) and FRAGMENT_ABUNDANCES (species abundances for each habitat fragment separately).</li>
 </ul>
 <h2>REQUIREMENTS</h2>
@@ -238,7 +238,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 </ul>
 </li>
 <li>The <code><a class="el" href="class_species_list.html" title="Contains a list of the species that exist at one location. The Row object, list, contains the active ...">SpeciesList</a></code> class<ul>
-<li>Contains the list of individuals, for application in a matrix, to essentially create a 3D array.</li>
+<li>Contains the species_id_list of individuals, for application in a matrix, to essentially create a 3D array.</li>
 <li>Handles the positioning of individuals in space within a grid cell.</li>
 </ul>
 </li>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li>Contains basic functions for importing command line arguments from a config file, providing an alternative way of setting up simulations.</li>
 </ul>
 </li>
-<li>The <code>TreeList</code> class<ul>
+<li>The <code><a class="el" href="class_community.html" title="A class to contain the tree object lineages and reconstructing the coalescence tree. Contains functions for calculating the number of species for a given speciation rate, outputting spatial data and generating species abundance distributions. Requires a link to the SQLite database from simulation output, and produces results within the same database file. ">Community</a></code> class<ul>
 <li>Provides the routines for applying different speciation rates to a phylogenetic tree, to be used either immediately after simulation within necsim, or at a later time using SpeciationCounter.cpp</li>
 </ul>
 </li>

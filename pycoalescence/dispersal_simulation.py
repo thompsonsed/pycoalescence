@@ -130,7 +130,7 @@ class DispersalSimulation(Landscape):
 		:param database: the database to open
 
 		:return: true if the DISPERSAL_DISTANCES table exists in the output database
-		:rtype bool
+		:rtype: bool
 		"""
 		self._open_database_connection(database)
 		existence = self._db_conn.cursor().execute("SELECT name FROM sqlite_master WHERE type='table' AND"
@@ -170,7 +170,6 @@ class DispersalSimulation(Landscape):
 		:param float cutoff: the cutoff value to use for norm-uniform dispersal
 		:param float dispersal_relative_cost:relative dispersal ability through non-habitat
 		:param bol restrict_self: if true, self-dispersal is prohibited
-		:return:
 		"""
 		self.dispersal_method = dispersal_method
 		self.sigma = sigma
@@ -244,6 +243,7 @@ class DispersalSimulation(Landscape):
 		self.number_repeats = number_repeats
 		if output_database != "output.db" or self.dispersal_database is None:
 			self.dispersal_database = output_database
+		self.dispersal_database = os.path.abspath(self.dispersal_database)
 		self.seed = seed
 		self.landscape_type = landscape_type
 		self.sequential = sequential
@@ -272,23 +272,31 @@ class DispersalSimulation(Landscape):
 		if self.setup_complete:
 			self.logger.info("Set up has already been completed.")
 		else:
-			self.c_dispersal_simulation.import_maps(self.deme, self.fine_map.file_name, self.fine_map.x_size,
-													self.fine_map.y_size, self.fine_map.x_offset,
-													self.fine_map.y_offset,
-													self.sample_map.x_size, self.sample_map.y_size,
-													self.coarse_map.file_name, self.coarse_map.x_size,
-													self.coarse_map.y_size, self.coarse_map.x_offset,
-													self.coarse_map.y_offset, int(self.coarse_scale),
-													self.landscape_type)
 			if len(self.historical_fine_list) != 0:
-				self.c_dispersal_simulation.set_historical_map_parameters(self.historical_fine_list,
-																		  [x for x in
-																		   range(len(self.historical_fine_list))],
-																		  self.rates_list, self.times_list,
-																		  self.historical_coarse_list,
-																		  [x for x in
-																		   range(len(self.historical_fine_list))],
-																		  self.rates_list, self.times_list)
+				self.c_dispersal_simulation.import_all_maps(self.deme, self.fine_map.file_name, self.fine_map.x_size,
+															self.fine_map.y_size, self.fine_map.x_offset,
+															self.fine_map.y_offset, self.sample_map.x_size,
+															self.sample_map.y_size, self.coarse_map.file_name,
+															self.coarse_map.x_size, self.coarse_map.y_size,
+															self.coarse_map.x_offset, self.coarse_map.y_offset,
+															int(self.coarse_scale), self.landscape_type,
+															self.historical_fine_list,
+															[x for x in range(len(self.historical_fine_list))],
+															[float(x) for x in self.rates_list],
+															[float(x) for x in self.times_list],
+															self.historical_coarse_list,
+															[x for x in range(len(self.historical_fine_list))],
+															[float(x) for x in self.rates_list],
+															[float(x) for x in self.times_list])
+			else:
+				self.c_dispersal_simulation.import_maps(self.deme, self.fine_map.file_name, self.fine_map.x_size,
+														self.fine_map.y_size, self.fine_map.x_offset,
+														self.fine_map.y_offset,
+														self.sample_map.x_size, self.sample_map.y_size,
+														self.coarse_map.file_name, self.coarse_map.x_size,
+														self.coarse_map.y_size, self.coarse_map.x_offset,
+														self.coarse_map.y_offset, int(self.coarse_scale),
+														self.landscape_type)
 			self.setup_complete = True
 
 	def run_mean_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, sequential=None):

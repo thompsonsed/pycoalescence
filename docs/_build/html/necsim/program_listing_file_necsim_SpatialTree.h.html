@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SpatialTree.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SpatialTree.h &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_SpatialTree.h.html" title="File SpatialTree.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpatialTree.h.html" accesskey="U">File SpatialTree.h</a> &#187;</li> 
       </ul>
     </div>  
@@ -84,9 +84,16 @@
 <span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#ifndef WIN_INSTALL</span>
+
 <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#endif</span>
+
 <span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="c1">//#define with_gdal</span>
 <span class="c1">// extra boost include - this requires the installation of boost on the system</span>
 <span class="c1">// note that this requires compilation with the -lboost_filesystem and -lboost_system linkers.</span>
@@ -94,13 +101,14 @@
 
 <span class="c1">// include fast-csv-parser by Ben Strasser (available from https://github.com/ben-strasser/fast-cpp-csv-parser)</span>
 <span class="c1">// for fast file reading</span>
+
 <span class="cp">#ifdef use_csv</span>
 <span class="cp">#include</span> <span class="cpf">&quot;fast-cpp-csv-parser/csv.h&quot;</span><span class="cp"></span>
 <span class="cp">#endif</span>
 
-<span class="cp">#ifndef sql_ram</span>
-<span class="cp">#define sql_ram</span>
-<span class="cp">#endif</span>
+<span class="c1">//#ifndef sql_ram</span>
+<span class="c1">//#define sql_ram</span>
+<span class="c1">//#endif</span>
 
 <span class="c1">// other includes for required files</span>
 <span class="cp">#include</span> <span class="cpf">&quot;Tree.h&quot;</span><span class="cp"></span>
@@ -114,7 +122,7 @@
 <span class="cp">#include</span> <span class="cpf">&quot;Community.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Setup.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;DispersalCoordinator.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;ReproductionMap.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ActivityMap.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Logger.h&quot;</span><span class="cp"></span>
 
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
@@ -124,25 +132,30 @@
 <span class="k">protected</span><span class="o">:</span>
     <span class="c1">// Our dispersal coordinator for getting dispersal distances and managing calls from the landscape</span>
     <span class="n">DispersalCoordinator</span> <span class="n">dispersal_coordinator</span><span class="p">;</span>
-    <span class="c1">// The reproduction map object</span>
-    <span class="n">ReproductionMap</span> <span class="n">rep_map</span><span class="p">;</span>
-    <span class="c1">// A list of new variables which will contain the relevant information for maps and grids.</span>
+    <span class="c1">// Death probability values across the landscape</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span> <span class="n">death_map</span><span class="p">;</span>
+    <span class="c1">// Reproduction probability values across the landscape</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span> <span class="n">reproduction_map</span><span class="p">;</span>
+    <span class="c1">// A species_id_list of new variables which will contain the relevant information for maps and grids.</span>
     <span class="c1">//  strings containing the file names to be imported.</span>
     <span class="n">string</span> <span class="n">fine_map_input</span><span class="p">,</span> <span class="n">coarse_map_input</span><span class="p">;</span>
     <span class="n">string</span> <span class="n">historical_fine_map_input</span><span class="p">,</span> <span class="n">historical_coarse_map_input</span><span class="p">;</span>
     <span class="c1">// Landscape object containing both the coarse and fine maps for checking whether or not there is habitat at a</span>
     <span class="c1">// particular location.</span>
-    <span class="n">Landscape</span> <span class="n">landscape</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span> <span class="n">landscape</span><span class="p">;</span>
     <span class="c1">// An indexing spatial positioning of the lineages</span>
     <span class="n">Matrix</span><span class="o">&lt;</span><span class="n">SpeciesList</span><span class="o">&gt;</span> <span class="n">grid</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">desired_specnum</span><span class="p">;</span>
     <span class="c1">// contains the DataMask for where we should start lineages from.</span>
     <span class="n">DataMask</span> <span class="n">samplegrid</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">SpatialTree</span><span class="p">()</span> <span class="o">:</span> <span class="n">Tree</span><span class="p">()</span>
+    <span class="n">SpatialTree</span><span class="p">()</span> <span class="o">:</span> <span class="n">Tree</span><span class="p">(),</span> <span class="n">dispersal_coordinator</span><span class="p">(),</span> <span class="n">death_map</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span><span class="p">()),</span>
+                    <span class="n">reproduction_map</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ActivityMap</span><span class="o">&gt;</span><span class="p">()),</span>
+                    <span class="n">fine_map_input</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span> <span class="n">coarse_map_input</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span> <span class="n">historical_fine_map_input</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span>
+                    <span class="n">historical_coarse_map_input</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">),</span> <span class="n">landscape</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span><span class="p">()),</span>
+                    <span class="n">grid</span><span class="p">(),</span> <span class="n">desired_specnum</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">samplegrid</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">outdatabase</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">desired_specnum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
     <span class="p">}</span>
 
     <span class="o">~</span><span class="n">SpatialTree</span><span class="p">()</span> <span class="k">override</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
@@ -160,7 +173,7 @@
     <span class="c1">// order to function correctly.</span>
     <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">importReproductionMap</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">importActivityMaps</span><span class="p">();</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getInitialCount</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
@@ -171,7 +184,8 @@
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">fillObjects</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">initial_count</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getIndividualsSampled</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span>
-                                 <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_wrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_wrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_gen</span><span class="p">);</span>
+                                        <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_wrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_wrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">current_gen</span><span class="p">);</span>
+
     <span class="kt">void</span> <span class="nf">removeOldPosition</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
 
     <span class="kt">void</span> <span class="nf">calcMove</span><span class="p">();</span>
@@ -197,8 +211,7 @@
     <span class="kt">void</span> <span class="nf">historicalStepChecks</span><span class="p">();</span>
 <span class="cp">#endif</span>
 
-
-    <span class="kt">void</span> <span class="nf">incrementGeneration</span><span class="p">()</span> <span class="k">override</span> <span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">incrementGeneration</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
     <span class="kt">void</span> <span class="nf">updateStepCoalescenceVariables</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
@@ -206,37 +219,38 @@
 
     <span class="n">string</span> <span class="nf">simulationParametersSqlInsertion</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
-
     <span class="kt">void</span> <span class="nf">simPause</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
-    <span class="kt">void</span> <span class="nf">dumpMap</span><span class="p">(</span><span class="n">string</span> <span class="n">pause_folder</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpMap</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">dumpGrid</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">simResume</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
-    <span class="kt">void</span> <span class="nf">loadGridSave</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">loadGridSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">loadMapSave</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">loadMapSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">verifyReproductionMap</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">verifyActivityMaps</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">addWrappedLineage</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numstart</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">);</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">countCellExpansion</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span>
-                                     <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generationin</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">make_tips</span><span class="p">);</span>
+                                     <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generationin</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">expandCell</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x_wrap</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y_wrap</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generation_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">add</span><span class="p">);</span>
-
-
-
+    <span class="kt">void</span> <span class="nf">expandCell</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x_wrap</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y_wrap</span><span class="p">,</span> <span class="kt">double</span> <span class="n">generation_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">add</span><span class="p">,</span>
+                    <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">active_added</span><span class="p">);</span>
 
 <span class="cp">#ifdef DEBUG</span>
 
     <span class="kt">void</span> <span class="nf">validateLineages</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
 
     <span class="kt">void</span> <span class="nf">debugDispersal</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">debugAddingLineage</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">numstart</span><span class="p">,</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">runChecks</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">coalchosen</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
 <span class="cp">#endif</span>
 <span class="p">};</span>
 
@@ -296,8 +310,8 @@
         <li class="right" >
           <a href="file_necsim_SpatialTree.h.html" title="File SpatialTree.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SpatialTree.h.html" >File SpatialTree.h</a> &#187;</li> 
       </ul>
     </div>

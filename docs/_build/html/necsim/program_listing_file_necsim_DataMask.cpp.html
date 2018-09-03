@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File DataMask.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File DataMask.cpp &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,8 +50,8 @@
         <li class="right" >
           <a href="file_necsim_DataMask.cpp.html" title="File DataMask.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_DataMask.cpp.html" accesskey="U">File DataMask.cpp</a> &#187;</li> 
       </ul>
     </div>  
@@ -72,7 +72,8 @@
 
 <span class="n">DataMask</span><span class="o">::</span><span class="n">DataMask</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">isNullSample</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">isGridOffset</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="n">x_dim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">y_dim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">x_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -82,16 +83,16 @@
     <span class="n">getProportionfptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">DataMask</span><span class="o">::</span><span class="n">getBoolProportion</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">bool</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">getDefault</span><span class="p">()</span>
+<span class="kt">bool</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">isNull</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">return</span> <span class="n">bDefault</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">isNullSample</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">sim_parameters</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="k">if</span><span class="p">((</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_x_size</span> <span class="o">&gt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_x_size</span> <span class="o">||</span>
-        <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span> <span class="o">&gt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_size</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bDefault</span><span class="p">)</span>
+        <span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span> <span class="o">&gt;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_size</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isNullSample</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Grid size: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_x_size</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span>
                      <span class="n">to_string</span><span class="p">(</span><span class="n">sim_parameters</span><span class="p">.</span><span class="n">grid_y_size</span><span class="p">));</span>
@@ -107,6 +108,14 @@
     <span class="n">mask_y_dim</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_size</span><span class="p">;</span>
     <span class="n">x_offset</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_x_offset</span><span class="p">;</span>
     <span class="n">y_offset</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_offset</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">x_dim</span> <span class="o">!=</span> <span class="n">mask_x_dim</span> <span class="o">||</span> <span class="n">y_dim</span> <span class="o">!=</span> <span class="n">mask_y_dim</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">isGridOffset</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">isGridOffset</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">bool</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">checkCanUseDefault</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">sim_parameters</span><span class="p">)</span>
@@ -117,18 +126,18 @@
            <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_y_size</span> <span class="o">==</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_y_size</span> <span class="o">&amp;&amp;</span>
            <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_x_offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">fine_map_y_offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">isNullSample</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">else</span>
         <span class="p">{</span>
-            <span class="n">bDefault</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">isNullSample</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
-        <span class="n">bDefault</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_mask_file</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+        <span class="n">isNullSample</span> <span class="o">=</span> <span class="n">sim_parameters</span><span class="p">.</span><span class="n">sample_mask_file</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="n">bDefault</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">isNullSample</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">importBooleanMask</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">xdim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">ydim</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask_xdim</span><span class="p">,</span>
@@ -144,8 +153,8 @@
     <span class="n">tmp_sim_parameters</span><span class="p">.</span><span class="n">sample_x_offset</span> <span class="o">=</span> <span class="n">xoffset</span><span class="p">;</span>
     <span class="n">tmp_sim_parameters</span><span class="p">.</span><span class="n">sample_y_offset</span> <span class="o">=</span> <span class="n">yoffset</span><span class="p">;</span>
     <span class="n">setup</span><span class="p">(</span><span class="n">tmp_sim_parameters</span><span class="p">);</span>
-    <span class="n">bDefault</span> <span class="o">=</span> <span class="n">inputfile_in</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span> <span class="o">||</span> <span class="n">inputfile_in</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bDefault</span><span class="p">)</span>
+    <span class="n">isNullSample</span> <span class="o">=</span> <span class="n">inputfile_in</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span> <span class="o">||</span> <span class="n">inputfile_in</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">isNullSample</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">doImport</span><span class="p">();</span>
     <span class="p">}</span>
@@ -222,7 +231,7 @@
 <span class="p">{</span>
     <span class="kt">long</span> <span class="n">xval</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">xwrap</span> <span class="o">*</span> <span class="n">x_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">;</span>
     <span class="kt">long</span> <span class="n">yval</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">ywrap</span> <span class="o">*</span> <span class="n">y_dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">bDefault</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">isNullSample</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
     <span class="p">}</span>
@@ -265,7 +274,7 @@
 <span class="kt">double</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">getSampleProportion</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">bDefault</span> <span class="o">||</span> <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">isNullSample</span> <span class="o">||</span> <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;Cannot get the exact value from a samplemask if we are using a null mask, or the &quot;</span>
                            <span class="s">&quot;exact samplemask has not been properly imported.&quot;</span><span class="p">);</span>
@@ -281,7 +290,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">getProportionfptr</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xwrap</span><span class="p">,</span> <span class="n">ywrap</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">convertBoolean</span><span class="p">(</span><span class="n">Landscape</span> <span class="o">&amp;</span><span class="n">map1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">deme_sampling</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">convertBoolean</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span> <span class="n">map1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">deme_sampling</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Clear the old boolean object and set the new size</span>
     <span class="n">sample_mask</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="n">y_dim</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">);</span>
@@ -293,8 +302,8 @@
             <span class="kt">long</span> <span class="n">tmp_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
             <span class="kt">long</span> <span class="n">tmp_xwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
             <span class="kt">long</span> <span class="n">tmp_ywrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="n">recalculate_coordinates</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">tmp_y</span><span class="p">,</span> <span class="n">tmp_xwrap</span><span class="p">,</span> <span class="n">tmp_ywrap</span><span class="p">);</span>
-            <span class="kt">double</span> <span class="n">density</span> <span class="o">=</span> <span class="n">map1</span><span class="p">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">tmp_y</span><span class="p">,</span> <span class="n">tmp_xwrap</span><span class="p">,</span> <span class="n">tmp_ywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">)</span> <span class="o">*</span> <span class="n">deme_sampling</span><span class="p">;</span>
+            <span class="n">recalculateCoordinates</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">tmp_y</span><span class="p">,</span> <span class="n">tmp_xwrap</span><span class="p">,</span> <span class="n">tmp_ywrap</span><span class="p">);</span>
+            <span class="kt">double</span> <span class="n">density</span> <span class="o">=</span> <span class="n">map1</span><span class="o">-&gt;</span><span class="n">getVal</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">tmp_y</span><span class="p">,</span> <span class="n">tmp_xwrap</span><span class="p">,</span> <span class="n">tmp_ywrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">)</span> <span class="o">*</span> <span class="n">deme_sampling</span><span class="p">;</span>
             <span class="n">sample_mask</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">density</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -305,9 +314,10 @@
     <span class="n">sample_mask_exact</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">recalculate_coordinates</span><span class="p">(</span><span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_wrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_wrap</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">DataMask</span><span class="o">::</span><span class="n">recalculateCoordinates</span><span class="p">(</span><span class="kt">long</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">x_wrap</span><span class="p">,</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">y_wrap</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bDefault</span><span class="p">)</span>
+    <span class="c1">// TODO FIX THIS AND FIGURE OUT WTF IS GOING ON</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">isGridOffset</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">x_wrap</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="p">((</span><span class="n">floor</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">x_offset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">x_dim</span><span class="p">)));</span>
         <span class="n">y_wrap</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="p">((</span><span class="n">floor</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">y_offset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">y_dim</span><span class="p">)));</span>
@@ -370,8 +380,8 @@
         <li class="right" >
           <a href="file_necsim_DataMask.cpp.html" title="File DataMask.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necim</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_DataMask.cpp.html" >File DataMask.cpp</a> &#187;</li> 
       </ul>
     </div>

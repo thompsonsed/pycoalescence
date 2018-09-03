@@ -15,7 +15,9 @@ Program Listing for File Setup.h
    #define SETUP
    #include <string>
    #include <vector>
+   #ifndef WIN_INSTALL
    #include <unistd.h>
+   #endif
    #include <sstream>
    #include <ctime>
    #include <boost/filesystem.hpp>

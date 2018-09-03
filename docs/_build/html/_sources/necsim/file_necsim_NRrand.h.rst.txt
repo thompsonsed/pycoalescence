@@ -40,6 +40,8 @@ Includes
 
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
+- ``algorithm``
+
 - ``climits``
 
 - ``cmath``
@@ -62,6 +64,8 @@ Included By
 -----------
 
 
+- :ref:`file_necsim_ActivityMap.h`
+
 - :ref:`file_necsim_DispersalCoordinator.h`
 
 - :ref:`file_necsim_Tree.h`
@@ -69,8 +73,6 @@ Included By
 - :ref:`file_necsim_SpatialTree.h`
 
 - :ref:`file_necsim_SpeciesList.h`
-
-- :ref:`file_necsim_ReproductionMap.h`
 
 - :ref:`file_necsim_Metacommunity.h`
 
@@ -91,6 +93,13 @@ Functions
 
 
 - :ref:`function_RNMX`
+
+
+Defines
+-------
+
+
+- :ref:`define__USE_MATH_DEFINES`
 
 
 Variables

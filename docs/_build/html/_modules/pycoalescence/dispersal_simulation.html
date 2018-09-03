@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.6rc38 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.6rc38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -64,19 +64,18 @@
 <span class="sd">	- Database containing each distance travelled so that metrics can be calculated.</span>
 <span class="sd">	- A table is created for mean dispersal distance over a single step or for mean distance travelled.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">std</span>
 
-<span class="kn">from</span> <span class="nn">.landscape</span> <span class="kn">import</span> <span class="n">Landscape</span>
 
 <span class="c1"># Python 2</span>
 <span class="k">try</span><span class="p">:</span>
-	<span class="kn">from</span> <span class="nn">build</span> <span class="kn">import</span> <span class="n">necsimmodule</span><span class="p">,</span> <span class="n">NECSimError</span>
+	<span class="kn">from</span> <span class="nn">.necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span>
 <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ime</span><span class="p">:</span>
-	<span class="kn">from</span> <span class="nn">.build</span> <span class="kn">import</span> <span class="n">necsimmodule</span><span class="p">,</span> <span class="n">NECSimError</span>
+	<span class="kn">from</span> <span class="nn">pycoalescence.necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span>
 
 <span class="k">try</span><span class="p">:</span>
 	<span class="k">try</span><span class="p">:</span>
@@ -88,8 +87,9 @@
 	<span class="n">sqlite3</span> <span class="o">=</span> <span class="bp">None</span>
 	<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Problem importing sqlite module &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ie</span><span class="p">))</span>
 
-<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">check_parent</span><span class="p">,</span> <span class="n">write_to_log</span>
-<span class="kn">from</span> <span class="nn">.map</span> <span class="kn">import</span> <span class="n">Map</span>
+<span class="kn">from</span> <span class="nn">pycoalescence.system_operations</span> <span class="kn">import</span> <span class="n">check_parent</span><span class="p">,</span> <span class="n">write_to_log</span>
+<span class="kn">from</span> <span class="nn">pycoalescence.map</span> <span class="kn">import</span> <span class="n">Map</span>
+<span class="kn">from</span> <span class="nn">pycoalescence.landscape</span> <span class="kn">import</span> <span class="n">Landscape</span>
 
 
 <div class="viewcode-block" id="DispersalSimulation"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation">[docs]</a><span class="k">class</span> <span class="nc">DispersalSimulation</span><span class="p">(</span><span class="n">Landscape</span><span class="p">):</span>
@@ -111,7 +111,7 @@
 		<span class="n">Landscape</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;pycoalescence.dispersal_simulation&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="n">logging_level</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span> <span class="o">=</span> <span class="n">necsimmodule</span><span class="o">.</span><span class="n">CDispersalSimulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CDispersalSimulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="c1"># The dispersal simulation data</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">dispersal_db</span>
@@ -185,7 +185,7 @@
 <span class="sd">		:param database: the database to open</span>
 
 <span class="sd">		:return: true if the DISPERSAL_DISTANCES table exists in the output database</span>
-<span class="sd">		:rtype bool</span>
+<span class="sd">		:rtype: bool</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_open_database_connection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
 		<span class="n">existence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39; AND&quot;</span>
@@ -225,7 +225,6 @@
 <span class="sd">		:param float cutoff: the cutoff value to use for norm-uniform dispersal</span>
 <span class="sd">		:param float dispersal_relative_cost:relative dispersal ability through non-habitat</span>
 <span class="sd">		:param bol restrict_self: if true, self-dispersal is prohibited</span>
-<span class="sd">		:return:</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_method</span> <span class="o">=</span> <span class="n">dispersal_method</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
@@ -299,14 +298,17 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span> <span class="o">=</span> <span class="n">number_repeats</span>
 		<span class="k">if</span> <span class="n">output_database</span> <span class="o">!=</span> <span class="s2">&quot;output.db&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">output_database</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="n">landscape_type</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">sequential</span> <span class="o">=</span> <span class="n">sequential</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">restrict_self</span> <span class="o">=</span> <span class="n">restrict_self</span>
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">number_steps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="n">number_steps</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">number_steps</span><span class="p">]</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">number_steps</span><span class="p">]</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">number_steps</span><span class="p">)]</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)):</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">set_output_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">set_dispersal_parameters</span><span class="p">(</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="n">dispersal_file</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">m_prob</span><span class="p">,</span>
 									  <span class="n">cutoff</span><span class="p">,</span> <span class="n">dispersal_relative_cost</span><span class="p">,</span> <span class="n">restrict_self</span><span class="p">)</span></div>
@@ -325,22 +327,31 @@
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_complete</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Set up has already been completed.&quot;</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">import_maps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deme</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span><span class="p">),</span>
-													<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">set_historical_map_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">,</span>
-																	  <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
-																	   <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
-																	  <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">,</span>
-																	  <span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">,</span>
-																	  <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
-																	   <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
-																	  <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">import_all_maps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deme</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span>
+															<span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span><span class="p">,</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">,</span>
+															<span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
+															<span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">],</span>
+															<span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">],</span>
+															<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">,</span>
+															<span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">))],</span>
+															<span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">],</span>
+															<span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">])</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">import_maps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deme</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span><span class="p">),</span>
+														<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">setup_complete</span> <span class="o">=</span> <span class="bp">True</span></div>
 
 <div class="viewcode-block" id="DispersalSimulation.run_mean_distance_travelled"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.run_mean_distance_travelled">[docs]</a>	<span class="k">def</span> <span class="nf">run_mean_distance_travelled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_repeats</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_steps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sequential</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -585,7 +596,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
