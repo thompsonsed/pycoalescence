@@ -1,5 +1,5 @@
 """
-Open tif files and detect properties and data using gdal. Detailed :ref:`here <Simulate_landscapes>`.
+Open tif files and detect properties and data using gdal. Detailed :ref:`here <map_reading>`.
 """
 import logging
 import math

@@ -133,7 +133,7 @@ provided.
 The most common issue for installing **pycoalescence** is gdal dependencies not being found (including errors relating
 to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
 location, or the header files not being included with the gdal install. To fix this, install the c++ library on your
-system first. Then download the python package from `here <https://pypi.org/project/GDAL/#files>`, and run
+system first. Then download the python package from `here <https://pypi.org/project/GDAL/#files>`_, and run
 ``python setup.py build`` from the gdal directory. If this is successful, run ``python setup.py install`` to install
 gdal to your python environment.
 

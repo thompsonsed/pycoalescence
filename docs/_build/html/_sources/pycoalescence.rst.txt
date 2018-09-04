@@ -78,6 +78,14 @@ hpc_setup file
     :undoc-members:
     :show-inheritance:
 
+installer file
+--------------
+
+.. automodule:: pycoalescence.installer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 landscape file
 --------------
 
@@ -118,13 +126,6 @@ patched_landscape module
     :undoc-members:
     :show-inheritance:
 
-setup file
-----------
-
-.. automodule:: pycoalescence.setup
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 spatial_algorithms file
 -----------------------

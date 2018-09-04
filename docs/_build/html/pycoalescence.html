@@ -77,12 +77,12 @@ and performing basic analysis of the simulation outputs. The program requires ne
 <li><a class="reference internal" href="#module-pycoalescence.fragment_config" id="id7">fragments config module</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.helper" id="id8">helper file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.hpc_setup" id="id9">hpc_setup file</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.landscape" id="id10">landscape file</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.landscape_metrics" id="id11">landscape_metrics file</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.map" id="id12">map module</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.merger" id="id13">merger module</a></li>
-<li><a class="reference internal" href="#module-pycoalescence.patched_landscape" id="id14">patched_landscape module</a></li>
-<li><a class="reference internal" href="#setup-file" id="id15">setup file</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.installer" id="id10">installer file</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.landscape" id="id11">landscape file</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.landscape_metrics" id="id12">landscape_metrics file</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.map" id="id13">map module</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.merger" id="id14">merger module</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.patched_landscape" id="id15">patched_landscape module</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.spatial_algorithms" id="id16">spatial_algorithms file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.sqlite_connection" id="id17">sqlite_connection file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.system_operations" id="id18">system_operations file</a></li>
@@ -843,7 +843,7 @@ ensures no seg faults occur.</p>
 <div class="section" id="module-pycoalescence.coalescence_tree">
 <span id="coalescence-tree-module"></span><h3><a class="toc-backref" href="#id3">coalescence_tree module</a><a class="headerlink" href="#module-pycoalescence.coalescence_tree" title="Permalink to this headline">¶</a></h3>
 <p>Generate the coalescence tree and acquire a number of biodiversity metrics for different parameter sets. Can also be
-used to compare against a comparison simulation object. Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
+used to compare against a comparison simulation object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2658,15 +2658,290 @@ updated naming convention.</p>
 <dl class="function">
 <dt id="pycoalescence.hpc_setup.build_hpc">
 <code class="descname">build_hpc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/hpc_setup.html#build_hpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.hpc_setup.build_hpc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compiles NECSim with the <code class="docutils literal"><span class="pre">--with-hpc</span></code> and <code class="docutils literal"><span class="pre">--with-verbose</span></code> flags, which adds extra support for intel compilers
-and provides a selection of optimisation flags for high-performance systems.
+<dd><p>Compiles necsim with the flags for optimisation on high-performance intel-based systems. On systems with a global
+variable containing INTEL_LICENSE_FILE, most of these options will be turned on automatically.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycoalescence.installer">
+<span id="installer-file"></span><h3><a class="toc-backref" href="#id10">installer file</a><a class="headerlink" href="#module-pycoalescence.installer" title="Permalink to this headline">¶</a></h3>
+<p>Compile <strong>necsim</strong> with default or provided compilation options. Intended for internal usage during <code class="docutils literal"><span class="pre">pip</span></code> or <code class="docutils literal"><span class="pre">conda</span></code>
+builds, although manual installation is also possible by running this file from the command line.
+<code class="docutils literal"><span class="pre">python</span> <span class="pre">installer.py</span></code> configures the install by detecting system components and compiles the <code class="docutils literal"><span class="pre">c++</span></code> files, if
+possible. Command line flags can be provided to installer.py to modify the install (see
+<span class="xref std std-ref">Compilation Options</span> for more information).</p>
+<dl class="class">
+<dt id="pycoalescence.installer.Installer">
+<em class="property">class </em><code class="descname">Installer</code><span class="sig-paren">(</span><em>dist</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">setuptools.command.build_ext.build_ext</span></code></p>
+<p>Wraps configuration and compilation of c++ code.</p>
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.autoconf">
+<code class="descname">autoconf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.autoconf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.autoconf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the <cite>autoconf</cite> bash function (assuming that autoconf is available) to create the <cite>configure</cite> executable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.backup_makefile">
+<code class="descname">backup_makefile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.backup_makefile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.backup_makefile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies the makefile to a saved folder so that even if the original is overwritten, the last successful
+compilation can be recorded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.build_extension">
+<code class="descname">build_extension</code><span class="sig-paren">(</span><em>ext</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.build_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.build_extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds the c++ and python extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.clean">
+<code class="descname">clean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs make clean in the NECSim directory to wipe any previous potential compile attempts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.configure">
+<code class="descname">configure</code><span class="sig-paren">(</span><em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.configure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs ./configure &#8211;opts with the supplied options. This should create the makefile for compilation, otherwise a
+RuntimeError will be thrown.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>opts</strong> &#8211; a list of options to pass to the ./configure call</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.configure_and_compile">
+<code class="descname">configure_and_compile</code><span class="sig-paren">(</span><em>argv=[None], logging_level=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.configure_and_compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.configure_and_compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the configure script, then runs the compilation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>argv</strong> &#8211; the arguments to pass to configure script</li>
+<li><strong>logging_level</strong> &#8211; the logging level to utilise (defaults to INFO).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.copy_makefile">
+<code class="descname">copy_makefile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.copy_makefile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.copy_makefile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies the backup makefile to the main directory, if it exists.
+Throws an IOError if no makefile is found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.create_default_depend">
+<code class="descname">create_default_depend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.create_default_depend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.create_default_depend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the default makedepend command, outputting dependencies to lib/depends_default.</p>
+<p>Used to generate a default dependency file on a system where makedepend exists, for a system where it does not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.do_compile">
+<code class="descname">do_compile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.do_compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.do_compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been
+installed for the subprocess call.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.get_build_dir">
+<code class="descname">get_build_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_build_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_build_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the build directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the build directory path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.get_compilation_flags">
+<code class="descname">get_compilation_flags</code><span class="sig-paren">(</span><em>display_warnings=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_compilation_flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_compilation_flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the compilation flags for passing to ./configure.
+:param display_warnings: If true, runs with the -Wall flag for compilation (displaying all warnings). Default is False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of compilation flags.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.get_default_cmake_args">
+<code class="descname">get_default_cmake_args</code><span class="sig-paren">(</span><em>output_dir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_default_cmake_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_default_cmake_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default cmake configure and build arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_dir</strong> &#8211; the output directory to use</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">tuple of two lists, first containing cmake configure arguments, second containing build arguments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.get_ldflags">
+<code class="descname">get_ldflags</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_ldflags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_ldflags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ldflags that python was compiled with, removing some problematic options.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.get_ldshared">
+<code class="descname">get_ldshared</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_ldshared"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_ldshared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ldshared python variables and replaces -bundle with -shared for proper compilation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.get_obj_dir">
+<code class="descname">get_obj_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_obj_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_obj_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the obj directory for installing obj files to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the obj directory path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.make_depend">
+<code class="descname">make_depend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.make_depend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.make_depend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs make depend in the lib directory to calculate all dependencies for the header and source files.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Fails silently if makedepend is not installed, printing an error to logging.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.move_shared_object_file">
+<code class="descname">move_shared_object_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.move_shared_object_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.move_shared_object_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves the shared object (.so) file to the build directory.
 :return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs installation and generates the shared object files - entry point for setuptools</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.run_cmake">
+<code class="descname">run_cmake</code><span class="sig-paren">(</span><em>src_dir</em>, <em>cmake_args</em>, <em>build_args</em>, <em>tmp_dir</em>, <em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.run_cmake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.run_cmake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs cmake to compile necsim.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>src_dir</strong> &#8211; the source directory for necsim .cpp and .h files</li>
+<li><strong>cmake_args</strong> &#8211; arguments to pass to the cmake project</li>
+<li><strong>tmp_dir</strong> &#8211; the build directory to output cmake files to</li>
+<li><strong>env</strong> &#8211; the os.environ (or other environmental variables) to pass on</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.run_configure">
+<code class="descname">run_configure</code><span class="sig-paren">(</span><em>argv=[None], logging_level=20, display_warnings=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.run_configure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.run_configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures the install for compile options provided via the command line, or with default options if no options exist.
+Running with <code class="docutils literal"><span class="pre">-help</span></code> or <cite>-h</cite> will display the compilation configurations called from <code class="docutils literal"><span class="pre">./configure</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>argv</strong> &#8211; the arguments to pass to configure script</li>
+<li><strong>logging_level</strong> &#8211; the logging level to utilise (defaults to INFO).</li>
+<li><strong>display_warnings</strong> &#8211; If true, runs with the -Wall flag for compilation (displaying all warnings). Default is False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.setuptools_cmake">
+<code class="descname">setuptools_cmake</code><span class="sig-paren">(</span><em>ext</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.setuptools_cmake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.setuptools_cmake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures cmake for setuptools usage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ext</strong> &#8211; the extension to build cmake on</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.installer.Installer.use_default_depends">
+<code class="descname">use_default_depends</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.use_default_depends"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.use_default_depends" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the default dependencies, copying all contents of depends_default to the end of Makefile.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Zero error-checking is done here as the Makefiles should not change, and the depends_default file should
+be created using create_default_depend()</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycoalescence.installer.get_python_library">
+<code class="descname">get_python_library</code><span class="sig-paren">(</span><em>python_version</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#get_python_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.get_python_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get path to the python library associated with the current python
+interpreter.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-pycoalescence.landscape">
-<span id="landscape-file"></span><h3><a class="toc-backref" href="#id10">landscape file</a><a class="headerlink" href="#module-pycoalescence.landscape" title="Permalink to this headline">¶</a></h3>
-<p>Generate landscapes and check map file combinations.</p>
+<span id="landscape-file"></span><h3><a class="toc-backref" href="#id11">landscape file</a><a class="headerlink" href="#module-pycoalescence.landscape" title="Permalink to this headline">¶</a></h3>
+<p>Generate landscapes and check map file combinations. Child class for <a class="reference internal" href="#pycoalescence.simulation.Simulation" title="pycoalescence.simulation.Simulation"><code class="xref py py-class docutils literal"><span class="pre">Simulation</span></code></a> and
+<a class="reference internal" href="#pycoalescence.dispersal_simulation.DispersalSimulation" title="pycoalescence.dispersal_simulation.DispersalSimulation"><code class="xref py py-class docutils literal"><span class="pre">DispersalSimulation</span></code></a>. Contains <a class="reference internal" href="#pycoalescence.map.Map" title="pycoalescence.map.Map"><code class="xref py py-class docutils literal"><span class="pre">Map</span></code></a> objects for each relevant map file internally.</p>
 <dl class="class">
 <dt id="pycoalescence.landscape.Landscape">
 <em class="property">class </em><code class="descname">Landscape</code><a class="reference internal" href="_modules/pycoalescence/landscape.html#Landscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.landscape.Landscape" title="Permalink to this definition">¶</a></dt>
@@ -2834,7 +3109,7 @@ which should automatically calculate map offsets, scaling and dimensions.</p>
 
 </div>
 <div class="section" id="module-pycoalescence.landscape_metrics">
-<span id="landscape-metrics-file"></span><h3><a class="toc-backref" href="#id11">landscape_metrics file</a><a class="headerlink" href="#module-pycoalescence.landscape_metrics" title="Permalink to this headline">¶</a></h3>
+<span id="landscape-metrics-file"></span><h3><a class="toc-backref" href="#id12">landscape_metrics file</a><a class="headerlink" href="#module-pycoalescence.landscape_metrics" title="Permalink to this headline">¶</a></h3>
 <p>Calculates landscape-level metrics, including mean distance to nearest-neighbour for each habitat cell and clumpiness.</p>
 <dl class="class">
 <dt id="pycoalescence.landscape_metrics.LandscapeMetrics">
@@ -2879,8 +3154,8 @@ details.</p>
 
 </div>
 <div class="section" id="module-pycoalescence.map">
-<span id="map-module"></span><h3><a class="toc-backref" href="#id12">map module</a><a class="headerlink" href="#module-pycoalescence.map" title="Permalink to this headline">¶</a></h3>
-<p>Open tif files and detect properties and data using gdal. Detailed <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
+<span id="map-module"></span><h3><a class="toc-backref" href="#id13">map module</a><a class="headerlink" href="#module-pycoalescence.map" title="Permalink to this headline">¶</a></h3>
+<p>Open tif files and detect properties and data using gdal. Detailed <a class="reference internal" href="README_landscapes.html#map-reading"><span class="std std-ref">here</span></a>.</p>
 <dl class="class">
 <dt id="pycoalescence.map.Map">
 <em class="property">class </em><code class="descname">Map</code><span class="sig-paren">(</span><em>file=None</em>, <em>is_sample=None</em>, <em>logging_level=30</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/map.html#Map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.map.Map" title="Permalink to this definition">¶</a></dt>
@@ -3446,7 +3721,7 @@ and the offsets describe the location in the output map to overwrite.</p>
 
 </div>
 <div class="section" id="module-pycoalescence.merger">
-<span id="merger-module"></span><h3><a class="toc-backref" href="#id13">merger module</a><a class="headerlink" href="#module-pycoalescence.merger" title="Permalink to this headline">¶</a></h3>
+<span id="merger-module"></span><h3><a class="toc-backref" href="#id14">merger module</a><a class="headerlink" href="#module-pycoalescence.merger" title="Permalink to this headline">¶</a></h3>
 <p>Combine simulation outputs from separate guilds. Detailed <a class="reference internal" href="README_merger.html#merging-simulations"><span class="std std-ref">here</span></a>.</p>
 <p><a class="reference internal" href="#pycoalescence.merger.Merger" title="pycoalescence.merger.Merger"><code class="xref py py-class docutils literal"><span class="pre">Merger</span></code></a> will output a single database file, merging the various biodiversity tables into one.</p>
 <p>Metrics are also calculated for the entire system, with a guild reference of 0.</p>
@@ -3524,7 +3799,7 @@ simulations</p>
 
 </div>
 <div class="section" id="module-pycoalescence.patched_landscape">
-<span id="patched-landscape-module"></span><h3><a class="toc-backref" href="#id14">patched_landscape module</a><a class="headerlink" href="#module-pycoalescence.patched_landscape" title="Permalink to this headline">¶</a></h3>
+<span id="patched-landscape-module"></span><h3><a class="toc-backref" href="#id15">patched_landscape module</a><a class="headerlink" href="#module-pycoalescence.patched_landscape" title="Permalink to this headline">¶</a></h3>
 <p>Generate landscapes of interconnected patches for simulating within a spatially-explicit neutral model.
 Detailed <a class="reference internal" href="README_landscapes.html#generate-landscapes"><span class="std std-ref">here</span></a>.</p>
 <p>Dispersal probabilities are defined between different patches, and each patch will be contain n individuals.</p>
@@ -3729,9 +4004,6 @@ matrix as a x by y tif file.</p>
 </table>
 </dd></dl>
 
-</div>
-<div class="section" id="setup-file">
-<h3><a class="toc-backref" href="#id15">setup file</a><a class="headerlink" href="#setup-file" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="module-pycoalescence.spatial_algorithms">
 <span id="spatial-algorithms-file"></span><h3><a class="toc-backref" href="#id16">spatial_algorithms file</a><a class="headerlink" href="#module-pycoalescence.spatial_algorithms" title="Permalink to this headline">¶</a></h3>
@@ -4243,7 +4515,7 @@ subprocess call will be redirected to logging.warning() after the subprocess cal
 <dl class="function">
 <dt id="pycoalescence.system_operations.set_logging_method">
 <code class="descname">set_logging_method</code><span class="sig-paren">(</span><em>logging_level=20</em>, <em>output=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#set_logging_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.set_logging_method" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates the logging process.</p>
+<dd><p>Initiates the logging method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4267,7 +4539,7 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
 <dt id="pycoalescence.system_operations.write_to_log">
 <code class="descname">write_to_log</code><span class="sig-paren">(</span><em>i</em>, <em>message</em>, <em>logger</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/system_operations.html#write_to_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.system_operations.write_to_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the message to the provided logger, at the provided level.</p>
-<p>This is used by NECSim to access to logging module more easily.</p>
+<p>This is used by <strong>necsim</strong> to access to logging module more easily.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4313,12 +4585,12 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
 <li><a class="reference internal" href="#module-pycoalescence.fragment_config">fragments config module</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.helper">helper file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.hpc_setup">hpc_setup file</a></li>
+<li><a class="reference internal" href="#module-pycoalescence.installer">installer file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.landscape">landscape file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.landscape_metrics">landscape_metrics file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.map">map module</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.merger">merger module</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.patched_landscape">patched_landscape module</a></li>
-<li><a class="reference internal" href="#setup-file">setup file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.spatial_algorithms">spatial_algorithms file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.sqlite_connection">sqlite_connection file</a></li>
 <li><a class="reference internal" href="#module-pycoalescence.system_operations">system_operations file</a></li>
