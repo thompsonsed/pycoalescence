@@ -24,7 +24,6 @@ from recommonmark.parser import CommonMarkParser
 
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
-use_exhale = True # Change this if you don't want to run with exhale
 
 if read_the_docs_build:
 	try:
@@ -38,14 +37,12 @@ if read_the_docs_build:
 		def __getattr__(cls, name):
 			return MagicMock()
 	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
-	if not use_exhale:
-		MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 	sys.modules["scipy"] = Mock()
 	sys.modules["scipy.spatial"] = Mock()
 	sys.modules["scipy.spatial.Voronoi"] = Mock()
-if use_exhale:
-	from exhale import configs
+
+from exhale import configs
 
 
 
@@ -73,10 +70,9 @@ extensions = [
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
 	'breathe',
+	'exhale',
 	'nbsphinx'
 ]
-if use_exhale:
-	extensions.extend(['exhale'])
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

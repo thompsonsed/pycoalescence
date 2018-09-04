@@ -268,7 +268,7 @@ class Installer(build_ext):
 			py_lib += sys.version[0:3]
 			if 'm' in sysconfig.get_config_var('LIBRARY'):
 				py_lib += 'm'
-			cflags += " -DANACONDA"  # TODO fix anaconda installation
+			cflags += " -DANACONDA"
 		ldflags += " " + py_ldflags
 		py_ldflags = "PYTHON_LDFLAGS=" + py_ldflags
 		call = [include + cflags, py_lib, ldflags, py_ldflags, platform_so]
