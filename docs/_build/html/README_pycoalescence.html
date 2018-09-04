@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence &#8212; pycoalescence 1.2.6rc38 documentation</title>
+    <title>pycoalescence &#8212; pycoalescence 1.2.6rc39 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2.6rc38',
+        VERSION:     '1.2.6rc39',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to pycoalescence"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc39 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -88,16 +88,16 @@ locations of lineages.</li>
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#installation" id="id5">Installation</a></li>
-<li><a class="reference internal" href="#performing-simulations" id="id6">Performing simulations</a></li>
-<li><a class="reference internal" href="#post-simulation-analysis" id="id7">Post-simulation analysis</a></li>
-<li><a class="reference internal" href="#extended-analysis" id="id8">Extended analysis</a></li>
-<li><a class="reference internal" href="#additional-package-features" id="id9">Additional Package Features</a></li>
-<li><a class="reference internal" href="#testing-install" id="id10">Testing install</a></li>
+<li><a class="reference internal" href="#installation" id="id7">Installation</a></li>
+<li><a class="reference internal" href="#performing-simulations" id="id8">Performing simulations</a></li>
+<li><a class="reference internal" href="#post-simulation-analysis" id="id9">Post-simulation analysis</a></li>
+<li><a class="reference internal" href="#extended-analysis" id="id10">Extended analysis</a></li>
+<li><a class="reference internal" href="#additional-package-features" id="id11">Additional Package Features</a></li>
+<li><a class="reference internal" href="#testing-install" id="id12">Testing install</a></li>
 </ul>
 </div>
 <div class="section" id="installation">
-<h3><a class="toc-backref" href="#id5">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
 <p>Two methods of installation are recommended: using conda to handle package management, including installation of all
 dependencies, or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a> into python virtual environments
 (see <a class="reference external" href="http://docs.python-guide.org/en/latest/dev/virtualenvs/">here</a> for good advice).</p>
@@ -106,10 +106,9 @@ finer control over installation methods if difficulties are encountered. Note th
 setuptools, which in turn runs <code class="docutils literal"><span class="pre">installer.py</span></code>.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">Mac OS X and Linux are supported through pip. Mac OS, Linux and Windows are supported through conda,
-although some Mac OS X systems may experience issues if multiple python versions are installed on the
-same system. For manual installation it should be possible install <strong>pycoalescence</strong> on any system, but
-may require some tinkering.</p>
+<p class="last">Mac OS X and Linux are supported through pip. Mac OS, Linux and Windows are supported through conda.
+For manual installation it should be possible install <strong>pycoalescence</strong> on any system, but may require
+some tinkering.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -118,7 +117,7 @@ environment as you intend to run simulations.</p>
 </div>
 <div class="section" id="installing-via-conda">
 <h4>Installing via conda<a class="headerlink" href="#installing-via-conda" title="Permalink to this headline">¶</a></h4>
-<p>Conda is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
+<p><a class="reference external" href="https://conda.io/docs/">Conda</a> is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
 manner. <strong>pycoalescence</strong> is provided on conda-forge. Installation of the package and all dependencies including boost,
 gdal, cmake and the relevant c++ compiler, simply requires <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">pycoalescence</span></code>. Note that
 conda installs the dependencies into its own environment and may ignore system installs.</p>
@@ -199,8 +198,9 @@ autotools process (<code class="docutils literal"><span class="pre">./configure<
 </div>
 <div class="section" id="installation-issues">
 <h4>Installation issues<a class="headerlink" href="#installation-issues" title="Permalink to this headline">¶</a></h4>
-<p>If you are on Windows or Linux, consider using conda to manage package dependencies. Errors related to installation from
-conda should be reported. On Mac OS X, installation via pip requires that the dependencies have already been provided.</p>
+<p>Consider using <a class="reference external" href="https://conda.io/docs/">conda</a> to manage package dependencies if you experience issues and please
+report any problems you have. On Mac OS X, installation via pip requires that the dependencies have already been
+provided.</p>
 <p>The most common issue for installing <strong>pycoalescence</strong> is gdal dependencies not being found (including errors relating
 to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
 location, or the header files not being included with the gdal install. To fix this, install the c++ library on your
@@ -211,7 +211,7 @@ gdal to your python environment.</p>
 </div>
 </div>
 <div class="section" id="performing-simulations">
-<span id="id1"></span><h3><a class="toc-backref" href="#id6">Performing simulations</a><a class="headerlink" href="#performing-simulations" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3><a class="toc-backref" href="#id8">Performing simulations</a><a class="headerlink" href="#performing-simulations" title="Permalink to this headline">¶</a></h3>
 <p>Check out the full simulation examples in <a class="reference internal" href="src/examples.html"><span class="doc">this jupyter notebook</span></a>.</p>
 <div class="section" id="setting-up-simulations">
 <h4>Setting up simulations<a class="headerlink" href="#setting-up-simulations" title="Permalink to this headline">¶</a></h4>
@@ -328,6 +328,8 @@ map and closed landscapes with hard boundaries. See <a class="reference internal
 </div>
 <div class="section" id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Some basic examples are given below. For more complicated scenarios, including examples of fetching data from completed
+simulations, please see <a class="reference internal" href="src/examples.html"><span class="doc">this jupyter notebook</span></a>.</p>
 <p>A simple simulation</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">Simulation</span>
 <span class="c1"># set logging level to &quot;info&quot; (from logging module)</span>
@@ -375,7 +377,7 @@ inputted map files.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">necsim can also be run directly using command line arguments (see
-<a class="reference internal" href="necsim/necsim_library.html#introduction-necsim"><span class="std std-ref">Introduction to necsim</span></a>).</p>
+<a class="reference internal" href="necsim/necsim_library.html#introduction-necsim"><span class="std std-ref">Introduction to necsim</span></a>), but this is not recommended.</p>
 </div>
 </div>
 <div class="section" id="dispersal-kernels">
@@ -494,8 +496,8 @@ and y dimensions) and purple arrows indicate the offsets for the coarse map.</p>
 <div class="section" id="infinite-landscapes">
 <h4>Infinite Landscapes<a class="headerlink" href="#infinite-landscapes" title="Permalink to this headline">¶</a></h4>
 <p>Simulations can also be run on infinite landscapes. Set <code class="docutils literal"><span class="pre">landscape_types=opt</span></code> in
-<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_simulation_parameters" title="pycoalescence.simulation.Simulation.set_simulation_parameters"><code class="xref py py-func docutils literal"><span class="pre">set_simulation_parameters()</span></code></a> where <em>opt</em> is one of the
-following:</p>
+<a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.set_simulation_parameters" title="pycoalescence.simulation.Simulation.set_simulation_parameters"><code class="xref py py-func docutils literal"><span class="pre">set_simulation_parameters()</span></code></a> where <em>opt</em> is one
+of the following:</p>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>&#8220;closed&#8221; (default)</dt>
@@ -521,6 +523,16 @@ following:</p>
 </div>
 <div class="section" id="optimising-simulations">
 <h4>Optimising Simulations<a class="headerlink" href="#optimising-simulations" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As of version 1.2.6rc35 dynamic resizing of internal objects is implemented. Whilst this does reduce RAM usage
+in all scenarios, it also means the optimisation process outlined below only relevent when the major
+constraint is the size of the density maps.</p>
+</div>
+<p>The optimisation process below can reduce RAM usage in systems where the major limitation is that the size of the
+density maps is much larger than the number of individuals being simulated. This process has a minor to major impact on
+performance, depending on the number of individuals. It will not fix issues with simulations not finishing, only reduce
+the RAM requirements.</p>
 <p><a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation.optimise_ram" title="pycoalescence.simulation.Simulation.optimise_ram"><code class="xref py py-func docutils literal"><span class="pre">optimise_ram()</span></code></a> exists for reducing the RAM requirements of
 a simulation. Running the function with a specific RAM limit, in GB, should choose a sample map size and offsets to
 minimise the in-memory object sizes. This may have a minor impact on simulation speed, but this is likely negligible.
@@ -627,7 +639,7 @@ parameters outside of the simulation database.</p>
 </div>
 </div>
 <div class="section" id="post-simulation-analysis">
-<h3><a class="toc-backref" href="#id7">Post-simulation analysis</a><a class="headerlink" href="#post-simulation-analysis" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Post-simulation analysis</a><a class="headerlink" href="#post-simulation-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Once simulations are complete, necsim&#8217;s <a class="reference internal" href="necsim/necsim_library.html#introduction-speciationcounter"><span class="std std-ref">applying speciation rates functionality</span></a>
 can be used to apply additional speciation rates to the coalescence tree. A simple way of applying additional simulation
 rates is provided within the <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree" title="pycoalescence.coalescence_tree.CoalescenceTree"><code class="xref py py-class docutils literal"><span class="pre">CoalescenceTree</span> <span class="pre">class</span></code></a>.</p>
@@ -646,8 +658,8 @@ achieved by supplying a metacommunity speciation rate and metacommunity size to
 neutral model is run to generate the metacommunity, which is then sampled from every time a speciation event occurs in
 the spatial model. As such the &#8220;speciation rate&#8221; from the spatial model can be intepretted as immigration from a
 metacommunity.</p>
-<div class="section" id="id2">
-<h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id4">
+<h4>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <p>A basic application procedure is</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">CoalescenceTree</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">()</span>
@@ -707,7 +719,7 @@ for scenarios where it is desirable to calculate custom biodiversity metrics.</p
 </div>
 </div>
 <div class="section" id="extended-analysis">
-<h3><a class="toc-backref" href="#id8">Extended analysis</a><a class="headerlink" href="#extended-analysis" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Extended analysis</a><a class="headerlink" href="#extended-analysis" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="pycoalescence.html#module-pycoalescence.coalescence_tree" title="pycoalescence.coalescence_tree"><code class="xref py py-mod docutils literal"><span class="pre">coalescence_tree</span></code></a> module can be used for more extensive simulation
 analysis, such as comparing simulated landscapes to real data and calculating goodness of fits.</p>
 <p>The general procedure for using this module involves a few functions, all contained in the
@@ -736,7 +748,7 @@ FRAGMENT_ABUNDANCES using <a class="reference internal" href="pycoalescence.html
 </div></blockquote>
 </div>
 <div class="section" id="additional-package-features">
-<h3><a class="toc-backref" href="#id9">Additional Package Features</a><a class="headerlink" href="#additional-package-features" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Additional Package Features</a><a class="headerlink" href="#additional-package-features" title="Permalink to this headline">¶</a></h3>
 <p>These features are not required for spatially-explicit coalescence models, as they are utilised internally by the
 package. However, there are some features that could be of great convenience to users, especially for generating and
 manipulating landscapes using tif files.</p>
@@ -752,9 +764,10 @@ a single map is supported with &#8220;closed&#8221;, &#8220;infinite&#8221; or &
 </ul>
 </div>
 <div class="section" id="testing-install">
-<h3><a class="toc-backref" href="#id10">Testing install</a><a class="headerlink" href="#testing-install" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Testing install</a><a class="headerlink" href="#testing-install" title="Permalink to this headline">¶</a></h3>
 <p>The system install can be tested by running <code class="xref py py-mod docutils literal"><span class="pre">test_install.py</span></code> from the command line
-(<code class="docutils literal"><span class="pre">python</span> <span class="pre">test_install.py</span></code>) which requires that <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span></code> has been successfully run previously.</p>
+(<code class="docutils literal"><span class="pre">python</span> <span class="pre">test_install.py</span></code>) which requires that <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span></code> has been successfully run previously or the package
+otherwise successfully installed.</p>
 </div>
 </div>
 <div class="section" id="prerequisites">
@@ -816,7 +829,7 @@ declared and multiple sets of pristine maps can be declared at unique times.</dd
 </div>
 <div class="section" id="version">
 <h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
-<p>Version 1.2.6rc38</p>
+<p>Version 1.2.6rc39</p>
 </div>
 <div class="section" id="contacts">
 <h2>Contacts<a class="headerlink" href="#contacts" title="Permalink to this headline">¶</a></h2>
@@ -867,7 +880,7 @@ details.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#post-simulation-analysis">Post-simulation analysis</a><ul>
-<li><a class="reference internal" href="#id2">Examples</a></li>
+<li><a class="reference internal" href="#id4">Examples</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#extended-analysis">Extended analysis</a></li>
@@ -929,7 +942,7 @@ details.</p>
         <li class="right" >
           <a href="index.html" title="Welcome to pycoalescence"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc38 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc39 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
