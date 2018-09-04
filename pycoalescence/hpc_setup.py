@@ -12,9 +12,10 @@ except (ImportError, SystemError, ValueError):
 
 def build_hpc():
 	"""
-	Compiles NECSim with the ``--with-hpc`` and ``--with-verbose`` flags, which adds extra support for intel compilers
-	and provides a selection of optimisation flags for high-performance systems.
-	:return:
+	Compiles necsim with the flags for optimisation on high-performance intel-based systems. On systems with a global
+	variable containing INTEL_LICENSE_FILE, most of these options will be turned on automatically.
+
+	:rtype: None
 	"""
 	from distutils.dist import Distribution
 	dist = Distribution()

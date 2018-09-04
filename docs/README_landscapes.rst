@@ -137,14 +137,14 @@ We have:
 
  - :math:`g_ii`, the number of adjacencies between pixels of patch type :math:`i` using the the double count method.
  - :math:`g_ik`, the number of adjacencies between pixels of patches :math:`i` and :math:`j`
- - :math:`\text{min}e_i`, the minimum perimeter (in cell surfaces) for a maximally-clumped class :math:`i`
+ - :math:`\text{min}(e_i)`, the minimum perimeter (in cell surfaces) for a maximally-clumped class :math:`i`
  - :math:`P_i`, the proportion of the landscape occupied by class :math:`i`.
 
 Given
 
 .. math::
 
-    G_i = (\frac{g_{ii}}{(\sum_{k=1}^{n} g_{ik}) - \text{min} e_i}
+    G_i = (\frac{g_{ii}}{(\sum_{k=1}^{n} g_{ik}) - \text{min} (e_i)}
 
 then
 

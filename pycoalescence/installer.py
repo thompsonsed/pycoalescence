@@ -1,10 +1,9 @@
 """
-Compile **necsim** with default or provided compilation options. It is required that this file is run (or the library
-compiled manually) before using **pycoalescence**.
-
-Running this file from the command line with ``python installer.py`` configures the install by detecting system components
-and compiles the ``c++`` files, if possible. Command line flags can be provided to installer.py to modify the install
-(see :ref:`Compilation Options <sec Compilation Options>` for more information).
+Compile **necsim** with default or provided compilation options. Intended for internal usage during ``pip`` or ``conda``
+builds, although manual installation is also possible by running this file from the command line.
+``python installer.py`` configures the install by detecting system components and compiles the ``c++`` files, if
+possible. Command line flags can be provided to installer.py to modify the install (see
+:ref:`Compilation Options <sec Compilation Options>` for more information).
 """
 
 from __future__ import print_function, absolute_import, division  # Only Python 2.x

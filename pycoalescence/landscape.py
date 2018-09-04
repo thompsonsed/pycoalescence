@@ -1,5 +1,6 @@
 """
-Generate landscapes and check map file combinations.
+Generate landscapes and check map file combinations. Child class for :class:`.Simulation` and
+:class:`.DispersalSimulation`. Contains :class:`.Map` objects for each relevant map file internally.
 """
 import logging
 

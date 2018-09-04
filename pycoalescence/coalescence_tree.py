@@ -1,6 +1,6 @@
 """
 Generate the coalescence tree and acquire a number of biodiversity metrics for different parameter sets. Can also be
-used to compare against a comparison simulation object. Detailed :ref:`here <Simulate_landscapes>`.
+used to compare against a comparison simulation object.
 
 :input:
 	- Completed simulation database from :class:`.Simulation`
