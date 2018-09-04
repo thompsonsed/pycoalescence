@@ -38,8 +38,8 @@ if read_the_docs_build:
 		def __getattr__(cls, name):
 			return MagicMock()
 	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "applyspecmodule", "necsimmodule", "necsimlinker"]
-	if not use_exhale:
-		MOCK_MODULES.extend(['exhale', 'configs'])
+	# if not use_exhale: # TODO remove
+	# 	MOCK_MODULES.extend(['exhale', 'configs'])
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 	sys.modules["scipy"] = Mock()
 	sys.modules["scipy.spatial"] = Mock()
@@ -73,10 +73,11 @@ extensions = [
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
 	'breathe',
+	'exhale',
 	'nbsphinx'
 ]
-if use_exhale:
-	extensions.extend(['exhale'])
+# if use_exhale: # TODO remove
+# 	extensions.extend(['exhale'])
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
