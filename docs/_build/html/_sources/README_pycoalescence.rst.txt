@@ -47,10 +47,9 @@ The other methods of installing listed here are provided as references to the in
 finer control over installation methods if difficulties are encountered. Note that pip and conda both internally call
 setuptools, which in turn runs ``installer.py``.
 
-.. important:: Mac OS X and Linux are supported through pip. Mac OS, Linux and Windows are supported through conda,
-               although some Mac OS X systems may experience issues if multiple python versions are installed on the
-               same system. For manual installation it should be possible install **pycoalescence** on any system, but
-               may require some tinkering.
+.. important:: Mac OS X and Linux are supported through pip. Mac OS, Linux and Windows are supported through conda.
+               For manual installation it should be possible install **pycoalescence** on any system, but may require
+               some tinkering.
 
 .. note:: Whichever installation option you use, it is important to ensure that the package is compiled in the same
           environment as you intend to run simulations.
@@ -58,7 +57,7 @@ setuptools, which in turn runs ``installer.py``.
 Installing via conda
 ''''''''''''''''''''
 
-Conda is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
+`Conda <https://conda.io/docs/>`_ is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
 manner. **pycoalescence** is provided on conda-forge. Installation of the package and all dependencies including boost,
 gdal, cmake and the relevant c++ compiler, simply requires ``conda install -c conda-forge pycoalescence``. Note that
 conda installs the dependencies into its own environment and may ignore system installs.
@@ -127,8 +126,9 @@ autotools process (``./configure`` and ``make``) instead of cmake for compilatio
 Installation issues
 '''''''''''''''''''
 
-If you are on Windows or Linux, consider using conda to manage package dependencies. Errors related to installation from
-conda should be reported. On Mac OS X, installation via pip requires that the dependencies have already been provided.
+Consider using `conda <https://conda.io/docs/>`_ to manage package dependencies if you experience issues and please
+report any problems you have. On Mac OS X, installation via pip requires that the dependencies have already been
+provided.
 
 The most common issue for installing **pycoalescence** is gdal dependencies not being found (including errors relating
 to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
@@ -235,6 +235,8 @@ Some of key simulation features are listed below.
 .. _sim_examples:
 Examples
 ''''''''
+Some basic examples are given below. For more complicated scenarios, including examples of fetching data from completed
+simulations, please see `this jupyter notebook <src/examples.ipynb>`_.
 
 A simple simulation
 
@@ -285,9 +287,7 @@ inputted map files.
     c.run()
 
 .. note:: necsim can also be run directly using command line arguments (see
-          :ref:`Introduction to necsim <Introduction_necsim>`).
-
-
+          :ref:`Introduction to necsim <Introduction_necsim>`), but this is not recommended.
 
 
 
@@ -389,8 +389,8 @@ Infinite Landscapes
 '''''''''''''''''''
 
 Simulations can also be run on infinite landscapes. Set ``landscape_types=opt`` in
-:func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>` where *opt* is one of the
-following:
+:func:`set_simulation_parameters() <pycoalescence.simulation.Simulation.set_simulation_parameters>` where *opt* is one
+of the following:
 
 - "closed" (default)
     Run without infinite landscapes, with closed boundaries to the coarse map.
@@ -406,6 +406,15 @@ following:
 
 Optimising Simulations
 ''''''''''''''''''''''
+
+.. note:: As of version 1.2.6rc35 dynamic resizing of internal objects is implemented. Whilst this does reduce RAM usage
+          in all scenarios, it also means the optimisation process outlined below only relevent when the major
+          constraint is the size of the density maps.
+
+The optimisation process below can reduce RAM usage in systems where the major limitation is that the size of the
+density maps is much larger than the number of individuals being simulated. This process has a minor to major impact on
+performance, depending on the number of individuals. It will not fix issues with simulations not finishing, only reduce
+the RAM requirements.
 
 :func:`optimise_ram() <pycoalescence.simulation.Simulation.optimise_ram>` exists for reducing the RAM requirements of
 a simulation. Running the function with a specific RAM limit, in GB, should choose a sample map size and offsets to
@@ -655,7 +664,8 @@ Testing install
 ~~~~~~~~~~~~~~~
 
 The system install can be tested by running :py:mod:`test_install.py <pycoalescence.test_install>` from the command line
-(``python test_install.py``) which requires that ``python setup.py`` has been successfully run previously.
+(``python test_install.py``) which requires that ``python setup.py`` has been successfully run previously or the package
+otherwise successfully installed.
 
 Prerequisites
 -------------
