@@ -139,7 +139,7 @@ def execute_silent(cmd, **kwargs):
 
 def set_logging_method(logging_level=logging.INFO, output=None, **kwargs):
 	"""
-	Initiates the logging process.
+	Initiates the logging method.
 
 	:param logging_level: the detail in logging output: can be one
 	 				     of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logging.CRITICAL
@@ -160,7 +160,7 @@ def write_to_log(i, message, logger):
 	"""
 	Writes the message to the provided logger, at the provided level.
 
-	This is used by NECSim to access to logging module more easily.
+	This is used by **necsim** to access to logging module more easily.
 
 	:param i: the level to log at (10: debug, 20: info, 30: warning, 40: error, 50: critical)
 	:param message: the message to write to the logger.
