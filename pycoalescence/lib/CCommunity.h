@@ -29,7 +29,7 @@ template<class T>
 class PyCommunityTemplate : public PyTemplate<T>
 {
 public:
-	SpecSimParameters *specSimParameters;
+	shared_ptr<SpecSimParameters> specSimParameters;
 };
 
 /**
@@ -282,12 +282,35 @@ static PyObject *reset(PyCommunityTemplate<T> *self)
 }
 
 template<class T>
+static PyObject *speciateRemainingLineages(PyCommunityTemplate<T> *self, PyObject * args)
+{
+	try
+	{
+		char *database_char;
+		if(!PyArg_ParseTuple(args, "s", &database_char))
+		{
+			return nullptr;
+		}
+		string database_str(database_char);
+		getGlobalLogger(self->logger, self->log_function);
+		self->base_object->speciateRemainingLineages(database_str);
+	}
+	catch(exception &e)
+	{
+		removeGlobalLogger();
+		PyErr_SetString(NECSimError, e.what());
+		return nullptr;
+	}
+	Py_RETURN_NONE;
+}
+
+template<class T>
 static void
 PyCommunity_dealloc(PyCommunityTemplate<T> *self)
 {
 	if(self->specSimParameters != nullptr)
 	{
-		delete self->specSimParameters;
+		self->specSimParameters.reset();
 		self->specSimParameters = nullptr;
 	}
 	PyTemplate_dealloc<T>(self);
@@ -305,7 +328,7 @@ template<class T>
 static int
 PyCommunity_init(PyCommunityTemplate<T> *self, PyObject *args, PyObject *kwds)
 {
-	self->specSimParameters = new SpecSimParameters();
+	self->specSimParameters = make_shared<SpecSimParameters>();
 	return PyTemplate_init<T>(self, args, kwds);
 }
 
@@ -318,22 +341,21 @@ PyMethodDef *genCommunityMethods()
 {
 	static PyMethodDef CommunityMethods[] =
 			{
-					{"setup",                      (PyCFunction) setupApplySpeciation<T>,     METH_VARARGS,
-															   "Sets the speciation parameters to be applied to the tree."},
-					{"add_time",                   (PyCFunction) addTime<T>,                  METH_VARARGS,
-															   "Adds a time to apply to the simulation."},
+					{"setup", (PyCFunction) setupApplySpeciation<T>, METH_VARARGS,
+															 "Sets the speciation parameters to be applied to the tree."},
+					{"add_time", (PyCFunction) addTime<T>, METH_VARARGS,
+															 "Adds a time to apply to the simulation."},
 					{"wipe_protracted_parameters", (PyCFunction) wipeProtractedParameters<T>, METH_NOARGS,
-															   "Wipes the protracted parameters."},
-					{"add_protracted_parameters",  (PyCFunction) addProtractedParameters<T>,  METH_VARARGS,
-															   "Adds protracted speciation parameters to apply to the simulation."},
-					{"apply",                      (PyCFunction) apply<T>,                    METH_NOARGS,
-															   "Applies the new speciation rate(s) to the coalescence tree."},
-					{"output",                     (PyCFunction) output<T>,                   METH_NOARGS,
-															   "Outputs the database to file."},
-					{"reset",                      (PyCFunction) reset<T>,                    METH_NOARGS,
-															   "Resets the internal object."},
-
-					{nullptr,                      nullptr, 0, nullptr}
+															 "Wipes the protracted parameters."},
+					{"add_protracted_parameters", (PyCFunction) addProtractedParameters<T>, METH_VARARGS,
+															 "Adds protracted speciation parameters to apply to the simulation."},
+					{"apply", (PyCFunction) apply<T>, METH_NOARGS,
+															 "Applies the new speciation rate(s) to the coalescence tree."},
+					{"output", (PyCFunction) output<T>, METH_NOARGS, "Outputs the database to file."},
+					{"reset", (PyCFunction) reset<T>, METH_NOARGS, "Resets the internal object."},
+					{"speciate_remaining_lineages", (PyCFunction) speciateRemainingLineages<T>, METH_VARARGS,
+							"Speciates the remaining lineages in a paused simulation to force it to appear complete"},
+					{nullptr, nullptr, 0, nullptr}
 			};
 	return CommunityMethods;
 }

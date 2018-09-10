@@ -1,5 +1,6 @@
 """Tests the pause and resume functionality of simulations to ensure it is the same as a continuous simulation."""
 import logging
+import sqlite3
 import unittest
 
 import os
@@ -8,6 +9,7 @@ import shutil
 from pycoalescence import Simulation, CoalescenceTree
 
 from pycoalescence.necsim import NECSimError
+from pycoalescence.sqlite_connection import check_sql_table_exist, fetch_table_from_sql
 from setupTests import setUpAll, tearDownAll, skipLongTest
 
 
@@ -497,3 +499,46 @@ class TestSimulationPause4(unittest.TestCase):
 		self.assertAlmostEqual(single_run_species_list[0][9], pause_sim_species_list[0][9], 16)
 		self.assertListEqual([x for x in pause_sim_species_list],
 		                     [x for x in single_run_species_list])
+
+class TestPauseSpeciateRemaining(unittest.TestCase):
+	"""Tests functionality relating to termination of a paused simulation by speciating every remaining lineage."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Runs a simulation to pause and restart from."""
+		cls.sim = Simulation(logging_level=50)
+		cls.sim.set_simulation_parameters(seed=14, job_type=17, output_directory="output",
+											 min_speciation_rate=0.00000000001,
+											 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=0,
+											 dispersal_relative_cost=1,
+											 min_num_species=1, habitat_change_rate=0,
+											 dispersal_method="normal")
+		cls.sim.set_map_files(sample_file="sample/SA_samplemaskINT spaced.tif",
+		                         fine_file="sample/SA_sample_fine.tif",
+		                         coarse_file="sample/SA_sample_coarse.tif")
+		cls.sim.run()
+		shutil.copy(cls.sim.output_database, os.path.join("output", "data_17_14b.db"))
+		cls.ct = CoalescenceTree()
+		cls.ct.speciate_remaining(cls.sim)
+	
+	def testPausedSimulationExists(self):
+		"""Tests that the paused simulation exists and the tables have been stored properly."""
+		paused_db = os.path.join("output", "data_{}_{}b.db".format(17, 14))
+		self.assertTrue(os.path.exists(paused_db))
+		with self.assertRaises(IOError):
+			ct = CoalescenceTree(paused_db)
+		ct = None
+		database = sqlite3.connect(paused_db)
+		self.assertTrue(check_sql_table_exist(database, "SPECIES_LIST"))
+		self.assertTrue(check_sql_table_exist(database, "SIMULATION_PARAMETERS"))
+		self.assertFalse(bool(database.cursor().execute(
+			"SELECT sim_complete FROM SIMULATION_PARAMETERS").fetchall()[0][0]))
+
+	def testForcedSpeciation(self):
+		"""Tests that the forced speciation of remaining lineages works as expected."""
+		ct = CoalescenceTree(self.sim)
+		ct.set_speciation_parameters(speciation_rates=[0.1, 0.5, 0.95])
+		ct.apply()
+		self.assertEqual(1171, ct.get_richness(1))
+		self.assertEqual(1172, ct.get_richness(2))
+		self.assertEqual(1173, ct.get_richness(3))

@@ -50,6 +50,7 @@ class SQLiteConnection():
 			self.database = None
 
 
+
 def check_sql_table_exist(database, table_name):
 	"""
 	Checks that the supplied table exists in the supplied database.
@@ -57,7 +58,7 @@ def check_sql_table_exist(database, table_name):
 	:param database: the database to check existence in
 	:param table_name: the table name to check for
 
-	:return: boolean of whether the table exists
+	:return: true if the table exists
 	:rtype: bool
 	"""
 	with SQLiteConnection(database) as cursor:

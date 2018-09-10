@@ -185,6 +185,7 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
    This is split into 3 parts, which can be called individually if necessary:
 
     #. Finalise setup
+
         - Run :func:`finalise_setup() <pycoalescence.simulation.Simulation.finalise_setup>` to check that simulations
           are setup and set up the maps and data structures in memory :ref:`necsim <Introduction_necsim>`.
 

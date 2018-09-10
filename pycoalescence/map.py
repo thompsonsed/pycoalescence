@@ -741,7 +741,6 @@ class Map(object):
 		.. note:: Writes to an in-memory file (filename_tmp.tif) which then overwrites the original file, unless
 				  dest_file is not None
 
-		:param source_projection: provide a source projection to reproject from
 		:param dest_projection: the destination file projection, can only be None if rescaling
 		:param source_file: optionally provide a file name to reproject. Defaults to self.file_name
 		:param dest_file: the destination file to output to (if None, overwrites original file)

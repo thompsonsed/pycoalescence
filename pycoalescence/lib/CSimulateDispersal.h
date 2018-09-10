@@ -21,7 +21,7 @@ using namespace std;
 class PySimulateDispersal : public PyTemplate<SimulateDispersal>
 {
 public:
-	SimParameters *dispersalParameters;
+	shared_ptr<SimParameters> dispersalParameters;
 	bool has_imported_maps;
 	unique_ptr<std::string> output_database;
 	bool printing;
@@ -438,7 +438,7 @@ static int
 PySimulateDispersal_init(PySimulateDispersal *self, PyObject *args, PyObject *kwds)
 {
 	auto out = PyTemplate_init<SimulateDispersal>(self, args, kwds);
-	self->dispersalParameters = new SimParameters();
+	self->dispersalParameters = make_shared<SimParameters>();
 	self->has_imported_maps = false;
 	self->output_database = make_unique<std::string>("none");
 	self->printing = true;
@@ -450,7 +450,7 @@ static void PySimulateDispersal_dealloc(PySimulateDispersal *self)
 {
 	if(self->dispersalParameters != nullptr)
 	{
-		delete self->dispersalParameters;
+		self->dispersalParameters.reset();
 		self->dispersalParameters = nullptr;
 	}
 	if(self->output_database != nullptr)
