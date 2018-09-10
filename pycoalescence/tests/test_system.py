@@ -756,7 +756,7 @@ class TestCoalSampling2(unittest.TestCase):
 		for f in [1, 2, 3]:
 			fragment_file = "sample/FragmentsTestFail{}.csv".format(f)
 			with self.assertRaises(NECSimError):
-				t = CoalescenceTree("output/temp.db")
+				t = CoalescenceTree("output/temp.db", logging_level=50)
 				t.wipe_data()
 				t.set_speciation_parameters(speciation_rates=[0.5, 0.6], record_spatial=False,
 											record_fragments=fragment_file)

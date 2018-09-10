@@ -392,7 +392,7 @@ class CoalescenceTree(object):
 		 However, the database WILL be set before the error is thrown, allowing for analysis of
 		 incomplete simulations if the error is handled correctly.
 
-		:param filename: the SQLite database file to import
+		:param pycoalescence.simulation.Simulation/str filename: the SQLite database file to import
 		"""
 		if isinstance(filename, pycoalescence.simulation.Simulation):
 			filename = filename.output_database
@@ -644,6 +644,25 @@ class CoalescenceTree(object):
 			self.logger.error("Coalescence tree has already been written to output database.")
 		else:
 			self.c_community.output()
+
+	def speciate_remaining(self, database):
+		"""
+		Speciates the remaining lineages in a paused database.
+
+		:param str/pycoalescence.simulation.Simulation database: the paused database to open
+
+		:rtype: None
+		"""
+		try:
+			self.set_database(database)
+			raise IOError("Database at {} is not a paused database.".format(self.file))
+		except IOError:
+			pass
+		self.database.close()
+		self.set_c_community()
+		self.c_community.speciate_remaining_lineages(self.file)
+
+
 
 	def get_richness(self, reference=1):
 		"""
