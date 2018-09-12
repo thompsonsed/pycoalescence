@@ -12,6 +12,7 @@
 #include <Python.h>
 #include <vector>
 #include <string>
+#include <memory>
 #include "necsim.h"
 #include "LandscapeMetricsCalculator.h"
 #include "PyLogging.h"

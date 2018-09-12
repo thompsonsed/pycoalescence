@@ -12,6 +12,7 @@
 
 #include <Python.h>
 #include <structmember.h>
+#include <memory>
 #include "PyImports.h"
 
 template<class T>
@@ -21,7 +22,7 @@ public:
 	PyObject_HEAD
 	PyObject *logger = nullptr;
 	PyObject *log_function = nullptr;
-	unique_ptr<T> base_object = nullptr;
+	std::unique_ptr<T> base_object = nullptr;
 
 //	virtual void init()
 //	{

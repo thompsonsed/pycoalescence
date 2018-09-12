@@ -9,6 +9,7 @@
 #include <structmember.h>
 #include <cstring>
 #include <string>
+#include <memory>
 #include "PyImports.h"
 #include "PyTemplates.h"
 #include "necsim.h"

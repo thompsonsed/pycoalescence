@@ -11,6 +11,7 @@
 
 #include <Python.h>
 #include <structmember.h>
+#include <memory>
 #include "necsim/ConfigFileParser.h"
 #include "necsim/Tree.h"
 #include "necsim/SpatialTree.h"

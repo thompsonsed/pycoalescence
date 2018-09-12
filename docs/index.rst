@@ -8,6 +8,14 @@
 Welcome to pycoalescence
 ========================
 
+|Documentation|_ |Binder|_
+
+.. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
+.. _Documentation: https://pycoalescence.readthedocs.io
+
+.. |Binder| image:: https://mybinder.org/badge.svg
+.. _Binder: https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master
+
 **pycoalescence** is a python package for running and analysing spatially-explicit neutral ecology simulations efficiently and easily.
 Input your maps and output a simulated landscape of individuals.
 
