@@ -6,21 +6,17 @@
 image: python:3.6.5
 
 pipelines:
-  branches:
-    develop:
-      - step:
-        name: Build
-        caches:
-          - pip
-          - gdal-bin
-          - libboost-dev
-          - cmake
-        script:
-          - pip install -r requirements.txt
-          - python setup.py develop
-      - step:
-        name: Testing
-        script:
-          - cd pycoalescence
-          - python -m unittest discover
+  default:
+    - step:
+      name: Build
+      caches:
+        - pip
+        - gdal-bin
+        - libboost-dev
+        - cmake
+      script:
+        - pip install -r requirements.txt
+        - python setup.py develop
+        - cd pycoalescence
+        - python -m unittest discover
 
