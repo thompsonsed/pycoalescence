@@ -8,15 +8,15 @@ image: python:3.6.5
 pipelines:
   default:
     - step:
-      name: Build
-      caches:
-        - pip
-        - gdal-bin
-        - libboost-dev
-        - cmake
-      script:
-        - pip install -r requirements.txt
-        - python setup.py develop
-        - cd pycoalescence
-        - python -m unittest discover
+        name: Build
+        caches:
+          - pip
+          - gdal-bin
+          - libboost-dev
+          - cmake
+        script:
+          - pip install -r requirements.txt
+          - python setup.py develop
+          - cd pycoalescence
+          - python -m unittest discover
 
