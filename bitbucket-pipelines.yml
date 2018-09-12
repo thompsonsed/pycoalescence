@@ -11,10 +11,8 @@ pipelines:
         name: Build
         caches:
           - pip
-          - gdal-bin
-          - libboost-dev
-          - cmake
         script:
+          - apt-get install -y gdal-bin libboost-dev cmake
           - pip install -r requirements.txt
           - python setup.py develop
           - cd pycoalescence
