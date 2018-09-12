@@ -12,7 +12,7 @@ pipelines:
         caches:
           - pip
         script:
-          - apt-get install -y gdal-bin libboost-dev cmake
+          - apt-get update && apt-get install -y gdal-bin libboost-dev cmake
           - pip install -r requirements.txt
           - python setup.py develop
           - cd pycoalescence
