@@ -5,6 +5,15 @@ pycoalescence
 .. role:: pycode(code)
    :language: python
 
+|Documentation|_ |Binder|_
+
+.. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
+.. _Documentation: https://pycoalescence.readthedocs.io
+
+.. |Binder| image:: https://mybinder.org/badge.svg
+.. _Binder: https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master
+
+
 
 Introduction
 ------------
@@ -185,6 +194,7 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
    This is split into 3 parts, which can be called individually if necessary:
 
     #. Finalise setup
+
         - Run :func:`finalise_setup() <pycoalescence.simulation.Simulation.finalise_setup>` to check that simulations
           are setup and set up the maps and data structures in memory :ref:`necsim <Introduction_necsim>`.
 

@@ -368,6 +368,12 @@ class Installer(build_ext):
 		env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
 			env.get('CXXFLAGS', ''),
 			self.distribution.get_version())
+		if "INTEL_LICENSE_FILE" in env.keys():
+			env["CXX"] = "icpc"
+			env["CC"] = "icc"
+			cmake_args.extend(["-DCMAKE_C_COMPILER=icc", "-DCMAKE_CXX_COMPILER=icpc", "-DUSING_INTEL"])
+		# TODO remove this
+		print(env)
 		self.run_cmake(ext.sourcedir, cmake_args, build_args, self.build_temp, env)
 
 	def run_cmake(self, src_dir, cmake_args, build_args, tmp_dir, env):

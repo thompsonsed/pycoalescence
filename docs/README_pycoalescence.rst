@@ -5,6 +5,15 @@ pycoalescence
 .. role:: pycode(code)
    :language: python
 
+|Documentation|_ |Binder|_
+
+.. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
+.. _Documentation: https://pycoalescence.readthedocs.io
+
+.. |Binder| image:: https://mybinder.org/badge.svg
+.. _Binder: https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master
+
+
 
 Introduction
 ------------

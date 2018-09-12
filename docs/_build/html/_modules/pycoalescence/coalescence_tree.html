@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.6rc39 documentation</title>
+    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.6rc55 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6rc39',
+        VERSION:     '1.2.6rc55',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc39 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -447,7 +447,7 @@
 <span class="sd">		 However, the database WILL be set before the error is thrown, allowing for analysis of</span>
 <span class="sd">		 incomplete simulations if the error is handled correctly.</span>
 
-<span class="sd">		:param filename: the SQLite database file to import</span>
+<span class="sd">		:param pycoalescence.simulation.Simulation/str filename: the SQLite database file to import</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pycoalescence</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">Simulation</span><span class="p">):</span>
 			<span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">output_database</span>
@@ -699,6 +699,25 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Coalescence tree has already been written to output database.&quot;</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">output</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CoalescenceTree.speciate_remaining"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.speciate_remaining">[docs]</a>	<span class="k">def</span> <span class="nf">speciate_remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Speciates the remaining lineages in a paused database.</span>
+
+<span class="sd">		:param str/pycoalescence.simulation.Simulation database: the paused database to open</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">set_database</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Database at {} is not a paused database.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">))</span>
+		<span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+			<span class="k">pass</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_c_community</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">speciate_remaining_lineages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span></div>
+
+
 
 <div class="viewcode-block" id="CoalescenceTree.get_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_richness">[docs]</a>	<span class="k">def</span> <span class="nf">get_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -2261,7 +2280,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc39 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

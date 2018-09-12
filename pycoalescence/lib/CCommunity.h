@@ -13,6 +13,7 @@
 #include <Python.h>
 #include <string>
 #include <structmember.h>
+#include <memory>
 #include "PyImports.h"
 #include "necsim/Community.h"
 #include "necsim/Metacommunity.h"
