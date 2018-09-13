@@ -2,40 +2,33 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
-version: 2
+version: 2.0
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.1
+      - image: circleci/cci-demo-docker-primary:0.0.1
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: ~/repo
+    working_directory: ~/pycoalescence
 
     steps:
       - checkout
 
       - run:
-          name: install dependencies
+          name: build package
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            apt-get update && apt-get install -y gdal-bin libboost-dev cmake libgdal-dev
-            pip install numpy scipy
-            python setup.py install
+            python3 setup.py install
         
       # run tests!
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
             cd pycoalescence
-            python -m unittest discover
+            python3 -m unittest discover
 
 
       - store_artifacts:
