@@ -688,7 +688,7 @@ prerequisites (such as numpy), although on some systems will fail to install gda
 
 -  Python version 2 >= 2.7.9 or 3 >= 3.4.1. Other versions may work, but are not supported.
 -  C++ compiler (such as GNU g++) with C++14 support.
--  `Cmake <https://cmake.org/>`_ for installing via pip or conda.
+-  `Cmake <https://cmake.org/>`_ >= 3.6 for installing via pip or conda.
 -  `The SQLite library <https://www.sqlite.org/download.html>`__ for both ``c++`` and ``python``
    installations. Comes as standard with python.
 - The gdal library for both python and C++ (`available here <http://www.gdal.org/>`__). Although it is possible to turn
