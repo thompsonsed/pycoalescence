@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File DataPoint.cpp &#8212; pycoalescence 1.2.6rc55 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6rc55',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File DataPoint.h" href="file_necsim_DataPoint.h.html" />
+    <link rel="prev" title="File DataPoint.cpp" href="file_necsim_DataPoint.cpp.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_DataPoint.h.html" title="File DataPoint.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_DataPoint.cpp.html" title="File DataPoint.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_DataPoint.cpp.html" accesskey="U">File DataPoint.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-datapoint-cpp">
+<span id="program-listing-file-necsim-datapoint-cpp"></span><h1>Program Listing for File DataPoint.cpp<a class="headerlink" href="#program-listing-for-file-datapoint-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_DataPoint.cpp.html#file-necsim-datapoint-cpp"><span class="std std-ref">File DataPoint.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
+<span class="cp">#include</span> <span class="cpf">&quot;Logging.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;DataPoint.h&quot;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="n">xwrap_in</span><span class="p">,</span> <span class="kt">long</span> <span class="n">ywrap_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span>
+                      <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">list_position_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">min_max_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">xpos</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">ypos</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">xwrap</span> <span class="o">=</span> <span class="n">xwrap_in</span><span class="p">;</span>
+    <span class="n">ywrap</span> <span class="o">=</span> <span class="n">ywrap_in</span><span class="p">;</span>
+    <span class="n">next_lineage</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">reference_in</span><span class="p">;</span>
+    <span class="n">list_position</span> <span class="o">=</span> <span class="n">list_position_in</span><span class="p">;</span>
+    <span class="n">nwrap</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">min_max</span> <span class="o">=</span> <span class="n">min_max_in</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">list_position_in</span><span class="p">,</span> <span class="kt">double</span> <span class="n">min_max_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setup</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">reference_in</span><span class="p">,</span> <span class="n">list_position_in</span><span class="p">,</span> <span class="n">min_max_in</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="n">DataPoint</span> <span class="n">datin</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">xpos</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getXpos</span><span class="p">();</span>
+    <span class="n">ypos</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getYpos</span><span class="p">();</span>
+    <span class="n">xwrap</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getXwrap</span><span class="p">();</span>
+    <span class="n">ywrap</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getYwrap</span><span class="p">();</span>
+    <span class="n">next_lineage</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getNext</span><span class="p">();</span>
+<span class="c1">//      last = datin.get_last(); // removed as of version 3.1</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getReference</span><span class="p">();</span>
+    <span class="n">list_position</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getListpos</span><span class="p">();</span>
+    <span class="n">nwrap</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getNwrap</span><span class="p">();</span>
+    <span class="n">min_max</span> <span class="o">=</span> <span class="n">datin</span><span class="p">.</span><span class="n">getMinmax</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setReference</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">z</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setNext</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">next_lineage</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setListPosition</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">l</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">list_position</span> <span class="o">=</span> <span class="n">l</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setNwrap</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">nwrap</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setMinmax</span><span class="p">(</span><span class="kt">double</span> <span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">min_max</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getXpos</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">xpos</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getYpos</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">ypos</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getXwrap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">xwrap</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getYwrap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">ywrap</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getReference</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">reference</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getNext</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">next_lineage</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getListpos</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">list_position</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getNwrap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">nwrap</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">getMinmax</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">min_max</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">decreaseNwrap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">nwrap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">out_of_range</span><span class="p">(</span><span class="s">&quot;ERROR_DATA_001: Trying to decrease  nwrap less than 0.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">nwrap</span><span class="o">--</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">setEndpoint</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span><span class="p">,</span> <span class="kt">long</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="n">xwrapin</span><span class="p">,</span> <span class="kt">long</span> <span class="n">ywrapin</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">xpos</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">ypos</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">xwrap</span> <span class="o">=</span> <span class="n">xwrapin</span><span class="p">;</span>
+    <span class="n">ywrap</span> <span class="o">=</span> <span class="n">ywrapin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">DataPoint</span> <span class="o">&amp;</span><span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">xpos</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">ypos</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">xwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">ywrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">next_lineage</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">reference</span>
+       <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">list_position</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">nwrap</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;,&quot;</span><span class="p">;</span>
+    <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">min_max</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">istream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="p">,</span> <span class="n">DataPoint</span> <span class="o">&amp;</span><span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//os &lt;&lt; m.numRows&lt;&lt;&quot; , &quot;&lt;&lt;m.numCols&lt;&lt;&quot; , &quot;&lt;&lt;endl;</span>
+    <span class="kt">char</span> <span class="n">delim</span><span class="p">;</span>
+    <span class="c1">//os &lt;&lt; &quot;datapoint&quot; &lt;&lt; endl;</span>
+    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">xpos</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">ypos</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">xwrap</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">ywrap</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">next_lineage</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span>
+       <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">reference</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">list_position</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">nwrap</span> <span class="o">&gt;&gt;</span> <span class="n">delim</span><span class="p">;</span>
+    <span class="n">is</span> <span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">min_max</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">is</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#ifdef DEBUG</span>
+<span class="kt">void</span> <span class="n">DataPoint</span><span class="o">::</span><span class="n">logActive</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">level</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;x, y, (x wrap, y wrap): &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">ypos</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, (&quot;</span> <span class="o">+</span>
+                 <span class="n">to_string</span><span class="p">(</span><span class="n">xwrap</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;, &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">ywrap</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">);</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Lineage next: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">next_lineage</span><span class="p">));</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Reference: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">reference</span><span class="p">));</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;List position: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">list_position</span><span class="p">));</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Number in wrapped lineages: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">nwrap</span><span class="p">));</span>
+    <span class="n">writeLog</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;Minimum maximum: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">min_max</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_DataPoint.cpp.html"
+                        title="previous chapter">File DataPoint.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_DataPoint.h.html"
+                        title="next chapter">File DataPoint.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_DataPoint.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_DataPoint.h.html" title="File DataPoint.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_DataPoint.cpp.html" title="File DataPoint.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_DataPoint.cpp.html" >File DataPoint.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

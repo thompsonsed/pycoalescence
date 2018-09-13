@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pycoalescence.landscape &#8212; pycoalescence 1.2.6rc55 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.6rc55',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycoalescence.landscape</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generate landscapes and check map file combinations. Child class for :class:`.Simulation` and</span>
+<span class="sd">:class:`.DispersalSimulation`. Contains :class:`.Map` objects for each relevant map file internally.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">check_file_exists</span><span class="p">,</span> <span class="n">create_logger</span>
+<span class="kn">from</span> <span class="nn">.map</span> <span class="kn">import</span> <span class="n">Map</span>
+
+
+<div class="viewcode-block" id="Landscape"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape">[docs]</a><span class="k">class</span> <span class="nc">Landscape</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Calculates offsets and dimensions of a selection of tif files making up a landscape.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initialises the default variables for the Landscape object.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">setup_complete</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span> <span class="o">=</span> <span class="n">Map</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span> <span class="o">=</span> <span class="n">Map</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span> <span class="o">=</span> <span class="n">Map</span><span class="p">()</span>
+		<span class="c1"># Historical map parameters</span>
+		<span class="c1"># Rate of habitat change that occurs before historical state</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">habitat_change_rate</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">gen_since_historical</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># The number of generations ago a habitat was historical</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">times_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span> <span class="o">=</span> <span class="mi">10</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;pycoalescence.landscape&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">=</span> <span class="bp">False</span>
+
+	<span class="k">def</span> <span class="nf">_create_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Creates the logger for use with NECSim simulation. Note you can supply your own logger by over-riding</span>
+<span class="sd">		self.logger. This function should only be run during self.__init__()</span>
+
+<span class="sd">		:param file: file to write output to. If None, outputs to terminal</span>
+<span class="sd">		:param logging_level: the logging level to use (defaults to INFO)</span>
+<span class="sd">		:param kwargs: additional keyword arguments to write out to</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">logging_level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">logging_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">create_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">logging_level</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Landscape.add_historical_map"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.add_historical_map">[docs]</a>	<span class="k">def</span> <span class="nf">add_historical_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fine_map</span><span class="p">,</span> <span class="n">coarse_map</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds an extra map to the list of historical maps.</span>
+
+<span class="sd">		:param fine_map: the historical fine map file to add</span>
+<span class="sd">		:param coarse_map: the historical coarse map file to add</span>
+<span class="sd">		:param time: the time to add (when the map is accurate)</span>
+<span class="sd">		:param rate: the rate to add (the rate of habitat change at this time)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span> <span class="o">=</span> <span class="n">fine_map</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="o">=</span> <span class="n">coarse_map</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">gen_since_historical</span> <span class="o">=</span> <span class="n">time</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">habitat_change_rate</span> <span class="o">=</span> <span class="n">rate</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fine_map</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coarse_map</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Landscape.sort_historical_maps"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.sort_historical_maps">[docs]</a>	<span class="k">def</span> <span class="nf">sort_historical_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sorts the historical maps by time.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span> <span class="o">=</span> \
+				<span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">,</span>
+												  <span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rates_list</span><span class="p">)))]</span></div>
+
+<div class="viewcode-block" id="Landscape.set_map"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.set_map">[docs]</a>	<span class="k">def</span> <span class="nf">set_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_file</span><span class="p">,</span> <span class="n">x_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">y_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Quick function for setting a single map file for both the sample map and fine map, of dimensions x and y.</span>
+<span class="sd">		Sets the sample file to &quot;null&quot; and coarse file and historical files to &quot;none&quot;.</span>
+
+<span class="sd">		:param str map_file: path to the map file</span>
+<span class="sd">		:param int x_size: the x dimension, or None to detect automatically from the &quot;.tif&quot; file</span>
+<span class="sd">		:param int y_size: the y dimension, or None to detect automatically from the &quot;.tif&quot; file</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">x_size</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">y_size</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">y_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must specify both a map x and y dimension.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">map_file</span><span class="p">,</span> <span class="n">x_size</span><span class="o">=</span><span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="o">=</span><span class="n">y_size</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">zero_offsets</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">zero_offsets</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">zero_offsets</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span> <span class="o">=</span> <span class="bp">True</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span> <span class="o">=</span> <span class="mf">1.0</span></div>
+
+<div class="viewcode-block" id="Landscape.set_map_files"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.set_map_files">[docs]</a>	<span class="k">def</span> <span class="nf">set_map_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">fine_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">coarse_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">historical_fine_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+					  <span class="n">historical_coarse_file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in</span>
+<span class="sd">		the specified dimensions.</span>
+
+<span class="sd">		If sample_file is &quot;null&quot;, dimension values will remain at 0.</span>
+<span class="sd">		If coarse_file is &quot;null&quot;, it will default to the size of fine_file with zero offset.</span>
+<span class="sd">		If the coarse file is &quot;none&quot;, it will not be used.</span>
+<span class="sd">		If the historical fine or coarse files are &quot;none&quot;, they will not be used.</span>
+
+<span class="sd">		:param str sample_file: the sample map file. Provide &quot;null&quot; if on samplemask is required</span>
+<span class="sd">		:param str fine_file: the fine map file. Defaults to &quot;null&quot; if none provided</span>
+<span class="sd">		:param str coarse_file: the coarse map file. Defaults to &quot;none&quot; if none provided</span>
+<span class="sd">		:param str historical_fine_file: the historical fine map file. Defaults to &quot;none&quot; if none provided</span>
+<span class="sd">		:param str historical_coarse_file: the historical coarse map file. Defaults to &quot;none&quot; if none provided</span>
+
+<span class="sd">		:rtype: None</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">fine_file</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Fine map file cannot be &#39;none&#39; or &#39;null&#39; for automatic parameter detection.&quot;</span>
+							 <span class="s2">&quot;Use set_map_parameters() instead.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">coarse_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">coarse_file</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+		<span class="k">if</span> <span class="n">historical_fine_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">historical_fine_file</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+		<span class="k">if</span> <span class="n">historical_coarse_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">historical_coarse_file</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_map_parameters</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fine_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">coarse_file</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+								<span class="n">historical_fine_file</span><span class="p">,</span> <span class="n">historical_coarse_file</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">detect_map_dimensions</span><span class="p">()</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span> <span class="o">=</span> <span class="bp">False</span>
+			<span class="k">raise</span> <span class="n">e</span></div>
+
+<div class="viewcode-block" id="Landscape.set_map_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.set_map_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">set_map_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">sample_x</span><span class="p">,</span> <span class="n">sample_y</span><span class="p">,</span> <span class="n">fine_file</span><span class="p">,</span> <span class="n">fine_x</span><span class="p">,</span> <span class="n">fine_y</span><span class="p">,</span> <span class="n">fine_x_offset</span><span class="p">,</span>
+						   <span class="n">fine_y_offset</span><span class="p">,</span> <span class="n">coarse_file</span><span class="p">,</span> <span class="n">coarse_x</span><span class="p">,</span> <span class="n">coarse_y</span><span class="p">,</span>
+						   <span class="n">coarse_x_offset</span><span class="p">,</span> <span class="n">coarse_y_offset</span><span class="p">,</span> <span class="n">coarse_scale</span><span class="p">,</span> <span class="n">historical_fine_map</span><span class="p">,</span> <span class="n">historical_coarse_map</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">		Set up the map objects with the required parameters. This is required for csv file usage.</span>
+
+<span class="sd">		Note that this function is not recommended for tif file usage, as it is much simpler to call set_map_files() and</span>
+<span class="sd">		which should automatically calculate map offsets, scaling and dimensions.</span>
+
+<span class="sd">		:param sample_file: the sample file to use, which should contain a boolean mask of where to sample</span>
+<span class="sd">		:param sample_x: the x dimension of the sample file</span>
+<span class="sd">		:param sample_y: the y dimension of the sample file</span>
+<span class="sd">		:param fine_file: the fine map file to use (must be equal to or larger than the sample file)</span>
+<span class="sd">		:param fine_x: the x dimension of the fine map file</span>
+<span class="sd">		:param fine_y: the y dimension of the fine map file</span>
+<span class="sd">		:param fine_x_offset: the x offset of the fine map file</span>
+<span class="sd">		:param fine_y_offset: the y offset of the fine map file</span>
+<span class="sd">		:param coarse_file: the coarse map file to use (must be equal to or larger than fine map file)</span>
+<span class="sd">		:param coarse_x: the x dimension of the coarse map file</span>
+<span class="sd">		:param coarse_y: the y dimension of the coarse map file</span>
+<span class="sd">		:param coarse_x_offset: the x offset of the coarse map file at the resolution of the fine map</span>
+<span class="sd">		:param coarse_y_offset: the y offset of the coarse map file at the resoultion of the fine map</span>
+<span class="sd">		:param coarse_scale: the relative scale of the coarse map compared to the fine map (must match x and y scaling)</span>
+<span class="sd">		:param historical_fine_map: the historical fine map file to use (must have dimensions equal to fine map)</span>
+<span class="sd">		:param historical_coarse_map: the historical coarse map file to use (must have dimensions equal to coarse map)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="n">sample_x</span><span class="p">,</span> <span class="n">sample_y</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">fine_file</span><span class="p">,</span> <span class="n">fine_x</span><span class="p">,</span> <span class="n">fine_y</span><span class="p">,</span> <span class="n">fine_x_offset</span><span class="p">,</span> <span class="n">fine_y_offset</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">coarse_file</span><span class="p">,</span> <span class="n">coarse_x</span><span class="p">,</span> <span class="n">coarse_y</span><span class="p">,</span> <span class="n">coarse_x_offset</span><span class="p">,</span> <span class="n">coarse_y_offset</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span> <span class="o">=</span> <span class="n">coarse_scale</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span> <span class="o">=</span> <span class="n">historical_fine_map</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="o">=</span> <span class="n">historical_coarse_map</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span> <span class="o">=</span> <span class="bp">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">err</span> <span class="o">=</span> <span class="s2">&quot;Map objects are already set up.&quot;</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Landscape.detect_map_dimensions"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.detect_map_dimensions">[docs]</a>	<span class="k">def</span> <span class="nf">detect_map_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Detects all the map dimensions for the provided files (where possible) and sets the respective values.</span>
+<span class="sd">		This is intended to be run after set_map_files()</span>
+
+<span class="sd">		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but</span>
+<span class="sd">						   not a coarse map.</span>
+
+<span class="sd">		:raises IOError: if one of the required maps does not exist</span>
+
+<span class="sd">		:raises ValueError: if the dimensions of the dispersal map do not make sense when used with the fine map</span>
+<span class="sd">							provided</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">()</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">file_name</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">x_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_size</span><span class="p">,</span>
+										   <span class="n">x_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_offset</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">x_ul</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_ul</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">y_ul</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_ul</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">()</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">calculate_offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">x_offset</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">y_offset</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]:</span>
+			<span class="n">tmpname</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span> <span class="o">=</span> <span class="mi">1</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">tmpname</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">x_offset</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">calculate_offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">y_offset</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">calculate_offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coarse_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">calculate_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">check_maps</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Landscape.check_maps"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.landscape.Landscape.check_maps">[docs]</a>	<span class="k">def</span> <span class="nf">check_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the maps all exist and that the file structure makes sense.</span>
+
+<span class="sd">		:raises TypeError: if a dispersal map or reproduction map is specified, we must have a fine map specified, but</span>
+<span class="sd">			not a coarse map.</span>
+
+<span class="sd">		:raises IOError: if one of the required maps does not exist</span>
+
+<span class="sd">		:return: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">map_file</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="p">]:</span>
+			<span class="n">map_file</span><span class="o">.</span><span class="n">check_map</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">map_file</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span><span class="p">]:</span>
+			<span class="n">check_file_exists</span><span class="p">(</span><span class="n">map_file</span><span class="p">)</span>
+		<span class="c1"># Now check that the rest of the map naming structures make sense.</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_map_file</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">}</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">}</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+					<span class="s2">&quot;Historical fine file is &#39;none&#39; but historical coarse file is not none. Check file names.&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Defaulting to historical_coarse_map_file = &#39;none&#39;&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+					<span class="s2">&quot;Set historical fine map file to &#39;none&#39;, but then added other historical maps. Changing.&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">historical_fine_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">}:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">}:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Coarse file is &#39;none&#39; but historical coarse file is not none. Check file names.&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Defaulting to historical_coarse_map_file = &#39;none&#39;&quot;</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_map_file</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">historical_coarse_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span> <span class="o">!=</span> <span class="s2">&quot;null&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">is_within</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Offsets mean that coarse map does not fully encompass fine map. Check that your&quot;</span>
+								 <span class="s2">&quot; maps exist at the same spatial coordinates.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Fine map file cannot be &#39;none&#39;, changing to &#39;null&#39;.&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+		<span class="c1"># Check offset of sample mask with fine map</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">file_name</span> <span class="o">!=</span> <span class="s2">&quot;null&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_map</span><span class="o">.</span><span class="n">is_within</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_map</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+				<span class="s2">&quot;Offsets mean that fine map does not fully encompass sample map. Check that your maps exist&quot;</span>
+				<span class="s2">&quot; at the same spatial coordinates.&quot;</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s2">&quot;tiled_fine&quot;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="bp">None</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">}:</span>
+				<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot use a coarse map with a tiled fine landscape.&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_type</span> <span class="o">==</span> <span class="s2">&quot;tiled_coarse&quot;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_map</span><span class="o">.</span><span class="n">file_name</span> <span class="ow">in</span> <span class="p">{</span><span class="bp">None</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">}:</span>
+				<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Cannot use a tiled_coarse landscape without a coarse map.&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>
