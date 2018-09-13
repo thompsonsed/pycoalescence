@@ -1,0 +1,42 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: thompsonsed/pycoalescence-circleci-0.0.1
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/pycoalescence
+
+
+    steps:
+      - checkout
+
+      - run:
+          name: build package
+          command: |
+            cd pycoalescence/lib
+            rm -r necsim
+            git clone git@bitbucket.org:thompsonsed/necsim.git
+            cd ../../
+            python3 setup.py install
+        
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            cd pycoalescence/tests
+            python3 -m unittest discover
+
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+          
