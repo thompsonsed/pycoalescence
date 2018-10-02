@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.6rc55 documentation</title>
+    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.6 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6rc55',
+        VERSION:     '1.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -365,7 +365,7 @@
 <span class="sd">				:func:`~run_mean_dispersal`</span>
 
 <span class="sd">		:param int number_repeats: the number of times to iterate on the map</span>
-<span class="sd">		:param int number_steps: the number of steps to take each time before recording the distance travelled</span>
+<span class="sd">		:param int/list number_steps: the number of steps to take each time before recording the distance travelled</span>
 <span class="sd">		:param int seed: the random seed</span>
 <span class="sd">		:param bool sequential: if true, runs repeats sequentially</span>
 <span class="sd">		:return:</span>
@@ -520,9 +520,11 @@
 			<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Could not get average distance from database: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 		<span class="k">return</span> <span class="n">stdev_distance</span></div>
 
-<div class="viewcode-block" id="DispersalSimulation.get_database_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">get_database_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DispersalSimulation.get_database_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">get_database_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Gets the dispersal simulation parameters from the dispersal_db</span>
+
+<span class="sd">		:param reference: the reference to obtain parameters for</span>
 
 <span class="sd">		:return: the dispersal simulation parameters</span>
 
@@ -544,9 +546,15 @@
 				<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">each</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
 					<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
 						<span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">each</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+			<span class="c1"># Now convert it into a dictionary</span>
 			<span class="n">main_dict</span><span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">column_names</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
-		<span class="c1"># Now convert it into a dictionary</span>
-		<span class="k">return</span> <span class="n">main_dict</span></div>
+		<span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">main_dict</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">main_dict</span><span class="p">[</span><span class="n">reference</span><span class="p">]</span>
+			<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No reference exists in the database with a value of {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="DispersalSimulation.get_database_references"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_references">[docs]</a>	<span class="k">def</span> <span class="nf">get_database_references</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -596,7 +604,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

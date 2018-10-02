@@ -93,15 +93,15 @@ class TestSimulationNorm(unittest.TestCase):
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(41, self.tree.get_richness(1))
-		self.assertEqual(57, self.tree.get_richness(2))
+		self.assertEqual(41, self.tree.get_species_richness(1))
+		self.assertEqual(57, self.tree.get_species_richness(2))
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(41, richness_01)
 		self.assertEqual(57, richness_02)
 
@@ -159,15 +159,15 @@ class TestSimulationInfLand(unittest.TestCase):
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(60, self.tree.get_richness(1))
-		self.assertEqual(70, self.tree.get_richness(2))
+		self.assertEqual(60, self.tree.get_species_richness(1))
+		self.assertEqual(70, self.tree.get_species_richness(2))
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(60, richness_01)
 		self.assertEqual(70, richness_02)
 
@@ -224,15 +224,15 @@ class TestSimulationFatInf(unittest.TestCase):
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(self.tree.get_richness(1), 80)
-		self.assertEqual(self.tree.get_richness(2), 87)
+		self.assertEqual(self.tree.get_species_richness(1), 80)
+		self.assertEqual(self.tree.get_species_richness(2), 87)
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(richness_01, 80)
 		self.assertEqual(richness_02, 87)
 
@@ -290,15 +290,15 @@ class TestSimulationTif(unittest.TestCase):
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(2643, self.tree.get_richness(1))
-		self.assertEqual(3124, self.tree.get_richness(2))
+		self.assertEqual(2643, self.tree.get_species_richness(1))
+		self.assertEqual(3124, self.tree.get_species_richness(2))
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(2643, richness_01)
 		self.assertEqual(3124, richness_02)
 
@@ -357,15 +357,15 @@ class TestSimulationTiledInfinite(unittest.TestCase):
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(3374, self.tree.get_richness(1))
-		self.assertEqual(3492, self.tree.get_richness(2))
+		self.assertEqual(3374, self.tree.get_species_richness(1))
+		self.assertEqual(3492, self.tree.get_species_richness(2))
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(3374, richness_01)
 		self.assertEqual(3492, richness_02)
 
@@ -434,23 +434,23 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
 		"""
 		Tests that the richness produced by the tiled map is greater than that produced by the closed map.
 		"""
-		self.assertGreater(self.tree.get_richness(1),
-						   self.tree2.get_richness(1))
+		self.assertGreater(self.tree.get_species_richness(1),
+						   self.tree2.get_species_richness(1))
 
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(3450, self.tree.get_richness(1))
-		self.assertEqual(3582, self.tree.get_richness(2))
+		self.assertEqual(3450, self.tree.get_species_richness(1))
+		self.assertEqual(3582, self.tree.get_species_richness(2))
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(3450, richness_01)
 		self.assertEqual(3582, richness_02)
 
@@ -492,8 +492,8 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		"""
 		Tests that the richness produced by a probability map is not the same as the richness produced without.
 		"""
-		self.assertNotEqual(self.coal.get_richness(1), self.coal2.get_richness(1))
-		self.assertEqual(2639, self.coal.get_richness(1))
+		self.assertNotEqual(self.coal.get_species_richness(1), self.coal2.get_species_richness(1))
+		self.assertEqual(2639, self.coal.get_species_richness(1))
 
 	def testReproductionMapNullRaisesError(self):
 		"""
@@ -611,15 +611,15 @@ class TestSimulationTifCoarse(unittest.TestCase):
 		Tests that the richness stored in the SQL file is correct.
 		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
 		"""
-		self.assertEqual(self.tree.get_richness(1), 283)
-		self.assertEqual(self.tree.get_richness(2), 283)
+		self.assertEqual(self.tree.get_species_richness(1), 283)
+		self.assertEqual(self.tree.get_species_richness(2), 283)
 
 	def testRichnessLandscape(self):
 		"""
 		Tests the landscape richness function which calculates landscape richness for each time and speciation rate.
 		"""
-		richness_01 = self.tree.get_landscape_richness(1)
-		richness_02 = self.tree.get_landscape_richness(2)
+		richness_01 = self.tree.get_species_richness(1)
+		richness_02 = self.tree.get_species_richness(2)
 		self.assertEqual(richness_01, 283)
 		self.assertEqual(richness_02, 283)
 
@@ -656,8 +656,8 @@ class TestSimulationNonSpatial(unittest.TestCase):
 		"""
 		Runs the sanity checks for non-spatially explicit simulations
 		"""
-		self.assertEqual(self.c.get_richness(), 100)
-		self.assertEqual(self.c2.get_richness(), 70)
+		self.assertEqual(self.c.get_species_richness(), 100)
+		self.assertEqual(self.c2.get_species_richness(), 70)
 
 	def testNSELocations(self):
 		"""
@@ -675,8 +675,8 @@ class TestSimulationNonSpatial(unittest.TestCase):
 		"""
 		Tests that protracted simulations work with NSE sims.
 		"""
-		self.assertGreater(self.c3.get_richness(1), self.c2.get_richness(1))
-		self.assertLess(self.c4.get_richness(1), self.c3.get_richness(1))
+		self.assertGreater(self.c3.get_species_richness(1), self.c2.get_species_richness(1))
+		self.assertLess(self.c4.get_species_richness(1), self.c3.get_species_richness(1))
 
 
 class TestSimulationSampling(unittest.TestCase):
@@ -713,11 +713,11 @@ class TestSimulationSampling(unittest.TestCase):
 		Also tests that both methods of obtaining species richness work.
 		"""
 		self.tree.calculate_richness()
-		self.assertEqual(1164, self.tree.get_landscape_richness(1))
-		self.assertEqual(1169, self.tree.get_landscape_richness(2))
-		self.assertEqual(self.tree.get_landscape_richness(1), self.tree.get_richness(1))
-		self.assertEqual(self.tree.get_landscape_richness(2), self.tree.get_richness(2))
-		self.assertEqual(self.tree.get_landscape_richness(3), self.tree.get_richness(3))
+		self.assertEqual(1164, self.tree.get_species_richness(1))
+		self.assertEqual(1169, self.tree.get_species_richness(2))
+		self.assertEqual(self.tree.get_species_richness(1), self.tree.get_species_richness(1))
+		self.assertEqual(self.tree.get_species_richness(2), self.tree.get_species_richness(2))
+		self.assertEqual(self.tree.get_species_richness(3), self.tree.get_species_richness(3))
 
 
 class TestCoalSampling2(unittest.TestCase):
@@ -862,8 +862,8 @@ class TestSimulationNullLandscape(unittest.TestCase):
 		"""
 		Tests that the richness produced by a landscape is sensible for the relevant speciation rates.
 		"""
-		self.assertEqual(1209, self.tree.get_richness(1))
-		self.assertEqual(1684, self.tree.get_richness(2))
+		self.assertEqual(1209, self.tree.get_species_richness(1))
+		self.assertEqual(1684, self.tree.get_species_richness(2))
 
 	def testNumberIndividuals(self):
 		"""
@@ -920,19 +920,19 @@ class TestSimulationComplexRun(unittest.TestCase):
 		"""
 		Tests that the complex simulation setup returns the correct species richness.
 		"""
-		self.assertEqual(3637, self.tree.get_landscape_richness(1))
-		self.assertEqual(3667, self.tree.get_landscape_richness(3))
-		self.assertEqual(3683, self.tree.get_landscape_richness(5))
-		self.assertEqual(0, self.tree.get_landscape_richness(10))
+		self.assertEqual(3637, self.tree.get_species_richness(1))
+		self.assertEqual(3667, self.tree.get_species_richness(3))
+		self.assertEqual(3683, self.tree.get_species_richness(5))
+		self.assertEqual(0, self.tree.get_species_richness(10))
 
 	def testComplexRichness2(self):
 		"""
 		Tests that the later generation of species richness is correct
 		"""
-		self.assertEqual(3620, self.tree.get_landscape_richness(2))
-		self.assertEqual(3649, self.tree.get_landscape_richness(4))
-		self.assertEqual(3679, self.tree.get_landscape_richness(6))
-		self.assertEqual(0, self.tree.get_landscape_richness(11))
+		self.assertEqual(3620, self.tree.get_species_richness(2))
+		self.assertEqual(3649, self.tree.get_species_richness(4))
+		self.assertEqual(3679, self.tree.get_species_richness(6))
+		self.assertEqual(0, self.tree.get_species_richness(11))
 
 	def testNumberIndividualsAddsUp(self):
 		"""
@@ -947,13 +947,13 @@ class TestSimulationComplexRun(unittest.TestCase):
 		"""
 		Tests that the richness produced by the two methods matches.
 		"""
-		self.assertEqual(self.tree.get_landscape_richness(reference=1), self.tree.get_richness(reference=1),
+		self.assertEqual(self.tree.get_species_richness(reference=1), self.tree.get_species_richness(reference=1),
 						 msg="Landscape richness is not as expected.")
-		self.assertEqual(self.tree.get_landscape_richness(reference=3), self.tree.get_richness(reference=3),
+		self.assertEqual(self.tree.get_species_richness(reference=3), self.tree.get_species_richness(reference=3),
 						 msg="Landscape richness is not as expected.")
-		self.assertEqual(self.tree.get_landscape_richness(reference=100), self.tree.get_richness(reference=100),
+		self.assertEqual(self.tree.get_species_richness(reference=100), self.tree.get_species_richness(reference=100),
 						 msg="Landscape richness is not as expected.")
-		self.assertEqual(self.tree.get_landscape_richness(reference=101), self.tree.get_richness(reference=101),
+		self.assertEqual(self.tree.get_species_richness(reference=101), self.tree.get_species_richness(reference=101),
 						 msg="Landscape richness is not as expected.")
 
 	def testComplexAbundances(self):
@@ -1066,28 +1066,28 @@ class TestSimulationComplexRun2(unittest.TestCase):
 		"""
 		Tests that the complex simulation setup returns the correct species richness.
 		"""
-		self.assertEqual(3603, self.tree.get_landscape_richness(1))
-		self.assertEqual(3641, self.tree.get_landscape_richness(3))
-		self.assertEqual(3677, self.tree.get_landscape_richness(5))
+		self.assertEqual(3603, self.tree.get_species_richness(1))
+		self.assertEqual(3641, self.tree.get_species_richness(3))
+		self.assertEqual(3677, self.tree.get_species_richness(5))
 
 	def testComplexRichness2(self):
 		"""
 		Tests that the complex simulation setup returns the correct species richness at other time samples
 		"""
-		self.assertEqual(3604, self.tree.get_landscape_richness(2))
-		self.assertEqual(3649, self.tree.get_landscape_richness(4))
-		self.assertEqual(3682, self.tree.get_landscape_richness(6))
+		self.assertEqual(3604, self.tree.get_species_richness(2))
+		self.assertEqual(3649, self.tree.get_species_richness(4))
+		self.assertEqual(3682, self.tree.get_species_richness(6))
 
 	def testZeroRichness(self):
 		"""
 		Tests that zero richness is produced where expected
 		:return:
 		"""
-		self.assertEqual(0, self.tree.get_landscape_richness(100))
-		self.assertEqual(self.tree.get_landscape_richness(1), self.tree.get_richness(1))
-		self.assertEqual(self.tree.get_landscape_richness(3), self.tree.get_richness(3))
-		self.assertEqual(self.tree.get_landscape_richness(6), self.tree.get_richness(6))
-		self.assertEqual(self.tree.get_landscape_richness(100), self.tree.get_richness(100))
+		self.assertEqual(0, self.tree.get_species_richness(100))
+		self.assertEqual(self.tree.get_species_richness(1), self.tree.get_species_richness(1))
+		self.assertEqual(self.tree.get_species_richness(3), self.tree.get_species_richness(3))
+		self.assertEqual(self.tree.get_species_richness(6), self.tree.get_species_richness(6))
+		self.assertEqual(self.tree.get_species_richness(100), self.tree.get_species_richness(100))
 
 
 class TestSimulationComplexRun3(unittest.TestCase):
@@ -1136,14 +1136,14 @@ class TestSimulationComplexRun3(unittest.TestCase):
 		Also tests that both methods of obtaining species richness work.
 		"""
 		self.tree.calculate_richness()
-		self.assertEqual(3643, self.tree.get_landscape_richness(1))
-		self.assertEqual(3670, self.tree.get_landscape_richness(3))
-		self.assertEqual(3689, self.tree.get_landscape_richness(5))
-		self.assertEqual(0, self.tree.get_landscape_richness(8))
-		self.assertEqual(self.tree.get_landscape_richness(1), self.tree.get_richness(1))
-		self.assertEqual(self.tree.get_landscape_richness(3), self.tree.get_richness(3))
-		self.assertEqual(self.tree.get_landscape_richness(4), self.tree.get_richness(4))
-		self.assertEqual(self.tree.get_landscape_richness(7), self.tree.get_richness(7))
+		self.assertEqual(3643, self.tree.get_species_richness(1))
+		self.assertEqual(3670, self.tree.get_species_richness(3))
+		self.assertEqual(3689, self.tree.get_species_richness(5))
+		self.assertEqual(0, self.tree.get_species_richness(8))
+		self.assertEqual(self.tree.get_species_richness(1), self.tree.get_species_richness(1))
+		self.assertEqual(self.tree.get_species_richness(3), self.tree.get_species_richness(3))
+		self.assertEqual(self.tree.get_species_richness(4), self.tree.get_species_richness(4))
+		self.assertEqual(self.tree.get_species_richness(7), self.tree.get_species_richness(7))
 
 
 class TestSimulationComplexRun4(unittest.TestCase):
@@ -1189,14 +1189,14 @@ class TestSimulationComplexRun4(unittest.TestCase):
 		Also tests that both methods of obtaining species richness work.
 		"""
 		self.tree.calculate_richness()
-		self.assertEqual(3634, self.tree.get_landscape_richness(1))
-		self.assertEqual(3661, self.tree.get_landscape_richness(2))
-		self.assertEqual(3684, self.tree.get_landscape_richness(3))
-		self.assertEqual(0, self.tree.get_landscape_richness(7))
-		self.assertEqual(self.tree.get_landscape_richness(1), self.tree.get_richness(1))
-		self.assertEqual(self.tree.get_landscape_richness(3), self.tree.get_richness(3))
-		self.assertEqual(self.tree.get_landscape_richness(5), self.tree.get_richness(5))
-		self.assertEqual(self.tree.get_landscape_richness(7), self.tree.get_richness(7))
+		self.assertEqual(3634, self.tree.get_species_richness(1))
+		self.assertEqual(3661, self.tree.get_species_richness(2))
+		self.assertEqual(3684, self.tree.get_species_richness(3))
+		self.assertEqual(0, self.tree.get_species_richness(7))
+		self.assertEqual(self.tree.get_species_richness(1), self.tree.get_species_richness(1))
+		self.assertEqual(self.tree.get_species_richness(3), self.tree.get_species_richness(3))
+		self.assertEqual(self.tree.get_species_richness(5), self.tree.get_species_richness(5))
+		self.assertEqual(self.tree.get_species_richness(7), self.tree.get_species_richness(7))
 
 	def testSimParametersCorrectlyStored(self):
 		"""
@@ -1331,10 +1331,10 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
 		"""
 		Tests that the old dispersal kernel matches the new dispersal kernel in richness
 		"""
-		self.assertEqual(self.tree1.get_richness(1),
-						 self.tree2.get_richness(1))
-		self.assertEqual(self.tree1.get_landscape_richness(1),
-						 self.tree2.get_landscape_richness(1))
+		self.assertEqual(self.tree1.get_species_richness(1),
+						 self.tree2.get_species_richness(1))
+		self.assertEqual(self.tree1.get_species_richness(1),
+						 self.tree2.get_species_richness(1))
 
 	def testOldKernelMatchesNewKernelSpeciesList(self):
 		"""
@@ -1393,10 +1393,10 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 		"""
 		Tests that the fat-tailed dispersal kernel matches the normal distribution for extreme tau in richness
 		"""
-		self.assertEqual(self.tree1.get_richness(1),
-						 self.tree2.get_richness(1))
-		self.assertEqual(self.tree1.get_landscape_richness(1),
-						 self.tree2.get_landscape_richness(1))
+		self.assertEqual(self.tree1.get_species_richness(1),
+						 self.tree2.get_species_richness(1))
+		self.assertEqual(self.tree1.get_species_richness(1),
+						 self.tree2.get_species_richness(1))
 
 	def testOldKernelMatchesNewKernelSpeciesList(self):
 		"""
@@ -1435,15 +1435,15 @@ class TestSimulationPaleoTime(unittest.TestCase):
 		"""
 		Tests that the simulation obtains the present-day richnesses accurately
 		"""
-		self.assertEqual(41, self.coal.get_richness(1))
-		self.assertEqual(57, self.coal.get_richness(3))
+		self.assertEqual(41, self.coal.get_species_richness(1))
+		self.assertEqual(57, self.coal.get_species_richness(3))
 
 	def testGetsHistoricalRichness(self):
 		"""
 		Tests that the simulation obtains the historical richnesses accurately
 		"""
-		self.assertEqual(40, self.coal.get_richness(2))
-		self.assertEqual(49, self.coal.get_richness(4))
+		self.assertEqual(40, self.coal.get_species_richness(2))
+		self.assertEqual(49, self.coal.get_species_richness(4))
 
 
 class TestSimulationProtractedSanityChecks(unittest.TestCase):
@@ -1543,9 +1543,9 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
 		Tests that the complex simulation setup returns the correct species richness.
 		Also tests that both methods of obtaining species richness work.
 		"""
-		self.assertGreaterEqual(self.tree1.get_richness(), self.tree2.get_richness())
-		self.assertGreaterEqual(self.tree3.get_richness(), self.tree2.get_richness())
-		self.assertGreaterEqual(self.tree1.get_richness(), self.tree4.get_richness())
+		self.assertGreaterEqual(self.tree1.get_species_richness(), self.tree2.get_species_richness())
+		self.assertGreaterEqual(self.tree3.get_species_richness(), self.tree2.get_species_richness())
+		self.assertGreaterEqual(self.tree1.get_species_richness(), self.tree4.get_species_richness())
 
 
 class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
@@ -1592,18 +1592,18 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 		"""
 		Runs some sanity checks to ensure that the post-application of protracted speciation is as expected.
 		"""
-		self.assertLess(self.c.get_richness(1), self.c.get_richness(3))
-		self.assertLess(self.c.get_richness(2), self.c.get_richness(4))
-		self.assertLess(self.c.get_richness(5), self.c.get_richness(3))
-		self.assertLess(self.c.get_richness(6), self.c.get_richness(4))
-		self.assertEqual(6, self.c.get_richness(1))
-		self.assertEqual(6, self.c.get_richness(2))
-		self.assertEqual(8, self.c.get_richness(3))
-		self.assertEqual(9, self.c.get_richness(4))
-		self.assertEqual(6, self.c.get_richness(5))
-		self.assertEqual(6, self.c.get_richness(6))
-		self.assertEqual(26, self.c.get_richness(7))
-		self.assertEqual(35, self.c.get_richness(8))
+		self.assertLess(self.c.get_species_richness(1), self.c.get_species_richness(3))
+		self.assertLess(self.c.get_species_richness(2), self.c.get_species_richness(4))
+		self.assertLess(self.c.get_species_richness(5), self.c.get_species_richness(3))
+		self.assertLess(self.c.get_species_richness(6), self.c.get_species_richness(4))
+		self.assertEqual(6, self.c.get_species_richness(1))
+		self.assertEqual(6, self.c.get_species_richness(2))
+		self.assertEqual(8, self.c.get_species_richness(3))
+		self.assertEqual(9, self.c.get_species_richness(4))
+		self.assertEqual(6, self.c.get_species_richness(5))
+		self.assertEqual(6, self.c.get_species_richness(6))
+		self.assertEqual(26, self.c.get_species_richness(7))
+		self.assertEqual(35, self.c.get_species_richness(8))
 
 	def testProtractedCommunityParametersStored(self):
 		"""
@@ -1694,18 +1694,18 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		"""
 		Runs some sanity checks to ensure that the post-application of protracted speciation is as expected.
 		"""
-		self.assertLess(self.c.get_richness(1), self.c.get_richness(3))
-		self.assertLess(self.c.get_richness(2), self.c.get_richness(4))
-		self.assertLess(self.c.get_richness(5), self.c.get_richness(3))
-		self.assertLess(self.c.get_richness(6), self.c.get_richness(4))
-		self.assertEqual(6, self.c.get_richness(1))
-		self.assertEqual(6, self.c.get_richness(2))
-		self.assertEqual(8, self.c.get_richness(3))
-		self.assertEqual(9, self.c.get_richness(4))
-		self.assertEqual(6, self.c.get_richness(5))
-		self.assertEqual(6, self.c.get_richness(6))
-		self.assertEqual(26, self.c.get_richness(7))
-		self.assertEqual(35, self.c.get_richness(8))
+		self.assertLess(self.c.get_species_richness(1), self.c.get_species_richness(3))
+		self.assertLess(self.c.get_species_richness(2), self.c.get_species_richness(4))
+		self.assertLess(self.c.get_species_richness(5), self.c.get_species_richness(3))
+		self.assertLess(self.c.get_species_richness(6), self.c.get_species_richness(4))
+		self.assertEqual(6, self.c.get_species_richness(1))
+		self.assertEqual(6, self.c.get_species_richness(2))
+		self.assertEqual(8, self.c.get_species_richness(3))
+		self.assertEqual(9, self.c.get_species_richness(4))
+		self.assertEqual(6, self.c.get_species_richness(5))
+		self.assertEqual(6, self.c.get_species_richness(6))
+		self.assertEqual(26, self.c.get_species_richness(7))
+		self.assertEqual(35, self.c.get_species_richness(8))
 
 	def testProtractedCommunityParametersStored(self):
 		"""
@@ -1800,18 +1800,18 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		"""
 		Runs some sanity checks to ensure that the post-application of protracted speciation is as expected.
 		"""
-		self.assertLess(self.c.get_richness(1), self.c.get_richness(3))
-		self.assertLess(self.c.get_richness(2), self.c.get_richness(4))
-		self.assertLess(self.c.get_richness(5), self.c.get_richness(3))
-		self.assertLess(self.c.get_richness(6), self.c.get_richness(4))
-		self.assertEqual(6, self.c.get_richness(1))
-		self.assertEqual(6, self.c.get_richness(2))
-		self.assertEqual(8, self.c.get_richness(3))
-		self.assertEqual(9, self.c.get_richness(4))
-		self.assertEqual(6, self.c.get_richness(5))
-		self.assertEqual(6, self.c.get_richness(6))
-		self.assertEqual(26, self.c.get_richness(7))
-		self.assertEqual(35, self.c.get_richness(8))
+		self.assertLess(self.c.get_species_richness(1), self.c.get_species_richness(3))
+		self.assertLess(self.c.get_species_richness(2), self.c.get_species_richness(4))
+		self.assertLess(self.c.get_species_richness(5), self.c.get_species_richness(3))
+		self.assertLess(self.c.get_species_richness(6), self.c.get_species_richness(4))
+		self.assertEqual(6, self.c.get_species_richness(1))
+		self.assertEqual(6, self.c.get_species_richness(2))
+		self.assertEqual(8, self.c.get_species_richness(3))
+		self.assertEqual(9, self.c.get_species_richness(4))
+		self.assertEqual(6, self.c.get_species_richness(5))
+		self.assertEqual(6, self.c.get_species_richness(6))
+		self.assertEqual(26, self.c.get_species_richness(7))
+		self.assertEqual(35, self.c.get_species_richness(8))
 
 	def testProtractedCommunityParametersStored(self):
 		"""
@@ -1884,7 +1884,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		"""
 		Tests that running a simulation with a dispersal map produces the expected output.
 		"""
-		self.assertEqual(self.c.get_richness(1), 737)
+		self.assertEqual(self.c.get_species_richness(1), 737)
 
 	def testDispersalParamStorage(self):
 		"""
@@ -1945,7 +1945,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
 		"""
 		Tests that running a simulation with a dispersal map produces the expected output.
 		"""
-		self.assertEqual(1171, self.c.get_richness(1))
+		self.assertEqual(1171, self.c.get_species_richness(1))
 
 	def testDispersalParamStorage(self):
 		"""
@@ -1992,7 +1992,7 @@ class TestSimulationDispersalMapsNoData(unittest.TestCase):
 		"""
 		Tests that running a simulation with a dispersal map produces the expected output.
 		"""
-		self.assertEqual(self.c.get_richness(1), 730)
+		self.assertEqual(self.c.get_species_richness(1), 730)
 
 	def testDispersalParamStorage(self):
 		"""
@@ -2085,8 +2085,8 @@ class TestDetectRamUsage(unittest.TestCase):
 		Tests that in a system with excessive RAM usage, the map file structure is rearranged for lower performance,
 		but optimal RAM usage.
 		"""
-		self.assertEqual(1770, self.c.get_richness(1))
-		self.assertEqual(1769, self.c.get_richness(2))
+		self.assertEqual(1770, self.c.get_species_richness(1))
+		self.assertEqual(1769, self.c.get_species_richness(2))
 
 	@skipLongTest
 	def testSingleLargeRun(self):
@@ -2103,7 +2103,7 @@ class TestDetectRamUsage(unittest.TestCase):
 							 coarse_file="none", coarse_x=2, coarse_y=1, coarse_x_offset=0, coarse_y_offset=0,
 							 coarse_scale=1.0, historical_fine_map="none", historical_coarse_map="none")
 		c.run()
-		self.assertEqual(136477, c.get_richness(1))
+		self.assertEqual(136477, c.get_species_richness(1))
 
 	def testReadWriteSaveState(self):
 		saved_state = self.c.get_optimised_solution()
@@ -2161,10 +2161,10 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		"""
 		Tests that the metacommunity application makes sense.
 		"""
-		self.assertEqual(self.t1.get_richness(), self.t4.get_richness(4))
-		self.assertEqual(76, self.t4.get_richness(4))
-		self.assertEqual(1, self.t2.get_richness(2))
-		self.assertEqual(self.t2.get_richness(2), self.t3.get_richness(3))
+		self.assertEqual(self.t1.get_species_richness(), self.t4.get_species_richness(4))
+		self.assertEqual(76, self.t4.get_species_richness(4))
+		self.assertEqual(1, self.t2.get_species_richness(2))
+		self.assertEqual(self.t2.get_species_richness(2), self.t3.get_species_richness(3))
 
 	def testMetacommunityReferencesStorage(self):
 		"""
@@ -2218,12 +2218,12 @@ class TestProtractedSimsWithMetacommunity(unittest.TestCase):
 
 	def testSpeciesRichnessValuesAsExpected(self):
 		"""Tests that the speciation rates can be successfully applied to the coalescence tree."""
-		self.assertEqual(76, self.tree.get_richness(1))
-		self.assertEqual(76, self.tree.get_richness(2))
-		self.assertEqual(76, self.tree.get_richness(3))
-		self.assertEqual(70, self.tree.get_richness(4))
-		self.assertEqual(68, self.tree.get_richness(5))
-		self.assertEqual(67, self.tree.get_richness(6))
+		self.assertEqual(76, self.tree.get_species_richness(1))
+		self.assertEqual(76, self.tree.get_species_richness(2))
+		self.assertEqual(76, self.tree.get_species_richness(3))
+		self.assertEqual(70, self.tree.get_species_richness(4))
+		self.assertEqual(68, self.tree.get_species_richness(5))
+		self.assertEqual(67, self.tree.get_species_richness(6))
 
 	def testParametersCorrectlyStored(self):
 		"""Tests that the community parameters are correctly stored."""
@@ -2268,9 +2268,9 @@ class TestTemporalSamplingProportion(unittest.TestCase):
 
 	def testSpeciesRichnessCorrect(self):
 		"""Tests that the number of species is correct across the time slices."""
-		self.assertEqual(147, self.coal.get_richness(1))
-		self.assertNotEqual(self.coal.get_richness(2), self.coal.get_richness(1))
-		self.assertNotEqual(self.coal.get_richness(3), self.coal.get_richness(2))
+		self.assertEqual(147, self.coal.get_species_richness(1))
+		self.assertNotEqual(self.coal.get_species_richness(2), self.coal.get_species_richness(1))
+		self.assertNotEqual(self.coal.get_species_richness(3), self.coal.get_species_richness(2))
 
 
 class TestLongTermSpeciesRichness(unittest.TestCase):
@@ -2304,22 +2304,22 @@ class TestLongTermSpeciesRichness(unittest.TestCase):
 
 	def testSpeciesRichness(self):
 		"""Tests that the species richness is correct at each time"""
-		self.assertEqual(64, self.coal.get_richness(1))
-		self.assertEqual(64, self.coal.get_richness(2))
-		self.assertEqual(123, self.coal.get_richness(3))
-		self.assertEqual(182, self.coal.get_richness(4))
-		self.assertEqual(96, self.coal.get_richness(5))
-		self.assertEqual(93, self.coal.get_richness(6))
-		self.assertEqual(154, self.coal.get_richness(7))
-		self.assertEqual(243, self.coal.get_richness(8))
-		self.assertEqual(127, self.coal.get_richness(9))
-		self.assertEqual(122, self.coal.get_richness(10))
-		self.assertEqual(183, self.coal.get_richness(11))
-		self.assertEqual(295, self.coal.get_richness(12))
-		self.assertEqual(155, self.coal.get_richness(13))
-		self.assertEqual(143, self.coal.get_richness(14))
-		self.assertEqual(215, self.coal.get_richness(15))
-		self.assertEqual(360, self.coal.get_richness(16))
+		self.assertEqual(64, self.coal.get_species_richness(1))
+		self.assertEqual(64, self.coal.get_species_richness(2))
+		self.assertEqual(123, self.coal.get_species_richness(3))
+		self.assertEqual(182, self.coal.get_species_richness(4))
+		self.assertEqual(96, self.coal.get_species_richness(5))
+		self.assertEqual(93, self.coal.get_species_richness(6))
+		self.assertEqual(154, self.coal.get_species_richness(7))
+		self.assertEqual(243, self.coal.get_species_richness(8))
+		self.assertEqual(127, self.coal.get_species_richness(9))
+		self.assertEqual(122, self.coal.get_species_richness(10))
+		self.assertEqual(183, self.coal.get_species_richness(11))
+		self.assertEqual(295, self.coal.get_species_richness(12))
+		self.assertEqual(155, self.coal.get_species_richness(13))
+		self.assertEqual(143, self.coal.get_species_richness(14))
+		self.assertEqual(215, self.coal.get_species_richness(15))
+		self.assertEqual(360, self.coal.get_species_richness(16))
 
 
 @skipLongTest
@@ -2411,12 +2411,12 @@ class TestReproductionMaps(unittest.TestCase):
 
 	def testOutputRichness(self):
 		"""Tests the output richness is as expected"""
-		self.assertEqual(199, self.coal1.get_richness())
-		self.assertEqual(221, self.coal2.get_richness())
-		self.assertEqual(215, self.coal3.get_richness())
-		self.assertNotEqual(self.coal1.get_richness(), self.coal2.get_richness())
-		self.assertNotEqual(self.coal1.get_richness(), self.coal3.get_richness())
-		self.assertNotEqual(1214, self.coal4.get_richness())
+		self.assertEqual(199, self.coal1.get_species_richness())
+		self.assertEqual(221, self.coal2.get_species_richness())
+		self.assertEqual(215, self.coal3.get_species_richness())
+		self.assertNotEqual(self.coal1.get_species_richness(), self.coal2.get_species_richness())
+		self.assertNotEqual(self.coal1.get_species_richness(), self.coal3.get_species_richness())
+		self.assertNotEqual(1214, self.coal4.get_species_richness())
 
 	def testOutputNumberIndividuals(self):
 		"""Tests that the number of individuals simulated in each scenario is correct."""
@@ -2442,7 +2442,7 @@ class TestReproductionMaps(unittest.TestCase):
 		sim2.add_historical_map("sample/SA_sample_fine2.tif", "none", 10.0, 0.0)
 		sim2.run()
 		log1 = log_stream1.getvalue().replace('\r', '').replace('\n', '')
-		self.assertEqual(191, sim1.get_richness())
-		self.assertEqual(184, sim2.get_richness())
+		self.assertEqual(191, sim1.get_species_richness())
+		self.assertEqual(184, sim2.get_species_richness())
 		self.assertEqual("Density is zero where reproduction map is non-zero. This is likely incorrect.", log1)
 

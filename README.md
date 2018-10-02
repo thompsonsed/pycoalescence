@@ -3,6 +3,13 @@
 
 
 
+[![PyPI version](https://badge.fury.io/py/pycoalescence.svg)](https://badge.fury.io/py/pycoalescence)[![Documentation status](https://readthedocs.org/projects/pycoalescence/badge/)](https://pycoalescence.readthedocs.io)  [![Example notebook](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master) 
+
+|     Windows    |    macOS    |    Linux    |
+|:--------------:|:-----------:|:-----------:|
+| [![AppVeyor CI](https://ci.appveyor.com/api/projects/status/3qex6in9w1384f57/branch/master?svg=true)](https://ci.appveyor.com/project/thompsonsed1992/pycoalescence-ci) | [![Travis CI](https://travis-ci.org/pycoalescence/pycoalescence-ci.svg?branch=master)](https://travis-ci.org/pycoalescence/pycoalescence-ci)  | [![Circle CI status](https://circleci.com/bb/thompsonsed/pycoalescence.svg?style=svg)](https://circleci.com/bb/thompsonsed/pycoalescence) |
+
+
 ###Introduction
 pycoalescence is a python package for spatially-explicit coalescence neutral simulations. pycoalescence provides a
 pythonic interface for setting up, running and analysing spatially-explicit neutral simulations. Simulations themselves
@@ -63,7 +70,7 @@ The basic procedure for this procedure is
 	* [optional] a config file containing the temporal sampling points desired.
 * `apply()` performs the analysis. This can be extremely RAM and time-intensive for large simulations. 
   The calculations will be stored in extra tables within the same SQL file as originally specified.
-
+* `get_species_richness()` or other equivalent functions to obtain the required metrics of biodiversity.
 
 ###Requirements
 

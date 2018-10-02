@@ -299,10 +299,10 @@ class TestMergerInheritance(unittest.TestCase):
 		Tests that species richness functions work properly.
 		:return:
 		"""
-		self.assertEqual(self.merger.get_richness(1), 7288)
-		self.assertEqual(self.merger.get_landscape_richness(1), 7288)
-		self.assertEqual(self.merger.get_richness(2), 7286)
-		self.assertEqual(self.merger.get_landscape_richness(2), 7286)
+		self.assertEqual(self.merger.get_species_richness(1), 7288)
+		self.assertEqual(self.merger.get_species_richness(1), 7288)
+		self.assertEqual(self.merger.get_species_richness(2), 7286)
+		self.assertEqual(self.merger.get_species_richness(2), 7286)
 
 
 class TestMergerAnalysis(unittest.TestCase):
@@ -339,10 +339,10 @@ class TestMergerAnalysis(unittest.TestCase):
 		"""
 		Tests that speciation rates can be applied.
 		"""
-		self.assertEqual(self.merger.get_richness(1), 7288)
-		self.assertEqual(self.merger.get_richness(2), 7348)
-		self.assertEqual(self.merger.get_landscape_richness(1), 7288)
-		self.assertEqual(self.merger.get_landscape_richness(2), 7348)
+		self.assertEqual(self.merger.get_species_richness(1), 7288)
+		self.assertEqual(self.merger.get_species_richness(2), 7348)
+		self.assertEqual(self.merger.get_species_richness(1), 7288)
+		self.assertEqual(self.merger.get_species_richness(2), 7348)
 
 	def testMergerAnalysisFragmentRichness(self):
 		"""

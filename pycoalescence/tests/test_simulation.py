@@ -299,7 +299,7 @@ class TestSimulationSetMaps(unittest.TestCase):
 		"""
 		Tests that the simulation completes successfully and outputs as intended.
 		"""
-		self.assertEqual(5, self.c.get_richness())
+		self.assertEqual(5, self.c.get_species_richness())
 
 	def testOrdersHistoricalMaps(self):
 		"""
@@ -478,7 +478,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 									landscape_type=False)
 		c.set_map("null", 10, 10)
 		c.run()
-		self.assertEqual(c.get_richness(), 1)
+		self.assertEqual(c.get_species_richness(), 1)
 
 	def testMaxSpeciation(self):
 		"""
@@ -493,7 +493,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
 									landscape_type=False)
 		c.set_map("null", 10, 10)
 		c.run()
-		self.assertEqual(c.get_richness(), 100)
+		self.assertEqual(c.get_species_richness(), 100)
 
 
 class TestSimulationMapDensityReading(unittest.TestCase):
@@ -571,11 +571,11 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
 		"""
 		Tests that the species richness differs between the two simulations
 		"""
-		self.assertNotEqual(self.base_sim.get_richness(), self.hist_sim.get_richness())
-		self.assertNotEqual(self.hist_sim.get_richness(), self.hist_sim2.get_richness())
-		self.assertEqual(2682, self.base_sim.get_richness())
-		self.assertEqual(2498, self.hist_sim2.get_richness())
-		self.assertEqual(2431, self.hist_sim.get_richness())
+		self.assertNotEqual(self.base_sim.get_species_richness(), self.hist_sim.get_species_richness())
+		self.assertNotEqual(self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness())
+		self.assertEqual(2682, self.base_sim.get_species_richness())
+		self.assertEqual(2498, self.hist_sim2.get_species_richness())
+		self.assertEqual(2431, self.hist_sim.get_species_richness())
 
 @skipLongTest
 class TestExpansionOverTime(unittest.TestCase):
@@ -594,10 +594,10 @@ class TestExpansionOverTime(unittest.TestCase):
 
 	def testSpeciesRichnessAtTimes(self):
 		"""Checks the species richness is correct for each time point."""
-		self.assertEqual(373, self.sim.get_richness(1))
-		self.assertEqual(363, self.sim.get_richness(2))
-		self.assertEqual(371, self.sim.get_richness(3))
-		self.assertEqual(363, self.sim.get_richness(4))
-		self.assertEqual(377, self.sim.get_richness(5))
-		self.assertEqual(386, self.sim.get_richness(6))
+		self.assertEqual(373, self.sim.get_species_richness(1))
+		self.assertEqual(363, self.sim.get_species_richness(2))
+		self.assertEqual(371, self.sim.get_species_richness(3))
+		self.assertEqual(363, self.sim.get_species_richness(4))
+		self.assertEqual(377, self.sim.get_species_richness(5))
+		self.assertEqual(386, self.sim.get_species_richness(6))
 

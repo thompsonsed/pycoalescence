@@ -127,7 +127,7 @@ class TestSimulationPause(unittest.TestCase):
 		for key in dict1.keys():
 			if key != "job_type" and key != "max_time":
 				self.assertEqual(dict1[key], dict2[key], "{} not equal.".format(key))
-		self.assertEqual(self.coal.get_richness(), self.coal2.get_richness())
+		self.assertEqual(self.coal.get_species_richness(), self.coal2.get_species_richness())
 		single_run_species_list = list(self.tree1.get_species_list())
 		pause_sim_species_list = list(self.tree2.get_species_list())
 		self.assertAlmostEqual(single_run_species_list[0][9], pause_sim_species_list[0][9], 16)
@@ -235,7 +235,7 @@ class TestSimulationPause2(unittest.TestCase):
 		self.tree1.set_speciation_parameters(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 											 sample_file="null")
 		self.tree1.apply()
-		self.assertEqual(self.coal3.get_richness(), self.coal2.get_richness())
+		self.assertEqual(self.coal3.get_species_richness(), self.coal2.get_species_richness())
 		single_run_species_list = list(self.tree1.get_species_list())
 		pause_sim_species_list = list(self.tree2.get_species_list())
 		dict1 = self.tree1.get_simulation_parameters()
@@ -360,7 +360,7 @@ class TestSimulationPause3(unittest.TestCase):
 		self.tree1.set_speciation_parameters(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 											 sample_file="null")
 		self.tree1.apply()
-		self.assertEqual(self.coal.get_richness(), self.coal2.get_richness())
+		self.assertEqual(self.coal.get_species_richness(), self.coal2.get_species_richness())
 		dict1 = self.tree1.get_simulation_parameters()
 		dict2 = self.tree2.get_simulation_parameters()
 		for key in dict1.keys():
@@ -486,7 +486,7 @@ class TestSimulationPause4(unittest.TestCase):
 		self.tree3.set_speciation_parameters(speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F",
 											 sample_file="null")
 		self.tree3.apply()
-		self.assertEqual(self.tree3.get_richness(), self.tree2.get_richness())
+		self.assertEqual(self.tree3.get_species_richness(), self.tree2.get_species_richness())
 		dict1 = self.tree3.get_simulation_parameters()
 		dict2 = self.tree2.get_simulation_parameters()
 		for key in dict1.keys():
@@ -539,6 +539,6 @@ class TestPauseSpeciateRemaining(unittest.TestCase):
 		ct = CoalescenceTree(self.sim)
 		ct.set_speciation_parameters(speciation_rates=[0.1, 0.5, 0.95])
 		ct.apply()
-		self.assertEqual(1171, ct.get_richness(1))
-		self.assertEqual(1172, ct.get_richness(2))
-		self.assertEqual(1173, ct.get_richness(3))
+		self.assertEqual(1171, ct.get_species_richness(1))
+		self.assertEqual(1172, ct.get_species_richness(2))
+		self.assertEqual(1173, ct.get_species_richness(3))

@@ -310,7 +310,7 @@ class DispersalSimulation(Landscape):
 				:func:`~run_mean_dispersal`
 
 		:param int number_repeats: the number of times to iterate on the map
-		:param int number_steps: the number of steps to take each time before recording the distance travelled
+		:param int/list number_steps: the number of steps to take each time before recording the distance travelled
 		:param int seed: the random seed
 		:param bool sequential: if true, runs repeats sequentially
 		:return:
@@ -465,9 +465,11 @@ class DispersalSimulation(Landscape):
 			raise IOError("Could not get average distance from database: " + str(e))
 		return stdev_distance
 
-	def get_database_parameters(self):
+	def get_database_parameters(self, reference=None):
 		"""
 		Gets the dispersal simulation parameters from the dispersal_db
+
+		:param reference: the reference to obtain parameters for
 
 		:return: the dispersal simulation parameters
 
@@ -489,9 +491,15 @@ class DispersalSimulation(Landscape):
 				for i, each in enumerate(values):
 					if isinstance(each, unicode):
 						values[i] = each.encode('ascii')
+			# Now convert it into a dictionary
 			main_dict[values[0]] = dict(zip(column_names[1:], values[1:]))
-		# Now convert it into a dictionary
-		return main_dict
+		if reference is None:
+			return main_dict
+		else:
+			try:
+				return main_dict[reference]
+			except KeyError:
+				raise KeyError("No reference exists in the database with a value of {}".format(reference))
 
 	def get_database_references(self):
 		"""
