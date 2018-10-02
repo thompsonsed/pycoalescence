@@ -10,7 +10,10 @@ import os
 import types
 
 from pycoalescence.spatial_algorithms import convert_coordinates
-
+try:
+	from matplotlib import pyplot as plt
+except (ImportError, RuntimeError) as ie:
+	logging.warning(ie)
 try:
 	NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
 except AttributeError:
@@ -801,3 +804,23 @@ class Map(object):
 			dst_ds.FlushCache()
 			dst_ds = None
 		dest = None
+
+
+	def plot(self):
+		"""
+		Returns a matplotlib.pyplot.figure object containing an image of the fragmented landscape (with axes removed).
+
+		Requires that the fragmented landscape has been created already using :meth:`~create`.
+
+		:return: figure object containing the fragmented landscape.
+		:rtype: matplotlib.pyplot.figure
+		"""
+		fig = plt.figure()
+		opened_here = False
+		if self.data is None:
+			opened_here = True
+			self.open()
+		fig.figimage(self.data, cmap="Greys_r", resize=True)
+		if opened_here:
+			self.data = None
+		return fig

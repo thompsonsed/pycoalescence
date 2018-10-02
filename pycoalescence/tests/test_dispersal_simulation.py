@@ -198,12 +198,21 @@ class TestDispersalSimulation(unittest.TestCase):
 		Tests that the database parameters are stored and returned correctly.
 		"""
 		self.assertEqual([x for x in range(1, 7)], self.m.get_database_references())
-		self.assertEqual( {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
+		expected_dict = {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
 						   "tau": 1, "m_prob": 1.0, "cutoff": 100.0,
 						   "dispersal_method": "normal",
 						   "map_file": os.path.join("sample", "SA_sample_fine.tif"),
 						   "seed": 2, "number_steps": 1,
-						   "number_repeats": 100}, self.m.get_database_parameters()[1],)
+						   "number_repeats": 100}
+		self.assertEqual(expected_dict, self.m.get_database_parameters()[1])
+		self.assertEqual(expected_dict, self.m.get_database_parameters(1))
+		for key in range(1, 6):
+			self.m.get_database_parameters(key)
+		with self.assertRaises(KeyError):
+			self.m.get_database_parameters(7)
+		with self.assertRaises(KeyError):
+			self.m.get_database_parameters("NotAKey")
+
 
 	def testDispersalMapReading(self):
 		"""

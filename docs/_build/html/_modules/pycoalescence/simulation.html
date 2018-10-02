@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.simulation &#8212; pycoalescence 1.2.6rc55 documentation</title>
+    <title>pycoalescence.simulation &#8212; pycoalescence 1.2.6 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6rc55',
+        VERSION:     '1.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -482,7 +482,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 		<span class="c1"># Now read the species richness from the database</span>
 		<span class="k">try</span><span class="p">:</span>
-			<span class="n">richness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_richness</span><span class="p">()</span>
+			<span class="n">richness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_species_richness</span><span class="p">()</span>
 			<span class="k">if</span> <span class="n">richness</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 				<span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;Richness is 0, error in program. This should never be the case for a complete &quot;</span>
 									 <span class="s2">&quot;sim.&quot;</span><span class="p">)</span>
@@ -491,9 +491,9 @@
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Simulation didn&#39;t complete in 10 hours (maximum time for run_simple). Try running a &quot;</span>
 							   <span class="s2">&quot;custom simulation instead.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Simulation.get_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.simulation.Simulation.get_richness">[docs]</a>	<span class="k">def</span> <span class="nf">get_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Simulation.get_species_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.simulation.Simulation.get_species_richness">[docs]</a>	<span class="k">def</span> <span class="nf">get_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Calls coal_analyse.get_richness() with the supplied variables.</span>
+<span class="sd">		Calls coal_analyse.get_species_richness() with the supplied variables.</span>
 
 <span class="sd">		Requires successful import of coal_analyse and sqlite3.</span>
 
@@ -509,7 +509,7 @@
 			<span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_database</span>
 			<span class="n">t</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">()</span>
 			<span class="n">t</span><span class="o">.</span><span class="n">set_database</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
-			<span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">get_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span></div>
+			<span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">get_species_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Simulation.get_protracted"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.simulation.Simulation.get_protracted">[docs]</a>	<span class="k">def</span> <span class="nf">get_protracted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -1294,7 +1294,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

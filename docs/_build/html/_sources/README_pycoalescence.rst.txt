@@ -5,18 +5,9 @@ pycoalescence
 .. role:: pycode(code)
    :language: python
 
-|Documentation|_ |Binder|_ |CircleCI|_
+  |AppVeyorWin|_
 
-.. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
-.. _Documentation: https://pycoalescence.readthedocs.io
-
-.. |Binder| image:: https://mybinder.org/badge.svg
-.. _Binder: https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master
-
-.. |CircleCI| image:: https://circleci.com/bb/thompsonsed/pycoalescence.svg?style=svg
-.. _CircleCI: https://circleci.com/bb/thompsonsed/pycoalescence
-
-
+.. include:: builds.rst
 
 Introduction
 ------------
@@ -608,7 +599,7 @@ Example application with more complicated parameters
 A few biodiversity metrics can then be obtained directly from the database using built-in functions, relieving the user
 of having to generate these manually. These include
 
-- species richness, using :func:`get_richness() <pycoalescence.coalescence_tree.CoalescenceTree.get_richness>`
+- species richness, using :func:`get_species_richness() <pycoalescence.coalescence_tree.CoalescenceTree.get_species_richness>`
 
 - species abundances, using :func:`get_species_abundances() <pycoalescence.coalescence_tree.CoalescenceTree.get_species_abundances>`
 

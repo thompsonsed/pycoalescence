@@ -41,7 +41,7 @@ class TestNullSimulationErrors(unittest.TestCase):
 		"""
 		t = CoalescenceTree()
 		with self.assertRaises(RuntimeError):
-			t.get_richness()
+			t.get_species_richness()
 		with self.assertRaises(RuntimeError):
 			t.calculate_fragment_richness()
 		with self.assertRaises(RuntimeError):
@@ -75,7 +75,7 @@ class TestNullSimulationErrors(unittest.TestCase):
 		with self.assertRaises(RuntimeError):
 			t.get_fragment_abundances("null", 1)
 		with self.assertRaises(RuntimeError):
-			t.get_landscape_richness()
+			t.get_species_richness()
 		with self.assertRaises(RuntimeError):
 			t.get_octaves(1)
 

@@ -427,7 +427,7 @@ class Simulation(Landscape):
 		self.run()
 		# Now read the species richness from the database
 		try:
-			richness = self.get_richness()
+			richness = self.get_species_richness()
 			if richness == 0:
 				raise AssertionError("Richness is 0, error in program. This should never be the case for a complete "
 									 "sim.")
@@ -436,9 +436,9 @@ class Simulation(Landscape):
 			raise RuntimeError("Simulation didn't complete in 10 hours (maximum time for run_simple). Try running a "
 							   "custom simulation instead.")
 
-	def get_richness(self, reference=1):
+	def get_species_richness(self, reference=1):
 		"""
-		Calls coal_analyse.get_richness() with the supplied variables.
+		Calls coal_analyse.get_species_richness() with the supplied variables.
 
 		Requires successful import of coal_analyse and sqlite3.
 
@@ -454,7 +454,7 @@ class Simulation(Landscape):
 			db = self.output_database
 			t = CoalescenceTree()
 			t.set_database(db)
-			return t.get_richness(reference)
+			return t.get_species_richness(reference)
 
 	def get_protracted(self):
 		"""

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence package &#8212; pycoalescence 1.2.6rc55 documentation</title>
+    <title>pycoalescence package &#8212; pycoalescence 1.2.6 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2.6rc55',
+        VERSION:     '1.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="modules.html" title="Modules"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">Modules</a> &#187;</li> 
       </ul>
     </div>  
@@ -403,9 +403,9 @@ This can be read back in with set_optimised_solution</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.get_richness">
-<code class="descname">get_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_richness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls coal_analyse.get_richness() with the supplied variables.</p>
+<dt id="pycoalescence.simulation.Simulation.get_species_richness">
+<code class="descname">get_species_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.get_species_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.get_species_richness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls coal_analyse.get_species_richness() with the supplied variables.</p>
 <p>Requires successful import of coal_analyse and sqlite3.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1097,7 +1097,7 @@ Octaves are then averaged for each fragment.</p>
 <code class="descname">calculate_richness</code><span class="sig-paren">(</span><em>output_metrics=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.calculate_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.calculate_richness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the landscape richness from across all fragments and stores result in a new table in
 SPECIES_RICHNESS
-Stores a separate result for each speciation rate and time.</p>
+Stores a separate result for each community reference.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1206,9 +1206,10 @@ Beta diversity is the true beta diversity (gamma / alpha).
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reference</strong> &#8211; the reference key for the calculated parameters. (default is 1)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reference</strong> &#8211; the reference key for the calculated parameters (default is 1)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary containing the speciation_rate, time, fragments and metacommunity_reference</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary containing the speciation_rate, time, fragments, metacommunity_reference and min/max
+speciation generation for protracted sims</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
@@ -1436,41 +1437,6 @@ richness has not yet been calculated, it tries to calculate the fragment richnes
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.coalescence_tree.CoalescenceTree.get_landscape_richness">
-<code class="descname">get_landscape_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_landscape_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_landscape_richness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads the landscape richness from the SPECIES_RICHNESS table in the database. Returns the richness for
-each speciation rate and time.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This should produce the same result as get_richness(sr, t) with the corresponding sr and t.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Return type of this function changes based on whether speciation rates and times were supplied.
-If they were, returns a single integer. Otherwise, returns a list of all species richnesses.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>speciation_rate</strong> &#8211; the required speciation rate (optional)</li>
-<li><strong>reference</strong> &#8211; the reference key for the calculated community parameters</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">either a list containing the speciation_rate, time, richness OR (if specific speciation rate and time
-provided), the species richness at that time and speciation rate.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int, list</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.get_metacommunity_parameters">
 <code class="descname">get_metacommunity_parameters</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_metacommunity_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_metacommunity_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary containing the parameters for the calculated community.</p>
@@ -1573,31 +1539,6 @@ This will call self.calculate_octaves() if it hasn&#8217;t been called previousl
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.coalescence_tree.CoalescenceTree.get_richness">
-<code class="descname">get_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_richness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the system richness for the parameters associated with the supplied community reference.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Richness of 0 is returned if there has been some problem; it is assumed that species richness
-will be above 0 for any simulation.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Values generated by this method should be identical to those produced by self.get_landscape_richness()</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reference</strong> &#8211; community reference which contains the parameters of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the system species richness</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.get_simulation_parameters">
 <code class="descname">get_simulation_parameters</code><span class="sig-paren">(</span><em>guild=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_simulation_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_simulation_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads the simulation parameters from the database and returns them.</p>
@@ -1686,6 +1627,35 @@ returns the whole table</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>community_reference</strong> (<em>int</em>) &#8211; community reference number</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of lists containing each row of the SPECIES_LOCATIONS table</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycoalescence.coalescence_tree.CoalescenceTree.get_species_richness">
+<code class="descname">get_species_richness</code><span class="sig-paren">(</span><em>reference=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_species_richness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_species_richness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the system richness for the parameters associated with the supplied community reference.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Richness of 0 is returned if there has been some problem; it is assumed that species richness
+will be above 0 for any simulation.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">if species richness has previously been calculated and stored in SPECIES_RICHNESS table, it gets
+the species richness value from there, otherwise it calculates the species richness</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reference</strong> &#8211; community reference which contains the parameters of interest</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">either a list containing the community references and respective species richness values
+OR (if community_reference is provided), the species richness for that community reference.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, list</td>
 </tr>
 </tbody>
 </table>
@@ -2033,15 +2003,17 @@ maps.</p>
 
 <dl class="method">
 <dt id="pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters">
-<code class="descname">get_database_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_database_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_database_parameters</code><span class="sig-paren">(</span><em>reference=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/dispersal_simulation.html#DispersalSimulation.get_database_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.dispersal_simulation.DispersalSimulation.get_database_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the dispersal simulation parameters from the dispersal_db</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the dispersal simulation parameters</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reference</strong> &#8211; the reference to obtain parameters for</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the dispersal simulation parameters</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -2215,7 +2187,7 @@ after number_steps have been moved.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>number_repeats</strong> (<em>int</em>) &#8211; the number of times to iterate on the map</li>
-<li><strong>number_steps</strong> (<em>int</em>) &#8211; the number of steps to take each time before recording the distance travelled</li>
+<li><strong>number_steps</strong> (<em>int/list</em>) &#8211; the number of steps to take each time before recording the distance travelled</li>
 <li><strong>seed</strong> (<em>int</em>) &#8211; the random seed</li>
 <li><strong>sequential</strong> (<em>bool</em>) &#8211; if true, runs repeats sequentially</li>
 </ul>
@@ -3558,6 +3530,23 @@ This allows direct access to the internal numpy array using the data object.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pycoalescence.map.Map.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/map.html#Map.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.map.Map.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a matplotlib.pyplot.figure object containing an image of the fragmented landscape (with axes removed).</p>
+<p>Requires that the fragmented landscape has been created already using <a class="reference internal" href="#pycoalescence.map.Map.create" title="pycoalescence.map.Map.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">figure object containing the fragmented landscape.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">matplotlib.pyplot.figure</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pycoalescence.map.Map.rasterise">
 <code class="descname">rasterise</code><span class="sig-paren">(</span><em>shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, geo_transform=None, field=None, burn_val=[1], data_type=6, attribute_filter=None, x_buffer=1, y_buffer=1, **kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/map.html#Map.rasterise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.map.Map.rasterise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rasterises the provided shape file to produce the output raster.</p>
@@ -4657,7 +4646,7 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
         <li class="right" >
           <a href="modules.html" title="Modules"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6rc55 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >Modules</a> &#187;</li> 
       </ul>
     </div>

@@ -1,4 +1,4 @@
-.. PyCoalescence documentation master file, created by
+.. pycoalescence documentation master file, created by
    sphinx-quickstart on Mon Oct 24 17:19:28 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -8,16 +8,7 @@
 Welcome to pycoalescence
 ========================
 
-|Documentation|_ |Binder|_ |CircleCI|_
-
-.. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
-.. _Documentation: https://pycoalescence.readthedocs.io
-
-.. |Binder| image:: https://mybinder.org/badge.svg
-.. _Binder: https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master
-
-.. |CircleCI| image:: https://circleci.com/bb/thompsonsed/pycoalescence.svg?style=svg
-.. _CircleCI: https://circleci.com/bb/thompsonsed/pycoalescence
+.. include:: builds.rst
 
 **pycoalescence** is a python package for running and analysing spatially-explicit neutral ecology simulations efficiently and easily.
 Input your maps and output a simulated landscape of individuals.

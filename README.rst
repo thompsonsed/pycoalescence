@@ -4,6 +4,9 @@ pycoalescence overview
 *A python package for coalescence-based spatially-explicit neutral
 ecology simulations*
 
+.. include:: docs/builds.rst
+
+
 Introduction
 ~~~~~~~~~~~~
 
@@ -83,6 +86,9 @@ The basic procedure for this procedure is
 -  ``apply()`` performs the analysis. This can be extremely RAM and
    time-intensive for large simulations. The calculations will be stored
    in extra tables within the same SQL file as originally specified.
+
+-  ``get_species_richness()`` or other equivalent functions to obtain the
+   required metrics of biodiversity.
 
 Requirements
 ~~~~~~~~~~~~
