@@ -54,6 +54,7 @@ def main(verbosity=1):
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Test pycoalescence functions correctly")
 	parser.add_argument('--quick', help='Run only quick tests.', action='store_true', default=False)
+	parser.add_argument('--bypass_gdal_warp', help='Bypass gdal.Warp.', action='store_true', default=False)
 	parser.add_argument('-v', '--verbose', help='Use verbose mode.', action='store_true', default=False)
 	args, unknown = parser.parse_known_args()
 	if args.quick:
@@ -61,6 +62,11 @@ if __name__ == "__main__":
 		sys.argv.remove('--quick')
 	else:
 		setupTests.quick_test = False
+	if args.bypass_gdal_warp:
+		setupTests.bypass_gdal_warp = True
+		sys.argv.remove('--bypass_gdal_warp')
+	else:
+		setupTests.bypass_gdal_warp = False
 	if args.verbose:
 		main(2)
 	else:
