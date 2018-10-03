@@ -2,7 +2,6 @@
 
 import logging
 import unittest
-
 import gdal
 from osgeo import osr, ogr, gdal
 import numpy as np
@@ -573,7 +572,8 @@ class MapAssignment(unittest.TestCase):
 		self.assertEqual(np.sum(arr), 259)
 		ds = None
 
-@skipUnless(hasattr(scipy.spatial, "Voronoi"), "Skipping reprojection test as scipy.spatial.Voronoi not found.")
+@unittest.skipUnless(hasattr(scipy.spatial, "Voronoi"),
+					 "Skipping reprojection test as scipy.spatial.Voronoi not found.")
 class TestFragmentedLandscape(unittest.TestCase):
 	"""
 	Tests that the fragmented landscape generation creates successfully for a range of fragment numbers and sizes.
