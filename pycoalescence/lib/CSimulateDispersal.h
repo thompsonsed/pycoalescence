@@ -66,6 +66,14 @@ public:
 	}
 };
 
+void raiseErrorOnFalse(bool error_raised)
+{
+	if(error_raised)
+	{
+
+	}
+}
+
 /**
  * @brief Sets all the map parameters, including historical maps, with a single import.
  * @param self the python self object
@@ -122,14 +130,32 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
 		self->dispersalParameters->fine_map_file = fine_map_file;
 		self->dispersalParameters->coarse_map_file = coarse_map_file;
 		self->dispersalParameters->landscape_type = landscape_type;
-		importPyListToVectorString(p_path_fine, path_fine, "Fine map paths must be strings.");
-		importPyListToVectorULong(p_number_fine, number_fine, "Fine map numbers must be integers.");
-		importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats.");
-		importPyListToVectorDouble(p_time_fine, time_fine, "Fine map times must be floats.");
-		importPyListToVectorString(p_path_coarse, path_coarse, "Coarse map paths must be strings.");
-		importPyListToVectorULong(p_number_coarse, number_coarse, "Coarse map numbers must be integers.");
-		importPyListToVectorDouble(p_rate_coarse, rate_coarse, "Coarse map rates must be floats.");
-		importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats.");
+		// Check for errors in each parsing of vector
+		vector<bool> passed_errors;
+		passed_errors.emplace_back(importPyListToVectorString(p_path_fine,
+															  path_fine, "Fine map paths must be strings."));
+		passed_errors.emplace_back(importPyListToVectorULong(p_number_fine,
+															 number_fine, "Fine map numbers must be integers."));
+		passed_errors.emplace_back(importPyListToVectorDouble(p_rate_fine,
+															  rate_fine, "Fine map rates must be floats."));
+		passed_errors.emplace_back(importPyListToVectorDouble(p_time_fine,
+															  time_fine, "Fine map times must be floats."));
+		passed_errors.emplace_back(importPyListToVectorString(p_path_coarse,
+															  path_coarse, "Coarse map paths must be strings."));
+		passed_errors.emplace_back(importPyListToVectorULong(p_number_coarse,
+															 number_coarse, "Coarse map numbers must be integers."));
+		passed_errors.emplace_back(importPyListToVectorDouble(p_rate_coarse,
+															  rate_coarse, "Coarse map rates must be floats."));
+		passed_errors.emplace_back(importPyListToVectorDouble(p_time_coarse,
+															  time_coarse, "Coarse map times must be floats."));
+		for(const auto &item: passed_errors)
+		{
+			if(!item)
+			{
+				removeGlobalLogger();
+				return nullptr;
+			}
+		}
 		self->dispersalParameters->setHistoricalMapParameters(path_fine, number_fine, rate_fine, time_fine, path_coarse,
 															  number_coarse, rate_coarse, time_coarse);
 		self->setDispersalParameters();

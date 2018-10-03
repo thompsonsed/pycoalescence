@@ -24,7 +24,7 @@ bool importPyListToVectorString(PyObject *list_input, vector<string> &output, co
 #if PY_MAJOR_VERSION >= 3
 		if(!PyUnicode_Check(item))
 #else
-		if(PyString_Check(item))
+		if(!PyString_Check(item))
 #endif
 		{
 			PyErr_SetString(PyExc_TypeError, err_msg.c_str());
