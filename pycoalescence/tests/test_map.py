@@ -10,7 +10,7 @@ import shutil
 import os
 
 from pycoalescence import Map, FragmentedLandscape
-from setupTests import setUpAll, tearDownAll
+from setupTests import setUpAll, tearDownAll, skipGdalWarp
 
 
 def setUpModule():
@@ -431,6 +431,7 @@ class TestMap(unittest.TestCase):
 		self.assertEqual(6, m.get_dtype())
 
 @unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
+@skipGdalWarp
 class TestMapReprojection(unittest.TestCase):
 	"""
 	Tests that reprojections work as intended.

@@ -19,6 +19,11 @@ try:
 except KeyError:
 	quick_test = None
 
+try:
+	bypass_gdal_warp = os.environ["bypass_gdal_warp"]
+except KeyError:
+	bypass_gdal_warp = None
+
 
 def setUpAll():
 	"""
@@ -71,6 +76,19 @@ def skipLongTest(f):
 	name = f.__name__
 	if quick_test:
 		@unittest.skip("skipping {} due to length...".format(name))
+		def g():
+			pass
+		return g
+	else:
+		return f
+
+def skipGdalWarp(f):
+	"""
+	Decorator to skip a test containing gdal warp - required for systems where gdal.Warp does not function properly
+	"""
+	name = f.__name__
+	if bypass_gdal_warp:
+		@unittest.skip("skipping {} due to lack of gdal.Warp ...".format(name))
 		def g():
 			pass
 		return g
