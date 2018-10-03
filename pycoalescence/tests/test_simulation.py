@@ -4,6 +4,7 @@ to assert simulation outputs are as expected.
 """
 import logging
 import os
+import sys
 import unittest
 from configparser import ConfigParser
 
@@ -324,7 +325,7 @@ class TestSimulationSetMaps(unittest.TestCase):
 		self.assertListEqual(expected_times, s.times_list)
 		self.assertListEqual(expected_rates, s.rates_list)
 
-
+@unittest.skipIf(sys.version[0] == '2', "Skipping python 3.x tests")
 class TestLoggingOutputsCorrectly(unittest.TestCase):
 	"""
 	Tests that logging outputs as expected.

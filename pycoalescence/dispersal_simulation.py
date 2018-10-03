@@ -56,8 +56,8 @@ class DispersalSimulation(Landscape):
 		Landscape.__init__(self)
 		self.logger = logging.Logger("pycoalescence.dispersal_simulation")
 		self._create_logger(logging_level=logging_level)
-		self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
 		self._db_conn = None
+		self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
 		# The dispersal simulation data
 		self.dispersal_database = dispersal_db
 		self.deme = 1
