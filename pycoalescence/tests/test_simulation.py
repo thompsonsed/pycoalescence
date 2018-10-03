@@ -6,7 +6,6 @@ import logging
 import os
 import sys
 import unittest
-from configparser import ConfigParser
 
 try:
 	import configparser as ConfigParser
