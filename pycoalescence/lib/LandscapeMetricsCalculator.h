@@ -12,6 +12,7 @@
 #include <numeric>
 #include "necsim/Map.h"
 #include "necsim/Cell.h"
+
 #ifndef MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
 #define MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
 
@@ -24,6 +25,10 @@ class LandscapeMetricsCalculator : public Map<double>
 {
 	vector<Cell> all_cells;
 public:
+
+	LandscapeMetricsCalculator() : all_cells(){};
+
+	virtual ~LandscapeMetricsCalculator(){};
 
 	/**
 	 * @brief Calculates the mean distance between nearest neighbours on a Map.
@@ -38,7 +43,7 @@ public:
 	 * @param y the y coordinate of the new location
 	 * @param min_distance the previous minimum distance
 	 */
-	void checkMinDistance(Cell &home_cell, const long &x, const long &y, double & min_distance);
+	void checkMinDistance(Cell &home_cell, const long &x, const long &y, double &min_distance);
 
 	/**
 	 * @brief Determines the distance to the nearest neighbour of a cell.
@@ -46,7 +51,7 @@ public:
 	 * @param col
 	 * @return
 	 */
-	double findNearestNeighbourDistance(const long & row, const long & col);
+	double findNearestNeighbourDistance(const long &row, const long &col);
 
 	/**
 	 * @brief Creates a list containing all habitat cells in the landscape.

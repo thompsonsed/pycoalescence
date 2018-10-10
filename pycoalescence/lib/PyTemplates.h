@@ -24,6 +24,7 @@ public:
 	PyObject *log_function = nullptr;
 	std::unique_ptr<T> base_object = nullptr;
 
+	virtual ~PyTemplate();
 //	virtual void init()
 //	{
 //

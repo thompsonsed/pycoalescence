@@ -10,8 +10,8 @@
 
 #define PYTHON_COMPILE
 #include <Python.h>
-#include <vector>
 #include <string>
+#include <vector>
 #include <csignal>
 
 // These are included here for compabilitity reasons
