@@ -57,7 +57,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/Logger.cpp
         ${SOURCE_DIR_NECSIM}/Landscape.cpp
         ${SOURCE_DIR_NECSIM}/ProtractedTree.cpp
-        ${SOURCE_DIR_NECSIM}/Setup.cpp
+        ${SOURCE_DIR_NECSIM}/setup.cpp
+        ${SOURCE_DIR_NECSIM}/setup.h
         ${SOURCE_DIR_NECSIM}/SpeciesList.h
         ${SOURCE_DIR_NECSIM}/Community.cpp
         ${SOURCE_DIR_NECSIM}/ActivityMap.cpp
