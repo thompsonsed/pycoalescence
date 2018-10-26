@@ -7,6 +7,7 @@ import os
 import shutil
 import sqlite3
 import unittest
+
 try:
 	from cStringIO import StringIO  # Python 2 string support
 except ImportError:
@@ -390,7 +391,8 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
 								coarse_file="sample/SA_sample_coarse.tif")
 		self.coal2 = Simulation()
 		self.coal2.set_simulation_parameters(seed=1, job_type=33, output_directory="output", min_speciation_rate=0.1,
-											 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
+											 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2,
+											 dispersal_relative_cost=1,
 											 min_num_species=1, cutoff=0.0, landscape_type="closed")
 		self.coal2.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								 coarse_file="sample/SA_sample_coarse.tif")
@@ -469,7 +471,8 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		self.coal = Simulation(logging_level=logging.CRITICAL)
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_parameters(seed=1, job_type=34, output_directory="output", min_speciation_rate=0.1,
-											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
+											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2,
+											dispersal_relative_cost=1,
 											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 											cutoff=0.0, landscape_type="closed")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
@@ -479,7 +482,8 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		self.coal2 = Simulation()
 		self.tree2 = CoalescenceTree()
 		self.coal2.set_simulation_parameters(seed=1, job_type=35, output_directory="output", min_speciation_rate=0.1,
-											 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
+											 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2,
+											 dispersal_relative_cost=1,
 											 min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 											 cutoff=0.0, landscape_type="closed")
 		self.coal2.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
@@ -640,16 +644,20 @@ class TestSimulationNonSpatial(unittest.TestCase):
 										spatial=False)
 		cls.c.run()
 		cls.c2 = Simulation(logging_level=logging.ERROR)
-		cls.c2.set_simulation_parameters(seed=1, job_type=40, output_directory="output", min_speciation_rate=0.5, deme=100,
+		cls.c2.set_simulation_parameters(seed=1, job_type=40, output_directory="output", min_speciation_rate=0.5,
+										 deme=100,
 										 spatial=False)
 		cls.c2.run()
 		cls.c3 = Simulation(logging_level=logging.ERROR)
-		cls.c3.set_simulation_parameters(seed=1, job_type=41, output_directory="output", min_speciation_rate=0.5, deme=100,
+		cls.c3.set_simulation_parameters(seed=1, job_type=41, output_directory="output", min_speciation_rate=0.5,
+										 deme=100,
 										 spatial=False, protracted=True, min_speciation_gen=0, max_speciation_gen=1)
 		cls.c3.run()
 		cls.c4 = Simulation(logging_level=logging.ERROR)
-		cls.c4.set_simulation_parameters(seed=1, job_type=42, output_directory="output", min_speciation_rate=0.5, deme=100,
-										 spatial=False, protracted=True, min_speciation_gen=100, max_speciation_gen=1000)
+		cls.c4.set_simulation_parameters(seed=1, job_type=42, output_directory="output", min_speciation_rate=0.5,
+										 deme=100,
+										 spatial=False, protracted=True, min_speciation_gen=100,
+										 max_speciation_gen=1000)
 		cls.c4.run()
 
 	def testNSESanityChecks(self):
@@ -692,7 +700,8 @@ class TestSimulationSampling(unittest.TestCase):
 		cls.coal = Simulation()
 		cls.tree = CoalescenceTree()
 		cls.coal.set_simulation_parameters(seed=6, job_type=8, output_directory="output", min_speciation_rate=0.5,
-										   sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2, dispersal_relative_cost=1,
+										   sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2,
+										   dispersal_relative_cost=1,
 										   min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 										   dispersal_method="normal")
 		# self.coal.set_simulation_parameters(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
@@ -1037,7 +1046,8 @@ class TestSimulationComplexRun2(unittest.TestCase):
 		self.coal = Simulation()
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_parameters(seed=6, job_type=7, output_directory="output", min_speciation_rate=0.5,
-											sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+											sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
+											dispersal_relative_cost=1,
 											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 											dispersal_method="normal")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
@@ -1105,7 +1115,8 @@ class TestSimulationComplexRun3(unittest.TestCase):
 		self.coal = Simulation()
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_parameters(seed=6, job_type=13, output_directory="output", min_speciation_rate=0.5,
-											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10,
+											dispersal_relative_cost=1,
 											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 											dispersal_method="normal")
 		# self.coal.set_simulation_parameters(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
@@ -1159,7 +1170,8 @@ class TestSimulationComplexRun4(unittest.TestCase):
 		self.coal = Simulation()
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_parameters(seed=7, job_type=13, output_directory="output", min_speciation_rate=0.5,
-											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10,
+											dispersal_relative_cost=1,
 											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 											dispersal_method="norm-uniform", m_prob=10 ** -8,
 											cutoff=160)
@@ -1360,7 +1372,8 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 		self.tree1 = CoalescenceTree()
 		self.tree2 = CoalescenceTree()
 		self.coal.set_simulation_parameters(seed=1, job_type=15, output_directory="output", min_speciation_rate=0.01,
-											sigma=2.0, tau=100000000000000000000000, deme=1, sample_size=0.1, max_time=4,
+											sigma=2.0, tau=100000000000000000000000, deme=1, sample_size=0.1,
+											max_time=4,
 											dispersal_relative_cost=1,
 											min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 											dispersal_method="normal", landscape_type=True)
@@ -1579,12 +1592,12 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
 		errors.
 		"""
-		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
-										 protracted_speciation_min=70, protracted_speciation_max=2000)
+		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
+		self.c.c_community.add_protracted_parameters(70.0, 2000.0)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
-		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
-										 protracted_speciation_min=50, protracted_speciation_max=2100)
+		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
+		self.c.c_community.add_protracted_parameters(50.0, 2100.0)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
 
@@ -1610,14 +1623,22 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 		Tests that the protracted community parameters are stored and returned correctly.
 		"""
 		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8], self.c.get_community_references())
-		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 100))
-		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 100))
-		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 25, 100))
-		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 25, 100))
-		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 200))
-		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 200))
-		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 0.0, 2000))
-		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 0.0, 2000))
+		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=100))
+		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=100))
+		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=25,
+														   max_speciation_gen=100))
+		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=25,
+														   max_speciation_gen=100))
+		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=200))
+		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=200))
+		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=0.0,
+														   max_speciation_gen=2000))
+		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=0.0,
+														   max_speciation_gen=2000))
 		ed1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
 			   "min_speciation_gen": 50, "max_speciation_gen": 100}
 		ed2 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
@@ -1681,12 +1702,12 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
 		errors.
 		"""
-		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
-										 protracted_speciation_min=70, protracted_speciation_max=2000)
+		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
+		self.c.c_community.add_protracted_parameters(70.0, 2000.0)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
-		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
-										 protracted_speciation_min=50, protracted_speciation_max=2100)
+		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
+		self.c.c_community.add_protracted_parameters(50.0, 2100.0)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
 
@@ -1712,14 +1733,22 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		Tests that the protracted community parameters are stored and returned correctly.
 		"""
 		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8], self.c.get_community_references())
-		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 100))
-		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 100))
-		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 25, 100))
-		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 25, 100))
-		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 200))
-		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 200))
-		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 0.0, 2000))
-		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 0.0, 2000))
+		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=100))
+		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=100))
+		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=25,
+														   max_speciation_gen=100))
+		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=25,
+														   max_speciation_gen=100))
+		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=200))
+		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=200))
+		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=0.0,
+														   max_speciation_gen=2000))
+		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=0.0,
+														   max_speciation_gen=2000))
 		ed1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
 			   "min_speciation_gen": 50, "max_speciation_gen": 100}
 		ed2 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
@@ -1787,12 +1816,12 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		Tests that applying speciation rates with out-of-range protracted speciation parameters throws the correct
 		errors.
 		"""
-		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
-										 protracted_speciation_min=70, protracted_speciation_max=2000)
+		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
+		self.c.c_community.add_protracted_parameters(70.0, 2000.0)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
-		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False,
-										 protracted_speciation_min=50, protracted_speciation_max=2100)
+		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
+		self.c.c_community.add_protracted_parameters(50.0, 2100.0)
 		with self.assertRaises(NECSimError):
 			self.c.apply()
 
@@ -1818,14 +1847,22 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		Tests that the protracted community parameters are stored and returned correctly.
 		"""
 		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8], self.c.get_community_references())
-		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 100))
-		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 100))
-		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 25, 100))
-		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 25, 100))
-		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 50, 200))
-		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 50, 200))
-		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, 0.0, 2000))
-		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, 0.0, 2000))
+		self.assertEqual(1, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=100))
+		self.assertEqual(2, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=100))
+		self.assertEqual(3, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=25,
+														   max_speciation_gen=100))
+		self.assertEqual(4, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=25,
+														   max_speciation_gen=100))
+		self.assertEqual(5, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=200))
+		self.assertEqual(6, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=50,
+														   max_speciation_gen=200))
+		self.assertEqual(7, self.c.get_community_reference(0.1, 0.0, False, 0, 0.0, min_speciation_gen=0.0,
+														   max_speciation_gen=2000))
+		self.assertEqual(8, self.c.get_community_reference(0.2, 0.0, False, 0, 0.0, min_speciation_gen=0.0,
+														   max_speciation_gen=2000))
 		ed1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
 			   "min_speciation_gen": 50, "max_speciation_gen": 100}
 		ed2 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 0,
@@ -1873,7 +1910,8 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		"""
 		self.c = Simulation(logging_level=logging.CRITICAL)
 		self.c.set_simulation_parameters(seed=1, job_type=32, output_directory="output", min_speciation_rate=0.5,
-										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10, dispersal_relative_cost=1,
+										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
+										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 										 )
 		self.c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
@@ -2129,7 +2167,7 @@ class TestSimulationMetacommunity(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		"""
-		Runs the default simulation and a the metacommunities to compare against.
+		Runs the default simulation and the metacommunities to compare against.
 		"""
 		cls.c = Simulation()
 		cls.c.set_simulation_parameters(seed=1, job_type=43, output_directory="output", min_speciation_rate=0.5,
@@ -2146,7 +2184,8 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		cls.c2.run()
 		cls.t2 = CoalescenceTree(cls.c)
 		cls.t2.set_speciation_parameters(speciation_rates=[0.5], record_spatial=False, record_fragments=False,
-										 metacommunity_size=1, metacommunity_speciation_rate=0.5)
+										 metacommunity_size=1, metacommunity_speciation_rate=0.5,
+										 metacommunity_option="simulated")
 		cls.t2.apply()
 		cls.t3 = CoalescenceTree(cls.c)
 		cls.t3.set_speciation_parameters(speciation_rates=[0.5], record_spatial=False, record_fragments=False,
@@ -2190,12 +2229,76 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		metacommunity_dict2 = self.t2.get_metacommunity_parameters(1)
 		metacommunity_dict3 = self.t3.get_metacommunity_parameters(2)
 		metacommunity_dict4 = self.t4.get_metacommunity_parameters(3)
-		comparison_dict2 = {"speciation_rate": 0.5, "metacommunity_size": 1.0}
-		comparison_dict3 = {"speciation_rate": 1.0, "metacommunity_size": 1.0}
-		comparison_dict4 = {"speciation_rate": 0.95, "metacommunity_size": 1000000.0}
+		comparison_dict2 = {"speciation_rate": 0.5, "metacommunity_size": 1.0, "option": "simulated",
+							"external_reference" : 0}
+		comparison_dict3 = {"speciation_rate": 1.0, "metacommunity_size": 1.0, "option": "simulated",
+							"external_reference" : 0}
+		comparison_dict4 = {"speciation_rate": 0.95, "metacommunity_size": 1000000.0, "option": "analytical",
+							"external_reference" : 0}
 		self.assertDictEqual(comparison_dict2, metacommunity_dict2)
 		self.assertDictEqual(comparison_dict3, metacommunity_dict3)
 		self.assertDictEqual(comparison_dict4, metacommunity_dict4)
+
+
+class TestMetacommunityMethodsMatch(unittest.TestCase):
+	"""Tests that the different methods of generating metacommunities work as intended."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Run the simulations to generate the required metacommunities."""
+		cls.tree_ref = CoalescenceTree(os.path.join("sample", "nse_reference.db"))
+		cls.speciation_rates = [0.0000001, 0.5, 0.99999]
+		cls.metacomm_sim = Simulation()
+		cls.metacomm_sim.set_simulation_parameters(seed=3, job_type=44, output_directory="output",
+												   min_speciation_rate=0.0001, sigma=4)
+		cls.metacomm_sim.set_map("null", 100, 100)
+		cls.metacomm_sim.run()
+		for i in range(3):
+			dst = os.path.join("output", "data_3_44_{}.db".format(i))
+			if os.path.exists(dst):
+				os.remove(dst)
+			shutil.copy2(cls.metacomm_sim.output_database, dst)
+		cls.tree_sim = CoalescenceTree(os.path.join("output", "data_3_44_0.db"))
+		cls.tree_sim.set_speciation_parameters(0.0001, metacommunity_size=10000,
+											   metacommunity_speciation_rate=cls.speciation_rates[0],
+											   metacommunity_option="simulated")
+		cls.tree_sim.apply()
+		cls.tree_analytical = CoalescenceTree(os.path.join("output", "data_3_44_1.db"))
+		cls.tree_analytical.set_speciation_parameters(0.0001, metacommunity_size=10000,
+													  metacommunity_speciation_rate=cls.speciation_rates[0],
+													  metacommunity_option="analytical")
+		cls.tree_analytical.apply()
+		cls.tree_external = CoalescenceTree(os.path.join("output", "data_3_44_2.db"))
+		cls.tree_external.set_speciation_parameters(0.0001,
+													metacommunity_option=os.path.join("sample", "nse_reference.db"),
+													metacommunity_reference=1)
+		cls.tree_external.apply()
+
+	def testApplyingExternalFile(self):
+		"""Basic tests that applying an external file works as intended."""
+		tree_external = CoalescenceTree(os.path.join("output", "data_3_44_2.db"))
+		tree_external.set_speciation_parameters(0.0001, metacommunity_option=os.path.join("sample", "nse_reference.db"),
+												metacommunity_reference=1)
+		tree_external.apply()
+
+	def testBadOptionsRaisesErrors(self):
+		"""Tests that the having invalid options raises the appropriate error."""
+		with self.assertRaises(ValueError):
+			self.tree_external2 = CoalescenceTree(os.path.join("output", "data_3_44_2.db"))
+			self.tree_external2.set_speciation_parameters(0.0001, metacommunity_size=10000,
+														  metacommunity_speciation_rate=self.speciation_rates[0],
+														  metacommunity_option=os.path.join("sample",
+																							"nse_reference.db"),
+														  metacommunity_reference=0)
+			self.tree_external2.apply()
+
+	def testSpeciesRichnessClose(self):
+		"""
+		Tests that the species richness values produced by the different methods (analytical, simulated and from
+		an external database) are all close with equivalent parameters.
+		"""
+		self.assertEqual(self.tree_analytical.get_species_richness(1), self.tree_sim.get_species_richness(1))
+		self.assertEqual(self.tree_external.get_species_richness(1), self.tree_sim.get_species_richness(1))
 
 
 class TestProtractedSimsWithMetacommunity(unittest.TestCase):
@@ -2221,9 +2324,9 @@ class TestProtractedSimsWithMetacommunity(unittest.TestCase):
 		self.assertEqual(76, self.tree.get_species_richness(1))
 		self.assertEqual(76, self.tree.get_species_richness(2))
 		self.assertEqual(76, self.tree.get_species_richness(3))
-		self.assertEqual(70, self.tree.get_species_richness(4))
-		self.assertEqual(68, self.tree.get_species_richness(5))
-		self.assertEqual(67, self.tree.get_species_richness(6))
+		self.assertEqual(60, self.tree.get_species_richness(4))
+		self.assertEqual(60, self.tree.get_species_richness(5))
+		self.assertEqual(58, self.tree.get_species_richness(6))
 
 	def testParametersCorrectlyStored(self):
 		"""Tests that the community parameters are correctly stored."""
@@ -2355,7 +2458,7 @@ class TestSamplingGridNumber(unittest.TestCase):
 
 	def testSpeciesRichnessNear(self):
 		"""Tests that the two species richness values are near one another."""
-		self.assertAlmostEqual(1.0, self.tree1.get_number_individuals()/self.tree2.get_number_individuals(), 0)
+		self.assertAlmostEqual(1.0, self.tree1.get_number_individuals() / self.tree2.get_number_individuals(), 0)
 
 
 class TestReproductionMaps(unittest.TestCase):
@@ -2368,7 +2471,7 @@ class TestReproductionMaps(unittest.TestCase):
 		cls.sim1.set_simulation_parameters(seed=1, job_type=47, output_directory="output",
 										   min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
 		cls.sim1.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
-							  reproduction_map="sample/SA_sample_reproduction.tif")
+							   reproduction_map="sample/SA_sample_reproduction.tif")
 		cls.sim1.run()
 		cls.sim2 = Simulation(logging_level=50)
 		cls.sim2.set_simulation_parameters(seed=1, job_type=48, output_directory="output",
@@ -2394,7 +2497,6 @@ class TestReproductionMaps(unittest.TestCase):
 		cls.coal2 = CoalescenceTree(cls.sim2)
 		cls.coal3 = CoalescenceTree(cls.sim3)
 		cls.coal4 = CoalescenceTree(cls.sim4)
-
 
 	def testDeathMapNullRaisesError(self):
 		"""Tests that an error is raised when the reproduction map has a zero value where the density map does not."""
@@ -2432,17 +2534,16 @@ class TestReproductionMaps(unittest.TestCase):
 		sim1.set_simulation_parameters(seed=5, job_type=47, output_directory="output",
 									   min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
 		sim1.set_map_files("null", fine_file="sample/SA_sample_fine2.tif",
-							  reproduction_map="sample/SA_sample_reproduction.tif")
+						   reproduction_map="sample/SA_sample_reproduction.tif")
 		sim1.run()
 		sim2 = Simulation(logging_level=60)
 		sim2.set_simulation_parameters(seed=6, job_type=47, output_directory="output",
 									   min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01)
 		sim2.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
-						  reproduction_map="sample/SA_sample_reproduction.tif")
+						   reproduction_map="sample/SA_sample_reproduction.tif")
 		sim2.add_historical_map("sample/SA_sample_fine2.tif", "none", 10.0, 0.0)
 		sim2.run()
 		log1 = log_stream1.getvalue().replace('\r', '').replace('\n', '')
 		self.assertEqual(191, sim1.get_species_richness())
 		self.assertEqual(184, sim2.get_species_richness())
 		self.assertEqual("Density is zero where reproduction map is non-zero. This is likely incorrect.", log1)
-

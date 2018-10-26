@@ -12,7 +12,7 @@
 #include <Python.h>
 #include <structmember.h>
 #include <memory>
-#include "necsim/ConfigFileParser.h"
+#include "ConfigParser.h"
 #include "necsim/Tree.h"
 #include "necsim/SpatialTree.h"
 #include "necsim/ProtractedTree.h"
@@ -79,7 +79,7 @@ static PyObject *importConfigFromString(PyTemplate<T> *self, PyObject *args)
 		istream &istream1 = ss;
 		getGlobalLogger(self->logger, self->log_function);
 		self->base_object->wipeSimulationVariables();
-		ConfigOption config;
+		ConfigParser config;
 		config.parseConfig(istream1);
 		self->base_object->importSimulationVariables(config);
 	}
@@ -202,7 +202,7 @@ static PyObject *setupResume(PyTemplate<T> *self, PyObject *args)
 	{
 		return nullptr;
 	}
-	// Set up the resume parameters.
+	// Set up the resume current_metacommunity_parameters.
 	string pause_directory_str, out_directory_str;
 	pause_directory_str = pause_directory;
 	out_directory_str = out_directory;

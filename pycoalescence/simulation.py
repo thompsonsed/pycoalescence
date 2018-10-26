@@ -1127,7 +1127,7 @@ class Simulation(Landscape):
 		if self.is_setup_map and self.is_setup_param:
 			self.check_maps()
 		else:
-			err = "Set up is incomplete."
+			err = "Set up of maps or parameters is incomplete."
 			raise RuntimeError(err)
 		self.check_sql_database(expected=expected)
 

@@ -491,19 +491,19 @@ static void PySimulateDispersal_dealloc(PySimulateDispersal *self)
 static PyMethodDef SimulateDispersalMethods[] =
 		{
 				{"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS,
-															  "Sets the dispersal parameters for this simulation."},
+															  "Sets the dispersal current_metacommunity_parameters for this simulation."},
 				{"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS,
 															  "Sets the output database for the simulation."},
 				{"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS,
-															  "Runs the dispersal simulation for the set parameters, calculating the mean distance per step."},
+															  "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
 				{"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS,
-															  "Runs the dispersal simulation for the set parameters, calculating the mean distance travelled."},
+															  "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
 				{"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS,
 															  "Imports the map files for the simulation. Should only be run once."},
 				{"import_all_maps", (PyCFunction) set_all_map_parameters, METH_VARARGS,
 						"Imports all the map files with a single import."},
 				{"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS,
-															  "Sets the historical map parameters."},
+															  "Sets the historical map current_metacommunity_parameters."},
 				{nullptr,                         nullptr, 0, nullptr}
 		};
 

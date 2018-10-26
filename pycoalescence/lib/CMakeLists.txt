@@ -44,12 +44,15 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/NRrand.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
+        ${SOURCE_DIR_NECSIM}/parameters.h
+        ${SOURCE_DIR_NECSIM}/parameters.cpp
         ${SOURCE_DIR_NECSIM}/SimParameters.h
-        ${SOURCE_DIR_NECSIM}/Filesystem.cpp
+        ${SOURCE_DIR_NECSIM}/SpecSimParameters.h
+        ${SOURCE_DIR_NECSIM}/file_system.cpp
         ${SOURCE_DIR_NECSIM}/SpatialTree.cpp
         ${SOURCE_DIR_NECSIM}/Tree.cpp
         ${SOURCE_DIR_NECSIM}/SpeciationCommands.cpp
-        ${SOURCE_DIR_NECSIM}/ConfigFileParser.cpp
+        ${SOURCE_DIR_NECSIM}/ConfigParser.cpp
         ${SOURCE_DIR_NECSIM}/DispersalCoordinator.cpp
         ${SOURCE_DIR_NECSIM}/Logger.cpp
         ${SOURCE_DIR_NECSIM}/Landscape.cpp
@@ -64,10 +67,10 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/SpeciesList.cpp
         ${SOURCE_DIR_NECSIM}/TreeNode.cpp
         ${SOURCE_DIR_NECSIM}/LogFile.cpp
-        ${SOURCE_DIR_NECSIM}/CPLCustomHandlerNecsim.cpp
+        ${SOURCE_DIR_NECSIM}/cpl_custom_handler.cpp
         ${SOURCE_DIR_NECSIM}/Cell.cpp
         PyLogger.cpp
-        ${SOURCE_DIR_NECSIM}/DoubleComparison.cpp
+        ${SOURCE_DIR_NECSIM}/double_comparison.cpp
         PyImports.cpp
         PyLogging.cpp
         LandscapeMetricsCalculator.cpp
@@ -75,7 +78,7 @@ set(SOURCE_FILES
         CSimulation.h
         CLandscapeMetricsCalculator.h
         CSimulateDispersal.h
-        ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp)
+        ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp necsim/neutral_analytical.cpp necsim/neutral_analytical.h necsim/parameters.cpp necsim/parameters.h necsim/SimulatedSpeciesAbundancesHandler.cpp necsim/SimulatedSpeciesAbundancesHandler.h necsim/AnalyticalSpeciesAbundancesHandler.cpp necsim/AnalyticalSpeciesAbundancesHandler.h necsim/SpeciesAbundancesHandler.cpp necsim/SpeciesAbundancesHandler.h)
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 elseif(WINDOWS)

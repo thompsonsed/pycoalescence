@@ -144,32 +144,247 @@ class TestParameterDescriptions(unittest.TestCase):
 		self.assertDictEqual(tmp_dict, get_parameter_description())
 
 
-class TestCoalescenceTreeAnalyse(unittest.TestCase):
-	"""
-	Tests analysis is performed correctly
-	"""
+class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
+	"Tests that the correct errors are raised when speciation parameters are supplied incorrectly."
 
 	@classmethod
 	def setUpClass(cls):
-		"""
-		Sets up the Coalescence object test case.
-		"""
-		dst = "output/sampledb0.db"
+		"""Generates the temporary databases to attempt analysis on."""
+		src = [os.path.join("sample", "sample{}.db".format(x)) for x in [2, 3]]
+		cls.dst = [os.path.join("output", "sample{}.db".format(x)) for x in [2, 3]]
+		for tmp_src, tmp_dst in zip(src, cls.dst):
+			if os.path.exists(tmp_dst):
+				os.remove(tmp_dst)
+			shutil.copy(tmp_src, tmp_dst)
+
+	def testSetSpeciationRates(self):
+		"""Tests setting speciation rates works as intended and raises appropriate errors"""
+		ct = CoalescenceTree(self.dst[0])
+		for attempt in ["a string", ["a", "string"], [["list", "list2"], 0.2, 0.1], [None]]:
+			with self.assertRaises(TypeError):
+				ct._set_speciation_rates(attempt)
+		with self.assertRaises(RuntimeError):
+			ct._set_speciation_rates(None)
+		for attempt in [-10, -2.0, 1.1, 100, [-1, 0.1, 0.2], [0.2, 0.8, 1.1]]:
+			with self.assertRaises(ValueError):
+				ct._set_speciation_rates(attempt)
+		expected_list = [0.1, 0.2, 0.3]
+		ct._set_speciation_rates(expected_list)
+		self.assertEqual(expected_list, ct.applied_speciation_rates_list)
+		ct._set_speciation_rates(0.2)
+		self.assertEqual([0.2], ct.applied_speciation_rates_list)
+
+	def testSetRecordFragments(self):
+		"""Tests that setting the record_fragments flag works as expected."""
+		ct = CoalescenceTree(self.dst[0])
+		ct._set_record_fragments(True)
+		self.assertEqual("null", ct.record_fragments)
+		ct._set_record_fragments(False)
+		self.assertEqual("F", ct.record_fragments)
+		for each in ["PlotBiodiversityMetrics.db", "doesntexist.csv"]:
+			config_path = os.path.join("sample", each)
+			with self.assertRaises(IOError):
+				ct._set_record_fragments(config_path)
+		expected = os.path.join("sample", "FragmentsTest.csv")
+		ct._set_record_fragments(expected)
+		self.assertEqual(expected, ct.record_fragments)
+
+	def testSetRecordSpatial(self):
+		"""Tests that the setting the record_spatial flag works as expected"""
+		ct = CoalescenceTree(self.dst[0])
+		ct._set_record_spatial("T")
+		self.assertTrue(ct.record_spatial)
+		ct._set_record_spatial("F")
+		self.assertFalse(ct.record_spatial)
+		with self.assertRaises(TypeError):
+			ct._set_record_spatial("nota bool")
+		ct._set_record_spatial(True)
+		self.assertTrue(ct.record_spatial)
+
+	def testSetMetacommunityParameters(self):
+		"""Tests that setting the metacommunity parameters works as expected."""
+		ct = CoalescenceTree(self.dst[0])
+		for size, spec in [[-10, 0.1], [10, -0.1], [10, 1.1]]:
+			with self.assertRaises(ValueError):
+				ct.fragments = "F"
+				ct._set_record_fragments(False)
+				ct._set_record_spatial(False)
+				ct.times = [0.0]
+				ct._set_metacommunity_parameters(size, spec)
+		ct._set_metacommunity_parameters(None, None)
+		self.assertEqual(0.0, ct.metacommunity_size)
+		self.assertEqual(0.0, ct.metacommunity_speciation_rate)
+		ct._set_metacommunity_parameters(10, 0.1, "simulated")
+		self.assertEqual(10, ct.metacommunity_size)
+		self.assertEqual(0.1, ct.metacommunity_speciation_rate)
+
+	def testSetProtractedParameters(self):
+		"""Tests that setting the protracted parameters works as expected."""
+		ct = CoalescenceTree(self.dst[0])
+		with self.assertRaises(ValueError):
+			ct._set_protracted_parameters(0.1, 100)
+		ct = CoalescenceTree(self.dst[1])
+		ct._set_protracted_parameters(10, 100)
+		self.assertEqual((10.0, 100.0), ct.protracted_parameters[0])
+		ct.protracted_parameters = []
+		for min_proc, max_proc in [[200, 5000], [80, 50], [200, 11000]]:
+			with self.assertRaises(ValueError):
+				ct._check_protracted_parameters(min_proc, max_proc)
+			with self.assertRaises(ValueError):
+				ct._set_protracted_parameters(min_proc, max_proc)
+			with self.assertRaises(ValueError):
+				ct.add_protracted_parameters(min_proc, max_proc)
+		ct._set_protracted_parameters(50, 5000)
+		self.assertEqual((50.0, 5000.0), ct.protracted_parameters[0])
+		ct.protracted_parameters = []
+		ct._set_protracted_parameters(None, None)
+		self.assertEqual((0.0, 0.0), ct.protracted_parameters[0])
+
+	def testSetSampleFile(self):
+		"""Tests that the sample file is correctly set."""
+		ct = CoalescenceTree(self.dst[0])
+		for file in ["notafile.tif", os.path.join("sample", "sample.db")]:
+			with self.assertRaises(IOError):
+				ct._set_sample_file(file)
+		ct._set_sample_file(None)
+		self.assertEqual("null", ct.sample_file)
+		expected_file = os.path.join("sample", "SA_sample_coarse.tif")
+		ct._set_sample_file(expected_file)
+		self.assertEqual(expected_file, ct.sample_file)
+
+	def testSetTimes(self):
+		"""Tests that times are correctly set."""
+		ct = CoalescenceTree(self.dst[0])
+		ct._set_times(None)
+		self.assertEqual(0.0, ct.times[0])
+		with self.assertRaises(TypeError):
+			ct.add_times(0.5)
+		with self.assertRaises(TypeError):
+			ct.add_times([0.2, 0.5, "string"])
+		ct.times = None
+		ct.add_times([0.2, 0.5, 10])
+		self.assertEqual([0.0, 0.2, 0.5, 10.0], ct.times)
+		ct.times = None
+		ct._set_times(0.2)
+		self.assertEqual([0.0, 0.2], ct.times)
+		ct.times = None
+		ct._set_times([0.1, 0.5, 10.0])
+		self.assertEqual([0.0, 0.1, 0.5, 10.0], ct.times)
+
+
+class TestCoalescenceTreeParameters(unittest.TestCase):
+	"""Tests that parameters are correctly obtained from the databases and the relevant errors are raised."""
+
+	def testCommunityParameters1(self):
+		"""Tests the community parameters make sense in a very simple community."""
+		t = CoalescenceTree(os.path.join("sample", "sample3.db"), logging_level=50)
+		self.assertEqual([], t.get_metacommunity_references())
+		self.assertEqual([1], t.get_community_references())
+		params = t.get_community_parameters(1)
+		expected_dict = {"speciation_rate": 0.001,
+						 "time": 0.0,
+						 "fragments": 0,
+						 "metacommunity_reference": 0,
+						 "min_speciation_gen": 100.0,
+						 "max_speciation_gen": 10000.0}
+		self.assertEqual(expected_dict, params)
+		with self.assertRaises(sqlite3.OperationalError):
+			t.get_metacommunity_parameters(1)
+		with self.assertRaises(KeyError):
+			t.get_community_parameters(2)
+		with self.assertRaises(KeyError):
+			t.get_community_reference(0.1, 0.0, 0, 0, 0.0, min_speciation_gen=100.0, max_speciation_gen=10000.0)
+		with self.assertRaises(KeyError):
+			params = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False)
+		ref = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False,
+										min_speciation_gen=100.0, max_speciation_gen=10000.0)
+		self.assertEqual(1, ref)
+		self.assertEqual(expected_dict, t.get_community_parameters(ref))
+
+	def testCommunityParameters2(self):
+		"""Tests the community parameters make sense in a very simple community."""
+		t = CoalescenceTree(os.path.join("sample", "sample4.db"))
+		self.assertEqual([1, 2, 3, 4, 5], t.get_community_references())
+		expected_params1 = {"speciation_rate": 0.1,
+							"time": 0.0,
+							"fragments": 0,
+							"metacommunity_reference": 0}
+		expected_params2 = {"speciation_rate": 0.1,
+							"time": 0.0,
+							"fragments": 0,
+							"metacommunity_reference": 1}
+		expected_params3 = {"speciation_rate": 0.2,
+							"time": 0.0,
+							"fragments": 0,
+							"metacommunity_reference": 1}
+		expected_params4 = {"speciation_rate": 0.1,
+							"time": 0.0,
+							"fragments": 0,
+							"metacommunity_reference": 2}
+		expected_params5 = {"speciation_rate": 0.2,
+							"time": 0.0,
+							"fragments": 0,
+							"metacommunity_reference": 2}
+		params1 = t.get_community_parameters(1)
+		params2 = t.get_community_parameters(2)
+		params3 = t.get_community_parameters(3)
+		params4 = t.get_community_parameters(4)
+		params5 = t.get_community_parameters(5)
+		self.assertEqual(expected_params1, params1)
+		self.assertEqual(expected_params2, params2)
+		self.assertEqual(expected_params3, params3)
+		self.assertEqual(expected_params4, params4)
+		self.assertEqual(expected_params5, params5)
+		with self.assertRaises(KeyError):
+			t.get_community_parameters(6)
+		ref1 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False)
+		with self.assertRaises(KeyError):
+			t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False, min_speciation_gen=0.1,
+									  max_speciation_gen=10000.0)
+		ref2 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False,
+										 metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
+										 metacommunity_option="simulated")
+		with self.assertRaises(KeyError):
+			t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False,
+									  metacommunity_size=10000.0, metacommunity_speciation_rate=0.01,
+									  metacommunity_option="simulated")
+		ref3 = t.get_community_reference(speciation_rate=0.2, time=0.0, fragments=False,
+										 metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
+										 metacommunity_option="simulated")
+		ref4 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False,
+										 metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
+										 metacommunity_option="analytical")
+		ref5 = t.get_community_reference(speciation_rate=0.2, time=0.0, fragments=False,
+										 metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
+										 metacommunity_option="analytical")
+		self.assertEqual(1, ref1)
+		self.assertEqual(2, ref2)
+		self.assertEqual(3, ref3)
+		self.assertEqual(4, ref4)
+		self.assertEqual(5, ref5)
+
+
+class TestCoalescenceTreeAnalysis(unittest.TestCase):
+	"""Tests analysis is performed correctly"""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Sets up the Coalescence object test case."""
+		dst = os.path.join("output", "sampledb0.db")
 		if os.path.exists(dst):
 			os.remove(dst)
-		shutil.copyfile("sample/sample.db", dst)
+		shutil.copyfile(os.path.join("sample", "sample.db"), dst)
 		random.seed(2)
 		cls.test = CoalescenceTree(dst)
 		cls.test.clear_calculations()
-		cls.test.import_comparison_data("sample/PlotBiodiversityMetrics.db")
-		# cls.test.calculate_comparison_octaves(False)
+		cls.test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
 		cls.test.calculate_fragment_richness()
 		cls.test.calculate_fragment_octaves()
 		cls.test.calculate_octaves_error()
 		cls.test.calculate_alpha_diversity()
 		cls.test.calculate_beta_diversity()
 		cls.test2 = CoalescenceTree()
-		cls.test2.set_database("sample/sample_nofrag.db")
+		cls.test2.set_database(os.path.join("sample", "sample_nofrag.db"))
 
 	@classmethod
 	def tearDownClass(cls):
@@ -178,12 +393,10 @@ class TestCoalescenceTreeAnalyse(unittest.TestCase):
 		"""
 		cls.test.clear_calculations()
 
-	# pass
-
 	def testComparisonDataNoExistError(self):
-		c = CoalescenceTree("sample/sample.db")
+		c = CoalescenceTree(os.path.join("sample", "sample.db"))
 		with self.assertRaises(IOError):
-			c.import_comparison_data("sample/doesnotexist.db")
+			c.import_comparison_data(os.path.join("sample", "doesnotexist.db"))
 
 	def testFragmentOctaves(self):
 		num = self.test.cursor.execute(
@@ -319,13 +532,13 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 		"""
 		Sets up the Coalescence object test case.
 		"""
-		dst = "output/sampledb1.db"
+		dst = os.path.join("output", "sampledb1.db")
 		if os.path.exists(dst):
 			os.remove(dst)
-		shutil.copyfile("sample/sample.db", dst)
+		shutil.copyfile(os.path.join("sample", "sample.db"), dst)
 		cls.test = CoalescenceTree(dst)
 		cls.test.clear_calculations()
-		cls.test.import_comparison_data("sample/PlotBiodiversityMetrics.db")
+		cls.test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
 		cls.test.calculate_species_distance_similarity()
 
 	def testSpeciesDistanceSimilarity(self):
@@ -355,13 +568,13 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		random.seed(10)
-		dst = "output/sampledb2.db"
+		dst = os.path.join("output", "sampledb2.db")
 		if os.path.exists(dst):
 			os.remove(dst)
-		shutil.copyfile("sample/sample.db", dst)
+		shutil.copyfile(os.path.join("sample", "sample.db"), dst)
 		cls.test = CoalescenceTree()
 		cls.test.set_database(dst)
-		cls.test.import_comparison_data("sample/PlotBiodiversityMetricsNoAlpha.db")
+		cls.test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetricsNoAlpha.db"))
 		cls.test.calculate_comparison_octaves(False)
 		cls.test.clear_calculations()
 		cls.test.calculate_fragment_richness()
@@ -370,7 +583,7 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		cls.test.calculate_alpha_diversity()
 		cls.test.calculate_beta_diversity()
 		cls.test2 = CoalescenceTree()
-		cls.test2.set_database("sample/sample_nofrag.db")
+		cls.test2.set_database(os.path.join("sample", "sample_nofrag.db"))
 
 	@classmethod
 	def tearDownClass(cls):
@@ -422,8 +635,9 @@ class TestSimulationAnalysis(unittest.TestCase):
 	def setUpClass(cls):
 		src = os.path.join("sample", "sample2.db")
 		dst = os.path.join("output", "sample2.db")
-		if not os.path.exists(dst):
-			shutil.copy(src, dst)
+		if os.path.exists(dst):
+			os.remove(dst)
+		shutil.copy(src, dst)
 		cls.tree = CoalescenceTree()
 		cls.tree.set_database(dst)
 		cls.tree.wipe_data()
@@ -447,7 +661,6 @@ class TestSimulationAnalysis(unittest.TestCase):
 										   record_fragments=os.path.join("sample", "example_historical_fine.tif"),
 										   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
 
-
 	def testReadsFragmentsRichness(self):
 		"""
 		Tests that the fragment richness can be read correctly
@@ -456,11 +669,11 @@ class TestSimulationAnalysis(unittest.TestCase):
 		expected_params = dict(seed=9, job_type=1, output_dir='output', speciation_rate=0.5, sigma=2.828427, tau=2.0,
 							   deme=1, sample_size=0.1, max_time=2.0, dispersal_relative_cost=1.0,
 							   min_num_species=1, habitat_change_rate=0.0, gen_since_historical=200.0,
-							   time_config_file='null', coarse_map_file='sample/SA_sample_coarse.tif',
+							   time_config_file='null', coarse_map_file=os.path.join("sample", 'SA_sample_coarse.tif'),
 							   coarse_map_x=35, coarse_map_y=41, coarse_map_x_offset=11, coarse_map_y_offset=14,
-							   coarse_map_scale=1.0, fine_map_file='sample/SA_sample_fine.tif', fine_map_x=13,
-							   fine_map_y=13, fine_map_x_offset=0, fine_map_y_offset=0,
-							   sample_file='sample/SA_samplemaskINT.tif', grid_x=13, grid_y=13,
+							   coarse_map_scale=1.0, fine_map_file=os.path.join("sample", "SA_sample_fine.tif"),
+							   fine_map_x=13, fine_map_y=13, fine_map_x_offset=0, fine_map_y_offset=0,
+							   sample_file=os.path.join("sample", "SA_samplemaskINT.tif"), grid_x=13, grid_y=13,
 							   sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
 							   historical_coarse_map='none', historical_fine_map='none', sim_complete=1,
 							   dispersal_method='normal', m_probability=0.0, cutoff=0.0, landscape_type='closed',
@@ -511,7 +724,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		"""
 		failtree = CoalescenceTree()
 		try:
-			failtree.set_database("sample/failsample.db")
+			failtree.set_database(os.path.join("sample", "failsample.db"))
 		except sqlite3.OperationalError:
 			pass
 		with self.assertRaises(RuntimeError):
@@ -583,3 +796,122 @@ class TestSimulationAnalysis(unittest.TestCase):
 		with self.assertRaises(KeyError):
 			self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict2, n=1,
 																	 community_reference=2))
+
+
+class TestMetacommunityApplication(unittest.TestCase):
+	"""
+	Tests that a metacommunity can be applied correctly under the three different scenarios. Note that this does not
+	test edge cases, just that the parameters are correctly stored and the different application methods work as
+	intended.
+	"""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Initialises the three database files to use."""
+		src = os.path.join("sample", "sample.db")
+		for i in range(3):
+			dst = os.path.join("output", "sample_{}.db".format(i))
+			if os.path.exists(dst):
+				os.remove(dst)
+			shutil.copy2(src, dst)
+
+	def testMetacommunityAddingInvalidParameters(self):
+		"""Tests that adding invalid parameter for a metacommunity raises the appropriate errors."""
+		tree = CoalescenceTree(os.path.join("output", "sample_0.db"))
+		tree.wipe_data()
+		tree.set_speciation_parameters([0.1, 0.2])
+		for size, spec, opt, ref in [[0, 0.1, "simulated", None], [10, 0.0, "analytical", None],
+									 [0, 0.0, "path/to/file", None], [0, 0.0, "path/to/not/a/file.db", 1]]:
+			with self.assertRaises(ValueError):
+				tree.add_metacommunity_parameters(metacommunity_size=size, metacommunity_speciation_rate=spec,
+												  metacommunity_option=opt, metacommunity_reference=ref)
+
+	def testMetacommunitySimulation(self):
+		"""Tests that a simulated metacommunity works as intended."""
+		tree = CoalescenceTree(os.path.join("output", "sample_0.db"))
+		tree.wipe_data()
+		tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
+									   metacommunity_speciation_rate=0.001, metacommunity_option="simulated")
+		tree.add_metacommunity_parameters(metacommunity_size=15000, metacommunity_speciation_rate=0.1,
+										  metacommunity_option="simulated")
+		tree.add_metacommunity_parameters(metacommunity_size=100000, metacommunity_speciation_rate=0.001,
+										  metacommunity_option="simulated")
+		tree.apply()
+		params_1 = tree.get_metacommunity_parameters(1)
+		params_2 = tree.get_metacommunity_parameters(2)
+		params_3 = tree.get_metacommunity_parameters(3)
+		self.assertEqual(10000, params_1["metacommunity_size"])
+		self.assertEqual(0.001, params_1["speciation_rate"])
+		self.assertEqual("simulated", params_1["option"])
+		self.assertEqual(0, params_1["external_reference"])
+		self.assertEqual(15000, params_2["metacommunity_size"])
+		self.assertEqual(0.1, params_2["speciation_rate"])
+		self.assertEqual("simulated", params_2["option"])
+		self.assertEqual(0, params_2["external_reference"])
+		self.assertEqual(100000, params_3["metacommunity_size"])
+		self.assertEqual(0.001, params_3["speciation_rate"])
+		self.assertEqual("simulated", params_3["option"])
+		self.assertEqual(0, params_3["external_reference"])
+		self.assertEqual(75, tree.get_species_richness(1))
+		self.assertEqual(75, tree.get_species_richness(2))
+		self.assertEqual(798, tree.get_species_richness(3))
+		self.assertEqual(902, tree.get_species_richness(4))
+		self.assertEqual(478, tree.get_species_richness(5))
+		self.assertEqual(520, tree.get_species_richness(6))
+
+	def testMetacommunityAnalytical(self):
+		"""Tests that an analytical metacommunity works as intended."""
+		tree = CoalescenceTree(os.path.join("output", "sample_1.db"))
+		tree.wipe_data()
+		tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
+									   metacommunity_speciation_rate=0.001, metacommunity_option="analytical")
+		tree.add_metacommunity_parameters(metacommunity_size=15000, metacommunity_speciation_rate=0.1,
+										  metacommunity_option="analytical")
+		tree.add_metacommunity_parameters(metacommunity_size=100000, metacommunity_speciation_rate=0.001,
+										  metacommunity_option="analytical")
+		tree.apply()
+		params_1 = tree.get_metacommunity_parameters(1)
+		params_2 = tree.get_metacommunity_parameters(2)
+		params_3 = tree.get_metacommunity_parameters(3)
+		self.assertEqual(10000, params_1["metacommunity_size"])
+		self.assertEqual(0.001, params_1["speciation_rate"])
+		self.assertEqual("analytical", params_1["option"])
+		self.assertEqual(0, params_1["external_reference"])
+		self.assertEqual(15000, params_2["metacommunity_size"])
+		self.assertEqual(0.1, params_2["speciation_rate"])
+		self.assertEqual("analytical", params_2["option"])
+		self.assertEqual(0, params_2["external_reference"])
+		self.assertEqual(100000, params_3["metacommunity_size"])
+		self.assertEqual(0.001, params_3["speciation_rate"])
+		self.assertEqual("analytical", params_3["option"])
+		self.assertEqual(0, params_3["external_reference"])
+		self.assertEqual(295, tree.get_species_richness(1))
+		self.assertEqual(333, tree.get_species_richness(2))
+		self.assertEqual(782, tree.get_species_richness(3))
+		self.assertEqual(909, tree.get_species_richness(4))
+		self.assertEqual(560, tree.get_species_richness(5))
+		self.assertEqual(595, tree.get_species_richness(6))
+
+	def testMetacommunityExternal(self):
+		"""Tests that an external metacommunity works as intended."""
+		tree = CoalescenceTree(os.path.join("output", "sample_1.db"))
+		tree.wipe_data()
+		tree.set_speciation_parameters([0.1, 0.2], metacommunity_option=os.path.join("sample", "nse_reference.db"),
+									   metacommunity_reference=1)
+		tree.add_metacommunity_parameters(metacommunity_option=os.path.join("sample", "nse_reference.db"),
+										  metacommunity_reference=2)
+		tree.apply()
+		params_1 = tree.get_metacommunity_parameters(1)
+		params_2 = tree.get_metacommunity_parameters(2)
+		self.assertEqual(0, params_1["metacommunity_size"])
+		self.assertEqual(0.0, params_1["speciation_rate"])
+		self.assertEqual(os.path.join("sample", "nse_reference.db"), params_1["option"])
+		self.assertEqual(1, params_1["external_reference"])
+		self.assertEqual(0, params_2["metacommunity_size"])
+		self.assertEqual(0.0, params_2["speciation_rate"])
+		self.assertEqual(os.path.join("sample", "nse_reference.db"), params_2["option"])
+		self.assertEqual(2, params_2["external_reference"])
+		self.assertEqual(1, tree.get_species_richness(1))
+		self.assertEqual(1, tree.get_species_richness(2))
+		self.assertEqual(850, tree.get_species_richness(3))
+		self.assertEqual(979, tree.get_species_richness(4))

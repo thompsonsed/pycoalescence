@@ -15,7 +15,7 @@
 #include <csignal>
 
 // These are included here for compabilitity reasons
-#include "necsim/Setup.h"
+#include "setup.h"
 // This provides compability for protracted speciation events.
 #include "necsim.h"
 #include "PyLogging.h"

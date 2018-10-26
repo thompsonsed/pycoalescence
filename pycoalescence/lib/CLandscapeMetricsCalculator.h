@@ -16,7 +16,7 @@
 #include "necsim.h"
 #include "LandscapeMetricsCalculator.h"
 #include "PyLogging.h"
-#include "necsim/CPLCustomHandlerNecsim.h"
+#include "cpl_custom_handler.h"
 #include "PyTemplates.h"
 
 class PyLMC : public PyTemplate<LandscapeMetricsCalculator>

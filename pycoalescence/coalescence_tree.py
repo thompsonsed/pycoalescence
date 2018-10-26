@@ -20,7 +20,7 @@ import os
 import random
 import sqlite3
 import sys
-from collections import defaultdict
+from collections import defaultdict, Iterable
 
 import numpy as np
 
@@ -82,9 +82,9 @@ class CoalescenceTree(object):
 		Initiates the CoalescenceTree object. By default, links to the SpeciationCounter program stored in
 		build/default/SpeciationCounter, but optionally takes speciation_program as a path to an alternative program.
 
-		:param database: optionally specify the path to call :py:meth:`~set_database` to
-		:param logging_level: the level from the logging module for desired terminal outputs
-		:param log_output: optionally provide a file to output information to instead
+		:param str/pycoalescence.Simulation database: optionally specify the path to call :py:meth:`~set_database` to
+		:param int logging_level: the level from the logging module for desired terminal outputs
+		:param str log_output: optionally provide a file to output information to instead
 		:return: None
 		"""
 		# C object for calculating the coalescence tree
@@ -116,6 +116,8 @@ class CoalescenceTree(object):
 		# Metacommunity parameters
 		self.metacommunity_size = None
 		self.metacommunity_speciation_rate = None
+		self.metacommunity_option = None
+		self.metacommunity_reference = None
 		self.logger = logging.Logger("pycoalescence.coalescence")
 		self.logging_level = logging_level
 		self._create_logger(file=log_output)
@@ -144,8 +146,8 @@ class CoalescenceTree(object):
 
 		.. tip:: Supply your own logger by over-riding :attr:`~import_comparison_data`.
 
-		:param file: file to write output to. If None, outputs to terminal
-		:param logging_level: the logging level to use (defaults to INFO)
+		:param str file: file to write output to. If None, outputs to terminal
+		:param int logging_level: the logging level to use (defaults to INFO=20)
 
 		:return: None
 		"""
@@ -158,7 +160,7 @@ class CoalescenceTree(object):
 		Checks that the numbers of individuals match between the comparison_abundances object and the simulation
 		database for each fragment
 
-		:return: boolean, true if the numbers match
+		:return: true if the numbers match
 		:rtype: bool
 		"""
 		if not self.fragment_abundances:
@@ -175,6 +177,193 @@ class CoalescenceTree(object):
 				if sum_simulated != sum([x[2] for x in self.comparison_abundances if x[0] == fragment]):
 					return False
 		return True
+
+	def _set_record_fragments(self, record_fragments):
+		"""
+		Checks if the fragment record flag is correctly set and sets the relevant parameter.
+
+		:param bool/str record_fragments: the fragments record flag to check
+
+		:rtype: None
+		"""
+		if isinstance(record_fragments, bool):
+			if record_fragments:
+				record_fragments = "null"
+			else:
+				record_fragments = "F"
+		if record_fragments is "T":
+			record_fragments = "null"
+		if record_fragments not in ["F", "null"]:
+			if not os.path.exists(record_fragments):
+				raise IOError("Fragment config does not exist at {}.".format(record_fragments))
+			if not (record_fragments.endswith(".csv") or record_fragments.endswith(".txt")):
+				raise IOError("Supplied fragment config file is not a csv or txt file: {}.".format(record_fragments))
+		self.record_fragments = record_fragments
+
+	def _set_record_spatial(self, record_spatial):
+		"""
+		Checks that the spatial record flag has been correctly set and sets the relevant parameter.
+
+		:param bool/str record_spatial: the object to check correctly identifies a spatial option
+
+		:rtype: None
+		"""
+		if record_spatial is "T":
+			record_spatial = True
+		elif record_spatial is "F":
+			record_spatial = False
+		elif not isinstance(record_spatial, bool):
+			raise TypeError("record_spatial must be a boolean.")
+		self.record_spatial = record_spatial
+
+	def _set_speciation_rates(self, speciation_rates):
+		"""
+		Checks that the speciation rates are correctly set for applying to the community and sets the applied
+		speciation rates parameter.
+
+		:param list/float speciation_rates: the speciation rates object to check is the correct format
+
+		:rtype: None
+		"""
+		if speciation_rates is None:
+			raise RuntimeError("No speciation rates supplied: requires at least 1 for analysis.")
+		elif not isinstance(speciation_rates, Iterable):
+			speciation_rates = [speciation_rates]
+		try:
+			speciation_rates = [float(x) for x in speciation_rates]
+		except ValueError as ve:
+			raise TypeError("Speciation rates are not floats: {}".format(ve))
+		for spec_rate in speciation_rates:
+			if spec_rate > 1.0 or spec_rate < 0.0:
+				raise ValueError("Speciation rates must be between 0.0 and 1.0.")
+		self.applied_speciation_rates_list = speciation_rates
+
+	def _set_metacommunity_parameters(self, metacommunity_size=None, metacommunity_speciation_rate=None,
+									  metacommunity_option=None, metacommunity_reference=None):
+		"""
+		Checks that the metacommunity parameters make sense and assigns them within the object.
+
+		:param float metacommunity_size: the number of individuals in the metacommunity
+		:param float metacommunity_speciation_rate: the speciation rate within the metacommunity
+		:param str metacommunity_option: either "simulated", "analytical", or a path to a database to read SADs from
+		:param int metacommunity_reference: the metacommunity reference if using a database to provide the metacommunity
+
+		:rtype: None
+		"""
+		if not metacommunity_size and not metacommunity_speciation_rate and not metacommunity_option and not \
+				metacommunity_reference:
+			self.metacommunity_size = 0
+			self.metacommunity_speciation_rate = 0.0
+			self.metacommunity_option = "none"
+			self.metacommunity_reference = 0
+		else:
+			if metacommunity_option is None:
+				metacommunity_option = "none"
+			if metacommunity_size is not None and metacommunity_speciation_rate is not None:
+				if metacommunity_size > 0 and 0.0 < metacommunity_speciation_rate <= 1.0:
+					self.metacommunity_size = metacommunity_size
+					self.metacommunity_speciation_rate = metacommunity_speciation_rate
+				else:
+					raise ValueError("Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
+									 "generating a metacommunity.")
+				if metacommunity_option not in ["simulated", "analytical", "none"]:
+					raise ValueError("Must use 'simulated' or 'analytical' for metacommunity option when supplying "
+									 "a metacommunity size and speciation rate.")
+				self.metacommunity_option = metacommunity_option
+				self.metacommunity_reference = 0
+			else:
+				if metacommunity_option in ["simulated", "analytical", "none"]:
+					raise ValueError("Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
+									 "generating a metacommunity.")
+				if metacommunity_size not in [0, None] or metacommunity_speciation_rate not in [0.0, None]:
+					raise ValueError("No metacommunity size of speciation rate should be supplied when using an "
+									 "external database for the metacommunity.")
+				if not os.path.exists(metacommunity_option):
+					raise IOError("No file exists to supply metacommunity at {}.".format(metacommunity_option))
+				if metacommunity_reference is None:
+					self.metacommunity_reference = 0
+				else:
+					self.metacommunity_reference = metacommunity_reference
+				self.metacommunity_size = 0
+				self.metacommunity_speciation_rate = 0.0
+				self.metacommunity_option = metacommunity_option
+			if not isinstance(self.c_community, libnecsim.CMetacommunity):
+				self.c_community = None
+				self._setup_c_community()
+			self.c_community.add_metacommunity_parameters(self.metacommunity_size, self.metacommunity_speciation_rate,
+														  self.metacommunity_option, self.metacommunity_reference)
+
+	def _set_protracted_parameters(self, protracted_speciation_min, protracted_speciation_max):
+		"""
+		Checks that the protracted parameters are valid and adds them to the simulation object.
+
+		:param float protracted_speciation_min: the minimum generation for protracted speciation
+		:param float protracted_speciation_max: the maximum generation for protracted speciation
+
+		:return: list containing the set of protracted speciation minimums and maximums
+		"""
+		if protracted_speciation_max is not None and protracted_speciation_min is not None:
+			if not self.is_protracted():
+				raise ValueError("Supplied protracted parameters for a non-protracted simulation.")
+			else:
+				self.add_protracted_parameters(float(protracted_speciation_min), float(protracted_speciation_max))
+		else:
+			self.add_protracted_parameters(0.0, 0.0)
+
+	def _check_protracted_parameters(self, min_speciation_gen, max_speciation_gen):
+		"""
+		Checks that the protracted parameters make sense compared to the original protracted parameters.
+
+		:param float min_speciation_gen: minimum number of generations for protracted speciation
+		:param float max_speciation_gen: maximum number of generations for protracted speciation
+
+		:rtype: None
+		"""
+		db_min = self.get_simulation_parameters()["min_speciation_gen"]
+		db_max = self.get_simulation_parameters()["max_speciation_gen"]
+		if min_speciation_gen < 0.0 or min_speciation_gen > db_min:
+			raise ValueError("Minimum generation for protracted speciation cannot be less than 0.0, or greater than "
+							 "the initial value used during simulation ({}).".format(db_min))
+		if max_speciation_gen < min_speciation_gen or max_speciation_gen > db_max:
+			raise ValueError("Maximum generation for protracted speciation cannot be less than the minimum, or greater"
+							 " than the initial value used during simulation ({}).".format(db_max))
+
+	def _set_sample_file(self, sample_file):
+		"""
+		Checks that the sample file has been correctly set and sets it within the object.
+
+		:param str sample_file: the file to use to determine spatial sampling
+
+		:rtype: None
+		"""
+		if sample_file is None:
+			self.logger.info("No sample file provided, defaulting to null.\n")
+			self.sample_file = "null"
+		else:
+			if sample_file != "null":
+				if not os.path.exists(sample_file):
+					raise IOError("Sample file does not exist at {}.".format(sample_file))
+				ext = os.path.splitext(sample_file)[1]
+				if ext not in [".tif", ".csv"]:
+					raise IOError("Extension is not .tif or .csv: {}.".format(ext))
+			self.sample_file = sample_file
+
+	def _set_times(self, times):
+		"""
+		Checks that the times are valid and adds them to the object.
+
+		:param list/float times: times to generate communities for
+
+		:rtype: None
+		"""
+		if times in (None, [], [None]):
+			self.logger.info("No times provided, defaulting to 0.0.\n")
+			self.add_time(0.0)
+		else:
+			if isinstance(times, Iterable):
+				self.add_times(times)
+			else:
+				self.add_time(times)
 
 	def _equalise_fragment_number(self, fragment, reference):
 		"""
@@ -438,13 +627,14 @@ class CoalescenceTree(object):
 	def set_speciation_parameters(self, speciation_rates, record_spatial=False, record_fragments=False,
 								  sample_file=None,
 								  times=None, protracted_speciation_min=None, protracted_speciation_max=None,
-								  metacommunity_size=None, metacommunity_speciation_rate=None):
+								  metacommunity_size=None, metacommunity_speciation_rate=None,
+								  metacommunity_option=None, metacommunity_reference=None):
 		"""
 
-		Set the parameters for the application of speciation rates. If no config files or time_config files are provided,
-		they will be taken from the main coalescence simulation.
+		Set the parameters for the application of speciation rates. If no config files or time_config files are
+		provided, they will be taken from the main coalescence simulation.
 
-		:param list speciation_rates: a list of speciation rates to apply
+		:param float/list speciation_rates: a single float, or list of speciation rates to apply
 		:param bool, str record_spatial: a boolean of whether to record spatial data (default=False)
 		:param bool, str record_fragments: either a csv file containing fragment data, or T/F for whether fragments
 										   should be calculated from squares of continuous habitat (default=False)
@@ -454,94 +644,63 @@ class CoalescenceTree(object):
 		:param float protracted speciation_max: the maximum number of generations before speciation occurs
 		:param float metacommunity_size: the size of the metacommunity to apply
 		:param float metacommunity_speciation_rate: speciation rate for the metacommunity
+		:param str metacommunity_option: either "simulated", "analytical", or a path to a database to read SADs from
+		:param int metacommunity_reference: the metacommunity reference if using a database to provide the metacommunity
 
 		:rtype: None
 		"""
 		if self.is_setup_speciation:
 			self.logger.warning("Speciation parameters already set.")
-		if isinstance(record_fragments, bool):
-			if record_fragments:
-				record_fragments = "null"
-			else:
-				record_fragments = "F"
-		if record_fragments is "T":
-			record_fragments = "null"
-		if record_fragments not in ["F", "null"]:
-			if not os.path.exists(record_fragments):
-				raise IOError("Fragment config does not exist at {}.".format(record_fragments))
-			if not (record_fragments.endswith(".csv") or record_fragments.endswith(".txt")):
-				raise IOError("Supplied fragment config file is not a csv or txt file: {}.".format(record_fragments))
-		if speciation_rates is None:
-			raise RuntimeError("No speciation rates supplied: requires at least 1 for analysis.")
-		if record_spatial is "T":
-			record_spatial = True
-		elif record_spatial is "F":
-			record_spatial = False
-		elif not isinstance(record_spatial, bool):
-			raise TypeError("record_spatial must be a boolean.")
-		if metacommunity_size is not None and metacommunity_speciation_rate is not None:
-			if metacommunity_size > 0 and metacommunity_speciation_rate > 0:
-				self.metacommunity_size = metacommunity_size
-				self.metacommunity_speciation_rate = metacommunity_speciation_rate
-			else:
-				raise ValueError("Must supply both metacommunity size >0 and speciation rate >0 and < 1 for applying"
-								 "a metacommunity.")
-		else:
-			self.metacommunity_size = 0
-			self.metacommunity_speciation_rate = 0.0
-		if protracted_speciation_max is not None and protracted_speciation_min is not None:
-			if not self.is_protracted():
-				raise ValueError("Supplied protracted parameters for a non-protracted simulation.");
-			else:
-				self.protracted_parameters.append((protracted_speciation_min, protracted_speciation_max))
-		else:
-			self.protracted_parameters.append((0.0, 0.0))
-		self.record_spatial = record_spatial
-		self.record_fragments = record_fragments
-		if sample_file is None:
-			self.logger.info("No sample file provided, defaulting to null.")
-			self.sample_file = "null"
-		else:
-			self.sample_file = sample_file
-		if times is None:
-			self.logger.info("No times provided, defaulting to 0.0.")
-			times = [0.0]
-		else:
-			if not isinstance(times, list):
-				times = [times]
-			out_times = []
-			for each in times:
-				if isinstance(each, int):
-					out_times.append(float(each))
-				else:
-					out_times.append(each)
-			times = out_times
-		if self.times is None:
-			self.times = times
-		else:
-			self.times.extend(times)
-		self.applied_speciation_rates_list = speciation_rates
+		self._set_record_fragments(record_fragments)
+		self._set_speciation_rates(speciation_rates)
+		self._set_record_spatial(record_spatial)
+		self._set_sample_file(sample_file)
+		self._set_times(times)
+		self._set_metacommunity_parameters(metacommunity_size=metacommunity_size,
+										   metacommunity_speciation_rate=metacommunity_speciation_rate,
+										   metacommunity_option=metacommunity_option,
+										   metacommunity_reference=metacommunity_reference)
+		self._set_protracted_parameters(protracted_speciation_min, protracted_speciation_max)
+
 		if self.sample_file == "null" and self.record_fragments == "null":
 			raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
 							 "provide a samplemask or set record_fragments=False.")
-		self.set_c_community()
-		protracted_speciation_min = [float(x[0]) for x in self.protracted_parameters]
-		protracted_speciation_max = [float(x[1]) for x in self.protracted_parameters]
-		self.c_community.setup(self.file, self.record_spatial, self.sample_file, self.record_fragments,
-							   self.applied_speciation_rates_list, self.times, protracted_speciation_min,
-							   protracted_speciation_max, self.metacommunity_size, self.metacommunity_speciation_rate)
 
-	def set_c_community(self):
+		self._setup_c_community()
+
+	def _set_c_community(self):
 		"""
 		Sets the c++ object depending on if a metacommunity is used or not.
 
 		:rtype: None
 		"""
 		if self.c_community is None:
-			if self.metacommunity_size == 0:
-				self.c_community = libnecsim.CCommunity(self.logger, write_to_log)
-			else:
+			if self._check_metacommunity():
 				self.c_community = libnecsim.CMetacommunity(self.logger, write_to_log)
+			else:
+				self.c_community = libnecsim.CCommunity(self.logger, write_to_log)
+
+	def _setup_c_community(self):
+		"""
+		Generates the initial parameters for the libnecsim object
+
+		:rtype: None
+		"""
+		self._set_c_community()
+		self.c_community.setup(self.file, self.record_spatial, self.sample_file, self.record_fragments,
+							   self.applied_speciation_rates_list, self.times)
+
+	def _check_metacommunity(self):
+		"""
+		Checks if the simulation needs to use a metacommunity.
+
+		:return: true if the community is a metacommunity simulation
+		:rtype: bool
+		"""
+		if self.metacommunity_option in [None, "none", "simulated", "analytical"]:
+			return self.metacommunity_size not in [0, None]
+		else:
+			return self.metacommunity_reference not in [0, None]
 
 	def add_time(self, time):
 		"""
@@ -551,8 +710,11 @@ class CoalescenceTree(object):
 		"""
 		if self.times is None:
 			self.times = [0.0]
-		self.times.append(float(time))
-		self.set_c_community()
+		try:
+			self.times.append(float(time))
+		except ValueError as ve:
+			raise TypeError("Times must be floats: {}.".format(ve))
+		self._set_c_community()
 		self.c_community.add_time(float(time))
 
 	def add_times(self, times):
@@ -561,6 +723,8 @@ class CoalescenceTree(object):
 
 		:param times: list of times to be applied
 		"""
+		if not isinstance(times, Iterable):
+			raise TypeError("Times list must be iterable.")
 		for each in times:
 			self.add_time(each)
 
@@ -577,8 +741,9 @@ class CoalescenceTree(object):
 			self.protracted_parameters = []
 			self.c_community.wipe_protracted_parameters()
 		if (min_speciation_gen, max_speciation_gen) not in self.protracted_parameters:
+			self._check_protracted_parameters(min_speciation_gen, max_speciation_gen)
 			self.protracted_parameters.append((min_speciation_gen, max_speciation_gen))
-			self.set_c_community()
+			self._set_c_community()
 			self.c_community.add_protracted_parameters(float(min_speciation_gen), float(max_speciation_gen))
 
 	def add_multiple_protracted_parameters(self, min_speciation_gens=None, max_speciation_gens=None,
@@ -605,6 +770,22 @@ class CoalescenceTree(object):
 		for min_g, max_g in tmp:
 			self.add_protracted_parameters(min_g, max_g)
 
+	def add_metacommunity_parameters(self, metacommunity_size=None, metacommunity_speciation_rate=None,
+									 metacommunity_option=None,
+									 metacommunity_reference=0):
+		"""
+		Adds the metacommunity parameters to the object.
+
+		:param float metacommunity_size: the number of individuals in the metacommunity
+		:param float metacommunity_speciation_rate: the speciation rate within the metacommunity
+		:param str metacommunity_option: either "simulated", "analytical", or a path to a database to read SADs from
+		:param int metacommunity_reference: the metacommunity reference if using a database to provide the metacommunity
+
+		:rtype: None
+		"""
+		self._set_metacommunity_parameters(metacommunity_size, metacommunity_speciation_rate, metacommunity_option,
+										   metacommunity_reference)
+
 	def apply(self):
 		"""
 		Generates the cooalescence tree for the set of speciation parameters.
@@ -628,12 +809,12 @@ class CoalescenceTree(object):
 			self.times = [0.0]
 		if not os.path.exists(self.file):
 			self.logger.warning(str("Check file existance for " + self.file +
-									". Potential lack of access (verify that definition is a relative path)."))
-		self.set_c_community()
+									". Potential lack of access (verify that definition is a relative path).\n"))
+		self._set_c_community()
 		if self.has_applied:
-			self.logger.warning("Output has already been written to file - regenerating internal object.")
+			self.logger.warning("Output has already been written to file - regenerating internal object.\n")
 			self.logger.info("To avoid this message in future, use apply_incremental() and then output() to generate "
-							 "the file")
+							 "the file.\n")
 			self.c_community.reset()
 		self.c_community.apply()
 
@@ -660,7 +841,7 @@ class CoalescenceTree(object):
 		except IOError:
 			pass
 		self.database.close()
-		self.set_c_community()
+		self._set_c_community()
 		self.c_community.speciate_remaining_lineages(self.file)
 
 	def get_species_richness(self, reference=1):
@@ -687,7 +868,6 @@ class CoalescenceTree(object):
 			return self.cursor.execute("SELECT richness FROM SPECIES_RICHNESS "
 									   "WHERE community_reference==?", (reference,)).fetchone()[0]
 		except (TypeError, sqlite3.OperationalError):
-			self.logger.info("No SPECIES_RICHNESS table exists, calculating.")
 			try:
 				c = self.cursor.execute("SELECT species_id FROM SPECIES_ABUNDANCES WHERE no_individuals > 0 AND "
 										"community_reference == ?", (reference,)).fetchall()
@@ -789,6 +969,8 @@ class CoalescenceTree(object):
 				raise e
 		else:
 			all_refs = [x[0] for x in self.cursor.execute("SELECT ref FROM SPECIES_RICHNESS").fetchall()]
+			if len(all_refs) == 0:
+				all_refs = [0]
 			ref = max(all_refs) + 1
 			existing_references.extend(all_refs)
 		references = self.get_community_references()
@@ -807,7 +989,8 @@ class CoalescenceTree(object):
 					tmp = [ref, "fragment_richness", "whole"]
 					tmp.extend([x[1], x[2]])
 					bio_output.append(tmp)
-				self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)", bio_output)
+				self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)",
+										bio_output)
 			self.cursor.executemany("INSERT INTO SPECIES_RICHNESS VALUES(?,?,?)", output)
 			self.database.commit()
 
@@ -1731,53 +1914,61 @@ class CoalescenceTree(object):
 		return dict(zip(column_names, values))
 
 	def get_community_reference(self, speciation_rate, time, fragments, metacommunity_size=0,
-								metacommunity_speciation_rate=0.0, min_speciation_gen=0.0, max_speciation_gen=0.0):
+								metacommunity_speciation_rate=0.0, metacommunity_option=None, external_reference=0,
+								min_speciation_gen=0.0, max_speciation_gen=0.0):
 		"""
 		Gets the community reference associated with the supplied community parameters
 
 		:raises KeyError: if COMMUNITY_PARAMETERS (or METACOMMUNITY_PARAMETERS) does not exist in database or no
 			reference exists for the supplied parameters
 
-		:param speciation_rate: the speciation rate of the community
-		:param time: the time in generations of the community
-		:param fragments: whether fragments were determined for the community
-		:param metacommunity_size: the metacommunity size
-		:param metacommunity_speciation_rate: the metacommunity speciation rate
-		:param min_speciation_gen: the minimum number of generations required before speciation
-		:param max_speciation_gen: the maximum number of generations required before speciation
+		:param float speciation_rate: the speciation rate of the community
+		:param float time: the time in generations of the community
+		:param bool/int fragments: whether fragments were determined for the community
+		:param int/float metacommunity_size: the metacommunity size
+		:param float metacommunity_speciation_rate: the metacommunity speciation rate
+		:param str metacommunity_option: option used for metacommunity creation
+		:param int external_reference: the metacommunity reference for external metacommunity databases
+		:param float min_speciation_gen: the minimum number of generations required before speciation
+		:param float max_speciation_gen: the maximum number of generations required before speciation
 		:return: the reference associated with this set of simulation parameters
 		"""
-		if metacommunity_size == 0:
+		if fragments is False:
+			fragments = 0
+		elif fragments is True:
+			fragments = 1
+		if metacommunity_size == 0 and external_reference == 0:
 			metacommunity_reference = 0
 		else:
 			self._check_database()
 			if not check_sql_table_exist(self.database, "METACOMMUNITY_PARAMETERS"):
 				raise KeyError("No table METACOMMUNITY_PARAMETERS exists in database {}".format(self.file))
 			self.cursor.execute("SELECT reference FROM METACOMMUNITY_PARAMETERS WHERE metacommunity_size == ? AND "
-								"speciation_rate == ? AND fragments == ?",
-								(metacommunity_size, metacommunity_speciation_rate, int(fragments)))
+								"speciation_rate == ? AND option == ? and external_reference == ?",
+								(float(metacommunity_size), metacommunity_speciation_rate, metacommunity_option,
+								 external_reference))
 			try:
 				metacommunity_reference = self.cursor.fetchone()[0]
-			except IndexError:
-				raise KeyError("Cannot obtain metacommunity reference from database with size={}, "
-							   "speciation rate={} and fragments={}".format(metacommunity_size,
-																			metacommunity_speciation_rate, fragments))
-		if check_sql_table_exist(self.database, "COMMUNITY_PARAMETERS"):
-			try:
-				self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
-									"time == ? AND fragments == ? AND metacommunity_reference == ? AND "
-									"min_speciation_gen == ? AND max_speciation_gen == ?",
-									(speciation_rate, time, int(fragments), metacommunity_reference, min_speciation_gen,
-									 max_speciation_gen))
-			except sqlite3.OperationalError:
-				self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
-									"time == ? AND fragments == ? AND metacommunity_reference == ?",
-									(speciation_rate, time, int(fragments), metacommunity_reference))
-			try:
+			except (IndexError, TypeError):
+				raise KeyError("Cannot obtain metacommunity reference from database with provided parameters.")
+		try:
+			if check_sql_table_exist(self.database, "COMMUNITY_PARAMETERS"):
+				try:
+					self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
+										"time == ? AND fragments == ? AND metacommunity_reference == ? AND "
+										"min_speciation_gen == ? AND max_speciation_gen == ?",
+										(speciation_rate, time, int(fragments), metacommunity_reference,
+										 min_speciation_gen,
+										 max_speciation_gen))
+				except sqlite3.OperationalError:
+					if min_speciation_gen != 0.0 or max_speciation_gen != 0.0:
+						raise IndexError
+					self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
+										"time == ? AND fragments == ? AND metacommunity_reference == ?",
+										(speciation_rate, time, int(fragments), metacommunity_reference))
 				return self.cursor.fetchone()[0]
-			except IndexError:
-				pass
-		raise KeyError("Cannot obtain community reference from database with provided parameters")
+		except (IndexError, TypeError):
+			raise KeyError("Cannot obtain community reference from database with provided parameters.")
 
 	def get_metacommunity_references(self):
 		"""
@@ -1813,12 +2004,13 @@ class CoalescenceTree(object):
 
 		:raises KeyError: if the supplied reference does not exist in the METACOMMUNITY_PARAMETERS table
 
-		:return: dictionary containing the speciation_rate, time, fragments and metacommunity_reference
+		:return: dictionary containing the speciation_rate, metacommunity_size, metacommunity option and metacommunity
+				 reference.
 		:rtype: dict
 		"""
 		self._check_database()
 		try:
-			self.cursor.execute("SELECT speciation_rate, metacommunity_size FROM"
+			self.cursor.execute("SELECT speciation_rate, metacommunity_size, option, external_reference FROM"
 								" METACOMMUNITY_PARAMETERS  WHERE reference== ?", (reference,))
 		except sqlite3.OperationalError as e:
 			self.logger.error("Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. \n")
@@ -1891,6 +2083,7 @@ class CoalescenceTree(object):
 		self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_ABUNDANCES")
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_ABUNDANCES")
 		self.cursor.execute("DROP TABLE IF EXISTS COMMUNITY_PARAMETERS")
+		self.cursor.execute("DROP TABLE IF EXISTS METACOMMUNITY_PARAMETERS")
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LOCATIONS")
 		self.clear_calculations()
 		self.database.commit()
