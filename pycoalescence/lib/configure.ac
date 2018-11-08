@@ -12,24 +12,24 @@ AC_ARG_WITH(debug, [AS_HELP_STRING([--with-debug],[enable debug mode])],[],[]wit
 AC_ARG_WITH(verbose, [AS_HELP_STRING([--with-verbose],[enable verbose mode enabled])],[],[with_verbose=no])
 AC_ARG_WITH(gdal, [AS_HELP_STRING([--with-gdal[PATH]],[prefix of gdal [guess]])],[],[with_gdal=no])
 AC_ARG_WITH(hpc, [AS_HELP_STRING([--with-hpc],[add compile options for icp compilation on IC HPC])],[],[with_hpc=no])
-AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing default paths])
-AC_ARG_VAR([PYTHON_LDFLAGS], [Library location for python header files, bypassing default paths])
-AC_ARG_VAR([PYTHON_LIB], [Name of the python library for linking (e.g. -lpython3.6m)])
+AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for Python, bypassing default paths])
+AC_ARG_VAR([PYTHON_LDFLAGS], [Library location for Python header files, bypassing default paths])
+AC_ARG_VAR([PYTHON_LIB], [Name of the Python library for linking (e.g. -lpython3.6m)])
 
-dnl Switch to c++ mode
+dnl Switch to C++ mode
 define(m4_pattern_allow)
 AC_LANG(C++)
-dnl Check if c++ compiler works works.
+dnl Check if C++ compiler works works.
 AC_PROG_CXX([icpc icc g++ gcc])
 AX_CXX_COMPILE_STDCXX(14, [], [optional])
 
 if [[ "$HAVE_CXX14" == 1 ]]
 then
 	fullcpp14="Full"
-	echo "Full c++14 support detected..."
+	echo "Full C++14 support detected..."
 else
 	fullcpp14="partial/not detected"
-	AC_MSG_WARN([Some issues encountered detected c++14, continuing anyway.])
+	AC_MSG_WARN([Some issues encountered detected C++14, continuing anyway.])
 fi
 dnl AC_PROG_CXX
 
@@ -193,7 +193,7 @@ dnl Display configuration status
 dnl ---------------------------------------------------------------------------
 
 echo "-----------------------------"
-echo "  NECSim is now configured"
+echo "  necsim is now configured"
 echo "-----------------------------"
 echo "  Installation directory:    ${prefix}"
 echo "  ----------------"
@@ -231,7 +231,7 @@ echo "       user-defined prefix:  ${with_gdal}"
 echo ""
 echo "    fast-cpp-csv-parser      ${fast_cpp_csv_parser}"
 echo ""
-echo "    c++14 support:           ${fullcpp14}"
+echo "    C++14 support:           ${fullcpp14}"
 
 
 echo "  ----------------"

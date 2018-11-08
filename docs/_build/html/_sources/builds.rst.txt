@@ -1,18 +1,27 @@
 
-+------------------+-----------+
-|   Documentation  |  Examples |
-+------------------+-----------+
-| |Documentation|_ | |Binder|_ |
-+------------------+-----------+
+.. list-table::
+    :widths: auto
+    :align: center
+    :header-rows: 1
 
-Builds
-------
+    * - Documentation
+      - Examples
+    * - |Documentation|_
+      - |Binder|_
 
-+----------------+-------------+-------------+
-|     Windows    |    macOS    |    Linux    |
-+----------------+-------------+-------------+
-| |AppVeyorWin|_ | |TravisCI|_ | |CircleCI|_ |
-+----------------+-------------+-------------+
+|
+
+.. list-table::
+    :widths: auto
+    :align: center
+    :header-rows: 1
+
+    * - Windows
+      - macOS
+      - Linux
+    * - |AppVeyorWin|_
+      - |TravisCI|_
+      - |CircleCI|_
 
 .. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
 .. _Documentation: https://pycoalescence.readthedocs.io

@@ -8,31 +8,21 @@ Program Listing for File SpecSimParameters.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
-   
-   #include <string>
-   #include <vector>
-   #include "ConfigFileParser.h"
-   #include "CustomExceptions.h"
-   #include "DoubleComparison.h"
    
    #ifndef SPECIATIONCOUNTER_SPECSIMPARAMETERS_H
    #define SPECIATIONCOUNTER_SPECSIMPARAMETERS_H
+   
+   #include <string>
+   #include <utility>
+   #include <vector>
+   #include "ConfigParser.h"
+   #include "custom_exceptions.h"
+   #include "double_comparison.h"
+   #include "parameters.h"
+   
    using namespace std;
-   
-   struct ProtractedSpeciationParameters
-   {
-       double min_speciation_gen;
-       double max_speciation_gen;
-       ProtractedSpeciationParameters() : min_speciation_gen(0), max_speciation_gen(0){};
-   
-       bool operator== (const ProtractedSpeciationParameters &p1) const {
-           return (doubleCompare(p1.min_speciation_gen, min_speciation_gen, 0.00000001) &&
-                   doubleCompare(p1.max_speciation_gen, max_speciation_gen, 0.00000001));
-       }
-   
-   };
    
    struct SpecSimParameters
    {
@@ -40,94 +30,89 @@ Program Listing for File SpecSimParameters.h
        bool bMultiRun;
        bool use_fragments;
        string filename;
-       vector<double> all_speciation_rates;
+       set<double> all_speciation_rates;
        string samplemask;
        string times_file;
-       vector<double> all_times;
+       set<double> all_times;
        string fragment_config_file;
        vector<ProtractedSpeciationParameters> protracted_parameters;
-       unsigned long metacommunity_size;
-       double metacommunity_speciation_rate;
+       MetacommunitiesArray metacommunity_parameters;
    
-       SpecSimParameters(): use_spatial(false), bMultiRun(false), use_fragments(false), filename("none"),
-                            all_speciation_rates(), samplemask("none"), times_file("null"), all_times(),
-                            fragment_config_file("none"), protracted_parameters(), metacommunity_size(0),
-                            metacommunity_speciation_rate(0.0)
+       SpecSimParameters() : use_spatial(false), bMultiRun(false), use_fragments(false), filename("none"),
+                             all_speciation_rates(), samplemask("none"), times_file("null"), all_times(),
+                             fragment_config_file("none"), protracted_parameters(), metacommunity_parameters()
        {
    
        }
    
-       void setup(string file_in, bool use_spatial_in, string sample_file, vector<double> times, string use_fragments_in,
-                  vector<double> speciation_rates, vector<double> min_speciation_gen_in,
-                  vector<double> max_speciation_gen_in)
-       {
-           setup(file_in, use_spatial_in, sample_file, times, use_fragments_in, speciation_rates,
-                 min_speciation_gen_in, max_speciation_gen_in, 0, 0.0);
-       }
+       SpecSimParameters(const string &fragment_config_file) : fragment_config_file(fragment_config_file){}
    
        void setup(string file_in, bool use_spatial_in, string sample_file, const vector<double> &times,
-                  string use_fragments_in, vector<double> speciation_rates, vector<double> min_speciation_gen_in,
-                  vector<double> max_speciation_gen_in,
-                  unsigned long metacommunity_size_in, double metacommunity_speciation_rate_in)
+                  const string &use_fragments_in, vector<double> speciation_rates)
        {
            filename = std::move(file_in);
            use_spatial = use_spatial_in;
            samplemask = std::move(sample_file);
            if(times.empty() && all_times.empty())
            {
-                   times_file = "null";
-                   all_times.push_back(0.0);
+               times_file = "null";
+               all_times.insert(0.0);
            }
            else
            {
                times_file = "set";
                for(const auto item : times)
                {
-                   all_times.emplace_back(item);
+                   all_times.insert(item);
                }
-           }
-           if(min_speciation_gen_in.size() != max_speciation_gen_in.size())
-           {
-               throw FatalException("Protracted parameter mismatch between minimum and maximum generations "
-                           "(must be equal length).");
-           }
-           if(!protracted_parameters.empty())
-           {
-               protracted_parameters.clear();
-           }
-           for(unsigned long i = 0; i < min_speciation_gen_in.size(); i++)
-           {
-               ProtractedSpeciationParameters tmp{};
-               tmp.min_speciation_gen = min_speciation_gen_in[i];
-               tmp.max_speciation_gen = max_speciation_gen_in[i];
-               protracted_parameters.emplace_back(tmp);
            }
            use_fragments = !(use_fragments_in == "F");
            fragment_config_file = use_fragments_in;
            bMultiRun = speciation_rates.size() > 1;
            for(auto speciation_rate : speciation_rates)
            {
-               all_speciation_rates.push_back(speciation_rate);
+               all_speciation_rates.insert(speciation_rate);
            }
-           metacommunity_size = metacommunity_size_in;
-           metacommunity_speciation_rate = metacommunity_speciation_rate_in;
+       }
+   
+       void addMetacommunityParameters(const unsigned long &metacommunity_size_in,
+                                       const double &metacommunity_speciation_rate_in,
+                                       const string &metacommunity_option_in,
+                                       const unsigned long &metacommunity_reference_in)
+       {
+           MetacommunityParameters tmp_meta_parameters = MetacommunityParameters(0, metacommunity_size_in,
+                                                                                 metacommunity_speciation_rate_in,
+                                                                                 metacommunity_option_in,
+                                                                                 metacommunity_reference_in);
+           if(!metacommunity_parameters.hasOption(tmp_meta_parameters))
+           {
+               metacommunity_parameters.addNew(tmp_meta_parameters);
+           }
+           else
+           {
+               stringstream ss;
+               ss << "Parameters already added for metacommunity with size " << metacommunity_size_in << ", ";
+               ss << "speciation rate " << metacommunity_speciation_rate_in << ", " << "using option ";
+               ss << metacommunity_option_in << " and reference " << metacommunity_reference_in << endl;
+               writeInfo(ss.str());
+           }
        }
    
        void importTimeConfig()
        {
            if(times_file == "null")
            {
-               all_times.push_back(0.0);
+               all_times.insert(0.0);
            }
            else
            {
                vector<string> tmpimport;
-               ConfigOption tmpconfig;
+               ConfigParser tmpconfig;
                tmpconfig.setConfig(times_file, false);
                tmpconfig.importConfig(tmpimport);
                for(const auto &i : tmpimport)
                {
-                   all_times.push_back(stod(i));
+                   all_times.insert(stod(i));
                }
            }
        }
@@ -144,13 +129,12 @@ Program Listing for File SpecSimParameters.h
            all_times.clear();
            fragment_config_file = "";
            protracted_parameters.clear();
-           metacommunity_size = 0;
-           metacommunity_speciation_rate = 0.0;
+           metacommunity_parameters.clear();
        }
    
        void addTime(double time)
        {
-           all_times.emplace_back(time);
+           all_times.insert(time);
        }
    
        void addProtractedParameters(double proc_spec_min, double proc_spec_max)
@@ -161,6 +145,5 @@ Program Listing for File SpecSimParameters.h
            protracted_parameters.emplace_back(tmp);
        }
    };
-   
    
    #endif //SPECIATIONCOUNTER_SPECSIMPARAMETERS_H

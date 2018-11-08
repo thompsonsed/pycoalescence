@@ -21,9 +21,10 @@ Class Hierarchy
          <li>Struct <a href="struct_SimParameters.html#struct-SimParameters">SimParameters</a></li>
          <li>Struct <a href="struct_SpeciesException.html#struct-SpeciesException">SpeciesException</a></li>
          <li>Class <a href="class_ActivityMap.html#class-ActivityMap">ActivityMap</a></li>
+         <li>Class <a href="class_AnalyticalSpeciesAbundancesHandler.html#class-AnalyticalSpeciesAbundancesHandler">AnalyticalSpeciesAbundancesHandler</a></li>
          <li>Class <a href="class_Cell.html#class-Cell">Cell</a></li>
          <li>Class <a href="class_Community.html#class-Community">Community</a></li>
-         <li>Class <a href="class_ConfigOption.html#class-ConfigOption">ConfigOption</a></li>
+         <li>Class <a href="class_ConfigParser.html#class-ConfigParser">ConfigParser</a></li>
          <li>Class <a href="class_DataMask.html#class-DataMask">DataMask</a></li>
          <li>Class <a href="class_DataPoint.html#class-DataPoint">DataPoint</a></li>
          <li>Class <a href="class_DispersalCoordinator.html#class-DispersalCoordinator">DispersalCoordinator</a></li>
@@ -45,8 +46,10 @@ Class Hierarchy
          <li>Template Class <a href="class_Row.html#template-class-Row">Row</a></li>
          <li>Class <a href="class_Samplematrix.html#class-Samplematrix">Samplematrix</a></li>
          <li>Class <a href="class_SimulateDispersal.html#class-SimulateDispersal">SimulateDispersal</a></li>
+         <li>Class <a href="class_SimulatedSpeciesAbundancesHandler.html#class-SimulatedSpeciesAbundancesHandler">SimulatedSpeciesAbundancesHandler</a></li>
          <li>Class <a href="class_SpatialTree.html#class-SpatialTree">SpatialTree</a></li>
          <li>Class <a href="class_SpeciationCommands.html#class-SpeciationCommands">SpeciationCommands</a></li>
+         <li>Class <a href="class_SpeciesAbundancesHandler.html#class-SpeciesAbundancesHandler">SpeciesAbundancesHandler</a></li>
          <li>Class <a href="class_SpeciesList.html#class-SpeciesList">SpeciesList</a></li>
          <li>Class <a href="class_SpecSimParameters.html#class-SpecSimParameters">SpecSimParameters</a></li>
          <li>Class <a href="class_Step.html#class-Step">Step</a></li>

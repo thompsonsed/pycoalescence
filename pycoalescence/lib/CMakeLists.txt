@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-# Main necsimmodule python program
+# Main necsimmodule Python program
 
 project(necsim CXX)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
@@ -59,6 +59,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/ProtractedTree.cpp
         ${SOURCE_DIR_NECSIM}/setup.cpp
         ${SOURCE_DIR_NECSIM}/setup.h
+        ${SOURCE_DIR_NECSIM}/SimulationTemplates.h
         ${SOURCE_DIR_NECSIM}/SpeciesList.h
         ${SOURCE_DIR_NECSIM}/Community.cpp
         ${SOURCE_DIR_NECSIM}/ActivityMap.cpp
@@ -108,7 +109,7 @@ if (DEFINED ENV{CONDA_PREFIX})
         target_link_libraries(necsim boost_system)
     endif()
 else ()
-    message(STATUS "Standard python install detected")
+    message(STATUS "Standard Python install detected")
     find_package(sqlite3)
     include_directories(${SQLITE3_INCLUDE_DIRS})
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})

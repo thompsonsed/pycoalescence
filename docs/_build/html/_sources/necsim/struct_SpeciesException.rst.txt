@@ -3,7 +3,7 @@
 Struct SpeciesException
 =======================
 
-- Defined in :ref:`file_necsim_CustomExceptions.h`
+- Defined in :ref:`file_necsim_custom_exceptions.h`
 
 
 Inheritance Relationships

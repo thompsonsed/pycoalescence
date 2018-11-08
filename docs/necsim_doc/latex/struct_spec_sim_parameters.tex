@@ -22,10 +22,13 @@ Collaboration diagram for Spec\+Sim\+Parameters\+:
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{struct_spec_sim_parameters_acbd3e700200cf2bb07b3e58f1dc95ec6}{setup} (string file\+\_\+in, bool use\+\_\+spatial\+\_\+in, string sample\+\_\+file, vector$<$ double $>$ times, string use\+\_\+fragments\+\_\+in, vector$<$ double $>$ speciation\+\_\+rates, vector$<$ double $>$ min\+\_\+speciation\+\_\+gen\+\_\+in, vector$<$ double $>$ max\+\_\+speciation\+\_\+gen\+\_\+in)
+{\bfseries Spec\+Sim\+Parameters} (const string \&fragment\+\_\+config\+\_\+file)\hypertarget{struct_spec_sim_parameters_af952a8e5648dfcd7edeb09e2817bf5bc}{}\label{struct_spec_sim_parameters_af952a8e5648dfcd7edeb09e2817bf5bc}
+
+\item 
+void \hyperlink{struct_spec_sim_parameters_a8ccea55b45c88fec3c1ff43a4ce81279}{setup} (string file\+\_\+in, bool use\+\_\+spatial\+\_\+in, string sample\+\_\+file, const vector$<$ double $>$ \&times, const string \&use\+\_\+fragments\+\_\+in, vector$<$ double $>$ speciation\+\_\+rates)
 \begin{DoxyCompactList}\small\item\em Sets the application arguments for the inputs. Intended for use with the applyspecmodule for integration with python. \end{DoxyCompactList}\item 
-void \hyperlink{struct_spec_sim_parameters_acabbdf627ecb8bec48314f7990b9b575}{setup} (string file\+\_\+in, bool use\+\_\+spatial\+\_\+in, string sample\+\_\+file, const vector$<$ double $>$ \&times, string use\+\_\+fragments\+\_\+in, vector$<$ double $>$ speciation\+\_\+rates, vector$<$ double $>$ min\+\_\+speciation\+\_\+gen\+\_\+in, vector$<$ double $>$ max\+\_\+speciation\+\_\+gen\+\_\+in, unsigned long metacommunity\+\_\+size\+\_\+in, double metacommunity\+\_\+speciation\+\_\+rate\+\_\+in)
-\begin{DoxyCompactList}\small\item\em Sets the application arguments for the inputs. Intended for use with the applyspecmodule for integration with python. \end{DoxyCompactList}\item 
+void \hyperlink{struct_spec_sim_parameters_af7213e036e74c8c6e7e1b8c2a8016b02}{add\+Metacommunity\+Parameters} (const unsigned long \&metacommunity\+\_\+size\+\_\+in, const double \&metacommunity\+\_\+speciation\+\_\+rate\+\_\+in, const string \&metacommunity\+\_\+option\+\_\+in, const unsigned long \&metacommunity\+\_\+reference\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the metacommunity parameters for the simulation. \end{DoxyCompactList}\item 
 void \hyperlink{struct_spec_sim_parameters_ae0196a50a551a821b75b6e92a35534a7}{import\+Time\+Config} ()\hypertarget{struct_spec_sim_parameters_ae0196a50a551a821b75b6e92a35534a7}{}\label{struct_spec_sim_parameters_ae0196a50a551a821b75b6e92a35534a7}
 
 \begin{DoxyCompactList}\small\item\em Import the time config file, if there is one. \end{DoxyCompactList}\item 
@@ -51,7 +54,7 @@ bool {\bfseries use\+\_\+fragments}\hypertarget{struct_spec_sim_parameters_ae2a8
 string {\bfseries filename}\hypertarget{struct_spec_sim_parameters_a39beb88bb0ce36265bb0b8c8468cbe48}{}\label{struct_spec_sim_parameters_a39beb88bb0ce36265bb0b8c8468cbe48}
 
 \item 
-vector$<$ double $>$ {\bfseries all\+\_\+speciation\+\_\+rates}\hypertarget{struct_spec_sim_parameters_af70bb0689f934fd5ec5ea1878a3e4011}{}\label{struct_spec_sim_parameters_af70bb0689f934fd5ec5ea1878a3e4011}
+set$<$ double $>$ {\bfseries all\+\_\+speciation\+\_\+rates}\hypertarget{struct_spec_sim_parameters_aca1ed096bc62ab6914b34e12784daea1}{}\label{struct_spec_sim_parameters_aca1ed096bc62ab6914b34e12784daea1}
 
 \item 
 string {\bfseries samplemask}\hypertarget{struct_spec_sim_parameters_add68fe2a48b1d80173c5066bf9cd0f6c}{}\label{struct_spec_sim_parameters_add68fe2a48b1d80173c5066bf9cd0f6c}
@@ -60,7 +63,7 @@ string {\bfseries samplemask}\hypertarget{struct_spec_sim_parameters_add68fe2a48
 string {\bfseries times\+\_\+file}\hypertarget{struct_spec_sim_parameters_a83a3ce34449db0152e0012838c0ac3a6}{}\label{struct_spec_sim_parameters_a83a3ce34449db0152e0012838c0ac3a6}
 
 \item 
-vector$<$ double $>$ {\bfseries all\+\_\+times}\hypertarget{struct_spec_sim_parameters_a2a61028935128b94785b6faca0a5788f}{}\label{struct_spec_sim_parameters_a2a61028935128b94785b6faca0a5788f}
+set$<$ double $>$ {\bfseries all\+\_\+times}\hypertarget{struct_spec_sim_parameters_ad9441471fbf455638a9598ba8aefe63e}{}\label{struct_spec_sim_parameters_ad9441471fbf455638a9598ba8aefe63e}
 
 \item 
 string {\bfseries fragment\+\_\+config\+\_\+file}\hypertarget{struct_spec_sim_parameters_adef81f827b1402d19f318c66f295c62a}{}\label{struct_spec_sim_parameters_adef81f827b1402d19f318c66f295c62a}
@@ -69,10 +72,7 @@ string {\bfseries fragment\+\_\+config\+\_\+file}\hypertarget{struct_spec_sim_pa
 vector$<$ \hyperlink{struct_protracted_speciation_parameters}{Protracted\+Speciation\+Parameters} $>$ {\bfseries protracted\+\_\+parameters}\hypertarget{struct_spec_sim_parameters_a4eba5de74f81f0a81097b4159f6ae797}{}\label{struct_spec_sim_parameters_a4eba5de74f81f0a81097b4159f6ae797}
 
 \item 
-unsigned long {\bfseries metacommunity\+\_\+size}\hypertarget{struct_spec_sim_parameters_a5afee22112d2be5b0dc730553e01d2cd}{}\label{struct_spec_sim_parameters_a5afee22112d2be5b0dc730553e01d2cd}
-
-\item 
-double {\bfseries metacommunity\+\_\+speciation\+\_\+rate}\hypertarget{struct_spec_sim_parameters_a4aa21c1b3e61729fb6f25d1b5cf38bd2}{}\label{struct_spec_sim_parameters_a4aa21c1b3e61729fb6f25d1b5cf38bd2}
+\hyperlink{struct_metacommunities_array}{Metacommunities\+Array} {\bfseries metacommunity\+\_\+parameters}\hypertarget{struct_spec_sim_parameters_a806167a898b61bba29044f27139d633c}{}\label{struct_spec_sim_parameters_a806167a898b61bba29044f27139d633c}
 
 \end{DoxyCompactItemize}
 
@@ -81,6 +81,27 @@ double {\bfseries metacommunity\+\_\+speciation\+\_\+rate}\hypertarget{struct_sp
 Contains the simulation parameters that are read from the command line. 
 
 \subsection{Member Function Documentation}
+\index{Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}!add\+Metacommunity\+Parameters@{add\+Metacommunity\+Parameters}}
+\index{add\+Metacommunity\+Parameters@{add\+Metacommunity\+Parameters}!Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}}
+\subsubsection[{\texorpdfstring{add\+Metacommunity\+Parameters(const unsigned long \&metacommunity\+\_\+size\+\_\+in, const double \&metacommunity\+\_\+speciation\+\_\+rate\+\_\+in, const string \&metacommunity\+\_\+option\+\_\+in, const unsigned long \&metacommunity\+\_\+reference\+\_\+in)}{addMetacommunityParameters(const unsigned long &metacommunity_size_in, const double &metacommunity_speciation_rate_in, const string &metacommunity_option_in, const unsigned long &metacommunity_reference_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spec\+Sim\+Parameters\+::add\+Metacommunity\+Parameters (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{metacommunity\+\_\+size\+\_\+in, }
+\item[{const double \&}]{metacommunity\+\_\+speciation\+\_\+rate\+\_\+in, }
+\item[{const string \&}]{metacommunity\+\_\+option\+\_\+in, }
+\item[{const unsigned long \&}]{metacommunity\+\_\+reference\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{struct_spec_sim_parameters_af7213e036e74c8c6e7e1b8c2a8016b02}{}\label{struct_spec_sim_parameters_af7213e036e74c8c6e7e1b8c2a8016b02}
+
+
+Sets the metacommunity parameters for the simulation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em metacommunity\+\_\+size\+\_\+in} & the number of individuals in the metacommunity \\
+\hline
+{\em metacommunity\+\_\+speciation\+\_\+rate\+\_\+in} & the speciation rate for the metacommunity \\
+\hline
+\end{DoxyParams}
 \index{Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}!add\+Protracted\+Parameters@{add\+Protracted\+Parameters}}
 \index{add\+Protracted\+Parameters@{add\+Protracted\+Parameters}!Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}}
 \subsubsection[{\texorpdfstring{add\+Protracted\+Parameters(double proc\+\_\+spec\+\_\+min, double proc\+\_\+spec\+\_\+max)}{addProtractedParameters(double proc_spec_min, double proc_spec_max)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spec\+Sim\+Parameters\+::add\+Protracted\+Parameters (
@@ -118,57 +139,16 @@ Adds an additional time to the times vector.
 \end{DoxyParams}
 \index{Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}!setup@{setup}}
 \index{setup@{setup}!Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}}
-\subsubsection[{\texorpdfstring{setup(string file\+\_\+in, bool use\+\_\+spatial\+\_\+in, string sample\+\_\+file, vector$<$ double $>$ times, string use\+\_\+fragments\+\_\+in, vector$<$ double $>$ speciation\+\_\+rates, vector$<$ double $>$ min\+\_\+speciation\+\_\+gen\+\_\+in, vector$<$ double $>$ max\+\_\+speciation\+\_\+gen\+\_\+in)}{setup(string file_in, bool use_spatial_in, string sample_file, vector< double > times, string use_fragments_in, vector< double > speciation_rates, vector< double > min_speciation_gen_in, vector< double > max_speciation_gen_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spec\+Sim\+Parameters\+::setup (
-\begin{DoxyParamCaption}
-\item[{string}]{file\+\_\+in, }
-\item[{bool}]{use\+\_\+spatial\+\_\+in, }
-\item[{string}]{sample\+\_\+file, }
-\item[{vector$<$ double $>$}]{times, }
-\item[{string}]{use\+\_\+fragments\+\_\+in, }
-\item[{vector$<$ double $>$}]{speciation\+\_\+rates, }
-\item[{vector$<$ double $>$}]{min\+\_\+speciation\+\_\+gen\+\_\+in, }
-\item[{vector$<$ double $>$}]{max\+\_\+speciation\+\_\+gen\+\_\+in}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{struct_spec_sim_parameters_acbd3e700200cf2bb07b3e58f1dc95ec6}{}\label{struct_spec_sim_parameters_acbd3e700200cf2bb07b3e58f1dc95ec6}
-
-
-Sets the application arguments for the inputs. Intended for use with the applyspecmodule for integration with python. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em file\+\_\+in} & the database to apply speciation rates to \\
-\hline
-{\em use\+\_\+spatial\+\_\+in} & if true, record full spatial data \\
-\hline
-{\em sample\+\_\+file} & the sample file to select lineages from the map \\
-\hline
-{\em times} & vector of times to apply \\
-\hline
-{\em use\+\_\+fragments\+\_\+in} & fragment file, or \char`\"{}\+T\char`\"{}/\char`\"{}\+F\char`\"{} for automatic detection/no detection \\
-\hline
-{\em speciation\+\_\+rates} & the speciation rates to apply \\
-\hline
-{\em min\+\_\+speciation\+\_\+gen\+\_\+in} & the minimum generation rate for speciation in protracted simulations \\
-\hline
-{\em max\+\_\+speciation\+\_\+gen\+\_\+in} & the maximum generation rate for speciation in protracted simulations \\
-\hline
-\end{DoxyParams}
-\index{Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}!setup@{setup}}
-\index{setup@{setup}!Spec\+Sim\+Parameters@{Spec\+Sim\+Parameters}}
-\subsubsection[{\texorpdfstring{setup(string file\+\_\+in, bool use\+\_\+spatial\+\_\+in, string sample\+\_\+file, const vector$<$ double $>$ \&times, string use\+\_\+fragments\+\_\+in, vector$<$ double $>$ speciation\+\_\+rates, vector$<$ double $>$ min\+\_\+speciation\+\_\+gen\+\_\+in, vector$<$ double $>$ max\+\_\+speciation\+\_\+gen\+\_\+in, unsigned long metacommunity\+\_\+size\+\_\+in, double metacommunity\+\_\+speciation\+\_\+rate\+\_\+in)}{setup(string file_in, bool use_spatial_in, string sample_file, const vector< double > &times, string use_fragments_in, vector< double > speciation_rates, vector< double > min_speciation_gen_in, vector< double > max_speciation_gen_in, unsigned long metacommunity_size_in, double metacommunity_speciation_rate_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spec\+Sim\+Parameters\+::setup (
+\subsubsection[{\texorpdfstring{setup(string file\+\_\+in, bool use\+\_\+spatial\+\_\+in, string sample\+\_\+file, const vector$<$ double $>$ \&times, const string \&use\+\_\+fragments\+\_\+in, vector$<$ double $>$ speciation\+\_\+rates)}{setup(string file_in, bool use_spatial_in, string sample_file, const vector< double > &times, const string &use_fragments_in, vector< double > speciation_rates)}}]{\setlength{\rightskip}{0pt plus 5cm}void Spec\+Sim\+Parameters\+::setup (
 \begin{DoxyParamCaption}
 \item[{string}]{file\+\_\+in, }
 \item[{bool}]{use\+\_\+spatial\+\_\+in, }
 \item[{string}]{sample\+\_\+file, }
 \item[{const vector$<$ double $>$ \&}]{times, }
-\item[{string}]{use\+\_\+fragments\+\_\+in, }
-\item[{vector$<$ double $>$}]{speciation\+\_\+rates, }
-\item[{vector$<$ double $>$}]{min\+\_\+speciation\+\_\+gen\+\_\+in, }
-\item[{vector$<$ double $>$}]{max\+\_\+speciation\+\_\+gen\+\_\+in, }
-\item[{unsigned long}]{metacommunity\+\_\+size\+\_\+in, }
-\item[{double}]{metacommunity\+\_\+speciation\+\_\+rate\+\_\+in}
+\item[{const string \&}]{use\+\_\+fragments\+\_\+in, }
+\item[{vector$<$ double $>$}]{speciation\+\_\+rates}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{struct_spec_sim_parameters_acabbdf627ecb8bec48314f7990b9b575}{}\label{struct_spec_sim_parameters_acabbdf627ecb8bec48314f7990b9b575}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{struct_spec_sim_parameters_a8ccea55b45c88fec3c1ff43a4ce81279}{}\label{struct_spec_sim_parameters_a8ccea55b45c88fec3c1ff43a4ce81279}
 
 
 Sets the application arguments for the inputs. Intended for use with the applyspecmodule for integration with python. 
@@ -190,10 +170,6 @@ Sets the application arguments for the inputs. Intended for use with the applysp
 {\em min\+\_\+speciation\+\_\+gen\+\_\+in} & the minimum generation rate for speciation in protracted simulations \\
 \hline
 {\em max\+\_\+speciation\+\_\+gen\+\_\+in} & the maximum generation rate for speciation in protracted simulations \\
-\hline
-{\em metacommunity\+\_\+size\+\_\+in} & \\
-\hline
-{\em metacommunity\+\_\+speciation\+\_\+rate\+\_\+in} & \\
 \hline
 \end{DoxyParams}
 

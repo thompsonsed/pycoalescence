@@ -1,9 +1,9 @@
-// This file is part of NECSim project which is released under MIT license.
+// This file is part of necsim project which is released under MIT license.
 // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
 /**
  * @author Samuel Thompson
  * @file CLandscapeMetricsCalculator.h
- * @brief Wraps the C LandscapeMetricsCalculator objects for accessing via python.
+ * @brief Wraps the C LandscapeMetricsCalculator objects for accessing via Python.
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 
@@ -28,9 +28,9 @@ public:
 
 /**
  * @brief Sets the map parameters and imports the maps
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse, should contain all key map parameters
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 PyObject *set_map(PyLMC *self, PyObject *args)
 {
@@ -52,7 +52,7 @@ PyObject *set_map(PyLMC *self, PyObject *args)
 		catch(exception &e)
 		{
 			removeGlobalLogger();
-			PyErr_SetString(NECSimError, e.what());
+			PyErr_SetString(necsimError, e.what());
 			return nullptr;
 		}
 	}
@@ -63,7 +63,7 @@ PyObject *set_map(PyLMC *self, PyObject *args)
 /**
  * @brief Calculates the CLUMPY metric for the imported map file.
  *
- * @param self the python self pointer
+ * @param self the Python self pointer
  * @return PyFloatType object containing the mean distance to the nearest neighbour
  */
 
@@ -83,7 +83,7 @@ static PyObject * calculateCLUMPY(PyLMC *self)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 }
@@ -91,7 +91,7 @@ static PyObject * calculateCLUMPY(PyLMC *self)
 /**
  * @brief Calculates the mean distance to the nearest neighbour for each cell on the imported map file.
  *
- * @param self the python self pointer
+ * @param self the Python self pointer
  * @return PyFloatType object containing the mean distance to the nearest neighbour
  */
 static PyObject * calculateMNN(PyLMC *self)
@@ -110,7 +110,7 @@ static PyObject * calculateMNN(PyLMC *self)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 }

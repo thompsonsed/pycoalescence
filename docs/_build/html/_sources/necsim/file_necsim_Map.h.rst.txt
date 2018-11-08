@@ -38,17 +38,17 @@ Includes
 --------
 
 
-- ``CPLCustomHandlerNecsim.h`` (:ref:`file_necsim_CPLCustomHandlerNecsim.h`)
-
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
-
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``Matrix.h`` (:ref:`file_necsim_Matrix.h`)
 
 - ``cpl_conv.h``
 
+- ``cpl_custom_handler.h`` (:ref:`file_necsim_cpl_custom_handler.h`)
+
 - ``cstring``
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
 
 - ``gdal_priv.h``
 

@@ -3,7 +3,7 @@
 Function getTime
 ================
 
-- Defined in :ref:`file_necsim_LogFile.cpp`
+- Defined in :ref:`file_necsim_LogFile.h`
 
 
 Function Documentation

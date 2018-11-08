@@ -66,6 +66,10 @@ Included By
 
 - :ref:`file_necsim_ActivityMap.h`
 
+- :ref:`file_necsim_SpeciesAbundancesHandler.h`
+
+- :ref:`file_necsim_AnalyticalSpeciesAbundancesHandler.h`
+
 - :ref:`file_necsim_DispersalCoordinator.h`
 
 - :ref:`file_necsim_Tree.h`
@@ -75,6 +79,10 @@ Included By
 - :ref:`file_necsim_SpeciesList.h`
 
 - :ref:`file_necsim_Metacommunity.h`
+
+- :ref:`file_necsim_SimulatedSpeciesAbundancesHandler.h`
+
+- :ref:`file_necsim_neutral_analytical.cpp`
 
 - :ref:`file_necsim_SimulateDispersal.h`
 

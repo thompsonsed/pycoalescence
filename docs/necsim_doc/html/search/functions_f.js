@@ -1,8 +1,10 @@
 var searchData=
 [
+  ['randomlogarithmic',['randomLogarithmic',['../class_n_rrand.html#a347f480f78917ebcc822f0f3b74825c3',1,'NRrand']]],
   ['rayleigh',['rayleigh',['../class_n_rrand.html#a39576a34204f90b6cda7dfd92561c0b0',1,'NRrand']]],
   ['rayleighcdf',['rayleighCDF',['../class_n_rrand.html#a2723a59dd63c61886238c2d466831985',1,'NRrand']]],
   ['rayleighmindist',['rayleighMinDist',['../class_n_rrand.html#aefdaf5521b01658bdd1c206bbe1e855f',1,'NRrand']]],
+  ['readsad',['readSAD',['../class_metacommunity.html#af91fb56ca0129f5c4df4c302d250dc55',1,'Metacommunity']]],
   ['recalculatecoordinates',['recalculateCoordinates',['../class_data_mask.html#a5eaef817c1baf4ac14d06d0e92bd4787',1,'DataMask']]],
   ['recalculatehabitatmax',['recalculateHabitatMax',['../class_landscape.html#abaf14ac4da88cd26f6593bdaa88d999f',1,'Landscape']]],
   ['recordspatial',['recordSpatial',['../class_community.html#a08be240fddc6ea481014567276a84dd0',1,'Community']]],

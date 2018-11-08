@@ -3,7 +3,7 @@
 Struct SectionOption
 ====================
 
-- Defined in :ref:`file_necsim_ConfigFileParser.h`
+- Defined in :ref:`file_necsim_ConfigParser.h`
 
 
 Struct Documentation

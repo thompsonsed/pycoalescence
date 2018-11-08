@@ -1,7 +1,7 @@
 pycoalescence overview
 ======================
 
-*A python package for coalescence-based spatially-explicit neutral
+*A Python package for coalescence-based spatially-explicit neutral
 ecology simulations*
 
 .. include:: docs/builds.rst
@@ -10,12 +10,12 @@ ecology simulations*
 Introduction
 ~~~~~~~~~~~~
 
-pycoalescence is a python package for spatially-explicit coalescence
+pycoalescence is a Python package for spatially-explicit coalescence
 neutral simulations. pycoalescence provides a pythonic interface for
 setting up, running and analysing spatially-explicit neutral
-simulations. Simulations themselves are performed in c++ using
+simulations. Simulations themselves are performed in C++ using
 `necsim <https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html>`__
-for excellent performance, whilst the python interface provides a simple
+for excellent performance, whilst the Python interface provides a simple
 solution for setting up and analysing simulations.
 
 For full documentation please see
@@ -41,7 +41,7 @@ If you cannot install via pip, download the tar ball and run
 all dependencies have been installed. By default, .o files are compiled
 to lib/obj and the .so file is compiled to the necsim directory.
 
-Make sure compilation is performed under the same python version
+Make sure compilation is performed under the same Python version
 simulations will be performed in.
 
 Basic Usage
@@ -100,13 +100,13 @@ Essential
 -  C++ compiler (such as GNU g++) with C++14 support.
 -  The SQLite library available
    `here <https://www.sqlite.org/download.html>`__. Requires both
-   ``c++`` and ``python`` installations. Comes as standard with python.
+   ``C++`` and ``Python`` installations. Comes as standard with Python.
 -  The Boost library for C++ available `here <https://www.boost.org>`__.
--  Numerical python (``numpy``) package (``pip install numpy``).
--  The gdal library for both python and C++ (`available
+-  Numerical Python (``numpy``) package (``pip install numpy``).
+-  The gdal library for both Python and C++ (`available
    here <https://www.gdal.org/>`__). Although it is possible to turn off
    gdal support, this is not recommended as it is essential if you wish
-   to use .tif files for simulation. Both the python package and ``c++``
+   to use .tif files for simulation. Both the Python package and ``C++``
    binaries are required; installation differs between systems, so view
    the gdal documentation for more help installing gdal properly.
 

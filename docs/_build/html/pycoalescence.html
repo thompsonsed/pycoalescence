@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence package &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence package &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="modules.html" title="Modules"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">Modules</a> &#187;</li> 
       </ul>
     </div>  
@@ -533,7 +533,7 @@ grid_density_actual().</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Note:</th><td class="field-body">Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.</td>
+<tr class="field-odd field"><th class="field-name">Note:</th><td class="field-body">Assumes that the C++ compiler has sizeof(long) = 8 bytes for calculating space usage.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Note:</th><td class="field-body">Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as
 a maximum size.</td>
@@ -743,6 +743,24 @@ This should contain the grid_x_size, grid_y_size, grid_file_name, sample_x_offse
 </dd></dl>
 
 <dl class="method">
+<dt id="pycoalescence.simulation.Simulation.set_seed">
+<code class="descname">set_seed</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the seed for the simulation.</p>
+<p>A seed &lt; 1 should not be set for the necsim, as equivalent behaviour is produce for seed and abs(seed), plus for
+seed = 1 and seed = 0. Consequently, for any values less than 1, we take a very large number plus the seed,
+instead. Therefore a error is raised if the seed exceeds this very large number (this is an acceptable
+decrease in userability as a seed that large is unlikely to ever be used).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seed</strong> (<em>int</em>) &#8211; the random number seed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pycoalescence.simulation.Simulation.set_simulation_parameters">
 <code class="descname">set_simulation_parameters</code><span class="sig-paren">(</span><em>seed</em>, <em>job_type</em>, <em>output_directory</em>, <em>min_speciation_rate</em>, <em>sigma=1.0</em>, <em>tau=1.0</em>, <em>deme=1</em>, <em>sample_size=1.0</em>, <em>max_time=3600</em>, <em>dispersal_method=None</em>, <em>m_prob=0.0</em>, <em>cutoff=0</em>, <em>dispersal_relative_cost=1</em>, <em>min_num_species=1</em>, <em>habitat_change_rate=0.0</em>, <em>gen_since_historical=1</em>, <em>restrict_self=False</em>, <em>landscape_type=False</em>, <em>protracted=False</em>, <em>min_speciation_gen=None</em>, <em>max_speciation_gen=None</em>, <em>spatial=True</em>, <em>uses_spatial_sampling=False</em>, <em>times=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.set_simulation_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.set_simulation_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set all the simulation parameters apart from the map objects.</p>
@@ -800,8 +818,8 @@ density * deme_sample * cell sampling proportion</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.simulation.Simulation.setupNECSim">
-<code class="descname">setupNECSim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.setupNECSim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.setupNECSim" title="Permalink to this definition">¶</a></dt>
+<dt id="pycoalescence.simulation.Simulation.setup_necsim">
+<code class="descname">setup_necsim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.setup_necsim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.setup_necsim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the type of the simulation (spatial/non-spatial, protracted/non-protracted) and sets the c object
 appropriately.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -812,13 +830,6 @@ appropriately.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycoalescence.simulation.Simulation.setup_necsim">
-<code class="descname">setup_necsim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/simulation.html#Simulation.setup_necsim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.simulation.Simulation.setup_necsim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the logging function and the logger object for the necsim object. Enforcing this function is always called
-ensures no seg faults occur.</p>
 </dd></dl>
 
 <dl class="method">
@@ -878,6 +889,29 @@ if required (<a class="reference internal" href="#pycoalescence.coalescence_tree
 <li>Calculate required metrics (such as <a class="reference internal" href="#pycoalescence.coalescence_tree.CoalescenceTree.calculate_fragment_richness" title="pycoalescence.coalescence_tree.CoalescenceTree.calculate_fragment_richness"><code class="xref py py-meth docutils literal"><span class="pre">calculate_fragment_richness()</span></code></a>)</li>
 <li>Optionally, calculate the goodness of fit (<a class="reference internal" href="#pycoalescence.coalescence_tree.CoalescenceTree.calculate_goodness_of_fit" title="pycoalescence.coalescence_tree.CoalescenceTree.calculate_goodness_of_fit"><code class="xref py py-meth docutils literal"><span class="pre">calculate_goodness_of_fit()</span></code></a>)</li>
 </ul>
+<dl class="method">
+<dt id="pycoalescence.coalescence_tree.CoalescenceTree.add_metacommunity_parameters">
+<code class="descname">add_metacommunity_parameters</code><span class="sig-paren">(</span><em>metacommunity_size=None</em>, <em>metacommunity_speciation_rate=None</em>, <em>metacommunity_option=None</em>, <em>metacommunity_reference=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.add_metacommunity_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.add_metacommunity_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the metacommunity parameters to the object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>metacommunity_size</strong> (<em>float</em>) &#8211; the number of individuals in the metacommunity</li>
+<li><strong>metacommunity_speciation_rate</strong> (<em>float</em>) &#8211; the speciation rate within the metacommunity</li>
+<li><strong>metacommunity_option</strong> (<em>str</em>) &#8211; either &#8220;simulated&#8221;, &#8220;analytical&#8221;, or a path to a database to read SADs from</li>
+<li><strong>metacommunity_reference</strong> (<em>int</em>) &#8211; the metacommunity reference if using a database to provide the metacommunity</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.add_multiple_protracted_parameters">
 <code class="descname">add_multiple_protracted_parameters</code><span class="sig-paren">(</span><em>min_speciation_gens=None</em>, <em>max_speciation_gens=None</em>, <em>speciation_gens=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.add_multiple_protracted_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.add_multiple_protracted_parameters" title="Permalink to this definition">¶</a></dt>
@@ -1219,7 +1253,7 @@ speciation generation for protracted sims</td>
 
 <dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.get_community_reference">
-<code class="descname">get_community_reference</code><span class="sig-paren">(</span><em>speciation_rate</em>, <em>time</em>, <em>fragments</em>, <em>metacommunity_size=0</em>, <em>metacommunity_speciation_rate=0.0</em>, <em>min_speciation_gen=0.0</em>, <em>max_speciation_gen=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_community_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_community_reference" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_community_reference</code><span class="sig-paren">(</span><em>speciation_rate</em>, <em>time</em>, <em>fragments</em>, <em>metacommunity_size=0</em>, <em>metacommunity_speciation_rate=0.0</em>, <em>metacommunity_option=None</em>, <em>external_reference=0</em>, <em>min_speciation_gen=0.0</em>, <em>max_speciation_gen=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.get_community_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.get_community_reference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the community reference associated with the supplied community parameters</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1230,13 +1264,15 @@ reference exists for the supplied parameters</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>speciation_rate</strong> &#8211; the speciation rate of the community</li>
-<li><strong>time</strong> &#8211; the time in generations of the community</li>
-<li><strong>fragments</strong> &#8211; whether fragments were determined for the community</li>
-<li><strong>metacommunity_size</strong> &#8211; the metacommunity size</li>
-<li><strong>metacommunity_speciation_rate</strong> &#8211; the metacommunity speciation rate</li>
-<li><strong>min_speciation_gen</strong> &#8211; the minimum number of generations required before speciation</li>
-<li><strong>max_speciation_gen</strong> &#8211; the maximum number of generations required before speciation</li>
+<li><strong>speciation_rate</strong> (<em>float</em>) &#8211; the speciation rate of the community</li>
+<li><strong>time</strong> (<em>float</em>) &#8211; the time in generations of the community</li>
+<li><strong>fragments</strong> (<em>bool/int</em>) &#8211; whether fragments were determined for the community</li>
+<li><strong>metacommunity_size</strong> (<em>int/float</em>) &#8211; the metacommunity size</li>
+<li><strong>metacommunity_speciation_rate</strong> (<em>float</em>) &#8211; the metacommunity speciation rate</li>
+<li><strong>metacommunity_option</strong> (<em>str</em>) &#8211; option used for metacommunity creation</li>
+<li><strong>external_reference</strong> (<em>int</em>) &#8211; the metacommunity reference for external metacommunity databases</li>
+<li><strong>min_speciation_gen</strong> (<em>float</em>) &#8211; the minimum number of generations required before speciation</li>
+<li><strong>max_speciation_gen</strong> (<em>float</em>) &#8211; the maximum number of generations required before speciation</li>
 </ul>
 </td>
 </tr>
@@ -1454,7 +1490,8 @@ error occurs</li>
 </ul>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary containing the speciation_rate, time, fragments and metacommunity_reference</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary containing the speciation_rate, metacommunity_size, metacommunity option and metacommunity
+reference.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
@@ -1788,20 +1825,6 @@ dictionary mapping fragment names to numbers of individuals to be sampled</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pycoalescence.coalescence_tree.CoalescenceTree.set_c_community">
-<code class="descname">set_c_community</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.set_c_community"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.set_c_community" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the c++ object depending on if a metacommunity is used or not.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.set_database">
 <code class="descname">set_database</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.set_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.set_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the database to the specified file and opens the sqlite connection.</p>
@@ -1823,15 +1846,15 @@ incomplete simulations if the error is handled correctly.</td>
 
 <dl class="method">
 <dt id="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters">
-<code class="descname">set_speciation_parameters</code><span class="sig-paren">(</span><em>speciation_rates</em>, <em>record_spatial=False</em>, <em>record_fragments=False</em>, <em>sample_file=None</em>, <em>times=None</em>, <em>protracted_speciation_min=None</em>, <em>protracted_speciation_max=None</em>, <em>metacommunity_size=None</em>, <em>metacommunity_speciation_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.set_speciation_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the parameters for the application of speciation rates. If no config files or time_config files are provided,
-they will be taken from the main coalescence simulation.</p>
+<code class="descname">set_speciation_parameters</code><span class="sig-paren">(</span><em>speciation_rates</em>, <em>record_spatial=False</em>, <em>record_fragments=False</em>, <em>sample_file=None</em>, <em>times=None</em>, <em>protracted_speciation_min=None</em>, <em>protracted_speciation_max=None</em>, <em>metacommunity_size=None</em>, <em>metacommunity_speciation_rate=None</em>, <em>metacommunity_option=None</em>, <em>metacommunity_reference=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/coalescence_tree.html#CoalescenceTree.set_speciation_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters for the application of speciation rates. If no config files or time_config files are
+provided, they will be taken from the main coalescence simulation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>speciation_rates</strong> (<em>list</em>) &#8211; a list of speciation rates to apply</li>
+<li><strong>speciation_rates</strong> (<em>float/list</em>) &#8211; a single float, or list of speciation rates to apply</li>
 <li><strong>str record_spatial</strong> (<em>bool</em><em>,</em><em></em>) &#8211; a boolean of whether to record spatial data (default=False)</li>
 <li><strong>str record_fragments</strong> (<em>bool</em><em>,</em><em></em>) &#8211; either a csv file containing fragment data, or T/F for whether fragments
 should be calculated from squares of continuous habitat (default=False)</li>
@@ -1841,6 +1864,8 @@ should be calculated from squares of continuous habitat (default=False)</li>
 <li><strong>protracted speciation_max</strong> (<em>float</em>) &#8211; the maximum number of generations before speciation occurs</li>
 <li><strong>metacommunity_size</strong> (<em>float</em>) &#8211; the size of the metacommunity to apply</li>
 <li><strong>metacommunity_speciation_rate</strong> (<em>float</em>) &#8211; speciation rate for the metacommunity</li>
+<li><strong>metacommunity_option</strong> (<em>str</em>) &#8211; either &#8220;simulated&#8221;, &#8220;analytical&#8221;, or a path to a database to read SADs from</li>
+<li><strong>metacommunity_reference</strong> (<em>int</em>) &#8211; the metacommunity reference if using a database to provide the metacommunity</li>
 </ul>
 </td>
 </tr>
@@ -1857,7 +1882,7 @@ should be calculated from squares of continuous habitat (default=False)</li>
 <dd><p>Sets up the link to the SpeciationCounter program. Defaults to the build/default/SpeciationCounter
 :param speciation_program: optionally provide a path to an alternative SpeciationCounter program.</p>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 1.2.4: </span>Deprecated due to movement towards using python API for applying speciation rates.</p>
+<p><span class="versionmodified">Deprecated since version 1.2.4: </span>Deprecated due to movement towards using Python API for applying speciation rates.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2663,14 +2688,14 @@ variable containing INTEL_LICENSE_FILE, most of these options will be turned on 
 <span id="installer-file"></span><h3><a class="toc-backref" href="#id10">installer file</a><a class="headerlink" href="#module-pycoalescence.installer" title="Permalink to this headline">¶</a></h3>
 <p>Compile <strong>necsim</strong> with default or provided compilation options. Intended for internal usage during <code class="docutils literal"><span class="pre">pip</span></code> or <code class="docutils literal"><span class="pre">conda</span></code>
 builds, although manual installation is also possible by running this file from the command line.
-<code class="docutils literal"><span class="pre">python</span> <span class="pre">installer.py</span></code> configures the install by detecting system components and compiles the <code class="docutils literal"><span class="pre">c++</span></code> files, if
+<code class="docutils literal"><span class="pre">python</span> <span class="pre">installer.py</span></code> configures the install by detecting system components and compiles the <code class="docutils literal"><span class="pre">C++</span></code> files, if
 possible. Command line flags can be provided to installer.py to modify the install (see
 <span class="xref std std-ref">Compilation Options</span> for more information).</p>
 <dl class="class">
 <dt id="pycoalescence.installer.Installer">
 <em class="property">class </em><code class="descname">Installer</code><span class="sig-paren">(</span><em>dist</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">setuptools.command.build_ext.build_ext</span></code></p>
-<p>Wraps configuration and compilation of c++ code.</p>
+<p>Wraps configuration and compilation of C++ code.</p>
 <dl class="method">
 <dt id="pycoalescence.installer.Installer.autoconf">
 <code class="descname">autoconf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.autoconf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.autoconf" title="Permalink to this definition">¶</a></dt>
@@ -2687,7 +2712,7 @@ compilation can be recorded.</p>
 <dl class="method">
 <dt id="pycoalescence.installer.Installer.build_extension">
 <code class="descname">build_extension</code><span class="sig-paren">(</span><em>ext</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.build_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.build_extension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Builds the c++ and python extension.</p>
+<dd><p>Builds the C++ and Python extension.</p>
 </dd></dl>
 
 <dl class="method">
@@ -2749,7 +2774,7 @@ Throws an IOError if no makefile is found.</p>
 <dl class="method">
 <dt id="pycoalescence.installer.Installer.do_compile">
 <code class="descname">do_compile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.do_compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.do_compile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been
+<dd><p>Compiles the C++ necsim program by running make. This changes the working directory to wherever the module has been
 installed for the subprocess call.</p>
 </dd></dl>
 
@@ -2805,13 +2830,13 @@ installed for the subprocess call.</p>
 <dl class="method">
 <dt id="pycoalescence.installer.Installer.get_ldflags">
 <code class="descname">get_ldflags</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_ldflags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_ldflags" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the ldflags that python was compiled with, removing some problematic options.</p>
+<dd><p>Get the ldflags that Python was compiled with, removing some problematic options.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pycoalescence.installer.Installer.get_ldshared">
 <code class="descname">get_ldshared</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#Installer.get_ldshared"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.Installer.get_ldshared" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the ldshared python variables and replaces -bundle with -shared for proper compilation.</p>
+<dd><p>Get the ldshared Python variables and replaces -bundle with -shared for proper compilation.</p>
 </dd></dl>
 
 <dl class="method">
@@ -2921,7 +2946,7 @@ be created using create_default_depend()</p>
 <dl class="function">
 <dt id="pycoalescence.installer.get_python_library">
 <code class="descname">get_python_library</code><span class="sig-paren">(</span><em>python_version</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycoalescence/installer.html#get_python_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycoalescence.installer.get_python_library" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get path to the python library associated with the current python
+<dd><p>Get path to the Python library associated with the current Python
 interpreter.</p>
 </dd></dl>
 
@@ -4646,7 +4671,7 @@ of logging.INFO (default), logging.WARNING, logging.DEBUG, logging.ERROR or logg
         <li class="right" >
           <a href="modules.html" title="Modules"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >Modules</a> &#187;</li> 
       </ul>
     </div>

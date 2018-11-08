@@ -3,7 +3,7 @@
 Struct ProtractedSpeciationParameters
 =====================================
 
-- Defined in :ref:`file_necsim_SpecSimParameters.h`
+- Defined in :ref:`file_necsim_parameters.h`
 
 
 Struct Documentation

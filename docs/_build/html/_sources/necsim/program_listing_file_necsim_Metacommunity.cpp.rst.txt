@@ -8,22 +8,45 @@ Program Listing for File Metacommunity.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
+   #include <utility>
+   #include <unordered_map>
    #include "Metacommunity.h"
+   #include "neutral_analytical.h"
    #include "LogFile.h"
+   #include "SpeciesAbundancesHandler.h"
+   #include "SimulatedSpeciesAbundancesHandler.h"
+   #include "AnalyticalSpeciesAbundancesHandler.h"
    
-   Metacommunity::Metacommunity(): community_size(0), speciation_rate(0.0), seed(0), task(0), parameters_checked(false),
-                                   metacommunity_cumulative_abundances(nullptr), random(), metacommunity_tree()
+   namespace na = neutral_analytical;
+   
+   Metacommunity::Metacommunity() : seed(0), task(0), parameters_checked(false),
+                                    species_abundances_handler(static_pointer_cast<SpeciesAbundancesHandler>(
+                                            make_shared<SimulatedSpeciesAbundancesHandler>())),
+                                    random(make_shared<NRrand>()),
+                                    metacommunity_tree(make_unique<Tree>())
    {
    
    }
    
-   void Metacommunity::setCommunityParameters(unsigned long community_size_in, long double speciation_rate_in)
+   void Metacommunity::setCommunityParameters(shared_ptr<MetacommunityParameters> metacommunity_parameters)
    {
-       community_size = community_size_in;
-       speciation_rate = speciation_rate_in;
+       current_metacommunity_parameters = std::move(metacommunity_parameters);
+       // Check if no metacommunity option has been supplied - in which case use sensible defaults
+       if(current_metacommunity_parameters->option == "none" || current_metacommunity_parameters->option == "null")
+       {
+           // Simulate only for smaller community sizes
+           if(current_metacommunity_parameters->metacommunity_size > 1000)
+           {
+               current_metacommunity_parameters->option = "analytical";
+           }
+           else
+           {
+               current_metacommunity_parameters->option = "simulated";
+           }
+       }
    }
    
    void Metacommunity::checkSimulationParameters()
@@ -32,20 +55,25 @@ Program Listing for File Metacommunity.cpp
        {
            if(database == nullptr)
            {
-               throw FatalException("Cannot read simulation parameters as database is null pointer.");
+               throw FatalException(
+                       "Cannot read simulation current_metacommunity_parameters as database is null pointer.");
            }
            // Now do the same for times
            sqlite3_stmt *stmt = nullptr;
-           string sql_call = "SELECT seed, task from SIMULATION_PARAMETERS";
+           string sql_call = "SELECT seed, job_type from SIMULATION_PARAMETERS";
            int rc = sqlite3_prepare_v2(database, sql_call.c_str(), static_cast<int>(strlen(sql_call.c_str())), &stmt,
                                        nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
+               stringstream ss;
+               ss << "Could not read seed and job_type number from SIMULATION_PARAMETERS: Error code: " << rc;
+               ss << ": " << sqlite3_errmsg(database) << endl;
                sqlite3_close(database);
+               throw FatalException(ss.str());
            }
            sqlite3_step(stmt);
-           seed = static_cast<unsigned long>(sqlite3_column_int(stmt, 1));
-           random.setSeed(seed);
+           seed = static_cast<unsigned long>(sqlite3_column_int(stmt, 0));
+           random->setSeed(seed);
            task = static_cast<unsigned long>(sqlite3_column_int(stmt, 1));
            sqlite3_step(stmt);
            sqlite3_finalize(stmt);
@@ -56,12 +84,18 @@ Program Listing for File Metacommunity.cpp
    void Metacommunity::addSpecies(unsigned long &species_count, TreeNode *tree_node, set<unsigned long> &species_list)
    {
    
-       auto species_id = selectLineageFromMetacommunity();
-       if(species_list.empty() || species_list.find(species_id) != species_list.end())
+       auto species_id = species_abundances_handler->getRandomSpeciesID();
+       if(species_list.empty() || species_list.find(species_id) == species_list.end())
        {
            species_list.insert(species_id);
-           species_count ++;
+           species_count++;
        }
+   #ifdef DEBUG
+       if(tree_node->getSpeciesID() != 0)
+       {
+           throw FatalException("Trying to add species for lineages with non-zero species id. Please report this bug.");
+       }
+   #endif // DEBUG
        tree_node->burnSpecies(species_id);
    }
    
@@ -71,85 +105,113 @@ Program Listing for File Metacommunity.cpp
        writeLog(10, "Running spatially-implicit model for metacommunity generation.");
    #endif //DEBUG
        // First set up a non-spatial coalescence simulation to generate our metacommunity
-       SimParameters temp_parameters;
-       temp_parameters.setMetacommunityParameters(community_size, speciation_rate, seed, task);
-       metacommunity_tree.internalSetup(temp_parameters);
+       shared_ptr<SimParameters> temp_parameters = make_shared<SimParameters>();
+       // Generate a new unique seed by adding 1073741823 if the seed is 0 - this ensures that 0 and 1 never appear as
+       // random seeds, which cause autocorrelation in simulation outputs.
+       if(seed == 0)
+       {
+           seed = 1073741823;
+       }
+       temp_parameters->setMetacommunityParameters(current_metacommunity_parameters->metacommunity_size,
+                                                   current_metacommunity_parameters->speciation_rate, seed,
+                                                   task);
+       // Dispose of any previous Tree object and create a new one
+       metacommunity_tree = make_unique<Tree>();
+       metacommunity_tree->internalSetup(temp_parameters);
        // Run our simulation and calculate the species abundance distribution (as this is all that needs to be stored).
-       if(!metacommunity_tree.runSimulation())
+       if(!metacommunity_tree->runSimulation())
        {
            throw FatalException("Completion of the non-spatial coalescence simulation "
-                                        "to create the metacommunity did not finish in time.");
+                                "to create the metacommunity did not finish in time.");
        }
-       metacommunity_tree.applySpecRateInternal(speciation_rate, 0.0);
-       // row_out now contains the number of individuals per species
+       metacommunity_tree->applySpecRateInternal(current_metacommunity_parameters->speciation_rate, 0.0);
+       // species_abundances now contains the number of individuals per species
        // Make it cumulative to increase the speed of indexing using binary search.
-       metacommunity_cumulative_abundances = metacommunity_tree.getCumulativeAbundances();
+       species_abundances_handler = make_shared<SimulatedSpeciesAbundancesHandler>();
+       species_abundances_handler->setup(random, current_metacommunity_parameters->metacommunity_size,
+                                         current_metacommunity_parameters->speciation_rate);
+       auto tmp_species_abundances = metacommunity_tree->getSpeciesAbundances();
+       if(tmp_species_abundances->empty())
+       {
+           throw FatalException("Simulated species abundance list is empty. Please report this bug.");
+       }
+       // Remove the 0 at the start
+       species_abundances_handler->setAbundanceList(tmp_species_abundances);
    #ifdef DEBUG
        writeLog(10, "Spatially-implicit simulation completed.");
    #endif //DEBUG
-   
    }
    
-   unsigned long Metacommunity::selectLineageFromMetacommunity()
-   {
-       auto max_indices = metacommunity_cumulative_abundances->size() - 1;
-       auto random_value = random.i0(community_size - 1);
-   #ifdef DEBUG
-       // binary search
-       if(random_value > (*metacommunity_cumulative_abundances)[max_indices])
-       {
-           throw FatalException("Random number generation out of range of the community size in lineage selection.");
-       }
-   #endif //DEBUG
-       unsigned long mid_point;
-       unsigned long min_indices = 0;
-       while(min_indices < max_indices-1)
-       {
-           mid_point = static_cast<unsigned long>(floor(((max_indices - min_indices) / 2) + min_indices));
-           if(random_value == (*metacommunity_cumulative_abundances)[mid_point])
-           {
-               min_indices = mid_point;
-               max_indices = mid_point;
-           }
-           if(random_value <= (*metacommunity_cumulative_abundances)[mid_point])
-           {
-               max_indices = mid_point;
-           }
-           else
-           {
-               min_indices = mid_point;
-           }
-       }
-       if(min_indices == max_indices - 1)
-       {
-           return max_indices;
-       }
-   #ifdef DEBUG
-       if(min_indices != max_indices)
-       {
-           throw FatalException("Error in binary search algorithm for lineage selection. Please report this bug.");
-       }
-   #endif // DEBUG
-       return min_indices;
-   }
-   
-   void Metacommunity::applyNoOutput(SpecSimParameters *sp)
+   void Metacommunity::applyNoOutput(shared_ptr<SpecSimParameters> sp)
    {
    #ifdef DEBUG
        writeLog(10, "********************");
        writeLog(10, "Metacommunity application");
    #endif //DEBUG
-       setCommunityParameters(sp->metacommunity_size, sp->metacommunity_speciation_rate);
+   
        // Make sure that the connection is opened to file.
-       openSqlConnection(sp->filename);
+       if(!bSqlConnection)
+       {
+           openSqlConnection(sp->filename);
+       }
        checkSimulationParameters();
-       closeSqlConnection();
-       createMetacommunityNSENeutralModel();
+       for(const auto &item: sp->metacommunity_parameters)
+       {
+           setCommunityParameters(item);
+           printMetacommunityParameters();
+           if(current_metacommunity_parameters->option == "simulated")
+           {
+               createMetacommunityNSENeutralModel();
+           }
+           else if(current_metacommunity_parameters->option == "analytical")
+           {
+               // Use approximation for the SAD from Chisholm and Pacala (2010)
+               approximateSAD();
+           }
+           else
+           {
+               // Use the file path provided
+               readSAD();
+           }
    #ifdef DEBUG
-       writeLog(10, "Creating coalescence tree from metacommunity...");
+           writeLog(10, "Creating coalescence tree from metacommunity...");
    #endif //DEBUG
-       Community::applyNoOutput(sp);
+           Community::applyNoOutput(sp);
+       }
    }
+   
+   void Metacommunity::approximateSAD()
+   {
+       species_abundances_handler = static_pointer_cast<SpeciesAbundancesHandler>(
+               make_shared<AnalyticalSpeciesAbundancesHandler>());
+       species_abundances_handler->setup(random, current_metacommunity_parameters->metacommunity_size,
+                                         current_metacommunity_parameters->speciation_rate);
+   }
+   
+   void Metacommunity::readSAD()
+   {
+       Community external_metacommunity;
+       external_metacommunity.openSqlConnection(current_metacommunity_parameters->option);
+       shared_ptr<map<unsigned long, unsigned long>> sad = external_metacommunity.getSpeciesAbundances(
+               current_metacommunity_parameters->external_reference);
+       species_abundances_handler = static_pointer_cast<SpeciesAbundancesHandler>(
+               make_shared<SimulatedSpeciesAbundancesHandler>());
+       species_abundances_handler->setup(random, current_metacommunity_parameters->metacommunity_size,
+                                         current_metacommunity_parameters->speciation_rate);
+       species_abundances_handler->setAbundanceList(sad);
+   }
+   
+   void Metacommunity::printMetacommunityParameters()
+   {
+       stringstream ss;
+       ss << "Metacommunity current_metacommunity_parameters:" << endl;
+       ss << "Metacommunity size: " << current_metacommunity_parameters->metacommunity_size << endl;
+       ss << "Speciation rate: " << current_metacommunity_parameters->speciation_rate << endl;
+       ss << "Option: " << current_metacommunity_parameters->option << endl;
+       ss << "External reference: " << current_metacommunity_parameters->external_reference << endl;
+       writeInfo(ss.str());
+   }
+   
    
    
    

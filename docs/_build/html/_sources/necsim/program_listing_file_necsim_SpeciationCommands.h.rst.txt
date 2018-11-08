@@ -8,11 +8,11 @@ Program Listing for File SpeciationCommands.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #include <cstdio>
-   
+   #include <memory>
    #include "Community.h"
    #include "TreeNode.h"
    #include "SpecSimParameters.h"
@@ -20,10 +20,8 @@ Program Listing for File SpeciationCommands.h
    class SpeciationCommands
    {
    private:
-       // Contains all speciation parameters
-       SpecSimParameters sp;
-       // Set up for the output coalescence tree
-       Row<TreeNode> data;
+       // Contains all speciation current_metacommunity_parameters
+       shared_ptr<SpecSimParameters> sp;
        // Command-line arguments for parsing
        vector<string> comargs;
        // number of command-line arguments
@@ -32,7 +30,7 @@ Program Listing for File SpeciationCommands.h
    
    public:
        
-       SpeciationCommands()
+       SpeciationCommands() : sp(make_shared<SpecSimParameters>())
        {
            
        }

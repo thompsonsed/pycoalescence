@@ -8,7 +8,7 @@ Program Listing for File SpatialTree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    //
    #ifndef SPATIALTREE_H
@@ -62,7 +62,7 @@ Program Listing for File SpatialTree.h
    #include "SpeciesList.h"
    #include "Landscape.h"
    #include "Community.h"
-   #include "Setup.h"
+   #include "setup.h"
    #include "DispersalCoordinator.h"
    #include "ActivityMap.h"
    #include "Logger.h"
@@ -163,15 +163,15 @@ Program Listing for File SpatialTree.h
    
        void simPause() override;
    
-       void dumpMap(ofstream &out);
+       void dumpMap(shared_ptr<ofstream> out);
    
-       void dumpGrid(ofstream &out);
+       void dumpGrid(shared_ptr<ofstream> out);
    
        void simResume() override;
    
-       void loadGridSave(ifstream &in1);
+       void loadGridSave(shared_ptr<ifstream> in1);
    
-       void loadMapSave(ifstream &in1);
+       void loadMapSave(shared_ptr<ifstream> in1);
    
        void verifyActivityMaps();
    

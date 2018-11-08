@@ -7,7 +7,7 @@ File necsim.h
 
 
 
-Contains the functions allowing integration of the PyCoalescence python module directly to the c++. 
+Contains the functions allowing integration of the pycoalescence Python module directly to the c++. 
 
 
 .. contents:: Contents
@@ -92,5 +92,5 @@ Variables
 
 - :ref:`variable__state`
 
-- :ref:`variable_NECSimError`
+- :ref:`variable_necsimError`
 

@@ -1,8 +1,8 @@
 """When run from the command line, installs pycoalescence to the environment.
 
-Run ```python setup.py build``` to build the c++ module.
+Run ```python setup.py build``` to build the C++ module.
 
-Run ```python setup.py install``` to build the c++ module and install it to the environment.
+Run ```python setup.py install``` to build the C++ module and install it to the environment.
 
 Run ```python setup.py develop``` to install the package in development mode.
 """
@@ -23,7 +23,7 @@ except ImportError:
 	# Means that one of the dependencies isn't installed properly - this is fine
 	pass
 
-# Get all the c++ source files
+# Get all the C++ source files
 # py_src_files = [os.path.join("pycoalescence/lib", x) for x in os.listdir("pycoalescence/lib")
 # 				if ".cpp" in x]
 # necsim_src_files = [os.path.join("pycoalescence/lib/necsim", x) for x in os.listdir("pycoalescence/lib/necsim") if
@@ -50,7 +50,7 @@ with open('README.rst') as f:
 # 					  include_dirs = ["pycoalescence/lib" "pycoalescence/lib/necsim"],
 # 					  libraries=['gdal', 'boost_filesystem', 'boost_system', 'sqlite3'],
 # 					  extra_compile_args=['-std=c++14'],
-# 					  language="c++",  # generate C++ code
+# 					  language="C++",  # generate C++ code
 # 					  )
 
 setup(name='pycoalescence',

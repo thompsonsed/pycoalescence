@@ -1,9 +1,9 @@
-// This file is part of NECSim project which is released under MIT license.
+// This file is part of necsim project which is released under MIT license.
 // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
 /**
  * @author Samuel Thompson
  * @file CCommunity.h
- * @brief Wraps the various C++ community objects for accessing via python.
+ * @brief Wraps the various C++ community objects for accessing via Python.
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 
@@ -23,7 +23,7 @@
 using namespace std;
 
 /**
- * @brief Template for CCommunity and CMetacommunity objects for exporting to python
+ * @brief Template for CCommunity and CMetacommunity objects for exporting to Python
  * @tparam T the type of the Community
  */
 template<class T>
@@ -36,7 +36,7 @@ public:
 /**
  * @brief Sets up the speciation parameters.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
@@ -80,7 +80,7 @@ static PyObject *setupApplySpeciation(PyCommunityTemplate<T> *self, PyObject *ar
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -89,7 +89,7 @@ static PyObject *setupApplySpeciation(PyCommunityTemplate<T> *self, PyObject *ar
 /**
  * @brief Adds a time to the speciation parameters.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
@@ -109,7 +109,7 @@ static PyObject *addTime(PyCommunityTemplate<T> *self, PyObject *args)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -118,7 +118,7 @@ static PyObject *addTime(PyCommunityTemplate<T> *self, PyObject *args)
 /**
  * @brief Adds a set of protracted parameters to the speciation parameters.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
@@ -138,7 +138,7 @@ static PyObject *addProtractedParameters(PyCommunityTemplate<T> *self, PyObject 
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -147,12 +147,12 @@ static PyObject *addProtractedParameters(PyCommunityTemplate<T> *self, PyObject 
 /**
  * @brief Adds a set of metacommunity parameters to the speciation parameters.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *addMetacommunityParameters(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject *pyAddMetacommunityParameters(PyCommunityTemplate<T> *self, PyObject *args)
 {
 	unsigned long metacommunity_size;
 	double speciation_rate;
@@ -172,7 +172,7 @@ static PyObject *addMetacommunityParameters(PyCommunityTemplate<T> *self, PyObje
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -181,7 +181,7 @@ static PyObject *addMetacommunityParameters(PyCommunityTemplate<T> *self, PyObje
 /**
  * @brief Wipes the protracted parameters vectors
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
 template<class T>
@@ -195,7 +195,7 @@ static PyObject *wipeProtractedParameters(PyCommunityTemplate<T> *self)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -204,7 +204,7 @@ static PyObject *wipeProtractedParameters(PyCommunityTemplate<T> *self)
 /**
  * @brief Applies the speciation parameters to the coalescence tree to generate the community.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
 template<class T>
@@ -220,7 +220,7 @@ static PyObject *apply(PyCommunityTemplate<T> *self)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -229,7 +229,7 @@ static PyObject *apply(PyCommunityTemplate<T> *self)
 /**
  * @brief Outputs the community to database.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
 template<class T>
@@ -245,7 +245,7 @@ static PyObject *output(PyCommunityTemplate<T> *self)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -254,7 +254,7 @@ static PyObject *output(PyCommunityTemplate<T> *self)
 /**
  * @brief Resets the internal community object.
  * @tparam T the type of the Community
- * @param self the reference to the python self object
+ * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
 template<class T>
@@ -274,14 +274,14 @@ static PyObject *reset(PyCommunityTemplate<T> *self)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
 }
 
 template<class T>
-static PyObject *speciateRemainingLineages(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject *pySpeciateRemainingLineages(PyCommunityTemplate<T> *self, PyObject *args)
 {
 	try
 	{
@@ -297,7 +297,7 @@ static PyObject *speciateRemainingLineages(PyCommunityTemplate<T> *self, PyObjec
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -318,7 +318,7 @@ PyCommunity_dealloc(PyCommunityTemplate<T> *self)
 /**
  * @brief Initialises the Community object.
  * @tparam T the template type
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to pass to constructor
  * @param kwds keyword arguments to pass to constructor
  * @return
@@ -332,7 +332,7 @@ PyCommunity_init(PyCommunityTemplate<T> *self, PyObject *args, PyObject *kwds)
 }
 
 /**
- * @brief Methods associated with the python CCommunity object
+ * @brief Methods associated with the Python CCommunity object
  * @tparam T the type of the Community
  */
 template<class T>
@@ -340,27 +340,34 @@ PyMethodDef *genCommunityMethods()
 {
 	static PyMethodDef CommunityMethods[] =
 			{
-					{"setup",                      (PyCFunction) setupApplySpeciation<T>,      METH_VARARGS,
-																											"Sets the speciation current_metacommunity_parameters to be applied to the tree."},
-					{"add_time",                   (PyCFunction) addTime<T>,                   METH_VARARGS,
-																											"Adds a time to apply to the simulation."},
-					{"wipe_protracted_parameters", (PyCFunction) wipeProtractedParameters<T>,  METH_NOARGS,
-																											"Wipes the protracted current_metacommunity_parameters."},
-					{"add_protracted_parameters",  (PyCFunction) addProtractedParameters<T>,   METH_VARARGS,
-																											"Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
-					{"add_metacommunity_parameters", (PyCFunction) addMetacommunityParameters<T>, METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
-					{"apply",                      (PyCFunction) apply<T>,                     METH_NOARGS,
-																											"Applies the new speciation rate(s) to the coalescence tree."},
-					{"output",                     (PyCFunction) output<T>,                    METH_NOARGS, "Outputs the database to file."},
-					{"reset",                      (PyCFunction) reset<T>,                     METH_NOARGS, "Resets the internal object."},
-					{"speciate_remaining_lineages", (PyCFunction) speciateRemainingLineages<T>, METH_VARARGS,
-																											"Speciates the remaining lineages in a paused simulation to force it to appear complete"},
+					{"setup",                        (PyCFunction) setupApplySpeciation<T>,        METH_VARARGS,
+																												 "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
+					{"add_time",                     (PyCFunction) addTime<T>,                     METH_VARARGS,
+																												 "Adds a time to apply to the simulation."},
+					{"wipe_protracted_parameters",   (PyCFunction) wipeProtractedParameters<T>,    METH_NOARGS,
+																												 "Wipes the protracted current_metacommunity_parameters."},
+					{"add_protracted_parameters",    (PyCFunction) addProtractedParameters<T>,     METH_VARARGS,
+																												 "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
+					{"add_metacommunity_parameters", (PyCFunction) pyAddMetacommunityParameters<T>,  METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
+					{"apply",                        (PyCFunction) apply<T>,                       METH_NOARGS,
+																												 "Applies the new speciation rate(s) to the coalescence tree."},
+					{"output",                       (PyCFunction) output<T>,                      METH_NOARGS,  "Outputs the database to file."},
+					{"reset",                        (PyCFunction) reset<T>,                       METH_NOARGS,  "Resets the internal object."},
+					{"speciate_remaining_lineages",  (PyCFunction) pySpeciateRemainingLineages<T>, METH_VARARGS,
+																												 "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
 
-					{nullptr,                      nullptr, 0,                                              nullptr}
+					{nullptr,                        nullptr, 0,                                                 nullptr}
 			};
 	return CommunityMethods;
 }
 
+/**
+ * @brief Generates the community type using the object name and description
+ * @tparam T the C++ class to generate a Python object for
+ * @param tp_name the Python class name
+ * @param tp_doc the Python documentation
+ * @return
+ */
 template<class T>
 static PyTypeObject genCommunityType(char *tp_name, char *tp_doc)
 {
@@ -383,15 +390,30 @@ static PyTypeObject genCommunityType(char *tp_name, char *tp_doc)
 	return ret_Community_Type;
 }
 
+/**
+ * @brief Generates the community type using the object name and description
+ * @tparam T the C++ class to generate a Python object for
+ * @param tp_name the Python class name
+ * @param tp_doc the Python documentation
+ * @return
+ */
 template<class T>
 static PyTypeObject genCommunityType(string tp_name, string tp_doc)
 {
 	return genCommunityType<T>(const_cast<char *>(tp_name.c_str()), const_cast<char *>(tp_doc.c_str()));
 }
 
+
+/**
+ * @brief The type object containing the Community to pass on to Python.
+ */
 static PyTypeObject
 		C_CommunityType = genCommunityType<Community>((char *) "libnecsim.CCommunity",
 													  (char *) "C class for generating communities from neutral simulations");
+
+/**
+ * @brief The type object containing the Metacommunity to pass on to Python.
+ */
 static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "libnecsim.CMetacommunity",
 																		  (char *) "C class for generating communities from neutral simulations");
 

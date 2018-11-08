@@ -8,19 +8,20 @@ Program Listing for File Landscape.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef LANDSCAPE_H
    #define LANDSCAPE_H
    
-   # include <string>
-   # include <cstdio>
-   # include <vector>
-   # include <iostream>
-   # include <fstream>
-   # include <cmath>
-   # include <stdexcept>
-   # include <boost/filesystem.hpp>
+   #include <string>
+   #include <cstdio>
+   #include <vector>
+   #include <iostream>
+   #include <fstream>
+   #include <cmath>
+   #include <stdexcept>
+   #include <memory>
+   #include <boost/filesystem.hpp>
    
    #include "Map.h"
    #include "DataMask.h"
@@ -53,7 +54,7 @@ Program Listing for File Landscape.h
        // the historical coarser map.
        Map<uint32_t> historical_coarse_map;
        // for importing and storing the simulation set-up options.
-       SimParameters *mapvars;
+       shared_ptr<SimParameters> mapvars;
        // the minimum values for each dimension for offsetting.
        long fine_x_min{}, fine_y_min{}, coarse_x_min{}, coarse_y_min{};
        // the maximum values for each dimension for offsetting.
@@ -110,9 +111,8 @@ Program Listing for File Landscape.h
    
        fptr getValFunc;
    public:
-       Landscape()
+       Landscape() : mapvars(make_shared<SimParameters>())
        {
-           mapvars = nullptr;
            check_set_dim = false; // sets the check to false.
            is_historical = false;
            current_map_time = 0;
@@ -132,7 +132,7 @@ Program Listing for File Landscape.h
    
        bool hasHistorical();
    
-       void setDims(SimParameters *mapvarsin);
+       void setDims(shared_ptr<SimParameters> mapvarsin);
    
        bool checkMapExists();
    
@@ -226,7 +226,7 @@ Program Listing for File Landscape.h
    
        unsigned long getInitialCount(double dSample, DataMask &samplemask);
    
-       SimParameters *getSimParameters();
+       shared_ptr<SimParameters> getSimParameters();
    
        bool checkMap(const double &x, const double &y, const long &xwrap, const long &ywrap, const double generation);
    

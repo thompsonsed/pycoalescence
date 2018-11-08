@@ -8,16 +8,18 @@ Program Listing for File Community.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    //#define use_csv
    #include <algorithm>
    #include <set>
    #include <unordered_map>
+   #include <utility>
+   #include <numeric>
    #include "Community.h"
-   #include "DoubleComparison.h"
-   #include "Filesystem.h"
+   #include "double_comparison.h"
+   #include "file_system.h"
    
    bool checkSpeciation(const long double &random_number, const long double &speciation_rate,
                         const unsigned long &no_generations)
@@ -25,227 +27,6 @@ Program Listing for File Community.cpp
        // bool result1, result2, result3, result4;
        long double res = 1.0 - pow(double(1.0 - speciation_rate), double(no_generations));
        return random_number <= res;
-   }
-   
-   CommunityParameters::CommunityParameters(unsigned long reference_in, long double speciation_rate_in, long double time_in,
-                                            bool fragment_in, unsigned long metacommunity_reference_in,
-                                            const ProtractedSpeciationParameters &protracted_params)
-   {
-       setup(reference_in, speciation_rate_in, time_in, fragment_in, metacommunity_reference_in, protracted_params);
-   }
-   
-   void CommunityParameters::setup(unsigned long reference_in, long double speciation_rate_in, long double time_in, bool fragment_in,
-                                   unsigned long metacommunity_reference_in, const ProtractedSpeciationParameters &protracted_params)
-   {
-       time = time_in;
-       speciation_rate = speciation_rate_in;
-       fragment = fragment_in;
-       reference = reference_in;
-       metacommunity_reference = metacommunity_reference_in;
-       protracted_parameters = protracted_params;
-       updated = false;
-   
-   }
-   
-   bool CommunityParameters::compare(long double speciation_rate_in, long double time_in, bool fragment_in,
-                                     unsigned long metacommunity_reference_in,
-                                     const ProtractedSpeciationParameters &protracted_params)
-   {
-       if(doubleCompare(double(time_in), double(0.0), 0.00001))
-       {
-   #ifdef DEBUG
-           stringstream os;
-           os << "Detected generation at t=0.0." << endl;
-           writeLog(10, os);
-   #endif // DEBUG
-           return doubleCompare(speciation_rate, speciation_rate_in, speciation_rate * 0.000001) &&
-                  fragment == fragment_in && metacommunity_reference == metacommunity_reference_in &&
-                  protracted_params == protracted_parameters;
-       }
-       return doubleCompare(speciation_rate, speciation_rate_in, speciation_rate * 0.000001) &&
-              doubleCompare(time, time_in, time * 0.0000000001) && fragment == fragment_in &&
-              metacommunity_reference == metacommunity_reference_in &&
-               protracted_params == protracted_parameters;
-   }
-   
-   bool CommunityParameters::compare(long double speciation_rate_in, long double time_in,
-                                     unsigned long metacommunity_reference_in,
-                                     const ProtractedSpeciationParameters &protracted_params)
-   {
-       return doubleCompare(speciation_rate, speciation_rate_in, speciation_rate * 0.000001) &&
-              doubleCompare(time, time_in, 0.0000000001) && metacommunity_reference == metacommunity_reference_in &&
-               protracted_params == protracted_parameters;
-   }
-   
-   bool CommunityParameters::compare(unsigned long reference_in)
-   {
-       return reference == reference_in;
-   }
-   
-   void CommunitiesArray::pushBack(unsigned long reference, long double speciation_rate, long double time, bool fragment,
-                                   unsigned long metacommunity_reference,
-                                   const ProtractedSpeciationParameters &protracted_params)
-   {
-       CommunityParameters tmp_param(reference, speciation_rate, time, fragment, metacommunity_reference, protracted_params);
-       communityParameters.push_back(tmp_param);
-   }
-   
-   void CommunitiesArray::pushBack(CommunityParameters tmp_param)
-   {
-       communityParameters.push_back(tmp_param);
-   }
-   
-   CommunityParameters &CommunitiesArray::addNew(long double speciation_rate, long double time, bool fragment,
-                                                 unsigned long metacommunity_reference,
-                                                 const ProtractedSpeciationParameters &protracted_params)
-   {
-       unsigned long max_reference = 1;
-       for(auto &i : communityParameters)
-       {
-           if(i.compare(speciation_rate, time, metacommunity_reference, protracted_params))
-           {
-               if(i.fragment == fragment || !fragment)
-               {
-                   stringstream ss;
-                   ss << "Non-unique parameter set: " << endl;
-                   ss << "-speciation rate: " << speciation_rate << endl;
-                   ss << "-time: " << time << endl;
-                   ss << "-fragment: " << fragment << endl;
-                   ss << "-metacommunity reference: " << metacommunity_reference << endl;
-                   ss << "-protracted speciation min: " << protracted_params.min_speciation_gen << endl;
-                   ss << "-protracted speciation max: " << protracted_params.max_speciation_gen<< endl;
-                   writeCritical(ss.str());
-                   throw FatalException("Tried to get reference for non-unique parameter set in communities. "
-                                        "Please report this bug.");
-               }
-               else
-               {
-                   i.fragment = true;
-                   i.updated = true;
-                   return i;
-               }
-           }
-           else
-           {
-               if(i.reference >= max_reference)
-               {
-                   max_reference = i.reference + 1;
-               }
-           }
-       }
-       CommunityParameters tmp_param(max_reference, speciation_rate, time, fragment, metacommunity_reference,
-                                     protracted_params);
-       communityParameters.push_back(tmp_param);
-       return communityParameters.back();
-   }
-   
-   bool CommunitiesArray::hasPair(long double speciation_rate, double time, bool fragment,
-                                  unsigned long metacommunity_reference,
-                                  const ProtractedSpeciationParameters &protracted_params)
-   {
-       for(auto &i : communityParameters)
-       {
-           if(i.compare(speciation_rate, time, fragment, metacommunity_reference, protracted_params))
-           {
-               return true;
-           }
-       }
-       return false;
-   }
-   
-   MetacommunityParameters::MetacommunityParameters(unsigned long reference_in, long double speciation_rate_in,
-                                                    unsigned long metacommunity_size_in)
-   {
-       metacommunity_size = metacommunity_size_in;
-       speciation_rate = speciation_rate_in;
-       reference = reference_in;
-   }
-   
-   bool MetacommunityParameters::compare(long double speciation_rate_in, unsigned long metacommunity_size_in)
-   {
-       return doubleCompare(speciation_rate, speciation_rate_in, speciation_rate * 0.000001) &&
-              metacommunity_size == metacommunity_size_in;
-   }
-   
-   bool MetacommunityParameters::compare(unsigned long reference_in)
-   {
-       return reference == reference_in;
-   }
-   
-   void MetacommunitiesArray::pushBack(unsigned long reference, long double speciation_rate,
-                                       unsigned long metacommunity_size)
-   {
-       MetacommunityParameters tmp_param(reference, speciation_rate, metacommunity_size);
-       calc_array.push_back(tmp_param);
-   }
-   
-   void MetacommunitiesArray::pushBack(MetacommunityParameters tmp_param)
-   {
-       calc_array.push_back(tmp_param);
-   }
-   
-   unsigned long MetacommunitiesArray::addNew(long double speciation_rate, unsigned long metacommunity_size)
-   {
-       unsigned long max_reference = 1;
-       for(auto &i : calc_array)
-       {
-           if(i.compare(speciation_rate, metacommunity_size))
-           {
-   
-               throw FatalException("Tried to get reference for non-unique parameter set in metacommunities. "
-                                    "Please report this bug.");
-           }
-           else
-           {
-               if(i.reference >= max_reference)
-               {
-                   max_reference = i.reference + 1;
-               }
-           }
-       }
-       MetacommunityParameters tmp_param(max_reference, speciation_rate, metacommunity_size);
-       calc_array.push_back(tmp_param);
-       return max_reference;
-   }
-   
-   bool MetacommunitiesArray::hasPair(long double speciation_rate, unsigned long metacommunity_size)
-   {
-       for(auto &i : calc_array)
-       {
-           if(i.compare(speciation_rate, metacommunity_size))
-           {
-               return true;
-           }
-       }
-       return false;
-   }
-   
-   bool MetacommunitiesArray::hasPair(unsigned long reference)
-   {
-       for(auto &i : calc_array)
-       {
-           if(i.compare(reference))
-           {
-               return true;
-           }
-       }
-       return false;
-   }
-   
-   unsigned long MetacommunitiesArray::getReference(long double speciation_rate, unsigned long metacommunity_size)
-   {
-       if(metacommunity_size == 0)
-       {
-           return 0;
-       }
-       for(auto &i : calc_array)
-       {
-           if(i.compare(speciation_rate, metacommunity_size))
-           {
-               return i.reference;
-           }
-       }
-       return 0;
    }
    
    Samplematrix::Samplematrix()
@@ -279,7 +60,6 @@ Program Listing for File Community.cpp
    void Samplematrix::setFragment(Fragment &fragment_in)
    {
        fragment = fragment_in;
-   //          os << "W,E,N,S: " << fragment.x_west << ", " << fragment.x_east << ", " << fragment.y_north << ", " << fragment.y_south << endl;
        bIsFragment = true;
    }
    
@@ -288,9 +68,9 @@ Program Listing for File Community.cpp
        bIsFragment = false;
    }
    
-   void Community::setList(Row<TreeNode> *l)
+   void Community::setList(shared_ptr<vector<TreeNode>> l)
    {
-       nodes = l;
+       nodes = std::move(l);
    }
    
    void Community::setDatabase(sqlite3 *dbin)
@@ -322,7 +102,7 @@ Program Listing for File Community.cpp
        if(!has_imported_data)
        {
            throw SpeciesException(
-                   "ERROR_SPEC_003: Attempt to import samplemask object before simulation parameters: dimensions not known");
+                   "ERROR_SPEC_003: Attempt to import samplemask object before simulation current_metacommunity_parameters: dimensions not known");
        }
        // Check that the main data has been imported already, otherwise the dimensions of the samplemask will not be correct
        if(!has_imported_samplemask)
@@ -380,8 +160,7 @@ Program Listing for File Community.cpp
    #endif
            importSamplemask("null");
        }
-       //      os << "listsize: " << nodes->size() << endl;
-       unsigned long iSpecCount = 0;  // start at 2 because the last species has been burnt already.
+       unsigned long species_count = 0;  // start at 2 because the last species has been burnt already.
        // check that tips exist within the spatial and temporal frame of interest.
    #ifdef DEBUG
        writeLog(10, "Assigning tips.");
@@ -442,7 +221,7 @@ Program Listing for File Community.cpp
            {
                TreeNode *this_node = &(*nodes)[i];
                // check if any parents exist
-               if(!(*nodes)[this_node->getParent()].getExistence() && this_node->getExistence() &&
+               if(!(*nodes)[this_node->getParent()].exists() && this_node->exists() &&
                   !this_node->hasSpeciated())
                {
                    bSorter = true;
@@ -453,39 +232,50 @@ Program Listing for File Community.cpp
    #ifdef DEBUG
        writeLog(10, "Speciating lineages.");
    #endif // DEBUG
-       iSpecCount = 0;
+       species_count = 0;
        set<unsigned long> species_list;
        // Now loop again, creating a new species for each species that actually exists.
-       for(unsigned long i = 1; i < nodes->size(); i++)
+       auto start = nodes->begin();
+       start++;
+       for(auto item = start; item != nodes->end(); item++)
        {
-           TreeNode *this_node = &(*nodes)[i];
-           if(this_node->getExistence() && this_node->hasSpeciated())
+           if(item->exists() && item->hasSpeciated())
            {
-               addSpecies(iSpecCount, this_node, species_list);
+               addSpecies(species_count, &(*item), species_list);
            }
        }
+   
        // Compress the species IDs so that the we have full mapping of species_ids to integers in range 0:n
        // Only do so if the numbers do not match initially
+   
    #ifdef DEBUG
        writeLog(10, "Counting species.");
    #endif // DEBUG
-       if(!species_list.empty() && iSpecCount != *species_list.rbegin())
+       if(!species_list.empty() && species_count != *species_list.rbegin())
        {
+           stringstream ss;
+           ss << "initial count is " << species_count << " species" << endl;
+           writeInfo(ss.str());
+           ss.str("");
+           ss << "Rescaling species ids for " << species_list.size() << " species...";
+           writeInfo(ss.str());
+           unsigned long initial_species_count = species_count;
            unsigned long tmp_species_count = 0;
-           unordered_map<unsigned long, unsigned long> ids_map;
-           ids_map.reserve(iSpecCount);
+           // Maps old to new species ids
+           map<unsigned long, unsigned long> old_ids_to_new_ids;
+   //      old_ids_to_new_ids.reserve(species_count);
            for(unsigned long i = 1; i < nodes->size(); i++)
            {
                TreeNode *this_node = &(*nodes)[i];
-               if(this_node->hasSpeciated() && this_node->getExistence())
+               if(this_node->hasSpeciated() && this_node->exists())
                {
-                   auto map_id = ids_map.find(this_node->getSpeciesID());
-                   if(map_id == ids_map.end())
+                   auto map_id = old_ids_to_new_ids.find(this_node->getSpeciesID());
+                   if(map_id == old_ids_to_new_ids.end())
                    {
                        tmp_species_count++;
+                       old_ids_to_new_ids[this_node->getSpeciesID()] = tmp_species_count;
                        this_node->resetSpecies();
                        this_node->burnSpecies(tmp_species_count);
-                       ids_map.emplace(this_node->getSpeciesID(), tmp_species_count);
                    }
                    else
                    {
@@ -494,18 +284,27 @@ Program Listing for File Community.cpp
                    }
                }
            }
-           iSpecCount = tmp_species_count;
+           if(tmp_species_count > initial_species_count)
+           {
+               writeInfo("\n");
+               stringstream ss;
+               ss << "Number of generated species (" << tmp_species_count << ") is more than the initial species count ";
+               ss << "(" << initial_species_count << ") - please report this bug." << endl;
+               throw FatalException(ss.str());
+           }
+           species_count = tmp_species_count;
+           writeInfo("done!\n");
        }
        else
        {
-           iSpecCount = 0;
+           species_count = 0;
            for(unsigned long i = 0; i < nodes->size(); i++)
            {
                TreeNode *this_node = &(*nodes)[i];
                // count all speciation events, not just the ones that exist!
-               if(this_node->hasSpeciated() && this_node->getExistence() && this_node->getSpeciesID() != 0)
+               if(this_node->hasSpeciated() && this_node->exists() && this_node->getSpeciesID() != 0)
                {
-                   iSpecCount++;
+                   species_count++;
                }
            }
        }
@@ -524,7 +323,7 @@ Program Listing for File Community.cpp
            {
                TreeNode *this_node = &(*nodes)[i];
                //              os << i << endl;
-               if(this_node->getSpeciesID() == 0 && this_node->getExistence())
+               if(this_node->getSpeciesID() == 0 && this_node->exists())
                {
                    loopon = true;
                    this_node->burnSpecies((*nodes)[this_node->getParent()].getSpeciesID());
@@ -559,9 +358,9 @@ Program Listing for File Community.cpp
    #ifdef DEBUG
        writeLog(10, "Completed tree creation.");
    #endif // DEBUG
-       iSpecies = iSpecCount;
+       iSpecies = species_count;
        //      os << "iSpecies: " << iSpecies << endl;
-       return iSpecCount;
+       return species_count;
    }
    
    void Community::addSpecies(unsigned long &species_count, TreeNode *tree_node, set<unsigned long> &species_list)
@@ -572,27 +371,23 @@ Program Listing for File Community.cpp
    
    void Community::calcSpeciesAbundance()
    {
-       row_out.setSize(iSpecies + 1);
-       //      os << "iSpecies: " << iSpecies << endl;
-       for(unsigned long i = 0; i < row_out.size(); i++)
-       {
-           row_out[i] = 0;
-       }
+       species_abundances = make_shared<vector<unsigned long>>();
+       species_abundances->resize(iSpecies + 1, 0);
        for(unsigned long i = 1; i < nodes->size(); i++)
        {
            TreeNode *this_node = &(*nodes)[i];
            if(this_node->isTip() &&
               doubleCompare(this_node->getGeneration(), current_community_parameters->time, 0.0001) &&
-              this_node->getExistence())
+              this_node->exists())
            {
    #ifdef DEBUG
-               if(this_node->getSpeciesID() >= row_out.size())
+               if(this_node->getSpeciesID() >= species_abundances->size())
                {
                    throw out_of_range("Node index out of range of abundances size. Please report this bug.");
                }
    #endif // DEBUG
                // The line that counts the number of individuals
-               row_out[this_node->getSpeciesID()]++;
+               species_abundances->operator[](this_node->getSpeciesID())++;
    #ifdef DEBUG
                if(!samplemask.getMaskVal(this_node->getXpos(), this_node->getYpos(),
                                          this_node->getXwrap(), this_node->getYwrap()) &&
@@ -600,7 +395,7 @@ Program Listing for File Community.cpp
                {
                    stringstream ss;
                    ss << "x,y " << (*nodes)[i].getXpos() << ", " << (*nodes)[i].getYpos() << endl;
-                   ss << "tip: " << (*nodes)[i].isTip() << " Existance: " << (*nodes)[i].getExistence()
+                   ss << "tip: " << (*nodes)[i].isTip() << " Existance: " << (*nodes)[i].exists()
                         << " samplemask: " << samplemask.getMaskVal(this_node->getXpos(), this_node->getYpos(),
                                                                     this_node->getXwrap(), this_node->getYwrap()) << endl;
                    ss
@@ -624,7 +419,7 @@ Program Listing for File Community.cpp
                    ss << "samplemask: " << samplemask.getVal(this_node->getXpos(), this_node->getYpos(),
                                                              this_node->getXwrap(), this_node->getYwrap()) << endl;
                    ss << "parent (tip, exists, generations): " << p_node->isTip() << ", "
-                      << p_node->getExistence() << ", " << p_node->getGeneration() << endl;
+                      << p_node->exists() << ", " << p_node->getGeneration() << endl;
                    ss << "species id zero - i: " << i << " parent: " << p_node->getParent()
                       << " speciation_probability: " << p_node->getSpecRate() << "has speciated: " << p_node->hasSpeciated()
                       << endl;
@@ -634,13 +429,14 @@ Program Listing for File Community.cpp
    #endif
            }
        }
+   
    }
    
    void Community::resetTree()
    {
-       for(unsigned long i = 0; i < nodes->size(); i++)
+       for(auto &item: *nodes)
        {
-           (*nodes)[i].qReset();
+           item.qReset();
        }
    }
    
@@ -780,7 +576,7 @@ Program Listing for File Community.cpp
        // Create db query
        string all_commands = "SELECT * FROM SPECIES_LIST;";
        sqlite3_prepare_v2(database, all_commands.c_str(), static_cast<int>(strlen(all_commands.c_str())), &stmt, nullptr);
-       nodes->setSize(datasize + 1);
+       nodes->resize(datasize + 1);
        // Check that the file opened correctly.
        sqlite3_step(stmt);
        // Copy the data across to the TreeNode data structure.
@@ -804,16 +600,6 @@ Program Listing for File Community.cpp
            auto existence = bool(sqlite3_column_int(stmt, 9));
            double dSpec = sqlite3_column_double(stmt, 10);
            long double generationin = sqlite3_column_double(stmt, 12);
-           //          os << xval << ", " << yval << endl;
-           // ignored lineages are now not ignored!
-           // TODO fix this properly and check functionality
-   //      if(tip && !samplemask.getVal(xval, yval) && generationin > generation && false)
-   //      {
-   //          ignored_lineages++;
-   //          sqlite3_step(stmt);
-   //      }
-   //      else
-   //      {
            // the -1 is to ensure that the species_id_list includes all lineages, but fills the output from the beginning
            unsigned long index = i - 1 - ignored_lineages;
            (*nodes)[index].setup(tip, xval, yval, xwrap, ywrap, generationin);
@@ -872,20 +658,17 @@ Program Listing for File Community.cpp
        }
    }
    
-   Row<unsigned long> *Community::getCumulativeAbundances()
+   shared_ptr<vector<unsigned long>> Community::getCumulativeAbundances()
    {
-       unsigned long total = 0;
-       for(unsigned long i = 0; i < row_out.size(); i++)
-       {
-           total += row_out[i];
-           row_out[i] = total;
-       }
-       return &row_out;
+       shared_ptr<vector<unsigned long>> out = make_shared<vector<unsigned long>>();
+       out->reserve(species_abundances->size());
+       partial_sum(species_abundances->begin(), species_abundances->end(), out->begin());
+       return species_abundances;
    }
    
-   Row<unsigned long> Community::getRowOut()
+   shared_ptr<vector<unsigned long>> Community::getRowOut()
    {
-       return row_out;
+       return species_abundances;
    }
    
    unsigned long Community::getSpeciesNumber()
@@ -1002,16 +785,12 @@ Program Listing for File Community.cpp
    
            // Start the transaction
            sqlite3_exec(database, "BEGIN TRANSACTION;", nullptr, nullptr, nullptr);
-           for(unsigned long i = 0; i < row_out.size(); i++)
+           for(unsigned long i = 0; i < species_abundances->size(); i++)
            {
-               // only do all the export itself if the value of i is not 0
-               // if(row_out[i] != 0)
-               //{
-   
-               // fixed precision problem - lexical cast allows for printing of very small doubles.
+               // lexical cast fixes a precision problem that allows for printing of very small doubles.
                sqlite3_bind_int(stmt, 1, static_cast<int>(max_species_id++));
                sqlite3_bind_int(stmt, 2, static_cast<int>(i));
-               sqlite3_bind_int(stmt, 3, static_cast<int>(row_out[i]));
+               sqlite3_bind_int(stmt, 3, static_cast<int>(species_abundances->operator[](i)));
                sqlite3_bind_int(stmt, 4, static_cast<int>(current_community_parameters->reference));
                int step = sqlite3_step(stmt);
                // makes sure the while loop doesn't go forever.
@@ -1060,28 +839,23 @@ Program Listing for File Community.cpp
        else
        {
            stringstream ss;
-           ss << "parameters already applied, not outputting SPECIES_ABUNDANCES table..." << endl;
+           ss << "current_metacommunity_parameters already applied, not outputting SPECIES_ABUNDANCES table..." << endl;
            writeInfo(ss.str());
        }
    }
    
-   bool Community::checkCalculationsPerformed(long double speciation_rate, double time, bool fragments,
-                                              unsigned long metacommunity_size, long double metacommunity_speciation_rate,
-                                              ProtractedSpeciationParameters proc_parameters)
+   bool
+   Community::checkCalculationsPerformed(const long double &speciation_rate, const double &time, const bool &fragments,
+                                         const MetacommunityParameters &metacomm_parameters,
+                                         const ProtractedSpeciationParameters &proc_parameters)
    {
-       auto metacommunity_reference = past_metacommunities.getReference(metacommunity_speciation_rate, metacommunity_size);
-       if(metacommunity_reference == 0 && metacommunity_size != 0)
+       auto metacommunity_reference = past_metacommunities.getReference(metacomm_parameters);
+       if(metacommunity_reference == 0 && metacomm_parameters.isMetacommunityOption())
        {
            return false;
        }
-       bool has_pair = past_communities.hasPair(speciation_rate, time, fragments, metacommunity_reference, proc_parameters);
-   #ifdef DEBUG
-       stringstream os;
-       os << "Checking for calculations with sr=" << speciation_rate << ", t=" << time;
-       os << " and ref: " << past_metacommunities.getReference(metacommunity_speciation_rate,
-                                                               metacommunity_size) << ": " << has_pair << endl;
-       writeLog(10, os);
-   #endif // DEBUG
+       bool has_pair = past_communities.hasPair(speciation_rate, time, fragments, metacommunity_reference,
+                                                proc_parameters);
        if(fragments && past_communities.hasPair(speciation_rate, time, false, metacommunity_reference, proc_parameters))
        {
            return false;
@@ -1091,7 +865,7 @@ Program Listing for File Community.cpp
        {
            return true;
        }
-   //  if(past_communities.hasPair(speciation_rate, time, !fragments,
+   //  if(past_communities.hasOption(speciation_rate, time, !fragments,
    //                              past_metacommunities.getReference(metacommunity_speciation_rate, metacommunity_size)))
    //  {
    //      return !fragments || has_pair;
@@ -1115,9 +889,10 @@ Program Listing for File Community.cpp
    
        // Start the transaction
        sqlite3_exec(database, "BEGIN TRANSACTION;", nullptr, nullptr, nullptr);
-       for(unsigned long i = 0; i < row_out.size(); i++)
+       for(unsigned long i = 0; i < species_abundances->size(); i++)
        {
-           if(row_out[i] != 0)
+           auto tmp_row = &species_abundances->operator[](i);
+           if(*tmp_row != 0)
            {
                // fixed precision problem - lexical cast allows for printing of very small doubles.
                sqlite3_bind_int(stmt, 1, static_cast<int>(max_fragment_id++));
@@ -1125,7 +900,7 @@ Program Listing for File Community.cpp
                sqlite3_bind_double(stmt, 3, f.area);
                sqlite3_bind_int(stmt, 4, static_cast<int>(f.num));
                sqlite3_bind_int(stmt, 5, static_cast<int>(i));
-               sqlite3_bind_int(stmt, 6, static_cast<int>(row_out[i]));
+               sqlite3_bind_int(stmt, 6, static_cast<int>(*tmp_row));
                sqlite3_bind_int(stmt, 7, static_cast<int>(current_community_parameters->reference));
                int step = sqlite3_step(stmt);
                // makes sure the while loop doesn't go forever.
@@ -1295,10 +1070,10 @@ Program Listing for File Community.cpp
        for(unsigned long i = 1; i < nodes->size(); i++)
        {
            TreeNode *this_node = &(*nodes)[i];
-           //          os << nodes[i].getExistence() << endl;
+           //          os << nodes[i].exists() << endl;
            if(this_node->isTip() &&
-              this_node->getExistence() && doubleCompare(static_cast<double>(this_node->getGeneration()),
-                                                         static_cast<double>(current_community_parameters->time), 0.0001))
+              this_node->exists() && doubleCompare(static_cast<double>(this_node->getGeneration()),
+                                                   static_cast<double>(current_community_parameters->time), 0.0001))
            {
                if(samplemask.getMaskVal(this_node->getXpos(), this_node->getYpos(),
                                         this_node->getXwrap(), this_node->getYwrap()))
@@ -1481,6 +1256,7 @@ Program Listing for File Community.cpp
            os << "Importing fragments from " << fragment_file << endl;
            writeInfo(os.str());
    #ifdef use_csv
+           writeInfo("Using fast-cpp-csv-parse");
            // Then use the fast-cpp-csv-parser
            // There is a config file to import - here we use a specific piece of import code to parse the csv file.
            // first count the number of lines
@@ -1584,6 +1360,13 @@ Program Listing for File Community.cpp
                // Fragment name and dimensions
                try
                {
+                   for(auto &item : (*this_fragment))
+                   {
+                       if(item.empty())
+                       {
+                           throw invalid_argument("Cannot convert empty argument.");
+                       }
+                   }
                    fragments[i].name = (*this_fragment)[0];
                    fragments[i].x_west = stoi((*this_fragment)[1]);
                    fragments[i].y_north = stoi((*this_fragment)[2]);
@@ -1650,7 +1433,7 @@ Program Listing for File Community.cpp
        writeInfo("done!\n");
    }
    
-   void Community::setSimParameters(const SimParameters *sim_parameters)
+   void Community::setSimParameters(const shared_ptr<SimParameters> sim_parameters)
    {
        if(!has_imported_data)
        {
@@ -1701,7 +1484,7 @@ Program Listing for File Community.cpp
        {
    #ifdef DEBUG
            stringstream os;
-           os << "Reading parameters..." << flush;
+           os << "Reading current_metacommunity_parameters..." << flush;
    #endif
            sqlite3_stmt *stmt2;
            string sql_parameters = "SELECT speciation_rate, grid_x, grid_y, protracted, min_speciation_gen, max_speciation_gen, "
@@ -1711,7 +1494,7 @@ Program Listing for File Community.cpp
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
                stringstream ss;
-               ss << "ERROR_SQL_020: FATAL. Could not open simulation parameters in " << file << ". Error code: ";
+               ss << "Could not open simulation parameters in " << file << ": Error code: " << rc << ": ";
                ss << sqlite3_errmsg(database);
                sqlite3_close(database);
                throw SpeciesException(ss.str());
@@ -1752,6 +1535,16 @@ Program Listing for File Community.cpp
        has_imported_data = true;
    }
    
+   void Community::forceSimCompleteParameter()
+   {
+       if(!bSqlConnection)
+       {
+           openSqlConnection(spec_sim_parameters->filename);
+       }
+       string update_command = "UPDATE SIMULATION_PARAMETERS SET sim_complete=1 WHERE sim_complete=0;";
+       sqlite3_exec(database, update_command.c_str(), nullptr, nullptr, nullptr);
+   }
+   
    bool Community::isSetDatabase()
    {
        return database_set;
@@ -1765,18 +1558,21 @@ Program Listing for File Community.cpp
            applied_protracted_parameters.max_speciation_gen > max_speciation_gen))
        {
    #ifdef DEBUG
-           writeLog(50, "Applied speciation parameters: " + to_string(applied_protracted_parameters.min_speciation_gen) + ", " +
+           writeLog(50, "Applied speciation current_metacommunity_parameters: " + to_string(applied_protracted_parameters.min_speciation_gen) + ", " +
                    to_string(applied_protracted_parameters.max_speciation_gen));
-           writeLog(50, "Simulated speciation parameters: " + to_string(min_speciation_gen) + ", " +
+           writeLog(50, "Simulated speciation current_metacommunity_parameters: " + to_string(min_speciation_gen) + ", " +
                         to_string(max_speciation_gen));
    #endif // DEBUG
            stringstream ss;
-           ss << "Applied protracted speciation parameters: " << applied_protracted_parameters.min_speciation_gen << ", ";
+           ss << "Applied protracted speciation current_metacommunity_parameters: "
+              << applied_protracted_parameters.min_speciation_gen << ", ";
            ss << applied_protracted_parameters.max_speciation_gen << endl;
-           ss << "Original protracted speciation parameters: " << min_speciation_gen << ", " << max_speciation_gen << endl;
+           ss << "Original protracted speciation current_metacommunity_parameters: " << min_speciation_gen << ", "
+              << max_speciation_gen << endl;
            writeCritical(ss.str());
-           throw SpeciesException("Cannot use protracted parameters with minimum > simulated minimum or "
-                                  "maximum > simulated maximums.");
+           throw SpeciesException(
+                   "Cannot use protracted current_metacommunity_parameters with minimum > simulated minimum or "
+                   "maximum > simulated maximums.");
        }
    }
    
@@ -1795,16 +1591,19 @@ Program Listing for File Community.cpp
    
    void Community::getPreviousCalcs()
    {
-       // Read the community parameters and store them in the relevant objects
+       writeInfo("Getting previous calculations...");
+       // Read the community current_metacommunity_parameters and store them in the relevant objects
        sqlite3_stmt *stmt1;
        string call1 = "select count(type) from sqlite_master where type='table' and name='COMMUNITY_PARAMETERS'";
        int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
        if(rc != SQLITE_DONE && rc != SQLITE_OK)
        {
+           stringstream ss;
+           ss << "Could not detect COMMUNITY_PARAMETERS table while finding previous calculations. Error code: " << rc
+              << ": ";
+           ss << sqlite3_errmsg(database) << endl;
            sqlite3_close(database);
-           throw SpeciesException("ERROR_SQL_020: FATAL. Could not check for COMMUNITY_PARAMETERS table. Error code: " +
-                                  to_string(rc));
-           //              exit(EXIT_FAILURE);
+           throw FatalException(ss.str());
        }
        sqlite3_step(stmt1);
        auto has_community_parameters = static_cast<bool>(sqlite3_column_int(stmt1, 0));
@@ -1813,6 +1612,7 @@ Program Listing for File Community.cpp
        // Read the speciation rates from the community_parameters table
        if(has_community_parameters)
        {
+           writeInfo("previous calculations detected.\n");
            sqlite3_stmt *stmt2;
            string call2 = "SELECT reference, speciation_rate, time, fragments, metacommunity_reference ";
            if(protracted)
@@ -1824,9 +1624,11 @@ Program Listing for File Community.cpp
                                    nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
+               stringstream ss;
+               ss << "Could not select from COMMUNITY_PARAMETERS table. Error code: " << rc << ": ";
+               ss << sqlite3_errmsg(database) << endl;
                sqlite3_close(database);
-               throw SpeciesException("ERROR_SQL_020: FATAL. Could not detect COMMUNITY_PARAMETERS table. Error code: " +
-                                      to_string(rc));
+               throw SpeciesException(ss.str());
            }
            rc = sqlite3_step(stmt2);
            while(rc == SQLITE_ROW)
@@ -1834,7 +1636,8 @@ Program Listing for File Community.cpp
                auto row_val = sqlite3_column_int(stmt2, 0);
                if(row_val == 0)
                {
-                   writeWarning("Reference of 0 found in community parameters in database, skipping...\n");
+                   writeWarning(
+                           "Reference of 0 found in community current_metacommunity_parameters in database, skipping...\n");
                }
                else
                {
@@ -1842,7 +1645,7 @@ Program Listing for File Community.cpp
                    if(protracted)
                    {
                        tmp.min_speciation_gen = sqlite3_column_double(stmt2, 5);
-                       tmp.max_speciation_gen= sqlite3_column_double(stmt2, 6);
+                       tmp.max_speciation_gen = sqlite3_column_double(stmt2, 6);
                    }
                    past_communities.pushBack(static_cast<unsigned long>(row_val), sqlite3_column_double(stmt2, 1),
                                              sqlite3_column_double(stmt2, 2), bool(sqlite3_column_int(stmt2, 3)),
@@ -1853,7 +1656,7 @@ Program Listing for File Community.cpp
            if(rc != SQLITE_OK && rc != SQLITE_DONE)
            {
                stringstream ss;
-               ss << "ERROR_SQL_020b: FATAL. Could not read community parameters." << endl;
+               ss << "ERROR_SQL_020b: FATAL. Could not read community current_metacommunity_parameters." << endl;
                ss << "Code: " << rc << endl << "Errmsg: ";
                ss << sqlite3_errmsg(database) << endl;
                sqlite3_clear_bindings(stmt2);
@@ -1862,7 +1665,11 @@ Program Listing for File Community.cpp
            }
            sqlite3_finalize(stmt2);
        }
-       // And the same for metacommunity parameters
+       else
+       {
+           writeInfo("no previous calculations detected.\n");
+       }
+       // And the same for metacommunity current_metacommunity_parameters
        sqlite3_stmt *stmt3;
        string call3 = "select count(type) from sqlite_master where type='table' and name='METACOMMUNITY_PARAMETERS'";
        rc = sqlite3_prepare_v2(database, call3.c_str(), static_cast<int>(strlen(call3.c_str())), &stmt3, nullptr);
@@ -1881,7 +1688,7 @@ Program Listing for File Community.cpp
        if(has_community_parameters)
        {
            sqlite3_stmt *stmt4;
-           string call4 = "SELECT reference, speciation_rate, metacommunity_size FROM ";
+           string call4 = "SELECT reference, speciation_rate, metacommunity_size, option, external_reference FROM ";
            call4 += "METACOMMUNITY_PARAMETERS";
            rc = sqlite3_prepare_v2(database, call4.c_str(), static_cast<int>(strlen(call4.c_str())), &stmt4,
                                    nullptr);
@@ -1896,14 +1703,15 @@ Program Listing for File Community.cpp
            while(rc == SQLITE_ROW)
            {
                past_metacommunities.pushBack(static_cast<unsigned long>(sqlite3_column_int(stmt4, 0)),
-                                             sqlite3_column_double(stmt4, 1),
-                                             static_cast<unsigned long>(sqlite3_column_int(stmt4, 2)));
+                                             static_cast<unsigned long>(sqlite3_column_int(stmt4, 2)),
+                                             sqlite3_column_double(stmt4, 1), (char *) (sqlite3_column_text(stmt4, 3)),
+                                             static_cast<const unsigned long &>(sqlite3_column_int(stmt4, 4)));
                rc = sqlite3_step(stmt4);
            }
            if(rc != SQLITE_OK && rc != SQLITE_DONE)
            {
                stringstream ss;
-               ss << "ERROR_SQL_020: FATAL. Could not read metacommunity parameters." << endl;
+               ss << "ERROR_SQL_020: FATAL. Could not read metacommunity current_metacommunity_parameters." << endl;
                ss << "Code: " << rc << endl << "Errmsg: ";
                ss << sqlite3_errmsg(database) << endl;
                sqlite3_clear_bindings(stmt4);
@@ -1915,32 +1723,32 @@ Program Listing for File Community.cpp
        }
    }
    
-   void Community::addCalculationPerformed(long double speciation_rate, double time, bool fragments,
-                                           unsigned long metacommunity_size, long double metacommunity_speciation_rate,
-                                           const ProtractedSpeciationParameters &protracted_params)
+   void Community::addCalculationPerformed(const long double &speciation_rate, const double &time, const bool &fragments,
+                                           const MetacommunityParameters &metacomm_parameters,
+                                           const ProtractedSpeciationParameters &protracted_parameters)
    {
-       auto meta_reference = past_metacommunities.getReference(metacommunity_speciation_rate,
-                                                               metacommunity_size);
-       if(meta_reference == 0 && metacommunity_size != 0)
+       auto meta_reference = past_metacommunities.getReference(metacomm_parameters);
+       if(meta_reference == 0 && metacomm_parameters.isMetacommunityOption())
        {
    #ifdef DEBUG
            stringstream ss;
-           ss << "Adding metacommunity (" << metacommunity_size << ", " << metacommunity_speciation_rate << ")" << endl;
+           ss << "Adding metacommunity (" << metacomm_parameters.metacommunity_size << ", " <<
+              metacomm_parameters.speciation_rate << ")" << endl;
            writeInfo(ss.str());
    #endif
-           meta_reference = past_metacommunities.addNew(metacommunity_speciation_rate, metacommunity_size);
+           meta_reference = past_metacommunities.addNew(metacomm_parameters);
        }
-       current_community_parameters = &past_communities.addNew(speciation_rate, time, fragments, meta_reference,
-                                                               protracted_params);
+       current_community_parameters = past_communities.addNew(speciation_rate, time, fragments, meta_reference,
+                                                              protracted_parameters);
    #ifdef DEBUG
-       for(auto &i : past_communities.communityParameters)
+       for(const auto &i : past_communities.comm_parameters)
        {
-           if(doubleCompare(i.time, current_community_parameters->time, 0.00001) &&
-               doubleCompare(i.speciation_rate, current_community_parameters->speciation_rate,
-                             i.speciation_rate*0.00001) &&
-                   i.protracted_parameters == current_community_parameters->protracted_parameters &&
-                   i.metacommunity_reference == current_community_parameters->metacommunity_reference &&
-                   i.reference != current_community_parameters->reference)
+           if(doubleCompare(i->time, current_community_parameters->time, 0.00001) &&
+               doubleCompare(i->speciation_rate, current_community_parameters->speciation_rate,
+                             i->speciation_rate*0.00001) &&
+                   i->protracted_parameters == current_community_parameters->protracted_parameters &&
+                   i->metacommunity_reference == current_community_parameters->metacommunity_reference &&
+                   i->reference != current_community_parameters->reference)
            {
                throw FatalException("Communities are identical, but references differ! Please report this bug.");
            }
@@ -1957,10 +1765,11 @@ Program Listing for File Community.cpp
        int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
        if(rc != SQLITE_DONE && rc != SQLITE_OK)
        {
+           stringstream ss;
+           ss << "Could not detect COMMUNITY_PARAMETERS table while getting unique community references. Error code: ";
+           ss << rc << ": " << sqlite3_errmsg(database) << endl;
            sqlite3_close(database);
-           throw SpeciesException("ERROR_SQL_020: FATAL. Could not check for COMMUNITY_PARAMETERS table. Error code: " +
-                                  to_string(rc));
-           //              exit(EXIT_FAILURE);
+           throw FatalException(ss.str());
        }
        sqlite3_step(stmt1);
        auto has_community_parameters = static_cast<bool>(sqlite3_column_int(stmt1, 0));
@@ -1975,9 +1784,11 @@ Program Listing for File Community.cpp
                                    nullptr);
            if(rc != SQLITE_DONE && rc != SQLITE_OK)
            {
+               stringstream ss;
+               ss << "Could not get distinct references from COMMUNITY_PARAMETERS table. Error code: " << rc << ": ";
+               ss << sqlite3_errmsg(database) << endl;
                sqlite3_close(database);
-               throw SpeciesException("ERROR_SQL_020: FATAL. Could not detect COMMUNITY_PARAMETERS table. Error code: " +
-                                      to_string(rc));
+               throw FatalException(ss.str());
            }
            rc = sqlite3_step(stmt2);
            while(rc != SQLITE_DONE)
@@ -1986,7 +1797,7 @@ Program Listing for File Community.cpp
                rc = sqlite3_step(stmt2);
                if(rc > 10000)
                {
-                   throw SpeciesException("ERROR_SQL_020: FATAL. Could not read speciation rates.");
+                   throw SpeciesException("Could not read speciation rates.");
                }
            }
            sqlite3_step(stmt2);
@@ -1998,7 +1809,7 @@ Program Listing for File Community.cpp
    vector<unsigned long> Community::getUniqueMetacommunityRefs()
    {
        vector<unsigned long> unique_metacommunity_refs;
-       // Read the community parameters and store them in the relevant objects
+       // Read the community current_metacommunity_parameters and store them in the relevant objects
        sqlite3_stmt *stmt1;
        string call1 = "select count(type) from sqlite_master where type='table' and name='METACOMMUNITY_PARAMETERS'";
        int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
@@ -2045,19 +1856,19 @@ Program Listing for File Community.cpp
    
    void Community::writeNewCommunityParameters()
    {
-       // Find new community parameters to add
+       // Find new community current_metacommunity_parameters to add
        auto unique_community_refs = getUniqueCommunityRefs();
        CommunitiesArray communities_to_write;
-       for(auto &community_param : past_communities.communityParameters)
+       for(auto &community_param : past_communities.comm_parameters)
        {
            if(find(unique_community_refs.begin(),
-                   unique_community_refs.end(), community_param.reference) == unique_community_refs.end())
+                   unique_community_refs.end(), community_param->reference) == unique_community_refs.end())
            {
                communities_to_write.pushBack(community_param);
-               unique_community_refs.push_back(community_param.reference);
+               unique_community_refs.push_back(community_param->reference);
            }
        }
-       if(!communities_to_write.communityParameters.empty())
+       if(!communities_to_write.comm_parameters.empty())
        {
            // Create the table if it doesn't exist
            string table_command = "CREATE TABLE IF NOT EXISTS COMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,"
@@ -2082,21 +1893,21 @@ Program Listing for File Community.cpp
                               nullptr);
            // Then add the required elements
            sqlite3_exec(database, "BEGIN TRANSACTION;", nullptr, nullptr, nullptr);
-           for(auto &item : communities_to_write.communityParameters)
+           for(auto &item : communities_to_write.comm_parameters)
            {
-               if(item.reference == 0)
+               if(item->reference == 0)
                {
                    continue;
                }
-               sqlite3_bind_int(stmt, 1, static_cast<int>(item.reference));
-               sqlite3_bind_double(stmt, 2, static_cast<double>(item.speciation_rate));
-               sqlite3_bind_double(stmt, 3, static_cast<double>(item.time));
-               sqlite3_bind_int(stmt, 4, static_cast<int>(item.fragment));
-               sqlite3_bind_int(stmt, 5, static_cast<int>(item.metacommunity_reference));
+               sqlite3_bind_int(stmt, 1, static_cast<int>(item->reference));
+               sqlite3_bind_double(stmt, 2, static_cast<double>(item->speciation_rate));
+               sqlite3_bind_double(stmt, 3, static_cast<double>(item->time));
+               sqlite3_bind_int(stmt, 4, static_cast<int>(item->fragment));
+               sqlite3_bind_int(stmt, 5, static_cast<int>(item->metacommunity_reference));
                if(protracted)
                {
-                   sqlite3_bind_int(stmt, 6, static_cast<int>(item.protracted_parameters.min_speciation_gen));
-                   sqlite3_bind_int(stmt, 7, static_cast<int>(item.protracted_parameters.max_speciation_gen));
+                   sqlite3_bind_double(stmt, 6, item->protracted_parameters.min_speciation_gen);
+                   sqlite3_bind_double(stmt, 7, item->protracted_parameters.max_speciation_gen);
                }
                time_t start_check, end_check;
                time(&start_check);
@@ -2136,51 +1947,54 @@ Program Listing for File Community.cpp
        }
    }
    
-   void Community::writeNewMetacommuntyParameters()
+   void Community::writeNewMetacommunityParameters()
    {
        auto unique_metacommunity_refs = getUniqueMetacommunityRefs();
        MetacommunitiesArray metacommunities_to_write;
        if(unique_metacommunity_refs.empty())
        {
-           for(auto &community_param : past_metacommunities.calc_array)
+           for(auto &community_param : past_metacommunities.metacomm_parameters)
            {
                metacommunities_to_write.pushBack(community_param);
            }
        }
        else
        {
-           for(auto &community_param : past_metacommunities.calc_array)
+           for(auto &community_param : past_metacommunities.metacomm_parameters)
            {
                if(find(unique_metacommunity_refs.begin(),
-                       unique_metacommunity_refs.end(), community_param.reference) == unique_metacommunity_refs.end())
+                       unique_metacommunity_refs.end(), community_param->reference) == unique_metacommunity_refs.end())
                {
                    metacommunities_to_write.pushBack(community_param);
-                   unique_metacommunity_refs.push_back(community_param.reference);
+                   unique_metacommunity_refs.push_back(community_param->reference);
                }
            }
        }
-       if(!metacommunities_to_write.calc_array.empty())
+       if(!metacommunities_to_write.metacomm_parameters.empty())
        {
            // Create the table if it doesn't exist
            string table_command = "CREATE TABLE IF NOT EXISTS METACOMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL,"
-                                  " speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);";
+                                  " speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL, "
+                                  "option TEXT NOT NULL, external_reference INT NOT NULL);";
            sqlite3_exec(database, table_command.c_str(), nullptr, nullptr, nullptr);
            sqlite3_stmt *stmt = nullptr;
-           table_command = "INSERT INTO METACOMMUNITY_PARAMETERS (reference, speciation_rate, metacommunity_size"
-                           ") VALUES (?,?,?);";
+           table_command = "INSERT INTO METACOMMUNITY_PARAMETERS (reference, speciation_rate, metacommunity_size, "
+                           "option, external_reference) VALUES (?,?,?, ?, ?);";
            sqlite3_prepare_v2(database, table_command.c_str(), static_cast<int>(strlen(table_command.c_str())), &stmt,
                               nullptr);
            // Then add the required elements
            sqlite3_exec(database, "BEGIN TRANSACTION;", nullptr, nullptr, nullptr);
-           for(auto &item : metacommunities_to_write.calc_array)
+           for(auto &item : metacommunities_to_write.metacomm_parameters)
            {
-               if(item.reference == 0)
+               if(item->reference == 0)
                {
                    continue;
                }
-               sqlite3_bind_int(stmt, 1, static_cast<int>(item.reference));
-               sqlite3_bind_double(stmt, 2, static_cast<double>(item.speciation_rate));
-               sqlite3_bind_int(stmt, 3, static_cast<int>(item.metacommunity_size));
+               sqlite3_bind_int(stmt, 1, static_cast<int>(item->reference));
+               sqlite3_bind_double(stmt, 2, static_cast<double>(item->speciation_rate));
+               sqlite3_bind_int(stmt, 3, static_cast<int>(item->metacommunity_size));
+               sqlite3_bind_text(stmt, 4, item->option.c_str(), static_cast<int>(item->option.length()), SQLITE_TRANSIENT);
+               sqlite3_bind_int(stmt, 5, static_cast<int>(item->external_reference));
                time_t start_check, end_check;
                time(&start_check);
                time(&end_check);
@@ -2195,8 +2009,8 @@ Program Listing for File Community.cpp
    #ifdef DEBUG
                    stringstream ss;
                    ss << "SQLITE error code: " << step << endl;
-                   ss << "Metacommunity reference: " << item.reference << endl;
-                   ss << "Speciation rate: " << item.speciation_rate << ", metacommunity size: " << item.metacommunity_size << endl;
+                   ss << "Metacommunity reference: " << item->reference << endl;
+                   ss << "Speciation rate: " << item->speciation_rate << ", metacommunity size: " << item->metacommunity_size << endl;
                    ss << sqlite3_errmsg(database) << endl;
                    writeLog(10, ss);
    #endif // DEBUG
@@ -2221,11 +2035,121 @@ Program Listing for File Community.cpp
        }
    }
    
+   void Community::createSpeciesList()
+   {
+       string create_species_list;
+       create_species_list =
+               "CREATE TABLE SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, xval INT NOT NULL,";
+       create_species_list += "yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, speciated INT NOT "
+                              "NULL, parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT "
+                              "NULL, gen_added DOUBLE NOT NULL);";
+   
+       // Create the table within the SQL database
+       char *sErrMsg = nullptr;
+       int rc = sqlite3_exec(database, create_species_list.c_str(), nullptr, nullptr, &sErrMsg);
+       if(rc != SQLITE_OK)
+       {
+           stringstream ss;
+           ss << "Error creating SPECIES_LIST table in database: " << sErrMsg << endl;
+           throw FatalException(ss.str());
+       }
+   }
+   
+   void Community::deleteSpeciesList()
+   {
+       string wipe_species_list;
+       wipe_species_list =
+               "DROP TABLE IF EXISTS SPECIES_LIST;";
+       // Drop the table from the SQL database
+       char *sErrMsg = nullptr;
+       int rc = sqlite3_exec(database, wipe_species_list.c_str(), nullptr, nullptr, &sErrMsg);
+       if(rc != SQLITE_OK)
+       {
+           stringstream ss;
+           ss << "Error dropping SPECIES_LIST table in database: " << sErrMsg << endl;
+           throw FatalException(ss.str());
+       }
+   }
+   
+   void Community::writeSpeciesList(const unsigned long &enddata)
+   {
+       sqlite3_stmt *stmt = nullptr;
+       char *sErrMsg = nullptr;
+       // Now create the prepared statement into which we shall insert the values from the table
+       string insert_species_list = "INSERT INTO SPECIES_LIST "
+                                    "(ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence,randnum,gen_alive,gen_added) "
+                                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+       sqlite3_prepare_v2(database, insert_species_list.c_str(), static_cast<int>(strlen(insert_species_list.c_str())),
+                          &stmt, nullptr);
+   
+       // Start the transaction
+       int rc = sqlite3_exec(database, "BEGIN TRANSACTION;", nullptr, nullptr, &sErrMsg);
+       if(rc != SQLITE_OK)
+       {
+           writeError("ERROR_SQL_008: Cannot start SQL transaction. Check memory database assignment and SQL commands.");
+       }
+       for(unsigned int i = 0; i <= enddata; i++)
+       {
+           sqlite3_bind_int(stmt, 1, i);
+           sqlite3_bind_int(stmt, 2, static_cast<int>((*nodes)[i].getSpeciesID()));
+           sqlite3_bind_int(stmt, 3, static_cast<int>((*nodes)[i].getXpos()));
+           sqlite3_bind_int(stmt, 4, static_cast<int>((*nodes)[i].getYpos()));
+           sqlite3_bind_int(stmt, 5, static_cast<int>((*nodes)[i].getXwrap()));
+           sqlite3_bind_int(stmt, 6, static_cast<int>((*nodes)[i].getYwrap()));
+           sqlite3_bind_int(stmt, 7, (*nodes)[i].isTip());
+           sqlite3_bind_int(stmt, 8, (*nodes)[i].hasSpeciated());
+           sqlite3_bind_int(stmt, 9, static_cast<int>((*nodes)[i].getParent()));
+           sqlite3_bind_int(stmt, 10, (*nodes)[i].exists());
+           sqlite3_bind_double(stmt, 11, static_cast<double>((*nodes)[i].getSpecRate()));
+           sqlite3_bind_int(stmt, 12, static_cast<int>((*nodes)[i].getGenRate()));
+           sqlite3_bind_double(stmt, 13, static_cast<double>((*nodes)[i].getGeneration()));
+           sqlite3_step(stmt);
+           sqlite3_clear_bindings(stmt);
+           sqlite3_reset(stmt);
+       }
+       stringstream os;
+       os << "\r    Executing SQL commands...." << flush;
+       writeInfo(os.str());
+       // execute the command and close the connection to the database
+       rc = sqlite3_exec(database, "END TRANSACTION;", nullptr, nullptr, &sErrMsg);
+       if(rc != SQLITE_OK)
+       {
+           stringstream ss;
+           ss << "ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL "
+                 "commands. Ensure SQL statements are properly cleared."
+              << endl;
+           ss << "Error code: " << rc << endl;
+           // try again
+           int i = 0;
+           while((rc != SQLITE_OK && rc != SQLITE_DONE) && i < 10)
+           {
+               sleep(1);
+               i++;
+               rc = sqlite3_exec(database, "END TRANSACTION;", nullptr, nullptr, &sErrMsg);
+               ss << "Attempt " << i << " failed..." << endl;
+               ss << "ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL "
+                     "commands. Ensure SQL statements are properly cleared." << endl;
+           }
+           writeError(ss.str());
+       }
+       // Need to finalise the statement
+       rc = sqlite3_finalize(stmt);
+       if(rc != SQLITE_OK)
+       {
+           stringstream ss;
+           ss << "ERROR_SQL_008: Cannot complete SQL transaction. Check memory database assignment and SQL "
+                 "commands. Ensure SQL statements are properly cleared."
+              << endl;
+           ss << "Error code: " << rc << endl;
+       }
+   
+   }
+   
    void Community::updateCommunityParameters()
    {
-       for(auto parameter : past_communities.communityParameters)
+       for(const auto &parameter : past_communities.comm_parameters)
        {
-           if(parameter.updated)
+           if(parameter->updated)
            {
                if(!bSqlConnection)
                {
@@ -2234,7 +2158,7 @@ Program Listing for File Community.cpp
    
                // Now find out the max size of the species_id_list, so we have a count to work from
                string count_command = "UPDATE COMMUNITY_PARAMETERS SET fragments = 1 WHERE reference = ";
-               count_command += to_string(parameter.reference) + ";";
+               count_command += to_string(parameter->reference) + ";";
                int rc = sqlite3_exec(database, count_command.c_str(), nullptr, nullptr, nullptr);
                // Need to finalise the statement
                if(rc != SQLITE_OK && rc != SQLITE_DONE)
@@ -2255,18 +2179,19 @@ Program Listing for File Community.cpp
        os << "***************************" << endl;
        os << "STARTING CALCULATIONS" << endl;
        os << "Input file is " << spec_sim_parameters->filename << endl;
-       sort(spec_sim_parameters->all_speciation_rates.begin(), spec_sim_parameters->all_speciation_rates.end());
        if(!spec_sim_parameters->bMultiRun)
        {
-           os << "Speciation rate is " << spec_sim_parameters->all_speciation_rates[0] << endl;
+           os << "Speciation rate is " << *spec_sim_parameters->all_speciation_rates.begin() << endl;
        }
        else
        {
            os << "Speciation rates are: " << flush;
-           for(unsigned int i = 0; i < spec_sim_parameters->all_speciation_rates.size(); i++)
+           unsigned long i = 0;
+           for(const auto &item :spec_sim_parameters->all_speciation_rates)
            {
-               os << spec_sim_parameters->all_speciation_rates[i] << flush;
-               if(i + 1 == spec_sim_parameters->all_speciation_rates.size())
+               os << item << flush;
+               i++;
+               if(i == spec_sim_parameters->all_speciation_rates.size())
                {
                    os << "." << endl;
                }
@@ -2280,28 +2205,32 @@ Program Listing for File Community.cpp
        if(!spec_sim_parameters->protracted_parameters.empty())
        {
            os.str("");
-           os << "Protracted speciation parameters (min, max) are: " << endl;
+           os << "Protracted speciation current_metacommunity_parameters (min, max) are: " << endl;
            for(const auto i : spec_sim_parameters->protracted_parameters)
            {
                os << i.min_speciation_gen << ", " << i.max_speciation_gen << endl;
            }
            writeInfo(os.str());
        }
-       if(spec_sim_parameters->metacommunity_size > 0)
+       os.str("");
+       for(const auto &item: spec_sim_parameters->metacommunity_parameters)
        {
-           os.str("");
-           os << "Metacommunity size: " << spec_sim_parameters->metacommunity_size << endl;
-           os << "Metacommunity speciation rate: " << spec_sim_parameters->metacommunity_speciation_rate << endl;
+           if(item->metacommunity_size > 0)
+           {
+               os << "Metacommunity size: " << item->metacommunity_size << endl;
+               os << "Metacommunity speciation rate: " << item->speciation_rate << endl;
+           }
        }
+       writeInfo(os.str());
    }
    
    void Community::calculateTree()
    {
        stringstream os;
-       for(auto protracted_params : spec_sim_parameters->protracted_parameters)
+       for(const auto &protracted_params : spec_sim_parameters->protracted_parameters)
        {
            setProtractedParameters(protracted_params);
-           for(auto sr : spec_sim_parameters->all_speciation_rates)
+           for(const auto &sr : spec_sim_parameters->all_speciation_rates)
            {
                os << "Calculating speciation rate " << sr << endl;
                writeInfo(os.str());
@@ -2313,14 +2242,10 @@ Program Listing for File Community.cpp
                    writeInfo(os.str());
                    resetTree();
                    if(!checkCalculationsPerformed(sr, time, spec_sim_parameters->use_fragments,
-                                                  spec_sim_parameters->metacommunity_size,
-                                                  spec_sim_parameters->metacommunity_speciation_rate,
-                                                  applied_protracted_parameters))
+                                                  *current_metacommunity_parameters, applied_protracted_parameters))
                    {
                        addCalculationPerformed(sr, time, spec_sim_parameters->use_fragments,
-                                               spec_sim_parameters->metacommunity_size,
-                                               spec_sim_parameters->metacommunity_speciation_rate,
-                                               applied_protracted_parameters);
+                                               *current_metacommunity_parameters, applied_protracted_parameters);
                        createDatabase();
                        if(spec_sim_parameters->use_spatial)
                        {
@@ -2334,7 +2259,9 @@ Program Listing for File Community.cpp
                    else
                    {
                        os.str("");
-                       os << "calculation already performed for " << sr << " at time " << time << endl;
+                       os << "calculation already performed for speciation rate=" << sr << ", time=" << time;
+                       os << " and protracted parameters " << protracted_params.min_speciation_gen << ", ";
+                       os << protracted_params.max_speciation_gen << endl;
                        writeInfo(os.str());
                    }
                }
@@ -2345,7 +2272,7 @@ Program Listing for File Community.cpp
    void Community::output()
    {
        writeNewCommunityParameters();
-       writeNewMetacommuntyParameters();
+       writeNewMetacommunityParameters();
        updateCommunityParameters();
        exportDatabase();
    }
@@ -2361,36 +2288,34 @@ Program Listing for File Community.cpp
        writeInfo(os.str());
    }
    
-   void Community::apply(SpecSimParameters *sp)
+   void Community::apply(shared_ptr<SpecSimParameters> sp)
    {
        time_t tStart{};
        time_t tEnd{};
        // Start the clock
        time(&tStart);
-       applyNoOutput(sp);
+       applyNoOutput(std::move(sp));
        output();
        printEndTimes(tStart, tEnd);
    }
    
-   void Community::applyNoOutput(SpecSimParameters *sp)
+   void Community::applyNoOutput(shared_ptr<SpecSimParameters> sp)
    {
-       doApplication(sp);
+       doApplication(std::move(sp));
    }
    
-   
-   
-   void Community::doApplication(SpecSimParameters *sp)
+   void Community::doApplication(shared_ptr<SpecSimParameters> sp)
    {
-       Row<TreeNode> data;
-       doApplication(sp, &data);
+       shared_ptr<vector<TreeNode>> data = make_shared<vector<TreeNode>>();
+       doApplication(std::move(sp), data);
    }
    
-   void Community::doApplication(SpecSimParameters *sp, Row<TreeNode> *data)
+   void Community::doApplication(shared_ptr<SpecSimParameters> sp, shared_ptr<vector<TreeNode>> data)
    {
        spec_sim_parameters = sp;
        writeSpeciationRates();
        // Set up the objects
-       setList(data);
+       setList(std::move(data));
        importSimParameters(sp->filename);
        importSamplemask(sp->samplemask);
        importData(sp->filename);
@@ -2402,13 +2327,143 @@ Program Listing for File Community.cpp
            os << "Total fragments: " << fragments.size() << endl;
            writeInfo(os.str());
        }
+       if(spec_sim_parameters->metacommunity_parameters.empty())
+       {
+           spec_sim_parameters->metacommunity_parameters.addNull();
+           current_metacommunity_parameters = spec_sim_parameters->metacommunity_parameters.metacomm_parameters[0];
+       }
+       if(spec_sim_parameters->protracted_parameters.empty())
+       {
+           ProtractedSpeciationParameters tmp;
+           spec_sim_parameters->protracted_parameters.emplace_back(tmp);
+       }
+   
        calculateTree();
    }
    
-   void Community::doApplicationInternal(SpecSimParameters *sp, Row<TreeNode> *data)
+   void Community::doApplicationInternal(shared_ptr<SpecSimParameters> sp, shared_ptr<vector<TreeNode>> data)
    {
        setInternalDatabase();
-       doApplication(sp, data);
+       doApplication(std::move(sp), std::move(data));
+   }
+   
+   void Community::speciateRemainingLineages(const string &filename)
+   {
+       importSimParameters(filename);
+       importSamplemask("null");
+       importData(filename);
+       spec_sim_parameters->filename = filename;
+       // Skip the first entry as it's always blank
+       for(unsigned long i = 1; i < nodes->size(); i++)
+       {
+           TreeNode *this_node = &(*nodes)[i];
+           if(this_node->getParent() == 0 && !checkSpeciation(this_node->getSpecRate(),
+                                                              min_spec_rate, this_node->getGenRate()))
+           {
+               this_node->setSpec(0.0);
+           }
+       }
+       deleteSpeciesList();
+       createSpeciesList();
+       writeSpeciesList(nodes->size());
+       forceSimCompleteParameter();
+       exportDatabase();
    
    }
+   
+   unsigned long Community::getSpeciesRichness(const unsigned long &community_reference)
+   {
+       if(!bSqlConnection)
+       {
+           throw FatalException("Attempted to get from sql database without opening database connection.");
+       }
+       sqlite3_stmt *stmt = nullptr;
+       // Now find out the max size of the species_id_list, so we have a count to work from
+       string count_command = "SELECT COUNT(DISTINCT(species_id)) FROM SPECIES_ABUNDANCES WHERE no_individuals > 0 ";
+       count_command += "AND community_reference == ";
+       count_command += to_string(community_reference) + ";";
+       sqlite3_prepare_v2(database, count_command.c_str(), static_cast<int>(strlen(count_command.c_str())), &stmt,
+                          nullptr);
+       sqlite3_step(stmt);
+       int tmp_val = sqlite3_column_int(stmt, 0);
+       // close the old statement
+       sqlite3_finalize(stmt);
+       return static_cast<unsigned long>(tmp_val);
+   }
+   
+   shared_ptr<map<unsigned long, unsigned long>> Community::getSpeciesAbundances(const unsigned long &community_reference)
+   {
+       if(!bSqlConnection)
+       {
+           throw FatalException("Attempted to get from sql database without opening database connection.");
+       }
+       // Check that the table exists
+       sqlite3_stmt *stmt1;
+       string call1 = "select count(type) from sqlite_master where type='table' and name='SPECIES_ABUNDANCES'";
+       int rc = sqlite3_prepare_v2(database, call1.c_str(), static_cast<int>(strlen(call1.c_str())), &stmt1, nullptr);
+       if(rc != SQLITE_DONE && rc != SQLITE_OK)
+       {
+           sqlite3_close(database);
+           throw SpeciesException("Could not check for SPECIES_ABUNDANCES table. Error code: " +
+                                  to_string(rc));
+       }
+       sqlite3_step(stmt1);
+       auto has_species_abundances = static_cast<bool>(sqlite3_column_int(stmt1, 0));
+       sqlite3_step(stmt1);
+       sqlite3_finalize(stmt1);
+       // Get the number of species in the table matching the community reference
+       if(!has_species_abundances)
+       {
+           throw SpeciesException("No SPECIES_ABUNDANCES table has been written yet.");
+       }
+       string call2 = "select count(distinct(species_id)) from SPECIES_ABUNDANCES where no_individuals>0 and ";
+       call2 += "community_reference == " + to_string(community_reference);
+       rc = sqlite3_prepare_v2(database, call2.c_str(), static_cast<int>(strlen(call2.c_str())), &stmt1, nullptr);
+       if(rc != SQLITE_DONE && rc != SQLITE_OK)
+       {
+           sqlite3_close(database);
+           throw SpeciesException("Could not check for SPECIES_ABUNDANCES table. Error code: " +
+                                  to_string(rc));
+       }
+       sqlite3_step(stmt1);
+       auto no_species = static_cast<unsigned int>(sqlite3_column_int(stmt1, 0));
+       if(no_species == 0)
+       {
+           stringstream ss;
+           ss << "No species found in SPECIES_ABUNDANCES for reference of " << community_reference << endl;
+           throw SpeciesException(ss.str());
+       }
+       sqlite3_step(stmt1);
+       sqlite3_finalize(stmt1);
+       // Now fetch the species abundances
+       string all_commands = "SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES WHERE community_reference ==";
+       all_commands += to_string(community_reference) + ";";
+       sqlite3_prepare_v2(database, all_commands.c_str(), static_cast<int>(strlen(all_commands.c_str())), &stmt1, nullptr);
+       sqlite3_step(stmt1);
+       // Copy the data across to the TreeNode data structure.
+       // For storing the number of ignored lineages so this can be subtracted off the parent number.
+       shared_ptr<map<unsigned long, unsigned long>> output_species_abundances =
+               make_shared<map<unsigned long, unsigned long>>();
+       unsigned long i = 0;
+       while(i < no_species)
+       {
+           auto species_id = static_cast<unsigned long>(sqlite3_column_int(stmt1, 0));
+           auto no_individuals = static_cast<unsigned long>(sqlite3_column_int(stmt1, 1));
+           if(no_individuals > 0)
+           {
+               (*output_species_abundances)[species_id] = no_individuals;
+               i++;
+           }
+           sqlite3_step(stmt1);
+       }
+       // Now we need to blank all objects
+       sqlite3_finalize(stmt1);
+       return output_species_abundances;
+   }
+   
+   shared_ptr<vector<unsigned long>> Community::getSpeciesAbundances()
+   {
+       return species_abundances;
+   }
+   
    

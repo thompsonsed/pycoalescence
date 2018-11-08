@@ -7,7 +7,7 @@ File CCommunity.h
 
 
 
-Wraps the various C++ community objects for accessing via python. 
+Wraps the various C++ community objects for accessing via Python. 
 
 
 .. contents:: Contents
@@ -38,23 +38,15 @@ Includes
 --------
 
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CPLCustomHandlerNecsim.h``
-
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Cell.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Community.h``
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ConfigFileParser.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/CustomExceptions.h``
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ConfigParser.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DataMask.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DataPoint.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/DoubleComparison.h``
-
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Filesystem.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/LogFile.h``
 
@@ -72,11 +64,23 @@ Includes
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpecSimParameters.h``
 
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpeciesAbundancesHandler.h``
+
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Step.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Tree.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/TreeNode.h``
+
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/cpl_custom_handler.h``
+
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/custom_exceptions.h``
+
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/double_comparison.h``
+
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/file_system.h``
+
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/parameters.h``
 
 - ``PyImports.h`` (:ref:`file_PyImports.h`)
 
@@ -128,7 +132,7 @@ Includes
 
 - ``necsim/Metacommunity.h`` (:ref:`file_necsim_Metacommunity.h`)
 
-- ``set``
+- ``set`` (:ref:`file_necsim_setup.cpp`)
 
 - ``sqlite3.h``
 
@@ -168,6 +172,8 @@ Functions
 ---------
 
 
+- :ref:`function_addMetacommunityParameters`
+
 - :ref:`function_addProtractedParameters`
 
 - :ref:`function_addTime`
@@ -185,6 +191,8 @@ Functions
 - :ref:`function_PyCommunity_dealloc`
 
 - :ref:`function_PyCommunity_init`
+
+- :ref:`function_pySpeciateRemainingLineages`
 
 - :ref:`function_reset`
 

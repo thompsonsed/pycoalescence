@@ -6,6 +6,7 @@ var searchData=
   ['decreasenwrap',['decreaseNwrap',['../class_data_point.html#a2d939bcbc5abae0d80fdd42a1b26725f',1,'DataPoint::decreaseNwrap()'],['../class_species_list.html#a15420717ab0ba00bba0ff55f971ee3d2',1,'SpeciesList::decreaseNwrap()']]],
   ['defaultimport',['defaultImport',['../class_map.html#a414e6bc9305ab830836cf817cb4a0d60',1,'Map']]],
   ['deletespecies',['deleteSpecies',['../class_species_list.html#af7464b3a3ea20220634ab38476a195e4',1,'SpeciesList']]],
+  ['deletespecieslist',['deleteSpeciesList',['../class_community.html#a9af4bdfd482ec50025c9182a32fd488c',1,'Community']]],
   ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
   ['detectdimensions',['detectDimensions',['../class_community.html#a579c5f423fc2461838a80baf6b396310',1,'Community']]],
   ['determinespeciationrates',['determineSpeciationRates',['../class_tree.html#a25f082da13789dfa3fefcbcfd08b4dfe',1,'Tree']]],
@@ -18,13 +19,13 @@ var searchData=
   ['dispersedispersalmap',['disperseDispersalMap',['../class_dispersal_coordinator.html#a6605069356e02d1c130b6d68e5d08483',1,'DispersalCoordinator']]],
   ['dispersenulldispersalmap',['disperseNullDispersalMap',['../class_dispersal_coordinator.html#a4bac3aeedb3ceb40601c3db951032d0e',1,'DispersalCoordinator']]],
   ['distancetonearesthabitat',['distanceToNearestHabitat',['../class_landscape.html#a3a552903c925b9769ecc2cad5b051682',1,'Landscape']]],
-  ['doapplication',['doApplication',['../class_community.html#a8ce443a30731d2249852d2b615f4a29a',1,'Community::doApplication(SpecSimParameters *sp)'],['../class_community.html#a7289dd39ee9b69ca314e1752a7b45701',1,'Community::doApplication(SpecSimParameters *sp, Row&lt; TreeNode &gt; *data)']]],
-  ['doapplicationinternal',['doApplicationInternal',['../class_community.html#aee7488d02cccb897ed1d561e242391df',1,'Community']]],
+  ['doapplication',['doApplication',['../class_community.html#a5eb474681b90144d5f21d52f0f2fcb10',1,'Community::doApplication(shared_ptr&lt; SpecSimParameters &gt; sp)'],['../class_community.html#a76705a3f0f72994463779fc9c59d9e44',1,'Community::doApplication(shared_ptr&lt; SpecSimParameters &gt; sp, shared_ptr&lt; vector&lt; TreeNode &gt;&gt; data)']]],
+  ['doapplicationinternal',['doApplicationInternal',['../class_community.html#a1c384a7f23647aa895fc842ace2596ef',1,'Community']]],
   ['doimport',['doImport',['../class_data_mask.html#a85f7b85bb4ac54aa884a8a06f1d35d1b',1,'DataMask']]],
   ['doupdate',['doUpdate',['../class_landscape.html#a1669ae6563ef5ed11ce1da30fb28214b',1,'Landscape']]],
-  ['dumpactive',['dumpActive',['../class_tree.html#a3cb2d92afc1943796ad6663cc97fc07d',1,'Tree']]],
-  ['dumpdata',['dumpData',['../class_tree.html#af94976f439abe0a141a4ab56fac91627',1,'Tree']]],
-  ['dumpgrid',['dumpGrid',['../class_spatial_tree.html#aad249642767366c7df4cc2bae3c65987',1,'SpatialTree']]],
-  ['dumpmain',['dumpMain',['../class_tree.html#a687613834d41ec340fc6f62708368f84',1,'Tree']]],
-  ['dumpmap',['dumpMap',['../class_spatial_tree.html#ab239652fcda3b0287e7c2ee29afde3b1',1,'SpatialTree']]]
+  ['dumpactive',['dumpActive',['../class_tree.html#a9cf1e86171d4a0e22e636bb2cdb01e27',1,'Tree']]],
+  ['dumpdata',['dumpData',['../class_tree.html#aef421096d19ced6d699b84b90a0a5bbc',1,'Tree']]],
+  ['dumpgrid',['dumpGrid',['../class_spatial_tree.html#abe47d47a37bf265337aeae602c65d8bb',1,'SpatialTree']]],
+  ['dumpmain',['dumpMain',['../class_tree.html#aa2af00092c1b4595e91b3443a9abad1a',1,'Tree']]],
+  ['dumpmap',['dumpMap',['../class_spatial_tree.html#a38b7633da178a31a5279294928b7de09',1,'SpatialTree']]]
 ];

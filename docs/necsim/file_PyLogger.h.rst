@@ -7,7 +7,7 @@ File PyLogger.h
 
 
 
-Routines for controlling logger from c++ to python. 
+Routines for controlling logger from C++ to Python. 
 
 
 .. contents:: Contents

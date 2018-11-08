@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Landscape.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Landscape.cpp &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_necsim_Landscape.cpp.html" title="File Landscape.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.cpp.html" accesskey="U">File Landscape.cpp</a> &#187;</li> 
       </ul>
@@ -66,13 +66,13 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Landscape.cpp.html#file-necsim-landscape-cpp"><span class="std std-ref">File Landscape.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#define _USE_MATH_DEFINES</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Landscape.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;file_system.h&quot;</span><span class="cp"></span>
 
 <span class="kt">uint32_t</span> <span class="nf">importToMapAndRound</span><span class="p">(</span><span class="n">string</span> <span class="n">map_file</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">map_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_x</span><span class="p">,</span>
                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">map_y</span><span class="p">,</span>
@@ -142,7 +142,7 @@
     <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">centre_y</span><span class="p">));</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span><span class="n">mapvarsin</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">setDims</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">mapvarsin</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">check_set_dim</span><span class="p">)</span>  <span class="c1">// checks to make sure it hasn&#39;t been run already.</span>
     <span class="p">{</span>
@@ -178,7 +178,7 @@
 
 <span class="kt">bool</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">checkMapExists</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mapvars</span><span class="o">-&gt;</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptionsSize</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mapvars</span><span class="o">-&gt;</span><span class="n">configs</span><span class="p">.</span><span class="n">getSectionOptionsSize</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">string</span> <span class="n">tmppath</span> <span class="o">=</span> <span class="n">mapvars</span><span class="o">-&gt;</span><span class="n">configs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getOption</span><span class="p">(</span><span class="s">&quot;path&quot;</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">doesExistNull</span><span class="p">(</span><span class="n">tmppath</span><span class="p">))</span>
@@ -822,11 +822,11 @@
     <span class="k">return</span> <span class="n">toret</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="n">SimParameters</span> <span class="o">*</span><span class="n">Landscape</span><span class="o">::</span><span class="n">getSimParameters</span><span class="p">()</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">Landscape</span><span class="o">::</span><span class="n">getSimParameters</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">mapvars</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulation parameters have not yet been set.&quot;</span><span class="p">);</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulation current_metacommunity_parameters have not yet been set.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">mapvars</span><span class="p">;</span>
 <span class="p">}</span>
@@ -1073,19 +1073,32 @@
     <span class="kt">long</span> <span class="n">end_y</span> <span class="o">=</span> <span class="n">start_y</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">radius</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">getVal</span><span class="p">(</span><span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span><span class="p">,</span> <span class="n">start_x_wrap</span><span class="p">,</span> <span class="n">start_y_wrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">getVal</span><span class="p">(</span><span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span><span class="p">,</span> <span class="n">start_x_wrap</span><span class="p">,</span> <span class="n">start_y_wrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
     <span class="p">{</span>
-        <span class="n">theta</span> <span class="o">+=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">max</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span>
-        <span class="n">radius</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">);</span>
-        <span class="n">end_x</span> <span class="o">=</span> <span class="n">archimedesSpiralX</span><span class="p">(</span><span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span>
-        <span class="n">end_y</span> <span class="o">=</span> <span class="n">archimedesSpiralY</span><span class="p">(</span><span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span>
-
-        <span class="c1">// Double check that the distance is not greater than the map size</span>
-        <span class="c1">// This acts as a fail-safe in case someone presents a historical map with no habitat cells on</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">isOnMap</span><span class="p">(</span><span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span><span class="p">,</span> <span class="n">start_x_wrap</span><span class="p">,</span> <span class="n">start_y_wrap</span><span class="p">))</span>
+        <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Could not find a habitat cell for parent. Check that your map files always have a &quot;</span>
-                        <span class="s">&quot;place for lineages to disperse from.&quot;</span><span class="p">);</span>
+            <span class="n">theta</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">max</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">));</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">);</span>
+            <span class="n">end_x</span> <span class="o">=</span> <span class="n">archimedesSpiralX</span><span class="p">(</span><span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span>
+            <span class="n">end_y</span> <span class="o">=</span> <span class="n">archimedesSpiralY</span><span class="p">(</span><span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span>
+
+            <span class="c1">// Double check that the distance is not greater than the map size</span>
+            <span class="c1">// This acts as a fail-safe in case someone presents a historical map with no habitat cells on</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">isOnMap</span><span class="p">(</span><span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span><span class="p">,</span> <span class="n">start_x_wrap</span><span class="p">,</span> <span class="n">start_y_wrap</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">radius</span> <span class="o">&gt;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="n">fine_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                   <span class="n">radius</span> <span class="o">&gt;</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getCols</span><span class="p">()</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">&amp;&amp;</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="n">coarse_map</span><span class="p">.</span><span class="n">getRows</span><span class="p">()</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+                    <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
+                            <span class="s">&quot;Could not find a habitat cell for parent. Check that your map files always have a &quot;</span>
+                            <span class="s">&quot;place for lineages to disperse from.&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">getVal</span><span class="p">(</span><span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span><span class="p">,</span> <span class="n">start_x_wrap</span><span class="p">,</span> <span class="n">start_y_wrap</span><span class="p">,</span> <span class="n">generation</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">pow</span><span class="p">(</span><span class="n">pow</span><span class="p">((</span><span class="n">start_x</span> <span class="o">-</span> <span class="n">end_x</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">pow</span><span class="p">((</span><span class="n">start_y</span> <span class="o">-</span> <span class="n">end_y</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">);</span>
@@ -1218,7 +1231,7 @@
         <li class="right" >
           <a href="file_necsim_Landscape.cpp.html" title="File Landscape.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.cpp.html" >File Landscape.cpp</a> &#187;</li> 
       </ul>

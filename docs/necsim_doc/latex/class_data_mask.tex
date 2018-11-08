@@ -37,9 +37,9 @@ Collaboration diagram for Data\+Mask\+:
 \begin{DoxyCompactList}\small\item\em The \hyperlink{class_data_mask}{Data\+Mask} constructor. \end{DoxyCompactList}\item 
 bool \hyperlink{class_data_mask_a9aa4ee43e6c20f4b7c3e8404ee12345b}{is\+Null} ()
 \begin{DoxyCompactList}\small\item\em Returns if the simulation is using the a null samplemask, and therefore does not need to store the full sample grid in memory. \end{DoxyCompactList}\item 
-void \hyperlink{class_data_mask_ab6a4e6f63856f96805ddc79022c47104}{setup} (const \hyperlink{struct_sim_parameters}{Sim\+Parameters} \&sim\+\_\+parameters)
+void \hyperlink{class_data_mask_aa0904fd16e834eaba37173a68743ade5}{setup} (const shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ sim\+\_\+parameters)
 \begin{DoxyCompactList}\small\item\em Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates. \end{DoxyCompactList}\item 
-bool {\bfseries check\+Can\+Use\+Default} (const \hyperlink{struct_sim_parameters}{Sim\+Parameters} \&sim\+\_\+parameters)\hypertarget{class_data_mask_ae5bf5df7975431338e3ea757e6f2fac9}{}\label{class_data_mask_ae5bf5df7975431338e3ea757e6f2fac9}
+bool {\bfseries check\+Can\+Use\+Default} (const shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ sim\+\_\+parameters)\hypertarget{class_data_mask_a3286a3145218718fde493799d060a7e0}{}\label{class_data_mask_a3286a3145218718fde493799d060a7e0}
 
 \item 
 void \hyperlink{class_data_mask_aac63b47c3688db359760f6134d30f239}{import\+Boolean\+Mask} (unsigned long xdim, unsigned long ydim, unsigned long mask\+\_\+xdim, unsigned long mask\+\_\+ydim, unsigned long xoffset, unsigned long yoffset, string inputfile\+\_\+in)
@@ -50,10 +50,10 @@ void \hyperlink{class_data_mask_a85f7b85bb4ac54aa884a8a06f1d35d1b}{do\+Import} (
 void \hyperlink{class_data_mask_a09a24a15ad49851e8f344150a9109dd2}{complete\+Bool\+Import} ()\hypertarget{class_data_mask_a09a24a15ad49851e8f344150a9109dd2}{}\label{class_data_mask_a09a24a15ad49851e8f344150a9109dd2}
 
 \begin{DoxyCompactList}\small\item\em Sets the map dimensions and the get\+Val function pointer. \end{DoxyCompactList}\item 
-void \hyperlink{class_data_mask_a8a1071a51c4114cda3f73eeb98992fb4}{setup\+Null} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} \&mapvarin)\hypertarget{class_data_mask_a8a1071a51c4114cda3f73eeb98992fb4}{}\label{class_data_mask_a8a1071a51c4114cda3f73eeb98992fb4}
+void \hyperlink{class_data_mask_af132f464ffb320233a866f46dfe7b87d}{setup\+Null} (const shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ mapvarin)\hypertarget{class_data_mask_af132f464ffb320233a866f46dfe7b87d}{}\label{class_data_mask_af132f464ffb320233a866f46dfe7b87d}
 
 \begin{DoxyCompactList}\small\item\em Sets up the null sampling map. \end{DoxyCompactList}\item 
-void \hyperlink{class_data_mask_ac756e21b1c8d9412d565fb020eec9a06}{import\+Sample\+Mask} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} \&mapvarin)
+void \hyperlink{class_data_mask_af638b08c5f7b822e0401210d605de3d1}{import\+Sample\+Mask} (const shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ mapvarin)
 \begin{DoxyCompactList}\small\item\em Imports the specified file for the sampling percentage within each cell. \end{DoxyCompactList}\item 
 bool \hyperlink{class_data_mask_ace6578db5b096b0c24112cc438cfa90d}{get\+Val} (const long \&x, const long \&y, const long \&xwrap, const long \&ywrap)
 \begin{DoxyCompactList}\small\item\em Calculates the matrix value at the provided x, y location. If everywhere is sampled, simply returns true, as no sample\+\_\+mask will be stored in memory. This is to save R\+AM where possible. \end{DoxyCompactList}\item 
@@ -328,11 +328,11 @@ Imports the sample mask as a boolean mask and sets the relevant sample mask dime
 \end{DoxyParams}
 \index{Data\+Mask@{Data\+Mask}!import\+Sample\+Mask@{import\+Sample\+Mask}}
 \index{import\+Sample\+Mask@{import\+Sample\+Mask}!Data\+Mask@{Data\+Mask}}
-\subsubsection[{\texorpdfstring{import\+Sample\+Mask(\+Sim\+Parameters \&mapvarin)}{importSampleMask(SimParameters &mapvarin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::import\+Sample\+Mask (
+\subsubsection[{\texorpdfstring{import\+Sample\+Mask(const shared\+\_\+ptr$<$ Sim\+Parameters $>$ mapvarin)}{importSampleMask(const shared_ptr< SimParameters > mapvarin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::import\+Sample\+Mask (
 \begin{DoxyParamCaption}
-\item[{{\bf Sim\+Parameters} \&}]{mapvarin}
+\item[{const shared\+\_\+ptr$<$ {\bf Sim\+Parameters} $>$}]{mapvarin}
 \end{DoxyParamCaption}
-)}\hypertarget{class_data_mask_ac756e21b1c8d9412d565fb020eec9a06}{}\label{class_data_mask_ac756e21b1c8d9412d565fb020eec9a06}
+)}\hypertarget{class_data_mask_af638b08c5f7b822e0401210d605de3d1}{}\label{class_data_mask_af638b08c5f7b822e0401210d605de3d1}
 
 
 Imports the specified file for the sampling percentage within each cell. 
@@ -383,11 +383,11 @@ Converts the coordinates back into the grid format. Changes the values in the pr
 \end{DoxyParams}
 \index{Data\+Mask@{Data\+Mask}!setup@{setup}}
 \index{setup@{setup}!Data\+Mask@{Data\+Mask}}
-\subsubsection[{\texorpdfstring{setup(const Sim\+Parameters \&sim\+\_\+parameters)}{setup(const SimParameters &sim_parameters)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::setup (
+\subsubsection[{\texorpdfstring{setup(const shared\+\_\+ptr$<$ Sim\+Parameters $>$ sim\+\_\+parameters)}{setup(const shared_ptr< SimParameters > sim_parameters)}}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+Mask\+::setup (
 \begin{DoxyParamCaption}
-\item[{const {\bf Sim\+Parameters} \&}]{sim\+\_\+parameters}
+\item[{const shared\+\_\+ptr$<$ {\bf Sim\+Parameters} $>$}]{sim\+\_\+parameters}
 \end{DoxyParamCaption}
-)}\hypertarget{class_data_mask_ab6a4e6f63856f96805ddc79022c47104}{}\label{class_data_mask_ab6a4e6f63856f96805ddc79022c47104}
+)}\hypertarget{class_data_mask_aa0904fd16e834eaba37173a68743ade5}{}\label{class_data_mask_aa0904fd16e834eaba37173a68743ade5}
 
 
 Sets the parameters for the datamask, including the dimensions of the map, the offsets from the grid and the dimensions of the grid itself for recalculating coordinates. 

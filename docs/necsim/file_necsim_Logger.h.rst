@@ -38,9 +38,9 @@ Includes
 --------
 
 
-- ``CPLCustomHandlerNecsim.h`` (:ref:`file_necsim_CPLCustomHandlerNecsim.h`)
-
 - ``LogFile.h`` (:ref:`file_necsim_LogFile.h`)
+
+- ``cpl_custom_handler.h`` (:ref:`file_necsim_cpl_custom_handler.h`)
 
 - ``cstdio``
 
@@ -68,7 +68,7 @@ Included By
 
 - :ref:`file_necsim_SimParameters.h`
 
-- :ref:`file_necsim_ConfigFileParser.cpp`
+- :ref:`file_necsim_ConfigParser.cpp`
 
 - :ref:`file_necsim_DataMask.cpp`
 
@@ -76,7 +76,7 @@ Included By
 
 - :ref:`file_necsim_DispersalCoordinator.cpp`
 
-- :ref:`file_necsim_Filesystem.cpp`
+- :ref:`file_necsim_file_system.cpp`
 
 - :ref:`file_necsim_Logger.cpp`
 

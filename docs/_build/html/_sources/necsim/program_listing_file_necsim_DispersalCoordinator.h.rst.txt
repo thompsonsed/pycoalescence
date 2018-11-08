@@ -8,7 +8,7 @@ Program Listing for File DispersalCoordinator.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef DISPERSALCOORDINATOR_H
@@ -82,7 +82,7 @@ Program Listing for File DispersalCoordinator.h
                          const double &m_probin, const double &cutoffin,
                          const double &sigmain, const double &tauin, const bool &restrict_self);
    
-       void setDispersal(SimParameters *simParameters);
+       void setDispersal(shared_ptr<SimParameters> simParameters);
    
        void importDispersal(const unsigned long &dispersal_dim, const string &dispersal_file);
    

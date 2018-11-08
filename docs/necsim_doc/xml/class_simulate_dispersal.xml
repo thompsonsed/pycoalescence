@@ -17,11 +17,11 @@
         </inbodydescription>
         <location file="necsim/SimulateDispersal.h" line="41" column="1" bodyfile="necsim/SimulateDispersal.h" bodystart="41" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_simulate_dispersal_1a06456ecb5cde83be793855a735c196f0" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="class_simulate_dispersal_1a99b4ca8cf3ecbaad85a22c41e5a97a77" prot="protected" static="no" mutable="no">
         <type><ref refid="class_data_mask" kindref="compound">DataMask</ref></type>
-        <definition>DataMask SimulateDispersal::dataMask</definition>
+        <definition>DataMask SimulateDispersal::data_mask</definition>
         <argsstring></argsstring>
-        <name>dataMask</name>
+        <name>data_mask</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -44,9 +44,9 @@
         </inbodydescription>
         <location file="necsim/SimulateDispersal.h" line="45" column="1" bodyfile="necsim/SimulateDispersal.h" bodystart="45" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_simulate_dispersal_1a6d11b4ed3e3942d2bb42e66116fffd2d" prot="protected" static="no" mutable="no">
-        <type><ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> *</type>
-        <definition>SimParameters* SimulateDispersal::simParameters</definition>
+      <memberdef kind="variable" id="class_simulate_dispersal_1abe4c7cc163059093528c621cc7bd041e" prot="protected" static="no" mutable="no">
+        <type>shared_ptr&lt; <ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> &gt;</type>
+        <definition>shared_ptr&lt;SimParameters&gt; SimulateDispersal::simParameters</definition>
         <argsstring></argsstring>
         <name>simParameters</name>
         <briefdescription>
@@ -253,13 +253,13 @@
         </inbodydescription>
         <location file="necsim/SimulateDispersal.h" line="93" column="1" bodyfile="necsim/SimulateDispersal.cpp" bodystart="21" bodyend="24"/>
       </memberdef>
-      <memberdef kind="function" id="class_simulate_dispersal_1a9d08a14b3f2a78591af2edf2884edb52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_simulate_dispersal_1a521c2254ee4e95542e939e8595fa5e4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void SimulateDispersal::setSimulationParameters</definition>
-        <argsstring>(SimParameters *sim_parameters, bool print=true)</argsstring>
+        <argsstring>(shared_ptr&lt; SimParameters &gt; sim_parameters, bool print=true)</argsstring>
         <name>setSimulationParameters</name>
         <param>
-          <type><ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> *</type>
+          <type>shared_ptr&lt; <ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> &gt;</type>
           <declname>sim_parameters</declname>
         </param>
         <param>
@@ -647,154 +647,121 @@
     <detaileddescription>
     </detaileddescription>
     <collaborationgraph>
-      <node id="758">
+      <node id="714">
         <label>Row&lt; double &gt;</label>
         <link refid="class_row"/>
       </node>
-      <node id="761">
+      <node id="717">
         <label>Step</label>
         <link refid="struct_step"/>
       </node>
-      <node id="746">
+      <node id="702">
         <label>SimulateDispersal</label>
         <link refid="class_simulate_dispersal"/>
-        <childnode refid="747" relation="usage">
+        <childnode refid="703" relation="usage">
           <edgelabel>cells</edgelabel>
         </childnode>
-        <childnode refid="749" relation="usage">
+        <childnode refid="705" relation="usage">
           <edgelabel>distances</edgelabel>
         </childnode>
-        <childnode refid="750" relation="usage">
-          <edgelabel>dataMask</edgelabel>
+        <childnode refid="706" relation="usage">
+          <edgelabel>data_mask</edgelabel>
         </childnode>
-        <childnode refid="759" relation="usage">
+        <childnode refid="715" relation="usage">
           <edgelabel>num_steps</edgelabel>
         </childnode>
-        <childnode refid="760" relation="usage">
+        <childnode refid="716" relation="usage">
           <edgelabel>dispersal_coordinator</edgelabel>
         </childnode>
-        <childnode refid="762" relation="usage">
+        <childnode refid="718" relation="usage">
           <edgelabel>parameter_references</edgelabel>
         </childnode>
-        <childnode refid="763" relation="usage">
-          <edgelabel>simParameters</edgelabel>
-        </childnode>
       </node>
-      <node id="765">
-        <label>std::vector&lt; double &gt;</label>
-      </node>
-      <node id="753">
+      <node id="709">
         <label>Row&lt; bool &gt;</label>
         <link refid="class_row"/>
       </node>
-      <node id="764">
-        <label>ConfigOption</label>
-        <link refid="class_config_option"/>
-      </node>
-      <node id="748">
+      <node id="704">
         <label>Cell</label>
         <link refid="struct_cell"/>
       </node>
-      <node id="751">
+      <node id="707">
         <label>Map&lt; bool &gt;</label>
         <link refid="class_map"/>
-        <childnode refid="752" relation="public-inheritance">
+        <childnode refid="708" relation="public-inheritance">
         </childnode>
-        <childnode refid="754" relation="usage">
+        <childnode refid="710" relation="usage">
           <edgelabel>filename</edgelabel>
         </childnode>
       </node>
-      <node id="755">
+      <node id="711">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="749">
+      <node id="705">
         <label>std::vector&lt; pair&lt; unsigned long, double &gt; &gt;</label>
       </node>
-      <node id="756">
+      <node id="712">
         <label>Map&lt; double &gt;</label>
         <link refid="class_map"/>
-        <childnode refid="757" relation="public-inheritance">
+        <childnode refid="713" relation="public-inheritance">
         </childnode>
-        <childnode refid="754" relation="usage">
+        <childnode refid="710" relation="usage">
           <edgelabel>filename</edgelabel>
         </childnode>
       </node>
-      <node id="763">
-        <label>SimParameters</label>
-        <link refid="struct_sim_parameters"/>
-        <childnode refid="764" relation="usage">
-          <edgelabel>configs</edgelabel>
-        </childnode>
-        <childnode refid="754" relation="usage">
-          <edgelabel>reproduction_file</edgelabel>
-          <edgelabel>times_file</edgelabel>
-          <edgelabel>sample_mask_file</edgelabel>
-          <edgelabel>fine_map_file</edgelabel>
-          <edgelabel>dispersal_method</edgelabel>
-          <edgelabel>dispersal_file</edgelabel>
-          <edgelabel>historical_fine_map_file</edgelabel>
-          <edgelabel>death_file</edgelabel>
-          <edgelabel>historical_coarse_map_file</edgelabel>
-          <edgelabel>output_directory</edgelabel>
-          <edgelabel>...</edgelabel>
-        </childnode>
-        <childnode refid="765" relation="usage">
-          <edgelabel>times</edgelabel>
-        </childnode>
-      </node>
-      <node id="752">
+      <node id="708">
         <label>Matrix&lt; bool &gt;</label>
         <link refid="class_matrix"/>
-        <childnode refid="753" relation="usage">
+        <childnode refid="709" relation="usage">
           <edgelabel>matrix</edgelabel>
         </childnode>
       </node>
-      <node id="750">
+      <node id="706">
         <label>DataMask</label>
         <link refid="class_data_mask"/>
-        <childnode refid="751" relation="usage">
+        <childnode refid="707" relation="usage">
           <edgelabel>sample_mask</edgelabel>
         </childnode>
-        <childnode refid="754" relation="usage">
+        <childnode refid="710" relation="usage">
           <edgelabel>inputfile</edgelabel>
         </childnode>
-        <childnode refid="756" relation="usage">
+        <childnode refid="712" relation="usage">
           <edgelabel>sample_mask_exact</edgelabel>
         </childnode>
       </node>
-      <node id="747">
+      <node id="703">
         <label>std::vector&lt; Cell &gt;</label>
-        <childnode refid="748" relation="usage">
+        <childnode refid="704" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="757">
+      <node id="713">
         <label>Matrix&lt; double &gt;</label>
         <link refid="class_matrix"/>
-        <childnode refid="758" relation="usage">
+        <childnode refid="714" relation="usage">
           <edgelabel>matrix</edgelabel>
         </childnode>
       </node>
-      <node id="760">
+      <node id="716">
         <label>DispersalCoordinator</label>
         <link refid="class_dispersal_coordinator"/>
-        <childnode refid="761" relation="usage">
+        <childnode refid="717" relation="usage">
           <edgelabel>doDispersal</edgelabel>
         </childnode>
-        <childnode refid="756" relation="usage">
+        <childnode refid="712" relation="usage">
           <edgelabel>raw_dispersal_prob_map</edgelabel>
           <edgelabel>dispersal_prob_map</edgelabel>
         </childnode>
       </node>
-      <node id="762">
+      <node id="718">
         <label>std::map&lt; unsigned long, unsigned long &gt;</label>
       </node>
-      <node id="759">
+      <node id="715">
         <label>std::set&lt; unsigned long &gt;</label>
       </node>
-      <node id="754">
+      <node id="710">
         <label>std::string</label>
-        <childnode refid="755" relation="public-inheritance">
+        <childnode refid="711" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
@@ -804,8 +771,8 @@
       <member refid="class_simulate_dispersal_1abafd3fc30df157d12e462c4b1907d8fa" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>checkMaxIdNumber</name></member>
       <member refid="class_simulate_dispersal_1a0dee5d1529bd7ee6f382f7cd1b5393e5" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>checkMaxParameterReference</name></member>
       <member refid="class_simulate_dispersal_1ae7e23b11a811ec48f2e08d9fa8ad151a" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>clearParameters</name></member>
+      <member refid="class_simulate_dispersal_1a99b4ca8cf3ecbaad85a22c41e5a97a77" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>data_mask</name></member>
       <member refid="class_simulate_dispersal_1afd3f96f169715aacbcc2939614a6a910" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>database</name></member>
-      <member refid="class_simulate_dispersal_1a06456ecb5cde83be793855a735c196f0" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>dataMask</name></member>
       <member refid="class_simulate_dispersal_1af69dbb932efef10441d1acf219416c0f" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>density_landscape</name></member>
       <member refid="class_simulate_dispersal_1a55da369d57d854168ff6e851b0d7892a" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>dispersal_coordinator</name></member>
       <member refid="class_simulate_dispersal_1a87359ce728efca1ece43f52c7aa4ce9c" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>distances</name></member>
@@ -829,9 +796,9 @@
       <member refid="class_simulate_dispersal_1acae5067045d5989df6d7dce80bcfe276" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>setOutputDatabase</name></member>
       <member refid="class_simulate_dispersal_1a46f2cd557ac9b21c107eac75e7c916af" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>setSeed</name></member>
       <member refid="class_simulate_dispersal_1a3da09319132db8c7ad035290be6590ef" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>setSequential</name></member>
-      <member refid="class_simulate_dispersal_1a9d08a14b3f2a78591af2edf2884edb52" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>setSimulationParameters</name></member>
+      <member refid="class_simulate_dispersal_1a521c2254ee4e95542e939e8595fa5e4c" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>setSimulationParameters</name></member>
       <member refid="class_simulate_dispersal_1a7aeeb01c40f5de7f88bce2b484bf83a0" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>setSizes</name></member>
-      <member refid="class_simulate_dispersal_1a6d11b4ed3e3942d2bb42e66116fffd2d" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>simParameters</name></member>
+      <member refid="class_simulate_dispersal_1abe4c7cc163059093528c621cc7bd041e" prot="protected" virt="non-virtual"><scope>SimulateDispersal</scope><name>simParameters</name></member>
       <member refid="class_simulate_dispersal_1ad05135d21e5bf28a5b905455a764829c" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>SimulateDispersal</name></member>
       <member refid="class_simulate_dispersal_1a85d8ee68e5f4962429571c835aa028b4" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>storeCellList</name></member>
       <member refid="class_simulate_dispersal_1af7d0a726cb3724c159ca46f4586a8bd3" prot="public" virt="non-virtual"><scope>SimulateDispersal</scope><name>writeDatabase</name></member>

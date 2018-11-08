@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Metacommunity.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Metacommunity.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_necsim_Metacommunity.h.html" title="File Metacommunity.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.h.html" accesskey="U">File Metacommunity.h</a> &#187;</li> 
       </ul>
@@ -66,7 +66,7 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Metacommunity.h.html#file-necsim-metacommunity-h"><span class="std std-ref">File Metacommunity.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#ifndef SPECIATIONCOUNTER_METACOMMUNITY_H</span>
@@ -75,33 +75,32 @@
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;set&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Community.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Tree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;SpecSimParameters.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SpeciesAbundancesHandler.h&quot;</span><span class="cp"></span>
 
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
 <span class="k">class</span> <span class="nc">Metacommunity</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">Community</span>
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
-    <span class="c1">// The number of individuals in the metacommunity</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">community_size</span><span class="p">;</span>
-    <span class="c1">// The speciation rate used for creation of the metacommunity</span>
-    <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">;</span>
     <span class="c1">// Simulation seed and task (read from the output database or set to 1)</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">task</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">parameters_checked</span><span class="p">;</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">metacommunity_cumulative_abundances</span><span class="p">;</span>
-    <span class="n">NRrand</span> <span class="n">random</span><span class="p">;</span>
-    <span class="n">Tree</span> <span class="n">metacommunity_tree</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpeciesAbundancesHandler</span><span class="o">&gt;</span> <span class="n">species_abundances_handler</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">random</span><span class="p">;</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Tree</span><span class="o">&gt;</span> <span class="n">metacommunity_tree</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
 
     <span class="n">Metacommunity</span><span class="p">();</span>
 
     <span class="o">~</span><span class="n">Metacommunity</span><span class="p">()</span> <span class="k">override</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
 
-    <span class="kt">void</span> <span class="nf">setCommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">community_size_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setCommunityParameters</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span> <span class="n">metacommunity_parameters</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">checkSimulationParameters</span><span class="p">();</span>
 
@@ -109,13 +108,15 @@
 
     <span class="kt">void</span> <span class="nf">createMetacommunityNSENeutralModel</span><span class="p">();</span>
 
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">selectLineageFromMetacommunity</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">applyNoOutput</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
 
-    <span class="kt">void</span> <span class="nf">applyNoOutput</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span> <span class="k">override</span> <span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">approximateSAD</span><span class="p">();</span>
 
+    <span class="kt">void</span> <span class="nf">readSAD</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">printMetacommunityParameters</span><span class="p">();</span>
 
 <span class="p">};</span>
-
 
 <span class="cp">#endif </span><span class="c1">//SPECIATIONCOUNTER_METACOMMUNITY_H</span>
 </pre></div>
@@ -173,7 +174,7 @@
         <li class="right" >
           <a href="file_necsim_Metacommunity.h.html" title="File Metacommunity.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.h.html" >File Metacommunity.h</a> &#187;</li> 
       </ul>

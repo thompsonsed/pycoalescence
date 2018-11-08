@@ -53,8 +53,6 @@ Includes
 
 - ``NRrand.h`` (:ref:`file_necsim_NRrand.h`)
 
-- ``Setup.h`` (:ref:`file_necsim_Setup.h`)
-
 - ``SimParameters.h`` (:ref:`file_necsim_SimParameters.h`)
 
 - ``SpeciesList.h`` (:ref:`file_necsim_SpeciesList.h`)
@@ -82,6 +80,8 @@ Includes
 - ``iostream``
 
 - ``memory``
+
+- ``setup.h`` (:ref:`file_necsim_setup.h`)
 
 - ``sqlite3.h``
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['communityparameters',['communityParameters',['../struct_communities_array.html#a51cb89209da53cdfdc40e0489103a086',1,'CommunitiesArray']]]
+  ['comm_5fparameters',['comm_parameters',['../struct_communities_array.html#a8b3fb7b85b0c86030fd39f2fa34cfe97',1,'CommunitiesArray']]]
 ];

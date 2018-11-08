@@ -39,9 +39,9 @@ Includes
 --------
 
 
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
-
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
 
 - ``sstream``
 

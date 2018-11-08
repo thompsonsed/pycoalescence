@@ -40,13 +40,13 @@ Includes
 
 - ``Community.h`` (:ref:`file_CCommunity.h`)
 
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
-
-- ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
-
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
 
 - ``SimulateDispersal.h`` (:ref:`file_CSimulateDispersal.h`)
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
+
+- ``file_system.h`` (:ref:`file_necsim_file_system.h`)
 
 - ``utility``
 

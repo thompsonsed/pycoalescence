@@ -7,7 +7,7 @@ File CSimulation.h
 
 
 
-Wraps the various C++ tree objects for accessing via python. 
+Wraps the various C++ tree objects for accessing via Python. 
 
 
 .. contents:: Contents
@@ -38,6 +38,8 @@ Includes
 --------
 
 
+- ``ConfigParser.h`` (:ref:`file_necsim_ConfigParser.h`)
+
 - ``PyImports.h`` (:ref:`file_PyImports.h`)
 
 - ``PyLogging.h`` (:ref:`file_PyLogging.h`)
@@ -46,9 +48,9 @@ Includes
 
 - ``Python.h``
 
-- ``necsim.h`` (:ref:`file_necsim.h`)
+- ``memory``
 
-- ``necsim/ConfigFileParser.h`` (:ref:`file_necsim_ConfigFileParser.h`)
+- ``necsim.h`` (:ref:`file_necsim.h`)
 
 - ``necsim/ProtractedSpatialTree.h`` (:ref:`file_necsim_ProtractedSpatialTree.h`)
 

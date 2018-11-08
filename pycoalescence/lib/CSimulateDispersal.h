@@ -76,9 +76,9 @@ void raiseErrorOnFalse(bool error_raised)
 
 /**
  * @brief Sets all the map parameters, including historical maps, with a single import.
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *args)
 {
@@ -116,7 +116,7 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
 	}
 	if(self->has_imported_maps)
 	{
-		PyErr_SetString(NECSimError, (char *) "Maps have already been imported");
+		PyErr_SetString(necsimError, (char *) "Maps have already been imported");
 		return nullptr;
 	}
 	try
@@ -166,7 +166,7 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -174,9 +174,9 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
 
 /**
  * @brief Sets the map parameters and imports the maps
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse, should contain all key map parameters
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
 {
@@ -187,7 +187,7 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
 #ifdef DEBUG
 	if(self == nullptr)
 	{
-		PyErr_SetString(NECSimError, (char *) "self pointer is null. Please report this bug.");
+		PyErr_SetString(necsimError, (char *) "self pointer is null. Please report this bug.");
 		return nullptr;
 	}
 #endif // DEBUG
@@ -204,7 +204,7 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
 	}
 	if(self->has_imported_maps)
 	{
-		PyErr_SetString(NECSimError, (char *) "Maps have already been imported");
+		PyErr_SetString(necsimError, (char *) "Maps have already been imported");
 		return nullptr;
 	}
 	try
@@ -225,7 +225,7 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -234,9 +234,9 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
 
 /**
  * @brief Sets the historical map parameters.
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse, should be lists of the fine and coarse map parameters
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObject *args)
 {
@@ -287,7 +287,7 @@ static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObje
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -295,9 +295,9 @@ static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObje
 
 /**
  * @brief Sets the key simulation parameters.
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 static PyObject *set_output_database(PySimulateDispersal *self, PyObject *args)
 {
@@ -321,7 +321,7 @@ static PyObject *set_output_database(PySimulateDispersal *self, PyObject *args)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 
@@ -331,9 +331,9 @@ static PyObject *set_output_database(PySimulateDispersal *self, PyObject *args)
 
 /**
  * @brief Sets the dispersal parameters.
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 static PyObject *set_dispersal_parameters(PySimulateDispersal *self, PyObject *args)
 {
@@ -360,7 +360,7 @@ static PyObject *set_dispersal_parameters(PySimulateDispersal *self, PyObject *a
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 
@@ -370,9 +370,9 @@ static PyObject *set_dispersal_parameters(PySimulateDispersal *self, PyObject *a
 
 /**
  * @brief Runs the mean distance travelled simulation
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 static PyObject *runMDT(PySimulateDispersal *self, PyObject *args)
 {
@@ -408,7 +408,7 @@ static PyObject *runMDT(PySimulateDispersal *self, PyObject *args)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;
@@ -417,9 +417,9 @@ static PyObject *runMDT(PySimulateDispersal *self, PyObject *args)
 
 /**
  * @brief Runs the simulation for mean dispersal distance.
- * @param self the python self object
+ * @param self the Python self object
  * @param args arguments to parse
- * @return pointer to the python object
+ * @return pointer to the Python object
  */
 static PyObject *runMeanDispersal(PySimulateDispersal *self, PyObject *args)
 {
@@ -447,7 +447,7 @@ static PyObject *runMeanDispersal(PySimulateDispersal *self, PyObject *args)
 	catch(exception &e)
 	{
 		removeGlobalLogger();
-		PyErr_SetString(NECSimError, e.what());
+		PyErr_SetString(necsimError, e.what());
 		return nullptr;
 	}
 	Py_RETURN_NONE;

@@ -1,7 +1,7 @@
 """
 Compile **necsim** with default or provided compilation options. Intended for internal usage during ``pip`` or ``conda``
 builds, although manual installation is also possible by running this file from the command line.
-``python installer.py`` configures the install by detecting system components and compiles the ``c++`` files, if
+``python installer.py`` configures the install by detecting system components and compiles the ``C++`` files, if
 possible. Command line flags can be provided to installer.py to modify the install (see
 :ref:`Compilation Options <sec Compilation Options>` for more information).
 """
@@ -31,7 +31,7 @@ from setuptools.command.build_ext import build_ext
 
 
 class Installer(build_ext):
-	"""Wraps configuration and compilation of c++ code."""
+	"""Wraps configuration and compilation of C++ code."""
 
 	def __init__(self, dist, **kwargs):
 		"""Generates the link to the mod directory for installation."""
@@ -89,7 +89,7 @@ class Installer(build_ext):
 
 	def do_compile(self):
 		"""
-		Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been
+		Compiles the C++ necsim program by running make. This changes the working directory to wherever the module has been
 		installed for the subprocess call.
 		"""
 		# Check that the make file exists
@@ -207,7 +207,7 @@ class Installer(build_ext):
 			raise RuntimeError("Make file has not been generated. Cannot clean.")
 
 	def get_ldflags(self):
-		"""Get the ldflags that python was compiled with, removing some problematic options."""
+		"""Get the ldflags that Python was compiled with, removing some problematic options."""
 		sysldflags = sysconfig.get_config_var("LDFLAGS")
 		if sysldflags is None:
 			ldflags = ""
@@ -220,7 +220,7 @@ class Installer(build_ext):
 		return ldflags
 
 	def get_ldshared(self):
-		"""Get the ldshared python variables and replaces -bundle with -shared for proper compilation."""
+		"""Get the ldshared Python variables and replaces -bundle with -shared for proper compilation."""
 		ldflags = sysconfig.get_config_var("LDSHARED")
 		if ldflags is None:
 			return ""
@@ -235,7 +235,7 @@ class Installer(build_ext):
 		:return: list of compilation flags.
 		:rtype: list
 		"""
-		# Get the relevant flags that python was originally compiled with, to be passed to the c++ code.
+		# Get the relevant flags that Python was originally compiled with, to be passed to the C++ code.
 		include = str("CPPFLAGS=-I" + sysconfig.get_python_inc()).replace("\n", "")
 		cflags = " " + sysconfig.get_config_var('CFLAGS')
 		cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
@@ -255,7 +255,7 @@ class Installer(build_ext):
 				"COMPILATION FAILURE: Windows is not yet supported. You must compile the libraries yourself.")
 		else:
 			logging.critical("OS not detected, compilation failures likely. Please report this error.")
-		# Make sure that the linker directs to the correct python library (such as -lpython3.5m)
+		# Make sure that the linker directs to the correct Python library (such as -lpython3.5m)
 		# Eventually this will also detect if the install is for an anaconda distribution.
 		if 'conda' not in sys.version and 'Continuum' not in sys.version:
 			py_lib += sys.version[0:3]
@@ -372,8 +372,6 @@ class Installer(build_ext):
 			env["CXX"] = "icpc"
 			env["CC"] = "icc"
 			cmake_args.extend(["-DCMAKE_C_COMPILER=icc", "-DCMAKE_CXX_COMPILER=icpc", "-DUSING_INTEL"])
-		# TODO remove this
-		print(env)
 		self.run_cmake(ext.sourcedir, cmake_args, build_args, self.build_temp, env)
 
 	def run_cmake(self, src_dir, cmake_args, build_args, tmp_dir, env):
@@ -404,7 +402,7 @@ class Installer(build_ext):
 			self.build_extension(ext)
 
 	def build_extension(self, ext):
-		"""Builds the c++ and python extension."""
+		"""Builds the C++ and Python extension."""
 		self.build_dir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)),
 													  "pycoalescence", "necsim"))
 		self.obj_dir = self.build_dir
@@ -438,7 +436,7 @@ class Installer(build_ext):
 		if libdir is None:
 			libdir = os.path.abspath(os.path.join(sysconfig.get_config_var('LIBDEST'), "..", "libs"))
 			if sysconfig.get_config_var("LIBDEST") is None:
-				raise SystemError("Cannot detect library directory for python install.")
+				raise SystemError("Cannot detect library directory for Python install.")
 		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(libdir),
 					  # "-DPYTHON_LINKER:=-lpython{}.{}{}".format(v_info.major, v_info.minor, pymalloc_ext),
 					  "-DPYTHON_CPPFLAGS:='{}'".format(cflags),
@@ -464,7 +462,7 @@ class Installer(build_ext):
 
 
 def get_python_library(python_version):
-	"""Get path to the python library associated with the current python
+	"""Get path to the Python library associated with the current Python
 	interpreter."""
 	# determine direct path to libpython
 	python_library = sysconfig.get_config_var('LIBRARY')
@@ -526,7 +524,7 @@ def get_python_library(python_version):
 					break
 	# Otherwise still a static library, keep searching
 	if potential_library is None:
-		raise IOError("No python libraries found")
+		raise IOError("No Python libraries found")
 	return potential_library
 
 
@@ -535,7 +533,7 @@ if __name__ == "__main__":
 	from distutils.dist import Distribution
 	import argparse
 
-	parser = argparse.ArgumentParser(description='Build the c++ library (necsim) required for pycoalescence.')
+	parser = argparse.ArgumentParser(description='Build the C++ library (necsim) required for pycoalescence.')
 	parser.add_argument('--cmake', action='store_true', default=True, dest="cmake",
 						help='use the cmake build process')
 	parser.add_argument('--autotools', action='store_true', default=False, dest="autotools",

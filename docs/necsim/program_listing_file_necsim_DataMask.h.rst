@@ -8,7 +8,7 @@ Program Listing for File DataMask.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    
@@ -53,9 +53,9 @@ Program Listing for File DataMask.h
    
        bool isNull();
    
-       void setup(const SimParameters &sim_parameters);
+       void setup(const shared_ptr<SimParameters> sim_parameters);
    
-       bool checkCanUseDefault(const SimParameters &sim_parameters);
+       bool checkCanUseDefault(const shared_ptr<SimParameters> sim_parameters);
        void importBooleanMask(unsigned long xdim, unsigned long ydim, unsigned long mask_xdim, unsigned long mask_ydim,
                               unsigned long xoffset, unsigned long yoffset, string inputfile_in);
    
@@ -63,9 +63,9 @@ Program Listing for File DataMask.h
    
        void completeBoolImport();
    
-       void setupNull(SimParameters &mapvarin);
+       void setupNull(const shared_ptr<SimParameters> mapvarin);
    
-       void importSampleMask(SimParameters &mapvarin);
+       void importSampleMask(const shared_ptr<SimParameters> mapvarin);
    
    
        bool getVal(const long &x, const long &y, const long &xwrap, const long &ywrap);

@@ -325,18 +325,30 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
 							"time": 0.0,
 							"fragments": 0,
 							"metacommunity_reference": 2}
+		expected_meta_params1 =  {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
+								 "option": "simulated",
+								 "external_reference": 0}
+		expected_meta_params2 = {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
+								 "option": "analytical",
+								 "external_reference": 0}
 		params1 = t.get_community_parameters(1)
 		params2 = t.get_community_parameters(2)
 		params3 = t.get_community_parameters(3)
 		params4 = t.get_community_parameters(4)
 		params5 = t.get_community_parameters(5)
+		params6 = t.get_metacommunity_parameters(1)
+		params7 = t.get_metacommunity_parameters(2)
 		self.assertEqual(expected_params1, params1)
 		self.assertEqual(expected_params2, params2)
 		self.assertEqual(expected_params3, params3)
 		self.assertEqual(expected_params4, params4)
 		self.assertEqual(expected_params5, params5)
+		self.assertEqual(expected_meta_params1, params6)
+		self.assertEqual(expected_meta_params2, params7)
 		with self.assertRaises(KeyError):
 			t.get_community_parameters(6)
+		with self.assertRaises(KeyError):
+			t.get_metacommunity_parameters(3)
 		ref1 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False)
 		with self.assertRaises(KeyError):
 			t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False, min_speciation_gen=0.1,
@@ -499,7 +511,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		with self.assertRaises(RuntimeError):
 			self.test2.calculate_fragment_octaves()
 
-	@unittest.skipIf(sys.version[0] != '3', "Skipping python 3.x tests")
+	@unittest.skipIf(sys.version[0] != '3', "Skipping Python 3.x tests")
 	def testModelFitting2(self):
 		"""
 		Tests that the goodness-of-fit calculations are correctly performed.
@@ -510,7 +522,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
 
-	@unittest.skipIf(sys.version[0] == '3', "Skipping python 2.x tests")
+	@unittest.skipIf(sys.version[0] == '3', "Skipping Python 2.x tests")
 	def testModelFitting3(self):
 		"""
 		Tests that the goodness-of-fit calculations are correctly performed.
@@ -809,7 +821,7 @@ class TestMetacommunityApplication(unittest.TestCase):
 	def setUpClass(cls):
 		"""Initialises the three database files to use."""
 		src = os.path.join("sample", "sample.db")
-		for i in range(3):
+		for i in range(6):
 			dst = os.path.join("output", "sample_{}.db".format(i))
 			if os.path.exists(dst):
 				os.remove(dst)
@@ -828,7 +840,7 @@ class TestMetacommunityApplication(unittest.TestCase):
 
 	def testMetacommunitySimulation(self):
 		"""Tests that a simulated metacommunity works as intended."""
-		tree = CoalescenceTree(os.path.join("output", "sample_0.db"))
+		tree = CoalescenceTree(os.path.join("output", "sample_1.db"))
 		tree.wipe_data()
 		tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
 									   metacommunity_speciation_rate=0.001, metacommunity_option="simulated")
@@ -852,16 +864,16 @@ class TestMetacommunityApplication(unittest.TestCase):
 		self.assertEqual(0.001, params_3["speciation_rate"])
 		self.assertEqual("simulated", params_3["option"])
 		self.assertEqual(0, params_3["external_reference"])
-		self.assertEqual(75, tree.get_species_richness(1))
-		self.assertEqual(75, tree.get_species_richness(2))
-		self.assertEqual(798, tree.get_species_richness(3))
-		self.assertEqual(902, tree.get_species_richness(4))
-		self.assertEqual(478, tree.get_species_richness(5))
-		self.assertEqual(520, tree.get_species_richness(6))
+		self.assertEqual(49, tree.get_species_richness(1))
+		self.assertEqual(53, tree.get_species_richness(2))
+		self.assertEqual(681, tree.get_species_richness(3))
+		self.assertEqual(791, tree.get_species_richness(4))
+		self.assertEqual(209, tree.get_species_richness(5))
+		self.assertEqual(242, tree.get_species_richness(6))
 
 	def testMetacommunityAnalytical(self):
 		"""Tests that an analytical metacommunity works as intended."""
-		tree = CoalescenceTree(os.path.join("output", "sample_1.db"))
+		tree = CoalescenceTree(os.path.join("output", "sample_2.db"))
 		tree.wipe_data()
 		tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
 									   metacommunity_speciation_rate=0.001, metacommunity_option="analytical")
@@ -885,16 +897,16 @@ class TestMetacommunityApplication(unittest.TestCase):
 		self.assertEqual(0.001, params_3["speciation_rate"])
 		self.assertEqual("analytical", params_3["option"])
 		self.assertEqual(0, params_3["external_reference"])
-		self.assertEqual(295, tree.get_species_richness(1))
-		self.assertEqual(333, tree.get_species_richness(2))
-		self.assertEqual(782, tree.get_species_richness(3))
-		self.assertEqual(909, tree.get_species_richness(4))
-		self.assertEqual(560, tree.get_species_richness(5))
-		self.assertEqual(595, tree.get_species_richness(6))
+		self.assertEqual(64, tree.get_species_richness(1))
+		self.assertEqual(61, tree.get_species_richness(2))
+		self.assertEqual(687, tree.get_species_richness(3))
+		self.assertEqual(785, tree.get_species_richness(4))
+		self.assertEqual(227, tree.get_species_richness(5))
+		self.assertEqual(242, tree.get_species_richness(6))
 
 	def testMetacommunityExternal(self):
 		"""Tests that an external metacommunity works as intended."""
-		tree = CoalescenceTree(os.path.join("output", "sample_1.db"))
+		tree = CoalescenceTree(os.path.join("output", "sample_3.db"))
 		tree.wipe_data()
 		tree.set_speciation_parameters([0.1, 0.2], metacommunity_option=os.path.join("sample", "nse_reference.db"),
 									   metacommunity_reference=1)
@@ -913,5 +925,94 @@ class TestMetacommunityApplication(unittest.TestCase):
 		self.assertEqual(2, params_2["external_reference"])
 		self.assertEqual(1, tree.get_species_richness(1))
 		self.assertEqual(1, tree.get_species_richness(2))
-		self.assertEqual(850, tree.get_species_richness(3))
-		self.assertEqual(979, tree.get_species_richness(4))
+		self.assertEqual(846, tree.get_species_richness(3))
+		self.assertEqual(962, tree.get_species_richness(4))
+
+	def testMetacommunityAnalyticalMethodDetection(self):
+		"""Tests that the analytical method detection works correctly."""
+		tree = CoalescenceTree(os.path.join("output", "sample_4.db"))
+		tree.wipe_data()
+		tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=110000, metacommunity_speciation_rate=0.5,
+									   metacommunity_option="none")
+		tree.add_metacommunity_parameters(metacommunity_speciation_rate=0.5, metacommunity_size=120000,
+										  metacommunity_option="none")
+		tree.apply()
+		params_1 = tree.get_metacommunity_parameters(1)
+		params_2 = tree.get_metacommunity_parameters(2)
+		self.assertEqual(110000, params_1["metacommunity_size"])
+		self.assertEqual(0.5, params_1["speciation_rate"])
+		self.assertEqual("analytical", params_1["option"])
+		self.assertEqual(120000, params_2["metacommunity_size"])
+		self.assertEqual(0.5, params_2["speciation_rate"])
+		self.assertEqual("analytical", params_2["option"])
+
+	def testMetacommunitySimulatedMethodDetection(self):
+		"""Tests that the simulated method detection works correctly."""
+		tree = CoalescenceTree(os.path.join("output", "sample_5.db"))
+		tree.wipe_data()
+		tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=1000, metacommunity_speciation_rate=0.5,
+									   metacommunity_option="none")
+		tree.add_metacommunity_parameters(metacommunity_speciation_rate=0.5, metacommunity_size=2000,
+										  metacommunity_option="none")
+		tree.apply()
+		params_1 = tree.get_metacommunity_parameters(1)
+		params_2 = tree.get_metacommunity_parameters(2)
+		self.assertEqual(1000, params_1["metacommunity_size"])
+		self.assertEqual(0.5, params_1["speciation_rate"])
+		self.assertEqual("simulated", params_1["option"])
+		self.assertEqual(2000, params_2["metacommunity_size"])
+		self.assertEqual(0.5, params_2["speciation_rate"])
+		self.assertEqual("simulated", params_2["option"])
+
+
+class TestMetacommunityApplicationOrdering(unittest.TestCase):
+	"""Tests that the ordering of adding parameters to the metacommunity does not matter."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Generates the test databases."""
+		src = os.path.join("sample", "sample3.db")
+		for i in [1, 2]:
+			dst = os.path.join("output", "sample_order_{}.db".format(i))
+			if os.path.exists(dst):
+				os.remove(dst)
+			shutil.copy(src, dst)
+		src = os.path.join("sample", "sample5.db")
+		for i in range(3, 6):
+			dst = os.path.join("output", "sample_order_{}.db".format(i))
+			if os.path.exists(dst):
+				os.remove(dst)
+			shutil.copy(src, dst)
+		cls.c1 = CoalescenceTree(os.path.join("output", "sample_order_1.db"))
+		cls.c2 = CoalescenceTree(os.path.join("output", "sample_order_2.db"))
+		cls.proc1 = CoalescenceTree(os.path.join("output", "sample_order_3.db"))
+		cls.proc2 = CoalescenceTree(os.path.join("output", "sample_order_4.db"))
+		cls.proc3 = CoalescenceTree(os.path.join("output", "sample_order_5.db"))
+		cls.c1.set_speciation_parameters([0.1, 0.5, 0.9], metacommunity_speciation_rate=0.001,
+										 metacommunity_option="simulated", metacommunity_size=10000)
+		cls.c1.apply()
+		cls.c2.set_speciation_parameters([0.1, 0.5, 0.9])
+		cls.c2.add_metacommunity_parameters(metacommunity_size=10000, metacommunity_speciation_rate=0.001,
+											metacommunity_option="simulated")
+		cls.c2.apply()
+		cls.proc1.set_speciation_parameters([0.1, 0.5, 0.9], protracted_speciation_min=5,
+											protracted_speciation_max=1000, metacommunity_option="simulated",
+											metacommunity_speciation_rate=0.001, metacommunity_size=10000)
+		cls.proc1.apply()
+		cls.proc2.set_speciation_parameters([0.1, 0.5, 0.9])
+		cls.proc2.add_metacommunity_parameters(metacommunity_size=10000, metacommunity_speciation_rate=0.001,
+											   metacommunity_option="simulated")
+		cls.proc2.add_protracted_parameters(min_speciation_gen=5, max_speciation_gen=1000)
+		cls.proc2.apply()
+		cls.proc3.set_speciation_parameters([0.1, 0.5, 0.9])
+		cls.proc3.add_protracted_parameters(min_speciation_gen=5, max_speciation_gen=1000)
+		cls.proc3.add_metacommunity_parameters(metacommunity_size=10000, metacommunity_speciation_rate=0.001,
+											   metacommunity_option="simulated")
+		cls.proc3.apply()
+
+	def testEquivalentMethodsMatch(self):
+		"""Tests that equivalent methods of applying metacommunities produce equivalent results."""
+		for i in range(1, 4):
+			self.assertEqual(self.c1.get_species_richness(i), self.c2.get_species_richness(i))
+			self.assertEqual(self.proc1.get_species_richness(i), self.proc2.get_species_richness(i))
+			self.assertEqual(self.proc2.get_species_richness(i), self.proc3.get_species_richness(i))

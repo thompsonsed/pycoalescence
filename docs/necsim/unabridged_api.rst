@@ -10,6 +10,11 @@ Namespaces
 .. toctree::
    :maxdepth: 5
 
+   namespace_neutral_analytical.rst
+
+.. toctree::
+   :maxdepth: 5
+
    namespace_std.rst
 
 Classes and Structs
@@ -84,6 +89,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_AnalyticalSpeciesAbundancesHandler.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_Cell.rst
 
 .. toctree::
@@ -94,7 +104,7 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_ConfigOption.rst
+   class_ConfigParser.rst
 
 .. toctree::
    :maxdepth: 5
@@ -204,12 +214,22 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_SimulatedSpeciesAbundancesHandler.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_SpatialTree.rst
 
 .. toctree::
    :maxdepth: 5
 
    class_SpeciationCommands.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_SpeciesAbundancesHandler.rst
 
 .. toctree::
    :maxdepth: 5
@@ -239,6 +259,11 @@ Classes and Structs
 Functions
 *********
 
+
+.. toctree::
+   :maxdepth: 5
+
+   function_addMetacommunityParameters.rst
 
 .. toctree::
    :maxdepth: 5
@@ -393,6 +418,16 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_elegantPairing.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_elegantPairing.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_genCommunityMethods.rst
 
 .. toctree::
@@ -459,6 +494,11 @@ Functions
    :maxdepth: 5
 
    function_getGlobalLogger.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_getTime.rst
 
 .. toctree::
    :maxdepth: 5
@@ -558,7 +598,27 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_openSQLiteDatabase.rst
+   function_neutral_analytical__getFundamentalBiodiversityNumber.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_neutral_analytical__nseMetacommunitySpeciesWithAbundance.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_neutral_analytical__nseSpeciesAbundanceCumulativeDistribution.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_neutral_analytical__nseSpeciesRichness.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_neutral_analytical__nseSpeciesRichnessDeprecated.rst
 
 .. toctree::
    :maxdepth: 5
@@ -568,7 +628,7 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_operator_LT__LT.rst
+   function_openSQLiteDatabase.rst
 
 .. toctree::
    :maxdepth: 5
@@ -589,6 +649,21 @@ Functions
    :maxdepth: 5
 
    function_operator_LT__LT.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_operator_LT__LT.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_operator_LT__LT.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_operator_GT__GT.rst
 
 .. toctree::
    :maxdepth: 5
@@ -658,6 +733,11 @@ Functions
 .. toctree::
    :maxdepth: 5
 
+   function_pySpeciateRemainingLineages.rst
+
+.. toctree::
+   :maxdepth: 5
+
    function_PyTemplate_clear.rst
 
 .. toctree::
@@ -704,6 +784,11 @@ Functions
    :maxdepth: 5
 
    function_PyTemplate_traverse.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   function_raiseErrorOnFalse.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1032,12 +1117,12 @@ Variables
 .. toctree::
    :maxdepth: 5
 
-   variable_NECSimError.rst
+   variable_necsimError.rst
 
 .. toctree::
    :maxdepth: 5
 
-   variable_NECSimMethods.rst
+   variable_NecsimMethods.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1174,6 +1259,16 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_AnalyticalSpeciesAbundancesHandler.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_CCommunity.h.rst
 
 .. toctree::
@@ -1204,22 +1299,22 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_ConfigFileParser.cpp.rst
+   file_necsim_ConfigParser.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_ConfigFileParser.h.rst
+   file_necsim_ConfigParser.h.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_CPLCustomHandlerNecsim.cpp.rst
+   file_necsim_cpl_custom_handler.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_CPLCustomHandlerNecsim.h.rst
+   file_necsim_cpl_custom_handler.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1234,7 +1329,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_CustomExceptions.h.rst
+   file_necsim_custom_exceptions.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1269,22 +1364,22 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_DoubleComparison.cpp.rst
+   file_necsim_double_comparison.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_DoubleComparison.h.rst
+   file_necsim_double_comparison.h.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_Filesystem.cpp.rst
+   file_necsim_file_system.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_Filesystem.h.rst
+   file_necsim_file_system.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1379,7 +1474,27 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_necsim_neutral_analytical.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_neutral_analytical.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_necsim_NRrand.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_parameters.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_parameters.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1439,12 +1554,12 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_Setup.cpp.rst
+   file_necsim_setup.cpp.rst
 
 .. toctree::
    :maxdepth: 5
 
-   file_necsim_Setup.h.rst
+   file_necsim_setup.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1460,6 +1575,16 @@ Files
    :maxdepth: 5
 
    file_necsim_SimulateDispersal.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_SimulatedSpeciesAbundancesHandler.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_SimulatedSpeciesAbundancesHandler.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -1485,6 +1610,16 @@ Files
    :maxdepth: 5
 
    file_necsim_SpeciationCommands.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_SpeciesAbundancesHandler.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_necsim_SpeciesAbundancesHandler.h.rst
 
 .. toctree::
    :maxdepth: 5

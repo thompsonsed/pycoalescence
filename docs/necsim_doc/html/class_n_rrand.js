@@ -15,6 +15,7 @@ var class_n_rrand =
     [ "norm", "class_n_rrand.html#aa57a6e9bae94c2df5a00473ba6fa900d", null ],
     [ "normUniform", "class_n_rrand.html#ab18277b2f873878602e82672b272c9be", null ],
     [ "normUniformMinDistance", "class_n_rrand.html#ad8c9f54d596e01624505c765172d8328", null ],
+    [ "randomLogarithmic", "class_n_rrand.html#a347f480f78917ebcc822f0f3b74825c3", null ],
     [ "rayleigh", "class_n_rrand.html#a39576a34204f90b6cda7dfd92561c0b0", null ],
     [ "rayleighCDF", "class_n_rrand.html#a2723a59dd63c61886238c2d466831985", null ],
     [ "rayleighMinDist", "class_n_rrand.html#aefdaf5521b01658bdd1c206bbe1e855f", null ],

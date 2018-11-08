@@ -7,7 +7,7 @@ File PyLogger.cpp
 
 
 
-Routines for controlling logger from c++ to python. 
+Routines for controlling logger from C++ to python. 
 
 
 .. contents:: Contents
@@ -40,7 +40,7 @@ Includes
 
 - ``PyLogger.h`` (:ref:`file_PyLogger.h`)
 
-- ``necsim/CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
 
 - ``necsim/Logger.h`` (:ref:`file_necsim_Logger.h`)
 

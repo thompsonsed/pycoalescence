@@ -8,14 +8,14 @@ Program Listing for File LogFile.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #include <sstream>
    #include <iomanip>
    #include <boost/filesystem.hpp>
    #include "LogFile.h"
-   #include "Filesystem.h"
-   #include "CustomExceptions.h"
+   #include "file_system.h"
+   #include "custom_exceptions.h"
    
    string getTime()
    {

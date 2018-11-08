@@ -8,12 +8,12 @@ Program Listing for File DispersalCoordinator.cpp
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #include "DispersalCoordinator.h"
    #include <utility>
-   #include "CustomExceptions.h"
+   #include "custom_exceptions.h"
    #include "Logger.h"
    
    DispersalCoordinator::DispersalCoordinator() : dispersal_prob_map(), raw_dispersal_prob_map(), NR(nullptr),
@@ -88,11 +88,11 @@ Program Listing for File DispersalCoordinator.cpp
        }
    }
    
-   void DispersalCoordinator::setDispersal(SimParameters *simParameters)
+   void DispersalCoordinator::setDispersal(shared_ptr<SimParameters> simParameters)
    {
        if(!simParameters)
        {
-           throw FatalException("Simulation parameters pointer has not been set for DispersalCoordinator.");
+           throw FatalException("Simulation current_metacommunity_parameters pointer has not been set for DispersalCoordinator.");
        }
        setDispersal(simParameters->dispersal_method, simParameters->dispersal_file,
                     simParameters->fine_map_x_size, simParameters->fine_map_y_size, simParameters->m_prob,
@@ -440,17 +440,17 @@ Program Listing for File DispersalCoordinator.cpp
        // greater than or equal to that distance.
        if(!landscape->getVal(this_step.oldx, this_step.oldy, this_step.oldxwrap, this_step.oldywrap, *generation))
        {
-           // TODO add proper unittests for this scenario
            auto min_distance = landscape->distanceToNearestHabitat(this_step.oldx, this_step.oldy, this_step.oldxwrap,
                                                                    this_step.oldywrap, *generation);
            while(fail)
            {
                dist = NR->dispersalMinDistance(min_distance);
-               // TODO move to debug
+   #ifdef DEBUG
                if(dist < min_distance)
                {
                    throw FatalException("Distance is less than minimum distance: please report this bug.");
                }
+   #endif // DEBUG
                angle = NR->direction();
                density = landscape->runDispersal(dist, angle, this_step.oldx,
                                                  this_step.oldy, this_step.oldxwrap, this_step.oldywrap, fail,

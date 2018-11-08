@@ -56,7 +56,7 @@ Includes
 
 - ``iostream``
 
-- ``set``
+- ``set`` (:ref:`file_necsim_setup.cpp`)
 
 - ``sqlite3.h``
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>necsim &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>necsim &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Namespace std" href="namespace_std.html" />
+    <link rel="next" title="Namespace neutral_analytical" href="namespace_neutral_analytical.html" />
     <link rel="prev" title="pycoalescence" href="../README_pycoalescence.html" /> 
   </head>
   <body role="document">
@@ -45,12 +45,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="namespace_std.html" title="Namespace std"
+          <a href="namespace_neutral_analytical.html" title="Namespace neutral_analytical"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../README_pycoalescence.html" title="pycoalescence"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -109,8 +109,8 @@ real-world systems. For more information on the topic, please see <a class="refe
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you want to also compile the module for integrating with python, provide the python library (PYTHON_LIB) and
-python include directories (PYTHON_INCLUDE) as command line flags to <code class="docutils literal"><span class="pre">./configure</span></code>. You must then run <code class="docutils literal"><span class="pre">make</span> <span class="pre">all</span></code>.
+<p class="last">If you want to also compile the module for integrating with Python, provide the Python library (PYTHON_LIB) and
+Python include directories (PYTHON_INCLUDE) as command line flags to <code class="docutils literal"><span class="pre">./configure</span></code>. You must then run <code class="docutils literal"><span class="pre">make</span> <span class="pre">all</span></code>.
 This is not recommended, and it is advised you use the <a class="reference internal" href="../README_pycoalescence.html#introduction-pycoalescence"><span class="std std-ref">install proceedure outlined here</span></a>.</p>
 </div>
 <div class="admonition warning">
@@ -404,7 +404,7 @@ This database contains all important simulation data over several tables, which 
 using a program like <a class="reference external" href="http://sqlitebrowser.org/">DB Browser for SQLite</a> or Microsoft Access.
 Alternatively, most programming languages have an SQLite interface
 (<a class="reference external" href="https://cran.r-project.org/web/packages/RSQLite/index.html">RSQlite</a>,
-<a class="reference external" href="https://docs.python.org/2/library/sqlite3.html">python sqlite3</a>)</li>
+<a class="reference external" href="https://docs.python.org/2/library/sqlite3.html">Python sqlite3</a>)</li>
 </ul>
 <p>The tables in the SQLite database are</p>
 <ul>
@@ -537,7 +537,7 @@ of spatial data.</li>
 <li>Handles the positioning of individuals in space within a grid cell.</li>
 </ul>
 </li>
-<li><p class="first">The <a class="reference internal" href="class_ConfigOption.html#_CPPv212ConfigOption" title="ConfigOption"><code class="xref cpp cpp-class docutils literal"><span class="pre">ConfigOption</span></code></a> class</p>
+<li><p class="first">The <code class="xref cpp cpp-class docutils literal"><span class="pre">ConfigOption</span></code> class</p>
 <ul class="simple">
 <li>Contains basic functions for importing command line arguments from a config file, providing an alternative way of
 setting up simulations.</li>
@@ -600,7 +600,7 @@ implemented here).</li>
 </div>
 <div class="section" id="version">
 <h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
-<p>Version 1.2.6</p>
+<p>Version 1.2.7a2</p>
 </div>
 <div class="section" id="contacts">
 <h2>Contacts<a class="headerlink" href="#contacts" title="Permalink to this headline">¶</a></h2>
@@ -638,9 +638,10 @@ details.</p>
       <li>Struct <a href="struct_SimParameters.html#struct-SimParameters">SimParameters</a></li>
       <li>Struct <a href="struct_SpeciesException.html#struct-SpeciesException">SpeciesException</a></li>
       <li>Class <a href="class_ActivityMap.html#class-ActivityMap">ActivityMap</a></li>
+      <li>Class <a href="class_AnalyticalSpeciesAbundancesHandler.html#class-AnalyticalSpeciesAbundancesHandler">AnalyticalSpeciesAbundancesHandler</a></li>
       <li>Class <a href="class_Cell.html#class-Cell">Cell</a></li>
       <li>Class <a href="class_Community.html#class-Community">Community</a></li>
-      <li>Class <a href="class_ConfigOption.html#class-ConfigOption">ConfigOption</a></li>
+      <li>Class <a href="class_ConfigParser.html#class-ConfigParser">ConfigParser</a></li>
       <li>Class <a href="class_DataMask.html#class-DataMask">DataMask</a></li>
       <li>Class <a href="class_DataPoint.html#class-DataPoint">DataPoint</a></li>
       <li>Class <a href="class_DispersalCoordinator.html#class-DispersalCoordinator">DispersalCoordinator</a></li>
@@ -662,8 +663,10 @@ details.</p>
       <li>Template Class <a href="class_Row.html#template-class-Row">Row</a></li>
       <li>Class <a href="class_Samplematrix.html#class-Samplematrix">Samplematrix</a></li>
       <li>Class <a href="class_SimulateDispersal.html#class-SimulateDispersal">SimulateDispersal</a></li>
+      <li>Class <a href="class_SimulatedSpeciesAbundancesHandler.html#class-SimulatedSpeciesAbundancesHandler">SimulatedSpeciesAbundancesHandler</a></li>
       <li>Class <a href="class_SpatialTree.html#class-SpatialTree">SpatialTree</a></li>
       <li>Class <a href="class_SpeciationCommands.html#class-SpeciationCommands">SpeciationCommands</a></li>
+      <li>Class <a href="class_SpeciesAbundancesHandler.html#class-SpeciesAbundancesHandler">SpeciesAbundancesHandler</a></li>
       <li>Class <a href="class_SpeciesList.html#class-SpeciesList">SpeciesList</a></li>
       <li>Class <a href="class_SpecSimParameters.html#class-SpecSimParameters">SpecSimParameters</a></li>
       <li>Class <a href="class_Step.html#class-Step">Step</a></li>
@@ -683,25 +686,27 @@ details.</p>
         <ul>
           <li>File <a href="file_necsim_ActivityMap.cpp.html#file-necsim-ActivityMap.cpp">ActivityMap.cpp</a></li>
           <li>File <a href="file_necsim_ActivityMap.h.html#file-necsim-ActivityMap.h">ActivityMap.h</a></li>
+          <li>File <a href="file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.html#file-necsim-AnalyticalSpeciesAbundancesHandler.cpp">AnalyticalSpeciesAbundancesHandler.cpp</a></li>
+          <li>File <a href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html#file-necsim-AnalyticalSpeciesAbundancesHandler.h">AnalyticalSpeciesAbundancesHandler.h</a></li>
           <li>File <a href="file_necsim_Cell.cpp.html#file-necsim-Cell.cpp">Cell.cpp</a></li>
           <li>File <a href="file_necsim_Cell.h.html#file-necsim-Cell.h">Cell.h</a></li>
           <li>File <a href="file_necsim_Community.cpp.html#file-necsim-Community.cpp">Community.cpp</a></li>
           <li>File <a href="file_necsim_Community.h.html#file-necsim-Community.h">Community.h</a></li>
-          <li>File <a href="file_necsim_ConfigFileParser.cpp.html#file-necsim-ConfigFileParser.cpp">ConfigFileParser.cpp</a></li>
-          <li>File <a href="file_necsim_ConfigFileParser.h.html#file-necsim-ConfigFileParser.h">ConfigFileParser.h</a></li>
-          <li>File <a href="file_necsim_CPLCustomHandlerNecsim.cpp.html#file-necsim-CPLCustomHandlerNecsim.cpp">CPLCustomHandlerNecsim.cpp</a></li>
-          <li>File <a href="file_necsim_CPLCustomHandlerNecsim.h.html#file-necsim-CPLCustomHandlerNecsim.h">CPLCustomHandlerNecsim.h</a></li>
-          <li>File <a href="file_necsim_CustomExceptions.h.html#file-necsim-CustomExceptions.h">CustomExceptions.h</a></li>
+          <li>File <a href="file_necsim_ConfigParser.cpp.html#file-necsim-ConfigParser.cpp">ConfigParser.cpp</a></li>
+          <li>File <a href="file_necsim_ConfigParser.h.html#file-necsim-ConfigParser.h">ConfigParser.h</a></li>
+          <li>File <a href="file_necsim_cpl_custom_handler.cpp.html#file-necsim-cpl-custom-handler.cpp">cpl_custom_handler.cpp</a></li>
+          <li>File <a href="file_necsim_cpl_custom_handler.h.html#file-necsim-cpl-custom-handler.h">cpl_custom_handler.h</a></li>
+          <li>File <a href="file_necsim_custom_exceptions.h.html#file-necsim-custom-exceptions.h">custom_exceptions.h</a></li>
           <li>File <a href="file_necsim_DataMask.cpp.html#file-necsim-DataMask.cpp">DataMask.cpp</a></li>
           <li>File <a href="file_necsim_DataMask.h.html#file-necsim-DataMask.h">DataMask.h</a></li>
           <li>File <a href="file_necsim_DataPoint.cpp.html#file-necsim-DataPoint.cpp">DataPoint.cpp</a></li>
           <li>File <a href="file_necsim_DataPoint.h.html#file-necsim-DataPoint.h">DataPoint.h</a></li>
           <li>File <a href="file_necsim_DispersalCoordinator.cpp.html#file-necsim-DispersalCoordinator.cpp">DispersalCoordinator.cpp</a></li>
           <li>File <a href="file_necsim_DispersalCoordinator.h.html#file-necsim-DispersalCoordinator.h">DispersalCoordinator.h</a></li>
-          <li>File <a href="file_necsim_DoubleComparison.cpp.html#file-necsim-DoubleComparison.cpp">DoubleComparison.cpp</a></li>
-          <li>File <a href="file_necsim_DoubleComparison.h.html#file-necsim-DoubleComparison.h">DoubleComparison.h</a></li>
-          <li>File <a href="file_necsim_Filesystem.cpp.html#file-necsim-Filesystem.cpp">Filesystem.cpp</a></li>
-          <li>File <a href="file_necsim_Filesystem.h.html#file-necsim-Filesystem.h">Filesystem.h</a></li>
+          <li>File <a href="file_necsim_double_comparison.cpp.html#file-necsim-double-comparison.cpp">double_comparison.cpp</a></li>
+          <li>File <a href="file_necsim_double_comparison.h.html#file-necsim-double-comparison.h">double_comparison.h</a></li>
+          <li>File <a href="file_necsim_file_system.cpp.html#file-necsim-file-system.cpp">file_system.cpp</a></li>
+          <li>File <a href="file_necsim_file_system.h.html#file-necsim-file-system.h">file_system.h</a></li>
           <li>File <a href="file_necsim_Landscape.cpp.html#file-necsim-Landscape.cpp">Landscape.cpp</a></li>
           <li>File <a href="file_necsim_Landscape.h.html#file-necsim-Landscape.h">Landscape.h</a></li>
           <li>File <a href="file_necsim_LicenseHeader.h.html#file-necsim-LicenseHeader.h">LicenseHeader.h</a></li>
@@ -716,21 +721,29 @@ details.</p>
           <li>File <a href="file_necsim_Matrix.h.html#file-necsim-Matrix.h">Matrix.h</a></li>
           <li>File <a href="file_necsim_Metacommunity.cpp.html#file-necsim-Metacommunity.cpp">Metacommunity.cpp</a></li>
           <li>File <a href="file_necsim_Metacommunity.h.html#file-necsim-Metacommunity.h">Metacommunity.h</a></li>
+          <li>File <a href="file_necsim_neutral_analytical.cpp.html#file-necsim-neutral-analytical.cpp">neutral_analytical.cpp</a></li>
+          <li>File <a href="file_necsim_neutral_analytical.h.html#file-necsim-neutral-analytical.h">neutral_analytical.h</a></li>
           <li>File <a href="file_necsim_NRrand.h.html#file-necsim-NRrand.h">NRrand.h</a></li>
+          <li>File <a href="file_necsim_parameters.cpp.html#file-necsim-parameters.cpp">parameters.cpp</a></li>
+          <li>File <a href="file_necsim_parameters.h.html#file-necsim-parameters.h">parameters.h</a></li>
           <li>File <a href="file_necsim_ProtractedSpatialTree.h.html#file-necsim-ProtractedSpatialTree.h">ProtractedSpatialTree.h</a></li>
           <li>File <a href="file_necsim_ProtractedTree.cpp.html#file-necsim-ProtractedTree.cpp">ProtractedTree.cpp</a></li>
           <li>File <a href="file_necsim_ProtractedTree.h.html#file-necsim-ProtractedTree.h">ProtractedTree.h</a></li>
           <li>File <a href="file_necsim_README.md.html#file-necsim-README.md">README.md</a></li>
-          <li>File <a href="file_necsim_Setup.cpp.html#file-necsim-Setup.cpp">Setup.cpp</a></li>
-          <li>File <a href="file_necsim_Setup.h.html#file-necsim-Setup.h">Setup.h</a></li>
+          <li>File <a href="file_necsim_setup.cpp.html#file-necsim-setup.cpp">setup.cpp</a></li>
+          <li>File <a href="file_necsim_setup.h.html#file-necsim-setup.h">setup.h</a></li>
           <li>File <a href="file_necsim_SimParameters.h.html#file-necsim-SimParameters.h">SimParameters.h</a></li>
           <li>File <a href="file_necsim_SimulateDispersal.cpp.html#file-necsim-SimulateDispersal.cpp">SimulateDispersal.cpp</a></li>
           <li>File <a href="file_necsim_SimulateDispersal.h.html#file-necsim-SimulateDispersal.h">SimulateDispersal.h</a></li>
+          <li>File <a href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html#file-necsim-SimulatedSpeciesAbundancesHandler.cpp">SimulatedSpeciesAbundancesHandler.cpp</a></li>
+          <li>File <a href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#file-necsim-SimulatedSpeciesAbundancesHandler.h">SimulatedSpeciesAbundancesHandler.h</a></li>
           <li>File <a href="file_necsim_SimulationTemplates.h.html#file-necsim-SimulationTemplates.h">SimulationTemplates.h</a></li>
           <li>File <a href="file_necsim_SpatialTree.cpp.html#file-necsim-SpatialTree.cpp">SpatialTree.cpp</a></li>
           <li>File <a href="file_necsim_SpatialTree.h.html#file-necsim-SpatialTree.h">SpatialTree.h</a></li>
           <li>File <a href="file_necsim_SpeciationCommands.cpp.html#file-necsim-SpeciationCommands.cpp">SpeciationCommands.cpp</a></li>
           <li>File <a href="file_necsim_SpeciationCommands.h.html#file-necsim-SpeciationCommands.h">SpeciationCommands.h</a></li>
+          <li>File <a href="file_necsim_SpeciesAbundancesHandler.cpp.html#file-necsim-SpeciesAbundancesHandler.cpp">SpeciesAbundancesHandler.cpp</a></li>
+          <li>File <a href="file_necsim_SpeciesAbundancesHandler.h.html#file-necsim-SpeciesAbundancesHandler.h">SpeciesAbundancesHandler.h</a></li>
           <li>File <a href="file_necsim_SpeciesList.cpp.html#file-necsim-SpeciesList.cpp">SpeciesList.cpp</a></li>
           <li>File <a href="file_necsim_SpeciesList.h.html#file-necsim-SpeciesList.h">SpeciesList.h</a></li>
           <li>File <a href="file_necsim_SpecSimParameters.h.html#file-necsim-SpecSimParameters.h">SpecSimParameters.h</a></li>
@@ -762,6 +775,14 @@ details.</p>
 </ul><!-- /treeView file-treeView --></div>
 <div class="section" id="full-api">
 <h2>Full API<a class="headerlink" href="#full-api" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_neutral_analytical.html">Namespace neutral_analytical</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_neutral_analytical.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="namespace_std.html">Namespace std</a></li>
@@ -886,6 +907,18 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="class_AnalyticalSpeciesAbundancesHandler.html">Class AnalyticalSpeciesAbundancesHandler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_AnalyticalSpeciesAbundancesHandler.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_AnalyticalSpeciesAbundancesHandler.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_AnalyticalSpeciesAbundancesHandler.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="class_Cell.html">Class Cell</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="class_Cell.html#class-documentation">Class Documentation</a></li>
 </ul>
@@ -906,8 +939,8 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="class_ConfigOption.html">Class ConfigOption</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="class_ConfigOption.html#class-documentation">Class Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="class_ConfigParser.html">Class ConfigParser</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_ConfigParser.html#class-documentation">Class Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1139,6 +1172,18 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="class_SimulatedSpeciesAbundancesHandler.html">Class SimulatedSpeciesAbundancesHandler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_SimulatedSpeciesAbundancesHandler.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_SimulatedSpeciesAbundancesHandler.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_SimulatedSpeciesAbundancesHandler.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="class_SpatialTree.html">Class SpatialTree</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="class_SpatialTree.html#inheritance-relationships">Inheritance Relationships</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="class_SpatialTree.html#base-type">Base Type</a></li>
@@ -1154,6 +1199,18 @@ details.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="class_SpeciationCommands.html">Class SpeciationCommands</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="class_SpeciationCommands.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_SpeciesAbundancesHandler.html">Class SpeciesAbundancesHandler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_SpeciesAbundancesHandler.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_SpeciesAbundancesHandler.html#derived-types">Derived Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_SpeciesAbundancesHandler.html#class-documentation">Class Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1198,6 +1255,14 @@ details.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="class_TreeNode.html">Class TreeNode</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="class_TreeNode.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_addMetacommunityParameters.html">Function addMetacommunityParameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_addMetacommunityParameters.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1444,6 +1509,22 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="function_elegantPairing.html">Function elegantPairing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_elegantPairing.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_elegantPairing.html">Function elegantPairing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_elegantPairing.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="function_genCommunityMethods.html">Function genCommunityMethods</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_genCommunityMethods.html#function-documentation">Function Documentation</a></li>
 </ul>
@@ -1550,6 +1631,14 @@ details.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="function_getGlobalLogger.html">Function getGlobalLogger</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_getGlobalLogger.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getTime.html">Function getTime</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getTime.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1708,8 +1797,40 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="function_openSQLiteDatabase.html">Function openSQLiteDatabase</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="function_openSQLiteDatabase.html#function-documentation">Function Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_neutral_analytical__getFundamentalBiodiversityNumber.html">Function getFundamentalBiodiversityNumber</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_neutral_analytical__getFundamentalBiodiversityNumber.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_neutral_analytical__nseMetacommunitySpeciesWithAbundance.html">Function nseMetacommunitySpeciesWithAbundance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_neutral_analytical__nseMetacommunitySpeciesWithAbundance.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_neutral_analytical__nseSpeciesAbundanceCumulativeDistribution.html">Function nseSpeciesAbundanceCumulativeDistribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_neutral_analytical__nseSpeciesAbundanceCumulativeDistribution.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_neutral_analytical__nseSpeciesRichness.html">Function nseSpeciesRichness</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_neutral_analytical__nseSpeciesRichness.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_neutral_analytical__nseSpeciesRichnessDeprecated.html">Function nseSpeciesRichnessDeprecated</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_neutral_analytical__nseSpeciesRichnessDeprecated.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1724,8 +1845,8 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="function_operator_LT__LT.html">Function operator&lt;&lt;</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="function_operator_LT__LT.html#function-documentation">Function Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_openSQLiteDatabase.html">Function openSQLiteDatabase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_openSQLiteDatabase.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1758,6 +1879,30 @@ details.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="function_operator_LT__LT.html">Function operator&lt;&lt;</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_operator_LT__LT.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_operator_LT__LT.html">Function operator&lt;&lt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_operator_LT__LT.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_operator_LT__LT.html">Function operator&lt;&lt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_operator_LT__LT.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_operator_GT__GT.html">Function operator&gt;&gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_operator_GT__GT.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -1868,6 +2013,14 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="function_pySpeciateRemainingLineages.html">Function pySpeciateRemainingLineages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_pySpeciateRemainingLineages.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="function_PyTemplate_clear.html">Function PyTemplate_clear</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_PyTemplate_clear.html#function-documentation">Function Documentation</a></li>
 </ul>
@@ -1942,6 +2095,14 @@ details.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="function_PyTemplate_traverse.html">Function PyTemplate_traverse</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="function_PyTemplate_traverse.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_raiseErrorOnFalse.html">Function raiseErrorOnFalse</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_raiseErrorOnFalse.html#function-documentation">Function Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -2460,16 +2621,16 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="variable_NECSimError.html">Variable NECSimError</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variable_NECSimError.html#variable-documentation">Variable Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variable_necsimError.html">Variable necsimError</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_necsimError.html#variable-documentation">Variable Documentation</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="variable_NECSimMethods.html">Variable NECSimMethods</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variable_NECSimMethods.html#variable-documentation">Variable Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variable_NecsimMethods.html">Variable NecsimMethods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_NecsimMethods.html#variable-documentation">Variable Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -2680,6 +2841,34 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.html">File AnalyticalSpeciesAbundancesHandler.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.html#definition-necsim-analyticalspeciesabundanceshandler-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/AnalyticalSpeciesAbundancesHandler.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.html">Program Listing for File AnalyticalSpeciesAbundancesHandler.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.cpp.html#includes">Includes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html">File AnalyticalSpeciesAbundancesHandler.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html#definition-necsim-analyticalspeciesabundanceshandler-h">Definition (<code class="docutils literal"><span class="pre">necsim/AnalyticalSpeciesAbundancesHandler.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_AnalyticalSpeciesAbundancesHandler.h.html">Program Listing for File AnalyticalSpeciesAbundancesHandler.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_AnalyticalSpeciesAbundancesHandler.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="file_CCommunity.h.html">File CCommunity.h</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="file_CCommunity.h.html#definition-ccommunity-h">Definition (<code class="docutils literal"><span class="pre">CCommunity.h</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="program_listing_file_CCommunity.h.html">Program Listing for File CCommunity.h</a></li>
@@ -2773,59 +2962,55 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_ConfigFileParser.cpp.html">File ConfigFileParser.cpp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.cpp.html#definition-necsim-configfileparser-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/ConfigFileParser.cpp</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_ConfigFileParser.cpp.html">Program Listing for File ConfigFileParser.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_ConfigParser.cpp.html">File ConfigParser.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.cpp.html#definition-necsim-configparser-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/ConfigParser.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_ConfigParser.cpp.html">Program Listing for File ConfigParser.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.cpp.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.cpp.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.cpp.html#functions">Functions</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html">File ConfigFileParser.h</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html#definition-necsim-configfileparser-h">Definition (<code class="docutils literal"><span class="pre">necsim/ConfigFileParser.h</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_ConfigFileParser.h.html">Program Listing for File ConfigFileParser.h</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html#included-by">Included By</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html#classes">Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigFileParser.h.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.cpp.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.cpp.html#functions">Functions</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.cpp.html">File CPLCustomHandlerNecsim.cpp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.cpp.html#definition-necsim-cplcustomhandlernecsim-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/CPLCustomHandlerNecsim.cpp</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_CPLCustomHandlerNecsim.cpp.html">Program Listing for File CPLCustomHandlerNecsim.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_ConfigParser.h.html">File ConfigParser.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.h.html#definition-necsim-configparser-h">Definition (<code class="docutils literal"><span class="pre">necsim/ConfigParser.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_ConfigParser.h.html">Program Listing for File ConfigParser.h</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.cpp.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.cpp.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.cpp.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.h.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_ConfigParser.h.html#functions">Functions</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.h.html">File CPLCustomHandlerNecsim.h</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.h.html#definition-necsim-cplcustomhandlernecsim-h">Definition (<code class="docutils literal"><span class="pre">necsim/CPLCustomHandlerNecsim.h</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_CPLCustomHandlerNecsim.h.html">Program Listing for File CPLCustomHandlerNecsim.h</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_cpl_custom_handler.cpp.html">File cpl_custom_handler.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.cpp.html#definition-necsim-cpl-custom-handler-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/cpl_custom_handler.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_cpl_custom_handler.cpp.html">Program Listing for File cpl_custom_handler.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.h.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.h.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.h.html#included-by">Included By</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CPLCustomHandlerNecsim.h.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.cpp.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.cpp.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_cpl_custom_handler.h.html">File cpl_custom_handler.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.h.html#definition-necsim-cpl-custom-handler-h">Definition (<code class="docutils literal"><span class="pre">necsim/cpl_custom_handler.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_cpl_custom_handler.h.html">Program Listing for File cpl_custom_handler.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_cpl_custom_handler.h.html#functions">Functions</a></li>
 </ul>
 </li>
 </ul>
@@ -2864,15 +3049,14 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_CustomExceptions.h.html">File CustomExceptions.h</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CustomExceptions.h.html#definition-necsim-customexceptions-h">Definition (<code class="docutils literal"><span class="pre">necsim/CustomExceptions.h</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_CustomExceptions.h.html">Program Listing for File CustomExceptions.h</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_custom_exceptions.h.html">File custom_exceptions.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_custom_exceptions.h.html#definition-necsim-custom-exceptions-h">Definition (<code class="docutils literal"><span class="pre">necsim/custom_exceptions.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_custom_exceptions.h.html">Program Listing for File custom_exceptions.h</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CustomExceptions.h.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CustomExceptions.h.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CustomExceptions.h.html#included-by">Included By</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_CustomExceptions.h.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_custom_exceptions.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_custom_exceptions.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_custom_exceptions.h.html#classes">Classes</a></li>
 </ul>
 </li>
 </ul>
@@ -2964,58 +3148,54 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_DoubleComparison.cpp.html">File DoubleComparison.cpp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.cpp.html#definition-necsim-doublecomparison-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/DoubleComparison.cpp</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_DoubleComparison.cpp.html">Program Listing for File DoubleComparison.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_double_comparison.cpp.html">File double_comparison.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_double_comparison.cpp.html#definition-necsim-double-comparison-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/double_comparison.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_double_comparison.cpp.html">Program Listing for File double_comparison.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.cpp.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.cpp.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.cpp.html#functions">Functions</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_DoubleComparison.h.html">File DoubleComparison.h</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.h.html#definition-necsim-doublecomparison-h">Definition (<code class="docutils literal"><span class="pre">necsim/DoubleComparison.h</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_DoubleComparison.h.html">Program Listing for File DoubleComparison.h</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.h.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.h.html#included-by">Included By</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_DoubleComparison.h.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_double_comparison.cpp.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_double_comparison.cpp.html#functions">Functions</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_Filesystem.cpp.html">File Filesystem.cpp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.cpp.html#definition-necsim-filesystem-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/Filesystem.cpp</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_Filesystem.cpp.html">Program Listing for File Filesystem.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_double_comparison.h.html">File double_comparison.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_double_comparison.h.html#definition-necsim-double-comparison-h">Definition (<code class="docutils literal"><span class="pre">necsim/double_comparison.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_double_comparison.h.html">Program Listing for File double_comparison.h</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.cpp.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.cpp.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.cpp.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_double_comparison.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_double_comparison.h.html#functions">Functions</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_Filesystem.h.html">File Filesystem.h</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.h.html#definition-necsim-filesystem-h">Definition (<code class="docutils literal"><span class="pre">necsim/Filesystem.h</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_Filesystem.h.html">Program Listing for File Filesystem.h</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_file_system.cpp.html">File file_system.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.cpp.html#definition-necsim-file-system-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/file_system.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_file_system.cpp.html">Program Listing for File file_system.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.h.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.h.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.h.html#included-by">Included By</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.h.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Filesystem.h.html#defines">Defines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.cpp.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.cpp.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_file_system.h.html">File file_system.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.h.html#definition-necsim-file-system-h">Definition (<code class="docutils literal"><span class="pre">necsim/file_system.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_file_system.h.html">Program Listing for File file_system.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.h.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_file_system.h.html#defines">Defines</a></li>
 </ul>
 </li>
 </ul>
@@ -3290,6 +3470,35 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_neutral_analytical.cpp.html">File neutral_analytical.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.cpp.html#definition-necsim-neutral-analytical-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/neutral_analytical.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_neutral_analytical.cpp.html">Program Listing for File neutral_analytical.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.cpp.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.cpp.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.cpp.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.cpp.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_neutral_analytical.h.html">File neutral_analytical.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.h.html#definition-necsim-neutral-analytical-h">Definition (<code class="docutils literal"><span class="pre">necsim/neutral_analytical.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_neutral_analytical.h.html">Program Listing for File neutral_analytical.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_neutral_analytical.h.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="file_necsim_NRrand.h.html">File NRrand.h</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_NRrand.h.html#definition-necsim-nrrand-h">Definition (<code class="docutils literal"><span class="pre">necsim/NRrand.h</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_NRrand.h.html">Program Listing for File NRrand.h</a></li>
@@ -3302,6 +3511,34 @@ details.</p>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_NRrand.h.html#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_NRrand.h.html#defines">Defines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_NRrand.h.html#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_parameters.cpp.html">File parameters.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.cpp.html#definition-necsim-parameters-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/parameters.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_parameters.cpp.html">Program Listing for File parameters.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.cpp.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.cpp.html#includes">Includes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_parameters.h.html">File parameters.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.h.html#definition-necsim-parameters-h">Definition (<code class="docutils literal"><span class="pre">necsim/parameters.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_parameters.h.html">Program Listing for File parameters.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_parameters.h.html#classes">Classes</a></li>
 </ul>
 </li>
 </ul>
@@ -3469,31 +3706,31 @@ details.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_Setup.cpp.html">File Setup.cpp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.cpp.html#definition-necsim-setup-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/Setup.cpp</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_Setup.cpp.html">Program Listing for File Setup.cpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_setup.cpp.html">File setup.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.cpp.html#definition-necsim-setup-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/setup.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_setup.cpp.html">Program Listing for File setup.cpp</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.cpp.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.cpp.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.cpp.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.cpp.html#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.cpp.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.cpp.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.cpp.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.cpp.html#variables">Variables</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="file_necsim_Setup.h.html">File Setup.h</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.h.html#definition-necsim-setup-h">Definition (<code class="docutils literal"><span class="pre">necsim/Setup.h</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_Setup.h.html">Program Listing for File Setup.h</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_setup.h.html">File setup.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.h.html#definition-necsim-setup-h">Definition (<code class="docutils literal"><span class="pre">necsim/setup.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_setup.h.html">Program Listing for File setup.h</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.h.html#detailed-description">Detailed Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.h.html#includes">Includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.h.html#included-by">Included By</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.h.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_necsim_Setup.h.html#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.h.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_setup.h.html#variables">Variables</a></li>
 </ul>
 </li>
 </ul>
@@ -3538,6 +3775,34 @@ details.</p>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulateDispersal.h.html#included-by">Included By</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulateDispersal.h.html#classes">Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulateDispersal.h.html#defines">Defines</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html">File SimulatedSpeciesAbundancesHandler.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html#definition-necsim-simulatedspeciesabundanceshandler-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/SimulatedSpeciesAbundancesHandler.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html">Program Listing for File SimulatedSpeciesAbundancesHandler.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html#includes">Includes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html">File SimulatedSpeciesAbundancesHandler.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#definition-necsim-simulatedspeciesabundanceshandler-h">Definition (<code class="docutils literal"><span class="pre">necsim/SimulatedSpeciesAbundancesHandler.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_SimulatedSpeciesAbundancesHandler.h.html">Program Listing for File SimulatedSpeciesAbundancesHandler.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#classes">Classes</a></li>
 </ul>
 </li>
 </ul>
@@ -3609,6 +3874,34 @@ details.</p>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciationCommands.h.html#includes">Includes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciationCommands.h.html#included-by">Included By</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciationCommands.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.cpp.html">File SpeciesAbundancesHandler.cpp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.cpp.html#definition-necsim-speciesabundanceshandler-cpp">Definition (<code class="docutils literal"><span class="pre">necsim/SpeciesAbundancesHandler.cpp</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_SpeciesAbundancesHandler.cpp.html">Program Listing for File SpeciesAbundancesHandler.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.cpp.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.cpp.html#includes">Includes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.h.html">File SpeciesAbundancesHandler.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.h.html#definition-necsim-speciesabundanceshandler-h">Definition (<code class="docutils literal"><span class="pre">necsim/SpeciesAbundancesHandler.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_necsim_SpeciesAbundancesHandler.h.html">Program Listing for File SpeciesAbundancesHandler.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_necsim_SpeciesAbundancesHandler.h.html#classes">Classes</a></li>
 </ul>
 </li>
 </ul>
@@ -3791,8 +4084,8 @@ details.</p>
   <p class="topless"><a href="../README_pycoalescence.html"
                         title="previous chapter">pycoalescence</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="namespace_std.html"
-                        title="next chapter">Namespace std</a></p>
+  <p class="topless"><a href="namespace_neutral_analytical.html"
+                        title="next chapter">Namespace neutral_analytical</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -3824,12 +4117,12 @@ details.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="namespace_std.html" title="Namespace std"
+          <a href="namespace_neutral_analytical.html" title="Namespace neutral_analytical"
              >next</a> |</li>
         <li class="right" >
           <a href="../README_pycoalescence.html" title="pycoalescence"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

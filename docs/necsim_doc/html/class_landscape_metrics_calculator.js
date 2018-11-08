@@ -1,5 +1,7 @@
 var class_landscape_metrics_calculator =
 [
+    [ "LandscapeMetricsCalculator", "class_landscape_metrics_calculator.html#a8b6c65f14753803f023c078cd615a25d", null ],
+    [ "~LandscapeMetricsCalculator", "class_landscape_metrics_calculator.html#a49ca32335b116b9c5291039334551410", null ],
     [ "calculateClumpiness", "class_landscape_metrics_calculator.html#aff48704d3a9e02da4914ac2b08c5f79b", null ],
     [ "calculateMinPerimeter", "class_landscape_metrics_calculator.html#a1ba606d6fb687aceaf4a8e31e8f17273", null ],
     [ "calculateMNN", "class_landscape_metrics_calculator.html#a34f344e3282eead2091fe8ccb32e6d48", null ],
@@ -29,11 +31,11 @@ var class_landscape_metrics_calculator =
     [ "open", "class_landscape_metrics_calculator.html#aa2764c9ae1c54c1821fa4f63b88fe0f3", null ],
     [ "open", "class_landscape_metrics_calculator.html#a2389e09950706ef49640976837186c79", null ],
     [ "openOffsetMap", "class_landscape_metrics_calculator.html#ade20cc1876ba2774f0f8274d432d89c3", null ],
-    [ "operator*", "class_landscape_metrics_calculator.html#ac4e94b307c56a15fb47a9255855f94a9", null ],
-    [ "operator*", "class_landscape_metrics_calculator.html#ac396cdd2d98e1b4d99f7e17c1c26b1ec", null ],
-    [ "operator+", "class_landscape_metrics_calculator.html#a311f3649e41cb4a3155f3f71a65829cb", null ],
+    [ "operator*", "class_landscape_metrics_calculator.html#a7285ecf2cfdfdcf3a3e19b4cde235528", null ],
+    [ "operator*", "class_landscape_metrics_calculator.html#a965f8987b92cfdbf8f17d3cf1bf0fa9b", null ],
+    [ "operator+", "class_landscape_metrics_calculator.html#abdbd1bbdae2f6926cdc2b58faa304826", null ],
     [ "operator+=", "class_landscape_metrics_calculator.html#a480a72298ae1fc8443b0edfaa66d7c46", null ],
-    [ "operator-", "class_landscape_metrics_calculator.html#a08e75978ea8288083ef36f53b4ac115d", null ],
+    [ "operator-", "class_landscape_metrics_calculator.html#a73b8da7142ea2593ba7d097651a3ce5c", null ],
     [ "operator-=", "class_landscape_metrics_calculator.html#a0e459fd035b2435ea016dc93c55ccac0", null ],
     [ "operator[]", "class_landscape_metrics_calculator.html#ae7e14b4bd8bb570260a4e578e4a601b7", null ],
     [ "printNumberComplete", "class_landscape_metrics_calculator.html#a03e0486e704090765d253b18a9dde0f5", null ],

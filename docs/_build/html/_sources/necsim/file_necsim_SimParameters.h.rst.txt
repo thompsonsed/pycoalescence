@@ -38,11 +38,13 @@ Includes
 --------
 
 
-- ``ConfigFileParser.h`` (:ref:`file_necsim_ConfigFileParser.h`)
-
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
+- ``ConfigParser.h`` (:ref:`file_necsim_ConfigParser.h`)
 
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
+
+- ``file_system.h`` (:ref:`file_necsim_file_system.h`)
 
 - ``string``
 

@@ -1,9 +1,9 @@
-//This file is part of NECSim project which is released under MIT license.
+//This file is part of necsim project which is released under MIT license.
 //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
 /**
  * @author Sam Thompson
  * @file PyLogging.cpp
- * @brief Routines for writing to python logging module.
+ * @brief Routines for writing to Python logging module.
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 #ifndef PYTHON_COMPILE

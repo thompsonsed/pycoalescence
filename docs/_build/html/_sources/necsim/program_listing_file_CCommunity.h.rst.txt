@@ -8,7 +8,7 @@ Program Listing for File CCommunity.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef NECSIM_C_COMMUNITY_H
    #define NECSIM_C_COMMUNITY_H
@@ -16,6 +16,7 @@ Program Listing for File CCommunity.h
    #include <Python.h>
    #include <string>
    #include <structmember.h>
+   #include <memory>
    #include "PyImports.h"
    #include "necsim/Community.h"
    #include "necsim/Metacommunity.h"
@@ -28,7 +29,7 @@ Program Listing for File CCommunity.h
    class PyCommunityTemplate : public PyTemplate<T>
    {
    public:
-       SpecSimParameters *specSimParameters;
+       shared_ptr<SpecSimParameters> specSimParameters;
    };
    
    template<class T>
@@ -38,30 +39,15 @@ Program Listing for File CCommunity.h
        int record_spatial;
        char *sample_file;
        char *fragment_file;
-       unsigned long metacommunity_size = 0;
-       double metacommunity_speciation_rate = 0.0;
        PyObject *list_speciation_rates;
        PyObject *list_times;
-       PyObject *list_min_spec_gen = nullptr;
-       PyObject *list_max_spec_gen = nullptr;
-       if(!PyArg_ParseTuple(args, "sissO!O!|O!O!kd", &database, &record_spatial, &sample_file,
-                            &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times, &PyList_Type,
-                            &list_min_spec_gen, &PyList_Type,
-                            &list_max_spec_gen, &metacommunity_size, &metacommunity_speciation_rate))
+       if(!PyArg_ParseTuple(args, "sissO!O!|kdsk", &database, &record_spatial, &sample_file,
+                            &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times))
        {
            return nullptr;
        }
        getGlobalLogger(self->logger, self->log_function);
-   #ifdef DEBUG
-       if(metacommunity_size == 0)
-       {
-           writeLog(10, "Metacommunity size not set.");
-       }
-       else
-       {
-           writeLog(10, "Metacommunity size: " + to_string(metacommunity_size));
-       }
-   #endif // DEBUG
+   
    
        // Convert all our variables to the relevant form
        string database_str = database;
@@ -70,8 +56,6 @@ Program Listing for File CCommunity.h
        string fragment_file_str = fragment_file;
        vector<double> speciation_rates;
        vector<double> times;
-       vector<double> min_speciation_gen;
-       vector<double> max_speciation_gen;
        if(!importPyListToVectorDouble(list_speciation_rates, speciation_rates, "Speciation rates must be floats."))
        {
            return nullptr;
@@ -80,34 +64,15 @@ Program Listing for File CCommunity.h
        {
            return nullptr;
        }
-       if(!list_min_spec_gen || !list_max_spec_gen)
-       {
-           min_speciation_gen.push_back(0.0);
-           max_speciation_gen.push_back(0.0);
-       }
-       else
-       {
-           if(!importPyListToVectorDouble(list_min_spec_gen, min_speciation_gen,
-                                          "Minimum protracted generations must be floats."))
-           {
-               return nullptr;
-           }
-           if(!importPyListToVectorDouble(list_max_spec_gen, max_speciation_gen,
-                                          "Maximum protracted generations must be floats."))
-           {
-               return nullptr;
-           }
-       }
        try
        {
-           self->specSimParameters->setup(std::move(database_str), use_spatial, sample_file_str, times,
-                                          fragment_file_str, speciation_rates, min_speciation_gen,
-                                          max_speciation_gen, metacommunity_size, metacommunity_speciation_rate);
+           self->specSimParameters->setup(std::move(database_str), use_spatial, sample_file_str, times, fragment_file_str,
+                                          speciation_rates);
        }
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -129,7 +94,7 @@ Program Listing for File CCommunity.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -151,7 +116,34 @@ Program Listing for File CCommunity.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
+           return nullptr;
+       }
+       Py_RETURN_NONE;
+   }
+   
+   template<class T>
+   static PyObject *addMetacommunityParameters(PyCommunityTemplate<T> *self, PyObject *args)
+   {
+       unsigned long metacommunity_size;
+       double speciation_rate;
+       char *metacommunity_option;
+       unsigned long metacommunity_reference;
+       if(!PyArg_ParseTuple(args, "kdsk", &metacommunity_size, &speciation_rate, &metacommunity_option,
+                            &metacommunity_reference))
+       {
+           return nullptr;
+       }
+       try
+       {
+           getGlobalLogger(self->logger, self->log_function);
+           self->specSimParameters->addMetacommunityParameters(metacommunity_size, speciation_rate,
+                                                               metacommunity_option, metacommunity_reference);
+       }
+       catch(exception &e)
+       {
+           removeGlobalLogger();
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -168,7 +160,7 @@ Program Listing for File CCommunity.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -187,7 +179,7 @@ Program Listing for File CCommunity.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -206,7 +198,7 @@ Program Listing for File CCommunity.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -229,7 +221,30 @@ Program Listing for File CCommunity.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
+           return nullptr;
+       }
+       Py_RETURN_NONE;
+   }
+   
+   template<class T>
+   static PyObject *pySpeciateRemainingLineages(PyCommunityTemplate<T> *self, PyObject *args)
+   {
+       try
+       {
+           char *database_char;
+           if(!PyArg_ParseTuple(args, "s", &database_char))
+           {
+               return nullptr;
+           }
+           string database_str(database_char);
+           getGlobalLogger(self->logger, self->log_function);
+           self->base_object->speciateRemainingLineages(database_str);
+       }
+       catch(exception &e)
+       {
+           removeGlobalLogger();
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -241,7 +256,7 @@ Program Listing for File CCommunity.h
    {
        if(self->specSimParameters != nullptr)
        {
-           delete self->specSimParameters;
+           self->specSimParameters.reset();
            self->specSimParameters = nullptr;
        }
        PyTemplate_dealloc<T>(self);
@@ -251,7 +266,7 @@ Program Listing for File CCommunity.h
    static int
    PyCommunity_init(PyCommunityTemplate<T> *self, PyObject *args, PyObject *kwds)
    {
-       self->specSimParameters = new SpecSimParameters();
+       self->specSimParameters = make_shared<SpecSimParameters>();
        return PyTemplate_init<T>(self, args, kwds);
    }
    
@@ -260,22 +275,23 @@ Program Listing for File CCommunity.h
    {
        static PyMethodDef CommunityMethods[] =
                {
-                       {"setup",                      (PyCFunction) setupApplySpeciation<T>,     METH_VARARGS,
-                                                                  "Sets the speciation parameters to be applied to the tree."},
-                       {"add_time",                   (PyCFunction) addTime<T>,                  METH_VARARGS,
-                                                                  "Adds a time to apply to the simulation."},
-                       {"wipe_protracted_parameters", (PyCFunction) wipeProtractedParameters<T>, METH_NOARGS,
-                                                                  "Wipes the protracted parameters."},
-                       {"add_protracted_parameters",  (PyCFunction) addProtractedParameters<T>,  METH_VARARGS,
-                                                                  "Adds protracted speciation parameters to apply to the simulation."},
-                       {"apply",                      (PyCFunction) apply<T>,                    METH_NOARGS,
-                                                                  "Applies the new speciation rate(s) to the coalescence tree."},
-                       {"output",                     (PyCFunction) output<T>,                   METH_NOARGS,
-                                                                  "Outputs the database to file."},
-                       {"reset",                      (PyCFunction) reset<T>,                    METH_NOARGS,
-                                                                  "Resets the internal object."},
+                       {"setup",                        (PyCFunction) setupApplySpeciation<T>,        METH_VARARGS,
+                                                                                                                    "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
+                       {"add_time",                     (PyCFunction) addTime<T>,                     METH_VARARGS,
+                                                                                                                    "Adds a time to apply to the simulation."},
+                       {"wipe_protracted_parameters",   (PyCFunction) wipeProtractedParameters<T>,    METH_NOARGS,
+                                                                                                                    "Wipes the protracted current_metacommunity_parameters."},
+                       {"add_protracted_parameters",    (PyCFunction) addProtractedParameters<T>,     METH_VARARGS,
+                                                                                                                    "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
+                       {"add_metacommunity_parameters", (PyCFunction) addMetacommunityParameters<T>,  METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
+                       {"apply",                        (PyCFunction) apply<T>,                       METH_NOARGS,
+                                                                                                                    "Applies the new speciation rate(s) to the coalescence tree."},
+                       {"output",                       (PyCFunction) output<T>,                      METH_NOARGS,  "Outputs the database to file."},
+                       {"reset",                        (PyCFunction) reset<T>,                       METH_NOARGS,  "Resets the internal object."},
+                       {"speciate_remaining_lineages",  (PyCFunction) pySpeciateRemainingLineages<T>, METH_VARARGS,
+                                                                                                                    "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
    
-                       {nullptr,                      nullptr, 0, nullptr}
+                       {nullptr,                        nullptr, 0,                                                 nullptr}
                };
        return CommunityMethods;
    }
@@ -308,9 +324,11 @@ Program Listing for File CCommunity.h
        return genCommunityType<T>(const_cast<char *>(tp_name.c_str()), const_cast<char *>(tp_doc.c_str()));
    }
    
+   
    static PyTypeObject
            C_CommunityType = genCommunityType<Community>((char *) "libnecsim.CCommunity",
                                                          (char *) "C class for generating communities from neutral simulations");
+   
    static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "libnecsim.CMetacommunity",
                                                                              (char *) "C class for generating communities from neutral simulations");
    

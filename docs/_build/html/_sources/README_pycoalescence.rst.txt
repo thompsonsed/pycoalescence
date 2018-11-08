@@ -5,16 +5,15 @@ pycoalescence
 .. role:: pycode(code)
    :language: python
 
-  |AppVeyorWin|_
 
 .. include:: builds.rst
 
 Introduction
 ------------
 
-**pycoalescence** is a python module for the spatially-explicit coalescence neutral simulator, described
-:ref:`here <Introduction_necsim>`. **pycoalescence** provides a pythonic interface for setting up, running and analysing
-spatially-explicit neutral simulations. It allows for a swift and clean creation management of simulations.
+**pycoalescence** is a Python module for the spatially-explicit coalescence neutral simulator, necsim, described
+:ref:`here <Introduction_necsim>`. **pycoalescence** provides a pythonic interface to the C++ simulator for swift
+simulation set-up, initiation and analysis.
 
 Features
 --------
@@ -43,7 +42,7 @@ Installation
 ~~~~~~~~~~~~
 
 Two methods of installation are recommended: using conda to handle package management, including installation of all
-dependencies, or using `pip <https://pypi.org/project/pip/>`__ into python virtual environments
+dependencies, or using `pip <https://pypi.org/project/pip/>`__ into Python virtual environments
 (see `here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__ for good advice).
 
 The other methods of installing listed here are provided as references to the install process itself, and to provide
@@ -60,24 +59,56 @@ setuptools, which in turn runs ``installer.py``.
 Installing via conda
 ''''''''''''''''''''
 
-`Conda <https://conda.io/docs/>`_ is a package manager that handles sourcing of all dependencies in a relatively straight-forward, cross-platform
-manner. **pycoalescence** is provided on conda-forge. Installation of the package and all dependencies including boost,
-gdal, cmake and the relevant c++ compiler, simply requires ``conda install -c conda-forge pycoalescence``. Note that
-conda installs the dependencies into its own environment and may ignore system installs.
+`Conda <https://conda.io/docs/>`_ is a package manager that handles sourcing of all dependencies in a relatively
+straight-forward, cross-platform manner. **pycoalescence** is provided on conda-forge. Installation of the package and
+all dependencies including boost, gdal, cmake and the relevant C++ compiler, simply requires
+``conda install -c conda-forge pycoalescence``. Note that conda installs the dependencies into its own environment and
+may ignore system installs.
+
+conda on Linux
+``````````````
+
+C++14 compilers are currently unsupported on Linux on conda-forge, meaning that installation through this channel is not
+possible at this time. The solution is to build the package recipe on your local machine using the following steps
+(requires git and conda are installed locally).
+
+- Change directory to a temporary directory and source the base conda environment
+
+    - ``cd temp``
+    - ``source /path/anaconda3/bin/activate``
+
+- Download the recipe from conda-forge using git and modify the recipe to include linux
+
+    - ``git clone https://github.com/conda-forge/pycoalescence-feedstock.git``
+    - Delete "or linux" from line 18 in pycoalescence-feedstock/recipes/meta.yaml. This will allow the build on linux
+      systems.
+
+
+
+
+-  Build the package (make sure conda-build package has been installed) and install the package to your desired
+   environment.
+
+    - ``conda-build .`` (this step takes some time)
+    - ``conda install --use-local pycoalescence --name MyEnv``
+
+.. note:: When the C++ compilers are updated on conda-forge, this method for installing on Linux will no longer be
+          necessary.
+
 
 Installing via pip
 ''''''''''''''''''
 
-Installation via pip requires that the non-python dependencies are installed manually first. Importantly, make sure that
+Installation via pip requires that the non-pythonic dependencies are installed manually first. Importantly, make sure that
 `gdal <http://www.gdal.org/>`__ is fully functional. On some systems this appears to need compilation directly from
-source. Also ensure that you have a c++14 compliant compiler, `cmake <https://cmake.org/>`_,
+source. Also ensure that you have a C++14 compliant compiler, `cmake <https://cmake.org/>`_,
 `sqlite <https://www.sqlite.org/download.html>`__ and `boost <http://www.boost.org>`__ installed. Finally make sure
-your python 3 is >= 3.4 or python 2 >= 2.7.9.
+your Python 3 is >= 3.4 or Python 2 >= 2.7.9.
 
 With all requirements installled, it is recommended that you use a virtual environment (or pipenv) to control your
-python packages (`see here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__).
+Python packages (`see here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__).
 
-Finally, installation of **pycoalescence**, including python dependencies, should just require
+Finally, installation of **pycoalescence**, including Python dependencies, should just require
 ``pip install pycoalescence``. The package should be downloaded and built.
 
 
@@ -87,7 +118,7 @@ Installing manually - setuptools
 
 This method is not recommended unless you experience problems with conda or pip. To install using setuptools, download
 the source code manually and run ``python setup.py install`` from the terminal. Running this command will install
-**pycoalescence** to the current python environment.
+**pycoalescence** to the current Python environment.
 
 Installing manually - installer.py
 ''''''''''''''''''''''''''''''''''
@@ -95,7 +126,7 @@ Installing manually - installer.py
 Calling ``python installer.py [opts]`` from the *pycoalescence* directory within the source code allows for finer
 control over installation options. Importantly, two different make environments can be used, either ./configure and
 make, or cmake. A list of options is given below, and can also be displayed by running ``python installer.py -h``.
-Running ``python installer.py`` will generate the package in-place, meaning that it will not be added to the python
+Running ``python installer.py`` will generate the package in-place, meaning that it will not be added to the Python
 environment. This can be desirable for HPC systems where package installation is not permitted.
 
 
@@ -103,7 +134,7 @@ environment. This can be desirable for HPC systems where package installation is
 +--------------------+-------------------------------------------------------------------------+---------+
 | Option             | Description                                                             | Default |
 +--------------------+-------------------------------------------------------------------------+---------+
-| --cmake            | Build the c++ library (necsim) required for pycoalescence.              | True    |
+| --cmake            | Build the C++ library (necsim) required for pycoalescence.              | True    |
 +--------------------+-------------------------------------------------------------------------+---------+
 | --autotools        | Use the autotools build process (./configure and make)                  | False   |
 +--------------------+-------------------------------------------------------------------------+---------+
@@ -135,10 +166,10 @@ provided.
 
 The most common issue for installing **pycoalescence** is gdal dependencies not being found (including errors relating
 to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
-location, or the header files not being included with the gdal install. To fix this, install the c++ library on your
-system first. Then download the python package from `here <https://pypi.org/project/GDAL/#files>`_, and run
+location, or the header files not being included with the gdal install. To fix this, install the C++ library on your
+system first. Then download the Python package from `here <https://pypi.org/project/GDAL/#files>`_, and run
 ``python setup.py build`` from the gdal directory. If this is successful, run ``python setup.py install`` to install
-gdal to your python environment.
+gdal to your Python environment.
 
 For issues related to missing boost headers, make sure that your system has boost properly installed.
 
@@ -156,7 +187,7 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
 
 #. Instantiate our :class:`Simulation <pycoalescence.simulation.Simulation>` object using
    :pycode:`sim = Simulation(logging_level=20)` where the logging level corresponds to the amount of information that is
-   displayed using `python's logging module <https://docs.python.org/3/library/logging.html>`_ (20 corresponds to
+   displayed using `Python's logging module <https://docs.python.org/3/library/logging.html>`_ (20 corresponds to
    "info", the second highest display level, after "debug").
 
 #. Specify simulation parameters
@@ -455,7 +486,7 @@ outlined below.
 Generating Configuration Files
 ''''''''''''''''''''''''''''''
 
-The default process is to not generate any actual config files - these are instead kept in memory to be passed to c++.
+The default process is to not generate any actual config files - these are instead kept in memory to be passed to C++.
 However, the configs can be written to a file using
 :func:`write_config() <pycoalescence.simulation.Simulation.write_config>`, which may be useful for storing simulation
 parameters outside of the simulation database.
@@ -548,12 +579,23 @@ The two functions for this routine are
    file. This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations
    will be stored in extra tables within the same SQL file as originally specified.
 
-Instead of speciation events always contributing a new species, they can instead draw from a metacommunity. This is
-achieved by supplying a metacommunity speciation rate and metacommunity size to
-:func:`set_speciation_parameters() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>`. A non-spatial
-neutral model is run to generate the metacommunity, which is then sampled from every time a speciation event occurs in
-the spatial model. As such the "speciation rate" from the spatial model can be intepretted as immigration from a
-metacommunity.
+Instead of speciation events always contributing a new species, they can instead draw from a metacommunity, simulating
+immigration events. There are three methods of providing a metacommunity:
+
+- simulate a non-spatial community using a metacommunity size and metacommunity speciation rate parameter to generate
+  the species abundances from which to draw individuals.
+
+- analytically generate the community using an approximation of the above simulation. The same two parameters
+  (metacommunity size and metacommunity speciation rate) are required.
+
+- Supply a database containing a SPECIES_ABUNDANCES table and an external community reference number referring to a
+  particular generated community within the database.
+
+All methods use the same function,
+:func:`set_speciation_parameters() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>` with
+``option`` set as one of "simulated", "analytical" or a path to the external database, respectively for the above
+three methods.
+
 
 Examples
 ''''''''
@@ -608,8 +650,8 @@ of having to generate these manually. These include
 
 Check out other full examples in `this jupyter notebook <src/examples.ipynb>`_.
 
-.. note:: The above functions require supplying a speciation rate and time, otherwise will output data for all
-          speciation rates and times.
+.. note:: The above functions for acquiring biodiversity metrics require supplying a speciation rate and time,
+          otherwise will output data for all speciation rates and times.
 
 .. tip:: Equivalent functions also exist for obtaining individual fragment biodiversity metrics.
 
@@ -677,22 +719,22 @@ Prerequisites
 Essential
 ~~~~~~~~~
 
-Note that conda should detect and install all prerequisites automatically. Pip will detect and install python
+Note that conda should detect and install all prerequisites automatically. Pip will detect and install Python
 prerequisites (such as numpy), although on some systems will fail to install gdal.
 
 -  Python version 2 >= 2.7.9 or 3 >= 3.4.1. Other versions may work, but are not supported.
 -  C++ compiler (such as GNU g++) with C++14 support.
 -  `Cmake <https://cmake.org/>`_ >= 3.6 for installing via pip or conda.
--  `The SQLite library <https://www.sqlite.org/download.html>`__ for both ``c++`` and ``python``
-   installations. Comes as standard with python.
-- The gdal library for both python and C++ (`available here <http://www.gdal.org/>`__). Although it is possible to turn
+-  `The SQLite library <https://www.sqlite.org/download.html>`__ for both ``C++`` and ``Python``
+   installations. Comes as standard with Python.
+- The gdal library for both Python and C++ (`available here <http://www.gdal.org/>`__). Although it is possible to turn
   off gdal support, this is not recommended as it is essential if you wish to use .tif files for
   :ref:`necsim <Introduction_necsim>`.  It allows reading parameter information from .tif files (using
-  :func:`detect_map_dimensions() <pycoalescence.simulation.Simulation.detect_map_dimensions>`). Both the python package
-  and ``c++`` binaries are required; installation differs between systems, so view the gdal documentation for more
+  :func:`detect_map_dimensions() <pycoalescence.simulation.Simulation.detect_map_dimensions>`). Both the Python package
+  and ``C++`` binaries are required; installation differs between systems, so view the gdal documentation for more
   help installing gdal properly.
 -  The Boost library for C++ available `here <http://www.boost.org>`__.
--  Numerical python (``numpy``) package (``pip install numpy``).
+-  Numerical Python (``numpy``) package (``pip install numpy``).
 
 Recommended
 ~~~~~~~~~~~

@@ -7,7 +7,7 @@ File PyLogging.cpp
 
 
 
-Routines for writing to python logging module. 
+Routines for writing to Python logging module. 
 
 
 .. contents:: Contents

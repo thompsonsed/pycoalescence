@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -75,7 +75,7 @@
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Iterable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
@@ -83,7 +83,7 @@
 	<span class="kn">from</span> <span class="nn">.necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span>
 <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">ie</span><span class="p">:</span>
 	<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ie</span><span class="p">))</span>
-	<span class="kn">from</span> <span class="nn">necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span><span class="p">,</span> <span class="n">NECSimError</span>
+	<span class="kn">from</span> <span class="nn">necsim</span> <span class="kn">import</span> <span class="n">libnecsim</span><span class="p">,</span> <span class="n">necsimError</span>
 
 <span class="kn">from</span> <span class="nn">.future_except</span> <span class="kn">import</span> <span class="n">FileNotFoundError</span>
 <span class="kn">from</span> <span class="nn">.system_operations</span> <span class="kn">import</span> <span class="n">mod_directory</span><span class="p">,</span> <span class="n">create_logger</span><span class="p">,</span> <span class="n">write_to_log</span>
@@ -137,9 +137,9 @@
 <span class="sd">		Initiates the CoalescenceTree object. By default, links to the SpeciationCounter program stored in</span>
 <span class="sd">		build/default/SpeciationCounter, but optionally takes speciation_program as a path to an alternative program.</span>
 
-<span class="sd">		:param database: optionally specify the path to call :py:meth:`~set_database` to</span>
-<span class="sd">		:param logging_level: the level from the logging module for desired terminal outputs</span>
-<span class="sd">		:param log_output: optionally provide a file to output information to instead</span>
+<span class="sd">		:param str/pycoalescence.Simulation database: optionally specify the path to call :py:meth:`~set_database` to</span>
+<span class="sd">		:param int logging_level: the level from the logging module for desired terminal outputs</span>
+<span class="sd">		:param str log_output: optionally provide a file to output information to instead</span>
 <span class="sd">		:return: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># C object for calculating the coalescence tree</span>
@@ -171,6 +171,8 @@
 		<span class="c1"># Metacommunity parameters</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="bp">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;pycoalescence.coalescence&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span> <span class="o">=</span> <span class="n">logging_level</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_create_logger</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">log_output</span><span class="p">)</span>
@@ -199,8 +201,8 @@
 
 <span class="sd">		.. tip:: Supply your own logger by over-riding :attr:`~import_comparison_data`.</span>
 
-<span class="sd">		:param file: file to write output to. If None, outputs to terminal</span>
-<span class="sd">		:param logging_level: the logging level to use (defaults to INFO)</span>
+<span class="sd">		:param str file: file to write output to. If None, outputs to terminal</span>
+<span class="sd">		:param int logging_level: the logging level to use (defaults to INFO=20)</span>
 
 <span class="sd">		:return: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -213,7 +215,7 @@
 <span class="sd">		Checks that the numbers of individuals match between the comparison_abundances object and the simulation</span>
 <span class="sd">		database for each fragment</span>
 
-<span class="sd">		:return: boolean, true if the numbers match</span>
+<span class="sd">		:return: true if the numbers match</span>
 <span class="sd">		:rtype: bool</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_abundances</span><span class="p">:</span>
@@ -230,6 +232,215 @@
 				<span class="k">if</span> <span class="n">sum_simulated</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_abundances</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">fragment</span><span class="p">]):</span>
 					<span class="k">return</span> <span class="bp">False</span>
 		<span class="k">return</span> <span class="bp">True</span>
+
+	<span class="k">def</span> <span class="nf">_set_record_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record_fragments</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks if the fragment record flag is correctly set and sets the relevant parameter.</span>
+
+<span class="sd">		:param bool/str record_fragments: the fragments record flag to check</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">record_fragments</span><span class="p">:</span>
+				<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+		<span class="k">if</span> <span class="n">record_fragments</span> <span class="ow">is</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
+			<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+		<span class="k">if</span> <span class="n">record_fragments</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">]:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Fragment config does not exist at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">))</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">record_fragments</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record_fragments</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)):</span>
+				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Supplied fragment config file is not a csv or txt file: {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">=</span> <span class="n">record_fragments</span>
+
+	<span class="k">def</span> <span class="nf">_set_record_spatial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record_spatial</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the spatial record flag has been correctly set and sets the relevant parameter.</span>
+
+<span class="sd">		:param bool/str record_spatial: the object to check correctly identifies a spatial option</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">record_spatial</span> <span class="ow">is</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
+			<span class="n">record_spatial</span> <span class="o">=</span> <span class="bp">True</span>
+		<span class="k">elif</span> <span class="n">record_spatial</span> <span class="ow">is</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>
+			<span class="n">record_spatial</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">record_spatial</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;record_spatial must be a boolean.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span> <span class="o">=</span> <span class="n">record_spatial</span>
+
+	<span class="k">def</span> <span class="nf">_set_speciation_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the speciation rates are correctly set for applying to the community and sets the applied</span>
+<span class="sd">		speciation rates parameter.</span>
+
+<span class="sd">		:param list/float speciation_rates: the speciation rates object to check is the correct format</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">speciation_rates</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No speciation rates supplied: requires at least 1 for analysis.&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+			<span class="n">speciation_rates</span> <span class="o">=</span> <span class="p">[</span><span class="n">speciation_rates</span><span class="p">]</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">speciation_rates</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">speciation_rates</span><span class="p">]</span>
+		<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">ve</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Speciation rates are not floats: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ve</span><span class="p">))</span>
+		<span class="k">for</span> <span class="n">spec_rate</span> <span class="ow">in</span> <span class="n">speciation_rates</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">spec_rate</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">spec_rate</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Speciation rates must be between 0.0 and 1.0.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span> <span class="o">=</span> <span class="n">speciation_rates</span>
+
+	<span class="k">def</span> <span class="nf">_set_metacommunity_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+									  <span class="n">metacommunity_option</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the metacommunity parameters make sense and assigns them within the object.</span>
+
+<span class="sd">		:param float metacommunity_size: the number of individuals in the metacommunity</span>
+<span class="sd">		:param float metacommunity_speciation_rate: the speciation rate within the metacommunity</span>
+<span class="sd">		:param str metacommunity_option: either &quot;simulated&quot;, &quot;analytical&quot;, or a path to a database to read SADs from</span>
+<span class="sd">		:param int metacommunity_reference: the metacommunity reference if using a database to provide the metacommunity</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">metacommunity_size</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metacommunity_speciation_rate</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metacommunity_option</span> <span class="ow">and</span> <span class="ow">not</span> \
+				<span class="n">metacommunity_reference</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">metacommunity_option</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="n">metacommunity_option</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+			<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">metacommunity_speciation_rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">metacommunity_speciation_rate</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">=</span> <span class="n">metacommunity_size</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="n">metacommunity_speciation_rate</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must supply both metacommunity size &gt;0 and speciation rate between 0 and 1 for &quot;</span>
+									 <span class="s2">&quot;generating a metacommunity.&quot;</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">metacommunity_option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;simulated&quot;</span><span class="p">,</span> <span class="s2">&quot;analytical&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]:</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must use &#39;simulated&#39; or &#39;analytical&#39; for metacommunity option when supplying &quot;</span>
+									 <span class="s2">&quot;a metacommunity size and speciation rate.&quot;</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">metacommunity_option</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="o">&gt;</span> <span class="mi">100000</span><span class="p">:</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using analytical method for generating metacommunity.&quot;</span><span class="p">)</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="o">=</span> <span class="s2">&quot;analytical&quot;</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using simulated method of generating metacommunity.&quot;</span><span class="p">)</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="o">=</span> <span class="s2">&quot;simulated&quot;</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="o">=</span> <span class="n">metacommunity_option</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">metacommunity_option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;simulated&quot;</span><span class="p">,</span> <span class="s2">&quot;analytical&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]:</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must supply both metacommunity size &gt;0 and speciation rate between 0 and 1 for &quot;</span>
+									 <span class="s2">&quot;generating a metacommunity.&quot;</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span> <span class="ow">or</span> <span class="n">metacommunity_speciation_rate</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">None</span><span class="p">]:</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No metacommunity size of speciation rate should be supplied when using an &quot;</span>
+									 <span class="s2">&quot;external database for the metacommunity.&quot;</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">metacommunity_option</span><span class="p">):</span>
+					<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No file exists to supply metacommunity at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metacommunity_option</span><span class="p">))</span>
+				<span class="k">if</span> <span class="n">metacommunity_reference</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="n">metacommunity_reference</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="o">=</span> <span class="n">metacommunity_option</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="p">,</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CMetacommunity</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_reset_parameters</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">add_metacommunity_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
+														  <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_set_protracted_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protracted_speciation_min</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the protracted parameters are valid and adds them to the simulation object.</span>
+
+<span class="sd">		:param float protracted_speciation_min: the minimum generation for protracted speciation</span>
+<span class="sd">		:param float protracted_speciation_max: the maximum generation for protracted speciation</span>
+
+<span class="sd">		:return: list containing the set of protracted speciation minimums and maximums</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">protracted_speciation_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">protracted_speciation_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_protracted</span><span class="p">():</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Supplied protracted parameters for a non-protracted simulation.&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">protracted_speciation_min</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">protracted_speciation_max</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_check_protracted_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the protracted parameters make sense compared to the original protracted parameters.</span>
+
+<span class="sd">		:param float min_speciation_gen: minimum number of generations for protracted speciation</span>
+<span class="sd">		:param float max_speciation_gen: maximum number of generations for protracted speciation</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">db_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_simulation_parameters</span><span class="p">()[</span><span class="s2">&quot;min_speciation_gen&quot;</span><span class="p">]</span>
+		<span class="n">db_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_simulation_parameters</span><span class="p">()[</span><span class="s2">&quot;max_speciation_gen&quot;</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">min_speciation_gen</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">min_speciation_gen</span> <span class="o">&gt;</span> <span class="n">db_min</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum generation for protracted speciation cannot be less than 0.0, or greater than &quot;</span>
+							 <span class="s2">&quot;the initial value used during simulation ({}).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">db_min</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">max_speciation_gen</span> <span class="o">&lt;</span> <span class="n">min_speciation_gen</span> <span class="ow">or</span> <span class="n">max_speciation_gen</span> <span class="o">&gt;</span> <span class="n">db_max</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Maximum generation for protracted speciation cannot be less than the minimum, or greater&quot;</span>
+							 <span class="s2">&quot; than the initial value used during simulation ({}).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">db_max</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">_set_sample_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_file</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the sample file has been correctly set and sets it within the object.</span>
+
+<span class="sd">		:param str sample_file: the file to use to determine spatial sampling</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">sample_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No sample file provided, defaulting to null.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">sample_file</span> <span class="o">!=</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sample_file</span><span class="p">):</span>
+					<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Sample file does not exist at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_file</span><span class="p">))</span>
+				<span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">sample_file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+				<span class="k">if</span> <span class="n">ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;.csv&quot;</span><span class="p">]:</span>
+					<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Extension is not .tif or .csv: {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ext</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="n">sample_file</span>
+
+	<span class="k">def</span> <span class="nf">_set_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks that the times are valid and adds them to the object.</span>
+
+<span class="sd">		:param list/float times: times to generate communities for</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">times</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="bp">None</span><span class="p">]):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No times provided, defaulting to 0.0.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">add_time</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_times</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_time</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Resets the object and adds all the required parameters to the object again.</span>
+
+<span class="sd">		Used when a standard CCommunity object is converted to a CMetacommunity object.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_c_community</span><span class="p">()</span>
+		<span class="c1"># The times have already been added in the above function call, so just need to add the protracted parameters</span>
+		<span class="n">tmp_protracted_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp_protracted_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">min_proc</span><span class="p">,</span> <span class="n">max_proc</span> <span class="ow">in</span> <span class="n">tmp_protracted_params</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="n">min_proc</span><span class="p">,</span> <span class="n">max_proc</span><span class="p">)</span>
 
 	<span class="k">def</span> <span class="nf">_equalise_fragment_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -427,7 +638,7 @@
 <span class="sd">		:param speciation_program: optionally provide a path to an alternative SpeciationCounter program.</span>
 
 <span class="sd">		.. deprecated:: 1.2.4</span>
-<span class="sd">			Deprecated due to movement towards using python API for applying speciation rates.</span>
+<span class="sd">			Deprecated due to movement towards using Python API for applying speciation rates.</span>
 
 <span class="sd">		:return: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
@@ -493,13 +704,14 @@
 <div class="viewcode-block" id="CoalescenceTree.set_speciation_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">set_speciation_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">record_spatial</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">record_fragments</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 								  <span class="n">sample_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 								  <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-								  <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+								  <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+								  <span class="n">metacommunity_option</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">		Set the parameters for the application of speciation rates. If no config files or time_config files are provided,</span>
-<span class="sd">		they will be taken from the main coalescence simulation.</span>
+<span class="sd">		Set the parameters for the application of speciation rates. If no config files or time_config files are</span>
+<span class="sd">		provided, they will be taken from the main coalescence simulation.</span>
 
-<span class="sd">		:param list speciation_rates: a list of speciation rates to apply</span>
+<span class="sd">		:param float/list speciation_rates: a single float, or list of speciation rates to apply</span>
 <span class="sd">		:param bool, str record_spatial: a boolean of whether to record spatial data (default=False)</span>
 <span class="sd">		:param bool, str record_fragments: either a csv file containing fragment data, or T/F for whether fragments</span>
 <span class="sd">										   should be calculated from squares of continuous habitat (default=False)</span>
@@ -509,94 +721,63 @@
 <span class="sd">		:param float protracted speciation_max: the maximum number of generations before speciation occurs</span>
 <span class="sd">		:param float metacommunity_size: the size of the metacommunity to apply</span>
 <span class="sd">		:param float metacommunity_speciation_rate: speciation rate for the metacommunity</span>
+<span class="sd">		:param str metacommunity_option: either &quot;simulated&quot;, &quot;analytical&quot;, or a path to a database to read SADs from</span>
+<span class="sd">		:param int metacommunity_reference: the metacommunity reference if using a database to provide the metacommunity</span>
 
 <span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_speciation</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Speciation parameters already set.&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">record_fragments</span><span class="p">:</span>
-				<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
-		<span class="k">if</span> <span class="n">record_fragments</span> <span class="ow">is</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
-			<span class="n">record_fragments</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
-		<span class="k">if</span> <span class="n">record_fragments</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">]:</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Fragment config does not exist at {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">))</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">record_fragments</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record_fragments</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)):</span>
-				<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Supplied fragment config file is not a csv or txt file: {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">))</span>
-		<span class="k">if</span> <span class="n">speciation_rates</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No speciation rates supplied: requires at least 1 for analysis.&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">record_spatial</span> <span class="ow">is</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
-			<span class="n">record_spatial</span> <span class="o">=</span> <span class="bp">True</span>
-		<span class="k">elif</span> <span class="n">record_spatial</span> <span class="ow">is</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>
-			<span class="n">record_spatial</span> <span class="o">=</span> <span class="bp">False</span>
-		<span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">record_spatial</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;record_spatial must be a boolean.&quot;</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">metacommunity_speciation_rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">metacommunity_speciation_rate</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">=</span> <span class="n">metacommunity_size</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="n">metacommunity_speciation_rate</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must supply both metacommunity size &gt;0 and speciation rate &gt;0 and &lt; 1 for applying&quot;</span>
-								 <span class="s2">&quot;a metacommunity.&quot;</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">=</span> <span class="mi">0</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
-		<span class="k">if</span> <span class="n">protracted_speciation_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">protracted_speciation_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_protracted</span><span class="p">():</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Supplied protracted parameters for a non-protracted simulation.&quot;</span><span class="p">);</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">protracted_speciation_min</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="p">))</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span> <span class="o">=</span> <span class="n">record_spatial</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">=</span> <span class="n">record_fragments</span>
-		<span class="k">if</span> <span class="n">sample_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No sample file provided, defaulting to null.&quot;</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">=</span> <span class="n">sample_file</span>
-		<span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No times provided, defaulting to 0.0.&quot;</span><span class="p">)</span>
-			<span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-				<span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">times</span><span class="p">]</span>
-			<span class="n">out_times</span> <span class="o">=</span> <span class="p">[]</span>
-			<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
-				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-					<span class="n">out_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">each</span><span class="p">))</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">out_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
-			<span class="n">times</span> <span class="o">=</span> <span class="n">out_times</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">times</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span> <span class="o">=</span> <span class="n">speciation_rates</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_record_fragments</span><span class="p">(</span><span class="n">record_fragments</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_speciation_rates</span><span class="p">(</span><span class="n">speciation_rates</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_record_spatial</span><span class="p">(</span><span class="n">record_spatial</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_sample_file</span><span class="p">(</span><span class="n">sample_file</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_times</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_metacommunity_parameters</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="o">=</span><span class="n">metacommunity_size</span><span class="p">,</span>
+										   <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
+										   <span class="n">metacommunity_option</span><span class="o">=</span><span class="n">metacommunity_option</span><span class="p">,</span>
+										   <span class="n">metacommunity_reference</span><span class="o">=</span><span class="n">metacommunity_reference</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_protracted_parameters</span><span class="p">(</span><span class="n">protracted_speciation_min</span><span class="p">,</span> <span class="n">protracted_speciation_max</span><span class="p">)</span>
+
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot specify a null samplemask and expect automatic fragment detection; &quot;</span>
 							 <span class="s2">&quot;provide a samplemask or set record_fragments=False.&quot;</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_c_community</span><span class="p">()</span>
-		<span class="n">protracted_speciation_min</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span><span class="p">]</span>
-		<span class="n">protracted_speciation_max</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span><span class="p">]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">,</span>
-							   <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">protracted_speciation_min</span><span class="p">,</span>
-							   <span class="n">protracted_speciation_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_speciation_rate</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoalescenceTree.set_c_community"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_c_community">[docs]</a>	<span class="k">def</span> <span class="nf">set_c_community</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_setup_c_community</span><span class="p">()</span></div>
+
+	<span class="k">def</span> <span class="nf">_set_c_community</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Sets the c++ object depending on if a metacommunity is used or not.</span>
+<span class="sd">		Sets the C++ object depending on if a metacommunity is used or not.</span>
 
 <span class="sd">		:rtype: None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CCommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_metacommunity</span><span class="p">():</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CMetacommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CMetacommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span></div>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CCommunity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_setup_c_community</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generates the initial parameters for the libnecsim object</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_c_community</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_spatial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_fragments</span><span class="p">,</span>
+							   <span class="bp">self</span><span class="o">.</span><span class="n">applied_speciation_rates_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_check_metacommunity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Checks if the simulation needs to use a metacommunity.</span>
+
+<span class="sd">		:return: true if the community is a metacommunity simulation</span>
+<span class="sd">		:rtype: bool</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_option</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;simulated&quot;</span><span class="p">,</span> <span class="s2">&quot;analytical&quot;</span><span class="p">]:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_size</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metacommunity_reference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
 
 <div class="viewcode-block" id="CoalescenceTree.add_time"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_time">[docs]</a>	<span class="k">def</span> <span class="nf">add_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -606,8 +787,11 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_c_community</span><span class="p">()</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+		<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">ve</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Times must be floats: {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ve</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_c_community</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">add_time</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.add_times"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_times">[docs]</a>	<span class="k">def</span> <span class="nf">add_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
@@ -616,6 +800,8 @@
 
 <span class="sd">		:param times: list of times to be applied</span>
 <span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Times list must be iterable.&quot;</span><span class="p">)</span>
 		<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">add_time</span><span class="p">(</span><span class="n">each</span><span class="p">)</span></div>
 
@@ -632,8 +818,9 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span> <span class="o">=</span> <span class="p">[]</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">wipe_protracted_parameters</span><span class="p">()</span>
 		<span class="k">if</span> <span class="p">(</span><span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_check_protracted_parameters</span><span class="p">(</span><span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">protracted_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">))</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">set_c_community</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_set_c_community</span><span class="p">()</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">min_speciation_gen</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_speciation_gen</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.add_multiple_protracted_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_multiple_protracted_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">add_multiple_protracted_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_speciation_gens</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_speciation_gens</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
@@ -660,6 +847,22 @@
 		<span class="k">for</span> <span class="n">min_g</span><span class="p">,</span> <span class="n">max_g</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="n">min_g</span><span class="p">,</span> <span class="n">max_g</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="CoalescenceTree.add_metacommunity_parameters"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.add_metacommunity_parameters">[docs]</a>	<span class="k">def</span> <span class="nf">add_metacommunity_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+									 <span class="n">metacommunity_option</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+									 <span class="n">metacommunity_reference</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Adds the metacommunity parameters to the object.</span>
+
+<span class="sd">		:param float metacommunity_size: the number of individuals in the metacommunity</span>
+<span class="sd">		:param float metacommunity_speciation_rate: the speciation rate within the metacommunity</span>
+<span class="sd">		:param str metacommunity_option: either &quot;simulated&quot;, &quot;analytical&quot;, or a path to a database to read SADs from</span>
+<span class="sd">		:param int metacommunity_reference: the metacommunity reference if using a database to provide the metacommunity</span>
+
+<span class="sd">		:rtype: None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_metacommunity_parameters</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_option</span><span class="p">,</span>
+										   <span class="n">metacommunity_reference</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="CoalescenceTree.apply"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.apply">[docs]</a>	<span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Generates the cooalescence tree for the set of speciation parameters.</span>
@@ -683,12 +886,12 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;Check file existance for &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">+</span>
-									<span class="s2">&quot;. Potential lack of access (verify that definition is a relative path).&quot;</span><span class="p">))</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_c_community</span><span class="p">()</span>
+									<span class="s2">&quot;. Potential lack of access (verify that definition is a relative path).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_c_community</span><span class="p">()</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_applied</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Output has already been written to file - regenerating internal object.&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Output has already been written to file - regenerating internal object.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;To avoid this message in future, use apply_incremental() and then output() to generate &quot;</span>
-							 <span class="s2">&quot;the file&quot;</span><span class="p">)</span>
+							 <span class="s2">&quot;the file.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span></div>
 
@@ -715,7 +918,7 @@
 		<span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
 			<span class="k">pass</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">set_c_community</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_set_c_community</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">speciate_remaining_lineages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.get_species_richness"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_species_richness">[docs]</a>	<span class="k">def</span> <span class="nf">get_species_richness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -742,7 +945,6 @@
 			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT richness FROM SPECIES_RICHNESS &quot;</span>
 									   <span class="s2">&quot;WHERE community_reference==?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 		<span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">):</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No SPECIES_RICHNESS table exists, calculating.&quot;</span><span class="p">)</span>
 			<span class="k">try</span><span class="p">:</span>
 				<span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT species_id FROM SPECIES_ABUNDANCES WHERE no_individuals &gt; 0 AND &quot;</span>
 										<span class="s2">&quot;community_reference == ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">reference</span><span class="p">,))</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
@@ -844,6 +1046,8 @@
 				<span class="k">raise</span> <span class="n">e</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">all_refs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ref FROM SPECIES_RICHNESS&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_refs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">all_refs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 			<span class="n">ref</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_refs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 			<span class="n">existing_references</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">all_refs</span><span class="p">)</span>
 		<span class="n">references</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">()</span>
@@ -862,7 +1066,8 @@
 					<span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span><span class="n">ref</span><span class="p">,</span> <span class="s2">&quot;fragment_richness&quot;</span><span class="p">,</span> <span class="s2">&quot;whole&quot;</span><span class="p">]</span>
 					<span class="n">tmp</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
 					<span class="n">bio_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)&quot;</span><span class="p">,</span> <span class="n">bio_output</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)&quot;</span><span class="p">,</span>
+										<span class="n">bio_output</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO SPECIES_RICHNESS VALUES(?,?,?)&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
@@ -1786,53 +1991,61 @@
 		<span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">column_names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.get_community_reference"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_community_reference">[docs]</a>	<span class="k">def</span> <span class="nf">get_community_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-								<span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">min_speciation_gen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+								<span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">metacommunity_option</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">external_reference</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+								<span class="n">min_speciation_gen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Gets the community reference associated with the supplied community parameters</span>
 
 <span class="sd">		:raises KeyError: if COMMUNITY_PARAMETERS (or METACOMMUNITY_PARAMETERS) does not exist in database or no</span>
 <span class="sd">			reference exists for the supplied parameters</span>
 
-<span class="sd">		:param speciation_rate: the speciation rate of the community</span>
-<span class="sd">		:param time: the time in generations of the community</span>
-<span class="sd">		:param fragments: whether fragments were determined for the community</span>
-<span class="sd">		:param metacommunity_size: the metacommunity size</span>
-<span class="sd">		:param metacommunity_speciation_rate: the metacommunity speciation rate</span>
-<span class="sd">		:param min_speciation_gen: the minimum number of generations required before speciation</span>
-<span class="sd">		:param max_speciation_gen: the maximum number of generations required before speciation</span>
+<span class="sd">		:param float speciation_rate: the speciation rate of the community</span>
+<span class="sd">		:param float time: the time in generations of the community</span>
+<span class="sd">		:param bool/int fragments: whether fragments were determined for the community</span>
+<span class="sd">		:param int/float metacommunity_size: the metacommunity size</span>
+<span class="sd">		:param float metacommunity_speciation_rate: the metacommunity speciation rate</span>
+<span class="sd">		:param str metacommunity_option: option used for metacommunity creation</span>
+<span class="sd">		:param int external_reference: the metacommunity reference for external metacommunity databases</span>
+<span class="sd">		:param float min_speciation_gen: the minimum number of generations required before speciation</span>
+<span class="sd">		:param float max_speciation_gen: the maximum number of generations required before speciation</span>
 <span class="sd">		:return: the reference associated with this set of simulation parameters</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">fragments</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+			<span class="n">fragments</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">elif</span> <span class="n">fragments</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+			<span class="n">fragments</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">if</span> <span class="n">metacommunity_size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">external_reference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 			<span class="k">if</span> <span class="ow">not</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;METACOMMUNITY_PARAMETERS&quot;</span><span class="p">):</span>
 				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No table METACOMMUNITY_PARAMETERS exists in database {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">))</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT reference FROM METACOMMUNITY_PARAMETERS WHERE metacommunity_size == ? AND &quot;</span>
-								<span class="s2">&quot;speciation_rate == ? AND fragments == ?&quot;</span><span class="p">,</span>
-								<span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fragments</span><span class="p">)))</span>
+								<span class="s2">&quot;speciation_rate == ? AND option == ? and external_reference == ?&quot;</span><span class="p">,</span>
+								<span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">),</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_option</span><span class="p">,</span>
+								 <span class="n">external_reference</span><span class="p">))</span>
 			<span class="k">try</span><span class="p">:</span>
 				<span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-			<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot obtain metacommunity reference from database with size={}, &quot;</span>
-							   <span class="s2">&quot;speciation rate={} and fragments={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span>
-																			<span class="n">metacommunity_speciation_rate</span><span class="p">,</span> <span class="n">fragments</span><span class="p">))</span>
-		<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;COMMUNITY_PARAMETERS&quot;</span><span class="p">):</span>
-			<span class="k">try</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND &quot;</span>
-									<span class="s2">&quot;time == ? AND fragments == ? AND metacommunity_reference == ? AND &quot;</span>
-									<span class="s2">&quot;min_speciation_gen == ? AND max_speciation_gen == ?&quot;</span><span class="p">,</span>
-									<span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fragments</span><span class="p">),</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">min_speciation_gen</span><span class="p">,</span>
-									 <span class="n">max_speciation_gen</span><span class="p">))</span>
-			<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND &quot;</span>
-									<span class="s2">&quot;time == ? AND fragments == ? AND metacommunity_reference == ?&quot;</span><span class="p">,</span>
-									<span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fragments</span><span class="p">),</span> <span class="n">metacommunity_reference</span><span class="p">))</span>
-			<span class="k">try</span><span class="p">:</span>
+			<span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot obtain metacommunity reference from database with provided parameters.&quot;</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">check_sql_table_exist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;COMMUNITY_PARAMETERS&quot;</span><span class="p">):</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND &quot;</span>
+										<span class="s2">&quot;time == ? AND fragments == ? AND metacommunity_reference == ? AND &quot;</span>
+										<span class="s2">&quot;min_speciation_gen == ? AND max_speciation_gen == ?&quot;</span><span class="p">,</span>
+										<span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fragments</span><span class="p">),</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+										 <span class="n">min_speciation_gen</span><span class="p">,</span>
+										 <span class="n">max_speciation_gen</span><span class="p">))</span>
+				<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">min_speciation_gen</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">max_speciation_gen</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+						<span class="k">raise</span> <span class="ne">IndexError</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND &quot;</span>
+										<span class="s2">&quot;time == ? AND fragments == ? AND metacommunity_reference == ?&quot;</span><span class="p">,</span>
+										<span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fragments</span><span class="p">),</span> <span class="n">metacommunity_reference</span><span class="p">))</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-			<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-				<span class="k">pass</span>
-		<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot obtain community reference from database with provided parameters&quot;</span><span class="p">)</span></div>
+		<span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Cannot obtain community reference from database with provided parameters.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.get_metacommunity_references"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.get_metacommunity_references">[docs]</a>	<span class="k">def</span> <span class="nf">get_metacommunity_references</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -1868,17 +2081,21 @@
 
 <span class="sd">		:raises KeyError: if the supplied reference does not exist in the METACOMMUNITY_PARAMETERS table</span>
 
-<span class="sd">		:return: dictionary containing the speciation_rate, time, fragments and metacommunity_reference</span>
+<span class="sd">		:return: dictionary containing the speciation_rate, metacommunity_size, metacommunity option and metacommunity</span>
+<span class="sd">				 reference.</span>
 <span class="sd">		:rtype: dict</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_check_database</span><span class="p">()</span>
 		<span class="k">try</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT speciation_rate, metacommunity_size FROM&quot;</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT speciation_rate, metacommunity_size, option, external_reference FROM&quot;</span>
 								<span class="s2">&quot; METACOMMUNITY_PARAMETERS  WHERE reference== ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">reference</span><span class="p">,))</span>
 		<span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 			<span class="k">raise</span> <span class="n">e</span>
-		<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()]</span>
+		<span class="n">fetch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">fetch</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No metacommunity parameters found for reference of {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+		<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fetch</span><span class="p">]</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No metacommunity parameters found for reference of {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
 		<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">member</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
@@ -1946,6 +2163,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS FRAGMENT_ABUNDANCES&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS SPECIES_ABUNDANCES&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS COMMUNITY_PARAMETERS&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS METACOMMUNITY_PARAMETERS&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS SPECIES_LOCATIONS&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">clear_calculations</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
@@ -2265,7 +2483,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

@@ -16,7 +16,7 @@ Collaboration diagram for Landscape\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_landscape__coll__graph}
+\includegraphics[width=315pt]{class_landscape__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -29,7 +29,7 @@ unsigned long \hyperlink{class_landscape_a99fac44043825a97e2e7fbc71caeb8e2}{get\
 \begin{DoxyCompactList}\small\item\em Gets the maximum habitat value from any map. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_ad8e9a0520be7426592aa1d8c91227f3e}{has\+Historical} ()
 \begin{DoxyCompactList}\small\item\em Returns if the simulation is using historical maps. \end{DoxyCompactList}\item 
-void \hyperlink{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}{set\+Dims} (\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$mapvarsin)
+void \hyperlink{class_landscape_abe7de5a0e44b1887de6f90b79d9e027b}{set\+Dims} (shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ mapvarsin)
 \begin{DoxyCompactList}\small\item\em Sets the dimensions of the grid, the area where the species are initially sampled from. This function must be run before any of the calc map functions to allow for the correct deme allocation. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_ab7d8cd906a44c24a7f120362563d1217}{check\+Map\+Exists} ()
 \begin{DoxyCompactList}\small\item\em Checks that the map files exist (or are none/null). \end{DoxyCompactList}\item 
@@ -101,7 +101,7 @@ void \hyperlink{class_landscape_a33e5909b7d430caf0f4fb909ba3e0499}{convert\+Fine
 \begin{DoxyCompactList}\small\item\em Converts the fine map coordinates to the sample grid coordinates. Main conversion is in a call to convert\+Coordinates, but also makes sure the returned types are long integers. \end{DoxyCompactList}\item 
 unsigned long \hyperlink{class_landscape_ae8d533d9a8fff3a96c240aadaeac3f04}{get\+Initial\+Count} (double d\+Sample, \hyperlink{class_data_mask}{Data\+Mask} \&samplemask)
 \begin{DoxyCompactList}\small\item\em Counts the number of spaces available in the initial species space. Requires the samplemask to check the sampling area. \end{DoxyCompactList}\item 
-\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$ \hyperlink{class_landscape_a679bb7a577f9404093b5aa8d17ba049e}{get\+Sim\+Parameters} ()
+shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ \hyperlink{class_landscape_a573108920d7b21c2978b915ee1bf9b7b}{get\+Sim\+Parameters} ()
 \begin{DoxyCompactList}\small\item\em Gets the mapvars object pointer for referencing simulation parameters. \end{DoxyCompactList}\item 
 bool \hyperlink{class_landscape_a24de83f1e8f762b9640cdba35793a404}{check\+Map} (const double \&x, const double \&y, const long \&xwrap, const long \&ywrap, const double generation)
 \begin{DoxyCompactList}\small\item\em Checks whether the point is habitat or non-\/habitat. \end{DoxyCompactList}\item 
@@ -146,7 +146,7 @@ typedef unsigned long(Landscape\+::$\ast$ {\bfseries fptr}) (const double \&x, c
 \hyperlink{class_map}{Map}$<$ uint32\+\_\+t $>$ {\bfseries historical\+\_\+coarse\+\_\+map}\hypertarget{class_landscape_a5ac41db1c48869d974c97393eb548dd8}{}\label{class_landscape_a5ac41db1c48869d974c97393eb548dd8}
 
 \item 
-\hyperlink{struct_sim_parameters}{Sim\+Parameters} $\ast$ {\bfseries mapvars}\hypertarget{class_landscape_aa3de03e94cea3c560df40bfa78b79f54}{}\label{class_landscape_aa3de03e94cea3c560df40bfa78b79f54}
+shared\+\_\+ptr$<$ \hyperlink{struct_sim_parameters}{Sim\+Parameters} $>$ {\bfseries mapvars}\hypertarget{class_landscape_aff7100b4002fee62a8ff90fa382d04b3}{}\label{class_landscape_aff7100b4002fee62a8ff90fa382d04b3}
 
 \item 
 long {\bfseries fine\+\_\+x\+\_\+min} \{\}\hypertarget{class_landscape_a95634ae0e15826160ad5c58a4093130d}{}\label{class_landscape_a95634ae0e15826160ad5c58a4093130d}
@@ -266,7 +266,7 @@ istream \& \hyperlink{class_landscape_a8b9beb241ad534346dc98d24f6bb9279}{operato
 \subsection{Detailed Description}
 Contains all maps and provides the functions for accessing a grid cell in the correct temporal and spacial location. 
 
-The function \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with \hyperlink{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}{set\+Dims()}, import the map files with \hyperlink{class_landscape_ad500af94a2afd577e682b3c042cab217}{calc\+Fine\+Map()}, \hyperlink{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}{calc\+Coarse\+Map()} etc, then set up the landscape type using \hyperlink{class_landscape_a63150f634d7936439bc5a1d20b84a7b2}{set\+Landscape()} and sethistorical(). Usage is then by \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} for running a dispersal kernel on the landscape, and then \hyperlink{class_landscape_a06dbce690810d8d771490c310cb96310}{get\+Val()} to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. 
+The function \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} also provides the move routine, provided two alternative methods for moving individuals. Contains routines for easy setting up and switching between the different coordinate systems required. Set the map parameters with \hyperlink{class_landscape_abe7de5a0e44b1887de6f90b79d9e027b}{set\+Dims()}, import the map files with \hyperlink{class_landscape_ad500af94a2afd577e682b3c042cab217}{calc\+Fine\+Map()}, \hyperlink{class_landscape_a2b34dcd828e0006dde9e60315cbddac8}{calc\+Coarse\+Map()} etc, then set up the landscape type using \hyperlink{class_landscape_a63150f634d7936439bc5a1d20b84a7b2}{set\+Landscape()} and sethistorical(). Usage is then by \hyperlink{class_landscape_aedc33de89997456d53cceb3e4e424e64}{run\+Dispersal()} for running a dispersal kernel on the landscape, and then \hyperlink{class_landscape_a06dbce690810d8d771490c310cb96310}{get\+Val()} to obtain the density at the desired coordinates. All coordinates should be given in reference to the simulation grid, and offsets for the fine and coarse map are calculated automatically. 
 
 \subsection{Member Function Documentation}
 \index{Landscape@{Landscape}!calc\+Offset@{calc\+Offset}}
@@ -545,11 +545,11 @@ the total number of individuals predicted to initially exist on the map.
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!get\+Sim\+Parameters@{get\+Sim\+Parameters}}
 \index{get\+Sim\+Parameters@{get\+Sim\+Parameters}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{get\+Sim\+Parameters()}{getSimParameters()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sim\+Parameters} $\ast$ Landscape\+::get\+Sim\+Parameters (
+\subsubsection[{\texorpdfstring{get\+Sim\+Parameters()}{getSimParameters()}}]{\setlength{\rightskip}{0pt plus 5cm}shared\+\_\+ptr$<$ {\bf Sim\+Parameters} $>$ Landscape\+::get\+Sim\+Parameters (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\hypertarget{class_landscape_a679bb7a577f9404093b5aa8d17ba049e}{}\label{class_landscape_a679bb7a577f9404093b5aa8d17ba049e}
+)}\hypertarget{class_landscape_a573108920d7b21c2978b915ee1bf9b7b}{}\label{class_landscape_a573108920d7b21c2978b915ee1bf9b7b}
 
 
 Gets the mapvars object pointer for referencing simulation parameters. 
@@ -943,11 +943,11 @@ the density value at the end dispersal point
 \end{DoxyReturn}
 \index{Landscape@{Landscape}!set\+Dims@{set\+Dims}}
 \index{set\+Dims@{set\+Dims}!Landscape@{Landscape}}
-\subsubsection[{\texorpdfstring{set\+Dims(\+Sim\+Parameters $\ast$mapvarsin)}{setDims(SimParameters *mapvarsin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Dims (
+\subsubsection[{\texorpdfstring{set\+Dims(shared\+\_\+ptr$<$ Sim\+Parameters $>$ mapvarsin)}{setDims(shared_ptr< SimParameters > mapvarsin)}}]{\setlength{\rightskip}{0pt plus 5cm}void Landscape\+::set\+Dims (
 \begin{DoxyParamCaption}
-\item[{{\bf Sim\+Parameters} $\ast$}]{mapvarsin}
+\item[{shared\+\_\+ptr$<$ {\bf Sim\+Parameters} $>$}]{mapvarsin}
 \end{DoxyParamCaption}
-)}\hypertarget{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}{}\label{class_landscape_acc47e50bdad6af7f2bbed57db73f6730}
+)}\hypertarget{class_landscape_abe7de5a0e44b1887de6f90b79d9e027b}{}\label{class_landscape_abe7de5a0e44b1887de6f90b79d9e027b}
 
 
 Sets the dimensions of the grid, the area where the species are initially sampled from. This function must be run before any of the calc map functions to allow for the correct deme allocation. 

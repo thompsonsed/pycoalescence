@@ -85,7 +85,7 @@ class DispersalSimulation(Landscape):
 
 	def __del__(self):
 		"""
-		Safely destroys the connection to the database, if it exists, and destroys the c++ objects.
+		Safely destroys the connection to the database, if it exists, and destroys the C++ objects.
 		"""
 		self._close_database_connection()
 		self.c_dispersal_simulation = None
@@ -486,7 +486,7 @@ class DispersalSimulation(Landscape):
 		main_dict = {}
 		for row in cursor.fetchall():
 			values = [x for x in row]
-			# python 2.x support
+			# Python 2.x support
 			if sys.version_info[0] != 3:
 				for i, each in enumerate(values):
 					if isinstance(each, unicode):

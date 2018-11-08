@@ -39,15 +39,19 @@ Includes
 
 - ``Community.h`` (:ref:`file_CCommunity.h`)
 
-- ``DoubleComparison.h`` (:ref:`file_necsim_DoubleComparison.h`)
-
-- ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
-
 - ``algorithm``
 
-- ``set``
+- ``double_comparison.h`` (:ref:`file_necsim_double_comparison.h`)
+
+- ``file_system.h`` (:ref:`file_necsim_file_system.h`)
+
+- ``numeric``
+
+- ``set`` (:ref:`file_necsim_setup.cpp`)
 
 - ``unordered_map``
+
+- ``utility``
 
 
 

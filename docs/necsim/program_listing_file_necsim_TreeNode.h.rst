@@ -8,7 +8,7 @@ Program Listing for File TreeNode.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef TREENODE
    #define TREENODE
@@ -101,29 +101,29 @@ Program Listing for File TreeNode.h
        
        // standard getters
        
-       bool getExistence();
+       bool exists() const;
        
-       bool isTip();
+       bool isTip() const;
        
-       unsigned long getParent();
+       unsigned long getParent() const;
    
-       unsigned long getXpos();
+       unsigned long getXpos() const;
        
-       unsigned long getYpos();
+       unsigned long getYpos() const;
        
-       long getXwrap();
+       long getXwrap() const;
        
-       long getYwrap();
+       long getYwrap() const;
        
-       bool hasSpeciated();
+       bool hasSpeciated() const;
        
-       unsigned long getSpeciesID();
+       unsigned long getSpeciesID() const;
        
-       long double getSpecRate();
+       long double getSpecRate() const;
        
-       unsigned long getGenRate();
+       unsigned long getGenRate() const;
        
-       long double getGeneration();
+       long double getGeneration() const;
    
        void speciate();
    

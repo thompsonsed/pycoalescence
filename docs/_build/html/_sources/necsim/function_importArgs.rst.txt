@@ -3,7 +3,7 @@
 Function importArgs
 ===================
 
-- Defined in :ref:`file_necsim_ConfigFileParser.h`
+- Defined in :ref:`file_necsim_ConfigParser.h`
 
 
 Function Documentation

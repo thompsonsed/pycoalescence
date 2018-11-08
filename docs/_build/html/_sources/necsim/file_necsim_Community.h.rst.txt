@@ -53,13 +53,19 @@ Includes
 
 - ``cstring``
 
-- ``set``
+- ``memory``
+
+- ``parameters.h`` (:ref:`file_necsim_parameters.h`)
+
+- ``set`` (:ref:`file_necsim_setup.cpp`)
 
 - ``sqlite3.h``
 
 - ``stdexcept``
 
 - ``string``
+
+- ``utility``
 
 
 
@@ -86,15 +92,7 @@ Classes
 -------
 
 
-- :ref:`struct_CommunitiesArray`
-
-- :ref:`struct_CommunityParameters`
-
 - :ref:`struct_Fragment`
-
-- :ref:`struct_MetacommunitiesArray`
-
-- :ref:`struct_MetacommunityParameters`
 
 - :ref:`class_Community`
 

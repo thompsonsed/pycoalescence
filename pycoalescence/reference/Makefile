@@ -1,5 +1,5 @@
 ##
-## Makefile input for automatic system configuration and compilation of NECSim and SpeciationCounter. 
+## Makefile input for automatic system configuration and compilation of necsim and SpeciationCounter.
 ##
 CXX=g++ -std=gnu++14
 LD=@LD@
@@ -19,7 +19,7 @@ ACLOCAL_AMFLAGS = -I m4 --install
 
 all: start_msg obj_dir build_dir $(BUILDDIR)/necsimmodule.so end_msg
 
-complete: all NECSim SpeciationCounter end_msg
+complete: all necsim SpeciationCounter end_msg
 
 obj_dir:
 	mkdir -p $(OBJDIR)
@@ -33,9 +33,9 @@ spec: start_msg_spec SpeciationCounter end_msg
 SpeciationCounter: SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o DataMask.o SimParameters.o ConfigFileParser.o
 	$(CXX) -o SpeciationCounter SpeciationCounter.o SpeciationCommands.o Community.o TreeNode.o Matrix.o DataMask.o SimParameters.o ConfigFileParser.o CPLCustomHandlerNecsim.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
-# NECSim compilation
-NECSim: main.o Tree.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
-	$(CXX) -o NECSim main.o Tree.o Matrix.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandlerNecsim.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
+# necsim compilation
+necsim: main.o Tree.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o LogFile.o Cell.o
+	$(CXX) -o necsim main.o Tree.o Matrix.o Logging.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o Setup.o DispersalCoordinator.o ReproductionMap.o Logging.o LogFile.o CPLCustomHandlerNecsim.o Cell.o $(LDFLAGS) $(CPPFLAGS) $(LIBS)
 
 start_msg: 
 	@echo "-----------------------------------------------"
@@ -47,10 +47,10 @@ end_msg:
 	@echo "------------ COMPILATION COMPLETE -------------"
 	@echo "-----------------------------------------------"
 
-## Compile NECSim
-coal: start_msg NECSim end_msg
+## Compile necsim
+coal: start_msg necsim end_msg
 
-# python shared object files
+# Python shared object files
 necsim_objects = $(addprefix $(OBJDIR)/, Setup.o PyLogging.o Tree.o ConfigFileParser.o DataPoint.o TreeNode.o SpeciesList.o Landscape.o DataMask.o Community.o DispersalCoordinator.o ReproductionMap.o ProtractedTree.o Filesystem.o SpatialTree.o LogFile.o CPLCustomHandlerNecsim.o Cell.o DoubleComparison.o Logger.o PyLogger.o PyImports.o Metacommunity.o SimulateDispersal.o LandscapeMetricsCalculator.o)
 
 dispersal_objects = $(addprefix $(OBJDIR)/, PyLogging.o SimulateDispersal.o LogFile.o Filesystem.o CPLCustomHandlerNecsim.o Landscape.o DataMask.o ConfigFileParser.o PyImports.o DispersalCoordinator.o Cell.o DoubleComparison.o Logger.o PyLogger.o)

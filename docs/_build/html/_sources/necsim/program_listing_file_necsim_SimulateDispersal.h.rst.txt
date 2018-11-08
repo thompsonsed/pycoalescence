@@ -8,7 +8,7 @@ Program Listing for File SimulateDispersal.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef DISPERSAL_TEST
@@ -37,11 +37,11 @@ Program Listing for File SimulateDispersal.h
        // The density map object
        shared_ptr<Landscape> density_landscape;
        // The samplemask object
-       DataMask dataMask;
+       DataMask data_mask;
        // Dispersal coordinator
        DispersalCoordinator dispersal_coordinator{};
-       // Stores all key simulation parameters for the Landscape object
-       SimParameters  * simParameters;
+       // Stores all key simulation current_metacommunity_parameters for the Landscape object
+       shared_ptr<SimParameters> simParameters;
        // The random number generator object
        shared_ptr<NRrand> random;
        // The random number seed
@@ -62,13 +62,13 @@ Program Listing for File SimulateDispersal.h
        double generation;
        // If true, sequentially selects dispersal probabilities, default is true
        bool is_sequential;
-       // Reference number for this set of parameters in the database output
+       // Reference number for this set of current_metacommunity_parameters in the database output
        unsigned long max_parameter_reference;
    public:
-       SimulateDispersal() : density_landscape(make_shared<Landscape>()), random(make_shared<NRrand>()), distances(),
-                             num_steps()
+       SimulateDispersal() : density_landscape(make_shared<Landscape>()), data_mask(), dispersal_coordinator(),
+                             simParameters(make_shared<SimParameters>()),
+                             random(make_shared<NRrand>()), distances(), parameter_references(), cells(), num_steps()
        {
-           simParameters = nullptr;
            num_repeats = 0;
            database = nullptr;
            seed = 0;
@@ -84,7 +84,7 @@ Program Listing for File SimulateDispersal.h
        
        void setSequential(bool bSequential);
    
-       void setSimulationParameters(SimParameters * sim_parameters, bool print=true);
+       void setSimulationParameters(shared_ptr<SimParameters> sim_parameters, bool print = true);
    
        void importMaps();
    

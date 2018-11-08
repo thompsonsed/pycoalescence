@@ -8,7 +8,7 @@ Program Listing for File LogFile.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef LOGFILE_H
    #define LOGFILE_H
@@ -21,6 +21,9 @@ Program Listing for File LogFile.h
    #define LOGNAME_FORMAT "%d%m%Y_%H%M%S"
    
    using namespace std;
+   
+   
+   string getTime();
    
    string getDefaultLogFile();
    

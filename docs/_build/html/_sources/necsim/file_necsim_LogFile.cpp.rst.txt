@@ -38,13 +38,13 @@ Includes
 --------
 
 
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
-
-- ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
-
 - ``LogFile.h`` (:ref:`file_necsim_LogFile.h`)
 
 - ``boost/filesystem.hpp``
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
+
+- ``file_system.h`` (:ref:`file_necsim_file_system.h`)
 
 - ``iomanip``
 

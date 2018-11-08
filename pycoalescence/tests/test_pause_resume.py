@@ -8,7 +8,7 @@ import shutil
 
 from pycoalescence import Simulation, CoalescenceTree
 
-from pycoalescence.necsim import NECSimError
+from pycoalescence.necsim import necsimError
 from pycoalescence.sqlite_connection import check_sql_table_exist, fetch_table_from_sql
 from setupTests import setUpAll, tearDownAll, skipLongTest
 
@@ -222,7 +222,7 @@ class TestSimulationPause2(unittest.TestCase):
 										  dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
 										  dispersal_method="normal", protracted=False,
 										  min_speciation_gen=0.0, max_speciation_gen=100)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			coaltmp.resume_coalescence(job_type=26, seed=10, pause_directory="output", max_time=10,
 			                           out_directory="output")
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pycoalescence.installer &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>pycoalescence.installer &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -56,7 +56,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Compile **necsim** with default or provided compilation options. Intended for internal usage during ``pip`` or ``conda``</span>
 <span class="sd">builds, although manual installation is also possible by running this file from the command line.</span>
-<span class="sd">``python installer.py`` configures the install by detecting system components and compiles the ``c++`` files, if</span>
+<span class="sd">``python installer.py`` configures the install by detecting system components and compiles the ``C++`` files, if</span>
 <span class="sd">possible. Command line flags can be provided to installer.py to modify the install (see</span>
 <span class="sd">:ref:`Compilation Options &lt;sec Compilation Options&gt;` for more information).</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -86,7 +86,7 @@
 
 
 <div class="viewcode-block" id="Installer"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.Installer">[docs]</a><span class="k">class</span> <span class="nc">Installer</span><span class="p">(</span><span class="n">build_ext</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Wraps configuration and compilation of c++ code.&quot;&quot;&quot;</span>
+	<span class="sd">&quot;&quot;&quot;Wraps configuration and compilation of C++ code.&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;Generates the link to the mod directory for installation.&quot;&quot;&quot;</span>
@@ -144,7 +144,7 @@
 
 <div class="viewcode-block" id="Installer.do_compile"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.Installer.do_compile">[docs]</a>	<span class="k">def</span> <span class="nf">do_compile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Compiles the c++ necsim program by running make. This changes the working directory to wherever the module has been</span>
+<span class="sd">		Compiles the C++ necsim program by running make. This changes the working directory to wherever the module has been</span>
 <span class="sd">		installed for the subprocess call.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># Check that the make file exists</span>
@@ -262,7 +262,7 @@
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Make file has not been generated. Cannot clean.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Installer.get_ldflags"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.Installer.get_ldflags">[docs]</a>	<span class="k">def</span> <span class="nf">get_ldflags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Get the ldflags that python was compiled with, removing some problematic options.&quot;&quot;&quot;</span>
+		<span class="sd">&quot;&quot;&quot;Get the ldflags that Python was compiled with, removing some problematic options.&quot;&quot;&quot;</span>
 		<span class="n">sysldflags</span> <span class="o">=</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s2">&quot;LDFLAGS&quot;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">sysldflags</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="n">ldflags</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -275,7 +275,7 @@
 		<span class="k">return</span> <span class="n">ldflags</span></div>
 
 <div class="viewcode-block" id="Installer.get_ldshared"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.Installer.get_ldshared">[docs]</a>	<span class="k">def</span> <span class="nf">get_ldshared</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Get the ldshared python variables and replaces -bundle with -shared for proper compilation.&quot;&quot;&quot;</span>
+		<span class="sd">&quot;&quot;&quot;Get the ldshared Python variables and replaces -bundle with -shared for proper compilation.&quot;&quot;&quot;</span>
 		<span class="n">ldflags</span> <span class="o">=</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s2">&quot;LDSHARED&quot;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">ldflags</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="k">return</span> <span class="s2">&quot;&quot;</span>
@@ -290,7 +290,7 @@
 <span class="sd">		:return: list of compilation flags.</span>
 <span class="sd">		:rtype: list</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="c1"># Get the relevant flags that python was originally compiled with, to be passed to the c++ code.</span>
+		<span class="c1"># Get the relevant flags that Python was originally compiled with, to be passed to the C++ code.</span>
 		<span class="n">include</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;CPPFLAGS=-I&quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_python_inc</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 		<span class="n">cflags</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;CFLAGS&#39;</span><span class="p">)</span>
 		<span class="n">cflags</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;-arch \b[^ ]*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cflags</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># remove any architecture flags</span>
@@ -310,7 +310,7 @@
 				<span class="s2">&quot;COMPILATION FAILURE: Windows is not yet supported. You must compile the libraries yourself.&quot;</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">logging</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;OS not detected, compilation failures likely. Please report this error.&quot;</span><span class="p">)</span>
-		<span class="c1"># Make sure that the linker directs to the correct python library (such as -lpython3.5m)</span>
+		<span class="c1"># Make sure that the linker directs to the correct Python library (such as -lpython3.5m)</span>
 		<span class="c1"># Eventually this will also detect if the install is for an anaconda distribution.</span>
 		<span class="k">if</span> <span class="s1">&#39;conda&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span> <span class="ow">and</span> <span class="s1">&#39;Continuum&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
 			<span class="n">py_lib</span> <span class="o">+=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
@@ -427,8 +427,6 @@
 			<span class="n">env</span><span class="p">[</span><span class="s2">&quot;CXX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;icpc&quot;</span>
 			<span class="n">env</span><span class="p">[</span><span class="s2">&quot;CC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;icc&quot;</span>
 			<span class="n">cmake_args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-DCMAKE_C_COMPILER=icc&quot;</span><span class="p">,</span> <span class="s2">&quot;-DCMAKE_CXX_COMPILER=icpc&quot;</span><span class="p">,</span> <span class="s2">&quot;-DUSING_INTEL&quot;</span><span class="p">])</span>
-		<span class="c1"># TODO remove this</span>
-		<span class="k">print</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">run_cmake</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">cmake_args</span><span class="p">,</span> <span class="n">build_args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_temp</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Installer.run_cmake"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.Installer.run_cmake">[docs]</a>	<span class="k">def</span> <span class="nf">run_cmake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_dir</span><span class="p">,</span> <span class="n">cmake_args</span><span class="p">,</span> <span class="n">build_args</span><span class="p">,</span> <span class="n">tmp_dir</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
@@ -459,7 +457,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">build_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Installer.build_extension"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.Installer.build_extension">[docs]</a>	<span class="k">def</span> <span class="nf">build_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Builds the c++ and python extension.&quot;&quot;&quot;</span>
+		<span class="sd">&quot;&quot;&quot;Builds the C++ and Python extension.&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">build_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ext_fullpath</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
 													  <span class="s2">&quot;pycoalescence&quot;</span><span class="p">,</span> <span class="s2">&quot;necsim&quot;</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">obj_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_dir</span>
@@ -493,7 +491,7 @@
 		<span class="k">if</span> <span class="n">libdir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="n">libdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;LIBDEST&#39;</span><span class="p">),</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;libs&quot;</span><span class="p">))</span>
 			<span class="k">if</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s2">&quot;LIBDEST&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s2">&quot;Cannot detect library directory for python install.&quot;</span><span class="p">)</span>
+				<span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s2">&quot;Cannot detect library directory for Python install.&quot;</span><span class="p">)</span>
 		<span class="n">cmake_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-DPYTHON_LIBRARY:FILEPATH={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">libdir</span><span class="p">),</span>
 					  <span class="c1"># &quot;-DPYTHON_LINKER:=-lpython{}.{}{}&quot;.format(v_info.major, v_info.minor, pymalloc_ext),</span>
 					  <span class="s2">&quot;-DPYTHON_CPPFLAGS:=&#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cflags</span><span class="p">),</span>
@@ -519,7 +517,7 @@
 
 
 <div class="viewcode-block" id="get_python_library"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.installer.get_python_library">[docs]</a><span class="k">def</span> <span class="nf">get_python_library</span><span class="p">(</span><span class="n">python_version</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Get path to the python library associated with the current python</span>
+	<span class="sd">&quot;&quot;&quot;Get path to the Python library associated with the current Python</span>
 <span class="sd">	interpreter.&quot;&quot;&quot;</span>
 	<span class="c1"># determine direct path to libpython</span>
 	<span class="n">python_library</span> <span class="o">=</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;LIBRARY&#39;</span><span class="p">)</span>
@@ -581,7 +579,7 @@
 					<span class="k">break</span>
 	<span class="c1"># Otherwise still a static library, keep searching</span>
 	<span class="k">if</span> <span class="n">potential_library</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-		<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No python libraries found&quot;</span><span class="p">)</span>
+		<span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No Python libraries found&quot;</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">potential_library</span></div>
 
 
@@ -590,7 +588,7 @@
 	<span class="kn">from</span> <span class="nn">distutils.dist</span> <span class="kn">import</span> <span class="n">Distribution</span>
 	<span class="kn">import</span> <span class="nn">argparse</span>
 
-	<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Build the c++ library (necsim) required for pycoalescence.&#39;</span><span class="p">)</span>
+	<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Build the C++ library (necsim) required for pycoalescence.&#39;</span><span class="p">)</span>
 	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cmake&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;cmake&quot;</span><span class="p">,</span>
 						<span class="n">help</span><span class="o">=</span><span class="s1">&#39;use the cmake build process&#39;</span><span class="p">)</span>
 	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--autotools&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;autotools&quot;</span><span class="p">,</span>
@@ -668,7 +666,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

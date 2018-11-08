@@ -7,7 +7,7 @@ File PyImports.cpp
 
 
 
-Routines for importing python objects to c++ vectors. 
+Routines for importing Python objects to C++ vectors. 
 
 
 .. contents:: Contents

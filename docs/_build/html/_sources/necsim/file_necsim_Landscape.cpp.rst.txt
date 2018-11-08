@@ -38,11 +38,11 @@ Includes
 --------
 
 
-- ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
-
 - ``Landscape.h`` (:ref:`file_necsim_Landscape.h`)
 
 - ``cmath``
+
+- ``file_system.h`` (:ref:`file_necsim_file_system.h`)
 
 
 

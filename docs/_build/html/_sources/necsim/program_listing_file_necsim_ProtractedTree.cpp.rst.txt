@@ -8,7 +8,7 @@ Program Listing for File ProtractedTree.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    //
    #include "ProtractedTree.h"
@@ -31,19 +31,19 @@ Program Listing for File ProtractedTree.cpp
    
    void ProtractedTree::speciateLineage(const unsigned long &data_position)
    {
-       data[data_position].setSpec(0.0);
-       if(speciation_generation_min >= data[data_position].getGenRate() + data[data_position].getGeneration())
+       (*data)[data_position].setSpec(0.0);
+       if(speciation_generation_min >= (*data)[data_position].getGenRate() + (*data)[data_position].getGeneration())
        {
-           data[data_position].setGenerationRate(static_cast<unsigned long>(floor(speciation_generation_min)) + 2);
+           (*data)[data_position].setGenerationRate(static_cast<unsigned long>(floor(speciation_generation_min)) + 2);
        }
    #ifdef DEBUG
        if(generation < speciation_generation_min)
        {
-           data[data_position].logLineageInformation(50);
+           (*data)[data_position].logLineageInformation(50);
            throw FatalException("Speciation attempted before minimum speciation generation. Please report this bug.");
        }
    #endif // DEBUG
-       data[data_position].speciate();
+       (*data)[data_position].speciate();
    }
    
    bool ProtractedTree::getProtracted()

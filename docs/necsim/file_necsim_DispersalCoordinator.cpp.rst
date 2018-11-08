@@ -39,11 +39,11 @@ Includes
 --------
 
 
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
-
 - ``DispersalCoordinator.h`` (:ref:`file_necsim_DispersalCoordinator.h`)
 
 - ``Logger.h`` (:ref:`file_necsim_Logger.h`)
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
 
 - ``utility``
 

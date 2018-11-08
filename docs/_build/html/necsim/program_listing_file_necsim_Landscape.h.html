@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Landscape.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Landscape.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.h.html" accesskey="U">File Landscape.h</a> &#187;</li> 
       </ul>
@@ -66,19 +66,20 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Landscape.h.html#file-necsim-landscape-h"><span class="std std-ref">File Landscape.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#ifndef LANDSCAPE_H</span>
 <span class="cp">#define LANDSCAPE_H</span>
 
-<span class="cp"># include &lt;string&gt;</span>
-<span class="cp"># include &lt;cstdio&gt;</span>
-<span class="cp"># include &lt;vector&gt;</span>
-<span class="cp"># include &lt;iostream&gt;</span>
-<span class="cp"># include &lt;fstream&gt;</span>
-<span class="cp"># include &lt;cmath&gt;</span>
-<span class="cp"># include &lt;stdexcept&gt;</span>
-<span class="cp"># include &lt;boost/filesystem.hpp&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/filesystem.hpp&gt;</span><span class="cp"></span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;Map.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;DataMask.h&quot;</span><span class="cp"></span>
@@ -111,7 +112,7 @@
     <span class="c1">// the historical coarser map.</span>
     <span class="n">Map</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">historical_coarse_map</span><span class="p">;</span>
     <span class="c1">// for importing and storing the simulation set-up options.</span>
-    <span class="n">SimParameters</span> <span class="o">*</span><span class="n">mapvars</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">mapvars</span><span class="p">;</span>
     <span class="c1">// the minimum values for each dimension for offsetting.</span>
     <span class="kt">long</span> <span class="n">fine_x_min</span><span class="p">{},</span> <span class="n">fine_y_min</span><span class="p">{},</span> <span class="n">coarse_x_min</span><span class="p">{},</span> <span class="n">coarse_y_min</span><span class="p">{};</span>
     <span class="c1">// the maximum values for each dimension for offsetting.</span>
@@ -168,9 +169,8 @@
 
     <span class="n">fptr</span> <span class="n">getValFunc</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">Landscape</span><span class="p">()</span>
+    <span class="n">Landscape</span><span class="p">()</span> <span class="o">:</span> <span class="n">mapvars</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span><span class="p">())</span>
     <span class="p">{</span>
-        <span class="n">mapvars</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">check_set_dim</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// sets the check to false.</span>
         <span class="n">is_historical</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
         <span class="n">current_map_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -190,7 +190,7 @@
 
     <span class="kt">bool</span> <span class="nf">hasHistorical</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span><span class="n">mapvarsin</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setDims</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">mapvarsin</span><span class="p">);</span>
 
     <span class="kt">bool</span> <span class="nf">checkMapExists</span><span class="p">();</span>
 
@@ -284,7 +284,7 @@
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getInitialCount</span><span class="p">(</span><span class="kt">double</span> <span class="n">dSample</span><span class="p">,</span> <span class="n">DataMask</span> <span class="o">&amp;</span><span class="n">samplemask</span><span class="p">);</span>
 
-    <span class="n">SimParameters</span> <span class="o">*</span><span class="nf">getSimParameters</span><span class="p">();</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">getSimParameters</span><span class="p">();</span>
 
     <span class="kt">bool</span> <span class="nf">checkMap</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">xwrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ywrap</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">generation</span><span class="p">);</span>
 
@@ -410,7 +410,7 @@
         <li class="right" >
           <a href="file_necsim_Landscape.h.html" title="File Landscape.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Landscape.h.html" >File Landscape.h</a> &#187;</li> 
       </ul>

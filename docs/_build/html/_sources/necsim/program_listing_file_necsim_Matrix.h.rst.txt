@@ -8,7 +8,7 @@ Program Listing for File Matrix.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef MATRIX
@@ -178,6 +178,7 @@ Program Listing for File Matrix.h
            copy(&m.matrix[0][0], &m.matrix[numRows][numCols], matrix);
        }
    
+       virtual 
        ~Matrix()
        {
            if(matrix)
@@ -243,7 +244,7 @@ Program Listing for File Matrix.h
            return *this;
        }
    
-       const Matrix operator+(const Matrix &m)
+       Matrix operator+(const Matrix &m) const
        {
            //Since addition creates a new matrix, we don't want to return a reference, but an actual matrix object.
            unsigned long newnumcols, newnumrows;
@@ -275,7 +276,7 @@ Program Listing for File Matrix.h
            return result;
        }
    
-       const Matrix operator-(const Matrix &m)
+       Matrix operator-(const Matrix &m) const
        {
            unsigned long newnumcols, newnumrows;
            if(numCols > m.numCols)
@@ -363,7 +364,7 @@ Program Listing for File Matrix.h
            return *this;
        }
    
-       const Matrix operator*(const double s)
+       Matrix operator*(const double s) const
        {
            Matrix result(numRows, numCols);
            for(unsigned long r = 0; r < numRows; r++)
@@ -376,7 +377,7 @@ Program Listing for File Matrix.h
            return result;
        }
    
-       const Matrix operator*(Matrix &m)
+       Matrix operator*(Matrix &m) const
        {
            unsigned long newnumcols;
            if(numCols > m.numRows)

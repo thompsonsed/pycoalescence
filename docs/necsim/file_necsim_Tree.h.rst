@@ -40,11 +40,7 @@ Includes
 
 - ``Community.h`` (:ref:`file_CCommunity.h`)
 
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
-
 - ``DataPoint.h`` (:ref:`file_necsim_DataPoint.h`)
-
-- ``Filesystem.h`` (:ref:`file_necsim_Filesystem.h`)
 
 - ``Matrix.h`` (:ref:`file_necsim_Matrix.h`)
 
@@ -55,6 +51,12 @@ Includes
 - ``Step.h`` (:ref:`file_necsim_Step.h`)
 
 - ``TreeNode.h`` (:ref:`file_necsim_TreeNode.h`)
+
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
+
+- ``file_system.h`` (:ref:`file_necsim_file_system.h`)
+
+- ``memory``
 
 - ``sqlite3.h``
 

@@ -3,7 +3,7 @@
 Variable log_name
 =================
 
-- Defined in :ref:`file_necsim_Setup.h`
+- Defined in :ref:`file_necsim_setup.h`
 
 
 Variable Documentation

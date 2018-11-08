@@ -5,9 +5,9 @@ import math
 
 # try:
 # 	import necsim
-# 	NECSimError = necsim.libnecsim.NECSimError
+# 	necsimError = necsim.libnecsim.necsimError
 # except ImportError:
-from pycoalescence.necsim.libnecsim import NECSimError as nse
+from pycoalescence.necsim.libnecsim import necsimError as nse
 from pycoalescence.dispersal_simulation import DispersalSimulation
 from setupTests import setUpAll, tearDownAll, skipLongTest
 
@@ -82,7 +82,7 @@ class TestDispersalSimulation(unittest.TestCase):
 			m.set_simulation_parameters(number_repeats=10000, output_database="output/normaldispersal.db", seed=1)
 			m.set_map_files("null")
 
-	def testRaisesNECSimError(self):
+	def testRaisesnecsimError(self):
 		"""
 		Tests that a dispersal.Error is raised when incorrect dispersal method is provided.
 		"""

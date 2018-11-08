@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File CSimulation.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File CSimulation.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File CustomExceptions.h" href="file_necsim_CustomExceptions.h.html" />
+    <link rel="next" title="File custom_exceptions.h" href="file_necsim_custom_exceptions.h.html" />
     <link rel="prev" title="File CSimulation.h" href="file_CSimulation.h.html" /> 
   </head>
   <body role="document">
@@ -45,12 +45,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_CustomExceptions.h.html" title="File CustomExceptions.h"
+          <a href="file_necsim_custom_exceptions.h.html" title="File custom_exceptions.h"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="file_CSimulation.h.html" title="File CSimulation.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CSimulation.h.html" accesskey="U">File CSimulation.h</a> &#187;</li> 
       </ul>
@@ -66,14 +66,15 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_CSimulation.h.html#file-csimulation-h"><span class="std std-ref">File CSimulation.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#ifndef PY_TREE_NECSIM</span>
 <span class="cp">#define PY_TREE_NECSIM</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;structmember.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;necsim/ConfigFileParser.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ConfigParser.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/Tree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/SpatialTree.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/ProtractedTree.h&quot;</span><span class="cp"></span>
@@ -104,7 +105,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -126,14 +127,14 @@
         <span class="n">istream</span> <span class="o">&amp;</span><span class="n">istream1</span> <span class="o">=</span> <span class="n">ss</span><span class="p">;</span>
         <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">wipeSimulationVariables</span><span class="p">();</span>
-        <span class="n">ConfigOption</span> <span class="n">config</span><span class="p">;</span>
+        <span class="n">ConfigParser</span> <span class="n">config</span><span class="p">;</span>
         <span class="n">config</span><span class="p">.</span><span class="n">parseConfig</span><span class="p">(</span><span class="n">istream1</span><span class="p">);</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">importSimulationVariables</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -151,7 +152,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -172,7 +173,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_FALSE</span><span class="p">;</span>
@@ -207,7 +208,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -224,7 +225,7 @@
     <span class="p">{</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="c1">// Set up the resume parameters.</span>
+    <span class="c1">// Set up the resume current_metacommunity_parameters.</span>
     <span class="n">string</span> <span class="n">pause_directory_str</span><span class="p">,</span> <span class="n">out_directory_str</span><span class="p">;</span>
     <span class="n">pause_directory_str</span> <span class="o">=</span> <span class="n">pause_directory</span><span class="p">;</span>
     <span class="n">out_directory_str</span> <span class="o">=</span> <span class="n">out_directory</span><span class="p">;</span>
@@ -246,7 +247,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -330,8 +331,8 @@
   <p class="topless"><a href="file_CSimulation.h.html"
                         title="previous chapter">File CSimulation.h</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="file_necsim_CustomExceptions.h.html"
-                        title="next chapter">File CustomExceptions.h</a></p>
+  <p class="topless"><a href="file_necsim_custom_exceptions.h.html"
+                        title="next chapter">File custom_exceptions.h</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -363,12 +364,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_CustomExceptions.h.html" title="File CustomExceptions.h"
+          <a href="file_necsim_custom_exceptions.h.html" title="File custom_exceptions.h"
              >next</a> |</li>
         <li class="right" >
           <a href="file_CSimulation.h.html" title="File CSimulation.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CSimulation.h.html" >File CSimulation.h</a> &#187;</li> 
       </ul>

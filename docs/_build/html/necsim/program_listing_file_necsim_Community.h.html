@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Community.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Community.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File ConfigFileParser.cpp" href="file_necsim_ConfigFileParser.cpp.html" />
+    <link rel="next" title="File ConfigParser.cpp" href="file_necsim_ConfigParser.cpp.html" />
     <link rel="prev" title="File Community.h" href="file_necsim_Community.h.html" /> 
   </head>
   <body role="document">
@@ -45,12 +45,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_ConfigFileParser.cpp.html" title="File ConfigFileParser.cpp"
+          <a href="file_necsim_ConfigParser.cpp.html" title="File ConfigParser.cpp"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="file_necsim_Community.h.html" title="File Community.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Community.h.html" accesskey="U">File Community.h</a> &#187;</li> 
       </ul>
@@ -66,7 +66,7 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Community.h.html#file-necsim-community-h"><span class="std std-ref">File Community.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 <span class="cp">#ifndef TREELIST</span>
 <span class="cp">#define TREELIST</span>
@@ -74,16 +74,23 @@
 <span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp"># include &lt;boost/filesystem.hpp&gt;</span>
 <span class="cp">#include</span> <span class="cpf">&lt;boost/lexical_cast.hpp&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;set&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+
+<span class="cp">#ifdef WIN_INSTALL</span>
+<span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp"></span>
+<span class="cp">#define sleep Sleep</span>
+<span class="cp">#endif</span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;TreeNode.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;DataMask.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;parameters.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;SpecSimParameters.h&quot;</span><span class="cp"></span>
 
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
@@ -91,89 +98,6 @@
 
 <span class="kt">bool</span> <span class="nf">checkSpeciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">random_number</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span>
                      <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">no_generations</span><span class="p">);</span>
-
-<span class="k">struct</span> <span class="n">CommunityParameters</span>
-<span class="p">{</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">;</span>
-    <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">;</span>
-    <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">;</span>
-    <span class="kt">bool</span> <span class="n">fragment</span><span class="p">;</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">;</span> <span class="c1">// will be 0 if no metacommunity used.</span>
-    <span class="c1">// protracted speciation parameters</span>
-    <span class="n">ProtractedSpeciationParameters</span> <span class="n">protracted_parameters</span><span class="p">;</span>
-    <span class="kt">bool</span> <span class="n">updated</span><span class="p">;</span> <span class="c1">// set to true if the fragment reference needs updating in the database</span>
-
-    <span class="n">CommunityParameters</span><span class="p">()</span> <span class="o">:</span> <span class="n">reference</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">speciation_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">fragment</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">metacommunity_reference</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                            <span class="n">protracted_parameters</span><span class="p">(),</span> <span class="n">updated</span><span class="p">(</span><span class="nb">false</span><span class="p">){}</span>
-
-    <span class="n">CommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
-                        <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
-                        <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-    <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
-               <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span> <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
-                 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
-                 <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
-                 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
-                 <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">compare</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">);</span>
-<span class="p">};</span>
-
-<span class="k">struct</span> <span class="n">CommunitiesArray</span>
-<span class="p">{</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span> <span class="n">communityParameters</span><span class="p">;</span>
-
-    <span class="kt">void</span> <span class="nf">pushBack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
-                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
-                  <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-    <span class="kt">void</span> <span class="nf">pushBack</span><span class="p">(</span><span class="n">CommunityParameters</span> <span class="n">tmp_param</span><span class="p">);</span>
-
-    <span class="n">CommunityParameters</span> <span class="o">&amp;</span><span class="n">addNew</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
-                                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
-                                <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">hasPair</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
-                 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
-                 <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
-
-<span class="p">};</span>
-
-<span class="k">struct</span> <span class="n">MetacommunityParameters</span>
-<span class="p">{</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">;</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">;</span>
-    <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">;</span>
-
-    <span class="n">MetacommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span>
-                            <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size_in</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size_in</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">compare</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">);</span>
-<span class="p">};</span>
-
-<span class="k">struct</span> <span class="n">MetacommunitiesArray</span>
-<span class="p">{</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span> <span class="n">calc_array</span><span class="p">;</span>
-
-    <span class="kt">void</span> <span class="nf">pushBack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">);</span>
-
-    <span class="kt">void</span> <span class="nf">pushBack</span><span class="p">(</span><span class="n">MetacommunityParameters</span> <span class="n">tmp_param</span><span class="p">);</span>
-
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">addNew</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">hasPair</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">);</span>
-
-    <span class="kt">bool</span> <span class="nf">hasPair</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">);</span>
-
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getReference</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">);</span>
-<span class="p">};</span>
 
 <span class="k">struct</span> <span class="n">Fragment</span>
 <span class="p">{</span>
@@ -220,14 +144,15 @@
     <span class="kt">bool</span> <span class="n">database_set</span><span class="p">;</span> <span class="c1">// boolean for whether the database has been set already.</span>
     <span class="n">sqlite3</span> <span class="o">*</span><span class="n">database</span><span class="p">;</span> <span class="c1">// stores the in-memory database connection.</span>
     <span class="kt">bool</span> <span class="n">bSqlConnection</span><span class="p">;</span> <span class="c1">// true if the data connection has been established.</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">nodes</span><span class="p">;</span> <span class="c1">// in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">row_out</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span> <span class="n">nodes</span><span class="p">;</span> <span class="c1">// in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">species_abundances</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">iSpecies</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">has_imported_samplemask</span><span class="p">;</span> <span class="c1">// checks whether the samplemask has already been imported.</span>
     <span class="kt">bool</span> <span class="n">has_imported_data</span><span class="p">;</span> <span class="c1">// checks whether the main sim data has been imported.</span>
     <span class="n">Samplematrix</span> <span class="n">samplemask</span><span class="p">;</span> <span class="c1">// the samplemask object for defining the areas we want to sample from.</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="n">Fragment</span><span class="o">&gt;</span> <span class="n">fragments</span><span class="p">;</span> <span class="c1">// a vector of fragments for storing each fragment&#39;s coordinates.</span>
-    <span class="n">CommunityParameters</span> <span class="o">*</span><span class="n">current_community_parameters</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span> <span class="n">current_community_parameters</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span> <span class="n">current_metacommunity_parameters</span><span class="p">;</span>
     <span class="c1">// the minimum speciation rate the original simulation was run with (this is read from the database SIMULATION_PARAMETERS table)</span>
     <span class="kt">long</span> <span class="kt">double</span> <span class="n">min_spec_rate</span><span class="p">;</span>
     <span class="c1">// The dimensions of the sample grid size.</span>
@@ -237,39 +162,47 @@
     <span class="c1">// Vector containing past speciation rates</span>
     <span class="n">CommunitiesArray</span> <span class="n">past_communities</span><span class="p">;</span>
     <span class="n">MetacommunitiesArray</span> <span class="n">past_metacommunities</span><span class="p">;</span>
-    <span class="c1">// Protracted speciation parameters</span>
+    <span class="c1">// Protracted speciation current_metacommunity_parameters</span>
     <span class="kt">bool</span> <span class="n">protracted</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">min_speciation_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">;</span>
     <span class="n">ProtractedSpeciationParameters</span> <span class="n">applied_protracted_parameters</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_species_id</span><span class="p">,</span> <span class="n">max_fragment_id</span><span class="p">,</span> <span class="n">max_locations_id</span><span class="p">;</span>
     <span class="c1">// Does not need to be stored during simulation pause</span>
-    <span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">spec_sim_parameters</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">spec_sim_parameters</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
 
-    <span class="n">Community</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">in_mem</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">database_set</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">database</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
-                                  <span class="n">bSqlConnection</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">nodes</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">row_out</span><span class="p">(),</span> <span class="n">iSpecies</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                                  <span class="n">has_imported_samplemask</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">has_imported_data</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">samplemask</span><span class="p">(),</span>
-                                  <span class="n">fragments</span><span class="p">(),</span> <span class="n">current_community_parameters</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">min_spec_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
-                                  <span class="n">grid_x_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">grid_y_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_x_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_y_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                                  <span class="n">samplemask_x_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_y_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">past_communities</span><span class="p">(),</span>
-                                  <span class="n">past_metacommunities</span><span class="p">(),</span> <span class="n">protracted</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">min_speciation_gen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
-                                  <span class="n">max_speciation_gen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">applied_protracted_parameters</span><span class="p">(),</span> <span class="n">max_species_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                                  <span class="n">max_fragment_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">max_locations_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">spec_sim_parameters</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span>
+    <span class="k">explicit</span> <span class="n">Community</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">in_mem</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">database_set</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">database</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+                                                      <span class="n">bSqlConnection</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">nodes</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">r</span><span class="p">)),</span>
+                                                      <span class="n">species_abundances</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span><span class="p">()),</span>
+                                                      <span class="n">iSpecies</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">has_imported_samplemask</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+                                                      <span class="n">has_imported_data</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">samplemask</span><span class="p">(),</span> <span class="n">fragments</span><span class="p">(),</span>
+                                                      <span class="n">current_community_parameters</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span><span class="p">()),</span>
+                                                      <span class="n">current_metacommunity_parameters</span><span class="p">(</span>
+                                                              <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span><span class="p">()),</span>
+                                                      <span class="n">min_spec_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+                                                      <span class="n">grid_x_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">grid_y_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_x_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                                      <span class="n">samplemask_y_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">samplemask_x_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                                      <span class="n">samplemask_y_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">past_communities</span><span class="p">(),</span>
+                                                      <span class="n">past_metacommunities</span><span class="p">(),</span> <span class="n">protracted</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+                                                      <span class="n">min_speciation_gen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">max_speciation_gen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+                                                      <span class="n">applied_protracted_parameters</span><span class="p">(),</span> <span class="n">max_species_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                                      <span class="n">max_fragment_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">max_locations_id</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                                      <span class="n">spec_sim_parameters</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span><span class="p">())</span>
     <span class="p">{</span>
 
     <span class="p">}</span>
 
-    <span class="n">Community</span><span class="p">()</span> <span class="o">:</span> <span class="n">Community</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span>
+    <span class="n">Community</span><span class="p">()</span> <span class="o">:</span> <span class="n">Community</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span><span class="p">())</span>
     <span class="p">{</span>
     <span class="p">}</span>
 
-     <span class="k">virtual</span> <span class="o">~</span><span class="n">Community</span><span class="p">()</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Community</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">nodes</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="n">nodes</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
         <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="kt">void</span> <span class="n">setList</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">l</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setList</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span> <span class="n">l</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setDatabase</span><span class="p">(</span><span class="n">sqlite3</span> <span class="o">*</span><span class="n">dbin</span><span class="p">);</span>
 
@@ -294,23 +227,26 @@
     <span class="kt">void</span> <span class="nf">openSqlConnection</span><span class="p">(</span><span class="n">string</span> <span class="n">inputfile</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">closeSqlConnection</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">setInternalDatabase</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">internalOption</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">importData</span><span class="p">(</span><span class="n">string</span> <span class="n">inputfile</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">setSimParameters</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">*</span><span class="n">sim_parameters</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setSimParameters</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">sim_parameters</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">importSimParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">file</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">forceSimCompleteParameter</span><span class="p">();</span>
 
     <span class="kt">bool</span> <span class="nf">isSetDatabase</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">getMaxSpeciesAbundancesID</span><span class="p">();</span>
 
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">getCumulativeAbundances</span><span class="p">();</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getCumulativeAbundances</span><span class="p">();</span>
 
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">getRowOut</span><span class="p">();</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getRowOut</span><span class="p">();</span>
 
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getSpeciesNumber</span><span class="p">();</span>
 
@@ -330,13 +266,13 @@
 
     <span class="kt">void</span> <span class="nf">outputSpeciesAbundances</span><span class="p">();</span>
 
-    <span class="kt">bool</span> <span class="nf">checkCalculationsPerformed</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragments</span><span class="p">,</span>
-                                    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
-                                    <span class="n">ProtractedSpeciationParameters</span> <span class="n">proc_parameters</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="nf">checkCalculationsPerformed</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">time</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">fragments</span><span class="p">,</span>
+                                    <span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">metacomm_parameters</span><span class="p">,</span>
+                                    <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">proc_parameters</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">addCalculationPerformed</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragments</span><span class="p">,</span>
-                                 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span><span class="p">,</span>
-                                 <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">addCalculationPerformed</span><span class="p">(</span><span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">time</span><span class="p">,</span> <span class="k">const</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">fragments</span><span class="p">,</span>
+                                 <span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">metacomm_parameters</span><span class="p">,</span>
+                                 <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_parameters</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">createFragmentDatabase</span><span class="p">(</span><span class="k">const</span> <span class="n">Fragment</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">);</span>
 
@@ -360,7 +296,13 @@
 
     <span class="kt">void</span> <span class="nf">writeNewCommunityParameters</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">writeNewMetacommuntyParameters</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">writeNewMetacommunityParameters</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">createSpeciesList</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">deleteSpeciesList</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">writeSpeciesList</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">enddata</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">updateCommunityParameters</span><span class="p">();</span>
 
@@ -368,20 +310,31 @@
 
     <span class="kt">void</span> <span class="nf">calculateTree</span><span class="p">();</span>
 
+    <span class="kt">void</span> <span class="nf">makeSpeciationRatesUnique</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">makeTimesUnique</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">output</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">printEndTimes</span><span class="p">(</span><span class="kt">time_t</span> <span class="n">tStart</span><span class="p">,</span> <span class="kt">time_t</span> <span class="n">tEnd</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">apply</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">apply</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">);</span>
 
-    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">applyNoOutput</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">applyNoOutput</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">doApplication</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">doApplication</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">doApplication</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">,</span> <span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">doApplication</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">,</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">doApplicationInternal</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">,</span> <span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">doApplicationInternal</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">,</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">);</span>
 
+    <span class="kt">void</span> <span class="nf">speciateRemainingLineages</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">filename</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getSpeciesRichness</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">community_reference</span><span class="p">);</span>
+
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getSpeciesAbundances</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">community_reference</span><span class="p">);</span>
+
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getSpeciesAbundances</span><span class="p">();</span>
 <span class="p">};</span>
 
 <span class="cp">#endif</span>
@@ -402,8 +355,8 @@
   <p class="topless"><a href="file_necsim_Community.h.html"
                         title="previous chapter">File Community.h</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="file_necsim_ConfigFileParser.cpp.html"
-                        title="next chapter">File ConfigFileParser.cpp</a></p>
+  <p class="topless"><a href="file_necsim_ConfigParser.cpp.html"
+                        title="next chapter">File ConfigParser.cpp</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -435,12 +388,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_ConfigFileParser.cpp.html" title="File ConfigFileParser.cpp"
+          <a href="file_necsim_ConfigParser.cpp.html" title="File ConfigParser.cpp"
              >next</a> |</li>
         <li class="right" >
           <a href="file_necsim_Community.h.html" title="File Community.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Community.h.html" >File Community.h</a> &#187;</li> 
       </ul>

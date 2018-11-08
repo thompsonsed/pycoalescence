@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Tree.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Tree.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_necsim_Tree.h.html" title="File Tree.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Tree.h.html" accesskey="U">File Tree.h</a> &#187;</li> 
       </ul>
@@ -66,7 +66,7 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Tree.h.html#file-necsim-tree-h"><span class="std std-ref">File Tree.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#ifndef TREE_H</span>
@@ -77,26 +77,26 @@
 
 <span class="cp">#include</span> <span class="cpf">&lt;sqlite3.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;TreeNode.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Matrix.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;SimParameters.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;DataPoint.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Community.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Filesystem.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;CustomExceptions.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;file_system.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;custom_exceptions.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Step.h&quot;</span><span class="cp"></span>
-
 
 <span class="k">class</span> <span class="nc">Tree</span>
 <span class="p">{</span>
 <span class="k">protected</span><span class="o">:</span>
     <span class="c1">// storing the coalescence tree itself</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
     <span class="c1">// a reference for the last written point in data.</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">enddata</span><span class="p">;</span>
-    <span class="c1">// Stores the command line parameters and parses the required information.</span>
-    <span class="n">SimParameters</span> <span class="n">sim_parameters</span><span class="p">;</span>
+    <span class="c1">// Stores the command line current_metacommunity_parameters and parses the required information.</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">sim_parameters</span><span class="p">;</span>
     <span class="c1">// random number generator</span>
     <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">NR</span><span class="p">;</span>
     <span class="c1">// Storing the speciation rates for later reference.</span>
@@ -104,9 +104,9 @@
     <span class="c1">// flag for having set the simulation seed.</span>
     <span class="kt">bool</span> <span class="n">seeded</span><span class="p">;</span>
     <span class="c1">// random seed</span>
-    <span class="kt">long</span> <span class="kt">long</span> <span class="n">the_seed</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">;</span>
     <span class="c1">// for file naming - good to know which task in a series is being executed here</span>
-    <span class="kt">long</span> <span class="kt">long</span> <span class="n">the_task</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">task</span><span class="p">;</span>
     <span class="c1">// The map file containing the times that we want to expand the model and record all lineages again.</span>
     <span class="c1">// If this is null, uses_temporal_sampling will be false and the vector will be empty.</span>
     <span class="n">string</span> <span class="n">times_file</span><span class="p">;</span>
@@ -117,7 +117,7 @@
     <span class="kt">time_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">sim_start</span><span class="p">,</span> <span class="n">sim_end</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span> <span class="n">sim_finish</span><span class="p">,</span> <span class="n">out_finish</span><span class="p">;</span>
     <span class="kt">time_t</span> <span class="n">time_taken</span><span class="p">;</span>
     <span class="c1">// Active lineages stored as a row of datapoints</span>
-    <span class="n">Row</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span> <span class="n">active</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span> <span class="n">active</span><span class="p">;</span>
     <span class="c1">// Stores the point of the end of the active vector. 0 is reserved as null</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">endactive</span><span class="p">;</span>
     <span class="c1">// the maximum size of endactive</span>
@@ -168,10 +168,11 @@
     <span class="c1">// variable for storing the paused sim location if files have been moved during paused/resumed simulations!</span>
     <span class="n">string</span> <span class="n">pause_sim_directory</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">Tree</span><span class="p">()</span> <span class="o">:</span> <span class="n">data</span><span class="p">(),</span> <span class="n">enddata</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_parameters</span><span class="p">(),</span> <span class="n">NR</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">speciation_rates</span><span class="p">(),</span> <span class="n">seeded</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
-             <span class="n">the_seed</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">the_task</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">times_file</span><span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">),</span> <span class="n">reference_times</span><span class="p">(),</span> <span class="n">uses_temporal_sampling</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+    <span class="n">Tree</span><span class="p">()</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;&gt;</span><span class="p">()),</span> <span class="n">enddata</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_parameters</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span><span class="p">()),</span>
+             <span class="n">NR</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">speciation_rates</span><span class="p">(),</span> <span class="n">seeded</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+             <span class="n">seed</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">task</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">times_file</span><span class="p">(</span><span class="s">&quot;null&quot;</span><span class="p">),</span> <span class="n">reference_times</span><span class="p">(),</span> <span class="n">uses_temporal_sampling</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
              <span class="n">start</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_start</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_end</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">now</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">sim_finish</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">out_finish</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">time_taken</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">active</span><span class="p">(),</span>
-             <span class="n">endactive</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">startendactive</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxsimsize</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">community</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">),</span> <span class="n">steps</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxtime</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">generation</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+             <span class="n">endactive</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">startendactive</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxsimsize</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">community</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">steps</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">maxtime</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">generation</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
              <span class="n">deme</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">deme_sample</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">spec</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">out_directory</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">),</span> <span class="n">database</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">sim_complete</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
              <span class="n">has_imported_vars</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
 <span class="cp">#ifdef sql_ram</span>
@@ -191,17 +192,17 @@
 <span class="cp">#endif</span>
     <span class="p">}</span>
 
-
     <span class="kt">void</span> <span class="n">importSimulationVariables</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">configfile</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">importSimulationVariables</span><span class="p">(</span><span class="n">ConfigOption</span> <span class="n">config</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">importSimulationVariables</span><span class="p">(</span><span class="n">ConfigParser</span> <span class="n">config</span><span class="p">);</span>
+
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">runFileChecks</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">wipeSimulationVariables</span><span class="p">();</span>
-    <span class="kt">void</span> <span class="nf">internalSetup</span><span class="p">(</span><span class="k">const</span> <span class="n">SimParameters</span> <span class="o">&amp;</span><span class="n">sim_parameters_in</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">internalSetup</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">sim_parameters_in</span><span class="p">);</span>
 
     <span class="kt">bool</span> <span class="nf">checkOutputDirectory</span><span class="p">();</span>
-
 
     <span class="kt">void</span> <span class="nf">checkSims</span><span class="p">();</span>
 
@@ -236,11 +237,12 @@
     <span class="kt">void</span> <span class="nf">determineSpeciationRates</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">addSpeciationRates</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">spec_rates_in</span><span class="p">);</span>
+
     <span class="kt">void</span> <span class="nf">generateObjects</span><span class="p">();</span>
 
     <span class="k">virtual</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">fillObjects</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">initial_count</span><span class="p">);</span>
 
-     <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">runSimulation</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">runSimulation</span><span class="p">();</span>
 
     <span class="kt">void</span> <span class="nf">writeSimStartToConsole</span><span class="p">();</span>
 
@@ -255,6 +257,7 @@
     <span class="kt">void</span> <span class="nf">speciation</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">);</span>
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">speciateLineage</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">data_position</span><span class="p">);</span>
+
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">removeOldPosition</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">);</span>
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">switchPositions</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">);</span>
@@ -271,10 +274,9 @@
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">addLineages</span><span class="p">(</span><span class="kt">double</span> <span class="n">generation_in</span><span class="p">);</span>
 
-    <span class="kt">bool</span> <span class="nf">checkProportionAdded</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">proportion_added</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="nf">checkProportionAdded</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">proportion_added</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">checkSimSize</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">req_active</span><span class="p">);</span>
-
 
     <span class="kt">void</span> <span class="nf">makeTip</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">tmp_active</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">generation_in</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data_added</span><span class="p">);</span>
 
@@ -286,8 +288,15 @@
 
     <span class="kt">void</span> <span class="nf">applySpecRateInternal</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">sr</span><span class="p">,</span> <span class="kt">double</span> <span class="n">t</span><span class="p">);</span>
 
-    <span class="n">Row</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">getCumulativeAbundances</span><span class="p">();</span>
-    <span class="kt">void</span> <span class="nf">setupTreeGeneration</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">sr</span><span class="p">,</span> <span class="kt">double</span> <span class="n">t</span><span class="p">);</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getCumulativeAbundances</span><span class="p">();</span>
+
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getSpeciesAbundances</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">community_reference</span><span class="p">);</span>
+
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">getSpeciesAbundances</span><span class="p">();</span>
+
+    <span class="n">ProtractedSpeciationParameters</span> <span class="nf">setupCommunity</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="nf">setupCommunityCalculation</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">sr</span><span class="p">,</span> <span class="kt">double</span> <span class="n">t</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">applySpecRate</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">sr</span><span class="p">);</span>
 
@@ -300,7 +309,6 @@
     <span class="k">virtual</span> <span class="kt">double</span> <span class="nf">getProtractedGenerationMin</span><span class="p">();</span>
 
     <span class="k">virtual</span> <span class="kt">double</span> <span class="nf">getProtractedGenerationMax</span><span class="p">();</span>
-
 
     <span class="kt">void</span> <span class="nf">sqlOutput</span><span class="p">();</span>
 
@@ -316,41 +324,43 @@
 
     <span class="kt">void</span> <span class="nf">sqlCreate</span><span class="p">();</span>
 
+    <span class="kt">void</span> <span class="nf">setupOutputDirectory</span><span class="p">();</span>
+
     <span class="kt">void</span> <span class="nf">sqlCreateSimulationParameters</span><span class="p">();</span>
 
     <span class="k">virtual</span> <span class="n">string</span> <span class="nf">simulationParametersSqlInsertion</span><span class="p">();</span>
 
     <span class="k">virtual</span> <span class="n">string</span> <span class="nf">protractedVarsToString</span><span class="p">();</span>
 
-
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">simPause</span><span class="p">();</span>
 
-    <span class="n">ofstream</span> <span class="nf">initiatePause</span><span class="p">();</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">initiatePause</span><span class="p">();</span>
 
-    <span class="kt">void</span> <span class="nf">dumpMain</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpMain</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">out</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">dumpActive</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpActive</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">out</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">dumpData</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dumpData</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">out</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">completePause</span><span class="p">(</span><span class="n">ofstream</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">completePause</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ofstream</span><span class="o">&gt;</span> <span class="n">out</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setResumeParameters</span><span class="p">(</span><span class="n">string</span> <span class="n">pausedir</span><span class="p">,</span> <span class="n">string</span> <span class="n">outdir</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seed</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">task</span><span class="p">,</span>
                              <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">new_max_time</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">setResumeParameters</span><span class="p">();</span>
 
-    <span class="n">ifstream</span> <span class="nf">openSaveFile</span><span class="p">();</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ifstream</span><span class="o">&gt;</span> <span class="n">openSaveFile</span><span class="p">();</span>
 
-    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">loadMainSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">loadMainSave</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ifstream</span><span class="o">&gt;</span> <span class="n">in1</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">loadDataSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">loadDataSave</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ifstream</span><span class="o">&gt;</span> <span class="n">in1</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">loadActiveSave</span><span class="p">(</span><span class="n">ifstream</span> <span class="o">&amp;</span><span class="n">in1</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">loadActiveSave</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ifstream</span><span class="o">&gt;</span> <span class="n">in1</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">initiateResume</span><span class="p">();</span>
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">simResume</span><span class="p">();</span>
+
 <span class="cp">#ifdef DEBUG</span>
 
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">validateLineages</span><span class="p">();</span>
@@ -364,7 +374,6 @@
     <span class="kt">void</span> <span class="nf">miniCheck</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">// DEBUG</span>
 <span class="p">};</span>
-
 
 <span class="cp">#endif </span><span class="c1">//TREE_H</span>
 </pre></div>
@@ -422,7 +431,7 @@
         <li class="right" >
           <a href="file_necsim_Tree.h.html" title="File Tree.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Tree.h.html" >File Tree.h</a> &#187;</li> 
       </ul>

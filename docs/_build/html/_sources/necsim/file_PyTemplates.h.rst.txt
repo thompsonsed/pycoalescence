@@ -7,7 +7,7 @@ File PyTemplates.h
 
 
 
-Routines for controlling logger from c++ to python. 
+Routines for controlling logger from C++ to python. 
 
 
 .. contents:: Contents
@@ -41,6 +41,8 @@ Includes
 - ``PyImports.h`` (:ref:`file_PyImports.h`)
 
 - ``Python.h``
+
+- ``memory``
 
 - ``structmember.h``
 

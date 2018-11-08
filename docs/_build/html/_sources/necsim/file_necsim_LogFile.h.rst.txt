@@ -78,6 +78,8 @@ Functions
 
 - :ref:`function_getDefaultLogFile`
 
+- :ref:`function_getTime`
+
 - :ref:`function_getUniqueFileName`
 
 

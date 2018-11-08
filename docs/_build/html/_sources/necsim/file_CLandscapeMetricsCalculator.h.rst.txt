@@ -7,7 +7,7 @@ File CLandscapeMetricsCalculator.h
 
 
 
-Wraps the C :ref:`class_LandscapeMetricsCalculator` objects for accessing via python. 
+Wraps the C :ref:`class_LandscapeMetricsCalculator` objects for accessing via Python. 
 
 
 .. contents:: Contents
@@ -46,9 +46,11 @@ Includes
 
 - ``Python.h``
 
-- ``necsim.h`` (:ref:`file_necsim.h`)
+- ``cpl_custom_handler.h`` (:ref:`file_necsim_cpl_custom_handler.h`)
 
-- ``necsim/CPLCustomHandlerNecsim.h`` (:ref:`file_necsim_CPLCustomHandlerNecsim.h`)
+- ``memory``
+
+- ``necsim.h`` (:ref:`file_necsim.h`)
 
 - ``string``
 

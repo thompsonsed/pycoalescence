@@ -8,7 +8,7 @@ Program Listing for File Map.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef MAP_H
    #define MAP_H
@@ -23,12 +23,12 @@ Program Listing for File Map.h
    #include <sstream>
    #include "Matrix.h"
    #include "Logger.h"
-   #include "CustomExceptions.h"
-   #include "CPLCustomHandlerNecsim.h"
+   #include "custom_exceptions.h"
+   #include "cpl_custom_handler.h"
    
    using namespace std;
    #ifdef DEBUG
-   #include "CustomExceptions.h"
+   #include "custom_exceptions.h"
    #endif // DEBUG
    
    template<class T>

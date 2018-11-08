@@ -2,52 +2,127 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
   <compounddef id="_py_logger_8cpp" kind="file" language="C++">
     <compoundname>PyLogger.cpp</compoundname>
-    <includes local="yes">necsim/CustomExceptions.h</includes>
+    <includes refid="custom__exceptions_8h" local="yes">custom_exceptions.h</includes>
     <includes local="yes">necsim/Logger.h</includes>
     <includes refid="_py_logger_8h" local="yes">PyLogger.h</includes>
     <includes local="no">utility</includes>
     <incdepgraph>
-      <node id="2107">
+      <node id="2421">
+        <label>Logging.h</label>
+        <link refid="_logging_8h_source"/>
+        <childnode refid="2422" relation="include">
+        </childnode>
+        <childnode refid="2423" relation="include">
+        </childnode>
+      </node>
+      <node id="2434">
         <label>necsim/Logger.h</label>
       </node>
-      <node id="2110">
+      <node id="2419">
+        <label>stdexcept</label>
+      </node>
+      <node id="2422">
         <label>string</label>
       </node>
-      <node id="2108">
+      <node id="2431">
+        <label>map</label>
+      </node>
+      <node id="2429">
+        <label>fstream</label>
+      </node>
+      <node id="2435">
         <label>PyLogger.h</label>
         <link refid="_py_logger_8h_source"/>
-        <childnode refid="2109" relation="include">
+        <childnode refid="2436" relation="include">
         </childnode>
-        <childnode refid="2110" relation="include">
+        <childnode refid="2422" relation="include">
         </childnode>
-        <childnode refid="2111" relation="include">
+        <childnode refid="2426" relation="include">
         </childnode>
-        <childnode refid="2107" relation="include">
+        <childnode refid="2434" relation="include">
         </childnode>
       </node>
-      <node id="2109">
+      <node id="2425">
+        <label>cstdio</label>
+      </node>
+      <node id="2430">
+        <label>ctime</label>
+      </node>
+      <node id="2436">
         <label>Python.h</label>
       </node>
-      <node id="2105">
+      <node id="2417">
         <label>PyLogger.cpp</label>
         <link refid="PyLogger.cpp"/>
-        <childnode refid="2106" relation="include">
+        <childnode refid="2418" relation="include">
         </childnode>
-        <childnode refid="2107" relation="include">
+        <childnode refid="2434" relation="include">
         </childnode>
-        <childnode refid="2108" relation="include">
+        <childnode refid="2435" relation="include">
         </childnode>
-        <childnode refid="2112" relation="include">
+        <childnode refid="2420" relation="include">
         </childnode>
       </node>
-      <node id="2112">
+      <node id="2420">
         <label>utility</label>
       </node>
-      <node id="2111">
+      <node id="2426">
         <label>sstream</label>
       </node>
-      <node id="2106">
-        <label>necsim/CustomExceptions.h</label>
+      <node id="2432">
+        <label>cpl_custom_handler.h</label>
+        <link refid="cpl__custom__handler_8h_source"/>
+        <childnode refid="2433" relation="include">
+        </childnode>
+      </node>
+      <node id="2424">
+        <label>iostream</label>
+      </node>
+      <node id="2423">
+        <label>Logger.h</label>
+        <link refid="_logger_8h_source"/>
+        <childnode refid="2422" relation="include">
+        </childnode>
+        <childnode refid="2424" relation="include">
+        </childnode>
+        <childnode refid="2425" relation="include">
+        </childnode>
+        <childnode refid="2419" relation="include">
+        </childnode>
+        <childnode refid="2426" relation="include">
+        </childnode>
+        <childnode refid="2427" relation="include">
+        </childnode>
+        <childnode refid="2432" relation="include">
+        </childnode>
+      </node>
+      <node id="2427">
+        <label>LogFile.h</label>
+        <link refid="_log_file_8h_source"/>
+        <childnode refid="2428" relation="include">
+        </childnode>
+        <childnode refid="2429" relation="include">
+        </childnode>
+        <childnode refid="2430" relation="include">
+        </childnode>
+        <childnode refid="2431" relation="include">
+        </childnode>
+      </node>
+      <node id="2418">
+        <label>custom_exceptions.h</label>
+        <link refid="custom__exceptions_8h_source"/>
+        <childnode refid="2419" relation="include">
+        </childnode>
+        <childnode refid="2420" relation="include">
+        </childnode>
+        <childnode refid="2421" relation="include">
+        </childnode>
+      </node>
+      <node id="2433">
+        <label>cpl_error.h</label>
+      </node>
+      <node id="2428">
+        <label>cstring</label>
       </node>
     </incdepgraph>
       <sectiondef kind="var">
@@ -76,9 +151,17 @@
           <declname>message</declname>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>Writes to cout, or to info in logging module if being compiled with python. </para>        </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="PyLogger.cpp" line="114" column="1" bodyfile="PyLogger.cpp" bodystart="114" bodyend="117"/>
@@ -93,9 +176,17 @@
           <declname>message</declname>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>Writes to cerr, or to warning in logging module if being compiled with python. </para>        </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="PyLogger.cpp" line="119" column="1" bodyfile="PyLogger.cpp" bodystart="119" bodyend="122"/>
@@ -110,9 +201,17 @@
           <declname>message</declname>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>Writes to cerr, or to error in logging module if being compiled with python. </para>        </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="PyLogger.cpp" line="124" column="1" bodyfile="PyLogger.cpp" bodystart="124" bodyend="134"/>
@@ -127,24 +226,32 @@
           <declname>message</declname>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>Writes to cerr, or to critical in logging module if being compiled with python. </para>        </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message to write out </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="PyLogger.cpp" line="136" column="1" bodyfile="PyLogger.cpp" bodystart="136" bodyend="139"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>Routines for controlling logger from c++ to python. </para>    </briefdescription>
+<para>Routines for controlling logger from C++ to python. </para>    </briefdescription>
     <detaileddescription>
 <para><simplesect kind="author"><para>Samuel Thompson</para></simplesect>
 <simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
 </para>    </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NECSim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>necsim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details</highlight></codeline>
-<codeline lineno="10"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/CustomExceptions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&quot;custom_exceptions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/Logger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyLogger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>

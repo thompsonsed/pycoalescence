@@ -8,13 +8,13 @@ Program Listing for File SimulateDispersal.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #include "SimulateDispersal.h"
    #include "Logger.h"
-   #include "CustomExceptions.h"
-   #include "Filesystem.h"
+   #include "custom_exceptions.h"
+   #include "file_system.h"
    #include "Community.h"
    
    #include <utility>
@@ -24,12 +24,12 @@ Program Listing for File SimulateDispersal.cpp
        is_sequential = bSequential;
    }
    
-   void SimulateDispersal::setSimulationParameters(SimParameters * sim_parameters, bool print)
+   void SimulateDispersal::setSimulationParameters(shared_ptr<SimParameters> sim_parameters, bool print)
    {
        if(print)
        {
            writeInfo("********************************\n");
-           writeInfo("Setting simulation parameters...\n");
+           writeInfo("Setting simulation current_metacommunity_parameters...\n");
        }
        simParameters = sim_parameters;
        if(print)
@@ -43,7 +43,7 @@ Program Listing for File SimulateDispersal.cpp
        writeInfo("Starting map import...\n");
        if(simParameters == nullptr)
        {
-           throw FatalException("Simulation parameters have not been set.");
+           throw FatalException("Simulation current_metacommunity_parameters have not been set.");
        }
        density_landscape->setDims(simParameters);
        dispersal_coordinator.setMaps(density_landscape);
@@ -55,7 +55,7 @@ Program Listing for File SimulateDispersal.cpp
        density_landscape->calcHistoricalCoarseMap();
        density_landscape->setLandscape(simParameters->landscape_type);
        density_landscape->recalculateHabitatMax();
-       dataMask.importSampleMask(*simParameters);
+       data_mask.importSampleMask(simParameters);
    }
    
    void SimulateDispersal::setSizes()
@@ -137,7 +137,7 @@ Program Listing for File SimulateDispersal.cpp
        {
            for(unsigned long j = 0; j < simParameters->sample_x_size; j++)
            {
-               if(dataMask.getVal(j, i, 0, 0))
+               if(data_mask.getVal(j, i, 0, 0))
                {
                    cell_total++;
                    total += density_landscape->getVal(j, i, 0, 0, 0.0);
@@ -265,7 +265,7 @@ Program Listing for File SimulateDispersal.cpp
                message += "  is not one of 'DISTANCES_TRAVELLED' or 'DISPERSAL_DISTANCES'.";
                throw FatalException(message);
            }
-           // Write out the parameters
+           // Write out the current_metacommunity_parameters
            checkMaxParameterReference();
            writeParameters(table_name);
            // Do the sql output
@@ -354,7 +354,7 @@ Program Listing for File SimulateDispersal.cpp
    
    void SimulateDispersal::writeParameters(string table_name)
    {
-       // Now add the parameters
+       // Now add the current_metacommunity_parameters
        string create_table = "CREATE TABLE IF NOT EXISTS PARAMETERS (ref INT PRIMARY KEY not null,";
        create_table += "simulation_type TEXT not null, ";
        create_table += " sigma DOUBLE not null, tau DOUBLE not null, m_prob DOUBLE not null, cutoff DOUBLE NOT NULL,";

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File CCommunity.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File CCommunity.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_CCommunity.h.html" title="File CCommunity.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CCommunity.h.html" accesskey="U">File CCommunity.h</a> &#187;</li> 
       </ul>
@@ -66,7 +66,7 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_CCommunity.h.html#file-ccommunity-h"><span class="std std-ref">File CCommunity.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#ifndef NECSIM_C_COMMUNITY_H</span>
 <span class="cp">#define NECSIM_C_COMMUNITY_H</span>
@@ -74,6 +74,7 @@
 <span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;structmember.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyImports.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/Community.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim/Metacommunity.h&quot;</span><span class="cp"></span>
@@ -86,7 +87,7 @@
 <span class="k">class</span> <span class="nc">PyCommunityTemplate</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">specSimParameters</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">specSimParameters</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
@@ -96,30 +97,15 @@
     <span class="kt">int</span> <span class="n">record_spatial</span><span class="p">;</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">sample_file</span><span class="p">;</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">fragment_file</span><span class="p">;</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kt">double</span> <span class="n">metacommunity_speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
     <span class="n">PyObject</span> <span class="o">*</span><span class="n">list_speciation_rates</span><span class="p">;</span>
     <span class="n">PyObject</span> <span class="o">*</span><span class="n">list_times</span><span class="p">;</span>
-    <span class="n">PyObject</span> <span class="o">*</span><span class="n">list_min_spec_gen</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-    <span class="n">PyObject</span> <span class="o">*</span><span class="n">list_max_spec_gen</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;sissO!O!|O!O!kd&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record_spatial</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sample_file</span><span class="p">,</span>
-                         <span class="o">&amp;</span><span class="n">fragment_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list_speciation_rates</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list_times</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span>
-                         <span class="o">&amp;</span><span class="n">list_min_spec_gen</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span>
-                         <span class="o">&amp;</span><span class="n">list_max_spec_gen</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">metacommunity_speciation_rate</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;sissO!O!|kdsk&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record_spatial</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sample_file</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">fragment_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list_speciation_rates</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PyList_Type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list_times</span><span class="p">))</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
-<span class="cp">#ifdef DEBUG</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">metacommunity_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Metacommunity size not set.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Metacommunity size: &quot;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">));</span>
-    <span class="p">}</span>
-<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+
 
     <span class="c1">// Convert all our variables to the relevant form</span>
     <span class="n">string</span> <span class="n">database_str</span> <span class="o">=</span> <span class="n">database</span><span class="p">;</span>
@@ -128,8 +114,6 @@
     <span class="n">string</span> <span class="n">fragment_file_str</span> <span class="o">=</span> <span class="n">fragment_file</span><span class="p">;</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">speciation_rates</span><span class="p">;</span>
     <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">times</span><span class="p">;</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">min_speciation_gen</span><span class="p">;</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">max_speciation_gen</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">list_speciation_rates</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="s">&quot;Speciation rates must be floats.&quot;</span><span class="p">))</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
@@ -138,34 +122,15 @@
     <span class="p">{</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">list_min_spec_gen</span> <span class="o">||</span> <span class="o">!</span><span class="n">list_max_spec_gen</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">min_speciation_gen</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
-        <span class="n">max_speciation_gen</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">list_min_spec_gen</span><span class="p">,</span> <span class="n">min_speciation_gen</span><span class="p">,</span>
-                                       <span class="s">&quot;Minimum protracted generations must be floats.&quot;</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">importPyListToVectorDouble</span><span class="p">(</span><span class="n">list_max_spec_gen</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="p">,</span>
-                                       <span class="s">&quot;Maximum protracted generations must be floats.&quot;</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
     <span class="k">try</span>
     <span class="p">{</span>
-        <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">database_str</span><span class="p">),</span> <span class="n">use_spatial</span><span class="p">,</span> <span class="n">sample_file_str</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span>
-                                       <span class="n">fragment_file_str</span><span class="p">,</span> <span class="n">speciation_rates</span><span class="p">,</span> <span class="n">min_speciation_gen</span><span class="p">,</span>
-                                       <span class="n">max_speciation_gen</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">database_str</span><span class="p">),</span> <span class="n">use_spatial</span><span class="p">,</span> <span class="n">sample_file_str</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">fragment_file_str</span><span class="p">,</span>
+                                       <span class="n">speciation_rates</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -187,7 +152,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -209,7 +174,34 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">addMetacommunityParameters</span><span class="p">(</span><span class="n">PyCommunityTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">metacommunity_option</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;kdsk&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">metacommunity_option</span><span class="p">,</span>
+                         <span class="o">&amp;</span><span class="n">metacommunity_reference</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span><span class="o">-&gt;</span><span class="n">addMetacommunityParameters</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span>
+                                                            <span class="n">metacommunity_option</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -226,7 +218,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -245,7 +237,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -264,7 +256,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -287,7 +279,30 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">pySpeciateRemainingLineages</span><span class="p">(</span><span class="n">PyCommunityTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">database_char</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;s&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">database_char</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">string</span> <span class="n">database_str</span><span class="p">(</span><span class="n">database_char</span><span class="p">);</span>
+        <span class="n">getGlobalLogger</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">logger</span><span class="p">,</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">log_function</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">base_object</span><span class="o">-&gt;</span><span class="n">speciateRemainingLineages</span><span class="p">(</span><span class="n">database_str</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">removeGlobalLogger</span><span class="p">();</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">Py_RETURN_NONE</span><span class="p">;</span>
@@ -299,7 +314,7 @@
 <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">delete</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span><span class="p">;</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
         <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="n">PyTemplate_dealloc</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
@@ -309,7 +324,7 @@
 <span class="k">static</span> <span class="kt">int</span>
 <span class="n">PyCommunity_init</span><span class="p">(</span><span class="n">PyCommunityTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SpecSimParameters</span><span class="p">();</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">specSimParameters</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span><span class="p">();</span>
     <span class="k">return</span> <span class="n">PyTemplate_init</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -318,22 +333,23 @@
 <span class="p">{</span>
     <span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">CommunityMethods</span><span class="p">[]</span> <span class="o">=</span>
             <span class="p">{</span>
-                    <span class="p">{</span><span class="s">&quot;setup&quot;</span><span class="p">,</span>                      <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">setupApplySpeciation</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>     <span class="n">METH_VARARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Sets the speciation parameters to be applied to the tree.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;add_time&quot;</span><span class="p">,</span>                   <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addTime</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                  <span class="n">METH_VARARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Adds a time to apply to the simulation.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;wipe_protracted_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">wipeProtractedParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">METH_NOARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Wipes the protracted parameters.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;add_protracted_parameters&quot;</span><span class="p">,</span>  <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addProtractedParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>  <span class="n">METH_VARARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Adds protracted speciation parameters to apply to the simulation.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;apply&quot;</span><span class="p">,</span>                      <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">apply</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                    <span class="n">METH_NOARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Applies the new speciation rate(s) to the coalescence tree.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;output&quot;</span><span class="p">,</span>                     <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">output</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                   <span class="n">METH_NOARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Outputs the database to file.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;reset&quot;</span><span class="p">,</span>                      <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">reset</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                    <span class="n">METH_NOARGS</span><span class="p">,</span>
-                                                               <span class="s">&quot;Resets the internal object.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;setup&quot;</span><span class="p">,</span>                        <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">setupApplySpeciation</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>        <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                                                                                 <span class="s">&quot;Sets the speciation current_metacommunity_parameters to be applied to the tree.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;add_time&quot;</span><span class="p">,</span>                     <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addTime</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                     <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                                                                                 <span class="s">&quot;Adds a time to apply to the simulation.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;wipe_protracted_parameters&quot;</span><span class="p">,</span>   <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">wipeProtractedParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>    <span class="n">METH_NOARGS</span><span class="p">,</span>
+                                                                                                                 <span class="s">&quot;Wipes the protracted current_metacommunity_parameters.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;add_protracted_parameters&quot;</span><span class="p">,</span>    <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addProtractedParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>     <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                                                                                 <span class="s">&quot;Adds protracted speciation current_metacommunity_parameters to apply to the simulation.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;add_metacommunity_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addMetacommunityParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>  <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;Adds metacommunity current_metacommunity_parameters to be applied&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;apply&quot;</span><span class="p">,</span>                        <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">apply</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                       <span class="n">METH_NOARGS</span><span class="p">,</span>
+                                                                                                                 <span class="s">&quot;Applies the new speciation rate(s) to the coalescence tree.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;output&quot;</span><span class="p">,</span>                       <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">output</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                      <span class="n">METH_NOARGS</span><span class="p">,</span>  <span class="s">&quot;Outputs the database to file.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;reset&quot;</span><span class="p">,</span>                        <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">reset</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                       <span class="n">METH_NOARGS</span><span class="p">,</span>  <span class="s">&quot;Resets the internal object.&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;speciate_remaining_lineages&quot;</span><span class="p">,</span>  <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">pySpeciateRemainingLineages</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">METH_VARARGS</span><span class="p">,</span>
+                                                                                                                 <span class="s">&quot;Speciates the remaining lineages in a paused simulation to force it to appear complete&quot;</span><span class="p">},</span>
 
-                    <span class="p">{</span><span class="k">nullptr</span><span class="p">,</span>                      <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">}</span>
+                    <span class="p">{</span><span class="k">nullptr</span><span class="p">,</span>                        <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>                                                 <span class="k">nullptr</span><span class="p">}</span>
             <span class="p">};</span>
     <span class="k">return</span> <span class="n">CommunityMethods</span><span class="p">;</span>
 <span class="p">}</span>
@@ -366,9 +382,11 @@
     <span class="k">return</span> <span class="n">genCommunityType</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">char</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">tp_name</span><span class="p">.</span><span class="n">c_str</span><span class="p">()),</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">char</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">tp_doc</span><span class="p">.</span><span class="n">c_str</span><span class="p">()));</span>
 <span class="p">}</span>
 
+
 <span class="k">static</span> <span class="n">PyTypeObject</span>
         <span class="n">C_CommunityType</span> <span class="o">=</span> <span class="n">genCommunityType</span><span class="o">&lt;</span><span class="n">Community</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CCommunity&quot;</span><span class="p">,</span>
                                                       <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;C class for generating communities from neutral simulations&quot;</span><span class="p">);</span>
+
 <span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">C_MetacommunityType</span> <span class="o">=</span> <span class="n">genCommunityType</span><span class="o">&lt;</span><span class="n">Metacommunity</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;libnecsim.CMetacommunity&quot;</span><span class="p">,</span>
                                                                           <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="s">&quot;C class for generating communities from neutral simulations&quot;</span><span class="p">);</span>
 
@@ -428,7 +446,7 @@
         <li class="right" >
           <a href="file_CCommunity.h.html" title="File CCommunity.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CCommunity.h.html" >File CCommunity.h</a> &#187;</li> 
       </ul>

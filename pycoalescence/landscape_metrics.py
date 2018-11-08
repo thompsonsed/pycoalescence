@@ -30,7 +30,7 @@ class LandscapeMetrics(Map):
 		self.c_LM_calc = libnecsim.CLandscapeMetricsCalculator(self.logger, write_to_log)
 
 	def __del__(self):
-		"""Safely destroy the c++ objects."""
+		"""Safely destroy the C++ objects."""
 		self.c_LM_calc = None
 		Map.__del__(self)
 

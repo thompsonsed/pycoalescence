@@ -3,7 +3,7 @@
 Struct CommunityParameters
 ==========================
 
-- Defined in :ref:`file_necsim_Community.h`
+- Defined in :ref:`file_necsim_parameters.h`
 
 
 Struct Documentation

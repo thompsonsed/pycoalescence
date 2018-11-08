@@ -55,8 +55,8 @@ For compilation, there are several provided options:
 * If you require compilation outside of the pycoalescence module, make use of the the file **Makefile** located in
   **Makefiles/SimpleCompile**. This can be modified and run using ``make`` to generate the executable.
 
-.. note:: If you want to also compile the module for integrating with python, provide the python library (PYTHON_LIB) and
-          python include directories (PYTHON_INCLUDE) as command line flags to ``./configure``. You must then run ``make all``.
+.. note:: If you want to also compile the module for integrating with Python, provide the Python library (PYTHON_LIB) and
+          Python include directories (PYTHON_INCLUDE) as command line flags to ``./configure``. You must then run ``make all``.
           This is not recommended, and it is advised you use the :ref:`install proceedure outlined here <Introduction_pycoalescence>`.
 
 .. warning:: Compilation on high-performance clusters will likely require an icc compiler and custom linking to the
@@ -352,7 +352,7 @@ Upon successful completion of a simulation, the outputs and parameters are store
   using a program like `DB Browser for SQLite <http://sqlitebrowser.org/>`__ or Microsoft Access.
   Alternatively, most programming languages have an SQLite interface
   (`RSQlite <https://cran.r-project.org/web/packages/RSQLite/index.html>`__,
-  `python sqlite3 <https://docs.python.org/2/library/sqlite3.html>`__)
+  `Python sqlite3 <https://docs.python.org/2/library/sqlite3.html>`__)
 
 The tables in the SQLite database are
 

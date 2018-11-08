@@ -5,5 +5,5 @@ var searchData=
   ['community',['Community',['../class_community.html',1,'']]],
   ['communityparameters',['CommunityParameters',['../struct_community_parameters.html',1,'']]],
   ['configexception',['ConfigException',['../struct_config_exception.html',1,'']]],
-  ['configoption',['ConfigOption',['../class_config_option.html',1,'']]]
+  ['configparser',['ConfigParser',['../class_config_parser.html',1,'']]]
 ];

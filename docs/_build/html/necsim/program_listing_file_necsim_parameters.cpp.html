@@ -1,0 +1,520 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File parameters.cpp &#8212; pycoalescence 1.2.7a2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.7a2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File parameters.h" href="file_necsim_parameters.h.html" />
+    <link rel="prev" title="File parameters.cpp" href="file_necsim_parameters.cpp.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_parameters.h.html" title="File parameters.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_parameters.cpp.html" title="File parameters.cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_parameters.cpp.html" accesskey="U">File parameters.cpp</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-parameters-cpp">
+<span id="program-listing-file-necsim-parameters-cpp"></span><h1>Program Listing for File parameters.cpp<a class="headerlink" href="#program-listing-for-file-parameters-cpp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_parameters.cpp.html#file-necsim-parameters-cpp"><span class="std std-ref">File parameters.cpp</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of necsim project which is released under MIT license.</span>
+<span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
+<span class="cp">#include</span> <span class="cpf">&quot;parameters.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;custom_exceptions.h&quot;</span><span class="cp"></span>
+
+<span class="n">CommunityParameters</span><span class="o">::</span><span class="n">CommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span>
+                                         <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
+                                         <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                         <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setup</span><span class="p">(</span><span class="n">reference_in</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="n">fragment_in</span><span class="p">,</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
+                                <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
+                                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">time_in</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
+    <span class="n">fragment</span> <span class="o">=</span> <span class="n">fragment_in</span><span class="p">;</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">reference_in</span><span class="p">;</span>
+    <span class="n">metacommunity_reference</span> <span class="o">=</span> <span class="n">metacommunity_reference_in</span><span class="p">;</span>
+    <span class="n">protracted_parameters</span> <span class="o">=</span> <span class="n">protracted_params</span><span class="p">;</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment_in</span><span class="p">,</span>
+                                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                  <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">doubleCompare</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">time_in</span><span class="p">),</span> <span class="kt">double</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="mf">0.00001</span><span class="p">))</span>
+    <span class="p">{</span>
+<span class="cp">#ifdef DEBUG</span>
+        <span class="n">stringstream</span> <span class="n">os</span><span class="p">;</span>
+        <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Detected generation at t=0.0.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">os</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
+        <span class="k">return</span> <span class="nf">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+               <span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment_in</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span> <span class="o">&amp;&amp;</span>
+               <span class="n">protracted_params</span> <span class="o">==</span> <span class="n">protracted_parameters</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="n">doubleCompare</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="n">time</span> <span class="o">*</span> <span class="mf">0.0000000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment_in</span> <span class="o">&amp;&amp;</span>
+           <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span> <span class="o">&amp;&amp;</span>
+           <span class="n">protracted_params</span> <span class="o">==</span> <span class="n">protracted_parameters</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time_in</span><span class="p">,</span>
+                                  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference_in</span><span class="p">,</span>
+                                  <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="n">doubleCompare</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time_in</span><span class="p">,</span> <span class="mf">0.0000000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">metacommunity_reference</span> <span class="o">==</span> <span class="n">metacommunity_reference_in</span> <span class="o">&amp;&amp;</span>
+           <span class="n">protracted_params</span> <span class="o">==</span> <span class="n">protracted_parameters</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">CommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">reference</span> <span class="o">==</span> <span class="n">reference_in</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">CommunitiesArray</span><span class="p">()</span> <span class="o">:</span> <span class="n">comm_parameters</span><span class="p">(){};</span>
+
+<span class="kt">void</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
+                                <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                                <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">tmp_param</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span>
+                                                      <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">);</span>
+    <span class="n">comm_parameters</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span> <span class="n">tmp_param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">comm_parameters</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">addNew</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
+                                                         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                                                         <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_reference</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">comm_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">fragment</span> <span class="o">==</span> <span class="n">fragment</span> <span class="o">||</span> <span class="o">!</span><span class="n">fragment</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Non-unique parameter set: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-speciation rate: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-time: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-fragment: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">fragment</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-metacommunity reference: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">metacommunity_reference</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-protracted speciation min: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">protracted_params</span><span class="p">.</span><span class="n">min_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-protracted speciation max: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">protracted_params</span><span class="p">.</span><span class="n">max_speciation_gen</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+                <span class="n">writeCritical</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+                <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Tried to get reference for non-unique parameter set in communities. &quot;</span>
+                                     <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">i</span><span class="o">-&gt;</span><span class="n">fragment</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="n">i</span><span class="o">-&gt;</span><span class="n">updated</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">reference</span> <span class="o">&gt;=</span> <span class="n">max_reference</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">max_reference</span> <span class="o">=</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">reference</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">tmp_param</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">CommunityParameters</span><span class="o">&gt;</span><span class="p">(</span><span class="n">max_reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span>
+                                                      <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">);</span>
+    <span class="n">comm_parameters</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">comm_parameters</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">CommunitiesArray</span><span class="o">::</span><span class="n">hasPair</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="kt">double</span> <span class="n">time</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">,</span>
+                               <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_reference</span><span class="p">,</span>
+                               <span class="k">const</span> <span class="n">ProtractedSpeciationParameters</span> <span class="o">&amp;</span><span class="n">protracted_params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">comm_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">metacommunity_reference</span><span class="p">,</span> <span class="n">protracted_params</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">MetacommunityParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">metacommunity_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">option</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+    <span class="n">external_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">MetacommunityParameters</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">reference_in</span><span class="p">,</span>
+                                                 <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">metacommunity_size_in</span><span class="p">,</span>
+                                                 <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate_in</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">option_in</span><span class="p">,</span>
+                                                 <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">external_reference_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">reference_in</span><span class="p">;</span>
+    <span class="n">metacommunity_size</span> <span class="o">=</span> <span class="n">metacommunity_size_in</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
+    <span class="n">option</span> <span class="o">=</span> <span class="n">option_in</span><span class="p">;</span>
+    <span class="n">external_reference</span> <span class="o">=</span> <span class="n">external_reference_in</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">,</span>
+                                      <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">option_in</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">ext_reference_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">option_in</span> <span class="o">==</span> <span class="s">&quot;simulated&quot;</span> <span class="o">||</span> <span class="n">option_in</span> <span class="o">==</span> <span class="s">&quot;analytical&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">doubleCompare</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">speciation_rate_in</span><span class="p">,</span> <span class="n">speciation_rate</span> <span class="o">*</span> <span class="mf">0.000001</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+               <span class="n">metacommunity_size</span> <span class="o">==</span> <span class="n">metacommunity_size_in</span> <span class="o">&amp;&amp;</span> <span class="n">option</span> <span class="o">==</span> <span class="n">option_in</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">option</span> <span class="o">==</span> <span class="n">option_in</span> <span class="o">&amp;&amp;</span> <span class="n">external_reference</span> <span class="o">==</span> <span class="n">ext_reference_in</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">metacomm_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">compare</span><span class="p">(</span><span class="n">metacomm_in</span><span class="p">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacomm_in</span><span class="p">.</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacomm_in</span><span class="p">.</span><span class="n">option</span><span class="p">,</span>
+                   <span class="n">metacomm_in</span><span class="p">.</span><span class="n">external_reference</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">reference</span> <span class="o">==</span> <span class="n">reference_in</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">isMetacommunityOption</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">metacommunity_size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">speciation_rate</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">option</span> <span class="o">!=</span> <span class="s">&quot;simulated&quot;</span> <span class="o">&amp;&amp;</span> <span class="n">option</span> <span class="o">!=</span> <span class="s">&quot;analytical&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Must use simulation or analytical solutions when supplying a metacommunity size and &quot;</span>
+                        <span class="s">&quot;speciation rate.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">option</span> <span class="o">!=</span> <span class="s">&quot;simulated&quot;</span> <span class="o">&amp;&amp;</span> <span class="n">option</span> <span class="o">!=</span> <span class="s">&quot;analytical&quot;</span> <span class="o">&amp;&amp;</span> <span class="n">option</span> <span class="o">!=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">external_reference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;External reference cannot be 0 when reading metacommunity from external database.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MetacommunityParameters</span><span class="o">::</span><span class="n">clear</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">metacommunity_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">option</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">;</span>
+    <span class="n">external_reference</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">MetacommunityParameters</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">parameters</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">.</span><span class="n">reference</span><span class="p">;</span>
+    <span class="n">metacommunity_size</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">.</span><span class="n">metacommunity_size</span><span class="p">;</span>
+    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">.</span><span class="n">speciation_rate</span><span class="p">;</span>
+    <span class="n">option</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">.</span><span class="n">option</span><span class="p">;</span>
+    <span class="n">external_reference</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">.</span><span class="n">external_reference</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">MetacommunitiesArray</span><span class="p">()</span> <span class="o">:</span> <span class="n">metacomm_parameters</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;&gt;::</span><span class="n">iterator</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;&gt;::</span><span class="n">iterator</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">end</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;&gt;::</span><span class="n">const_iterator</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;&gt;::</span><span class="n">const_iterator</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">end</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">reference</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                    <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">option</span><span class="p">,</span>
+                                    <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">external_reference</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">tmp_param</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span>
+                                                          <span class="n">external_reference</span><span class="p">);</span>
+    <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span> <span class="n">tmp_param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">clear</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">size</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">empty</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">addNew</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span>
+                                           <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">option</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">external_reference</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_reference</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">metacomm_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">external_reference</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Duplicate metacommunity parameters: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">metacommunity_size</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Speciation rate: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Option: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">option</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;External reference: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">external_reference</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">writeCritical</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="s">&quot;Tried to get reference for non-unique parameter set in metacommunities. &quot;</span>
+                                 <span class="s">&quot;Please report this bug.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">reference</span> <span class="o">&gt;=</span> <span class="n">max_reference</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">max_reference</span> <span class="o">=</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">reference</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">tmp_param</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span><span class="p">(</span><span class="n">max_reference</span><span class="p">,</span> <span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span>
+                                                          <span class="n">external_reference</span><span class="p">);</span>
+    <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">tmp_param</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">max_reference</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">addNew</span><span class="p">(</span><span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">metacomm_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">addNew</span><span class="p">(</span><span class="n">metacomm_in</span><span class="p">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacomm_in</span><span class="p">.</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacomm_in</span><span class="p">.</span><span class="n">option</span><span class="p">,</span>
+                  <span class="n">metacomm_in</span><span class="p">.</span><span class="n">external_reference</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">hasOption</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span>
+                                     <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">option</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">external_reference</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">metacomm_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">external_reference</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">hasOption</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">reference</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">metacomm_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">hasOption</span><span class="p">(</span><span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">metacomm_in</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">hasOption</span><span class="p">(</span><span class="n">metacomm_in</span><span class="p">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacomm_in</span><span class="p">.</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">metacomm_in</span><span class="p">.</span><span class="n">option</span><span class="p">,</span>
+                     <span class="n">metacomm_in</span><span class="p">.</span><span class="n">external_reference</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">getReference</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                                 <span class="k">const</span> <span class="kt">long</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">option</span><span class="p">,</span>
+                                                 <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">external_reference</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">metacommunity_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">option</span> <span class="o">==</span> <span class="s">&quot;simulated&quot;</span> <span class="o">||</span> <span class="n">option</span> <span class="o">==</span> <span class="s">&quot;analytical&quot;</span> <span class="o">||</span> <span class="n">option</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">external_reference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">i</span> <span class="p">:</span> <span class="n">metacomm_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">external_reference</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">reference</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">getReference</span><span class="p">(</span><span class="k">const</span> <span class="n">MetacommunityParameters</span> <span class="o">&amp;</span><span class="n">metacomm_parameters</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">getReference</span><span class="p">(</span><span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">speciation_rate</span><span class="p">,</span>
+                        <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">option</span><span class="p">,</span> <span class="n">metacomm_parameters</span><span class="p">.</span><span class="n">external_reference</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MetacommunitiesArray</span><span class="o">::</span><span class="n">addNull</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">MetacommunityParameters</span> <span class="n">null_parameters</span><span class="p">;</span>
+    <span class="n">addNew</span><span class="p">(</span><span class="n">null_parameters</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_parameters.cpp.html"
+                        title="previous chapter">File parameters.cpp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_parameters.h.html"
+                        title="next chapter">File parameters.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_parameters.cpp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_parameters.h.html" title="File parameters.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_parameters.cpp.html" title="File parameters.cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_parameters.cpp.html" >File parameters.cpp</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

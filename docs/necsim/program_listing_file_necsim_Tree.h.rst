@@ -8,7 +8,7 @@ Program Listing for File Tree.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef TREE_H
@@ -19,26 +19,26 @@ Program Listing for File Tree.h
    
    #include <sqlite3.h>
    #include <string>
+   #include <memory>
    #include "TreeNode.h"
    #include "Matrix.h"
    #include "SimParameters.h"
    #include "NRrand.h"
    #include "DataPoint.h"
    #include "Community.h"
-   #include "Filesystem.h"
-   #include "CustomExceptions.h"
+   #include "file_system.h"
+   #include "custom_exceptions.h"
    #include "Step.h"
-   
    
    class Tree
    {
    protected:
        // storing the coalescence tree itself
-       Row<TreeNode> data;
+       shared_ptr<vector<TreeNode>> data;
        // a reference for the last written point in data.
        unsigned long enddata;
-       // Stores the command line parameters and parses the required information.
-       SimParameters sim_parameters;
+       // Stores the command line current_metacommunity_parameters and parses the required information.
+       shared_ptr<SimParameters> sim_parameters;
        // random number generator
        shared_ptr<NRrand> NR;
        // Storing the speciation rates for later reference.
@@ -46,9 +46,9 @@ Program Listing for File Tree.h
        // flag for having set the simulation seed.
        bool seeded;
        // random seed
-       long long the_seed;
+       long long seed;
        // for file naming - good to know which task in a series is being executed here
-       long long the_task;
+       long long task;
        // The map file containing the times that we want to expand the model and record all lineages again.
        // If this is null, uses_temporal_sampling will be false and the vector will be empty.
        string times_file;
@@ -59,7 +59,7 @@ Program Listing for File Tree.h
        time_t start, sim_start, sim_end, now, sim_finish, out_finish;
        time_t time_taken;
        // Active lineages stored as a row of datapoints
-       Row<DataPoint> active;
+       vector<DataPoint> active;
        // Stores the point of the end of the active vector. 0 is reserved as null
        unsigned long endactive;
        // the maximum size of endactive
@@ -110,10 +110,11 @@ Program Listing for File Tree.h
        // variable for storing the paused sim location if files have been moved during paused/resumed simulations!
        string pause_sim_directory;
    public:
-       Tree() : data(), enddata(0), sim_parameters(), NR(make_shared<NRrand>()), speciation_rates(), seeded(false),
-                the_seed(-1), the_task(-1), times_file("null"), reference_times(), uses_temporal_sampling(false),
+       Tree() : data(make_shared<vector<TreeNode>>()), enddata(0), sim_parameters(make_shared<SimParameters>()),
+                NR(make_shared<NRrand>()), speciation_rates(), seeded(false),
+                seed(-1), task(-1), times_file("null"), reference_times(), uses_temporal_sampling(false),
                 start(0), sim_start(0), sim_end(0), now(0), sim_finish(0), out_finish(0), time_taken(0), active(),
-                endactive(0), startendactive(0), maxsimsize(0), community(&data), steps(0), maxtime(0), generation(0.0),
+                endactive(0), startendactive(0), maxsimsize(0), community(data), steps(0), maxtime(0), generation(0.0),
                 deme(0), deme_sample(0.0), spec(0.0), out_directory(""), database(nullptr), sim_complete(false),
                 has_imported_vars(false),
    #ifdef sql_ram
@@ -133,17 +134,17 @@ Program Listing for File Tree.h
    #endif
        }
    
-   
        void importSimulationVariables(const string &configfile);
    
-       void importSimulationVariables(ConfigOption config);
+       void importSimulationVariables(ConfigParser config);
+   
        virtual void runFileChecks();
    
        void wipeSimulationVariables();
-       void internalSetup(const SimParameters &sim_parameters_in);
+   
+       void internalSetup(shared_ptr<SimParameters> sim_parameters_in);
    
        bool checkOutputDirectory();
-   
    
        void checkSims();
    
@@ -178,11 +179,12 @@ Program Listing for File Tree.h
        void determineSpeciationRates();
    
        void addSpeciationRates(vector<long double> spec_rates_in);
+   
        void generateObjects();
    
        virtual unsigned long fillObjects(const unsigned long &initial_count);
    
-        virtual bool runSimulation();
+       virtual bool runSimulation();
    
        void writeSimStartToConsole();
    
@@ -197,6 +199,7 @@ Program Listing for File Tree.h
        void speciation(const unsigned long &chosen);
    
        virtual void speciateLineage(const unsigned long &data_position);
+   
        virtual void removeOldPosition(const unsigned long &chosen);
    
        virtual void switchPositions(const unsigned long &chosen);
@@ -213,10 +216,9 @@ Program Listing for File Tree.h
    
        virtual void addLineages(double generation_in);
    
-       bool checkProportionAdded(const double & proportion_added);
+       bool checkProportionAdded(const double &proportion_added);
    
        void checkSimSize(unsigned long req_data, unsigned long req_active);
-   
    
        void makeTip(const unsigned long &tmp_active, const double &generation_in, vector<TreeNode> &data_added);
    
@@ -228,8 +230,15 @@ Program Listing for File Tree.h
    
        void applySpecRateInternal(long double sr, double t);
    
-       Row<unsigned long> *getCumulativeAbundances();
-       void setupTreeGeneration(long double sr, double t);
+       shared_ptr<vector<unsigned long>> getCumulativeAbundances();
+   
+       shared_ptr<map<unsigned long, unsigned long>> getSpeciesAbundances(const unsigned long &community_reference);
+   
+       shared_ptr<vector<unsigned long>> getSpeciesAbundances();
+   
+       ProtractedSpeciationParameters setupCommunity();
+   
+       void setupCommunityCalculation(long double sr, double t);
    
        void applySpecRate(long double sr);
    
@@ -242,7 +251,6 @@ Program Listing for File Tree.h
        virtual double getProtractedGenerationMin();
    
        virtual double getProtractedGenerationMax();
-   
    
        void sqlOutput();
    
@@ -258,41 +266,43 @@ Program Listing for File Tree.h
    
        void sqlCreate();
    
+       void setupOutputDirectory();
+   
        void sqlCreateSimulationParameters();
    
        virtual string simulationParametersSqlInsertion();
    
        virtual string protractedVarsToString();
    
-   
        virtual void simPause();
    
-       ofstream initiatePause();
+       shared_ptr<ofstream> initiatePause();
    
-       void dumpMain(ofstream &out);
+       void dumpMain(shared_ptr<ofstream> out);
    
-       void dumpActive(ofstream &out);
+       void dumpActive(shared_ptr<ofstream> out);
    
-       void dumpData(ofstream &out);
+       void dumpData(shared_ptr<ofstream> out);
    
-       void completePause(ofstream &out);
+       void completePause(shared_ptr<ofstream> out);
    
        void setResumeParameters(string pausedir, string outdir, unsigned long seed, unsigned long task,
                                 unsigned long new_max_time);
    
        void setResumeParameters();
    
-       ifstream openSaveFile();
+       shared_ptr<ifstream> openSaveFile();
    
-       virtual void loadMainSave(ifstream &in1);
+       virtual void loadMainSave(shared_ptr<ifstream> in1);
    
-       void loadDataSave(ifstream &in1);
+       void loadDataSave(shared_ptr<ifstream> in1);
    
-       void loadActiveSave(ifstream &in1);
+       void loadActiveSave(shared_ptr<ifstream> in1);
    
        void initiateResume();
    
        virtual void simResume();
+   
    #ifdef DEBUG
    
        virtual void validateLineages();
@@ -306,6 +316,5 @@ Program Listing for File Tree.h
        void miniCheck(const unsigned long &chosen);
    #endif // DEBUG
    };
-   
    
    #endif //TREE_H

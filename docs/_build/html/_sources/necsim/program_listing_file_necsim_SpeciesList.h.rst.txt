@@ -8,13 +8,17 @@ Program Listing for File SpeciesList.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
     #ifndef SPECIESLIST
     #define SPECIESLIST
    
+   #ifdef CXX14_SUPPORT
+   #include "memory.h"
+   #else
    #include <memory>
+   #endif
    #include "Matrix.h"
    #include "NRrand.h"
    using namespace std;

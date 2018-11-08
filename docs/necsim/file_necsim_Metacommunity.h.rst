@@ -44,9 +44,13 @@ Includes
 
 - ``SpecSimParameters.h`` (:ref:`file_necsim_SpecSimParameters.h`)
 
+- ``SpeciesAbundancesHandler.h`` (:ref:`file_necsim_AnalyticalSpeciesAbundancesHandler.h`)
+
 - ``Tree.h`` (:ref:`file_necsim_ProtractedSpatialTree.h`)
 
-- ``set``
+- ``memory``
+
+- ``set`` (:ref:`file_necsim_setup.cpp`)
 
 - ``sqlite3.h``
 

@@ -28,7 +28,7 @@ try:
 	from .necsim import libnecsim
 except ImportError as ie:
 	logging.info(str(ie))
-	from necsim import libnecsim, NECSimError
+	from necsim import libnecsim, necsimError
 
 from .future_except import FileNotFoundError
 from .system_operations import mod_directory, create_logger, write_to_log
@@ -269,7 +269,15 @@ class CoalescenceTree(object):
 				if metacommunity_option not in ["simulated", "analytical", "none"]:
 					raise ValueError("Must use 'simulated' or 'analytical' for metacommunity option when supplying "
 									 "a metacommunity size and speciation rate.")
-				self.metacommunity_option = metacommunity_option
+				if metacommunity_option == "none":
+					if metacommunity_size > 100000:
+						self.logger.info("Using analytical method for generating metacommunity.")
+						self.metacommunity_option = "analytical"
+					else:
+						self.logger.info("Using simulated method of generating metacommunity.")
+						self.metacommunity_option = "simulated"
+				else:
+					self.metacommunity_option = metacommunity_option
 				self.metacommunity_reference = 0
 			else:
 				if metacommunity_option in ["simulated", "analytical", "none"]:
@@ -288,8 +296,7 @@ class CoalescenceTree(object):
 				self.metacommunity_speciation_rate = 0.0
 				self.metacommunity_option = metacommunity_option
 			if not isinstance(self.c_community, libnecsim.CMetacommunity):
-				self.c_community = None
-				self._setup_c_community()
+				self._reset_parameters()
 			self.c_community.add_metacommunity_parameters(self.metacommunity_size, self.metacommunity_speciation_rate,
 														  self.metacommunity_option, self.metacommunity_reference)
 
@@ -364,6 +371,21 @@ class CoalescenceTree(object):
 				self.add_times(times)
 			else:
 				self.add_time(times)
+
+	def _reset_parameters(self):
+		"""
+		Resets the object and adds all the required parameters to the object again.
+
+		Used when a standard CCommunity object is converted to a CMetacommunity object.
+		"""
+		self.c_community = None
+		self._setup_c_community()
+		# The times have already been added in the above function call, so just need to add the protracted parameters
+		tmp_protracted_params = self.protracted_parameters
+		if len(tmp_protracted_params) > 0:
+			self.protracted_parameters = []
+			for min_proc, max_proc in tmp_protracted_params:
+				self.add_protracted_parameters(min_proc, max_proc)
 
 	def _equalise_fragment_number(self, fragment, reference):
 		"""
@@ -561,7 +583,7 @@ class CoalescenceTree(object):
 		:param speciation_program: optionally provide a path to an alternative SpeciationCounter program.
 
 		.. deprecated:: 1.2.4
-			Deprecated due to movement towards using python API for applying speciation rates.
+			Deprecated due to movement towards using Python API for applying speciation rates.
 
 		:return: None
 		"""
@@ -670,7 +692,7 @@ class CoalescenceTree(object):
 
 	def _set_c_community(self):
 		"""
-		Sets the c++ object depending on if a metacommunity is used or not.
+		Sets the C++ object depending on if a metacommunity is used or not.
 
 		:rtype: None
 		"""
@@ -823,7 +845,7 @@ class CoalescenceTree(object):
 		Outputs the coalescence trees to the same simulation database object.
 		"""
 		if self.has_applied:
-			self.logger.error("Coalescence tree has already been written to output database.")
+			self.logger.error("Coalescence tree has already been written to output database.\n")
 		else:
 			self.c_community.output()
 
@@ -2015,7 +2037,10 @@ class CoalescenceTree(object):
 		except sqlite3.OperationalError as e:
 			self.logger.error("Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. \n")
 			raise e
-		values = [x for x in self.cursor.fetchone()]
+		fetch = self.cursor.fetchone()
+		if fetch is None:
+			raise KeyError("No metacommunity parameters found for reference of {}".format(reference))
+		values = [x for x in fetch]
 		if len(values) == 0:
 			raise KeyError("No metacommunity parameters found for reference of {}".format(reference))
 		column_names = [member[0] for member in self.cursor.description]

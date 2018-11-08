@@ -1,6 +1,6 @@
 """
-Compiles NECSim for several simulation scenarios and tests the output to make sure simulation results are as expected.
-Also performs limited tests of the PyCoalescence setup routines.
+Compiles necsim for several simulation scenarios and tests the output to make sure simulation results are as expected.
+Also performs limited tests of the pycoalescence setup routines.
 
 .. note:: If test_install.py has not been run before, compilation may take a while, depending on your system, as it
    compiles NECSim for several different options.
@@ -29,7 +29,7 @@ except ImportError as ie:
 	logging.warning("Continuing with local package")
 	sys.path.append("../")
 
-	# Conditional import for python 2 being stupid
+	# Conditional import for Python 2 being stupid
 	from system_operations import set_logging_method
 	import setupTests
 if sys.version_info[0] is not 3:

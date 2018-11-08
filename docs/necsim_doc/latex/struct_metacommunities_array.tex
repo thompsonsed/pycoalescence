@@ -7,7 +7,7 @@ Contains an array of \hyperlink{struct_metacommunity_parameters}{Metacommunity\+
 
 
 
-{\ttfamily \#include $<$Community.\+h$>$}
+{\ttfamily \#include $<$parameters.\+h$>$}
 
 
 
@@ -16,28 +16,55 @@ Collaboration diagram for Metacommunities\+Array\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=221pt]{struct_metacommunities_array__coll__graph}
+\includegraphics[width=279pt]{struct_metacommunities_array__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{struct_metacommunities_array_a581a404fb39d14256419d9ae1118f58b}{push\+Back} (unsigned long reference, long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)
+\hyperlink{struct_metacommunities_array_ac06b31ab097315a80514fc03ae99ed27}{Metacommunities\+Array} ()\hypertarget{struct_metacommunities_array_ac06b31ab097315a80514fc03ae99ed27}{}\label{struct_metacommunities_array_ac06b31ab097315a80514fc03ae99ed27}
+
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+vector$<$ shared\+\_\+ptr$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ $>$\+::iterator \hyperlink{struct_metacommunities_array_a73d6e0fb339af3a27bcbf428d8caf0fc}{begin} ()
+\begin{DoxyCompactList}\small\item\em Support for range-\/based for loop iteration over metacomm\+\_\+parameters. \end{DoxyCompactList}\item 
+vector$<$ shared\+\_\+ptr$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ $>$\+::iterator \hyperlink{struct_metacommunities_array_a3a49a550c463078f51c04b5ab32e12cd}{end} ()
+\begin{DoxyCompactList}\small\item\em Support for range-\/based for loop iteration over metacomm\+\_\+parameters. \end{DoxyCompactList}\item 
+vector$<$ shared\+\_\+ptr$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ $>$\+::const\+\_\+iterator \hyperlink{struct_metacommunities_array_aafe83642b1b45af29578b0c8a9829a99}{begin} () const 
+\begin{DoxyCompactList}\small\item\em Support for range-\/based for loop iteration over metacomm\+\_\+parameters. \end{DoxyCompactList}\item 
+vector$<$ shared\+\_\+ptr$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ $>$\+::const\+\_\+iterator \hyperlink{struct_metacommunities_array_a29765f064310ea5bad76d2bfb56f8619}{end} () const 
+\begin{DoxyCompactList}\small\item\em Support for range-\/based for loop iteration over metacomm\+\_\+parameters. \end{DoxyCompactList}\item 
+void \hyperlink{struct_metacommunities_array_a3e5b4d95743b3a28a521ba627fad622a}{push\+Back} (const unsigned long \&reference, const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)
 \begin{DoxyCompactList}\small\item\em Adds an extra \hyperlink{struct_community_parameters}{Community\+Parameters} object to the calc\+\_\+array vector with the supplied variables. \end{DoxyCompactList}\item 
-void \hyperlink{struct_metacommunities_array_aafc6f9ba63be4c85d32d86ebfd2137e3}{push\+Back} (\hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} tmp\+\_\+param)
+void \hyperlink{struct_metacommunities_array_a8d015063db5528131c96ee6eb2625904}{push\+Back} (shared\+\_\+ptr$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ tmp\+\_\+param)
 \begin{DoxyCompactList}\small\item\em Adds the provided Past\+Metacommunity\+Parameters object to the calc\+\_\+array vector. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{struct_metacommunities_array_a2fef78ac6dea9d8297a7fd3b72f3026c}{add\+New} (long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)
+void \hyperlink{struct_metacommunities_array_aeeadf7da4469e93dd62322abe2cd2db8}{clear} ()\hypertarget{struct_metacommunities_array_aeeadf7da4469e93dd62322abe2cd2db8}{}\label{struct_metacommunities_array_aeeadf7da4469e93dd62322abe2cd2db8}
+
+\begin{DoxyCompactList}\small\item\em Wipes the internal vector. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{struct_metacommunities_array_aacd1795a5dcf8a8ba2690d29aa7f76df}{size} ()
+\begin{DoxyCompactList}\small\item\em Gets the size of the array. \end{DoxyCompactList}\item 
+bool \hyperlink{struct_metacommunities_array_aa39cf0eccb18b7e8d59d6a84d2dbbf90}{empty} ()
+\begin{DoxyCompactList}\small\item\em Check if the array is empty. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{struct_metacommunities_array_a6ffe1001285cb2e6892f06d792b8ac06}{add\+New} (const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)
 \begin{DoxyCompactList}\small\item\em Adds a new metacommunities calculation paremeters reference, with a new unique reference. \end{DoxyCompactList}\item 
-bool \hyperlink{struct_metacommunities_array_a8ef151569615b4091807aa8c50ebf1b2}{has\+Pair} (long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)
+unsigned long \hyperlink{struct_metacommunities_array_a2969e9c50cb7cb9f9bb2f0a84abe89c4}{add\+New} (const \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} \&metacomm\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Adds a new set of metacommunity parameters to the array. \end{DoxyCompactList}\item 
+bool \hyperlink{struct_metacommunities_array_ad16c2b1df93accb5bffb5a6cfae7c0eb}{has\+Option} (const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)
 \begin{DoxyCompactList}\small\item\em Checks whether the calculation with the supplied variables has already been performed. \end{DoxyCompactList}\item 
-bool \hyperlink{struct_metacommunities_array_a98876103779bab91793f6daa513722d6}{has\+Pair} (unsigned long reference)
+bool \hyperlink{struct_metacommunities_array_a5b4f3e826d045aac2c7e09d8fb380876}{has\+Option} (unsigned long reference)
 \begin{DoxyCompactList}\small\item\em Checks whether the calculation with the supplied reference has already been performed. Overloaded version for checking references. \end{DoxyCompactList}\item 
-unsigned long \hyperlink{struct_metacommunities_array_a5c15d164bc32cd2731c9382fe3fbbfbe}{get\+Reference} (long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)
-\begin{DoxyCompactList}\small\item\em Gets the metacommunity reference for the provided parameters, or returns 0 if it doesn\textquotesingle{}t exist. \end{DoxyCompactList}\end{DoxyCompactItemize}
+bool \hyperlink{struct_metacommunities_array_a3919ab2082db032eb3b1fe1c39201789}{has\+Option} (const \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} \&metacomm\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Checks whether the calculation with the supplied reference has already been performed. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{struct_metacommunities_array_a8c1b6836f052ebb4fe2bb3c8833e3d6e}{get\+Reference} (const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)
+\begin{DoxyCompactList}\small\item\em Gets the metacommunity reference for the provided parameters, or returns 0 if it doesn\textquotesingle{}t exist. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{struct_metacommunities_array_aeeff79f170f9d4c5198c1b0373843504}{get\+Reference} (const \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} \&metacomm\+\_\+parameters)
+\begin{DoxyCompactList}\small\item\em Gets the metacommunity reference for the provided parameters, or returns 0 if it doesn\textquotesingle{}t exist. \end{DoxyCompactList}\item 
+void \hyperlink{struct_metacommunities_array_afea47da3543504b7aac4bd02ba8e290f}{add\+Null} ()\hypertarget{struct_metacommunities_array_afea47da3543504b7aac4bd02ba8e290f}{}\label{struct_metacommunities_array_afea47da3543504b7aac4bd02ba8e290f}
+
+\begin{DoxyCompactList}\small\item\em Adds an empty metacommunity parameters option. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-vector$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ {\bfseries calc\+\_\+array}\hypertarget{struct_metacommunities_array_ae98cbbcca0be5883b0028f4c0a136261}{}\label{struct_metacommunities_array_ae98cbbcca0be5883b0028f4c0a136261}
+vector$<$ shared\+\_\+ptr$<$ \hyperlink{struct_metacommunity_parameters}{Metacommunity\+Parameters} $>$ $>$ {\bfseries metacomm\+\_\+parameters}\hypertarget{struct_metacommunities_array_a869cfa9f4c99ed20d8e10d9d4f0a409a}{}\label{struct_metacommunities_array_a869cfa9f4c99ed20d8e10d9d4f0a409a}
 
 \end{DoxyCompactItemize}
 
@@ -48,12 +75,14 @@ Contains an array of \hyperlink{struct_metacommunity_parameters}{Metacommunity\+
 \subsection{Member Function Documentation}
 \index{Metacommunities\+Array@{Metacommunities\+Array}!add\+New@{add\+New}}
 \index{add\+New@{add\+New}!Metacommunities\+Array@{Metacommunities\+Array}}
-\subsubsection[{\texorpdfstring{add\+New(long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)}{addNew(long double speciation_rate, unsigned long metacommunity_size)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::add\+New (
+\subsubsection[{\texorpdfstring{add\+New(const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)}{addNew(const unsigned long &metacommunity_size, const long double &speciation_rate, const string &option, const unsigned long &external_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::add\+New (
 \begin{DoxyParamCaption}
-\item[{long double}]{speciation\+\_\+rate, }
-\item[{unsigned long}]{metacommunity\+\_\+size}
+\item[{const unsigned long \&}]{metacommunity\+\_\+size, }
+\item[{const long double \&}]{speciation\+\_\+rate, }
+\item[{const string \&}]{option, }
+\item[{const unsigned long \&}]{external\+\_\+reference}
 \end{DoxyParamCaption}
-)}\hypertarget{struct_metacommunities_array_a2fef78ac6dea9d8297a7fd3b72f3026c}{}\label{struct_metacommunities_array_a2fef78ac6dea9d8297a7fd3b72f3026c}
+)}\hypertarget{struct_metacommunities_array_a6ffe1001285cb2e6892f06d792b8ac06}{}\label{struct_metacommunities_array_a6ffe1001285cb2e6892f06d792b8ac06}
 
 
 Adds a new metacommunities calculation paremeters reference, with a new unique reference. 
@@ -64,18 +93,113 @@ Adds a new metacommunities calculation paremeters reference, with a new unique r
 \hline
 {\em metacommunity\+\_\+size} & the size of the metacommunity in the new calculation \\
 \hline
+{\em option} & the metacommunity option (\char`\"{}simulated\char`\"{}, \char`\"{}analytical\char`\"{} or a path to a database) \\
+\hline
+{\em external\+\_\+reference} & the reference for the external database \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 the new reference number, which should be unique 
 \end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!add\+New@{add\+New}}
+\index{add\+New@{add\+New}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{add\+New(const Metacommunity\+Parameters \&metacomm\+\_\+in)}{addNew(const MetacommunityParameters &metacomm_in)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::add\+New (
+\begin{DoxyParamCaption}
+\item[{const {\bf Metacommunity\+Parameters} \&}]{metacomm\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_a2969e9c50cb7cb9f9bb2f0a84abe89c4}{}\label{struct_metacommunities_array_a2969e9c50cb7cb9f9bb2f0a84abe89c4}
+
+
+Adds a new set of metacommunity parameters to the array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em metacomm\+\_\+in} & the new metacommunity parameters to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the new reference number, which should be unique 
+\end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!begin@{begin}}
+\index{begin@{begin}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{begin()}{begin()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ shared\+\_\+ptr$<$ {\bf Metacommunity\+Parameters} $>$ $>$\+::iterator Metacommunities\+Array\+::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_a73d6e0fb339af3a27bcbf428d8caf0fc}{}\label{struct_metacommunities_array_a73d6e0fb339af3a27bcbf428d8caf0fc}
+
+
+Support for range-\/based for loop iteration over metacomm\+\_\+parameters. 
+
+\begin{DoxyReturn}{Returns}
+the start of the parameters vector 
+\end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!begin@{begin}}
+\index{begin@{begin}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{begin() const }{begin() const }}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ shared\+\_\+ptr$<$ {\bf Metacommunity\+Parameters} $>$ $>$\+::const\+\_\+iterator Metacommunities\+Array\+::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{struct_metacommunities_array_aafe83642b1b45af29578b0c8a9829a99}{}\label{struct_metacommunities_array_aafe83642b1b45af29578b0c8a9829a99}
+
+
+Support for range-\/based for loop iteration over metacomm\+\_\+parameters. 
+
+\begin{DoxyReturn}{Returns}
+the start of the parameters vector 
+\end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!empty@{empty}}
+\index{empty@{empty}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{empty()}{empty()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Metacommunities\+Array\+::empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_aa39cf0eccb18b7e8d59d6a84d2dbbf90}{}\label{struct_metacommunities_array_aa39cf0eccb18b7e8d59d6a84d2dbbf90}
+
+
+Check if the array is empty. 
+
+\begin{DoxyReturn}{Returns}
+true if the array has no elements in 
+\end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!end@{end}}
+\index{end@{end}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{end()}{end()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ shared\+\_\+ptr$<$ {\bf Metacommunity\+Parameters} $>$ $>$\+::iterator Metacommunities\+Array\+::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_a3a49a550c463078f51c04b5ab32e12cd}{}\label{struct_metacommunities_array_a3a49a550c463078f51c04b5ab32e12cd}
+
+
+Support for range-\/based for loop iteration over metacomm\+\_\+parameters. 
+
+\begin{DoxyReturn}{Returns}
+the end of the parameters vector 
+\end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!end@{end}}
+\index{end@{end}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{end() const }{end() const }}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ shared\+\_\+ptr$<$ {\bf Metacommunity\+Parameters} $>$ $>$\+::const\+\_\+iterator Metacommunities\+Array\+::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{struct_metacommunities_array_a29765f064310ea5bad76d2bfb56f8619}{}\label{struct_metacommunities_array_a29765f064310ea5bad76d2bfb56f8619}
+
+
+Support for range-\/based for loop iteration over metacomm\+\_\+parameters. 
+
+\begin{DoxyReturn}{Returns}
+the end of the parameters vector 
+\end{DoxyReturn}
 \index{Metacommunities\+Array@{Metacommunities\+Array}!get\+Reference@{get\+Reference}}
 \index{get\+Reference@{get\+Reference}!Metacommunities\+Array@{Metacommunities\+Array}}
-\subsubsection[{\texorpdfstring{get\+Reference(long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)}{getReference(long double speciation_rate, unsigned long metacommunity_size)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::get\+Reference (
+\subsubsection[{\texorpdfstring{get\+Reference(const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)}{getReference(const unsigned long &metacommunity_size, const long double &speciation_rate, const string &option, const unsigned long &external_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::get\+Reference (
 \begin{DoxyParamCaption}
-\item[{long double}]{speciation\+\_\+rate, }
-\item[{unsigned long}]{metacommunity\+\_\+size}
+\item[{const unsigned long \&}]{metacommunity\+\_\+size, }
+\item[{const long double \&}]{speciation\+\_\+rate, }
+\item[{const string \&}]{option, }
+\item[{const unsigned long \&}]{external\+\_\+reference}
 \end{DoxyParamCaption}
-)}\hypertarget{struct_metacommunities_array_a5c15d164bc32cd2731c9382fe3fbbfbe}{}\label{struct_metacommunities_array_a5c15d164bc32cd2731c9382fe3fbbfbe}
+)}\hypertarget{struct_metacommunities_array_a8c1b6836f052ebb4fe2bb3c8833e3d6e}{}\label{struct_metacommunities_array_a8c1b6836f052ebb4fe2bb3c8833e3d6e}
 
 
 Gets the metacommunity reference for the provided parameters, or returns 0 if it doesn\textquotesingle{}t exist. 
@@ -88,18 +212,43 @@ Gets the metacommunity reference for the provided parameters, or returns 0 if it
 \hline
 {\em fragment} & bool for checking if fragments were used \\
 \hline
+{\em option} & the metacommunity option (\char`\"{}simulated\char`\"{}, \char`\"{}analytical\char`\"{} or a path to a database) \\
+\hline
+{\em external\+\_\+reference} & the reference for the external database \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 the metacommunity reference number, or 0 if it doesn\textquotesingle{}t exist 
 \end{DoxyReturn}
-\index{Metacommunities\+Array@{Metacommunities\+Array}!has\+Pair@{has\+Pair}}
-\index{has\+Pair@{has\+Pair}!Metacommunities\+Array@{Metacommunities\+Array}}
-\subsubsection[{\texorpdfstring{has\+Pair(long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)}{hasPair(long double speciation_rate, unsigned long metacommunity_size)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Metacommunities\+Array\+::has\+Pair (
+\index{Metacommunities\+Array@{Metacommunities\+Array}!get\+Reference@{get\+Reference}}
+\index{get\+Reference@{get\+Reference}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{get\+Reference(const Metacommunity\+Parameters \&metacomm\+\_\+parameters)}{getReference(const MetacommunityParameters &metacomm_parameters)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::get\+Reference (
 \begin{DoxyParamCaption}
-\item[{long double}]{speciation\+\_\+rate, }
-\item[{unsigned long}]{metacommunity\+\_\+size}
+\item[{const {\bf Metacommunity\+Parameters} \&}]{metacomm\+\_\+parameters}
 \end{DoxyParamCaption}
-)}\hypertarget{struct_metacommunities_array_a8ef151569615b4091807aa8c50ebf1b2}{}\label{struct_metacommunities_array_a8ef151569615b4091807aa8c50ebf1b2}
+)}\hypertarget{struct_metacommunities_array_aeeff79f170f9d4c5198c1b0373843504}{}\label{struct_metacommunities_array_aeeff79f170f9d4c5198c1b0373843504}
+
+
+Gets the metacommunity reference for the provided parameters, or returns 0 if it doesn\textquotesingle{}t exist. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em metacomm\+\_\+parameters} & the parameters to check for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the metacommunity reference number, or 0 if it doesn\textquotesingle{}t exist 
+\end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!has\+Option@{has\+Option}}
+\index{has\+Option@{has\+Option}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{has\+Option(const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)}{hasOption(const unsigned long &metacommunity_size, const long double &speciation_rate, const string &option, const unsigned long &external_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Metacommunities\+Array\+::has\+Option (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{metacommunity\+\_\+size, }
+\item[{const long double \&}]{speciation\+\_\+rate, }
+\item[{const string \&}]{option, }
+\item[{const unsigned long \&}]{external\+\_\+reference}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_ad16c2b1df93accb5bffb5a6cfae7c0eb}{}\label{struct_metacommunities_array_ad16c2b1df93accb5bffb5a6cfae7c0eb}
 
 
 Checks whether the calculation with the supplied variables has already been performed. 
@@ -110,17 +259,21 @@ Checks whether the calculation with the supplied variables has already been perf
 \hline
 {\em metacommunity\+\_\+size} & the size of metacommunity to check for \\
 \hline
+{\em option} & the metacommunity option (\char`\"{}simulated\char`\"{}, \char`\"{}analytical\char`\"{} or a path to a database) \\
+\hline
+{\em external\+\_\+reference} & the reference for the external database \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 true if the reference exists in past metacommunity parameters 
 \end{DoxyReturn}
-\index{Metacommunities\+Array@{Metacommunities\+Array}!has\+Pair@{has\+Pair}}
-\index{has\+Pair@{has\+Pair}!Metacommunities\+Array@{Metacommunities\+Array}}
-\subsubsection[{\texorpdfstring{has\+Pair(unsigned long reference)}{hasPair(unsigned long reference)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Metacommunities\+Array\+::has\+Pair (
+\index{Metacommunities\+Array@{Metacommunities\+Array}!has\+Option@{has\+Option}}
+\index{has\+Option@{has\+Option}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{has\+Option(unsigned long reference)}{hasOption(unsigned long reference)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Metacommunities\+Array\+::has\+Option (
 \begin{DoxyParamCaption}
 \item[{unsigned long}]{reference}
 \end{DoxyParamCaption}
-)}\hypertarget{struct_metacommunities_array_a98876103779bab91793f6daa513722d6}{}\label{struct_metacommunities_array_a98876103779bab91793f6daa513722d6}
+)}\hypertarget{struct_metacommunities_array_a5b4f3e826d045aac2c7e09d8fb380876}{}\label{struct_metacommunities_array_a5b4f3e826d045aac2c7e09d8fb380876}
 
 
 Checks whether the calculation with the supplied reference has already been performed. Overloaded version for checking references. 
@@ -133,15 +286,36 @@ Checks whether the calculation with the supplied reference has already been perf
 \begin{DoxyReturn}{Returns}
 true if the reference exists in past metacommunity parameters 
 \end{DoxyReturn}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!has\+Option@{has\+Option}}
+\index{has\+Option@{has\+Option}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{has\+Option(const Metacommunity\+Parameters \&metacomm\+\_\+in)}{hasOption(const MetacommunityParameters &metacomm_in)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Metacommunities\+Array\+::has\+Option (
+\begin{DoxyParamCaption}
+\item[{const {\bf Metacommunity\+Parameters} \&}]{metacomm\+\_\+in}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_a3919ab2082db032eb3b1fe1c39201789}{}\label{struct_metacommunities_array_a3919ab2082db032eb3b1fe1c39201789}
+
+
+Checks whether the calculation with the supplied reference has already been performed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em metacomm\+\_\+in} & the metacommunity parameters to check for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the metacommunity already exists in past metacommunity parameters 
+\end{DoxyReturn}
 \index{Metacommunities\+Array@{Metacommunities\+Array}!push\+Back@{push\+Back}}
 \index{push\+Back@{push\+Back}!Metacommunities\+Array@{Metacommunities\+Array}}
-\subsubsection[{\texorpdfstring{push\+Back(unsigned long reference, long double speciation\+\_\+rate, unsigned long metacommunity\+\_\+size)}{pushBack(unsigned long reference, long double speciation_rate, unsigned long metacommunity_size)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunities\+Array\+::push\+Back (
+\subsubsection[{\texorpdfstring{push\+Back(const unsigned long \&reference, const unsigned long \&metacommunity\+\_\+size, const long double \&speciation\+\_\+rate, const string \&option, const unsigned long \&external\+\_\+reference)}{pushBack(const unsigned long &reference, const unsigned long &metacommunity_size, const long double &speciation_rate, const string &option, const unsigned long &external_reference)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunities\+Array\+::push\+Back (
 \begin{DoxyParamCaption}
-\item[{unsigned long}]{reference, }
-\item[{long double}]{speciation\+\_\+rate, }
-\item[{unsigned long}]{metacommunity\+\_\+size}
+\item[{const unsigned long \&}]{reference, }
+\item[{const unsigned long \&}]{metacommunity\+\_\+size, }
+\item[{const long double \&}]{speciation\+\_\+rate, }
+\item[{const string \&}]{option, }
+\item[{const unsigned long \&}]{external\+\_\+reference}
 \end{DoxyParamCaption}
-)}\hypertarget{struct_metacommunities_array_a581a404fb39d14256419d9ae1118f58b}{}\label{struct_metacommunities_array_a581a404fb39d14256419d9ae1118f58b}
+)}\hypertarget{struct_metacommunities_array_a3e5b4d95743b3a28a521ba627fad622a}{}\label{struct_metacommunities_array_a3e5b4d95743b3a28a521ba627fad622a}
 
 
 Adds an extra \hyperlink{struct_community_parameters}{Community\+Parameters} object to the calc\+\_\+array vector with the supplied variables. 
@@ -154,14 +328,18 @@ Adds an extra \hyperlink{struct_community_parameters}{Community\+Parameters} obj
 \hline
 {\em metacommunity\+\_\+size} & the size of the metacommunity used \\
 \hline
+{\em option} & the metacommunity option (\char`\"{}simulated\char`\"{}, \char`\"{}analytical\char`\"{} or a path to a database) \\
+\hline
+{\em external\+\_\+reference} & the reference for the external database \\
+\hline
 \end{DoxyParams}
 \index{Metacommunities\+Array@{Metacommunities\+Array}!push\+Back@{push\+Back}}
 \index{push\+Back@{push\+Back}!Metacommunities\+Array@{Metacommunities\+Array}}
-\subsubsection[{\texorpdfstring{push\+Back(\+Metacommunity\+Parameters tmp\+\_\+param)}{pushBack(MetacommunityParameters tmp_param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunities\+Array\+::push\+Back (
+\subsubsection[{\texorpdfstring{push\+Back(shared\+\_\+ptr$<$ Metacommunity\+Parameters $>$ tmp\+\_\+param)}{pushBack(shared_ptr< MetacommunityParameters > tmp_param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Metacommunities\+Array\+::push\+Back (
 \begin{DoxyParamCaption}
-\item[{{\bf Metacommunity\+Parameters}}]{tmp\+\_\+param}
+\item[{shared\+\_\+ptr$<$ {\bf Metacommunity\+Parameters} $>$}]{tmp\+\_\+param}
 \end{DoxyParamCaption}
-)}\hypertarget{struct_metacommunities_array_aafc6f9ba63be4c85d32d86ebfd2137e3}{}\label{struct_metacommunities_array_aafc6f9ba63be4c85d32d86ebfd2137e3}
+)}\hypertarget{struct_metacommunities_array_a8d015063db5528131c96ee6eb2625904}{}\label{struct_metacommunities_array_a8d015063db5528131c96ee6eb2625904}
 
 
 Adds the provided Past\+Metacommunity\+Parameters object to the calc\+\_\+array vector. 
@@ -171,9 +349,23 @@ Adds the provided Past\+Metacommunity\+Parameters object to the calc\+\_\+array 
 {\em tmp\+\_\+param} & the set of metacommunity parameters to add \\
 \hline
 \end{DoxyParams}
+\index{Metacommunities\+Array@{Metacommunities\+Array}!size@{size}}
+\index{size@{size}!Metacommunities\+Array@{Metacommunities\+Array}}
+\subsubsection[{\texorpdfstring{size()}{size()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Metacommunities\+Array\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{struct_metacommunities_array_aacd1795a5dcf8a8ba2690d29aa7f76df}{}\label{struct_metacommunities_array_aacd1795a5dcf8a8ba2690d29aa7f76df}
+
+
+Gets the size of the array. 
+
+\begin{DoxyReturn}{Returns}
+the number of metacommunity parameters that have been added 
+\end{DoxyReturn}
 
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-necsim/Community.\+h\item 
-necsim/Community.\+cpp\end{DoxyCompactItemize}
+necsim/parameters.\+h\item 
+necsim/parameters.\+cpp\end{DoxyCompactItemize}

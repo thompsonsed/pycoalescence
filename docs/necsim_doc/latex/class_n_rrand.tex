@@ -65,7 +65,9 @@ void \hyperlink{class_n_rrand_a432b648073ccd3cb7f8215bb5c299619}{set\+Dispersal\
 double \hyperlink{class_n_rrand_a1e15746ff8398488245b750325f37b08}{dispersal} ()
 \begin{DoxyCompactList}\small\item\em Runs the dispersal with the allocated dispersal function. \end{DoxyCompactList}\item 
 double \hyperlink{class_n_rrand_a3cb0629d54b54865403738edd84ba883}{dispersal\+Min\+Distance} (const double \&min\+\_\+distance)
-\begin{DoxyCompactList}\small\item\em Get a dispersal distance with some minimum. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get a dispersal distance with some minimum. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_n_rrand_a347f480f78917ebcc822f0f3b74825c3}{random\+Logarithmic} (long double alpha)
+\begin{DoxyCompactList}\small\item\em Sample from a logarithmic distribution. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
@@ -174,7 +176,7 @@ whether or not the event has occured.
 Call from the fat-\/tailed dispersal kernel with the provided sigma. 
 
 \begin{DoxyRefDesc}{Deprecated}
-\item[\hyperlink{deprecated__deprecated000004}{Deprecated}]This is the original version used in J Rosindell\textquotesingle{}s codebase, and has been altered for a version which approximates the gaussian distribution at extreme limits. \end{DoxyRefDesc}
+\item[\hyperlink{deprecated__deprecated000006}{Deprecated}]This is the original version used in J Rosindell\textquotesingle{}s codebase, and has been altered for a version which approximates the gaussian distribution at extreme limits. \end{DoxyRefDesc}
 
 \begin{DoxyParams}{Parameters}
 {\em z} & the desired sigma. \\
@@ -195,7 +197,7 @@ a random number drawn from the fat-\/tailed dispersal kernel.
 Call from fat-\/tailed dispersal kernel. This function requires \hyperlink{class_n_rrand_a5679f458940de730f527772ca27db5ad}{set\+Dispersal\+Params()} has already been called. 
 
 \begin{DoxyRefDesc}{Deprecated}
-\item[\hyperlink{deprecated__deprecated000005}{Deprecated}]deprecated, kept for testing purposes only \end{DoxyRefDesc}
+\item[\hyperlink{deprecated__deprecated000007}{Deprecated}]deprecated, kept for testing purposes only \end{DoxyRefDesc}
 \begin{DoxyReturn}{Returns}
 a random number drawn from the fat-\/tailed dispersal kernel. 
 \end{DoxyReturn}
@@ -211,7 +213,7 @@ a random number drawn from the fat-\/tailed dispersal kernel.
 Old version of the function call reparameterised for different nu and sigma. 
 
 \begin{DoxyRefDesc}{Deprecated}
-\item[\hyperlink{deprecated__deprecated000006}{Deprecated}]Kept only for testing purposes. \end{DoxyRefDesc}
+\item[\hyperlink{deprecated__deprecated000008}{Deprecated}]Kept only for testing purposes. \end{DoxyRefDesc}
 \begin{DoxyReturn}{Returns}
 a random number drawn from the fat-\/tailed dispersal kernel. 
 \end{DoxyReturn}
@@ -321,6 +323,27 @@ Generates a random distance from a norm-\/uniform distribution, given that the d
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 a random distance greater than the minimum provided 
+\end{DoxyReturn}
+\index{N\+Rrand@{N\+Rrand}!random\+Logarithmic@{random\+Logarithmic}}
+\index{random\+Logarithmic@{random\+Logarithmic}!N\+Rrand@{N\+Rrand}}
+\subsubsection[{\texorpdfstring{random\+Logarithmic(long double alpha)}{randomLogarithmic(long double alpha)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long N\+Rrand\+::random\+Logarithmic (
+\begin{DoxyParamCaption}
+\item[{long double}]{alpha}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_n_rrand_a347f480f78917ebcc822f0f3b74825c3}{}\label{class_n_rrand_a347f480f78917ebcc822f0f3b74825c3}
+
+
+Sample from a logarithmic distribution. 
+
+Uses the LK sampling method for generating random numbers from a logarithmic distribution, as described by Kemp (1981).
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & alpha parameter for the logarithmic distribution \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the randomly generated logarithmic number 
 \end{DoxyReturn}
 \index{N\+Rrand@{N\+Rrand}!rayleigh@{rayleigh}}
 \index{rayleigh@{rayleigh}!N\+Rrand@{N\+Rrand}}

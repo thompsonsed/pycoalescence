@@ -8,14 +8,15 @@ Program Listing for File CSimulation.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef PY_TREE_NECSIM
    #define PY_TREE_NECSIM
    
    #include <Python.h>
    #include <structmember.h>
-   #include "necsim/ConfigFileParser.h"
+   #include <memory>
+   #include "ConfigParser.h"
    #include "necsim/Tree.h"
    #include "necsim/SpatialTree.h"
    #include "necsim/ProtractedTree.h"
@@ -46,7 +47,7 @@ Program Listing for File CSimulation.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -68,14 +69,14 @@ Program Listing for File CSimulation.h
            istream &istream1 = ss;
            getGlobalLogger(self->logger, self->log_function);
            self->base_object->wipeSimulationVariables();
-           ConfigOption config;
+           ConfigParser config;
            config.parseConfig(istream1);
            self->base_object->importSimulationVariables(config);
        }
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -93,7 +94,7 @@ Program Listing for File CSimulation.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -114,7 +115,7 @@ Program Listing for File CSimulation.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_FALSE;
@@ -149,7 +150,7 @@ Program Listing for File CSimulation.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -166,7 +167,7 @@ Program Listing for File CSimulation.h
        {
            return nullptr;
        }
-       // Set up the resume parameters.
+       // Set up the resume current_metacommunity_parameters.
        string pause_directory_str, out_directory_str;
        pause_directory_str = pause_directory;
        out_directory_str = out_directory;
@@ -188,7 +189,7 @@ Program Listing for File CSimulation.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;

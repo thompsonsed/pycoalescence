@@ -8,7 +8,7 @@ Program Listing for File PyLogger.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef NECSIM_PYLOGGER_H
    #define NECSIM_PYLOGGER_H

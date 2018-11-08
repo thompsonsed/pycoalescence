@@ -55,6 +55,8 @@ Includes
 
 - ``iostream``
 
+- ``memory``
+
 - ``stdexcept``
 
 - ``string``

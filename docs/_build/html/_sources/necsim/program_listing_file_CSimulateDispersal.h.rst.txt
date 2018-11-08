@@ -19,6 +19,7 @@ Program Listing for File CSimulateDispersal.h
    #include <structmember.h>
    #include <cstring>
    #include <string>
+   #include <memory>
    #include "PyImports.h"
    #include "PyTemplates.h"
    #include "necsim.h"
@@ -31,7 +32,7 @@ Program Listing for File CSimulateDispersal.h
    class PySimulateDispersal : public PyTemplate<SimulateDispersal>
    {
    public:
-       SimParameters *dispersalParameters;
+       shared_ptr<SimParameters> dispersalParameters;
        bool has_imported_maps;
        unique_ptr<std::string> output_database;
        bool printing;
@@ -67,6 +68,14 @@ Program Listing for File CSimulateDispersal.h
            }
        }
    };
+   
+   void raiseErrorOnFalse(bool error_raised)
+   {
+       if(error_raised)
+       {
+   
+       }
+   }
    
    static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *args)
    {
@@ -104,7 +113,7 @@ Program Listing for File CSimulateDispersal.h
        }
        if(self->has_imported_maps)
        {
-           PyErr_SetString(NECSimError, (char *) "Maps have already been imported");
+           PyErr_SetString(necsimError, (char *) "Maps have already been imported");
            return nullptr;
        }
        try
@@ -118,14 +127,32 @@ Program Listing for File CSimulateDispersal.h
            self->dispersalParameters->fine_map_file = fine_map_file;
            self->dispersalParameters->coarse_map_file = coarse_map_file;
            self->dispersalParameters->landscape_type = landscape_type;
-           importPyListToVectorString(p_path_fine, path_fine, "Fine map paths must be strings.");
-           importPyListToVectorULong(p_number_fine, number_fine, "Fine map numbers must be integers.");
-           importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats.");
-           importPyListToVectorDouble(p_time_fine, time_fine, "Fine map times must be floats.");
-           importPyListToVectorString(p_path_coarse, path_coarse, "Coarse map paths must be strings.");
-           importPyListToVectorULong(p_number_coarse, number_coarse, "Coarse map numbers must be integers.");
-           importPyListToVectorDouble(p_rate_coarse, rate_coarse, "Coarse map rates must be floats.");
-           importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats.");
+           // Check for errors in each parsing of vector
+           vector<bool> passed_errors;
+           passed_errors.emplace_back(importPyListToVectorString(p_path_fine,
+                                                                 path_fine, "Fine map paths must be strings."));
+           passed_errors.emplace_back(importPyListToVectorULong(p_number_fine,
+                                                                number_fine, "Fine map numbers must be integers."));
+           passed_errors.emplace_back(importPyListToVectorDouble(p_rate_fine,
+                                                                 rate_fine, "Fine map rates must be floats."));
+           passed_errors.emplace_back(importPyListToVectorDouble(p_time_fine,
+                                                                 time_fine, "Fine map times must be floats."));
+           passed_errors.emplace_back(importPyListToVectorString(p_path_coarse,
+                                                                 path_coarse, "Coarse map paths must be strings."));
+           passed_errors.emplace_back(importPyListToVectorULong(p_number_coarse,
+                                                                number_coarse, "Coarse map numbers must be integers."));
+           passed_errors.emplace_back(importPyListToVectorDouble(p_rate_coarse,
+                                                                 rate_coarse, "Coarse map rates must be floats."));
+           passed_errors.emplace_back(importPyListToVectorDouble(p_time_coarse,
+                                                                 time_coarse, "Coarse map times must be floats."));
+           for(const auto &item: passed_errors)
+           {
+               if(!item)
+               {
+                   removeGlobalLogger();
+                   return nullptr;
+               }
+           }
            self->dispersalParameters->setHistoricalMapParameters(path_fine, number_fine, rate_fine, time_fine, path_coarse,
                                                                  number_coarse, rate_coarse, time_coarse);
            self->setDispersalParameters();
@@ -136,7 +163,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -151,7 +178,7 @@ Program Listing for File CSimulateDispersal.h
    #ifdef DEBUG
        if(self == nullptr)
        {
-           PyErr_SetString(NECSimError, (char *) "self pointer is null. Please report this bug.");
+           PyErr_SetString(necsimError, (char *) "self pointer is null. Please report this bug.");
            return nullptr;
        }
    #endif // DEBUG
@@ -168,7 +195,7 @@ Program Listing for File CSimulateDispersal.h
        }
        if(self->has_imported_maps)
        {
-           PyErr_SetString(NECSimError, (char *) "Maps have already been imported");
+           PyErr_SetString(necsimError, (char *) "Maps have already been imported");
            return nullptr;
        }
        try
@@ -189,7 +216,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -245,7 +272,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -273,7 +300,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
    
@@ -306,7 +333,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
    
@@ -348,7 +375,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -381,7 +408,7 @@ Program Listing for File CSimulateDispersal.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
        Py_RETURN_NONE;
@@ -399,7 +426,7 @@ Program Listing for File CSimulateDispersal.h
    PySimulateDispersal_init(PySimulateDispersal *self, PyObject *args, PyObject *kwds)
    {
        auto out = PyTemplate_init<SimulateDispersal>(self, args, kwds);
-       self->dispersalParameters = new SimParameters();
+       self->dispersalParameters = make_shared<SimParameters>();
        self->has_imported_maps = false;
        self->output_database = make_unique<std::string>("none");
        self->printing = true;
@@ -411,7 +438,7 @@ Program Listing for File CSimulateDispersal.h
    {
        if(self->dispersalParameters != nullptr)
        {
-           delete self->dispersalParameters;
+           self->dispersalParameters.reset();
            self->dispersalParameters = nullptr;
        }
        if(self->output_database != nullptr)
@@ -425,19 +452,19 @@ Program Listing for File CSimulateDispersal.h
    static PyMethodDef SimulateDispersalMethods[] =
            {
                    {"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS,
-                                                                 "Sets the dispersal parameters for this simulation."},
+                                                                 "Sets the dispersal current_metacommunity_parameters for this simulation."},
                    {"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS,
                                                                  "Sets the output database for the simulation."},
                    {"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS,
-                                                                 "Runs the dispersal simulation for the set parameters, calculating the mean distance per step."},
+                                                                 "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
                    {"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS,
-                                                                 "Runs the dispersal simulation for the set parameters, calculating the mean distance travelled."},
+                                                                 "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
                    {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS,
                                                                  "Imports the map files for the simulation. Should only be run once."},
                    {"import_all_maps", (PyCFunction) set_all_map_parameters, METH_VARARGS,
                            "Imports all the map files with a single import."},
                    {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS,
-                                                                 "Sets the historical map parameters."},
+                                                                 "Sets the historical map current_metacommunity_parameters."},
                    {nullptr,                         nullptr, 0, nullptr}
            };
    

@@ -8,7 +8,7 @@ Program Listing for File NRrand.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    
    #ifndef FATTAIL_H
@@ -66,8 +66,10 @@ Program Listing for File NRrand.h
    
        typedef double (NRrand::*fptr)(); // once setup will contain the dispersal function to use for this simulation.
        fptr dispersalFunction;
+   
        // once setup will contain the dispersal function for the minimum dispersal distance.
        typedef double (NRrand::*fptr2)(const double &min_distance);
+   
        fptr2 dispersalFunctionMinDistance;
        // the probability that dispersal comes from the uniform distribution. This is only relevant for uniform dispersals.
        double m_prob{};
@@ -91,10 +93,10 @@ Program Listing for File NRrand.h
            {
                idum2 = 123456789;
                iy = 0;
-               idum = seed;
+               idum = abs(seed);
                if(idum < 1) idum = 1;
                //Be sure to prevent idum = 0.
-               idum2 = (idum);
+               idum2 = idum;
                for(j = NTAB + 7; j >= 0; j--)
                {
                    //Load the shuffle table (after 8 warm-ups).
@@ -181,7 +183,7 @@ Program Listing for File NRrand.h
        double rayleighMinDist(const double &dist)
        {
            double min_prob = rayleighCDF(dist);
-           double rand_prob = min_prob + (1-min_prob) * d01();
+           double rand_prob = min_prob + (1 - min_prob) * d01();
            double out = sigma * pow(-2 * log(rand_prob), 0.5);
            if(out < dist)
            {
@@ -211,15 +213,16 @@ Program Listing for File NRrand.h
            return result;
        }
    
-       double fattailCDF(const double & distance)
+       double fattailCDF(const double &distance)
        {
-           return (1.0/(2.0*M_PI*sigma*sigma)) * pow(1 + (distance*distance/(tau*sigma*sigma)), -(tau + 2.0)/2.0);
+           return (1.0 / (2.0 * M_PI * sigma * sigma)) *
+                  pow(1 + (distance * distance / (tau * sigma * sigma)), -(tau + 2.0) / 2.0);
        }
    
-       double fattailMinDistance(const double & min_distance)
+       double fattailMinDistance(const double &min_distance)
        {
            double prob = fattailCDF(min_distance);
-           double random_number = prob + d01() * (1-prob);
+           double random_number = prob + d01() * (1 - prob);
            return (sigma * pow((tau * (pow(random_number, -2.0 / tau)) - 1.0), 0.5));
        }
    
@@ -274,7 +277,7 @@ Program Listing for File NRrand.h
            return rayleigh();
        }
    
-       double normUniformMinDistance(const double & min_distance)
+       double normUniformMinDistance(const double &min_distance)
        {
            if(d01() < m_prob)
            {
@@ -289,7 +292,7 @@ Program Listing for File NRrand.h
            return d01() * cutoff;
        }
    
-       double uniformMinDistance(const double & min_distance)
+       double uniformMinDistance(const double &min_distance)
        {
            if(min_distance > cutoff)
            {
@@ -313,7 +316,7 @@ Program Listing for File NRrand.h
            return 0.9 * cutoff + (uniform() * 0.1);
        }
    
-       double uniformUniformMinDistance(const double & min_distance)
+       double uniformUniformMinDistance(const double &min_distance)
        {
            if(d01() < 0.5)
            {
@@ -392,7 +395,29 @@ Program Listing for File NRrand.h
            return min(double(LONG_MAX), (this->*dispersalFunctionMinDistance)(min_distance));
        }
    
-       // to reconstruct distribution, use x = fattail/squrt(1+direction) , y = fattail/squrt(1+(direction^-1))
+       unsigned long randomLogarithmic(long double alpha)
+       {
+           double u_2 = d01();
+           if(u_2 > alpha)
+           {
+               return 1;
+           }
+           long double h = log(1 - alpha);
+           long double q = 1 - exp(d01() * h);
+           if(u_2 < (q * q))
+           {
+               return static_cast<unsigned long>(floor(1 + log(u_2) / log(q)));
+           }
+           else if(u_2 > q)
+           {
+               return 1;
+           }
+           else
+           {
+               return 2;
+           }
+   
+       }
    
        friend ostream &operator<<(ostream &os, const NRrand &r)
        {

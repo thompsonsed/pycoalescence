@@ -17,15 +17,15 @@ var class_simulate_dispersal =
     [ "setOutputDatabase", "class_simulate_dispersal.html#acae5067045d5989df6d7dce80bcfe276", null ],
     [ "setSeed", "class_simulate_dispersal.html#a46f2cd557ac9b21c107eac75e7c916af", null ],
     [ "setSequential", "class_simulate_dispersal.html#a3da09319132db8c7ad035290be6590ef", null ],
-    [ "setSimulationParameters", "class_simulate_dispersal.html#a9d08a14b3f2a78591af2edf2884edb52", null ],
+    [ "setSimulationParameters", "class_simulate_dispersal.html#a521c2254ee4e95542e939e8595fa5e4c", null ],
     [ "setSizes", "class_simulate_dispersal.html#a7aeeb01c40f5de7f88bce2b484bf83a0", null ],
     [ "storeCellList", "class_simulate_dispersal.html#a85d8ee68e5f4962429571c835aa028b4", null ],
     [ "writeDatabase", "class_simulate_dispersal.html#af7d0a726cb3724c159ca46f4586a8bd3", null ],
     [ "writeParameters", "class_simulate_dispersal.html#ae0afed6eeb06f5bae4ee13a24850c8c5", null ],
     [ "writeRepeatInfo", "class_simulate_dispersal.html#ab8c48b2398f715d4de2b35a91daaae58", null ],
     [ "cells", "class_simulate_dispersal.html#abcb3ce61b835cbd007d09726302d692a", null ],
+    [ "data_mask", "class_simulate_dispersal.html#a99b4ca8cf3ecbaad85a22c41e5a97a77", null ],
     [ "database", "class_simulate_dispersal.html#afd3f96f169715aacbcc2939614a6a910", null ],
-    [ "dataMask", "class_simulate_dispersal.html#a06456ecb5cde83be793855a735c196f0", null ],
     [ "density_landscape", "class_simulate_dispersal.html#af69dbb932efef10441d1acf219416c0f", null ],
     [ "dispersal_coordinator", "class_simulate_dispersal.html#a55da369d57d854168ff6e851b0d7892a", null ],
     [ "distances", "class_simulate_dispersal.html#a87359ce728efca1ece43f52c7aa4ce9c", null ],
@@ -37,5 +37,5 @@ var class_simulate_dispersal =
     [ "parameter_references", "class_simulate_dispersal.html#a9d6fb5998b4b31837ff214b0bd216b18", null ],
     [ "random", "class_simulate_dispersal.html#a1b66ec7506a0cadab13f802de2d4d2c2", null ],
     [ "seed", "class_simulate_dispersal.html#af9ab2fa8b2c3e1bb1ba49b31679ae0d7", null ],
-    [ "simParameters", "class_simulate_dispersal.html#a6d11b4ed3e3942d2bb42e66116fffd2d", null ]
+    [ "simParameters", "class_simulate_dispersal.html#abe4c7cc163059093528c621cc7bd041e", null ]
 ];

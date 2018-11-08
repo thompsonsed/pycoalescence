@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Program Listing for File SimulatedSpeciesAbundancesHandler.h &#8212; pycoalescence 1.2.7a2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.7a2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File SimulationTemplates.h" href="file_necsim_SimulationTemplates.h.html" />
+    <link rel="prev" title="File SimulatedSpeciesAbundancesHandler.h" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulationTemplates.h.html" title="File SimulationTemplates.h"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html" title="File SimulatedSpeciesAbundancesHandler.h"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html" accesskey="U">File SimulatedSpeciesAbundancesHandler.h</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-simulatedspeciesabundanceshandler-h">
+<span id="program-listing-file-necsim-simulatedspeciesabundanceshandler-h"></span><h1>Program Listing for File SimulatedSpeciesAbundancesHandler.h<a class="headerlink" href="#program-listing-for-file-simulatedspeciesabundanceshandler-h" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Return to documentation for <a class="reference internal" href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html#file-necsim-simulatedspeciesabundanceshandler-h"><span class="std std-ref">File SimulatedSpeciesAbundancesHandler.h</span></a></li>
+</ul>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
+<span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
+
+<span class="cp">#ifndef SIMULATED_SPECIES_ABUNDANCES_H</span>
+<span class="cp">#define SIMULATED_SPECIES_ABUNDANCES_H</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;numeric&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;neutral_analytical.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;NRrand.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;custom_exceptions.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;double_comparison.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SpeciesAbundancesHandler.h&quot;</span><span class="cp"></span>
+
+<span class="k">namespace</span> <span class="n">na</span> <span class="o">=</span> <span class="n">neutral_analytical</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">SimulatedSpeciesAbundancesHandler</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">SpeciesAbundancesHandler</span>
+<span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="c1">// Maps abundance values to a vector containing species ids</span>
+    <span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">species_abundances</span><span class="p">;</span>
+    <span class="c1">// Maps abundance values to the maximum number of species expected to be contained.</span>
+    <span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">species_richness_per_abundance</span><span class="p">;</span>
+    <span class="c1">// Maps cumulative probabilities of choosing each abundance to abundance values</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">cumulative_abundance_map</span><span class="p">;</span>
+    <span class="c1">// Total species number</span>
+    <span class="kt">double</span> <span class="n">total_species_number</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">number_of_individuals</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">SimulatedSpeciesAbundancesHandler</span><span class="p">();</span>
+
+    <span class="o">~</span><span class="n">SimulatedSpeciesAbundancesHandler</span><span class="p">()</span> <span class="k">override</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getRandomSpeciesID</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">setAbundanceList</span><span class="p">(</span><span class="k">const</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="o">&amp;</span><span class="n">abundance_list_in</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">setAbundanceList</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">abundance_list_in</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">generateAbundanceTable</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">abundance_list</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">generateCumulativeAbundances</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">abundance_list</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getRandomAbundanceOfIndividual</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">getSpeciesRichnessOfAbundance</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">abundance</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+<span class="c1">//</span>
+<span class="c1">//  /**</span>
+<span class="c1">//   * @brief Generates an actual species abundance distribution from the probability distribution.</span>
+<span class="c1">//   *</span>
+<span class="c1">//   *</span>
+<span class="c1">//   * This process involves randomly adding species to their abundance class according to the probability distribution,</span>
+<span class="c1">//   * and is not guaranteed to generate the exact number of individuals as required by the metacommunity (but this</span>
+<span class="c1">//   * should be a good approximation for larger community sizes).</span>
+<span class="c1">//   */</span>
+<span class="c1">//  void generateAbundances()</span>
+<span class="c1">//  {</span>
+<span class="c1">//      makeProbabilityDistributionCumulative();</span>
+<span class="c1">//      species_abundances.clear();</span>
+<span class="c1">//      while(number_of_individuals &lt; community_size)</span>
+<span class="c1">//      {</span>
+<span class="c1">//          // Randomly add a species</span>
+<span class="c1">//          double random_number = random_no-&gt;d01();</span>
+<span class="c1">//          auto random_abundance_pointer = lower_bound(abundance_prob_dist-&gt;begin(), abundance_prob_dist-&gt;end(),</span>
+<span class="c1">//                                                      random_number);</span>
+<span class="c1">//          unsigned long random_abundance = random_abundance_pointer - abundance_prob_dist-&gt;begin();</span>
+<span class="c1">//          species_abundances.emplace_back(random_abundance);</span>
+<span class="c1">//          number_of_individuals += random_abundance;</span>
+<span class="c1">//      }</span>
+<span class="c1">//</span>
+<span class="c1">//  }</span>
+<span class="c1">//</span>
+<span class="c1">//  /**</span>
+<span class="c1">//   * @brief Counts the number of species expected to exist according to the probability distribution. Stores the</span>
+<span class="c1">//   * result in total_species_number.</span>
+<span class="c1">//   */</span>
+<span class="c1">//  void countTotalSpecies()</span>
+<span class="c1">//  {</span>
+<span class="c1">//      total_species_number = 0.0;</span>
+<span class="c1">//      if(abundance_prob_dist-&gt;empty())</span>
+<span class="c1">//      {</span>
+<span class="c1">//          throw FatalException(&quot;The species abundance distribution has no species. Please report this bug.&quot;);</span>
+<span class="c1">//      }</span>
+<span class="c1">//      (*abundance_prob_dist)[0] = 0.0;</span>
+<span class="c1">//      for(const auto &amp;item : *abundance_prob_dist)</span>
+<span class="c1">//      {</span>
+<span class="c1">//          total_species_number += item;</span>
+<span class="c1">//      }</span>
+<span class="c1">//  }</span>
+<span class="c1">//</span>
+<span class="c1">//  /**</span>
+<span class="c1">//   * @brief Makes the probability distribution cumulative, if it has not already been made so.</span>
+<span class="c1">//   */</span>
+<span class="c1">//  void makeProbabilityDistributionCumulative()</span>
+<span class="c1">//  {</span>
+<span class="c1">//      countTotalSpecies();</span>
+<span class="c1">//      if(!doubleCompare(total_species_number, 1.0, 0.00000000001))</span>
+<span class="c1">//      {</span>
+<span class="c1">//          for(unsigned long i = 1; i &lt; abundance_prob_dist-&gt;size(); i++)</span>
+<span class="c1">//          {</span>
+<span class="c1">//              (*abundance_prob_dist)[i] += (*abundance_prob_dist)[i - 1];</span>
+<span class="c1">//          }</span>
+<span class="c1">//          for(unsigned long i = 1; i &lt; abundance_prob_dist-&gt;size(); i++)</span>
+<span class="c1">//          {</span>
+<span class="c1">//              (*abundance_prob_dist)[i] /= total_species_number;</span>
+<span class="c1">//          }</span>
+<span class="c1">//          (*abundance_prob_dist)[0] = 0.0;</span>
+<span class="c1">//      }</span>
+<span class="c1">//  }</span>
+<span class="c1">//</span>
+<span class="c1">//  /**</span>
+<span class="c1">//   * @brief Makes the species abundances cumulative.</span>
+<span class="c1">//   *</span>
+<span class="c1">//   * Assumes that number_of_individuals holds the total number of individuals in the community.</span>
+<span class="c1">//   */</span>
+<span class="c1">//  void makeSpeciesAbundancesCumulative()</span>
+<span class="c1">//  {</span>
+<span class="c1">//      cumulative_abundances-&gt;reserve(species_abundances.size());</span>
+<span class="c1">//      partial_sum(species_abundances.begin(), species_abundances.end(), cumulative_abundances-&gt;begin(),</span>
+<span class="c1">//                  addAndRescale);</span>
+<span class="c1">//  }</span>
+<span class="c1">//</span>
+<span class="c1">//  /**</span>
+<span class="c1">//   * @brief Gets a random species ID</span>
+<span class="c1">//   * @return a random species identity</span>
+<span class="c1">//   */</span>
+<span class="c1">//  unsigned long getRandomSpeciesID()</span>
+<span class="c1">//  {</span>
+<span class="c1">//      // Select a random species</span>
+<span class="c1">//      double random_number = random_no-&gt;d01();</span>
+<span class="c1">//      auto species_id_pointer = lower_bound(species_abundances.begin(), species_abundances.end(), random_number);</span>
+<span class="c1">//      return species_id_pointer - species_abundances.begin();</span>
+<span class="c1">//  }</span>
+
+<span class="p">};</span>
+
+<span class="cp">#endif </span><span class="c1">//SIMULATED_SPECIES_ABUNDANCES_H</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html"
+                        title="previous chapter">File SimulatedSpeciesAbundancesHandler.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_necsim_SimulationTemplates.h.html"
+                        title="next chapter">File SimulationTemplates.h</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/program_listing_file_necsim_SimulatedSpeciesAbundancesHandler.h.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulationTemplates.h.html" title="File SimulationTemplates.h"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html" title="File SimulatedSpeciesAbundancesHandler.h"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="file_necsim_SimulatedSpeciesAbundancesHandler.h.html" >File SimulatedSpeciesAbundancesHandler.h</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

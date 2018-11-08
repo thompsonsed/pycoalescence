@@ -3,7 +3,7 @@
 Function runXL
 ==============
 
-- Defined in :ref:`file_necsim_Setup.h`
+- Defined in :ref:`file_necsim_setup.h`
 
 
 Function Documentation

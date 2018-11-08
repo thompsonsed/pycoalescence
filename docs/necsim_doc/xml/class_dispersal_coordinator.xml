@@ -414,13 +414,13 @@
         </inbodydescription>
         <location file="necsim/DispersalCoordinator.h" line="118" column="1" bodyfile="necsim/DispersalCoordinator.cpp" bodystart="57" bodyend="88"/>
       </memberdef>
-      <memberdef kind="function" id="class_dispersal_coordinator_1a8504699586755df070b44da71ea346a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_dispersal_coordinator_1a13809695dbf175d765464331c2b8d134" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void DispersalCoordinator::setDispersal</definition>
-        <argsstring>(SimParameters *simParameters)</argsstring>
+        <argsstring>(shared_ptr&lt; SimParameters &gt; simParameters)</argsstring>
         <name>setDispersal</name>
         <param>
-          <type><ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> *</type>
+          <type>shared_ptr&lt; <ref refid="struct_sim_parameters" kindref="compound">SimParameters</ref> &gt;</type>
           <declname>simParameters</declname>
         </param>
         <briefdescription>
@@ -1388,47 +1388,47 @@
     <detaileddescription>
 <para>It requires linking to a density map, random number generator and a generation counter from the <ref refid="class_tree" kindref="compound">Tree</ref> class.</para><para>Note that no element of this object is recorded during a paused simulation, as all objects pointed to are stored elsewhere and behaviours are recalculated upon simulation resume. </para>    </detaileddescription>
     <collaborationgraph>
-      <node id="503">
+      <node id="475">
         <label>Row&lt; double &gt;</label>
         <link refid="class_row"/>
       </node>
-      <node id="500">
+      <node id="472">
         <label>Step</label>
         <link refid="struct_step"/>
       </node>
-      <node id="505">
+      <node id="477">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="501">
+      <node id="473">
         <label>Map&lt; double &gt;</label>
         <link refid="class_map"/>
-        <childnode refid="502" relation="public-inheritance">
+        <childnode refid="474" relation="public-inheritance">
         </childnode>
-        <childnode refid="504" relation="usage">
+        <childnode refid="476" relation="usage">
           <edgelabel>filename</edgelabel>
         </childnode>
       </node>
-      <node id="502">
+      <node id="474">
         <label>Matrix&lt; double &gt;</label>
         <link refid="class_matrix"/>
-        <childnode refid="503" relation="usage">
+        <childnode refid="475" relation="usage">
           <edgelabel>matrix</edgelabel>
         </childnode>
       </node>
-      <node id="499">
+      <node id="471">
         <label>DispersalCoordinator</label>
         <link refid="class_dispersal_coordinator"/>
-        <childnode refid="500" relation="usage">
+        <childnode refid="472" relation="usage">
           <edgelabel>doDispersal</edgelabel>
         </childnode>
-        <childnode refid="501" relation="usage">
+        <childnode refid="473" relation="usage">
           <edgelabel>raw_dispersal_prob_map</edgelabel>
           <edgelabel>dispersal_prob_map</edgelabel>
         </childnode>
       </node>
-      <node id="504">
+      <node id="476">
         <label>std::string</label>
-        <childnode refid="505" relation="public-inheritance">
+        <childnode refid="477" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
@@ -1463,7 +1463,7 @@
       <member refid="class_dispersal_coordinator_1a7813e9d02d42c9326199cad342744592" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>raw_dispersal_prob_map</name></member>
       <member refid="class_dispersal_coordinator_1abcb6ca3c2ff84a07fe9324231317c5ca" prot="protected" virt="non-virtual"><scope>DispersalCoordinator</scope><name>reproduction_map</name></member>
       <member refid="class_dispersal_coordinator_1a977652ff40148fa7e0a0bfff049b9568" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setDispersal</name></member>
-      <member refid="class_dispersal_coordinator_1a8504699586755df070b44da71ea346a5" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setDispersal</name></member>
+      <member refid="class_dispersal_coordinator_1a13809695dbf175d765464331c2b8d134" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setDispersal</name></member>
       <member refid="class_dispersal_coordinator_1ae72980ec66825c641545675037885248" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setEndPointFptr</name></member>
       <member refid="class_dispersal_coordinator_1aad9a57afe4629674c958e4d0de4d2451" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setGenerationPtr</name></member>
       <member refid="class_dispersal_coordinator_1a7564bbc5e1d03f5a6f1e268c5c6db5aa" prot="public" virt="non-virtual"><scope>DispersalCoordinator</scope><name>setMaps</name></member>

@@ -8,7 +8,7 @@ Program Listing for File Community.h
 
 .. code-block:: cpp
 
-   //This file is part of NECSim project which is released under MIT license.
+   //This file is part of necsim project which is released under MIT license.
    //See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef TREELIST
    #define TREELIST
@@ -16,16 +16,23 @@ Program Listing for File Community.h
    #include <cmath>
    #include <sqlite3.h>
    #include <cstring>
-   #include <cmath>
    #include <stdexcept>
    #include <string>
    # include <boost/filesystem.hpp>
    #include <boost/lexical_cast.hpp>
    #include <set>
+   #include <utility>
+   #include <memory>
+   
+   #ifdef WIN_INSTALL
+   #include <windows.h>
+   #define sleep Sleep
+   #endif
    
    #include "TreeNode.h"
    #include "Matrix.h"
    #include "DataMask.h"
+   #include "parameters.h"
    #include "SpecSimParameters.h"
    
    using namespace std;
@@ -33,89 +40,6 @@ Program Listing for File Community.h
    
    bool checkSpeciation(const long double &random_number, const long double &speciation_rate,
                         const unsigned long &no_generations);
-   
-   struct CommunityParameters
-   {
-       unsigned long reference;
-       long double speciation_rate;
-       long double time;
-       bool fragment;
-       unsigned long metacommunity_reference; // will be 0 if no metacommunity used.
-       // protracted speciation parameters
-       ProtractedSpeciationParameters protracted_parameters;
-       bool updated; // set to true if the fragment reference needs updating in the database
-   
-       CommunityParameters() : reference(0), speciation_rate(0.0), time(0), fragment(false), metacommunity_reference(0),
-                               protracted_parameters(), updated(false){}
-   
-       CommunityParameters(unsigned long reference_in, long double speciation_rate_in, long double time_in,
-                           bool fragment_in, unsigned long metacommunity_reference_in,
-                           const ProtractedSpeciationParameters &protracted_params);
-   
-       void setup(unsigned long reference_in, long double speciation_rate_in, long double time_in, bool fragment_in,
-                  unsigned long metacommunity_reference_in, const ProtractedSpeciationParameters &protracted_params);
-   
-       bool compare(long double speciation_rate_in, long double time_in, bool fragment_in,
-                    unsigned long metacommunity_reference_in,
-                    const ProtractedSpeciationParameters &protracted_params);
-   
-       bool compare(long double speciation_rate_in, long double time_in,
-                    unsigned long metacommunity_reference_in,
-                    const ProtractedSpeciationParameters &protracted_params);
-   
-       bool compare(unsigned long reference_in);
-   };
-   
-   struct CommunitiesArray
-   {
-       vector<CommunityParameters> communityParameters;
-   
-       void pushBack(unsigned long reference, long double speciation_rate, long double time, bool fragment,
-                     unsigned long metacommunity_reference,
-                     const ProtractedSpeciationParameters &protracted_params);
-   
-       void pushBack(CommunityParameters tmp_param);
-   
-       CommunityParameters &addNew(long double speciation_rate, long double time, bool fragment,
-                                   unsigned long metacommunity_reference,
-                                   const ProtractedSpeciationParameters &protracted_params);
-   
-       bool hasPair(long double speciation_rate, double time, bool fragment,
-                    unsigned long metacommunity_reference,
-                    const ProtractedSpeciationParameters &protracted_params);
-   
-   };
-   
-   struct MetacommunityParameters
-   {
-       unsigned long reference;
-       unsigned long metacommunity_size;
-       long double speciation_rate;
-   
-       MetacommunityParameters(unsigned long reference_in, long double speciation_rate_in,
-                               unsigned long metacommunity_size_in);
-   
-       bool compare(long double speciation_rate_in, unsigned long metacommunity_size_in);
-   
-       bool compare(unsigned long reference_in);
-   };
-   
-   struct MetacommunitiesArray
-   {
-       vector<MetacommunityParameters> calc_array;
-   
-       void pushBack(unsigned long reference, long double speciation_rate, unsigned long metacommunity_size);
-   
-       void pushBack(MetacommunityParameters tmp_param);
-   
-       unsigned long addNew(long double speciation_rate, unsigned long metacommunity_size);
-   
-       bool hasPair(long double speciation_rate, unsigned long metacommunity_size);
-   
-       bool hasPair(unsigned long reference);
-   
-       unsigned long getReference(long double speciation_rate, unsigned long metacommunity_size);
-   };
    
    struct Fragment
    {
@@ -162,14 +86,15 @@ Program Listing for File Community.h
        bool database_set; // boolean for whether the database has been set already.
        sqlite3 *database; // stores the in-memory database connection.
        bool bSqlConnection; // true if the data connection has been established.
-       Row<TreeNode> *nodes; // in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.
-       Row<unsigned long> row_out;
+       shared_ptr<vector<TreeNode>> nodes; // in older versions this was called species_id_list. Changed to avoid confusion with the built-in class.
+       shared_ptr<vector<unsigned long>> species_abundances;
        unsigned long iSpecies;
        bool has_imported_samplemask; // checks whether the samplemask has already been imported.
        bool has_imported_data; // checks whether the main sim data has been imported.
        Samplematrix samplemask; // the samplemask object for defining the areas we want to sample from.
        vector<Fragment> fragments; // a vector of fragments for storing each fragment's coordinates.
-       CommunityParameters *current_community_parameters;
+       shared_ptr<CommunityParameters> current_community_parameters;
+       shared_ptr<MetacommunityParameters> current_metacommunity_parameters;
        // the minimum speciation rate the original simulation was run with (this is read from the database SIMULATION_PARAMETERS table)
        long double min_spec_rate;
        // The dimensions of the sample grid size.
@@ -179,39 +104,47 @@ Program Listing for File Community.h
        // Vector containing past speciation rates
        CommunitiesArray past_communities;
        MetacommunitiesArray past_metacommunities;
-       // Protracted speciation parameters
+       // Protracted speciation current_metacommunity_parameters
        bool protracted;
        double min_speciation_gen, max_speciation_gen;
        ProtractedSpeciationParameters applied_protracted_parameters;
        unsigned long max_species_id, max_fragment_id, max_locations_id;
        // Does not need to be stored during simulation pause
-       SpecSimParameters *spec_sim_parameters;
+       shared_ptr<SpecSimParameters> spec_sim_parameters;
    public:
    
-       Community(Row<TreeNode> *r) : in_mem(false), database_set(false), database(nullptr),
-                                     bSqlConnection(false), nodes(r), row_out(), iSpecies(0),
-                                     has_imported_samplemask(false), has_imported_data(false), samplemask(),
-                                     fragments(), current_community_parameters(nullptr), min_spec_rate(0.0),
-                                     grid_x_size(0), grid_y_size(0), samplemask_x_size(0), samplemask_y_size(0),
-                                     samplemask_x_offset(0), samplemask_y_offset(0), past_communities(),
-                                     past_metacommunities(), protracted(false), min_speciation_gen(0.0),
-                                     max_speciation_gen(0.0), applied_protracted_parameters(), max_species_id(0),
-                                     max_fragment_id(0), max_locations_id(0), spec_sim_parameters(nullptr)
+       explicit Community(shared_ptr<vector<TreeNode>> r) : in_mem(false), database_set(false), database(nullptr),
+                                                         bSqlConnection(false), nodes(std::move(r)),
+                                                         species_abundances(make_shared<vector<unsigned long>>()),
+                                                         iSpecies(0), has_imported_samplemask(false),
+                                                         has_imported_data(false), samplemask(), fragments(),
+                                                         current_community_parameters(make_shared<CommunityParameters>()),
+                                                         current_metacommunity_parameters(
+                                                                 make_shared<MetacommunityParameters>()),
+                                                         min_spec_rate(0.0),
+                                                         grid_x_size(0), grid_y_size(0), samplemask_x_size(0),
+                                                         samplemask_y_size(0), samplemask_x_offset(0),
+                                                         samplemask_y_offset(0), past_communities(),
+                                                         past_metacommunities(), protracted(false),
+                                                         min_speciation_gen(0.0), max_speciation_gen(0.0),
+                                                         applied_protracted_parameters(), max_species_id(0),
+                                                         max_fragment_id(0), max_locations_id(0),
+                                                         spec_sim_parameters(make_shared<SpecSimParameters>())
        {
    
        }
    
-       Community() : Community(nullptr)
+       Community() : Community(make_shared<vector<TreeNode>>())
        {
        }
    
-        virtual ~Community()
+       virtual ~Community()
        {
-           nodes = nullptr;
+           nodes.reset();
            sqlite3_close(database);
        }
    
-       void setList(Row<TreeNode> *l);
+       void setList(shared_ptr<vector<TreeNode>> l);
    
        void setDatabase(sqlite3 *dbin);
    
@@ -236,23 +169,26 @@ Program Listing for File Community.h
        void openSqlConnection(string inputfile);
    
        void closeSqlConnection();
+   
        void setInternalDatabase();
    
        void internalOption();
    
        void importData(string inputfile);
    
-       void setSimParameters(const SimParameters *sim_parameters);
+       void setSimParameters(shared_ptr<SimParameters> sim_parameters);
    
        void importSimParameters(string file);
+   
+       void forceSimCompleteParameter();
    
        bool isSetDatabase();
    
        void getMaxSpeciesAbundancesID();
    
-       Row<unsigned long> *getCumulativeAbundances();
+       shared_ptr<vector<unsigned long>> getCumulativeAbundances();
    
-       Row<unsigned long> getRowOut();
+       shared_ptr<vector<unsigned long>> getRowOut();
    
        unsigned long getSpeciesNumber();
    
@@ -272,13 +208,13 @@ Program Listing for File Community.h
    
        void outputSpeciesAbundances();
    
-       bool checkCalculationsPerformed(long double speciation_rate, double time, bool fragments,
-                                       unsigned long metacommunity_size, long double metacommunity_speciation_rate,
-                                       ProtractedSpeciationParameters proc_parameters);
+       bool checkCalculationsPerformed(const long double &speciation_rate, const double &time, const bool &fragments,
+                                       const MetacommunityParameters &metacomm_parameters,
+                                       const ProtractedSpeciationParameters &proc_parameters);
    
-       void addCalculationPerformed(long double speciation_rate, double time, bool fragments,
-                                    unsigned long metacommunity_size, long double metacommunity_speciation_rate,
-                                    const ProtractedSpeciationParameters &protracted_params);
+       void addCalculationPerformed(const long double &speciation_rate, const double &time, const bool &fragments,
+                                    const MetacommunityParameters &metacomm_parameters,
+                                    const ProtractedSpeciationParameters &protracted_parameters);
    
        void createFragmentDatabase(const Fragment &f);
    
@@ -302,7 +238,13 @@ Program Listing for File Community.h
    
        void writeNewCommunityParameters();
    
-       void writeNewMetacommuntyParameters();
+       void writeNewMetacommunityParameters();
+   
+       void createSpeciesList();
+   
+       void deleteSpeciesList();
+   
+       void writeSpeciesList(const unsigned long &enddata);
    
        void updateCommunityParameters();
    
@@ -310,20 +252,31 @@ Program Listing for File Community.h
    
        void calculateTree();
    
+       void makeSpeciationRatesUnique();
+   
+       void makeTimesUnique();
+   
        void output();
    
        void printEndTimes(time_t tStart, time_t tEnd);
    
-       void apply(SpecSimParameters *sp);
+       void apply(shared_ptr<SpecSimParameters> sp);
    
-       virtual void applyNoOutput(SpecSimParameters *sp);
+       virtual void applyNoOutput(shared_ptr<SpecSimParameters> sp);
    
-       void doApplication(SpecSimParameters *sp);
+       void doApplication(shared_ptr<SpecSimParameters> sp);
    
-       void doApplication(SpecSimParameters *sp, Row<TreeNode> *data);
+       void doApplication(shared_ptr<SpecSimParameters> sp, shared_ptr<vector<TreeNode>> data);
    
-       void doApplicationInternal(SpecSimParameters *sp, Row<TreeNode> *data);
+       void doApplicationInternal(shared_ptr<SpecSimParameters> sp, shared_ptr<vector<TreeNode>> data);
    
+       void speciateRemainingLineages(const string &filename);
+   
+       unsigned long getSpeciesRichness(const unsigned long &community_reference);
+   
+       shared_ptr<map<unsigned long, unsigned long>> getSpeciesAbundances(const unsigned long &community_reference);
+   
+       shared_ptr<vector<unsigned long>> getSpeciesAbundances();
    };
    
    #endif

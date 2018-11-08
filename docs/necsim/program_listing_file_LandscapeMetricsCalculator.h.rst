@@ -8,13 +8,14 @@ Program Listing for File LandscapeMetricsCalculator.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #include<algorithm>
    #include <vector>
    #include <numeric>
    #include "necsim/Map.h"
    #include "necsim/Cell.h"
+   
    #ifndef MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
    #define MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
    
@@ -25,11 +26,15 @@ Program Listing for File LandscapeMetricsCalculator.h
        vector<Cell> all_cells;
    public:
    
+       LandscapeMetricsCalculator() : all_cells(){};
+   
+       virtual ~LandscapeMetricsCalculator(){};
+   
        double calculateMNN();
    
-       void checkMinDistance(Cell &home_cell, const long &x, const long &y, double & min_distance);
+       void checkMinDistance(Cell &home_cell, const long &x, const long &y, double &min_distance);
    
-       double findNearestNeighbourDistance(const long & row, const long & col);
+       double findNearestNeighbourDistance(const long &row, const long &col);
    
        void createCellList();
    

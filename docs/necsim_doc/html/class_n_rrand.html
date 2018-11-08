@@ -204,6 +204,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3cb0629d54b54865403738edd84ba883"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_rrand.html#a3cb0629d54b54865403738edd84ba883">dispersalMinDistance</a> (const double &amp;min_distance)</td></tr>
 <tr class="memdesc:a3cb0629d54b54865403738edd84ba883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a dispersal distance with some minimum.  <a href="#a3cb0629d54b54865403738edd84ba883">More...</a><br /></td></tr>
 <tr class="separator:a3cb0629d54b54865403738edd84ba883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347f480f78917ebcc822f0f3b74825c3"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_rrand.html#a347f480f78917ebcc822f0f3b74825c3">randomLogarithmic</a> (long double alpha)</td></tr>
+<tr class="memdesc:a347f480f78917ebcc822f0f3b74825c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample from a logarithmic distribution.  <a href="#a347f480f78917ebcc822f0f3b74825c3">More...</a><br /></td></tr>
+<tr class="separator:a347f480f78917ebcc822f0f3b74825c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -385,7 +388,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Call from the fat-tailed dispersal kernel with the provided sigma. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>This is the original version used in J Rosindell's codebase, and has been altered for a version which approximates the gaussian distribution at extreme limits. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>This is the original version used in J Rosindell's codebase, and has been altered for a version which approximates the gaussian distribution at extreme limits. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">z</td><td>the desired sigma. </td></tr>
@@ -418,7 +421,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Call from fat-tailed dispersal kernel. This function requires <a class="el" href="class_n_rrand.html#a5679f458940de730f527772ca27db5ad" title="Sets the dispersal parameters, avoiding requirement to provide these numbers each function call...">setDispersalParams()</a> has already been called. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>deprecated, kept for testing purposes only </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Deprecated:</a></b></dt><dd>deprecated, kept for testing purposes only </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a random number drawn from the fat-tailed dispersal kernel. </dd></dl>
 
 </div>
@@ -445,7 +448,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Old version of the function call reparameterised for different nu and sigma. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>Kept only for testing purposes. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>Kept only for testing purposes. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a random number drawn from the fat-tailed dispersal kernel. </dd></dl>
 
 </div>
@@ -632,6 +635,40 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a random distance greater than the minimum provided </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a347f480f78917ebcc822f0f3b74825c3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long NRrand::randomLogarithmic </td>
+          <td>(</td>
+          <td class="paramtype">long double&#160;</td>
+          <td class="paramname"><em>alpha</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sample from a logarithmic distribution. </p>
+<p>Uses the LK sampling method for generating random numbers from a logarithmic distribution, as described by Kemp (1981).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alpha</td><td>alpha parameter for the logarithmic distribution </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the randomly generated logarithmic number </dd></dl>
 
 </div>
 </div>

@@ -38,13 +38,17 @@ Includes
 --------
 
 
-- ``ConfigFileParser.h`` (:ref:`file_necsim_ConfigFileParser.h`)
+- ``ConfigParser.h`` (:ref:`file_necsim_ConfigParser.h`)
 
-- ``CustomExceptions.h`` (:ref:`file_necsim_CustomExceptions.h`)
+- ``custom_exceptions.h`` (:ref:`file_necsim_custom_exceptions.h`)
 
-- ``DoubleComparison.h`` (:ref:`file_necsim_DoubleComparison.h`)
+- ``double_comparison.h`` (:ref:`file_necsim_double_comparison.h`)
+
+- ``parameters.h`` (:ref:`file_necsim_parameters.h`)
 
 - ``string``
+
+- ``utility``
 
 - ``vector``
 
@@ -66,8 +70,6 @@ Included By
 Classes
 -------
 
-
-- :ref:`struct_ProtractedSpeciationParameters`
 
 - :ref:`class_SpecSimParameters`
 

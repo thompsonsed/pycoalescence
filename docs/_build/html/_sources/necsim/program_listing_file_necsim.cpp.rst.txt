@@ -8,16 +8,16 @@ Program Listing for File necsim.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #define PYTHON_COMPILE
    #include <Python.h>
-   #include <vector>
    #include <string>
+   #include <vector>
    #include <csignal>
    
    // These are included here for compabilitity reasons
-   #include "necsim/Setup.h"
+   #include "setup.h"
    // This provides compability for protracted speciation events.
    #include "necsim.h"
    #include "PyLogging.h"
@@ -30,7 +30,7 @@ Program Listing for File necsim.cpp
    using namespace std;
    
    #if PY_MAJOR_VERSION < 3
-   static PyMethodDef NECSimMethods[] =
+   static PyMethodDef NecsimMethods[] =
    {
        {NULL, NULL, 0 , NULL}
    };
@@ -77,7 +77,7 @@ Program Listing for File necsim.cpp
        #if PY_MAJOR_VERSION >= 3
        module = PyModule_Create(&moduledef);
        #else
-       module = Py_InitModule("libnecsim", NECSimMethods);
+       module = Py_InitModule("libnecsim", NecsimMethods);
        #endif
        if(module == nullptr)
        {
@@ -104,9 +104,9 @@ Program Listing for File necsim.cpp
            PyEval_InitThreads();
            
        }
-       NECSimError = PyErr_NewException((char*)"libnecsim.NECSimError", NULL, NULL);
-       Py_INCREF(NECSimError);
-       PyModule_AddObject(module, "NECSimError", NECSimError);
+       necsimError = PyErr_NewException((char*)"libnecsim.necsimError", NULL, NULL);
+       Py_INCREF(necsimError);
+       PyModule_AddObject(module, "necsimError", necsimError);
        PyModule_AddObject(module, (char*)"CSpatialSimulation", (PyObject *) &C_SpatialSimulationType);
        PyModule_AddObject(module, (char*)"CNSESimulation", (PyObject *) &C_NSESimulationType);
        PyModule_AddObject(module, (char*)"CCommunity", (PyObject *) &C_CommunityType);

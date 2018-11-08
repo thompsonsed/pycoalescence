@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File CLandscapeMetricsCalculator.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File CLandscapeMetricsCalculator.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_CLandscapeMetricsCalculator.h.html" title="File CLandscapeMetricsCalculator.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CLandscapeMetricsCalculator.h.html" accesskey="U">File CLandscapeMetricsCalculator.h</a> &#187;</li> 
       </ul>
@@ -66,17 +66,18 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_CLandscapeMetricsCalculator.h.html#file-clandscapemetricscalculator-h"><span class="std std-ref">File CLandscapeMetricsCalculator.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#ifndef NECSIM_CLANDSCAPEMETRICSCALCULATOR_H</span>
 <span class="cp">#define NECSIM_CLANDSCAPEMETRICSCALCULATOR_H</span>
 <span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;necsim.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;LandscapeMetricsCalculator.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyLogging.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;necsim/CPLCustomHandlerNecsim.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;cpl_custom_handler.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;PyTemplates.h&quot;</span><span class="cp"></span>
 
 <span class="k">class</span> <span class="nc">PyLMC</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PyTemplate</span><span class="o">&lt;</span><span class="n">LandscapeMetricsCalculator</span><span class="o">&gt;</span>
@@ -106,7 +107,7 @@
         <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
         <span class="p">{</span>
             <span class="n">removeGlobalLogger</span><span class="p">();</span>
-            <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+            <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
             <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -130,7 +131,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -151,7 +152,7 @@
     <span class="k">catch</span><span class="p">(</span><span class="n">exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="n">removeGlobalLogger</span><span class="p">();</span>
-        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">NECSimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+        <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">necsimError</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
         <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -267,7 +268,7 @@
         <li class="right" >
           <a href="file_CLandscapeMetricsCalculator.h.html" title="File CLandscapeMetricsCalculator.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_CLandscapeMetricsCalculator.h.html" >File CLandscapeMetricsCalculator.h</a> &#187;</li> 
       </ul>

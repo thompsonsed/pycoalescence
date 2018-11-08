@@ -8,7 +8,7 @@ Program Listing for File PyImports.cpp
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #include <cstring>
    #ifndef WIN_INSTALL
@@ -27,7 +27,7 @@ Program Listing for File PyImports.cpp
    #if PY_MAJOR_VERSION >= 3
            if(!PyUnicode_Check(item))
    #else
-           if(PyString_Check(item))
+           if(!PyString_Check(item))
    #endif
            {
                PyErr_SetString(PyExc_TypeError, err_msg.c_str());

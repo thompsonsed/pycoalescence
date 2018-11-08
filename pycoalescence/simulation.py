@@ -31,7 +31,7 @@ global sqlite_import
 try:
 	import configparser as ConfigParser
 	from io import StringIO
-except ImportError as ie:  # python 2.x support
+except ImportError as ie:  # Python 2.x support
 	import ConfigParser
 	from cStringIO import StringIO
 
@@ -149,21 +149,13 @@ class Simulation(Landscape):
 		self.uses_spatial_sampling = False
 
 	def __del__(self):
-		"""Safely destroys the logger and the c++ objects."""
+		"""Safely destroys the logger and the C++ objects."""
 		handlers = copy.copy(self.logger.handlers)
 		for handler in handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
 		self.logger = None
 		self.c_simulation = None
-
-	def setup_necsim(self):
-		"""
-		Sets the logging function and the logger object for the necsim object. Enforcing this function is always called
-		ensures no seg faults occur.
-		"""
-		self.necsim.set_logger(self.logger)
-		self.necsim.set_log_function(write_to_log)
 
 	def add_sample_time(self, time):
 		"""
@@ -605,7 +597,7 @@ class Simulation(Landscape):
 		:param list times: list of temporal sampling points to apply (in generations)
 		"""
 		if not self.is_setup_param:
-			self.seed = seed
+			self.set_seed(seed)
 			self.output_directory = output_directory
 			self.job_type = job_type
 			self.min_speciation_rate = min_speciation_rate
@@ -657,6 +649,27 @@ class Simulation(Landscape):
 		else:
 			self.logger.warning("Parameters already set up.")
 
+	def set_seed(self, seed):
+		"""
+		Sets the seed for the simulation.
+
+		A seed < 1 should not be set for the necsim, as equivalent behaviour is produce for seed and abs(seed), plus for
+		seed = 1 and seed = 0. Consequently, for any values less than 1, we take a very large number plus the seed,
+		instead. Therefore a error is raised if the seed exceeds this very large number (this is an acceptable
+		decrease in userability as a seed that large is unlikely to ever be used).
+
+		:param int seed: the random number seed
+		"""
+		limit_val = int(2147483647 / 2)
+		if seed > limit_val:
+			raise ValueError("Seed cannot be larger than 2,147,483,647")
+		if seed < 1:
+			new_seed = abs(seed) + limit_val
+			self.logger.critical("Seed of {} is < 1, so will be changed to {}\n".format(seed, new_seed))
+			self.seed = new_seed
+		else:
+			self.seed = seed
+
 	def check_simulation_parameters(self):
 		"""
 		Checks that simulation parameters have been correctly set and the program is ready for running.
@@ -705,7 +718,7 @@ class Simulation(Landscape):
 		if not os.path.exists(file_path):
 			raise IOError(
 				"Paused file " + file_path + " not found. Ensure pause directory is correct and is accessible.")
-		self.setupNECSim()
+		self.setup_necsim()
 		self.c_simulation.setup_resume(pause_directory, out_directory, seed, job_type, max_time)
 		self.is_setup_complete = True
 		self._run_and_output()
@@ -886,7 +899,7 @@ class Simulation(Landscape):
 
 		If ram_limit is None, this function does nothing.
 
-		:note: Assumes that the c++ compiler has sizeof(long) = 8 bytes for calculating space usage.
+		:note: Assumes that the C++ compiler has sizeof(long) = 8 bytes for calculating space usage.
 
 		:note: Only optimises RAM for a square area of the map. For rectangular shapes, will use the shortest length as
 			   a maximum size.
@@ -1024,7 +1037,7 @@ class Simulation(Landscape):
 		self.create_config()
 		self.create_map_config()
 		self.calculate_sql_database()
-		self.setupNECSim()
+		self.setup_necsim()
 		if self.full_config_file is not None:
 			self.c_simulation.import_from_config(self.full_config_file)
 		else:
@@ -1033,7 +1046,7 @@ class Simulation(Landscape):
 		self.c_simulation.setup()
 		self.is_setup_complete = True
 
-	def setupNECSim(self):
+	def setup_necsim(self):
 		"""
 		Calculates the type of the simulation (spatial/non-spatial, protracted/non-protracted) and sets the c object
 		appropriately.
@@ -1166,7 +1179,7 @@ class Simulation(Landscape):
 			# Make the output directory if it doesn't yet exist
 			if not os.path.exists(self.output_directory):
 				os.makedirs(self.output_directory)
-			# Call the c++ object and run the simulation
+			# Call the C++ object and run the simulation
 			return self.c_simulation.run()
 		else:
 			raise RuntimeError("Set up is incomplete.")

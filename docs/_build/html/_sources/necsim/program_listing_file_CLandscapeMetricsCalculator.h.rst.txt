@@ -8,17 +8,18 @@ Program Listing for File CLandscapeMetricsCalculator.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef NECSIM_CLANDSCAPEMETRICSCALCULATOR_H
    #define NECSIM_CLANDSCAPEMETRICSCALCULATOR_H
    #include <Python.h>
    #include <vector>
    #include <string>
+   #include <memory>
    #include "necsim.h"
    #include "LandscapeMetricsCalculator.h"
    #include "PyLogging.h"
-   #include "necsim/CPLCustomHandlerNecsim.h"
+   #include "cpl_custom_handler.h"
    #include "PyTemplates.h"
    
    class PyLMC : public PyTemplate<LandscapeMetricsCalculator>
@@ -48,7 +49,7 @@ Program Listing for File CLandscapeMetricsCalculator.h
            catch(exception &e)
            {
                removeGlobalLogger();
-               PyErr_SetString(NECSimError, e.what());
+               PyErr_SetString(necsimError, e.what());
                return nullptr;
            }
        }
@@ -72,7 +73,7 @@ Program Listing for File CLandscapeMetricsCalculator.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
    }
@@ -93,7 +94,7 @@ Program Listing for File CLandscapeMetricsCalculator.h
        catch(exception &e)
        {
            removeGlobalLogger();
-           PyErr_SetString(NECSimError, e.what());
+           PyErr_SetString(necsimError, e.what());
            return nullptr;
        }
    }

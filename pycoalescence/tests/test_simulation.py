@@ -10,7 +10,7 @@ import unittest
 try:
 	import configparser as ConfigParser
 	from io import StringIO
-except ImportError as ie:  # python 2.x support
+except ImportError as ie:  # Python 2.x support
 	import ConfigParser
 	from cStringIO import StringIO
 
@@ -44,7 +44,7 @@ class TestFileCreation(unittest.TestCase):
 		Sets up the Coalescence object test case.
 		"""
 		self.coal = Simulation(logging_level=logging.CRITICAL)
-		self.coal.set_simulation_parameters(0, 0, "output/test_output/test_output2/", 0.1, 4, 4, deme=1, sample_size=1.0,
+		self.coal.set_simulation_parameters(10, 38, "output/test_output/test_output2/", 0.1, 4, 4, deme=1, sample_size=1.0,
 											max_time=2,
 											dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
 											gen_since_historical=2, dispersal_method="normal")
@@ -58,8 +58,8 @@ class TestFileCreation(unittest.TestCase):
 		"""
 		self.assertTrue(os.path.isfile(self.coal.output_database))
 		self.assertEqual(os.path.join(self.coal.output_database),
-						 os.path.join(self.coal.output_directory, "data_{}_{}.db".format(self.coal.seed,
-																						 self.coal.job_type)))
+						 os.path.join(self.coal.output_directory, "data_{}_{}.db".format(self.coal.job_type,
+																						 self.coal.seed)))
 
 
 class TestFileNaming(unittest.TestCase):
@@ -72,11 +72,51 @@ class TestFileNaming(unittest.TestCase):
 		:return:
 		"""
 		coal = Simulation()
-		coal.set_simulation_parameters(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
+		coal.set_simulation_parameters(100000, 10000, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 									   dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
 									   gen_since_historical=2, dispersal_method="normal")
 		with self.assertRaises(ValueError):
 			coal.set_map_files(sample_file="null", fine_file="null")
+
+class TestSetSeed(unittest.TestCase):
+	"""Tests that seeds are correctly set, and errors are thrown where appropriate."""
+
+	def testIncorrectSeedRaisesErrors(self):
+		"""Tests that an error is raised if the seed is too large."""
+		s = Simulation()
+		with self.assertRaises(ValueError):
+			s.set_seed(2147483647)
+		with self.assertRaises(ValueError):
+			s.set_simulation_parameters(seed=2147483647, job_type=1, output_directory="output", min_speciation_rate=0.1)
+
+	def testBasicSeedSetting(self):
+		"""Tests that the basic seed setting works as intended."""
+		s = Simulation()
+		s.set_seed(1)
+		self.assertEqual(1, s.seed)
+		s = Simulation()
+		s.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
+									spatial=False)
+		self.assertEqual(1, s.seed)
+
+	def testModifiedSeedSetting(self):
+		"""Tests that the modification to seed setting works as intended."""
+		s = Simulation(logging_level=60)
+		s.set_seed(0)
+		self.assertEqual(1073741823, s.seed)
+		s = Simulation(logging_level=60)
+		s.set_simulation_parameters(seed=0, job_type=1, output_directory="output", min_speciation_rate=0.1,
+									spatial=False)
+		self.assertEqual(1073741823, s.seed)
+		s = Simulation(logging_level=60)
+		s.set_seed(-1)
+		self.assertEqual(1073741824, s.seed)
+		s = Simulation(logging_level=60)
+		s.set_seed(-2)
+		self.assertEqual(1073741825, s.seed)
+		s = Simulation(logging_level=60)
+		s.set_seed(-300)
+		self.assertEqual(1073742123, s.seed)
 
 
 class TestOffsetMismatch(unittest.TestCase):
@@ -138,7 +178,7 @@ class TestOffsetMismatch(unittest.TestCase):
 
 class TestSimulationRaisesErrors(unittest.TestCase):
 	"""
-	Tests that protracted and normal simulations raise the NECSimError when NECSim throws an error
+	Tests that protracted and normal simulations raise the necsimError when necsim throws an error
 	"""
 
 	def testNormalRaisesError(self):
@@ -324,24 +364,22 @@ class TestSimulationSetMaps(unittest.TestCase):
 		self.assertListEqual(expected_times, s.times_list)
 		self.assertListEqual(expected_rates, s.rates_list)
 
-@unittest.skipIf(sys.version[0] == '2', "Skipping python 3.x tests")
+@unittest.skipIf(sys.version[0] == '2', "Skipping Python 3.x tests")
 class TestLoggingOutputsCorrectly(unittest.TestCase):
-	"""
-	Tests that logging outputs as expected.
-	"""
+	"""Basic test for expected logging outputs."""
 
 	def testOutputStreamerInfo(self):
 		"""
-		Tests that info output streaming works as intended.
+		Tests that info output streaming works as intended (skipping the timing information)
 		"""
 		log_stream = StringIO()
 		with open("sample/log_12_2.txt", "r") as content_file:
-			expected_log = content_file.read().replace('\r', '').replace('\n', '')
+			expected_log = content_file.read().replace('\r', '').replace('\n', '')[-10]
 		s = Simulation(logging_level=logging.INFO, stream=log_stream)
 		s.set_simulation_parameters(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
 		s.set_map("null", 10, 10)
 		s.run()
-		log = log_stream.getvalue().replace('\r', '').replace('\n', '')
+		log = log_stream.getvalue().replace('\r', '').replace('\n', '')[-10]
 		self.assertEqual(expected_log, log)
 
 	def testOutputStreamerWarning(self):

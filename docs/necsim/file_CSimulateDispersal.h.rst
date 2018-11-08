@@ -53,8 +53,6 @@ Includes
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/ProtractedTree.h``
 
-- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Setup.h``
-
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SimParameters.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/SpatialTree.h``
@@ -66,6 +64,8 @@ Includes
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/Tree.h``
 
 - ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/TreeNode.h``
+
+- ``/Users/samthompson/Documents/PhD/Code/pycoalescence/pycoalescence/lib/necsim/setup.h``
 
 - ``CSimulation.h`` (:ref:`file_CSimulation.h`)
 
@@ -101,7 +101,7 @@ Includes
 
 - ``necsim/SimulateDispersal.h`` (:ref:`file_necsim_SimulateDispersal.h`)
 
-- ``set``
+- ``set`` (:ref:`file_necsim_setup.cpp`)
 
 - ``sqlite3.h``
 
@@ -146,6 +146,8 @@ Functions
 - :ref:`function_PySimulateDispersal_init`
 
 - :ref:`function_PySimulateDispersal_new`
+
+- :ref:`function_raiseErrorOnFalse`
 
 - :ref:`function_runMDT`
 

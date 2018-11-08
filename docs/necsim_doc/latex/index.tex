@@ -16,11 +16,11 @@ Version\+: 1.\+0 This project is released under M\+IT licence See file {\bfserie
 
 \subsection*{I\+N\+T\+R\+O\+D\+U\+C\+T\+I\+ON}
 
-necsim is a generic spatial coalescence simulator for neutral systems. It applies the model to temporally and spatially varying density maps for a specific set of supplied parameters, and outputs information for each individual to a S\+QL database.
+necsim is a generic spatial coalescence simulator for neutral systems. It applies the model to temporally and spatially varying density maps for a specific set of supplied current\+\_\+metacommunity\+\_\+parameters, and outputs information for each individual to a S\+QL database.
 
 necsim includes functionality for applying varying speciation rates after simulations are complete. This enables the main simulation to be run with the {\itshape minimum} speciation rate required and afterwards analysis can be completed using different speciation rates.
 
-The recommended method of usage is through the pycoalescence package, using a python interface for installation, simulation setup and running. See \href{http://pycoalescence.readthedocs.io/}{\tt here} for more details.
+The recommended method of usage is through the pycoalescence package, using a Python interface for installation, simulation setup and running. See \href{http://pycoalescence.readthedocs.io/}{\tt here} for more details.
 
 You are free to modify and distribute the code as per the license specified in {\bfseries L\+I\+C\+E\+N\+C\+E.\+txt} to suit any additional neutral simulation requirements (or any other purpose).
 
@@ -36,7 +36,7 @@ For compilation on High Performance Computing (H\+PC) systems, they will likely 
 
 \subsubsection*{Running simulations}
 
-Note that the recommended method of running and analysing simulations is through the \href{https://pycoalescence.readthedocs.io}{\tt {\bfseries pycoalescence}} python package. The routine relies on supplying command line arguments (see below) for all the major simulation variables. Alternatively, supplying a config .txt file and using the command line arguments {\ttfamily ./necsim -\/c /path/to/config.txt} can be used for parsing command line arguments from the text file.
+Note that the recommended method of running and analysing simulations is through the \href{https://pycoalescence.readthedocs.io}{\tt {\bfseries pycoalescence}} Python package. The routine relies on supplying command line arguments (see below) for all the major simulation variables. Alternatively, supplying a config .txt file and using the command line arguments {\ttfamily ./necsim -\/c /path/to/config.txt} can be used for parsing command line arguments from the text file.
 
 \paragraph*{Command Line Arguments}
 
@@ -62,7 +62,7 @@ The command line options to be specified are\+:
 \item (and onwards) speciation rates to apply after simulation.
 \end{DoxyEnumerate}
 
-In this set up, the map config file contains a file on each line, with tab separation between the different variables. The \char`\"{}ref\char`\"{} flag contains the object type, followed by all other parameters. An example is given below.
+In this set up, the map config file contains a file on each line, with tab separation between the different variables. The \char`\"{}ref\char`\"{} flag contains the object type, followed by all other current\+\_\+metacommunity\+\_\+parameters. An example is given below.
 
 ref=sample\+\_\+grid path=/path/to/file x=100 y=200 mask=/path/to/mask ref=fine\+\_\+map path=/path/to/file x=100 y=200 x\+\_\+off=10 y\+\_\+off=20 ref=historical\+\_\+fine path=/path/to/file number=n rate=r time=g
 
@@ -91,7 +91,7 @@ Alternatively, by specifying the -\/f flag, (full mode) as the first argument, t
 \item the deme sample size (as a proportion of deme size)
 \item the time to run the simulation (in seconds).
 \item lambda -\/ the relative cost of moving through non-\/forest
-\item the\+\_\+task -\/ for referencing the specific task later on.
+\item task -\/ for referencing the specific task later on.
 \item the minimum number of species the system is known to contain.
 \item the historical fine map file to use
 \item the historical coarse map file to use
@@ -141,16 +141,16 @@ The program also accepts a config file, specified by running {\ttfamily ./necsim
 32 speciationrate2 = d
 33 ...
 \end{DoxyCode}
- where {\ttfamily i} represents a positive integer, {\ttfamily d} is a decimal value between 0 and 1, and {\ttfamily f} is any positive number (float). Whilst this does help with readability of the code, the order of the arguments is essential at this stage (i.\+e. don\textquotesingle{}t switch the order of the lines). Future versions may alter the system of reading such that the parameters are set according to their key. Any number of speciation rates (or 0) can be at the end of the file.
+ where {\ttfamily i} represents a positive integer, {\ttfamily d} is a decimal value between 0 and 1, and {\ttfamily f} is any positive number (float). Whilst this does help with readability of the code, the order of the arguments is essential at this stage (i.\+e. don\textquotesingle{}t switch the order of the lines). Future versions may alter the system of reading such that the current\+\_\+metacommunity\+\_\+parameters are set according to their key. Any number of speciation rates (or 0) can be at the end of the file.
 
 \paragraph*{Outputs}
 
-Upon successful completion of a simulation, necsim will produce an S\+Q\+Lite database file in the output directory in an S\+Q\+L\+\_\+data folder. This database contains several tables, which can be accessed using a program like \href{http://sqlitebrowser.org/}{\tt DB Browser for S\+Q\+Lite} or Microsoft Access. Alternatively, most programming languages have an S\+Q\+Lite interface (\href{https://cran.r-project.org/web/packages/RSQLite/index.html}{\tt R\+S\+Qlite}, \href{https://docs.python.org/2/library/sqlite3.html}{\tt python sqlite3})
+Upon successful completion of a simulation, necsim will produce an S\+Q\+Lite database file in the output directory in an S\+Q\+L\+\_\+data folder. This database contains several tables, which can be accessed using a program like \href{http://sqlitebrowser.org/}{\tt DB Browser for S\+Q\+Lite} or Microsoft Access. Alternatively, most programming languages have an S\+Q\+Lite interface (\href{https://cran.r-project.org/web/packages/RSQLite/index.html}{\tt R\+S\+Qlite}, \href{https://docs.python.org/2/library/sqlite3.html}{\tt Python sqlite3})
 
 
 \begin{DoxyItemize}
 \item The main table within the database is the S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+I\+ST table, which is the location and inheritence of every lineage recorded. Several other important data structures (such as whether it is a \char`\"{}tip\char`\"{} of the phylogenetic tree of not) which are used when re-\/constructing the species identity.
-\item A secondary output from necsims is a S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table for identifying the exact parameters with which the model is run.
+\item A secondary output from necsims is a S\+I\+M\+U\+L\+A\+T\+I\+O\+N\+\_\+\+P\+A\+R\+A\+M\+E\+T\+E\+RS table for identifying the exact current\+\_\+metacommunity\+\_\+parameters with which the model is run.
 \item Speciation\+Counter also produces a S\+P\+E\+C\+I\+E\+S\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES table containing species abundances across the whole sample map, plus (optionally) a table of S\+P\+E\+C\+I\+E\+S\+\_\+\+L\+O\+C\+A\+T\+I\+O\+NS (containing the x,y location of every individual) and F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+A\+B\+U\+N\+D\+A\+N\+C\+ES (species abundances for each habitat fragment separately).
 \end{DoxyItemize}
 
@@ -210,7 +210,7 @@ A brief description of the important classes is given below. Some classes also c
 \item Contains the species\+\_\+id\+\_\+list of individuals, for application in a matrix, to essentially create a 3D array.
 \item Handles the positioning of individuals in space within a grid cell.
 \end{DoxyItemize}
-\item The {\ttfamily \hyperlink{class_config_option}{Config\+Option}} class
+\item The {\ttfamily \hyperlink{class_config_parser}{Config\+Parser}} class
 \begin{DoxyItemize}
 \item Contains basic functions for importing command line arguments from a config file, providing an alternative way of setting up simulations.
 \end{DoxyItemize}

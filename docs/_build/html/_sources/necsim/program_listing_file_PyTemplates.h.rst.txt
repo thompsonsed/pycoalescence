@@ -8,13 +8,14 @@ Program Listing for File PyTemplates.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
    #ifndef NECSIM_PYTEMPLATES_H
    #define NECSIM_PYTEMPLATES_H
    
    #include <Python.h>
    #include <structmember.h>
+   #include <memory>
    #include "PyImports.h"
    
    template<class T>
@@ -24,8 +25,9 @@ Program Listing for File PyTemplates.h
        PyObject_HEAD
        PyObject *logger = nullptr;
        PyObject *log_function = nullptr;
-       unique_ptr<T> base_object = nullptr;
+       std::unique_ptr<T> base_object = nullptr;
    
+       virtual ~PyTemplate();
    //  virtual void init()
    //  {
    //

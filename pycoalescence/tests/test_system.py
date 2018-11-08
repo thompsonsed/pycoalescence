@@ -16,7 +16,7 @@ except ImportError:
 from setupTests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Simulation, CoalescenceTree
-from pycoalescence.necsim import NECSimError
+from pycoalescence.necsim import necsimError
 
 
 def setUpModule():
@@ -46,13 +46,13 @@ class TestSimulationNorm(unittest.TestCase):
 		"""
 		self.coal = Simulation()
 		self.tree = CoalescenceTree()
-		self.coal.set_simulation_parameters(0, 0, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
+		self.coal.set_simulation_parameters(2, 5, "output", 0.1, 4, 4, deme=1, sample_size=1.0, max_time=2,
 											dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0,
 											gen_since_historical=2, dispersal_method="normal")
 		self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
 		self.coal.set_speciation_rates([0.1, 0.2])
 		self.coal.run()
-		self.tree.set_database("output/data_0_0.db")
+		self.tree.set_database("output/data_5_2.db")
 		self.tree.calculate_richness()
 
 	@classmethod
@@ -70,7 +70,7 @@ class TestSimulationNorm(unittest.TestCase):
 		:return:
 		"""
 		params = self.tree.get_simulation_parameters()
-		actual_sim_parameters = dict(seed=0, job_type=0, output_dir='output', speciation_rate=0.1, sigma=4.0, tau=4.0,
+		actual_sim_parameters = dict(seed=2, job_type=5, output_dir='output', speciation_rate=0.1, sigma=4.0, tau=4.0,
 									 deme=1, sample_size=1.0, max_time=2.0, dispersal_relative_cost=1.0,
 									 min_num_species=1, habitat_change_rate=0.0, gen_since_historical=2.0,
 									 time_config_file='null', coarse_map_file='null',
@@ -86,16 +86,16 @@ class TestSimulationNorm(unittest.TestCase):
 		for key in params.keys():
 			self.assertEqual(params[key], actual_sim_parameters[key])
 		# self.assertDictEqual(params, actual_sim_parameters)
-		self.assertEqual(self.tree.get_job()[0], 0)
-		self.assertEqual(self.tree.get_job()[1], 0)
+		self.assertEqual(self.tree.get_job()[0], 2)
+		self.assertEqual(self.tree.get_job()[1], 5)
 
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
-		self.assertEqual(41, self.tree.get_species_richness(1))
-		self.assertEqual(57, self.tree.get_species_richness(2))
+		self.assertEqual(43, self.tree.get_species_richness(1))
+		self.assertEqual(53, self.tree.get_species_richness(2))
 
 	def testRichnessLandscape(self):
 		"""
@@ -103,8 +103,8 @@ class TestSimulationNorm(unittest.TestCase):
 		"""
 		richness_01 = self.tree.get_species_richness(1)
 		richness_02 = self.tree.get_species_richness(2)
-		self.assertEqual(41, richness_01)
-		self.assertEqual(57, richness_02)
+		self.assertEqual(43, richness_01)
+		self.assertEqual(53, richness_02)
 
 
 class TestSimulationInfLand(unittest.TestCase):
@@ -158,7 +158,7 @@ class TestSimulationInfLand(unittest.TestCase):
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
 		self.assertEqual(60, self.tree.get_species_richness(1))
 		self.assertEqual(70, self.tree.get_species_richness(2))
@@ -223,7 +223,7 @@ class TestSimulationFatInf(unittest.TestCase):
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
 		self.assertEqual(self.tree.get_species_richness(1), 80)
 		self.assertEqual(self.tree.get_species_richness(2), 87)
@@ -289,7 +289,7 @@ class TestSimulationTif(unittest.TestCase):
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
 		self.assertEqual(2643, self.tree.get_species_richness(1))
 		self.assertEqual(3124, self.tree.get_species_richness(2))
@@ -356,7 +356,7 @@ class TestSimulationTiledInfinite(unittest.TestCase):
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
 		self.assertEqual(3374, self.tree.get_species_richness(1))
 		self.assertEqual(3492, self.tree.get_species_richness(2))
@@ -442,7 +442,7 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
 		self.assertEqual(3450, self.tree.get_species_richness(1))
 		self.assertEqual(3582, self.tree.get_species_richness(2))
@@ -510,7 +510,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 									cutoff=0.0, landscape_type="closed")
 		c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 						death_map="sample/SA_sample_reproduction_invalid.tif")
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			c.finalise_setup()
 
 
@@ -549,7 +549,7 @@ class TestSimulationTifBytes(unittest.TestCase):
 	def testSimOuptputDimensions(self):
 		"""
 		Tests that the simulation correctly completes with a byte-encoded tif file and the dimensions were read correctly
-		by NECSim
+		by necsim
 		"""
 		self.tree.set_database(self.coal)
 		sim_params = self.tree.get_simulation_parameters()
@@ -613,7 +613,7 @@ class TestSimulationTifCoarse(unittest.TestCase):
 	def testRichness(self):
 		"""
 		Tests that the richness stored in the SQL file is correct.
-		Note that this is actually a test of both the c++ (NECSim) and the python front-end.
+		Note that this is actually a test of both the C++ (necsim) and the Python front-end.
 		"""
 		self.assertEqual(self.tree.get_species_richness(1), 283)
 		self.assertEqual(self.tree.get_species_richness(2), 283)
@@ -764,7 +764,7 @@ class TestCoalSampling2(unittest.TestCase):
 		"""
 		for f in [1, 2, 3]:
 			fragment_file = "sample/FragmentsTestFail{}.csv".format(f)
-			with self.assertRaises(NECSimError):
+			with self.assertRaises(necsimError):
 				t = CoalescenceTree("output/temp.db", logging_level=50)
 				t.wipe_data()
 				t.set_speciation_parameters(speciation_rates=[0.5, 0.6], record_spatial=False,
@@ -1594,11 +1594,11 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
 		"""
 		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		self.c.c_community.add_protracted_parameters(70.0, 2000.0)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			self.c.apply()
 		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		self.c.c_community.add_protracted_parameters(50.0, 2100.0)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			self.c.apply()
 
 	def testProtractedPostApplicationSanityChecks(self):
@@ -1704,11 +1704,11 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
 		"""
 		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		self.c.c_community.add_protracted_parameters(70.0, 2000.0)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			self.c.apply()
 		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		self.c.c_community.add_protracted_parameters(50.0, 2100.0)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			self.c.apply()
 
 	def testProtractedPostApplicationSanityChecks(self):
@@ -1818,11 +1818,11 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		"""
 		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		self.c.c_community.add_protracted_parameters(70.0, 2000.0)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			self.c.apply()
 		self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
 		self.c.c_community.add_protracted_parameters(50.0, 2100.0)
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			self.c.apply()
 
 	def testProtractedPostApplicationSanityChecks(self):
@@ -2002,7 +2002,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
 									min_num_species=1, habitat_change_rate=0, gen_since_historical=200)
 		c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse_zeros.tif",
 						dispersal_map="sample/dispersal_fine_cumulative.tif")
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			c.run()
 
 
@@ -2230,11 +2230,11 @@ class TestSimulationMetacommunity(unittest.TestCase):
 		metacommunity_dict3 = self.t3.get_metacommunity_parameters(2)
 		metacommunity_dict4 = self.t4.get_metacommunity_parameters(3)
 		comparison_dict2 = {"speciation_rate": 0.5, "metacommunity_size": 1.0, "option": "simulated",
-							"external_reference" : 0}
+							"external_reference": 0}
 		comparison_dict3 = {"speciation_rate": 1.0, "metacommunity_size": 1.0, "option": "simulated",
-							"external_reference" : 0}
+							"external_reference": 0}
 		comparison_dict4 = {"speciation_rate": 0.95, "metacommunity_size": 1000000.0, "option": "analytical",
-							"external_reference" : 0}
+							"external_reference": 0}
 		self.assertDictEqual(comparison_dict2, metacommunity_dict2)
 		self.assertDictEqual(comparison_dict3, metacommunity_dict3)
 		self.assertDictEqual(comparison_dict4, metacommunity_dict4)
@@ -2311,10 +2311,10 @@ class TestProtractedSimsWithMetacommunity(unittest.TestCase):
 										  min_speciation_rate=0.1, sigma=2, protracted=True, min_speciation_gen=1000,
 										  max_speciation_gen=10000)
 		cls.sim.set_map("sample/SA_sample_fine.tif")
-		cls.sim.set_speciation_rates([0.1, 0.2, 0.3])
+		cls.sim.set_speciation_rates([0.1, 0.5, 0.9])
 		cls.sim.run()
 		cls.tree = CoalescenceTree(cls.sim, logging_level=50)
-		cls.tree.set_speciation_parameters(speciation_rates=[0.1, 0.2, 0.3], protracted_speciation_min=1000,
+		cls.tree.set_speciation_parameters(speciation_rates=[0.1, 0.5, 0.9], protracted_speciation_min=1000,
 										   protracted_speciation_max=10000, metacommunity_size=10000,
 										   metacommunity_speciation_rate=0.001)
 		cls.tree.apply()
@@ -2324,9 +2324,9 @@ class TestProtractedSimsWithMetacommunity(unittest.TestCase):
 		self.assertEqual(76, self.tree.get_species_richness(1))
 		self.assertEqual(76, self.tree.get_species_richness(2))
 		self.assertEqual(76, self.tree.get_species_richness(3))
-		self.assertEqual(60, self.tree.get_species_richness(4))
-		self.assertEqual(60, self.tree.get_species_richness(5))
-		self.assertEqual(58, self.tree.get_species_richness(6))
+		self.assertEqual(22, self.tree.get_species_richness(4))
+		self.assertEqual(23, self.tree.get_species_richness(5))
+		self.assertEqual(22, self.tree.get_species_richness(6))
 
 	def testParametersCorrectlyStored(self):
 		"""Tests that the community parameters are correctly stored."""
@@ -2334,19 +2334,19 @@ class TestProtractedSimsWithMetacommunity(unittest.TestCase):
 		self.assertEqual(0.1, params["speciation_rate"])
 		self.assertEqual(0, params["metacommunity_reference"])
 		params = self.tree.get_community_parameters(2)
-		self.assertEqual(0.2, params["speciation_rate"])
+		self.assertEqual(0.5, params["speciation_rate"])
 		self.assertEqual(0, params["metacommunity_reference"])
 		params = self.tree.get_community_parameters(3)
-		self.assertEqual(0.3, params["speciation_rate"])
+		self.assertEqual(0.9, params["speciation_rate"])
 		self.assertEqual(0, params["metacommunity_reference"])
 		params = self.tree.get_community_parameters(4)
 		self.assertEqual(0.1, params["speciation_rate"])
 		self.assertEqual(1, params["metacommunity_reference"])
 		params = self.tree.get_community_parameters(5)
-		self.assertEqual(0.2, params["speciation_rate"])
+		self.assertEqual(0.5, params["speciation_rate"])
 		self.assertEqual(1, params["metacommunity_reference"])
 		params = self.tree.get_community_parameters(6)
-		self.assertEqual(0.3, params["speciation_rate"])
+		self.assertEqual(0.9, params["speciation_rate"])
 		self.assertEqual(1, params["metacommunity_reference"])
 
 
@@ -2506,7 +2506,7 @@ class TestReproductionMaps(unittest.TestCase):
 									min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
 									cutoff=0.0, landscape_type="closed")
 
-		with self.assertRaises(NECSimError):
+		with self.assertRaises(necsimError):
 			c.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 							reproduction_map="sample/SA_sample_reproduction_invalid.tif")
 			c.run()
@@ -2547,3 +2547,110 @@ class TestReproductionMaps(unittest.TestCase):
 		self.assertEqual(191, sim1.get_species_richness())
 		self.assertEqual(184, sim2.get_species_richness())
 		self.assertEqual("Density is zero where reproduction map is non-zero. This is likely incorrect.", log1)
+
+
+@skipLongTest
+class TestAnalyticalMatchesSimulated(unittest.TestCase):
+	"""Tests that the analytical result closely matches the simulated result at large scales"""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Runs the simulations to test matching between the analytical and simulated methods - this takes some time."""
+		cls.species_richnesses_local = {0.01: [], 0.1: [], 0.5: [], 0.9: []}
+		cls.species_richnesses_sim = {0.01: [], 0.1: [], 0.5: [], 0.9: []}
+		cls.species_richnesses_ana = {0.01: [], 0.1: [], 0.5: [], 0.9: []}
+		for i in range(1, 11, 1):
+			s = Simulation()
+			s.set_simulation_parameters(seed=i, job_type=49, output_directory="output", min_speciation_rate=0.01,
+										deme=10000, spatial=False)
+			s.set_speciation_rates([0.01, 0.1, 0.5, 0.9])
+			s.run()
+			c = CoalescenceTree(s)
+			c.set_speciation_parameters([0.01, 0.1, 0.5, 0.9], metacommunity_size=1000000,
+										metacommunity_speciation_rate=0.0001, metacommunity_option="simulated")
+			c.add_metacommunity_parameters(metacommunity_size=1000000, metacommunity_speciation_rate=0.0001,
+										   metacommunity_option="analytical")
+			c.apply()
+			c.calculate_richness()
+			cls.species_richnesses_local[0.01].append(c.get_species_richness(1))
+			cls.species_richnesses_local[0.1].append(c.get_species_richness(2))
+			cls.species_richnesses_local[0.5].append(c.get_species_richness(3))
+			cls.species_richnesses_local[0.9].append(c.get_species_richness(4))
+			cls.species_richnesses_sim[0.01].append(c.get_species_richness(5))
+			cls.species_richnesses_sim[0.1].append(c.get_species_richness(6))
+			cls.species_richnesses_sim[0.5].append(c.get_species_richness(7))
+			cls.species_richnesses_sim[0.9].append(c.get_species_richness(8))
+			cls.species_richnesses_ana[0.01].append(c.get_species_richness(9))
+			cls.species_richnesses_ana[0.1].append(c.get_species_richness(10))
+			cls.species_richnesses_ana[0.5].append(c.get_species_richness(11))
+			cls.species_richnesses_ana[0.9].append(c.get_species_richness(12))
+		cls.means_sim = {}
+		cls.means_ana = {}
+		for k in [0.01, 0.1, 0.5, 0.9]:
+			cls.means_sim[k] = sum(cls.species_richnesses_sim[k]) / len(cls.species_richnesses_sim[k])
+			cls.means_ana[k] = sum(cls.species_richnesses_ana[k]) / len(cls.species_richnesses_ana[k])
+
+	def testSpeciesRichness(self):
+		"""Quick test to make sure species richnesses are as expected."""
+		c1 = CoalescenceTree(os.path.join("output", "data_49_1.db"))
+		c2 = CoalescenceTree(os.path.join("output", "data_49_6.db"))
+		c3 = CoalescenceTree(os.path.join("output", "data_49_10.db"))
+		self.assertEqual(443, c1.get_species_richness(1))
+		self.assertEqual(2512, c1.get_species_richness(2))
+		self.assertEqual(6970, c1.get_species_richness(3))
+		self.assertEqual(9469, c1.get_species_richness(4))
+		self.assertEqual(181, c1.get_species_richness(5))
+		self.assertEqual(325, c1.get_species_richness(6))
+		self.assertEqual(398, c1.get_species_richness(7))
+		self.assertEqual(453, c1.get_species_richness(8))
+		self.assertEqual(168, c1.get_species_richness(9))
+		self.assertEqual(320, c1.get_species_richness(10))
+		self.assertEqual(420, c1.get_species_richness(11))
+		self.assertEqual(459, c1.get_species_richness(12))
+		self.assertEqual(161, c2.get_species_richness(5))
+		self.assertEqual(334, c2.get_species_richness(6))
+		self.assertEqual(412, c2.get_species_richness(7))
+		self.assertEqual(452, c2.get_species_richness(8))
+		self.assertEqual(188, c2.get_species_richness(9))
+		self.assertEqual(333, c2.get_species_richness(10))
+		self.assertEqual(460, c2.get_species_richness(11))
+		self.assertEqual(495, c2.get_species_richness(12))
+		self.assertEqual(176, c3.get_species_richness(5))
+		self.assertEqual(312, c3.get_species_richness(6))
+		self.assertEqual(485, c3.get_species_richness(11))
+		self.assertEqual(539, c3.get_species_richness(12))
+
+	def testMeansClose(self):
+		"""Tests that the means are roughly equivalent between the simulated and the analytical methods."""
+		mean_sim = {}
+		mean_ana = {}
+		expected_sim = {0.01: 177.3, 0.1: 323.2, 0.5: 418.2, 0.9: 451.4}
+		expected_ana = {0.01: 183.7, 0.1: 348.8, 0.5: 459.5, 0.9: 495.4}
+		for k in self.species_richnesses_sim.keys():
+			mean_sim[k] = float(sum(self.species_richnesses_sim[k])) / float(len(self.species_richnesses_sim[k]))
+			mean_ana[k] = float(sum(self.species_richnesses_ana[k])) / float(len(self.species_richnesses_ana[k]))
+		self.assertEqual(expected_sim, mean_sim)
+		self.assertEqual(expected_ana, mean_ana)
+
+
+@skipLongTest
+class TestLargeScaleAnalytical(unittest.TestCase):
+	"""Tests a single large-scale analytical run matches the expected result."""
+
+	def testLargeScaleAnalyticalResult(self):
+		s = Simulation()
+		s.set_simulation_parameters(seed=1, job_type=50, output_directory="output", min_speciation_rate=0.5,
+									spatial=False, deme=100000)
+		s.run()
+		c = CoalescenceTree(s)
+		c.set_speciation_parameters([0.5, 0.9])
+		c.add_metacommunity_parameters(metacommunity_size=10000000, metacommunity_speciation_rate=0.001,
+									   metacommunity_option="simulated")
+		c.add_metacommunity_parameters(metacommunity_size=10000000, metacommunity_speciation_rate=0.001,
+									   metacommunity_option="analytical")
+		c.apply()
+		self.assertEqual(69348, c.get_species_richness(1))
+		self.assertEqual(20814, c.get_species_richness(2))
+		self.assertEqual(23654, c.get_species_richness(3))
+		self.assertEqual(20947, c.get_species_richness(4))
+		self.assertEqual(23704, c.get_species_richness(5))

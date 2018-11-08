@@ -1,0 +1,254 @@
+\hypertarget{class_analytical_species_abundances_handler}{}\section{Analytical\+Species\+Abundances\+Handler Class Reference}
+\label{class_analytical_species_abundances_handler}\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+
+
+Inheritance diagram for Analytical\+Species\+Abundances\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{class_analytical_species_abundances_handler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Analytical\+Species\+Abundances\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_analytical_species_abundances_handler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_analytical_species_abundances_handler_a6dd3df257df5b6a53e268ee68169d2e1}{Analytical\+Species\+Abundances\+Handler} ()\hypertarget{class_analytical_species_abundances_handler_a6dd3df257df5b6a53e268ee68169d2e1}{}\label{class_analytical_species_abundances_handler_a6dd3df257df5b6a53e268ee68169d2e1}
+
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_analytical_species_abundances_handler_a5653844a38727d2f493c7f1fbfd2cde1}{$\sim$\+Analytical\+Species\+Abundances\+Handler} () override=default\hypertarget{class_analytical_species_abundances_handler_a5653844a38727d2f493c7f1fbfd2cde1}{}\label{class_analytical_species_abundances_handler_a5653844a38727d2f493c7f1fbfd2cde1}
+
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_analytical_species_abundances_handler_a4ee4ee4778d5544f293b433528e070e1}{setup} (shared\+\_\+ptr$<$ \hyperlink{class_n_rrand}{N\+Rrand} $>$ random, const unsigned long \&community\+\_\+size, const long double \&speciation\+\_\+rate) override
+\begin{DoxyCompactList}\small\item\em Creates the \hyperlink{class_species_abundances_handler}{Species\+Abundances\+Handler} object. \end{DoxyCompactList}\item 
+void \hyperlink{class_analytical_species_abundances_handler_ad681c92bc8f8c3c06b0ca1193bde2a18}{generate\+Species\+Abundances} ()\hypertarget{class_analytical_species_abundances_handler_ad681c92bc8f8c3c06b0ca1193bde2a18}{}\label{class_analytical_species_abundances_handler_ad681c92bc8f8c3c06b0ca1193bde2a18}
+
+\begin{DoxyCompactList}\small\item\em Generates the species abundances using the analytical approximation. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_analytical_species_abundances_handler_aa24c47038c2f6ac55307a95d7c6dcb4e}{get\+Random\+Species\+ID} () override
+\begin{DoxyCompactList}\small\item\em Gets a randomly generated species identity. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_analytical_species_abundances_handler_a818c3563cfd4a0fa84e17b448252b764}{pick\+Previous\+Individual} (const unsigned long \&individual\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Picks out a random individual from previously-\/seen individuals. \end{DoxyCompactList}\item 
+void \hyperlink{class_analytical_species_abundances_handler_a325cd35f3d6c3c1ccdf9cfac6060475e}{add\+New\+Species} ()
+\begin{DoxyCompactList}\small\item\em Picks out a new individual/species id with a random species abundance. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{class_analytical_species_abundances_handler_a5521f4825daa9d9180930cef646cf281}{get\+Random\+Abundance\+Of\+Species} ()
+\begin{DoxyCompactList}\small\item\em Gets a random species abundance by sampling from the logarithmic distribution. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_species_abundances_handler_a4c0a67df18c6af25463044796abd77d5}{set\+Abundance\+List} (const shared\+\_\+ptr$<$ map$<$ unsigned long, unsigned long $>$$>$ \&abundance\+\_\+list\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the abundance list. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_species_abundances_handler_ae838648ecd291e74309a6b32634dc776}{set\+Abundance\+List} (shared\+\_\+ptr$<$ vector$<$ unsigned long $>$$>$ abundance\+\_\+list\+\_\+in)
+\begin{DoxyCompactList}\small\item\em Sets the abundance list. \end{DoxyCompactList}\item 
+virtual unsigned long \hyperlink{class_species_abundances_handler_a5bd4781276f15255431a00863d182cba}{get\+Random\+Abundance\+Of\+Individual} ()
+\begin{DoxyCompactList}\small\item\em Gets a random species abundance. \end{DoxyCompactList}\item 
+virtual unsigned long \hyperlink{class_species_abundances_handler_a33708e99d7eb07385aea58aea925e1bc}{get\+Species\+Richness\+Of\+Abundance} (const unsigned long \&abundance)
+\begin{DoxyCompactList}\small\item\em Gets the species richness of a particular abundance class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long {\bfseries seen\+\_\+no\+\_\+individuals}\hypertarget{class_analytical_species_abundances_handler_a7e428f1c37385a4bd25abff4c66c249e}{}\label{class_analytical_species_abundances_handler_a7e428f1c37385a4bd25abff4c66c249e}
+
+\item 
+map$<$ unsigned long, unsigned long $>$ {\bfseries ind\+\_\+to\+\_\+species}\hypertarget{class_analytical_species_abundances_handler_a6eaf9005d83772fd23d6249777ecab4c}{}\label{class_analytical_species_abundances_handler_a6eaf9005d83772fd23d6249777ecab4c}
+
+\item 
+shared\+\_\+ptr$<$ \hyperlink{class_n_rrand}{N\+Rrand} $>$ {\bfseries random}\hypertarget{class_species_abundances_handler_a9adf19e91e8b615a0aeba2d96be95109}{}\label{class_species_abundances_handler_a9adf19e91e8b615a0aeba2d96be95109}
+
+\item 
+unsigned long {\bfseries max\+\_\+species\+\_\+id}\hypertarget{class_species_abundances_handler_a7b020381eff35fc37d0bd97782728d6b}{}\label{class_species_abundances_handler_a7b020381eff35fc37d0bd97782728d6b}
+
+\item 
+unsigned long {\bfseries community\+\_\+size}\hypertarget{class_species_abundances_handler_afb4de4e0814f76d4c978f93a6f7cdabd}{}\label{class_species_abundances_handler_afb4de4e0814f76d4c978f93a6f7cdabd}
+
+\item 
+long double {\bfseries speciation\+\_\+rate}\hypertarget{class_species_abundances_handler_aa945e9f660b2d8aa7d5b36d7bbd0fda6}{}\label{class_species_abundances_handler_aa945e9f660b2d8aa7d5b36d7bbd0fda6}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!add\+New\+Species@{add\+New\+Species}}
+\index{add\+New\+Species@{add\+New\+Species}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{add\+New\+Species()}{addNewSpecies()}}]{\setlength{\rightskip}{0pt plus 5cm}void Analytical\+Species\+Abundances\+Handler\+::add\+New\+Species (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_analytical_species_abundances_handler_a325cd35f3d6c3c1ccdf9cfac6060475e}{}\label{class_analytical_species_abundances_handler_a325cd35f3d6c3c1ccdf9cfac6060475e}
+
+
+Picks out a new individual/species id with a random species abundance. 
+
+\begin{DoxyReturn}{Returns}
+the species id of the new individual 
+\end{DoxyReturn}
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!get\+Random\+Abundance\+Of\+Individual@{get\+Random\+Abundance\+Of\+Individual}}
+\index{get\+Random\+Abundance\+Of\+Individual@{get\+Random\+Abundance\+Of\+Individual}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{get\+Random\+Abundance\+Of\+Individual()}{getRandomAbundanceOfIndividual()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Species\+Abundances\+Handler\+::get\+Random\+Abundance\+Of\+Individual (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_species_abundances_handler_a5bd4781276f15255431a00863d182cba}{}\label{class_species_abundances_handler_a5bd4781276f15255431a00863d182cba}
+
+
+Gets a random species abundance. 
+
+\begin{DoxyReturn}{Returns}
+the randomly generated abundance 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_simulated_species_abundances_handler_a0a01ec5baee3fb9c12185b6d672a6c72}{Simulated\+Species\+Abundances\+Handler}.
+
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!get\+Random\+Abundance\+Of\+Species@{get\+Random\+Abundance\+Of\+Species}}
+\index{get\+Random\+Abundance\+Of\+Species@{get\+Random\+Abundance\+Of\+Species}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{get\+Random\+Abundance\+Of\+Species()}{getRandomAbundanceOfSpecies()}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Analytical\+Species\+Abundances\+Handler\+::get\+Random\+Abundance\+Of\+Species (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_analytical_species_abundances_handler_a5521f4825daa9d9180930cef646cf281}{}\label{class_analytical_species_abundances_handler_a5521f4825daa9d9180930cef646cf281}
+
+
+Gets a random species abundance by sampling from the logarithmic distribution. 
+
+\begin{DoxyReturn}{Returns}
+the randomly generated abundance 
+\end{DoxyReturn}
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!get\+Random\+Species\+ID@{get\+Random\+Species\+ID}}
+\index{get\+Random\+Species\+ID@{get\+Random\+Species\+ID}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{get\+Random\+Species\+I\+D() override}{getRandomSpeciesID() override}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Analytical\+Species\+Abundances\+Handler\+::get\+Random\+Species\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_analytical_species_abundances_handler_aa24c47038c2f6ac55307a95d7c6dcb4e}{}\label{class_analytical_species_abundances_handler_aa24c47038c2f6ac55307a95d7c6dcb4e}
+
+
+Gets a randomly generated species identity. 
+
+\begin{DoxyReturn}{Returns}
+the species identity 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_species_abundances_handler_ac44cbc9b3affa109c51f94b050653fea}{Species\+Abundances\+Handler}.
+
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!get\+Species\+Richness\+Of\+Abundance@{get\+Species\+Richness\+Of\+Abundance}}
+\index{get\+Species\+Richness\+Of\+Abundance@{get\+Species\+Richness\+Of\+Abundance}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{get\+Species\+Richness\+Of\+Abundance(const unsigned long \&abundance)}{getSpeciesRichnessOfAbundance(const unsigned long &abundance)}}]{\setlength{\rightskip}{0pt plus 5cm}virtual unsigned long Species\+Abundances\+Handler\+::get\+Species\+Richness\+Of\+Abundance (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{abundance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_species_abundances_handler_a33708e99d7eb07385aea58aea925e1bc}{}\label{class_species_abundances_handler_a33708e99d7eb07385aea58aea925e1bc}
+
+
+Gets the species richness of a particular abundance class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em abundance} & the abundance class of the species \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the number of species with that abundance 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{class_simulated_species_abundances_handler_a274112c16a17f739b8c751ae81d01cbf}{Simulated\+Species\+Abundances\+Handler}.
+
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!pick\+Previous\+Individual@{pick\+Previous\+Individual}}
+\index{pick\+Previous\+Individual@{pick\+Previous\+Individual}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{pick\+Previous\+Individual(const unsigned long \&individual\+\_\+id)}{pickPreviousIndividual(const unsigned long &individual_id)}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned long Analytical\+Species\+Abundances\+Handler\+::pick\+Previous\+Individual (
+\begin{DoxyParamCaption}
+\item[{const unsigned long \&}]{individual\+\_\+id}
+\end{DoxyParamCaption}
+)}\hypertarget{class_analytical_species_abundances_handler_a818c3563cfd4a0fa84e17b448252b764}{}\label{class_analytical_species_abundances_handler_a818c3563cfd4a0fa84e17b448252b764}
+
+
+Picks out a random individual from previously-\/seen individuals. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em individual\+\_\+id} & the individual id number to pick \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+species id of the individual 
+\end{DoxyReturn}
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!set\+Abundance\+List@{set\+Abundance\+List}}
+\index{set\+Abundance\+List@{set\+Abundance\+List}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{set\+Abundance\+List(const shared\+\_\+ptr$<$ map$<$ unsigned long, unsigned long $>$$>$ \&abundance\+\_\+list\+\_\+in)}{setAbundanceList(const shared_ptr< map< unsigned long, unsigned long >> &abundance_list_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Species\+Abundances\+Handler\+::set\+Abundance\+List (
+\begin{DoxyParamCaption}
+\item[{const shared\+\_\+ptr$<$ map$<$ unsigned long, unsigned long $>$$>$ \&}]{abundance\+\_\+list\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_species_abundances_handler_a4c0a67df18c6af25463044796abd77d5}{}\label{class_species_abundances_handler_a4c0a67df18c6af25463044796abd77d5}
+
+
+Sets the abundance list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em abundance\+\_\+list\+\_\+in} & list of abundances for each species \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_simulated_species_abundances_handler_a762ef5787578666171b4e27bda446421}{Simulated\+Species\+Abundances\+Handler}.
+
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!set\+Abundance\+List@{set\+Abundance\+List}}
+\index{set\+Abundance\+List@{set\+Abundance\+List}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{set\+Abundance\+List(shared\+\_\+ptr$<$ vector$<$ unsigned long $>$$>$ abundance\+\_\+list\+\_\+in)}{setAbundanceList(shared_ptr< vector< unsigned long >> abundance_list_in)}}]{\setlength{\rightskip}{0pt plus 5cm}void Species\+Abundances\+Handler\+::set\+Abundance\+List (
+\begin{DoxyParamCaption}
+\item[{shared\+\_\+ptr$<$ vector$<$ unsigned long $>$$>$}]{abundance\+\_\+list\+\_\+in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [inherited]}}\hypertarget{class_species_abundances_handler_ae838648ecd291e74309a6b32634dc776}{}\label{class_species_abundances_handler_ae838648ecd291e74309a6b32634dc776}
+
+
+Sets the abundance list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em abundance\+\_\+list\+\_\+in} & list of abundances for each species \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{class_simulated_species_abundances_handler_a8d7b8017421357298cdce364d85b6963}{Simulated\+Species\+Abundances\+Handler}.
+
+\index{Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}!setup@{setup}}
+\index{setup@{setup}!Analytical\+Species\+Abundances\+Handler@{Analytical\+Species\+Abundances\+Handler}}
+\subsubsection[{\texorpdfstring{setup(shared\+\_\+ptr$<$ N\+Rrand $>$ random, const unsigned long \&community\+\_\+size, const long double \&speciation\+\_\+rate) override}{setup(shared_ptr< NRrand > random, const unsigned long &community_size, const long double &speciation_rate) override}}]{\setlength{\rightskip}{0pt plus 5cm}void Analytical\+Species\+Abundances\+Handler\+::setup (
+\begin{DoxyParamCaption}
+\item[{shared\+\_\+ptr$<$ {\bf N\+Rrand} $>$}]{random, }
+\item[{const unsigned long \&}]{community\+\_\+size, }
+\item[{const long double \&}]{speciation\+\_\+rate}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\hypertarget{class_analytical_species_abundances_handler_a4ee4ee4778d5544f293b433528e070e1}{}\label{class_analytical_species_abundances_handler_a4ee4ee4778d5544f293b433528e070e1}
+
+
+Creates the \hyperlink{class_species_abundances_handler}{Species\+Abundances\+Handler} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em random} & the random number generator \\
+\hline
+{\em community\+\_\+size} & the number of individuals in the community \\
+\hline
+{\em speciation\+\_\+rate} & the speciation rate of the community \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_species_abundances_handler_ad98b28d7d70e8e1281f0e9acb5b419fd}{Species\+Abundances\+Handler}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+necsim/Analytical\+Species\+Abundances\+Handler.\+h\item 
+necsim/Analytical\+Species\+Abundances\+Handler.\+cpp\end{DoxyCompactItemize}

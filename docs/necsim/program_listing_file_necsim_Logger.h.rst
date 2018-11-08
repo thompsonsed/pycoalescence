@@ -8,7 +8,7 @@ Program Listing for File Logger.h
 
 .. code-block:: cpp
 
-   // This file is part of NECSim project which is released under MIT license.
+   // This file is part of necsim project which is released under MIT license.
    // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
    #ifndef LOGGING_IMPORT_H
    #define LOGGING_IMPORT_H
@@ -19,7 +19,7 @@ Program Listing for File Logger.h
    #include <stdexcept>
    #include <sstream>
    #include "LogFile.h"
-   #include "CPLCustomHandlerNecsim.h"
+   #include "cpl_custom_handler.h"
    
    using namespace std;
    

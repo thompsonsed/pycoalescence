@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File Metacommunity.cpp &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File Metacommunity.cpp &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -50,7 +50,7 @@
         <li class="right" >
           <a href="file_necsim_Metacommunity.cpp.html" title="File Metacommunity.cpp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.cpp.html" accesskey="U">File Metacommunity.cpp</a> &#187;</li> 
       </ul>
@@ -66,22 +66,45 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_Metacommunity.cpp.html#file-necsim-metacommunity-cpp"><span class="std std-ref">File Metacommunity.cpp</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
+<span class="cp">#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;Metacommunity.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;neutral_analytical.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;LogFile.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SpeciesAbundancesHandler.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SimulatedSpeciesAbundancesHandler.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;AnalyticalSpeciesAbundancesHandler.h&quot;</span><span class="cp"></span>
 
-<span class="n">Metacommunity</span><span class="o">::</span><span class="n">Metacommunity</span><span class="p">()</span><span class="o">:</span> <span class="n">community_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">speciation_rate</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">task</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">parameters_checked</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
-                                <span class="n">metacommunity_cumulative_abundances</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">random</span><span class="p">(),</span> <span class="n">metacommunity_tree</span><span class="p">()</span>
+<span class="k">namespace</span> <span class="n">na</span> <span class="o">=</span> <span class="n">neutral_analytical</span><span class="p">;</span>
+
+<span class="n">Metacommunity</span><span class="o">::</span><span class="n">Metacommunity</span><span class="p">()</span> <span class="o">:</span> <span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">task</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">parameters_checked</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+                                 <span class="n">species_abundances_handler</span><span class="p">(</span><span class="n">static_pointer_cast</span><span class="o">&lt;</span><span class="n">SpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">(</span>
+                                         <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimulatedSpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">())),</span>
+                                 <span class="n">random</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span>
+                                 <span class="n">metacommunity_tree</span><span class="p">(</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">Tree</span><span class="o">&gt;</span><span class="p">())</span>
 <span class="p">{</span>
 
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">setCommunityParameters</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">community_size_in</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">double</span> <span class="n">speciation_rate_in</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">MetacommunityParameters</span><span class="o">&gt;</span> <span class="n">metacommunity_parameters</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">community_size</span> <span class="o">=</span> <span class="n">community_size_in</span><span class="p">;</span>
-    <span class="n">speciation_rate</span> <span class="o">=</span> <span class="n">speciation_rate_in</span><span class="p">;</span>
+    <span class="n">current_metacommunity_parameters</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">metacommunity_parameters</span><span class="p">);</span>
+    <span class="c1">// Check if no metacommunity option has been supplied - in which case use sensible defaults</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">==</span> <span class="s">&quot;none&quot;</span> <span class="o">||</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">==</span> <span class="s">&quot;null&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Simulate only for smaller community sizes</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">=</span> <span class="s">&quot;analytical&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">=</span> <span class="s">&quot;simulated&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">checkSimulationParameters</span><span class="p">()</span>
@@ -90,20 +113,25 @@
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">database</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Cannot read simulation parameters as database is null pointer.&quot;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span>
+                    <span class="s">&quot;Cannot read simulation current_metacommunity_parameters as database is null pointer.&quot;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="c1">// Now do the same for times</span>
         <span class="n">sqlite3_stmt</span> <span class="o">*</span><span class="n">stmt</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
-        <span class="n">string</span> <span class="n">sql_call</span> <span class="o">=</span> <span class="s">&quot;SELECT seed, task from SIMULATION_PARAMETERS&quot;</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">sql_call</span> <span class="o">=</span> <span class="s">&quot;SELECT seed, job_type from SIMULATION_PARAMETERS&quot;</span><span class="p">;</span>
         <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">sqlite3_prepare_v2</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">sql_call</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">sql_call</span><span class="p">.</span><span class="n">c_str</span><span class="p">())),</span> <span class="o">&amp;</span><span class="n">stmt</span><span class="p">,</span>
                                     <span class="k">nullptr</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_DONE</span> <span class="o">&amp;&amp;</span> <span class="n">rc</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
         <span class="p">{</span>
+            <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Could not read seed and job_type number from SIMULATION_PARAMETERS: Error code: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rc</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sqlite3_errmsg</span><span class="p">(</span><span class="n">database</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
             <span class="n">sqlite3_close</span><span class="p">(</span><span class="n">database</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="nf">FatalException</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
         <span class="p">}</span>
         <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
-        <span class="n">seed</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
-        <span class="n">random</span><span class="p">.</span><span class="n">setSeed</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+        <span class="n">random</span><span class="o">-&gt;</span><span class="n">setSeed</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
         <span class="n">task</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqlite3_column_int</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
         <span class="n">sqlite3_step</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
         <span class="n">sqlite3_finalize</span><span class="p">(</span><span class="n">stmt</span><span class="p">);</span>
@@ -114,12 +142,18 @@
 <span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">addSpecies</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&amp;</span><span class="n">species_count</span><span class="p">,</span> <span class="n">TreeNode</span> <span class="o">*</span><span class="n">tree_node</span><span class="p">,</span> <span class="n">set</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">species_list</span><span class="p">)</span>
 <span class="p">{</span>
 
-    <span class="k">auto</span> <span class="n">species_id</span> <span class="o">=</span> <span class="n">selectLineageFromMetacommunity</span><span class="p">();</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">species_list</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">||</span> <span class="n">species_list</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">species_id</span><span class="p">)</span> <span class="o">!=</span> <span class="n">species_list</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+    <span class="k">auto</span> <span class="n">species_id</span> <span class="o">=</span> <span class="n">species_abundances_handler</span><span class="o">-&gt;</span><span class="n">getRandomSpeciesID</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">species_list</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">||</span> <span class="n">species_list</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">species_id</span><span class="p">)</span> <span class="o">==</span> <span class="n">species_list</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="n">species_list</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">species_id</span><span class="p">);</span>
-        <span class="n">species_count</span> <span class="o">++</span><span class="p">;</span>
+        <span class="n">species_count</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>
+<span class="cp">#ifdef DEBUG</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">tree_node</span><span class="o">-&gt;</span><span class="n">getSpeciesID</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Trying to add species for lineages with non-zero species id. Please report this bug.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif </span><span class="c1">// DEBUG</span>
     <span class="n">tree_node</span><span class="o">-&gt;</span><span class="n">burnSpecies</span><span class="p">(</span><span class="n">species_id</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -129,84 +163,111 @@
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Running spatially-implicit model for metacommunity generation.&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
     <span class="c1">// First set up a non-spatial coalescence simulation to generate our metacommunity</span>
-    <span class="n">SimParameters</span> <span class="n">temp_parameters</span><span class="p">;</span>
-    <span class="n">temp_parameters</span><span class="p">.</span><span class="n">setMetacommunityParameters</span><span class="p">(</span><span class="n">community_size</span><span class="p">,</span> <span class="n">speciation_rate</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">task</span><span class="p">);</span>
-    <span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">internalSetup</span><span class="p">(</span><span class="n">temp_parameters</span><span class="p">);</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">temp_parameters</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="c1">// Generate a new unique seed by adding 1073741823 if the seed is 0 - this ensures that 0 and 1 never appear as</span>
+    <span class="c1">// random seeds, which cause autocorrelation in simulation outputs.</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">seed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="mi">1073741823</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">temp_parameters</span><span class="o">-&gt;</span><span class="n">setMetacommunityParameters</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                                <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span>
+                                                <span class="n">task</span><span class="p">);</span>
+    <span class="c1">// Dispose of any previous Tree object and create a new one</span>
+    <span class="n">metacommunity_tree</span> <span class="o">=</span> <span class="n">make_unique</span><span class="o">&lt;</span><span class="n">Tree</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="n">metacommunity_tree</span><span class="o">-&gt;</span><span class="n">internalSetup</span><span class="p">(</span><span class="n">temp_parameters</span><span class="p">);</span>
     <span class="c1">// Run our simulation and calculate the species abundance distribution (as this is all that needs to be stored).</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">runSimulation</span><span class="p">())</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">metacommunity_tree</span><span class="o">-&gt;</span><span class="n">runSimulation</span><span class="p">())</span>
     <span class="p">{</span>
         <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Completion of the non-spatial coalescence simulation &quot;</span>
-                                     <span class="s">&quot;to create the metacommunity did not finish in time.&quot;</span><span class="p">);</span>
+                             <span class="s">&quot;to create the metacommunity did not finish in time.&quot;</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">applySpecRateInternal</span><span class="p">(</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-    <span class="c1">// row_out now contains the number of individuals per species</span>
+    <span class="n">metacommunity_tree</span><span class="o">-&gt;</span><span class="n">applySpecRateInternal</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// species_abundances now contains the number of individuals per species</span>
     <span class="c1">// Make it cumulative to increase the speed of indexing using binary search.</span>
-    <span class="n">metacommunity_cumulative_abundances</span> <span class="o">=</span> <span class="n">metacommunity_tree</span><span class="p">.</span><span class="n">getCumulativeAbundances</span><span class="p">();</span>
+    <span class="n">species_abundances_handler</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimulatedSpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="n">species_abundances_handler</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span><span class="n">random</span><span class="p">,</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                      <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">tmp_species_abundances</span> <span class="o">=</span> <span class="n">metacommunity_tree</span><span class="o">-&gt;</span><span class="n">getSpeciesAbundances</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">tmp_species_abundances</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Simulated species abundance list is empty. Please report this bug.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// Remove the 0 at the start</span>
+    <span class="n">species_abundances_handler</span><span class="o">-&gt;</span><span class="n">setAbundanceList</span><span class="p">(</span><span class="n">tmp_species_abundances</span><span class="p">);</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Spatially-implicit simulation completed.&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
-
 <span class="p">}</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">selectLineageFromMetacommunity</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">auto</span> <span class="n">max_indices</span> <span class="o">=</span> <span class="n">metacommunity_cumulative_abundances</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">auto</span> <span class="n">random_value</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">i0</span><span class="p">(</span><span class="n">community_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-<span class="cp">#ifdef DEBUG</span>
-    <span class="c1">// binary search</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">random_value</span> <span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span><span class="n">metacommunity_cumulative_abundances</span><span class="p">)[</span><span class="n">max_indices</span><span class="p">])</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Random number generation out of range of the community size in lineage selection.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="cp">#endif </span><span class="c1">//DEBUG</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mid_point</span><span class="p">;</span>
-    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">min_indices</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">min_indices</span> <span class="o">&lt;</span> <span class="n">max_indices</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">mid_point</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(((</span><span class="n">max_indices</span> <span class="o">-</span> <span class="n">min_indices</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_indices</span><span class="p">));</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">random_value</span> <span class="o">==</span> <span class="p">(</span><span class="o">*</span><span class="n">metacommunity_cumulative_abundances</span><span class="p">)[</span><span class="n">mid_point</span><span class="p">])</span>
-        <span class="p">{</span>
-            <span class="n">min_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
-            <span class="n">max_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">random_value</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="o">*</span><span class="n">metacommunity_cumulative_abundances</span><span class="p">)[</span><span class="n">mid_point</span><span class="p">])</span>
-        <span class="p">{</span>
-            <span class="n">max_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="n">min_indices</span> <span class="o">=</span> <span class="n">mid_point</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">min_indices</span> <span class="o">==</span> <span class="n">max_indices</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="n">max_indices</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="cp">#ifdef DEBUG</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">min_indices</span> <span class="o">!=</span> <span class="n">max_indices</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">FatalException</span><span class="p">(</span><span class="s">&quot;Error in binary search algorithm for lineage selection. Please report this bug.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="cp">#endif </span><span class="c1">// DEBUG</span>
-    <span class="k">return</span> <span class="n">min_indices</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">SpecSimParameters</span> <span class="o">*</span><span class="n">sp</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SpecSimParameters</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#ifdef DEBUG</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;********************&quot;</span><span class="p">);</span>
     <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Metacommunity application&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
-    <span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_speciation_rate</span><span class="p">);</span>
+
     <span class="c1">// Make sure that the connection is opened to file.</span>
-    <span class="n">openSqlConnection</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bSqlConnection</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">openSqlConnection</span><span class="p">(</span><span class="n">sp</span><span class="o">-&gt;</span><span class="n">filename</span><span class="p">);</span>
+    <span class="p">}</span>
     <span class="n">checkSimulationParameters</span><span class="p">();</span>
-    <span class="n">closeSqlConnection</span><span class="p">();</span>
-    <span class="n">createMetacommunityNSENeutralModel</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">item</span><span class="p">:</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">metacommunity_parameters</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setCommunityParameters</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+        <span class="n">printMetacommunityParameters</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">==</span> <span class="s">&quot;simulated&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">createMetacommunityNSENeutralModel</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">==</span> <span class="s">&quot;analytical&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Use approximation for the SAD from Chisholm and Pacala (2010)</span>
+            <span class="n">approximateSAD</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="c1">// Use the file path provided</span>
+            <span class="n">readSAD</span><span class="p">();</span>
+        <span class="p">}</span>
 <span class="cp">#ifdef DEBUG</span>
-    <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Creating coalescence tree from metacommunity...&quot;</span><span class="p">);</span>
+        <span class="n">writeLog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Creating coalescence tree from metacommunity...&quot;</span><span class="p">);</span>
 <span class="cp">#endif </span><span class="c1">//DEBUG</span>
-    <span class="n">Community</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
+        <span class="n">Community</span><span class="o">::</span><span class="n">applyNoOutput</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">approximateSAD</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">species_abundances_handler</span> <span class="o">=</span> <span class="n">static_pointer_cast</span><span class="o">&lt;</span><span class="n">SpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">(</span>
+            <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">AnalyticalSpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">species_abundances_handler</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span><span class="n">random</span><span class="p">,</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                      <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">readSAD</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Community</span> <span class="n">external_metacommunity</span><span class="p">;</span>
+    <span class="n">external_metacommunity</span><span class="p">.</span><span class="n">openSqlConnection</span><span class="p">(</span><span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span><span class="p">);</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;&gt;</span> <span class="n">sad</span> <span class="o">=</span> <span class="n">external_metacommunity</span><span class="p">.</span><span class="n">getSpeciesAbundances</span><span class="p">(</span>
+            <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">external_reference</span><span class="p">);</span>
+    <span class="n">species_abundances_handler</span> <span class="o">=</span> <span class="n">static_pointer_cast</span><span class="o">&lt;</span><span class="n">SpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">(</span>
+            <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimulatedSpeciesAbundancesHandler</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">species_abundances_handler</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span><span class="n">random</span><span class="p">,</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span><span class="p">,</span>
+                                      <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span><span class="p">);</span>
+    <span class="n">species_abundances_handler</span><span class="o">-&gt;</span><span class="n">setAbundanceList</span><span class="p">(</span><span class="n">sad</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Metacommunity</span><span class="o">::</span><span class="n">printMetacommunityParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Metacommunity current_metacommunity_parameters:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Metacommunity size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">metacommunity_size</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Speciation rate: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">speciation_rate</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Option: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">option</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;External reference: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">current_metacommunity_parameters</span><span class="o">-&gt;</span><span class="n">external_reference</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">writeInfo</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -263,7 +324,7 @@
         <li class="right" >
           <a href="file_necsim_Metacommunity.cpp.html" title="File Metacommunity.cpp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_Metacommunity.cpp.html" >File Metacommunity.cpp</a> &#187;</li> 
       </ul>

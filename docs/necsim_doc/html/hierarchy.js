@@ -7,7 +7,7 @@ var hierarchy =
       [ "Metacommunity", "class_metacommunity.html", null ]
     ] ],
     [ "CommunityParameters", "struct_community_parameters.html", null ],
-    [ "ConfigOption", "class_config_option.html", null ],
+    [ "ConfigParser", "class_config_parser.html", null ],
     [ "DataMask", "class_data_mask.html", [
       [ "Samplematrix", "class_samplematrix.html", null ]
     ] ],
@@ -58,16 +58,17 @@ var hierarchy =
     ] ],
     [ "Row< T >", "class_row.html", null ],
     [ "Row< bool >", "class_row.html", null ],
-    [ "Row< DataPoint >", "class_row.html", null ],
     [ "Row< double >", "class_row.html", null ],
     [ "Row< SpeciesList >", "class_row.html", null ],
-    [ "Row< TreeNode >", "class_row.html", null ],
     [ "Row< uint32_t >", "class_row.html", null ],
-    [ "Row< unsigned long >", "class_row.html", null ],
     [ "SectionOption", "struct_section_option.html", null ],
     [ "SimParameters", "struct_sim_parameters.html", null ],
     [ "SimulateDispersal", "class_simulate_dispersal.html", null ],
     [ "SpeciationCommands", "class_speciation_commands.html", null ],
+    [ "SpeciesAbundancesHandler", "class_species_abundances_handler.html", [
+      [ "AnalyticalSpeciesAbundancesHandler", "class_analytical_species_abundances_handler.html", null ],
+      [ "SimulatedSpeciesAbundancesHandler", "class_simulated_species_abundances_handler.html", null ]
+    ] ],
     [ "SpeciesList", "class_species_list.html", null ],
     [ "SpecSimParameters", "struct_spec_sim_parameters.html", null ],
     [ "Step", "struct_step.html", null ],

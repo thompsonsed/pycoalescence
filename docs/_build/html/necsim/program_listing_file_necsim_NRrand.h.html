@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File NRrand.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File NRrand.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File ProtractedSpatialTree.h" href="file_necsim_ProtractedSpatialTree.h.html" />
+    <link rel="next" title="File parameters.cpp" href="file_necsim_parameters.cpp.html" />
     <link rel="prev" title="File NRrand.h" href="file_necsim_NRrand.h.html" /> 
   </head>
   <body role="document">
@@ -45,12 +45,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_ProtractedSpatialTree.h.html" title="File ProtractedSpatialTree.h"
+          <a href="file_necsim_parameters.cpp.html" title="File parameters.cpp"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="file_necsim_NRrand.h.html" title="File NRrand.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_NRrand.h.html" accesskey="U">File NRrand.h</a> &#187;</li> 
       </ul>
@@ -66,7 +66,7 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_NRrand.h.html#file-necsim-nrrand-h"><span class="std std-ref">File NRrand.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">//This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">//See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#ifndef FATTAIL_H</span>
@@ -124,8 +124,10 @@
 
     <span class="k">typedef</span> <span class="nf">double</span> <span class="p">(</span><span class="n">NRrand</span><span class="o">::*</span><span class="n">fptr</span><span class="p">)();</span> <span class="c1">// once setup will contain the dispersal function to use for this simulation.</span>
     <span class="n">fptr</span> <span class="n">dispersalFunction</span><span class="p">;</span>
+
     <span class="c1">// once setup will contain the dispersal function for the minimum dispersal distance.</span>
     <span class="k">typedef</span> <span class="nf">double</span> <span class="p">(</span><span class="n">NRrand</span><span class="o">::*</span><span class="n">fptr2</span><span class="p">)(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">);</span>
+
     <span class="n">fptr2</span> <span class="n">dispersalFunctionMinDistance</span><span class="p">;</span>
     <span class="c1">// the probability that dispersal comes from the uniform distribution. This is only relevant for uniform dispersals.</span>
     <span class="kt">double</span> <span class="n">m_prob</span><span class="p">{};</span>
@@ -149,10 +151,10 @@
         <span class="p">{</span>
             <span class="n">idum2</span> <span class="o">=</span> <span class="mi">123456789</span><span class="p">;</span>
             <span class="n">iy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="n">idum</span> <span class="o">=</span> <span class="n">seed</span><span class="p">;</span>
+            <span class="n">idum</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
             <span class="k">if</span><span class="p">(</span><span class="n">idum</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">idum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
             <span class="c1">//Be sure to prevent idum = 0.</span>
-            <span class="n">idum2</span> <span class="o">=</span> <span class="p">(</span><span class="n">idum</span><span class="p">);</span>
+            <span class="n">idum2</span> <span class="o">=</span> <span class="n">idum</span><span class="p">;</span>
             <span class="k">for</span><span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="n">NTAB</span> <span class="o">+</span> <span class="mi">7</span><span class="p">;</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">--</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="c1">//Load the shuffle table (after 8 warm-ups).</span>
@@ -239,7 +241,7 @@
     <span class="kt">double</span> <span class="n">rayleighMinDist</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">dist</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">double</span> <span class="n">min_prob</span> <span class="o">=</span> <span class="n">rayleighCDF</span><span class="p">(</span><span class="n">dist</span><span class="p">);</span>
-        <span class="kt">double</span> <span class="n">rand_prob</span> <span class="o">=</span> <span class="n">min_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">min_prob</span><span class="p">)</span> <span class="o">*</span> <span class="n">d01</span><span class="p">();</span>
+        <span class="kt">double</span> <span class="n">rand_prob</span> <span class="o">=</span> <span class="n">min_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">min_prob</span><span class="p">)</span> <span class="o">*</span> <span class="n">d01</span><span class="p">();</span>
         <span class="kt">double</span> <span class="n">out</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">rand_prob</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">);</span>
         <span class="k">if</span><span class="p">(</span><span class="n">out</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">)</span>
         <span class="p">{</span>
@@ -269,15 +271,16 @@
         <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="kt">double</span> <span class="n">fattailCDF</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">distance</span><span class="p">)</span>
+    <span class="kt">double</span> <span class="n">fattailCDF</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">distance</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">M_PI</span><span class="o">*</span><span class="n">sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">))</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">distance</span><span class="o">*</span><span class="n">distance</span><span class="o">/</span><span class="p">(</span><span class="n">tau</span><span class="o">*</span><span class="n">sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)),</span> <span class="o">-</span><span class="p">(</span><span class="n">tau</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">))</span> <span class="o">*</span>
+               <span class="n">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">distance</span> <span class="o">*</span> <span class="n">distance</span> <span class="o">/</span> <span class="p">(</span><span class="n">tau</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)),</span> <span class="o">-</span><span class="p">(</span><span class="n">tau</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="kt">double</span> <span class="n">fattailMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="kt">double</span> <span class="n">fattailMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="kt">double</span> <span class="n">prob</span> <span class="o">=</span> <span class="n">fattailCDF</span><span class="p">(</span><span class="n">min_distance</span><span class="p">);</span>
-        <span class="kt">double</span> <span class="n">random_number</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">+</span> <span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">prob</span><span class="p">);</span>
+        <span class="kt">double</span> <span class="n">random_number</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">+</span> <span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span><span class="p">);</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">pow</span><span class="p">((</span><span class="n">tau</span> <span class="o">*</span> <span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">random_number</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">tau</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">));</span>
     <span class="p">}</span>
 
@@ -332,7 +335,7 @@
         <span class="k">return</span> <span class="n">rayleigh</span><span class="p">();</span>
     <span class="p">}</span>
 
-    <span class="kt">double</span> <span class="n">normUniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="kt">double</span> <span class="n">normUniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_prob</span><span class="p">)</span>
         <span class="p">{</span>
@@ -347,7 +350,7 @@
         <span class="k">return</span> <span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">cutoff</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="kt">double</span> <span class="n">uniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="kt">double</span> <span class="n">uniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">min_distance</span> <span class="o">&gt;</span> <span class="n">cutoff</span><span class="p">)</span>
         <span class="p">{</span>
@@ -371,7 +374,7 @@
         <span class="k">return</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">cutoff</span> <span class="o">+</span> <span class="p">(</span><span class="n">uniform</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="kt">double</span> <span class="n">uniformUniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span> <span class="n">min_distance</span><span class="p">)</span>
+    <span class="kt">double</span> <span class="n">uniformUniformMinDistance</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">min_distance</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
         <span class="p">{</span>
@@ -450,7 +453,29 @@
         <span class="k">return</span> <span class="n">min</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">LONG_MAX</span><span class="p">),</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">dispersalFunctionMinDistance</span><span class="p">)(</span><span class="n">min_distance</span><span class="p">));</span>
     <span class="p">}</span>
 
-    <span class="c1">// to reconstruct distribution, use x = fattail/squrt(1+direction) , y = fattail/squrt(1+(direction^-1))</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">randomLogarithmic</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">u_2</span> <span class="o">=</span> <span class="n">d01</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">u_2</span> <span class="o">&gt;</span> <span class="n">alpha</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">long</span> <span class="kt">double</span> <span class="n">h</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">);</span>
+        <span class="kt">long</span> <span class="kt">double</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="n">d01</span><span class="p">()</span> <span class="o">*</span> <span class="n">h</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">u_2</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="n">q</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">log</span><span class="p">(</span><span class="n">u_2</span><span class="p">)</span> <span class="o">/</span> <span class="n">log</span><span class="p">(</span><span class="n">q</span><span class="p">)));</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">u_2</span> <span class="o">&gt;</span> <span class="n">q</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
 
     <span class="k">friend</span> <span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">NRrand</span> <span class="o">&amp;</span><span class="n">r</span><span class="p">)</span>
     <span class="p">{</span>
@@ -528,8 +553,8 @@
   <p class="topless"><a href="file_necsim_NRrand.h.html"
                         title="previous chapter">File NRrand.h</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="file_necsim_ProtractedSpatialTree.h.html"
-                        title="next chapter">File ProtractedSpatialTree.h</a></p>
+  <p class="topless"><a href="file_necsim_parameters.cpp.html"
+                        title="next chapter">File parameters.cpp</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -561,12 +586,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_ProtractedSpatialTree.h.html" title="File ProtractedSpatialTree.h"
+          <a href="file_necsim_parameters.cpp.html" title="File parameters.cpp"
              >next</a> |</li>
         <li class="right" >
           <a href="file_necsim_NRrand.h.html" title="File NRrand.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_NRrand.h.html" >File NRrand.h</a> &#187;</li> 
       </ul>

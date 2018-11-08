@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Program Listing for File SimulateDispersal.h &#8212; pycoalescence 1.2.6 documentation</title>
+    <title>Program Listing for File SimulateDispersal.h &#8212; pycoalescence 1.2.7a2 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.6',
+        VERSION:     '1.2.7a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File SimulationTemplates.h" href="file_necsim_SimulationTemplates.h.html" />
+    <link rel="next" title="File SimulatedSpeciesAbundancesHandler.cpp" href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html" />
     <link rel="prev" title="File SimulateDispersal.h" href="file_necsim_SimulateDispersal.h.html" /> 
   </head>
   <body role="document">
@@ -45,12 +45,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_SimulationTemplates.h.html" title="File SimulationTemplates.h"
+          <a href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html" title="File SimulatedSpeciesAbundancesHandler.cpp"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="file_necsim_SimulateDispersal.h.html" title="File SimulateDispersal.h"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.h.html" accesskey="U">File SimulateDispersal.h</a> &#187;</li> 
       </ul>
@@ -66,7 +66,7 @@
 <ul class="simple">
 <li>Return to documentation for <a class="reference internal" href="file_necsim_SimulateDispersal.h.html#file-necsim-simulatedispersal-h"><span class="std std-ref">File SimulateDispersal.h</span></a></li>
 </ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of NECSim project which is released under MIT license.</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.</span>
 
 <span class="cp">#ifndef DISPERSAL_TEST</span>
@@ -95,11 +95,11 @@
     <span class="c1">// The density map object</span>
     <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span> <span class="n">density_landscape</span><span class="p">;</span>
     <span class="c1">// The samplemask object</span>
-    <span class="n">DataMask</span> <span class="n">dataMask</span><span class="p">;</span>
+    <span class="n">DataMask</span> <span class="n">data_mask</span><span class="p">;</span>
     <span class="c1">// Dispersal coordinator</span>
     <span class="n">DispersalCoordinator</span> <span class="n">dispersal_coordinator</span><span class="p">{};</span>
-    <span class="c1">// Stores all key simulation parameters for the Landscape object</span>
-    <span class="n">SimParameters</span>  <span class="o">*</span> <span class="n">simParameters</span><span class="p">;</span>
+    <span class="c1">// Stores all key simulation current_metacommunity_parameters for the Landscape object</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">simParameters</span><span class="p">;</span>
     <span class="c1">// The random number generator object</span>
     <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span> <span class="n">random</span><span class="p">;</span>
     <span class="c1">// The random number seed</span>
@@ -120,13 +120,13 @@
     <span class="kt">double</span> <span class="n">generation</span><span class="p">;</span>
     <span class="c1">// If true, sequentially selects dispersal probabilities, default is true</span>
     <span class="kt">bool</span> <span class="n">is_sequential</span><span class="p">;</span>
-    <span class="c1">// Reference number for this set of parameters in the database output</span>
+    <span class="c1">// Reference number for this set of current_metacommunity_parameters in the database output</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_parameter_reference</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
-    <span class="n">SimulateDispersal</span><span class="p">()</span> <span class="o">:</span> <span class="n">density_landscape</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">random</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">distances</span><span class="p">(),</span>
-                          <span class="n">num_steps</span><span class="p">()</span>
+    <span class="n">SimulateDispersal</span><span class="p">()</span> <span class="o">:</span> <span class="n">density_landscape</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Landscape</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">data_mask</span><span class="p">(),</span> <span class="n">dispersal_coordinator</span><span class="p">(),</span>
+                          <span class="n">simParameters</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span><span class="p">()),</span>
+                          <span class="n">random</span><span class="p">(</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">NRrand</span><span class="o">&gt;</span><span class="p">()),</span> <span class="n">distances</span><span class="p">(),</span> <span class="n">parameter_references</span><span class="p">(),</span> <span class="n">cells</span><span class="p">(),</span> <span class="n">num_steps</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">simParameters</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">num_repeats</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="n">database</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -142,7 +142,7 @@
 
     <span class="kt">void</span> <span class="n">setSequential</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bSequential</span><span class="p">);</span>
 
-    <span class="kt">void</span> <span class="nf">setSimulationParameters</span><span class="p">(</span><span class="n">SimParameters</span> <span class="o">*</span> <span class="n">sim_parameters</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">print</span><span class="o">=</span><span class="nb">true</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">setSimulationParameters</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SimParameters</span><span class="o">&gt;</span> <span class="n">sim_parameters</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">print</span> <span class="o">=</span> <span class="nb">true</span><span class="p">);</span>
 
     <span class="kt">void</span> <span class="nf">importMaps</span><span class="p">();</span>
 
@@ -206,8 +206,8 @@
   <p class="topless"><a href="file_necsim_SimulateDispersal.h.html"
                         title="previous chapter">File SimulateDispersal.h</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="file_necsim_SimulationTemplates.h.html"
-                        title="next chapter">File SimulationTemplates.h</a></p>
+  <p class="topless"><a href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html"
+                        title="next chapter">File SimulatedSpeciesAbundancesHandler.cpp</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -239,12 +239,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="file_necsim_SimulationTemplates.h.html" title="File SimulationTemplates.h"
+          <a href="file_necsim_SimulatedSpeciesAbundancesHandler.cpp.html" title="File SimulatedSpeciesAbundancesHandler.cpp"
              >next</a> |</li>
         <li class="right" >
           <a href="file_necsim_SimulateDispersal.h.html" title="File SimulateDispersal.h"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="file_necsim_SimulateDispersal.h.html" >File SimulateDispersal.h</a> &#187;</li> 
       </ul>

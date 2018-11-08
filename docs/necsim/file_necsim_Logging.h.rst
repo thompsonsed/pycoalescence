@@ -50,9 +50,9 @@ Included By
 
 - :ref:`file_necsim_Matrix.h`
 
-- :ref:`file_necsim_CustomExceptions.h`
+- :ref:`file_necsim_custom_exceptions.h`
 
-- :ref:`file_necsim_CPLCustomHandlerNecsim.cpp`
+- :ref:`file_necsim_cpl_custom_handler.cpp`
 
 - :ref:`file_necsim_DataPoint.cpp`
 
@@ -60,7 +60,7 @@ Included By
 
 - :ref:`file_necsim_main.cpp`
 
-- :ref:`file_necsim_Setup.cpp`
+- :ref:`file_necsim_setup.cpp`
 
 - :ref:`file_necsim_TreeNode.cpp`
 

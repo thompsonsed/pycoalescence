@@ -1,9 +1,9 @@
-// This file is part of NECSim project which is released under MIT license.
+// This file is part of necsim project which is released under MIT license.
 // See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details
 /**
  * @author Samuel Thompson
  * @file PyTemplates.h
- * @brief Routines for controlling logger from c++ to python.
+ * @brief Routines for controlling logger from C++ to python.
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 
