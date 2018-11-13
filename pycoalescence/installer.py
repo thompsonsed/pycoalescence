@@ -371,7 +371,7 @@ class Installer(build_ext):
 		if "INTEL_LICENSE_FILE" in env.keys():
 			env["CXX"] = "icpc"
 			env["CC"] = "icc"
-			cmake_args.extend(["-DCMAKE_C_COMPILER=icc", "-DCMAKE_CXX_COMPILER=icpc", "-DUSING_INTEL"])
+			cmake_args.extend(["-DCMAKE_C_COMPILER=icc", "-DCMAKE_CXX_COMPILER=icpc", "-DUSING_INTEL=ON"])
 		self.run_cmake(ext.sourcedir, cmake_args, build_args, self.build_temp, env)
 
 	def run_cmake(self, src_dir, cmake_args, build_args, tmp_dir, env):

@@ -6,8 +6,9 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
 endif ()
-# Change this option to ON if RAM usage is an issue
+# Change this option to ON if RAM usage is an issue or supply as via CL
 option(minimal_ram "minimal_ram" OFF)
+option(USING_INTEL "Use intel compilers for compiling necsim." OFF) # Disabled by default
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,7 +18,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 message(STATUS "Compiler is ${CMAKE_CXX_COMPILER}")
 if (USING_INTEL)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS -xSSE4.2 -axAVX,CORE-AVX-I,CORE-AVX2")
+    message(STATUS "Intel compiler option is ${USING_INTEL}")
+    if(${USING_INTEL})
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -xSSE4.2 -axAVX,CORE-AVX-I,CORE-AVX2")
+    endif()
 endif()
 if (NOT ${minimal_ram})
     add_definitions(-Dsql_ram)
