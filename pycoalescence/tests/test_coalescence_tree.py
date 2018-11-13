@@ -533,6 +533,12 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
 		self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
 
+	def testErrorIfNotApplied(self):
+		"""Tests that an error is raised if outputting is attempted without applying any community parameters."""
+		c = CoalescenceTree(os.path.join("sample", "sample.db"))
+		with self.assertRaises(RuntimeError):
+			c.output()
+
 
 class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 	"""

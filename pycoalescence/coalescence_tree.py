@@ -124,6 +124,7 @@ class CoalescenceTree(object):
 		if database is not None:
 			self.set_database(database)
 		# Set to true once speciation rates have been written to the output database.
+		self.has_outputted = False
 		self.has_applied = False
 
 	def __del__(self):
@@ -819,7 +820,7 @@ class CoalescenceTree(object):
 		# Log warning if sample file is null and record fragments is true
 		self.apply_incremental()
 		self.c_community.output()
-		self.has_applied = True
+		self.has_outputted = True
 
 	def apply_incremental(self):
 		"""
@@ -833,11 +834,12 @@ class CoalescenceTree(object):
 			self.logger.warning(str("Check file existance for " + self.file +
 									". Potential lack of access (verify that definition is a relative path).\n"))
 		self._set_c_community()
-		if self.has_applied:
+		if self.has_outputted:
 			self.logger.warning("Output has already been written to file - regenerating internal object.\n")
 			self.logger.info("To avoid this message in future, use apply_incremental() and then output() to generate "
 							 "the file.\n")
 			self.c_community.reset()
+		self.has_applied = True
 		self.c_community.apply()
 
 	def output(self):
@@ -845,9 +847,12 @@ class CoalescenceTree(object):
 		Outputs the coalescence trees to the same simulation database object.
 		"""
 		if self.has_applied:
-			self.logger.error("Coalescence tree has already been written to output database.\n")
+			if self.has_outputted:
+				self.logger.error("Coalescence tree has already been written to output database.\n")
+			else:
+				self.c_community.output()
 		else:
-			self.c_community.output()
+			raise RuntimeError("No changes have been applied to the coalescence tree for outputting.")
 
 	def speciate_remaining(self, database):
 		"""
