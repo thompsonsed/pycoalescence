@@ -84,7 +84,17 @@ set(SOURCE_FILES
         CSimulation.h
         CLandscapeMetricsCalculator.h
         CSimulateDispersal.h
-        ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp necsim/neutral_analytical.cpp necsim/neutral_analytical.h necsim/parameters.cpp necsim/parameters.h necsim/SimulatedSpeciesAbundancesHandler.cpp necsim/SimulatedSpeciesAbundancesHandler.h necsim/AnalyticalSpeciesAbundancesHandler.cpp necsim/AnalyticalSpeciesAbundancesHandler.h necsim/SpeciesAbundancesHandler.cpp necsim/SpeciesAbundancesHandler.h)
+        ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
+        ${SOURCE_DIR_NECSIM}/neutral_analytical.cpp
+        ${SOURCE_DIR_NECSIM}/neutral_analytical.h
+        ${SOURCE_DIR_NECSIM}/parameters.cpp
+        ${SOURCE_DIR_NECSIM}/parameters.h
+        ${SOURCE_DIR_NECSIM}/SimulatedSpeciesAbundancesHandler.cpp
+        ${SOURCE_DIR_NECSIM}/SimulatedSpeciesAbundancesHandler.h
+        ${SOURCE_DIR_NECSIM}/AnalyticalSpeciesAbundancesHandler.cpp
+        ${SOURCE_DIR_NECSIM}/AnalyticalSpeciesAbundancesHandler.h
+        ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.cpp
+        ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.h)
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 elseif(WINDOWS)
@@ -179,7 +189,7 @@ if(WINDOWS)
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})
     target_link_libraries(necsim ${GDAL_LIBRARY})
 #    INSTALL_TARGETS(../necsim/ RUNTIME_DIRECTORY
-#            ../necsim/ necsim)
+#            ../${SOURCE_DIR_NECSIM}/ necsim)
 #    INSTALL(TARGETS ExecutableTarget StaticLibraryTarget SharedLibraryTarget
 #            RUNTIME DESTINATION bin
 #            LIBRARY DESTINATION lib
