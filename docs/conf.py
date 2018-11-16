@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# PyCoalescence documentation build configuration file, created by
+# pycoalescence documentation build configuration file, created by
 # sphinx-quickstart on Mon Oct 24 17:19:28 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -41,8 +41,6 @@ if read_the_docs_build:
 	sys.modules["scipy"] = Mock()
 	sys.modules["scipy.spatial"] = Mock()
 	sys.modules["scipy.spatial.Voronoi"] = Mock()
-
-from exhale import configs
 
 
 
@@ -560,20 +558,20 @@ highlight_language = 'py'
 
 # The configurations you specified
 stripPath = ".."
-
-internal_configs = textwrap.dedent('''
-    # Tell doxygen to output wherever breathe is expecting things
-    OUTPUT_DIRECTORY       = {out}
-    # Tell doxygen to strip the path names (RTD builds produce long abs paths...)
-    STRIP_FROM_PATH        = {strip}
-'''.format(out=input_dir, strip=configs.exhaleDoxygenStdin))
-# external_configs = textwrap.dedent(configs.exhaleDoxygenStdin)
-# The full input being sent
-full_input = "{base}\n{internal}\n\n".format(
-    base=configs.DEFAULT_DOXYGEN_STDIN_BASE,
-    # external=external_configs,
-    internal=internal_configs
-)
+#
+# internal_configs = textwrap.dedent('''
+#     # Tell doxygen to output wherever breathe is expecting things
+#     OUTPUT_DIRECTORY       = {out}
+#     # Tell doxygen to strip the path names (RTD builds produce long abs paths...)
+#     STRIP_FROM_PATH        = {strip}
+# '''.format(out=input_dir, strip=configs.exhaleDoxygenStdin))
+# # external_configs = textwrap.dedent(configs.exhaleDoxygenStdin)
+# # The full input being sent
+# full_input = "{base}\n{internal}\n\n".format(
+#     base=configs.DEFAULT_DOXYGEN_STDIN_BASE,
+#     # external=external_configs,
+#     internal=internal_configs
+# )
 
 import codecs
 # data="none"

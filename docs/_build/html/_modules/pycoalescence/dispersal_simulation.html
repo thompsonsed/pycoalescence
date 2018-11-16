@@ -1,21 +1,18 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.7a2 documentation</title>
-    
+    <title>pycoalescence.dispersal_simulation &#8212; pycoalescence 1.2.7a5 documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.7a2',
+        VERSION:     '1.2.7a5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,14 +22,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -42,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -192,6 +189,13 @@
 												   <span class="s2">&quot; name=&#39;{}&#39;;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="p">))</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 		<span class="k">return</span> <span class="n">existence</span>
 
+	<span class="k">def</span> <span class="nf">_check_output_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Sets the setup to false if the output database has not been generated already.&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span> <span class="o">=</span> <span class="n">libnecsim</span><span class="o">.</span><span class="n">CDispersalSimulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">write_to_log</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">setup_complete</span> <span class="o">=</span> <span class="bp">False</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">set_output_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_database</span><span class="p">)</span>
+
 <div class="viewcode-block" id="DispersalSimulation.set_map_files"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.set_map_files">[docs]</a>	<span class="k">def</span> <span class="nf">set_map_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fine_file</span><span class="p">,</span> <span class="n">sample_file</span><span class="o">=</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">coarse_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">historical_fine_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 					  <span class="n">historical_coarse_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -320,6 +324,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_setup_map</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Maps have not been set up yet.&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_output_database</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">set_dispersal_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dispersal_method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
 															 <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span>
 															 <span class="bp">self</span><span class="o">.</span><span class="n">m_prob</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispersal_relative_cost</span><span class="p">,</span>
@@ -389,6 +394,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
 		<span class="k">if</span> <span class="n">sequential</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequential</span> <span class="o">=</span> <span class="n">sequential</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_output_database</span><span class="p">()</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_complete</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">complete_setup</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">run_mean_distance_travelled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
@@ -414,7 +420,9 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
 		<span class="k">if</span> <span class="n">sequential</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">sequential</span> <span class="o">=</span> <span class="n">sequential</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">complete_setup</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_check_output_database</span><span class="p">()</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_complete</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">complete_setup</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_dispersal_simulation</span><span class="o">.</span><span class="n">run_mean_dispersal_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_repeats</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequential</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DispersalSimulation.get_mean_dispersal"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.dispersal_simulation.DispersalSimulation.get_mean_dispersal">[docs]</a>	<span class="k">def</span> <span class="nf">get_mean_dispersal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parameter_reference</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -604,13 +612,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
     </div>
   </body>
 </html>

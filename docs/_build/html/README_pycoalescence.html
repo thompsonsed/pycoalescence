@@ -1,21 +1,18 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pycoalescence &#8212; pycoalescence 1.2.7a2 documentation</title>
-    
+    <title>pycoalescence &#8212; pycoalescence 1.2.7a5 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/collapsible-lists/css/tree_view.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2.7a2',
+        VERSION:     '1.2.7a5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="_static/PyCoal_favicon_large.ico"/>
@@ -34,7 +31,7 @@
     <link rel="next" title="necsim" href="necsim/necsim_library.html" />
     <link rel="prev" title="Welcome to pycoalescence" href="index.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -50,7 +47,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to pycoalescence"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -169,7 +166,7 @@ possible at this time. The solution is to build the package recipe on your local
 <blockquote>
 <div><ul class="simple">
 <li><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/conda-forge/pycoalescence-feedstock.git</span></code></li>
-<li>Delete &#8220;or linux&#8221; from line 18 in pycoalescence-feedstock/recipes/meta.yaml. This will allow the build on linux
+<li>Delete “or linux” from line 18 in pycoalescence-feedstock/recipes/meta.yaml. This will allow the build on linux
 systems.</li>
 </ul>
 </div></blockquote>
@@ -227,31 +224,31 @@ environment. This can be desirable for HPC systems where package installation is
 <td>Description</td>
 <td>Default</td>
 </tr>
-<tr class="row-even"><td>&#8211;cmake</td>
+<tr class="row-even"><td>–cmake</td>
 <td>Build the C++ library (necsim) required for pycoalescence.</td>
 <td>True</td>
 </tr>
-<tr class="row-odd"><td>&#8211;autotools</td>
+<tr class="row-odd"><td>–autotools</td>
 <td>Use the autotools build process (./configure and make)</td>
 <td>False</td>
 </tr>
-<tr class="row-even"><td>&#8211;compiler-args</td>
+<tr class="row-even"><td>–compiler-args</td>
 <td>Additional arguments to pass to the autotools compiler</td>
 <td>None</td>
 </tr>
-<tr class="row-odd"><td>&#8211;cmake-args</td>
+<tr class="row-odd"><td>–cmake-args</td>
 <td>Additional arguments to pass to the cmake compiler during configuration</td>
 <td>None</td>
 </tr>
-<tr class="row-even"><td>&#8211;cmake-build-args</td>
+<tr class="row-even"><td>–cmake-build-args</td>
 <td>Additional arguments to pass to the cmake compiler at build time</td>
 <td>None</td>
 </tr>
-<tr class="row-odd"><td>&#8211;debug</td>
+<tr class="row-odd"><td>–debug</td>
 <td>Compile using DEBUG defines</td>
 <td>False</td>
 </tr>
-<tr class="row-even"><td>-c -C &#8211;compile</td>
+<tr class="row-even"><td>-c -C –compile</td>
 <td>Compile only, do not re-configure necsim</td>
 <td>False</td>
 </tr>
@@ -288,8 +285,8 @@ gdal to your Python environment.</p>
 <ol class="arabic">
 <li><p class="first">Instantiate our <a class="reference internal" href="pycoalescence.html#pycoalescence.simulation.Simulation" title="pycoalescence.simulation.Simulation"><code class="xref py py-class docutils literal"><span class="pre">Simulation</span></code></a> object using
 <code class="code pycode python docutils literal"><span class="name"><span class="pre">sim</span></span> <span class="operator"><span class="pre">=</span></span> <span class="name"><span class="pre">Simulation</span></span><span class="punctuation"><span class="pre">(</span></span><span class="name"><span class="pre">logging_level</span></span><span class="operator"><span class="pre">=</span></span><span class="literal number integer"><span class="pre">20</span></span><span class="punctuation"><span class="pre">)</span></span></code> where the logging level corresponds to the amount of information that is
-displayed using <a class="reference external" href="https://docs.python.org/3/library/logging.html">Python&#8217;s logging module</a> (20 corresponds to
-&#8220;info&#8221;, the second highest display level, after &#8220;debug&#8221;).</p>
+displayed using <a class="reference external" href="https://docs.python.org/3/library/logging.html">Python’s logging module</a> (20 corresponds to
+“info”, the second highest display level, after “debug”).</p>
 </li>
 <li><p class="first">Specify simulation parameters</p>
 <ul>
@@ -316,8 +313,8 @@ method a) should be used.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">One can specify either &#8220;null&#8221; or &#8220;none&#8221; map types; &#8220;null&#8221; creates a map at the specified
-size, whereas &#8220;none&#8221; creates hard boundaries without any in-memory map object created at all. However,
+<p class="last">One can specify either “null” or “none” map types; “null” creates a map at the specified
+size, whereas “none” creates hard boundaries without any in-memory map object created at all. However,
 the dimensions of these files must be manually supplied.</p>
 </div>
 </li>
@@ -484,7 +481,7 @@ dispersal map can be set by using
 process, see <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">In this scenario, it is not possible to use a coarse map, which should be &#8220;none&#8221;.</p>
+<p class="last">In this scenario, it is not possible to use a coarse map, which should be “none”.</p>
 </div>
 </div>
 <div class="section" id="differing-demographic-rates">
@@ -506,7 +503,7 @@ other locations.</p>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">The reproduction and death maps can only be used with a fine map, and coarse map should be set to &#8220;none&#8221;.</p>
+<p class="last">The reproduction and death maps can only be used with a fine map, and coarse map should be set to “none”.</p>
 </div>
 </div>
 <div class="section" id="limitations-of-simulation-variables">
@@ -525,7 +522,7 @@ unnecessary bugs.</p>
 <li>Fine map dimensions must be smaller than coarse map dimensions (supplied at the resolution of the fine map files).</li>
 <li>Dimensions of historical fine and coarse maps must match their respective current map dimensions.</li>
 <li>All offsets must maintain the smaller map within the larger map</li>
-<li>If any files are supplied as &#8216;null&#8217;, map sizes must still be provided. This is important for sample map size, but
+<li>If any files are supplied as ‘null’, map sizes must still be provided. This is important for sample map size, but
 should be corrected in a future update for coarse map files.</li>
 </ul>
 </div></blockquote>
@@ -542,8 +539,8 @@ dimensions will be read correctly.</li>
 ensure georeferencing is preserved.</p>
 </div>
 <ul class="simple">
-<li>If the samplemask map is &#8220;null&#8221;, the program will read the dimensions from the fine map and choose that as the
-area to sample entirely over. Supplying &#8220;null&#8221; will therefore sample the entirety of the fine map.</li>
+<li>If the samplemask map is “null”, the program will read the dimensions from the fine map and choose that as the
+area to sample entirely over. Supplying “null” will therefore sample the entirety of the fine map.</li>
 </ul>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
@@ -568,22 +565,22 @@ and y dimensions) and purple arrows indicate the offsets for the coarse map.</p>
 of the following:</p>
 <ul class="simple">
 <li><dl class="first docutils">
-<dt>&#8220;closed&#8221; (default)</dt>
+<dt>“closed” (default)</dt>
 <dd>Run without infinite landscapes, with closed boundaries to the coarse map.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>&#8220;infinite&#8221;</dt>
+<dt>“infinite”</dt>
 <dd>Run with a historical infinite landscape outside of the coares map boundaries.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>&#8220;tiled_coarse&#8221;</dt>
+<dt>“tiled_coarse”</dt>
 <dd>Tile the coarse map infinitely in all dimensions. A coarse map must be provided.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>&#8220;tiled_fine&#8221;</dt>
+<dt>“tiled_fine”</dt>
 <dd>Tile the fine map infinitely in all dimensions. No coarse map should be provided.</dd>
 </dl>
 </li>
@@ -708,7 +705,7 @@ parameters outside of the simulation database.</p>
 </div>
 <div class="section" id="post-simulation-analysis">
 <h3><a class="toc-backref" href="#id9">Post-simulation analysis</a><a class="headerlink" href="#post-simulation-analysis" title="Permalink to this headline">¶</a></h3>
-<p>Once simulations are complete, necsim&#8217;s <a class="reference internal" href="necsim/necsim_library.html#introduction-speciationcounter"><span class="std std-ref">applying speciation rates functionality</span></a>
+<p>Once simulations are complete, necsim’s <a class="reference internal" href="necsim/necsim_library.html#introduction-speciationcounter"><span class="std std-ref">applying speciation rates functionality</span></a>
 can be used to apply additional speciation rates to the coalescence tree. A simple way of applying additional simulation
 rates is provided within the <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree" title="pycoalescence.coalescence_tree.CoalescenceTree"><code class="xref py py-class docutils literal"><span class="pre">CoalescenceTree</span> <span class="pre">class</span></code></a>.</p>
 <p>The two functions for this routine are</p>
@@ -732,7 +729,7 @@ particular generated community within the database.</li>
 </ul>
 <p>All methods use the same function,
 <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters" title="pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters"><code class="xref py py-func docutils literal"><span class="pre">set_speciation_parameters()</span></code></a> with
-<code class="docutils literal"><span class="pre">option</span></code> set as one of &#8220;simulated&#8221;, &#8220;analytical&#8221; or a path to the external database, respectively for the above
+<code class="docutils literal"><span class="pre">option</span></code> set as one of “simulated”, “analytical” or a path to the external database, respectively for the above
 three methods.</p>
 <div class="section" id="id4">
 <h4>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
@@ -807,18 +804,18 @@ database, which should be an output from a <strong>necsim</strong> simulation (r
 <li><a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.import_comparison_data" title="pycoalescence.coalescence_tree.CoalescenceTree.import_comparison_data"><code class="xref py py-func docutils literal"><span class="pre">import_comparison_data()</span></code></a> reads an
 SQL database which contains real data to compare to the simulation output. The comparison data should contain the
 following tables:<ul>
-<li>BIODIVERSITY_ METRICS, containing <em>only</em> &#8220;metric&#8221;, &#8220;fragment&#8221;, &#8220;value&#8221; and &#8220;number_of_individuals&#8221; columns.
-The metric can be &#8220;fragment_richness&#8221; or any other metric created by your own functions which exists also in
+<li>BIODIVERSITY_ METRICS, containing <em>only</em> “metric”, “fragment”, “value” and “number_of_individuals” columns.
+The metric can be “fragment_richness” or any other metric created by your own functions which exists also in
 the simulated data.</li>
-<li>SPECIES_ABUNDANCES containing <em>at least</em> &#8220;SpeciesID&#8221;, &#8220;Abund&#8221;.</li>
+<li>SPECIES_ABUNDANCES containing <em>at least</em> “SpeciesID”, “Abund”.</li>
 </ul>
 </li>
 </ul>
 <p>Additionally, one can provide the following if comparisons between fragments are required:</p>
 <blockquote>
 <div><ul class="simple">
-<li>FRAGMENT_ABUNDANCES containing <em>at least</em> &#8220;Plot&#8221;, &#8220;Mnemonic&#8221; and &#8220;Abund&#8221;.</li>
-<li>FRAGMENT_OCTAVES containing <em>at least</em> &#8220;fragment&#8221;, &#8220;octave&#8221;, &#8220;num_species&#8221;. This can also be calculated from
+<li>FRAGMENT_ABUNDANCES containing <em>at least</em> “Plot”, “Mnemonic” and “Abund”.</li>
+<li>FRAGMENT_OCTAVES containing <em>at least</em> “fragment”, “octave”, “num_species”. This can also be calculated from
 FRAGMENT_ABUNDANCES using <a class="reference internal" href="pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.calculate_comparison_octaves" title="pycoalescence.coalescence_tree.CoalescenceTree.calculate_comparison_octaves"><code class="xref py py-func docutils literal"><span class="pre">calculate_comparison_octaves()</span></code></a></li>
 </ul>
 </div></blockquote>
@@ -834,7 +831,7 @@ Functionality is contained within the <a class="reference internal" href="pycoal
 <li>Generate fragmented landscapes (see <a class="reference internal" href="README_landscapes.html#generate-landscapes"><span class="std std-ref">here</span></a>). This may be useful for generating example
 landscapes of a particular size with desired characteristics.</li>
 <li>Simulate a dispersal kernel on a landscape to obtain characteristics of the effective dispersal kernel. Currently only
-a single map is supported with &#8220;closed&#8221;, &#8220;infinite&#8221; or &#8220;tiled&#8221; landscape types (see <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>).</li>
+a single map is supported with “closed”, “infinite” or “tiled” landscape types (see <a class="reference internal" href="README_landscapes.html#simulate-landscapes"><span class="std std-ref">here</span></a>).</li>
 <li>Simulations can be merged into a single output, with each simulation occupying a separate guild (see
 <a class="reference internal" href="README_merger.html#merging-simulations"><span class="std std-ref">here</span></a>). Analyses can then be performed on the combined data.</li>
 </ul>
@@ -905,7 +902,7 @@ declared and multiple sets of pristine maps can be declared at unique times.</dd
 </div>
 <div class="section" id="version">
 <h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
-<p>Version 1.2.7a2</p>
+<p>Version 1.2.7a5</p>
 </div>
 <div class="section" id="contacts">
 <h2>Contacts<a class="headerlink" href="#contacts" title="Permalink to this headline">¶</a></h2>
@@ -1021,12 +1018,12 @@ details.</p>
         <li class="right" >
           <a href="index.html" title="Welcome to pycoalescence"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
     </div>
   </body>
 </html>

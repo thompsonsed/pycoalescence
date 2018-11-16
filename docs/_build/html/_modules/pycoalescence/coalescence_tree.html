@@ -1,21 +1,18 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.7a2 documentation</title>
-    
+    <title>pycoalescence.coalescence_tree &#8212; pycoalescence 1.2.7a5 documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/collapsible-lists/css/tree_view.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2.7a2',
+        VERSION:     '1.2.7a5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,14 +22,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -42,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -179,6 +176,7 @@
 		<span class="k">if</span> <span class="n">database</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">set_database</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
 		<span class="c1"># Set to true once speciation rates have been written to the output database.</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">has_outputted</span> <span class="o">=</span> <span class="bp">False</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">has_applied</span> <span class="o">=</span> <span class="bp">False</span>
 
 	<span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -874,7 +872,7 @@
 		<span class="c1"># Log warning if sample file is null and record fragments is true</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">apply_incremental</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">output</span><span class="p">()</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">has_applied</span> <span class="o">=</span> <span class="bp">True</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">has_outputted</span> <span class="o">=</span> <span class="bp">True</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.apply_incremental"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.apply_incremental">[docs]</a>	<span class="k">def</span> <span class="nf">apply_incremental</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -888,11 +886,12 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;Check file existance for &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">+</span>
 									<span class="s2">&quot;. Potential lack of access (verify that definition is a relative path).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_set_c_community</span><span class="p">()</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_applied</span><span class="p">:</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_outputted</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Output has already been written to file - regenerating internal object.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;To avoid this message in future, use apply_incremental() and then output() to generate &quot;</span>
 							 <span class="s2">&quot;the file.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">has_applied</span> <span class="o">=</span> <span class="bp">True</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.output"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.output">[docs]</a>	<span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -900,9 +899,12 @@
 <span class="sd">		Outputs the coalescence trees to the same simulation database object.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_applied</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Coalescence tree has already been written to output database.&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_outputted</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Coalescence tree has already been written to output database.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">output</span><span class="p">()</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">c_community</span><span class="o">.</span><span class="n">output</span><span class="p">()</span></div>
+			<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No changes have been applied to the coalescence tree for outputting.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CoalescenceTree.speciate_remaining"><a class="viewcode-back" href="../../pycoalescence.html#pycoalescence.coalescence_tree.CoalescenceTree.speciate_remaining">[docs]</a>	<span class="k">def</span> <span class="nf">speciate_remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
@@ -2483,13 +2485,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
     </div>
   </body>
 </html>

@@ -137,6 +137,13 @@ class DispersalSimulation(Landscape):
 												   " name='{}';".format(table_name)).fetchone() is not None
 		return existence
 
+	def _check_output_database(self):
+		"""Sets the setup to false if the output database has not been generated already."""
+		if not os.path.exists(self.dispersal_database):
+			self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
+			self.setup_complete = False
+			self.c_dispersal_simulation.set_output_database(self.dispersal_database)
+
 	def set_map_files(self, fine_file, sample_file="null", coarse_file=None, historical_fine_file=None,
 					  historical_coarse_file=None, deme=1):
 		"""
@@ -265,6 +272,7 @@ class DispersalSimulation(Landscape):
 		"""
 		if not self.is_setup_map:
 			raise RuntimeError("Maps have not been set up yet.")
+		self._check_output_database()
 		self.c_dispersal_simulation.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma,
 															 self.tau,
 															 self.m_prob, self.cutoff, self.dispersal_relative_cost,
@@ -334,6 +342,7 @@ class DispersalSimulation(Landscape):
 			self.seed = seed
 		if sequential is not None:
 			self.sequential = sequential
+		self._check_output_database()
 		if not self.setup_complete:
 			self.complete_setup()
 		self.c_dispersal_simulation.run_mean_distance_travelled(self.number_repeats, self.number_steps, self.seed,
@@ -359,7 +368,9 @@ class DispersalSimulation(Landscape):
 			self.seed = seed
 		if sequential:
 			self.sequential = sequential
-		self.complete_setup()
+		self._check_output_database()
+		if not self.setup_complete:
+			self.complete_setup()
 		self.c_dispersal_simulation.run_mean_dispersal_distance(self.number_repeats, self.seed, self.sequential)
 
 	def get_mean_dispersal(self, database=None, parameter_reference=1):

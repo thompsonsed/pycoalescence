@@ -1,21 +1,18 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Example simulations and analysis using pycoalescence &#8212; pycoalescence 1.2.7a2 documentation</title>
-    
+    <title>Example simulations and analysis using pycoalescence &#8212; pycoalescence 1.2.7a5 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.7a2',
+        VERSION:     '1.2.7a5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,7 +22,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
@@ -34,7 +31,7 @@
     <link rel="next" title="Modules" href="../modules.html" />
     <link rel="prev" title="Merging simulation outputs" href="../README_merger.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -50,7 +47,7 @@
         <li class="right" >
           <a href="../README_merger.html" title="Merging simulation outputs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -240,9 +237,9 @@ own simulations.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>import os
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 
-from pycoalescence import Simulation, CoalescenceTree
+<span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">CoalescenceTree</span>
 </pre></div>
 </div>
 </div>
@@ -253,16 +250,16 @@ from pycoalescence import Simulation, CoalescenceTree
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>input_dir = &quot;pycoalescence/tests/sample&quot;
-output_dir = &quot;output&quot;
+<span></span><span class="n">input_dir</span> <span class="o">=</span> <span class="s2">&quot;pycoalescence/tests/sample&quot;</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="Basic-spatial-simulation-and-analysis">
 <h2>Basic spatial simulation and analysis<a class="headerlink" href="#Basic-spatial-simulation-and-analysis" title="Permalink to this headline">¶</a></h2>
 <p>Basic spatial simulation on just one map file, with a closed landscape.
-For this example we run with full logging (at &#8216;debug&#8217; level). All other
-examples will be run using &#8216;critical&#8217; level, which shouldn&#8217;t output any
+For this example we run with full logging (at ‘debug’ level). All other
+examples will be run using ‘critical’ level, which shouldn’t output any
 information unless there is a problem.</p>
 <p>Use a speciation rate of 0.1, a dispersal of 2.0 (sigma) and 10
 individuals per cell (deme).</p>
@@ -273,12 +270,12 @@ individuals per cell (deme).</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>sim1 = Simulation(logging_level=10)
-sim1.set_simulation_parameters(seed=1, job_type=1, output_directory=output_dir, min_speciation_rate=0.1,
-                                                       sigma=2.0, deme=10)
-# Use automatic detection of the map file dimensions
-sim1.set_map(os.path.join(input_dir, &quot;SA_sample_fine.tif&quot;))
-sim1.run()
+<span></span><span class="n">sim1</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">set_simulation_parameters</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                       <span class="n">sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># Use automatic detection of the map file dimensions</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">set_map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_fine.tif&quot;</span><span class="p">))</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -353,9 +350,9 @@ Total simulation and output time was 0 hours 0 minutes 7 seconds
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>tree1 = CoalescenceTree(sim1, logging_level=10)
-tree1.set_speciation_parameters(speciation_rates=[0.1, 0.2, 0.4])
-tree1.apply()
+<span></span><span class="n">tree1</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim1</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">tree1</span><span class="o">.</span><span class="n">set_speciation_parameters</span><span class="p">(</span><span class="n">speciation_rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
+<span class="n">tree1</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -397,10 +394,10 @@ our community parameters.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>for reference in tree1.get_community_references():
-    spec_rate = tree1.get_community_parameters(reference=reference)[&quot;speciation_rate&quot;]
-    print(&quot;Species richness for speciation rate of {} is {}&quot;.format(spec_rate,
-                                                                                                                                    tree1.get_richness(reference)))
+<span></span><span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">tree1</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">():</span>
+    <span class="n">spec_rate</span> <span class="o">=</span> <span class="n">tree1</span><span class="o">.</span><span class="n">get_community_parameters</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)[</span><span class="s2">&quot;speciation_rate&quot;</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Species richness for speciation rate of {} is {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spec_rate</span><span class="p">,</span>
+                                                                                                                                    <span class="n">tree1</span><span class="o">.</span><span class="n">get_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -433,13 +430,13 @@ generations in the past.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>sample_file = os.path.join(input_dir, &quot;SA_samplemaskINT.tif&quot;)
-fine_file = os.path.join(input_dir, &quot;SA_sample_fine.tif&quot;)
-coarse_file = os.path.join(input_dir, &quot;SA_sample_coarse.tif&quot;)
-pristine_fine_file1 = os.path.join(input_dir, &quot;SA_sample_fine_pristine1.tif&quot;)
-pristine_coarse_file1 = os.path.join(input_dir, &quot;SA_sample_coarse_pristine1.tif&quot;)
-pristine_fine_file2 = os.path.join(input_dir, &quot;SA_sample_fine_pristine2.tif&quot;)
-pristine_coarse_file2 = os.path.join(input_dir, &quot;SA_sample_coarse_pristine2.tif&quot;)
+<span></span><span class="n">sample_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_samplemaskINT.tif&quot;</span><span class="p">)</span>
+<span class="n">fine_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_fine.tif&quot;</span><span class="p">)</span>
+<span class="n">coarse_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_coarse.tif&quot;</span><span class="p">)</span>
+<span class="n">pristine_fine_file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_fine_pristine1.tif&quot;</span><span class="p">)</span>
+<span class="n">pristine_coarse_file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_coarse_pristine1.tif&quot;</span><span class="p">)</span>
+<span class="n">pristine_fine_file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_fine_pristine2.tif&quot;</span><span class="p">)</span>
+<span class="n">pristine_coarse_file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_coarse_pristine2.tif&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -449,19 +446,19 @@ pristine_coarse_file2 = os.path.join(input_dir, &quot;SA_sample_coarse_pristine2
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>sim2 = Simulation(logging_level=50)
-sim2.set_simulation_parameters(seed=2, job_type=1, output_directory=output_dir, min_speciation_rate=0.1,
-                                                       sigma=2.0, deme=1)
-sim2.set_speciation_rates([0.1, 0.2, 0.3])
-# Use automatic detection of the map file dimensions
-sim2.set_map_files(sample_file=sample_file, fine_file=fine_file, coarse_file=coarse_file)
-sim2.add_historical_map(fine_map=pristine_fine_file1, coarse_map=pristine_coarse_file1, time=100,
-                                            rate=0.5)
-sim2.add_historical_map(fine_map=pristine_fine_file2, coarse_map=pristine_coarse_file2, time=100,
-                                            rate=0.5)
-sim2.add_sample_time(50)
-sim2.add_sample_time(100)
-sim2.run()
+<span></span><span class="n">sim2</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">set_simulation_parameters</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                       <span class="n">sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">set_speciation_rates</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="c1"># Use automatic detection of the map file dimensions</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">set_map_files</span><span class="p">(</span><span class="n">sample_file</span><span class="o">=</span><span class="n">sample_file</span><span class="p">,</span> <span class="n">fine_file</span><span class="o">=</span><span class="n">fine_file</span><span class="p">,</span> <span class="n">coarse_file</span><span class="o">=</span><span class="n">coarse_file</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">add_historical_map</span><span class="p">(</span><span class="n">fine_map</span><span class="o">=</span><span class="n">pristine_fine_file1</span><span class="p">,</span> <span class="n">coarse_map</span><span class="o">=</span><span class="n">pristine_coarse_file1</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                            <span class="n">rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">add_historical_map</span><span class="p">(</span><span class="n">fine_map</span><span class="o">=</span><span class="n">pristine_fine_file2</span><span class="p">,</span> <span class="n">coarse_map</span><span class="o">=</span><span class="n">pristine_coarse_file2</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                            <span class="n">rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">add_sample_time</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">add_sample_time</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">sim2</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -472,15 +469,15 @@ sim2.run()
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>tree2 = CoalescenceTree(sim2)
-for reference in tree2.get_community_references():
-    # Contains a dictionary of the parameters
-    community_parameters = tree2.get_community_parameters(reference)
-    spec_rate = community_parameters[&quot;speciation_rate&quot;]
-    time = community_parameters[&quot;time&quot;]
-    print(&quot;Species richness at time {} with speciation rate of {} is {}.&quot;.format(time,
-                                                                                                                                                             spec_rate,
-                                                                                                                                                             tree2.get_richness(reference)))
+<span></span><span class="n">tree2</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">tree2</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">():</span>
+    <span class="c1"># Contains a dictionary of the parameters</span>
+    <span class="n">community_parameters</span> <span class="o">=</span> <span class="n">tree2</span><span class="o">.</span><span class="n">get_community_parameters</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+    <span class="n">spec_rate</span> <span class="o">=</span> <span class="n">community_parameters</span><span class="p">[</span><span class="s2">&quot;speciation_rate&quot;</span><span class="p">]</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">community_parameters</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Species richness at time {} with speciation rate of {} is {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">,</span>
+                                                                                                                                                             <span class="n">spec_rate</span><span class="p">,</span>
+                                                                                                                                                             <span class="n">tree2</span><span class="o">.</span><span class="n">get_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -514,14 +511,14 @@ well.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>sim3 = Simulation(logging_level=50)
-sim3.set_simulation_parameters(seed=3, job_type=1, output_directory=output_dir,
-                                                       min_speciation_rate=0.1, sigma=2.0, deme=1,
-                                                       protracted=True, min_speciation_gen=1000, max_speciation_gen=10000)
-sim3.set_speciation_rates([0.1, 0.2, 0.3])
-# Use automatic detection of the map file dimensions
-sim3.set_map(os.path.join(input_dir, &quot;SA_sample_fine.tif&quot;))
-sim3.run()
+<span></span><span class="n">sim3</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">set_simulation_parameters</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+                                                       <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                                       <span class="n">protracted</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">min_speciation_gen</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_speciation_gen</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">set_speciation_rates</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="c1"># Use automatic detection of the map file dimensions</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">set_map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_fine.tif&quot;</span><span class="p">))</span>
+<span class="n">sim3</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -533,13 +530,13 @@ instead of a speciation rate.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>tree3 = CoalescenceTree(sim3)
-tree3.set_speciation_parameters(speciation_rates=[0.1, 0.2, 0.3], protracted_speciation_min=1000,
-                                                            protracted_speciation_max=10000, metacommunity_speciation_rate=0.001,
-                                                            metacommunity_size=100000)
-tree3.add_protracted_parameters(10, 5000)
-tree3.add_protracted_parameters(50, 800)
-tree3.apply()
+<span></span><span class="n">tree3</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim3</span><span class="p">)</span>
+<span class="n">tree3</span><span class="o">.</span><span class="n">set_speciation_parameters</span><span class="p">(</span><span class="n">speciation_rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="n">protracted_speciation_min</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                                            <span class="n">protracted_speciation_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+                                                            <span class="n">metacommunity_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">tree3</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="n">tree3</span><span class="o">.</span><span class="n">add_protracted_parameters</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+<span class="n">tree3</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -550,18 +547,18 @@ tree3.apply()
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>for reference in tree3.get_community_references():
-    params = tree3.get_community_parameters(reference)
-    spec_rate = params[&quot;speciation_rate&quot;]
-    proc_min = params[&quot;min_speciation_gen&quot;]
-    proc_max = params[&quot;max_speciation_gen&quot;]
-    print(&quot;Speciation rate of {}, (min gen={}, max gen={})&quot;.format(spec_rate, proc_min, proc_max))
-    if params[&quot;metacommunity_reference&quot;] != 0:
-            meta_params = tree3.get_metacommunity_parameters(params[&quot;metacommunity_reference&quot;])
-            meta_spec = meta_params[&quot;speciation_rate&quot;]
-            meta_size = meta_params[&quot;metacommunity_size&quot;]
-            print(&quot;Metacommunity used of size {} with speciation rate {}.&quot;.format(meta_size, meta_spec))
-    print(&quot;Species richness: {}&quot;.format(tree3.get_richness(reference)))
+<span></span><span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">tree3</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">():</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">tree3</span><span class="o">.</span><span class="n">get_community_parameters</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+    <span class="n">spec_rate</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;speciation_rate&quot;</span><span class="p">]</span>
+    <span class="n">proc_min</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;min_speciation_gen&quot;</span><span class="p">]</span>
+    <span class="n">proc_max</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;max_speciation_gen&quot;</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Speciation rate of {}, (min gen={}, max gen={})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spec_rate</span><span class="p">,</span> <span class="n">proc_min</span><span class="p">,</span> <span class="n">proc_max</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;metacommunity_reference&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">meta_params</span> <span class="o">=</span> <span class="n">tree3</span><span class="o">.</span><span class="n">get_metacommunity_parameters</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;metacommunity_reference&quot;</span><span class="p">])</span>
+            <span class="n">meta_spec</span> <span class="o">=</span> <span class="n">meta_params</span><span class="p">[</span><span class="s2">&quot;speciation_rate&quot;</span><span class="p">]</span>
+            <span class="n">meta_size</span> <span class="o">=</span> <span class="n">meta_params</span><span class="p">[</span><span class="s2">&quot;metacommunity_size&quot;</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Metacommunity used of size {} with speciation rate {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">meta_size</span><span class="p">,</span> <span class="n">meta_spec</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Species richness: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tree3</span><span class="o">.</span><span class="n">get_richness</span><span class="p">(</span><span class="n">reference</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -615,12 +612,12 @@ required as objects will be deleted when they fall out of scope.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span>sim1 = None
-sim2 = None
-sim3 = None
-tree1 = None
-tree2 = None
-tree3 = None
+<span></span><span class="n">sim1</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">sim2</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">sim3</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">tree1</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">tree2</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">tree3</span> <span class="o">=</span> <span class="bp">None</span>
 </pre></div>
 </div>
 </div>
@@ -692,12 +689,12 @@ tree3 = None
         <li class="right" >
           <a href="../README_merger.html" title="Merging simulation outputs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
     </div>
   </body>
 </html>
