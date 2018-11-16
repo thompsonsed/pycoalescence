@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_ProtractedTree.h:
 
 File ProtractedTree.h
 =====================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_ProtractedTree` class for running simulations and outputting the phylogenetic trees using protracted speciation. 
-
+Contains the :ref:`exhale_class_class_protracted_tree` class for running simulations and outputting the phylogenetic trees using protracted speciation. 
+ 
 
 .. contents:: Contents
    :local:
@@ -60,5 +62,5 @@ Classes
 -------
 
 
-- :ref:`class_ProtractedTree`
+- :ref:`exhale_class_class_protracted_tree`
 

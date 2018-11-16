@@ -1,14 +1,12 @@
 
-
 .. _file_PyLogging.h:
 
 File PyLogging.h
 ================
 
 
-
 Routines for writing to Python logging module. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -67,7 +65,7 @@ Functions
 ---------
 
 
-- :ref:`function_getGlobalLogger`
+- :ref:`exhale_function__py_logging_8h_1a211ca84a4b539aa59a531cce6fd015e4`
 
-- :ref:`function_removeGlobalLogger`
+- :ref:`exhale_function__py_logging_8h_1a2ee01f3c6539e20979d44c3bb5a9073b`
 

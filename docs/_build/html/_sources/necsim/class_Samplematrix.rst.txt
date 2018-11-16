@@ -1,4 +1,4 @@
-.. _class_Samplematrix:
+.. _exhale_class_class_samplematrix:
 
 Class Samplematrix
 ==================
@@ -12,7 +12,7 @@ Inheritance Relationships
 Base Type
 *********
 
-- ``public DataMask`` (:ref:`class_DataMask`)
+- ``public DataMask`` (:ref:`exhale_class_class_data_mask`)
 
 
 Class Documentation

@@ -1,4 +1,4 @@
-.. _template_class_Row:
+.. _exhale_class_class_row:
 
 Template Class Row
 ==================

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_ProtractedSpatialTree.h:
 
 File ProtractedSpatialTree.h
 ============================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_ProtractedSpatialTree` class for running simulations and outputting the phylogenetic trees using protracted speciation. 
-
+Contains the :ref:`exhale_class_class_protracted_spatial_tree` class for running simulations and outputting the phylogenetic trees using protracted speciation. 
+ 
 
 .. contents:: Contents
    :local:
@@ -50,12 +52,12 @@ Classes
 -------
 
 
-- :ref:`class_ProtractedSpatialTree`
+- :ref:`exhale_class_class_protracted_spatial_tree`
 
 
 Defines
 -------
 
 
-- :ref:`define_SPECIATIONCOUNTER_PROTRACTEDSPATIALTREE_H`
+- :ref:`exhale_define__protracted_spatial_tree_8h_1ad9838a1c6978b0ac757bae17a32a4d0d`
 

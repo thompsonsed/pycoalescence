@@ -1,0 +1,1528 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Class SpatialTree &#8212; pycoalescence 1.2.7a5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class SpeciationCommands" href="class_speciation_commands.html" />
+    <link rel="prev" title="Class SimulatedSpeciesAbundancesHandler" href="class_simulated_species_abundances_handler.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_speciation_commands.html" title="Class SpeciationCommands"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="class_simulated_species_abundances_handler.html" title="Class SimulatedSpeciesAbundancesHandler"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="class-spatialtree">
+<span id="exhale-class-class-spatial-tree"></span><h1>Class SpatialTree<a class="headerlink" href="#class-spatialtree" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_necsim_SpatialTree.h.html#file-necsim-spatialtree-h"><span class="std std-ref">File SpatialTree.h</span></a></li>
+</ul>
+<div class="section" id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">Tree</span></code> (<a class="reference internal" href="class_tree.html#exhale-class-class-tree"><span class="std std-ref">Class Tree</span></a>)</li>
+</ul>
+</div>
+<div class="section" id="derived-type">
+<h3>Derived Type<a class="headerlink" href="#derived-type" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">ProtractedSpatialTree</span></code> (<a class="reference internal" href="class_protracted_spatial_tree.html#exhale-class-class-protracted-spatial-tree"><span class="std std-ref">Class ProtractedSpatialTree</span></a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv311SpatialTree">
+<span class="target" id="class_spatial_tree"></span><em class="property">class </em><code class="descname">SpatialTree</code> : <em class="property">public</em> <em class="property">virtual</em> <a class="reference internal" href="class_tree.html#_CPPv34Tree" title="Tree">Tree</a><a class="headerlink" href="#_CPPv311SpatialTree" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Represents the output phylogenetic tree, when run on a spatially-explicit landscape. </p>
+<p>Contains all functions for running simulations, outputting data and calculating coalescence tree structure. </p>
+<p>Subclassed by <a class="reference internal" href="class_protracted_spatial_tree.html#class_protracted_spatial_tree"><span class="std std-ref">ProtractedSpatialTree</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree11SpatialTreeEv">
+<span class="target" id="class_spatial_tree_1a051cc56f4f1284c419616ca6b582d52f"></span><code class="descname">SpatialTree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N11SpatialTree11SpatialTreeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The constructor for <a class="reference internal" href="#class_spatial_tree"><span class="std std-ref">SpatialTree</span></a>. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTreeD0Ev">
+<span class="target" id="class_spatial_tree_1ab5c557551d05c27f7688de97c0806216"></span><code class="descname">~SpatialTree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N11SpatialTreeD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree13runFileChecksEv">
+<span class="target" id="class_spatial_tree_1a060fb8be17d702ed5eb0c142a89d9773"></span>void <code class="descname">runFileChecks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Runs the basic file existence checks. Checks for paused simulations and file existence. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree9parseArgsER6vectorI6stringE">
+<span class="target" id="class_spatial_tree_1ad6a5412bccbccc92a302b2fb05bbced2"></span>void <code class="descname">parseArgs</code><span class="sig-paren">(</span>vector&lt;string&gt; &amp;<em>comargs</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Parses the command line arguments and saves the flags in <a class="reference internal" href="class_tree.html#class_tree"><span class="std std-ref">Tree</span></a> for fullmode, resuming and other important variables. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">comargs</span></code>: </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree12checkFoldersEv">
+<span class="target" id="class_spatial_tree_1aef0097abc7c616ed656e26b4055834c3"></span>void <code class="descname">checkFolders</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks that the folders exist and the files required for the simulation also exist. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree13setParametersEv">
+<span class="target" id="class_spatial_tree_1a0c83bcd9a84f4fa98c78b75a78a9a012"></span>void <code class="descname">setParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the map object with the correct variables, taking the <a class="reference internal" href="struct_sim_parameters.html#struct_sim_parameters"><span class="std std-ref">SimParameters</span></a> structure defined elsewhere for the parameters. </p>
+<p>Requires that parameters have already been imported into the <a class="reference internal" href="struct_sim_parameters.html#struct_sim_parameters"><span class="std std-ref">SimParameters</span></a></p>
+<p>This function can only be run once, otherwise a Main_Exception will be thrown </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree10importMapsEv">
+<span class="target" id="class_spatial_tree_1ab9603c25cd1c8466d1e4bfa3f73f191f"></span>void <code class="descname">importMaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Imports the maps into the forestmap object. </p>
+<p>The simulation variables should have already been imported by <a class="reference internal" href="#class_spatial_tree_1a0c83bcd9a84f4fa98c78b75a78a9a012"><span class="std std-ref">setParameters()</span></a>, otherwise a Fatal_Exception will be thrown. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree18importActivityMapsEv">
+<span class="target" id="class_spatial_tree_1a8ba526e7129f70b4ccff289c1a21d2a9"></span>void <code class="descname">importActivityMaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Imports the activity maps from the relevant files. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree15getInitialCountEv">
+<span class="target" id="class_spatial_tree_1a05ac9205ab49dbe6056522722372063b"></span>unsigned long <code class="descname">getInitialCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Counts the number of individuals that exist on the spatial grid. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of individuals that will be initially simulated </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree25setupDispersalCoordinatorEv">
+<span class="target" id="class_spatial_tree_1a3ce93c4d62367f17dd523cab4cc35ae8"></span>void <code class="descname">setupDispersalCoordinator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets up the dispersal coordinator by linking to the correct functions and choosing the appropriate dispersal method. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree5setupEv">
+<span class="target" id="class_spatial_tree_1ae97336318c81e182e9f445f7efdbff8d"></span>void <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Contains the setup routines for a spatial landscape. It also checks for paused simulations and imports data if necessary from paused files. <a class="reference internal" href="#class_spatial_tree_1ab9603c25cd1c8466d1e4bfa3f73f191f"><span class="std std-ref">importMaps()</span></a> is called for importing the map files. </p>
+<p></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree11fillObjectsERKm">
+<span class="target" id="class_spatial_tree_1a030ece1d0756057e56f4272510d3e567"></span>unsigned long <code class="descname">fillObjects</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>initial_count</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Fill the active, data and grid objects with the starting lineages. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of lineages added (for validation purposes) </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">initial_count</span></code>: the number of individuals expected to exist </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree21getIndividualsSampledERKlRKlRKlRKlRKd">
+<span class="target" id="class_spatial_tree_1a46d31dc58b01f2666e90078e95b2a25d"></span>unsigned long <code class="descname">getIndividualsSampled</code><span class="sig-paren">(</span><em class="property">const</em> long &amp;<em>x</em>, <em class="property">const</em> long &amp;<em>y</em>, <em class="property">const</em> long &amp;<em>x_wrap</em>, <em class="property">const</em> long &amp;<em>y_wrap</em>, <em class="property">const</em> double &amp;<em>current_gen</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the number of individuals to be sampled at the particular point and time. Round the number down to the nearest whole number for numbers of individuals. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of individuals to sample at this location. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the x location for individuals to be sampled </li>
+<li><code class="docutils literal notranslate"><span class="pre">y</span></code>: the y location for individuals to be sampled </li>
+<li><code class="docutils literal notranslate"><span class="pre">x_wrap</span></code>: the number of x wraps for the cell </li>
+<li><code class="docutils literal notranslate"><span class="pre">y_wrap</span></code>: the number of y wraps for the cell </li>
+<li><code class="docutils literal notranslate"><span class="pre">current_gen</span></code>: the current generation timer </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree17removeOldPositionERKm">
+<span class="target" id="class_spatial_tree_1ae694bde4ab31b51c13c4a96f9a86a8ba"></span>void <code class="descname">removeOldPosition</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>chosen</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Removes the old position within active by checking any wrapping and removing connections. </p>
+<p>The function also corrects the linked list to identify the correct nwrap for every wrapped lineage in that space.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">chosen</span></code>: the desired active reference to remove from the grid. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree8calcMoveEv">
+<span class="target" id="class_spatial_tree_1ac7202eff84dfe8931374cc236efb9133"></span>void <code class="descname">calcMove</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculate the move, given a start x,y coordinates and wrapping. </p>
+<p>The provided parameters will be altered to contain the new values so no record of the old variables remains after function running. Current dispersal methods use a fattailed dispersal. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree10calcMinMaxERKm">
+<span class="target" id="class_spatial_tree_1ae6b453b80ea8ffedbbba799ac6142352"></span>long double <code class="descname">calcMinMax</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>current</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculates the minmax for a given branch. </p>
+<p>Calculates the speciation rate required for speciation to have occured on this branch.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">current</span></code>: the current active reference to perform calculations over. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree10calcNewPosERbRKmRmRKlRKlRKlRKl">
+<span class="target" id="class_spatial_tree_1ac2b2ab269b36896cb41c47f750b8c032"></span>void <code class="descname">calcNewPos</code><span class="sig-paren">(</span>bool &amp;<em>coal</em>, <em class="property">const</em> unsigned long &amp;<em>chosen</em>, unsigned long &amp;<em>coalchosen</em>, <em class="property">const</em> long &amp;<em>oldx</em>, <em class="property">const</em> long &amp;<em>oldy</em>, <em class="property">const</em> long &amp;<em>oldxwrap</em>, <em class="property">const</em> long &amp;<em>oldywrap</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculates the new position, checking whether coalescence has occured and with which lineage. </p>
+<p>This involves correct handling of checking wrapped lineages (outside the original grid). The probability of coalescence is also calculated.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">coal</span></code>: boolean for whether coalescence occured or not </li>
+<li><code class="docutils literal notranslate"><span class="pre">chosen</span></code>: the chosen lineage </li>
+<li><code class="docutils literal notranslate"><span class="pre">coalchosen</span></code>: the lineaged that is coalescing (if required) </li>
+<li><code class="docutils literal notranslate"><span class="pre">oldx</span></code>: the old x position </li>
+<li><code class="docutils literal notranslate"><span class="pre">oldy</span></code>: the old y position </li>
+<li><code class="docutils literal notranslate"><span class="pre">oldxwrap</span></code>: the old x wrapping </li>
+<li><code class="docutils literal notranslate"><span class="pre">oldywrap</span></code>: the old y wrapping </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree15switchPositionsERKm">
+<span class="target" id="class_spatial_tree_1a71c99204503ec59815a5338ab934331d"></span>void <code class="descname">switchPositions</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>chosen</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Switches the chosen position with the endactive position. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">chosen</span></code>: the chosen lineage to switch with endactive. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree12calcNextStepEv">
+<span class="target" id="class_spatial_tree_1a577196761885888dcb9366ab377f98cb"></span>void <code class="descname">calcNextStep</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculates the next step for the simulation. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree10estSpecnumEv">
+<span class="target" id="class_spatial_tree_1a96919ff86b2a4d1de5ba14c2598a9346"></span>unsigned long <code class="descname">estSpecnum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Estimates the species number from the second largest minimum speciation rate remaining in active. </p>
+<p>This allows for halting of the simulation once this threshold has been reached. However, the function is not currently in use as calculating the coalescence tree is very computionally intensive. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree19incrementGenerationEv">
+<span class="target" id="class_spatial_tree_1aa5db72e986bed4b0aa81217f5be30cf4"></span>void <code class="descname">incrementGeneration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Increments the generation counter and step references, then updates the map for any changes to habitat cover. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree30updateStepCoalescenceVariablesEv">
+<span class="target" id="class_spatial_tree_1ad14491fc87b0a9b28f5b8b316ee8a89d"></span>void <code class="descname">updateStepCoalescenceVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Updates the coalescence variables in the step object. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree11addLineagesEd">
+<span class="target" id="class_spatial_tree_1a6e802a5034648cc26b24923f27f85727"></span>void <code class="descname">addLineages</code><span class="sig-paren">(</span>double <em>generation_in</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Expands the map, generating the new lineages where necessary. </p>
+<p>The samplemask provided is used for expansion. Any empty spaces are filled with a new lineage. Lineages which have not moved are changed to tips, with a new data entry so that original and new generations are recorded.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">generation_in</span></code>: the generation that the expansion is occuring at. This is used in recording the new tips </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree32simulationParametersSqlInsertionEv">
+<span class="target" id="class_spatial_tree_1acc54786661c182b6df23e57a61716e0f"></span>string <code class="descname">simulationParametersSqlInsertion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Creates a string containing the SQL insertion statement for the simulation parameters. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>string containing the SQL insertion statement </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree8simPauseEv">
+<span class="target" id="class_spatial_tree_1af89289a1dc549102c0137763a7d26065"></span>void <code class="descname">simPause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Pause the simulation and dump data from memory. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree7dumpMapE10shared_ptrI8ofstreamE">
+<span class="target" id="class_spatial_tree_1a38b7633da178a31a5279294928b7de09"></span>void <code class="descname">dumpMap</code><span class="sig-paren">(</span>shared_ptr&lt;ofstream&gt; <em>out</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Saves the map object to file. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">out</span></code>: the output file stream to save the object to </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree8dumpGridE10shared_ptrI8ofstreamE">
+<span class="target" id="class_spatial_tree_1abe47d47a37bf265337aeae602c65d8bb"></span>void <code class="descname">dumpGrid</code><span class="sig-paren">(</span>shared_ptr&lt;ofstream&gt; <em>out</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Saves the grid object to file. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">out</span></code>: the output file stream to save the object to </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree9simResumeEv">
+<span class="target" id="class_spatial_tree_1ad578ceeaf0ab3f4a2e39eb907881c11f"></span>void <code class="descname">simResume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Resumes the simulation from a previous state. </p>
+<p>Reads in the parameters and objects from file and re-starts the simulation. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree12loadGridSaveE10shared_ptrI8ifstreamE">
+<span class="target" id="class_spatial_tree_1a5bf74321bb2ffdb8cf74a0a624aef7a8"></span>void <code class="descname">loadGridSave</code><span class="sig-paren">(</span>shared_ptr&lt;ifstream&gt; <em>in1</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Loads the grid from the save file into memory. </p>
+<p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>Requires that both the simulation parameters and the maps have already been loaded. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree11loadMapSaveE10shared_ptrI8ifstreamE">
+<span class="target" id="class_spatial_tree_1abbb3de8e0dbc9c08feb0d52882db5b66"></span>void <code class="descname">loadMapSave</code><span class="sig-paren">(</span>shared_ptr&lt;ifstream&gt; <em>in1</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Loads the map from the save file into memory. </p>
+<p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>Requires that the simulation parameters have already been loaded. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree18verifyActivityMapsEv">
+<span class="target" id="class_spatial_tree_1af2fe54f787584c4fde048ebc96556a51"></span>void <code class="descname">verifyActivityMaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks that the reproduction map makes sense with the fine density map. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree17addWrappedLineageEmll">
+<span class="target" id="class_spatial_tree_1a5b26973b7f2dd3ca842a2eb8d2957896"></span>void <code class="descname">addWrappedLineage</code><span class="sig-paren">(</span>unsigned long <em>numstart</em>, long <em>x</em>, long <em>y</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Adds the lineage to the correct point in the linked list of active lineages. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">numstart</span></code>: the active position to add </li>
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the x position of the lineage </li>
+<li><code class="docutils literal notranslate"><span class="pre">y</span></code>: the y position of the lineage </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree18countCellExpansionERKlRKlRKlRKlRKdR6vectorI8TreeNodeE">
+<span class="target" id="class_spatial_tree_1a3e5e285241dbf1382e989624b1c77fed"></span>unsigned long <code class="descname">countCellExpansion</code><span class="sig-paren">(</span><em class="property">const</em> long &amp;<em>x</em>, <em class="property">const</em> long &amp;<em>y</em>, <em class="property">const</em> long &amp;<em>xwrap</em>, <em class="property">const</em> long &amp;<em>ywrap</em>, <em class="property">const</em> double &amp;<em>generationin</em>, vector&lt;<a class="reference internal" href="class_tree_node.html#_CPPv38TreeNode" title="TreeNode">TreeNode</a>&gt; &amp;<em>data_added</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Counts the number of lineages at a particular location that need to be added, after making the correct proportion of those that already exist into tips. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of lineages still to add </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the x coordinate of the location of interest </li>
+<li><code class="docutils literal notranslate"><span class="pre">y</span></code>: the y coordinate of the location of interest </li>
+<li><code class="docutils literal notranslate"><span class="pre">xwrap</span></code>: the x wrapping of the location </li>
+<li><code class="docutils literal notranslate"><span class="pre">ywrap</span></code>: the y wrapping of the location </li>
+<li><code class="docutils literal notranslate"><span class="pre">generationin</span></code>: the generation to assign to new tips </li>
+<li><code class="docutils literal notranslate"><span class="pre">data_added</span></code>: vector containing <a class="reference internal" href="class_tree_node.html#class_tree_node"><span class="std std-ref">TreeNode</span></a> objects to add to data </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N11SpatialTree10expandCellElllldmR6vectorI8TreeNodeER6vectorI9DataPointE">
+<span class="target" id="class_spatial_tree_1a5a6cf10d4f6d84d06091b07399a7abc7"></span>void <code class="descname">expandCell</code><span class="sig-paren">(</span>long <em>x</em>, long <em>y</em>, long <em>x_wrap</em>, long <em>y_wrap</em>, double <em>generation_in</em>, unsigned long <em>add</em>, vector&lt;<a class="reference internal" href="class_tree_node.html#_CPPv38TreeNode" title="TreeNode">TreeNode</a>&gt; &amp;<em>data_added</em>, vector&lt;<a class="reference internal" href="class_data_point.html#_CPPv39DataPoint" title="DataPoint">DataPoint</a>&gt; &amp;<em>active_added</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Expands the cell at the desired location by adding the supplied number of lineages. </p>
+<p>This takes into account wrapping to correctly add the right number</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the x coordinate to add at </li>
+<li><code class="docutils literal notranslate"><span class="pre">y</span></code>: the y coordinate to add at </li>
+<li><code class="docutils literal notranslate"><span class="pre">x_wrap</span></code>: the x wrapping to add at </li>
+<li><code class="docutils literal notranslate"><span class="pre">y_wrap</span></code>: the y wrapping to add at </li>
+<li><code class="docutils literal notranslate"><span class="pre">generation_in</span></code>: the generation to set the new lineages to </li>
+<li><code class="docutils literal notranslate"><span class="pre">add</span></code>: the total number of lineages to add at this location </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree25importSimulationVariablesERK6string">
+<span class="target" id="class_tree_1a455d87022772b309a5974ea5f0295139"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><em class="property">const</em> string &amp;<em>configfile</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Import the simulation variables from the command line structure. </p>
+<p>This function parses the simulation variables, imports them from the config file, checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_tree.html#class_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and <a class="reference internal" href="class_tree.html#class_tree_1afe75245862a1c40030c1c8607518cf8d"><span class="std std-ref">runSimulation()</span></a> can be run immediately afterwards.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">configfile</span></code>: the path to the config file containing parameters to parse. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree25importSimulationVariablesE12ConfigParser">
+<span class="target" id="class_tree_1a43c8d5001964ac7dac4d55059ebc9b38"></span>void <code class="descname">importSimulationVariables</code><span class="sig-paren">(</span><a class="reference internal" href="class_config_parser.html#_CPPv312ConfigParser" title="ConfigParser">ConfigParser</a> <em>config</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Import the simulation variables from a ConfigOption. </p>
+<p>This function parses the simulation variables, imports them (from either the command line or a config file), checks that the input files exist and checks for any paused simulations. The flags are then set correctly, meaning that <a class="reference internal" href="class_tree.html#class_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> and runSim() can be run immediately afterwards.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">config</span></code>: the set of config parameters to import </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree23wipeSimulationVariablesEv">
+<span class="target" id="class_tree_1aa31508ea6d5801c6dee17c035f393b60"></span>void <code class="descname">wipeSimulationVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Resets all the simulation variables. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13internalSetupE10shared_ptrI13SimParametersE">
+<span class="target" id="class_tree_1a9bbc17547248e676085fab58ab2022e7"></span>void <code class="descname">internalSetup</code><span class="sig-paren">(</span>shared_ptr&lt;<a class="reference internal" href="struct_sim_parameters.html#_CPPv313SimParameters" title="SimParameters">SimParameters</a>&gt; <em>sim_parameters_in</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets up the simulation parameters from the one provided. </p>
+<p>Intended for usage with metacommunity application. No output directory is expected. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">sim_parameters_in</span></code>: the simulation parameters to set up the simulation with </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree20checkOutputDirectoryEv">
+<span class="target" id="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78"></span>bool <code class="descname">checkOutputDirectory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Asserts that the output directory is not null and exists. If it doesn’t exist, it attempts to create it. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if output creates successfully </dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">Fatal_Exception</span></code>: if the output directory creation fails </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree9checkSimsEv">
+<span class="target" id="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad"></span>void <code class="descname">checkSims</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks for existing paused simulations to resume from Sets bPaused if there are. </p>
+<p>This version uses the default values read from the config file. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree9checkSimsE6stringll">
+<span class="target" id="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c"></span>void <code class="descname">checkSims</code><span class="sig-paren">(</span>string <em>output_dir</em>, long <em>seed</em>, long <em>task</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks for existing paused simulations to resume from. </p>
+<p>Sets bPaused if there are.</p>
+<p>This version uses the values supplied to the function directly</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">output_dir</span></code>: the output directory to check for </li>
+<li><code class="docutils literal notranslate"><span class="pre">seed</span></code>: the seed for paused sims </li>
+<li><code class="docutils literal notranslate"><span class="pre">task</span></code>: the task for paused sims </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree22setProtractedVariablesEdd">
+<span class="target" id="class_tree_1a891764ffc1e29d3edbe0fd08e67a184b"></span>void <code class="descname">setProtractedVariables</code><span class="sig-paren">(</span>double <em>speciation_gen_min</em>, double <em>speciation_gen_max</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the protracted variables. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">speciation_gen_min</span></code>: the minimum number of generations to have passed before speciation is allowed </li>
+<li><code class="docutils literal notranslate"><span class="pre">speciation_gen_max</span></code>: the maximum number of generations a lineage can exist for before it is speciated. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree9hasPausedEv">
+<span class="target" id="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43"></span>bool <code class="descname">hasPaused</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the has_paused variable for resuming sims. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>if the simulation has paused </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree19getTemporalSamplingEv">
+<span class="target" id="class_tree_1ac03c034a5730ee4f4d8727aace776412"></span>vector&lt;double&gt; <code class="descname">getTemporalSampling</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the map autocorrel times. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree7getSeedEv">
+<span class="target" id="class_tree_1a857521315ca6bd9b3300d099488d74f1"></span>long long <code class="descname">getSeed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Getter for the simulation seed. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>Returns the seeds </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree7setSeedEx">
+<span class="target" id="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d"></span>void <code class="descname">setSeed</code><span class="sig-paren">(</span>long long <em>seed_in</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the simulation seed for the random number generator. </p>
+<p>This function should only be called once.</p>
+<p>The seed is set within the NR object. This will be fixed for the simulation and is only performed once.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">seed_in</span></code>: the desired seed to set for the simulation </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree14setObjectSizesEv">
+<span class="target" id="class_tree_1a869ab0aba75336f737cbb137c74b8abc"></span>unsigned long <code class="descname">setObjectSizes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the sizes of grid, active and data, based on the number of individuals counted from the samplemask. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a count of the number of individuals that exist in the simulation </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree16setInitialValuesEv">
+<span class="target" id="class_tree_1aec2640897132a1b667e852bbafc14c78"></span>void <code class="descname">setInitialValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the starting values for required parameters. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree20setSimStartVariablesEv">
+<span class="target" id="class_tree_1a1ba0f5d27c6ef6e9e17f988aff2dfe65"></span>void <code class="descname">setSimStartVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the variables at the start of a simulation for temporary data. </p>
+<p>This is not the main set-up routine, which creates the permanent data structures including maps, the coalescence tree and active lineage listings. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10printSetupEv">
+<span class="target" id="class_tree_1ab71da7797a6586ddd948661c34ce4788"></span>void <code class="descname">printSetup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Prints the statement for the setup initiation. </p>
+<p>This is stored in a separate function so that it can be called in isolation by child classes. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree8setTimesEv">
+<span class="target" id="class_tree_1ae3fb33c46cf7e3af44604a9875b375a3"></span>void <code class="descname">setTimes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the temporal sampling points from the time config file. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree24determineSpeciationRatesEv">
+<span class="target" id="class_tree_1a25f082da13789dfa3fefcbcfd08b4dfe"></span>void <code class="descname">determineSpeciationRates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Determines the speciation rates to apply and then applies them to the coalescence tree post-simulation. </p>
+<p>Detects speciation rates from the config files supplied. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree18addSpeciationRatesE6vectorIeE">
+<span class="target" id="class_tree_1a38488499b196d3f5ee40b2a68fe3279e"></span>void <code class="descname">addSpeciationRates</code><span class="sig-paren">(</span>vector&lt;long double&gt; <em>spec_rates_in</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Adds the speciation rates to those to be applied. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree15generateObjectsEv">
+<span class="target" id="class_tree_1a50b3d13d4032e0d7a69890b9bd7f84fa"></span>void <code class="descname">generateObjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Assigns the objects sizes in memory and fills with the starting lineages. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13runSimulationEv">
+<span class="target" id="class_tree_1afe75245862a1c40030c1c8607518cf8d"></span>bool <code class="descname">runSimulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Run the entire simulation given the start conditions already defined by <a class="reference internal" href="class_tree.html#class_tree_1aec10ea2b720edc13a38310afdfe2b6e4"><span class="std std-ref">setup()</span></a> </p>
+<p>Setup is assumed to have been run already. This function is the main function containing the main loop of the simulation. At the end of the simulation, returns true if the simulation is complete, false otherwise. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree22writeSimStartToConsoleEv">
+<span class="target" id="class_tree_1a95360a2f62ef0eb436d586552b299e1f"></span>void <code class="descname">writeSimStartToConsole</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Writes to the console that the simulation is beginning. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree18writeStepToConsoleEv">
+<span class="target" id="class_tree_1a37de93174eece50a2fc082b683d97047"></span>void <code class="descname">writeStepToConsole</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Write the step counter to console. This function should only be called in debugging mode. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree19chooseRandomLineageEv">
+<span class="target" id="class_tree_1a23803bddf46ad28a1bdd46bf05693b1f"></span>void <code class="descname">chooseRandomLineage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Chooses a random lineage from active. </p>
+<p>The index of the random lineage is stored in this_step, as chosen. Also records the required variables for the step process, like x, y position. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10speciationERKm">
+<span class="target" id="class_tree_1a05c9e44f1a4d7af83e65b6c4565b1b28"></span>void <code class="descname">speciation</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>chosen</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Speciation to supplied lineage. </p>
+<p>Also calls the removeOldPos() and <a class="reference internal" href="class_tree.html#class_tree_1ab1be13d2e99a4445a7cc84f907e0c90e"><span class="std std-ref">switchPositions()</span></a> functions for removing the lineage out of active reference. <dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">chosen</span></code>: </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree15speciateLineageERKm">
+<span class="target" id="class_tree_1a32e12cc62ce2d9ae893214b1f4cfad1f"></span>void <code class="descname">speciateLineage</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>data_position</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Performs the actual speciation. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">data_position</span></code>: the position in the array of TreeNodes for this lineage </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree14calcSpeciationERKeRKeRKm">
+<span class="target" id="class_tree_1abc9389511e1aecf5e573315fc8f4d77c"></span>bool <code class="descname">calcSpeciation</code><span class="sig-paren">(</span><em class="property">const</em> long double &amp;<em>random_number</em>, <em class="property">const</em> long double &amp;<em>speciation_rate</em>, <em class="property">const</em> unsigned long &amp;<em>no_generations</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculates the speciation probability from the random number, speciation rate and number of generations a lineage has existed for. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>if true, speciation has occured </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">random_number</span></code>: the generated random number from 0-1 </li>
+<li><code class="docutils literal notranslate"><span class="pre">speciation_rate</span></code>: the speciation rate to be applied </li>
+<li><code class="docutils literal notranslate"><span class="pre">no_generations</span></code>: the number of generations a lineage has existed for </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree16coalescenceEventERKmRm">
+<span class="target" id="class_tree_1a16eedb70009e7570d933f88e8ce44117"></span>void <code class="descname">coalescenceEvent</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>chosen</em>, unsigned long &amp;<em>coalchosen</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Perform the coalescence between lineages. Once coalesced, lineages are removed from the active scope. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">chosen</span></code>: the chosen lineage for coalescence </li>
+<li><code class="docutils literal notranslate"><span class="pre">coalchosen</span></code>: the target lineage for coalscence </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree15checkTimeUpdateEv">
+<span class="target" id="class_tree_1afcbe72c55b38c94ae17de9c2e1dd3a7f"></span>void <code class="descname">checkTimeUpdate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks if the number of lineages should be expanded at another sample point. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree20checkProportionAddedERKd">
+<span class="target" id="class_tree_1aa3eef7c7e66a975d1dfd1a0a0148e037"></span>bool <code class="descname">checkProportionAdded</code><span class="sig-paren">(</span><em class="property">const</em> double &amp;<em>proportion_added</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Randomly checks if a lineage should be added, based on the proportion added. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the lineage should be added, false otherwise </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">proportion_added</span></code>: the proportion of lineages that should be added </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree12checkSimSizeEmm">
+<span class="target" id="class_tree_1ab8a62d0ca2b1746676073e3f33e2a949"></span>void <code class="descname">checkSimSize</code><span class="sig-paren">(</span>unsigned long <em>req_data</em>, unsigned long <em>req_active</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks the size of the main active and data objects is large enough. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">req_data</span></code>: the required data object size </li>
+<li><code class="docutils literal notranslate"><span class="pre">req_active</span></code>: the required active object size </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree7makeTipERKmRKdR6vectorI8TreeNodeE">
+<span class="target" id="class_tree_1a3fa6fbeeb00d1661958f8e358796251c"></span>void <code class="descname">makeTip</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>tmp_active</em>, <em class="property">const</em> double &amp;<em>generation_in</em>, vector&lt;<a class="reference internal" href="class_tree_node.html#_CPPv38TreeNode" title="TreeNode">TreeNode</a>&gt; &amp;<em>data_added</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the active reference to a tip, if it isn’t one already. Otherwise, creates a new tip for the new generation time. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">tmp_active</span></code>: the reference in active </li>
+<li><code class="docutils literal notranslate"><span class="pre">generation_in</span></code>: the generation to set for the new lineage </li>
+<li><code class="docutils literal notranslate"><span class="pre">data_added</span></code>: vector of lineages to add to data </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10convertTipEmdR6vectorI8TreeNodeE">
+<span class="target" id="class_tree_1a370a23cfb08fd27ed1862bdfa605c5b8"></span>void <code class="descname">convertTip</code><span class="sig-paren">(</span>unsigned long <em>i</em>, double <em>generationin</em>, vector&lt;<a class="reference internal" href="class_tree_node.html#_CPPv38TreeNode" title="TreeNode">TreeNode</a>&gt; &amp;<em>data_added</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Creates a new reference in data containing the tip with a new generation counter. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">i</span></code>: the reference in active of the lineage to make a tip </li>
+<li><code class="docutils literal notranslate"><span class="pre">generationin</span></code>: the generation to make the lineage a tip at </li>
+<li><code class="docutils literal notranslate"><span class="pre">data_added</span></code>: vector of lineages to add to the data object </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree14stopSimulationEv">
+<span class="target" id="class_tree_1afd6bd75c301d2f57c4997fcfc92f192e"></span>bool <code class="descname">stopSimulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Finalises the simulation, and performs the correct tasks depending if the sim has been paused or finished. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd></dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13applySpecRateEed">
+<span class="target" id="class_tree_1aa6349a32b3fcfb82a5f8311b11db3982"></span>void <code class="descname">applySpecRate</code><span class="sig-paren">(</span>long double <em>sr</em>, double <em>t</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Applies the given speciation rate to the tree. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">sr</span></code>: the required speciation rate </li>
+<li><code class="docutils literal notranslate"><span class="pre">t</span></code>: the required time of speciation </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13applySpecRateEe">
+<span class="target" id="class_tree_1ab699328f13b22f48faa63a5638e907db"></span>void <code class="descname">applySpecRate</code><span class="sig-paren">(</span>long double <em>sr</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Overloaded version of applySpecRates for the default generation (0.0). </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">sr</span></code>: the speciation rate to apply to the tree </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree21applySpecRateInternalEed">
+<span class="target" id="class_tree_1ac89abe0404d05d0363258b72cb80700b"></span>void <code class="descname">applySpecRateInternal</code><span class="sig-paren">(</span>long double <em>sr</em>, double <em>t</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Applies the given speciation rate to the tree, but does not output to a file. Instead returns a pointer to the nodes object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">sr</span></code>: the required speciation rate </li>
+<li><code class="docutils literal notranslate"><span class="pre">t</span></code>: the required time of speciation </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree23getCumulativeAbundancesEv">
+<span class="target" id="class_tree_1ad84f38d8a8347b53c8fd77e0dc3e1f90"></span>shared_ptr&lt;vector&lt;unsigned long&gt;&gt; <code class="descname">getCumulativeAbundances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the sorted cumulative species abundances from the contained TreeList. </p>
+<p>For use with metacommunity applications <dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>row of cumulative species abundances </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree20getSpeciesAbundancesERKm">
+<span class="target" id="class_tree_1a3dafbfba14cf2a12a24ddd2c90bfd3fc"></span>shared_ptr&lt;map&lt;unsigned long, unsigned long&gt;&gt; <code class="descname">getSpeciesAbundances</code><span class="sig-paren">(</span><em class="property">const</em> unsigned long &amp;<em>community_reference</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the species abundances from the internal tree. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the species abundances </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">community_reference</span></code>: the community reference </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree20getSpeciesAbundancesEv">
+<span class="target" id="class_tree_1ac369b24b2b52b84b558220b9158806f8"></span>shared_ptr&lt;vector&lt;unsigned long&gt;&gt; <code class="descname">getSpeciesAbundances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the species abundances from the internal tree. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the species abundances </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree14setupCommunityEv">
+<span class="target" id="class_tree_1ae39208e0f31a0170414a80e2b2d4e400"></span><a class="reference internal" href="struct_protracted_speciation_parameters.html#_CPPv330ProtractedSpeciationParameters" title="ProtractedSpeciationParameters">ProtractedSpeciationParameters</a> <code class="descname">setupCommunity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets up <a class="reference internal" href="class_community.html#class_community"><span class="std std-ref">Community</span></a> member to point to the same output database as the simulation. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the protracted speciation parameters to set up </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree25setupCommunityCalculationEed">
+<span class="target" id="class_tree_1aaa85f6886029ee48472241cab746ded1"></span>void <code class="descname">setupCommunityCalculation</code><span class="sig-paren">(</span>long double <em>sr</em>, double <em>t</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets up the generation of the tree object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">sr</span></code>: the required speciation rate </li>
+<li><code class="docutils literal notranslate"><span class="pre">t</span></code>: the required time of speciation </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree18applyMultipleRatesEv">
+<span class="target" id="class_tree_1acfc7efdec999f6dbf2ac089514d22091"></span>void <code class="descname">applyMultipleRates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Applies multiple speciation rates to the coalescence tree, ignoring repeated speciation rates. </p>
+<p>Speciation rates are read from the speciation_rates object, which should have already been calculated. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13getProtractedEv">
+<span class="target" id="class_tree_1aa23a57f7863d58384f61d464d998ab3c"></span>bool <code class="descname">getProtracted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the protractedness of the simulation. Overridden by protracted child classes. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd></dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree22getProtractedVariablesEv">
+<span class="target" id="class_tree_1a34c0808026bf00546c8f9786376be730"></span>string <code class="descname">getProtractedVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the protracted variables and returns them as a single, newline separated string. This method is intended to be overridden in derived classes. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>string containing the protracted variables, separated by newlines. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree26getProtractedGenerationMinEv">
+<span class="target" id="class_tree_1a6ffc42e941f352cd74f01f6f7011f00b"></span>double <code class="descname">getProtractedGenerationMin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the minimum number of generations a lineage must exist. </p>
+<p>Without overriding this function, should always return 0.0. <dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>double the number of generations a lineage must exist </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree26getProtractedGenerationMaxEv">
+<span class="target" id="class_tree_1a0c5e746982a87f24c083f4534bf92b45"></span>double <code class="descname">getProtractedGenerationMax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Gets the maximum number of generations a lineage can exist. </p>
+<p>Without overriding this function, should always return 0.0 (no maximum).</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>double the number of generations a lineage must exist </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree9sqlOutputEv">
+<span class="target" id="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3"></span>void <code class="descname">sqlOutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Copy the in-memory database to file. </p>
+<p>This function should not be called if the database is already opened on disc, and won’t do anything if it is. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10outputDataEv">
+<span class="target" id="class_tree_1afdf680e187c25ed39d1e66542ce44cc3"></span>void <code class="descname">outputData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Outputs important simulation data to a csv file. Overloaded version which automatically calls <a class="reference internal" href="class_tree.html#class_tree_1a2d2065bbebee8b55270d2691d40cd974"><span class="std std-ref">sortData()</span></a> if no species richness is provided. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10outputDataEm">
+<span class="target" id="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724"></span>void <code class="descname">outputData</code><span class="sig-paren">(</span>unsigned long <em>species_richness</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Outputs important simulation data to a csv file. This function will likely be remove in future versions as all simulation output is now contained in an SQLite database. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">species_richness</span></code>: the species richness of the tree with the minimum speciation rate. Outputted into the csv file </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree8sortDataEv">
+<span class="target" id="class_tree_1a2d2065bbebee8b55270d2691d40cd974"></span>unsigned long <code class="descname">sortData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sort and process the species list so that the useful information can be extracted from it. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10writeTimesEv">
+<span class="target" id="class_tree_1ab8785fc9e27868a56335048321c13290"></span>void <code class="descname">writeTimes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Writes the times to the terminal for simulation information. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree15openSQLDatabaseEv">
+<span class="target" id="class_tree_1a9e240bbfc3139b290a0dead741f560bf"></span>void <code class="descname">openSQLDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Opens a connection to the in-memory database, or the on-disk database, depending on the compilation options. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree9sqlCreateEv">
+<span class="target" id="class_tree_1ae784a6ed362f6c5263ee797759f715b6"></span>void <code class="descname">sqlCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Generates the SQL database file from the full simulation data. This allows for greater analysis of the data after completion of the simulation. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree20setupOutputDirectoryEv">
+<span class="target" id="class_tree_1aea2222fa1237ba2e72f516c2b6bb02c9"></span>void <code class="descname">setupOutputDirectory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Creates the output directory, if it doesn’t already exist, and deletes any existing database with the output name. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree29sqlCreateSimulationParametersEv">
+<span class="target" id="class_tree_1a199f47b62b9b10917ff8b89d20c543a7"></span>void <code class="descname">sqlCreateSimulationParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Creates the SIMULATION_PARAMETERS table in the SQL database. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree22protractedVarsToStringEv">
+<span class="target" id="class_tree_1aa8bb5d93c7992404ede0a49bb69ccd1f"></span>string <code class="descname">protractedVarsToString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Outputs the protracted variables to a string. </p>
+<p>This function is intended to be overridden by derived classes. It is intended the output is used for writing to SQL databases.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>string containing a list of the protracted speciation variables. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13initiatePauseEv">
+<span class="target" id="class_tree_1a3cd762da25ff2a313ccc21f4993918f5"></span>shared_ptr&lt;ofstream&gt; <code class="descname">initiatePause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks the output folder exists and initiates the pause. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the output file stream to save objects to </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree8dumpMainE10shared_ptrI8ofstreamE">
+<span class="target" id="class_tree_1aa2af00092c1b4595e91b3443a9abad1a"></span>void <code class="descname">dumpMain</code><span class="sig-paren">(</span>shared_ptr&lt;ofstream&gt; <em>out</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Saves the main simulation variables to file. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">out</span></code>: the output file stream to save the object to </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree10dumpActiveE10shared_ptrI8ofstreamE">
+<span class="target" id="class_tree_1a9cf1e86171d4a0e22e636bb2cdb01e27"></span>void <code class="descname">dumpActive</code><span class="sig-paren">(</span>shared_ptr&lt;ofstream&gt; <em>out</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Saves the active object to file. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">out</span></code>: the output file stream to save the object to </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree8dumpDataE10shared_ptrI8ofstreamE">
+<span class="target" id="class_tree_1aef421096d19ced6d699b84b90a0a5bbc"></span>void <code class="descname">dumpData</code><span class="sig-paren">(</span>shared_ptr&lt;ofstream&gt; <em>out</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Saves the data object to file. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">out</span></code>: the output file stream to save the object to </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree13completePauseE10shared_ptrI8ofstreamE">
+<span class="target" id="class_tree_1abea4ba1f5340f9690b92008a3b049fba"></span>void <code class="descname">completePause</code><span class="sig-paren">(</span>shared_ptr&lt;ofstream&gt; <em>out</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Completes the pause routine and outputs the sql dump. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">out</span></code>: the output stream to close up </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree19setResumeParametersE6string6stringmmm">
+<span class="target" id="class_tree_1ac545d844141db977920fc9fd76ce9dbb"></span>void <code class="descname">setResumeParameters</code><span class="sig-paren">(</span>string <em>pausedir</em>, string <em>outdir</em>, unsigned long <em>seed</em>, unsigned long <em>task</em>, unsigned long <em>new_max_time</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the resume variables so that the simulation can be resumed. </p>
+<p>The pause directory can be the same as the output directory if it is desirable to save to the same location.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pausedir</span></code>: the directory containing the pause folder for resuming the simulation </li>
+<li><code class="docutils literal notranslate"><span class="pre">outdir</span></code>: the directory to write simulation output to </li>
+<li><code class="docutils literal notranslate"><span class="pre">seed</span></code>: the simulation seed </li>
+<li><code class="docutils literal notranslate"><span class="pre">task</span></code>: the simulation task </li>
+<li><code class="docutils literal notranslate"><span class="pre">new_max_time</span></code>: the maximum simulation time to run for in seconds (0 keeps old simulation max time) </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree19setResumeParametersEv">
+<span class="target" id="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300"></span>void <code class="descname">setResumeParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Sets the resume variables to the defaults. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree12openSaveFileEv">
+<span class="target" id="class_tree_1acc6cbb7b0ac50a003a5e64ec3e37e3c0"></span>shared_ptr&lt;ifstream&gt; <code class="descname">openSaveFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree12loadMainSaveE10shared_ptrI8ifstreamE">
+<span class="target" id="class_tree_1a7f40faa0cd2c61d9acfa0915bdeecffe"></span>void <code class="descname">loadMainSave</code><span class="sig-paren">(</span>shared_ptr&lt;ifstream&gt; <em>in1</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Loads the main simulation parameters from the save file into memory. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree12loadDataSaveE10shared_ptrI8ifstreamE">
+<span class="target" id="class_tree_1a65e6b9229e919776512518ebd5f91660"></span>void <code class="descname">loadDataSave</code><span class="sig-paren">(</span>shared_ptr&lt;ifstream&gt; <em>in1</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Loads the data object from the save file into memory. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree14loadActiveSaveE10shared_ptrI8ifstreamE">
+<span class="target" id="class_tree_1adb4f5a02e428b1c0652f30e8aac3ea7f"></span>void <code class="descname">loadActiveSave</code><span class="sig-paren">(</span>shared_ptr&lt;ifstream&gt; <em>in1</em><span class="sig-paren">)</span><br /></dt>
+<dd><p>Loads the active object from the save file into memory. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N4Tree14initiateResumeEv">
+<span class="target" id="class_tree_1a8cfe5d30d53d702f18cd67981e2c9acb"></span>void <code class="descname">initiateResume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Checks for resuming and prints to the terminal. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Protected Attributes</p>
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree21dispersal_coordinatorE">
+<span class="target" id="class_spatial_tree_1ad238e987bbf1cf2110bd6c3b980de3e4"></span><a class="reference internal" href="class_dispersal_coordinator.html#_CPPv320DispersalCoordinator" title="DispersalCoordinator">DispersalCoordinator</a> <code class="descname">dispersal_coordinator</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree9death_mapE">
+<span class="target" id="class_spatial_tree_1a6daf7de3a05f63777a0ad67f12bc7095"></span>shared_ptr&lt;<a class="reference internal" href="class_activity_map.html#_CPPv311ActivityMap" title="ActivityMap">ActivityMap</a>&gt; <code class="descname">death_map</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree16reproduction_mapE">
+<span class="target" id="class_spatial_tree_1ac9ec70e77ff7b1f67bc9aed6cb8749e1"></span>shared_ptr&lt;<a class="reference internal" href="class_activity_map.html#_CPPv311ActivityMap" title="ActivityMap">ActivityMap</a>&gt; <code class="descname">reproduction_map</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree14fine_map_inputE">
+<span class="target" id="class_spatial_tree_1a44fdea35be7d4496248ee27c1457ad6a"></span>string <code class="descname">fine_map_input</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree16coarse_map_inputE">
+<span class="target" id="class_spatial_tree_1a464b674dbf6f2968497f698ad9a16433"></span>string <code class="descname">coarse_map_input</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree25historical_fine_map_inputE">
+<span class="target" id="class_spatial_tree_1ac49970522839ed06459949caca57fa1d"></span>string <code class="descname">historical_fine_map_input</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree27historical_coarse_map_inputE">
+<span class="target" id="class_spatial_tree_1a54279132ba3e8bc3455488bb3b16e8f8"></span>string <code class="descname">historical_coarse_map_input</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree9landscapeE">
+<span class="target" id="class_spatial_tree_1a0c081fddba637ed965c932bb6b8ee998"></span>shared_ptr&lt;<a class="reference internal" href="class_landscape.html#_CPPv39Landscape" title="Landscape">Landscape</a>&gt; <code class="descname">landscape</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree4gridE">
+<span class="target" id="class_spatial_tree_1a199167b149b25c506fdaeb660d595658"></span><a class="reference internal" href="class_matrix.html#_CPPv36Matrix" title="Matrix">Matrix</a>&lt;<a class="reference internal" href="class_species_list.html#_CPPv311SpeciesList" title="SpeciesList">SpeciesList</a>&gt; <code class="descname">grid</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree15desired_specnumE">
+<span class="target" id="class_spatial_tree_1a694c7eb6c70687ea87e49066a8957877"></span>unsigned long <code class="descname">desired_specnum</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N11SpatialTree10samplegridE">
+<span class="target" id="class_spatial_tree_1ad902e850c9573b5c26ef6d77a203f72d"></span><a class="reference internal" href="class_data_mask.html#_CPPv38DataMask" title="DataMask">DataMask</a> <code class="descname">samplegrid</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree4dataE">
+<span class="target" id="class_tree_1a959e6513ebc4e0dba488349a644e909a"></span>shared_ptr&lt;vector&lt;<a class="reference internal" href="class_tree_node.html#_CPPv38TreeNode" title="TreeNode">TreeNode</a>&gt;&gt; <code class="descname">data</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree7enddataE">
+<span class="target" id="class_tree_1a50344999e6b64d15eef935b1f6023471"></span>unsigned long <code class="descname">enddata</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree14sim_parametersE">
+<span class="target" id="class_tree_1aa838b517c44d9693f8b485c57989097f"></span>shared_ptr&lt;<a class="reference internal" href="struct_sim_parameters.html#_CPPv313SimParameters" title="SimParameters">SimParameters</a>&gt; <code class="descname">sim_parameters</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree2NRE">
+<span class="target" id="class_tree_1a20790866da998f8cb7d0f1455d9fbcc5"></span>shared_ptr&lt;<a class="reference internal" href="class_n_rrand.html#_CPPv36NRrand" title="NRrand">NRrand</a>&gt; <code class="descname">NR</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree16speciation_ratesE">
+<span class="target" id="class_tree_1a61b4349fe78d09ac06eff4b7d6833105"></span>vector&lt;long double&gt; <code class="descname">speciation_rates</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree6seededE">
+<span class="target" id="class_tree_1a78935befd45946b8e69023bffca59c1d"></span>bool <code class="descname">seeded</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree4seedE">
+<span class="target" id="class_tree_1a821c3c83d8bad2a6c3dba687533f6a53"></span>long long <code class="descname">seed</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree4taskE">
+<span class="target" id="class_tree_1a5f74fd75a2d2a606703b19a3a2d177d2"></span>long long <code class="descname">task</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10times_fileE">
+<span class="target" id="class_tree_1a5e031ea8d94f48288547116a9e7d7add"></span>string <code class="descname">times_file</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree15reference_timesE">
+<span class="target" id="class_tree_1a56bb1ea64368f5b705360a435350f9d5"></span>vector&lt;double&gt; <code class="descname">reference_times</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree22uses_temporal_samplingE">
+<span class="target" id="class_tree_1abed1688c75153c4af4e8c574a26dd636"></span>bool <code class="descname">uses_temporal_sampling</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree5startE">
+<span class="target" id="class_tree_1ac077d686ee96b123aa779e8a8a5de3ce"></span>time_t <code class="descname">start</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree9sim_startE">
+<span class="target" id="class_tree_1a01cc9b30f2b10b9f51b218df25b13b09"></span>time_t <code class="descname">sim_start</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree7sim_endE">
+<span class="target" id="class_tree_1a26100477c7e58a9e0a90cdee1379ed69"></span>time_t <code class="descname">sim_end</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree3nowE">
+<span class="target" id="class_tree_1a5510d0fb5deb23fd39a2619d104f85fa"></span>time_t <code class="descname">now</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10sim_finishE">
+<span class="target" id="class_tree_1ac399ba59be9dc33a04223d10a82ee5ee"></span>time_t <code class="descname">sim_finish</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10out_finishE">
+<span class="target" id="class_tree_1a5ee1fa5adf72bb599badc041fbee7d09"></span>time_t <code class="descname">out_finish</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10time_takenE">
+<span class="target" id="class_tree_1abd18bb487c0192588b6bed6f00bcfd07"></span>time_t <code class="descname">time_taken</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree6activeE">
+<span class="target" id="class_tree_1aad809474d3389ddc719c6140a6164490"></span>vector&lt;<a class="reference internal" href="class_data_point.html#_CPPv39DataPoint" title="DataPoint">DataPoint</a>&gt; <code class="descname">active</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree9endactiveE">
+<span class="target" id="class_tree_1ab478831f09c135bc9a4bc991c9fd5076"></span>unsigned long <code class="descname">endactive</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree14startendactiveE">
+<span class="target" id="class_tree_1a3f1a90ab7ef917a996790e5ddfcebf85"></span>unsigned long <code class="descname">startendactive</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10maxsimsizeE">
+<span class="target" id="class_tree_1a0244ee15452c38393246147d93836b4d"></span>unsigned long <code class="descname">maxsimsize</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree9communityE">
+<span class="target" id="class_tree_1adbb8b625d03dbcdca00f3d8d4b4a50df"></span><a class="reference internal" href="class_community.html#_CPPv39Community" title="Community">Community</a> <code class="descname">community</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree5stepsE">
+<span class="target" id="class_tree_1ae7d33b8c16eeb8cb0c7f96dbfbc61b4e"></span>long <code class="descname">steps</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree7maxtimeE">
+<span class="target" id="class_tree_1a1868cf626a0b12f21a038989d4eca210"></span>unsigned long <code class="descname">maxtime</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10generationE">
+<span class="target" id="class_tree_1a84cc46d51045ff3b161ee8788950e0c2"></span>double <code class="descname">generation</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree4demeE">
+<span class="target" id="class_tree_1a9fe104115b4593c772c03b57b82ff0de"></span>long <code class="descname">deme</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree11deme_sampleE">
+<span class="target" id="class_tree_1ac7a1d0583d3dcb55c50fec0e1fd57985"></span>double <code class="descname">deme_sample</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree4specE">
+<span class="target" id="class_tree_1a586678f7084086add3a4136476abd375"></span>long double <code class="descname">spec</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree13out_directoryE">
+<span class="target" id="class_tree_1a85615771af7b568adca1b801995cfdc7"></span>string <code class="descname">out_directory</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree8databaseE">
+<span class="target" id="class_tree_1aae24ce11e30fbd74fe078b23b46c14cd"></span>sqlite3 *<code class="descname">database</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree12sim_completeE">
+<span class="target" id="class_tree_1a07f9982fd6f6243c78ef42371603bbe4"></span>bool <code class="descname">sim_complete</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree17has_imported_varsE">
+<span class="target" id="class_tree_1a97bde28466a098bb9e58c1bd5610fd68"></span>bool <code class="descname">has_imported_vars</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree9this_stepE">
+<span class="target" id="class_tree_1af7de4d4f04360edcbe2a20db882b1f87"></span><a class="reference internal" href="class_struct_step.html#_CPPv34Step" title="Step">Step</a> <code class="descname">this_step</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree19sql_output_databaseE">
+<span class="target" id="class_tree_1a80d3e92108eb472df49640a661ef4f7d"></span>string <code class="descname">sql_output_database</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree9bFullModeE">
+<span class="target" id="class_tree_1a7a32ee0d04641ae745c08f7278c36c13"></span>bool <code class="descname">bFullMode</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree7bResumeE">
+<span class="target" id="class_tree_1ac9cbd7d17fb511c1fcc70c765f6440b0"></span>bool <code class="descname">bResume</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree7bConfigE">
+<span class="target" id="class_tree_1a6c8c76aec6a9faef9c38f4f275b0793d"></span>bool <code class="descname">bConfig</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree10has_pausedE">
+<span class="target" id="class_tree_1aaa64e29ab7bc3c6f48d454063f0c39e1"></span>bool <code class="descname">has_paused</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree18has_imported_pauseE">
+<span class="target" id="class_tree_1ad8d1d7e4fa673b28542ba31c5b637856"></span>bool <code class="descname">has_imported_pause</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree13bIsProtractedE">
+<span class="target" id="class_tree_1a1f7515f16d99a9748ab2c4c667f1ffc4"></span>bool <code class="descname">bIsProtracted</code><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N4Tree19pause_sim_directoryE">
+<span class="target" id="class_tree_1a504a4d7ae23146fd6236baa59da51a6e"></span>string <code class="descname">pause_sim_directory</code><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class SpatialTree</a><ul>
+<li><a class="reference internal" href="#inheritance-relationships">Inheritance Relationships</a><ul>
+<li><a class="reference internal" href="#base-type">Base Type</a></li>
+<li><a class="reference internal" href="#derived-type">Derived Type</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="class_simulated_species_abundances_handler.html"
+                        title="previous chapter">Class SimulatedSpeciesAbundancesHandler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="class_speciation_commands.html"
+                        title="next chapter">Class SpeciationCommands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/class_spatial_tree.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_speciation_commands.html" title="Class SpeciationCommands"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="class_simulated_species_abundances_handler.html" title="Class SimulatedSpeciesAbundancesHandler"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>

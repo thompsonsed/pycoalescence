@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SimParameters.h:
 
 File SimParameters.h
 ====================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Stores and parses simulation parameters from the command line or a config file. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -73,5 +75,5 @@ Classes
 -------
 
 
-- :ref:`struct_SimParameters`
+- :ref:`exhale_struct_struct_sim_parameters`
 

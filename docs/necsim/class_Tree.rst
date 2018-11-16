@@ -1,4 +1,4 @@
-.. _class_Tree:
+.. _exhale_class_class_tree:
 
 Class Tree
 ==========
@@ -12,8 +12,8 @@ Inheritance Relationships
 Derived Types
 *************
 
-- ``public ProtractedTree`` (:ref:`class_ProtractedTree`)
-- ``public SpatialTree`` (:ref:`class_SpatialTree`)
+- ``public ProtractedTree`` (:ref:`exhale_class_class_protracted_tree`)
+- ``public SpatialTree`` (:ref:`exhale_class_class_spatial_tree`)
 
 
 Class Documentation

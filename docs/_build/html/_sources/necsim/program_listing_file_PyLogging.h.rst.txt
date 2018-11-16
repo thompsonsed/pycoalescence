@@ -4,7 +4,9 @@
 Program Listing for File PyLogging.h
 ====================================
 
-- Return to documentation for :ref:`file_PyLogging.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_PyLogging.h>` (``PyLogging.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

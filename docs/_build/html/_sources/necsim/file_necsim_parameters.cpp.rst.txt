@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_parameters.cpp:
 
 File parameters.cpp
 ===================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains various objects used for storing parameters related to tree reconstruction. 
-
+ 
 
 .. contents:: Contents
    :local:

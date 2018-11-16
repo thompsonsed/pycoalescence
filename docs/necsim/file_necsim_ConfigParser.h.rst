@@ -1,12 +1,12 @@
 
-
 .. _file_necsim_ConfigParser.h:
 
 File ConfigParser.h
 ===================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
 
-
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. contents:: Contents
    :local:
@@ -72,14 +72,14 @@ Classes
 -------
 
 
-- :ref:`struct_SectionOption`
+- :ref:`exhale_struct_struct_section_option`
 
-- :ref:`class_ConfigParser`
+- :ref:`exhale_class_class_config_parser`
 
 
 Functions
 ---------
 
 
-- :ref:`function_importArgs`
+- :ref:`exhale_function__config_parser_8h_1ab14ba2a8e5a50a5a24b48c45294ef483`
 

@@ -4,7 +4,9 @@
 Program Listing for File LandscapeMetricsCalculator.h
 =====================================================
 
-- Return to documentation for :ref:`file_LandscapeMetricsCalculator.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_LandscapeMetricsCalculator.h>` (``LandscapeMetricsCalculator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

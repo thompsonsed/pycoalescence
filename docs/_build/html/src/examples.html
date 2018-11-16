@@ -4,34 +4,27 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Example simulations and analysis using pycoalescence &#8212; pycoalescence 1.2.7a5 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.2.7a5',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Modules" href="../modules.html" />
     <link rel="prev" title="Merging simulation outputs" href="../README_merger.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -232,11 +225,11 @@ own simulations.</p>
 <strong>pycoalescence</strong>.</p>
 <p>First import the necessary modules</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">pycoalescence</span> <span class="kn">import</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">CoalescenceTree</span>
@@ -245,11 +238,11 @@ own simulations.</p>
 </div>
 <p>Define our input and output directories - <strong>change these as required</strong></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">input_dir</span> <span class="o">=</span> <span class="s2">&quot;pycoalescence/tests/sample&quot;</span>
 <span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
 </pre></div>
@@ -265,11 +258,11 @@ information unless there is a problem.</p>
 individuals per cell (deme).</p>
 <p>The output will be stored in <em>output/data_1_1.db</em></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sim1</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">sim1</span><span class="o">.</span><span class="n">set_simulation_parameters</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                        <span class="n">sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -345,11 +338,11 @@ Total simulation and output time was 0 hours 0 minutes 7 seconds
 </div>
 <p>Re-create the coalescence tree for different speciation rates</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">tree1</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim1</span><span class="p">,</span> <span class="n">logging_level</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">tree1</span><span class="o">.</span><span class="n">set_speciation_parameters</span><span class="p">(</span><span class="n">speciation_rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
 <span class="n">tree1</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
@@ -389,11 +382,11 @@ Writing out to output/data_1_1.db...done!
 <p>Print out the species richness for each speciation rate by looping over
 our community parameters.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">tree1</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">():</span>
     <span class="n">spec_rate</span> <span class="o">=</span> <span class="n">tree1</span><span class="o">.</span><span class="n">get_community_parameters</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)[</span><span class="s2">&quot;speciation_rate&quot;</span><span class="p">]</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Species richness for speciation rate of {} is {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spec_rate</span><span class="p">,</span>
@@ -425,11 +418,11 @@ generations in the past.</p>
 <p>The output will be stored in <em>output/data_1_2.db</em></p>
 <p>Define our file paths</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sample_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_samplemaskINT.tif&quot;</span><span class="p">)</span>
 <span class="n">fine_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_fine.tif&quot;</span><span class="p">)</span>
 <span class="n">coarse_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s2">&quot;SA_sample_coarse.tif&quot;</span><span class="p">)</span>
@@ -441,11 +434,11 @@ generations in the past.</p>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sim2</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">sim2</span><span class="o">.</span><span class="n">set_simulation_parameters</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                        <span class="n">sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -464,11 +457,11 @@ generations in the past.</p>
 </div>
 <p>Print the species richness for each time and speciation rate.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">tree2</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim2</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">tree2</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">():</span>
     <span class="c1"># Contains a dictionary of the parameters</span>
@@ -506,11 +499,11 @@ speciation to occur at 10000 generations.</p>
 <p>The coalescence tree is generated with and without a metacommunity as
 well.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sim3</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">logging_level</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">sim3</span><span class="o">.</span><span class="n">set_simulation_parameters</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">job_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
                                                        <span class="n">min_speciation_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">deme</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -525,11 +518,11 @@ well.</p>
 <p>Re-create the coalescence tree using sampling from a metacommunity
 instead of a speciation rate.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">tree3</span> <span class="o">=</span> <span class="n">CoalescenceTree</span><span class="p">(</span><span class="n">sim3</span><span class="p">)</span>
 <span class="n">tree3</span><span class="o">.</span><span class="n">set_speciation_parameters</span><span class="p">(</span><span class="n">speciation_rates</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="n">protracted_speciation_min</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
                                                             <span class="n">protracted_speciation_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">metacommunity_speciation_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
@@ -542,11 +535,11 @@ instead of a speciation rate.</p>
 </div>
 <p>Print out the species richness for each parameter set</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">tree3</span><span class="o">.</span><span class="n">get_community_references</span><span class="p">():</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">tree3</span><span class="o">.</span><span class="n">get_community_parameters</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
     <span class="n">spec_rate</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;speciation_rate&quot;</span><span class="p">]</span>
@@ -607,11 +600,11 @@ Species richness: 657
 <p>Delete the objects from memory to clear from RAM - this is not usually
 required as objects will be deleted when they fall out of scope.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sim1</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">sim2</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">sim3</span> <span class="o">=</span> <span class="bp">None</span>
@@ -634,7 +627,7 @@ required as objects will be deleted when they fall out of scope.</p>
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Example simulations and analysis using pycoalescence</a><ul>
 <li><a class="reference internal" href="#Basic-spatial-simulation-and-analysis">Basic spatial simulation and analysis</a></li>
@@ -662,12 +655,14 @@ required as objects will be deleted when they fall out of scope.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -694,7 +689,7 @@ required as objects will be deleted when they fall out of scope.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
 </html>

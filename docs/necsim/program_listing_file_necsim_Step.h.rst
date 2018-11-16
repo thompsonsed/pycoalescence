@@ -4,7 +4,9 @@
 Program Listing for File Step.h
 ===============================
 
-- Return to documentation for :ref:`file_necsim_Step.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_Step.h>` (``necsim/Step.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

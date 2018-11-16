@@ -1,14 +1,12 @@
 
-
 .. _file_PyLogger.h:
 
 File PyLogger.h
 ===============
 
 
-
 Routines for controlling logger from C++ to Python. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -65,12 +63,12 @@ Classes
 -------
 
 
-- :ref:`class_PyLogger`
+- :ref:`exhale_class_class_py_logger`
 
 
 Defines
 -------
 
 
-- :ref:`define_PYTHON_COMPILE`
+- :ref:`exhale_define__py_logger_8h_1a9302692bd9a9cf56478cbae301f04d53`
 

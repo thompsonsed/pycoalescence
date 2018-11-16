@@ -4,7 +4,9 @@
 Program Listing for File LandscapeMetricsCalculator.cpp
 =======================================================
 
-- Return to documentation for :ref:`file_LandscapeMetricsCalculator.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_LandscapeMetricsCalculator.cpp>` (``LandscapeMetricsCalculator.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

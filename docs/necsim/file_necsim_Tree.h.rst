@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_Tree.h:
 
 File Tree.h
 ===========
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains the main simulation object for spatially-implicit coalescence simulations. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -28,7 +30,7 @@ Definition (``necsim/Tree.h``)
 Detailed Description
 --------------------
 
-Provides the basis for spatially-explicit versions in :ref:`class_SpatialTree`, and protracted speciation versions in :ref:`class_ProtractedTree` and :ref:`class_ProtractedSpatialTree`.
+Provides the basis for spatially-explicit versions in :ref:`exhale_class_class_spatial_tree`, and protracted speciation versions in :ref:`exhale_class_class_protracted_tree` and :ref:`exhale_class_class_protracted_spatial_tree`.
 MIT Licence. 
 
 
@@ -81,5 +83,5 @@ Classes
 -------
 
 
-- :ref:`class_Tree`
+- :ref:`exhale_class_class_tree`
 

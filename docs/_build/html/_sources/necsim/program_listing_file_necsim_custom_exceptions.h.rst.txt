@@ -4,7 +4,9 @@
 Program Listing for File custom_exceptions.h
 ============================================
 
-- Return to documentation for :ref:`file_necsim_custom_exceptions.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_custom_exceptions.h>` (``necsim/custom_exceptions.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

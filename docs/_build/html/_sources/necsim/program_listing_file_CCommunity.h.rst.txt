@@ -4,7 +4,9 @@
 Program Listing for File CCommunity.h
 =====================================
 
-- Return to documentation for :ref:`file_CCommunity.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_CCommunity.h>` (``CCommunity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 
@@ -123,7 +125,7 @@ Program Listing for File CCommunity.h
    }
    
    template<class T>
-   static PyObject *addMetacommunityParameters(PyCommunityTemplate<T> *self, PyObject *args)
+   static PyObject *pyAddMetacommunityParameters(PyCommunityTemplate<T> *self, PyObject *args)
    {
        unsigned long metacommunity_size;
        double speciation_rate;
@@ -283,7 +285,7 @@ Program Listing for File CCommunity.h
                                                                                                                     "Wipes the protracted current_metacommunity_parameters."},
                        {"add_protracted_parameters",    (PyCFunction) addProtractedParameters<T>,     METH_VARARGS,
                                                                                                                     "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
-                       {"add_metacommunity_parameters", (PyCFunction) addMetacommunityParameters<T>,  METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
+                       {"add_metacommunity_parameters", (PyCFunction) pyAddMetacommunityParameters<T>,  METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
                        {"apply",                        (PyCFunction) apply<T>,                       METH_NOARGS,
                                                                                                                     "Applies the new speciation rate(s) to the coalescence tree."},
                        {"output",                       (PyCFunction) output<T>,                      METH_NOARGS,  "Outputs the database to file."},

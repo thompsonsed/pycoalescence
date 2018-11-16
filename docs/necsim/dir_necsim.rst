@@ -1,9 +1,11 @@
-.. _directory_necsim:
+.. _dir_necsim:
 
 
 Directory necsim
 ================
 
+
+*Directory path:* ``necsim``
 
 
 Files

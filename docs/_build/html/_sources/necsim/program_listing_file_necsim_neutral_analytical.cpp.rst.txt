@@ -4,7 +4,9 @@
 Program Listing for File neutral_analytical.cpp
 ===============================================
 
-- Return to documentation for :ref:`file_necsim_neutral_analytical.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_neutral_analytical.cpp>` (``necsim/neutral_analytical.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

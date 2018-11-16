@@ -1,12 +1,12 @@
 
-
 .. _file_necsim_neutral_analytical.h:
 
 File neutral_analytical.h
 =========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
 
-
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. contents:: Contents
    :local:

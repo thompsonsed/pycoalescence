@@ -4,7 +4,9 @@
 Program Listing for File DataPoint.h
 ====================================
 
-- Return to documentation for :ref:`file_necsim_DataPoint.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_DataPoint.h>` (``necsim/DataPoint.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

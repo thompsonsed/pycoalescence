@@ -1,4 +1,4 @@
-.. _struct_Fragment:
+.. _exhale_struct_struct_fragment:
 
 Struct Fragment
 ===============

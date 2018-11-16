@@ -8,54 +8,7 @@ Class Hierarchy
    <ul class="treeView" id="class-treeView">
      <li>
        <ul class="collapsibleList">
-         <li>Struct <a href="struct_CommunitiesArray.html#struct-CommunitiesArray">CommunitiesArray</a></li>
-         <li>Struct <a href="struct_CommunityParameters.html#struct-CommunityParameters">CommunityParameters</a></li>
-         <li>Struct <a href="struct_ConfigException.html#struct-ConfigException">ConfigException</a></li>
-         <li>Struct <a href="struct_FatalException.html#struct-FatalException">FatalException</a></li>
-         <li>Struct <a href="struct_Fragment.html#struct-Fragment">Fragment</a></li>
-         <li>Struct <a href="struct_MetacommunitiesArray.html#struct-MetacommunitiesArray">MetacommunitiesArray</a></li>
-         <li>Struct <a href="struct_MetacommunityParameters.html#struct-MetacommunityParameters">MetacommunityParameters</a></li>
-         <li>Struct <a href="struct_module_state.html#struct-module-state">module_state</a></li>
-         <li>Struct <a href="struct_ProtractedSpeciationParameters.html#struct-ProtractedSpeciationParameters">ProtractedSpeciationParameters</a></li>
-         <li>Struct <a href="struct_SectionOption.html#struct-SectionOption">SectionOption</a></li>
-         <li>Struct <a href="struct_SimParameters.html#struct-SimParameters">SimParameters</a></li>
-         <li>Struct <a href="struct_SpeciesException.html#struct-SpeciesException">SpeciesException</a></li>
-         <li>Class <a href="class_ActivityMap.html#class-ActivityMap">ActivityMap</a></li>
-         <li>Class <a href="class_AnalyticalSpeciesAbundancesHandler.html#class-AnalyticalSpeciesAbundancesHandler">AnalyticalSpeciesAbundancesHandler</a></li>
-         <li>Class <a href="class_Cell.html#class-Cell">Cell</a></li>
-         <li>Class <a href="class_Community.html#class-Community">Community</a></li>
-         <li>Class <a href="class_ConfigParser.html#class-ConfigParser">ConfigParser</a></li>
-         <li>Class <a href="class_DataMask.html#class-DataMask">DataMask</a></li>
-         <li>Class <a href="class_DataPoint.html#class-DataPoint">DataPoint</a></li>
-         <li>Class <a href="class_DispersalCoordinator.html#class-DispersalCoordinator">DispersalCoordinator</a></li>
-         <li>Class <a href="class_Landscape.html#class-Landscape">Landscape</a></li>
-         <li>Class <a href="class_LandscapeMetricsCalculator.html#class-LandscapeMetricsCalculator">LandscapeMetricsCalculator</a></li>
-         <li>Class <a href="class_LogFile.html#class-LogFile">LogFile</a></li>
-         <li>Class <a href="class_Logger.html#class-Logger">Logger</a></li>
-         <li>Template Class <a href="class_Map.html#template-class-Map">Map</a></li>
-         <li>Template Class <a href="class_Matrix.html#template-class-Matrix">Matrix</a></li>
-         <li>Class <a href="class_Metacommunity.html#class-Metacommunity">Metacommunity</a></li>
-         <li>Class <a href="class_NRrand.html#class-NRrand">NRrand</a></li>
-         <li>Class <a href="class_ProtractedSpatialTree.html#class-ProtractedSpatialTree">ProtractedSpatialTree</a></li>
-         <li>Class <a href="class_ProtractedTree.html#class-ProtractedTree">ProtractedTree</a></li>
-         <li>Template Class <a href="class_PyCommunityTemplate.html#template-class-PyCommunityTemplate">PyCommunityTemplate</a></li>
-         <li>Class <a href="class_PyLMC.html#class-PyLMC">PyLMC</a></li>
-         <li>Class <a href="class_PyLogger.html#class-PyLogger">PyLogger</a></li>
-         <li>Class <a href="class_PySimulateDispersal.html#class-PySimulateDispersal">PySimulateDispersal</a></li>
-         <li>Template Class <a href="class_PyTemplate.html#template-class-PyTemplate">PyTemplate</a></li>
-         <li>Template Class <a href="class_Row.html#template-class-Row">Row</a></li>
-         <li>Class <a href="class_Samplematrix.html#class-Samplematrix">Samplematrix</a></li>
-         <li>Class <a href="class_SimulateDispersal.html#class-SimulateDispersal">SimulateDispersal</a></li>
-         <li>Class <a href="class_SimulatedSpeciesAbundancesHandler.html#class-SimulatedSpeciesAbundancesHandler">SimulatedSpeciesAbundancesHandler</a></li>
-         <li>Class <a href="class_SpatialTree.html#class-SpatialTree">SpatialTree</a></li>
-         <li>Class <a href="class_SpeciationCommands.html#class-SpeciationCommands">SpeciationCommands</a></li>
-         <li>Class <a href="class_SpeciesAbundancesHandler.html#class-SpeciesAbundancesHandler">SpeciesAbundancesHandler</a></li>
-         <li>Class <a href="class_SpeciesList.html#class-SpeciesList">SpeciesList</a></li>
-         <li>Class <a href="class_SpecSimParameters.html#class-SpecSimParameters">SpecSimParameters</a></li>
-         <li>Class <a href="class_Step.html#class-Step">Step</a></li>
-         <li>Class <a href="class_Tree.html#class-Tree">Tree</a></li>
-         <li class="lastChild">Class <a href="class_TreeNode.html#class-TreeNode">TreeNode</a></li>
-
+         <li>Struct <a href="struct_communities_array.html#exhale-struct-struct-communities-array">CommunitiesArray</a></li><li>Struct <a href="struct_community_parameters.html#exhale-struct-struct-community-parameters">CommunityParameters</a></li><li>Struct <a href="struct_config_exception.html#exhale-struct-struct-config-exception">ConfigException</a></li><li>Struct <a href="struct_fatal_exception.html#exhale-struct-struct-fatal-exception">FatalException</a></li><li>Struct <a href="struct_fragment.html#exhale-struct-struct-fragment">Fragment</a></li><li>Struct <a href="struct_metacommunities_array.html#exhale-struct-struct-metacommunities-array">MetacommunitiesArray</a></li><li>Struct <a href="struct_metacommunity_parameters.html#exhale-struct-struct-metacommunity-parameters">MetacommunityParameters</a></li><li>Struct <a href="structmodule__state.html#exhale-struct-structmodule-state">module_state</a></li><li>Struct <a href="struct_protracted_speciation_parameters.html#exhale-struct-struct-protracted-speciation-parameters">ProtractedSpeciationParameters</a></li><li>Struct <a href="struct_section_option.html#exhale-struct-struct-section-option">SectionOption</a></li><li>Struct <a href="struct_sim_parameters.html#exhale-struct-struct-sim-parameters">SimParameters</a></li><li>Struct <a href="struct_species_exception.html#exhale-struct-struct-species-exception">SpeciesException</a></li><li>Class <a href="class_activity_map.html#exhale-class-class-activity-map">ActivityMap</a></li><li>Class <a href="class_analytical_species_abundances_handler.html#exhale-class-class-analytical-species-abundances-handler">AnalyticalSpeciesAbundancesHandler</a></li><li>Class <a href="class_struct_cell.html#exhale-class-struct-cell">Cell</a></li><li>Class <a href="class_community.html#exhale-class-class-community">Community</a></li><li>Class <a href="class_config_parser.html#exhale-class-class-config-parser">ConfigParser</a></li><li>Class <a href="class_data_mask.html#exhale-class-class-data-mask">DataMask</a></li><li>Class <a href="class_data_point.html#exhale-class-class-data-point">DataPoint</a></li><li>Class <a href="class_dispersal_coordinator.html#exhale-class-class-dispersal-coordinator">DispersalCoordinator</a></li><li>Class <a href="class_landscape.html#exhale-class-class-landscape">Landscape</a></li><li>Class <a href="class_landscape_metrics_calculator.html#exhale-class-class-landscape-metrics-calculator">LandscapeMetricsCalculator</a></li><li>Class <a href="class_log_file.html#exhale-class-class-log-file">LogFile</a></li><li>Class <a href="class_logger.html#exhale-class-class-logger">Logger</a></li><li>Template Class <a href="class_map.html#exhale-class-class-map">Map</a></li><li>Template Class <a href="class_matrix.html#exhale-class-class-matrix">Matrix</a></li><li>Class <a href="class_metacommunity.html#exhale-class-class-metacommunity">Metacommunity</a></li><li>Class <a href="class_n_rrand.html#exhale-class-class-n-rrand">NRrand</a></li><li>Class <a href="class_protracted_spatial_tree.html#exhale-class-class-protracted-spatial-tree">ProtractedSpatialTree</a></li><li>Class <a href="class_protracted_tree.html#exhale-class-class-protracted-tree">ProtractedTree</a></li><li>Template Class <a href="class_py_community_template.html#exhale-class-class-py-community-template">PyCommunityTemplate</a></li><li>Class <a href="class_py_l_m_c.html#exhale-class-class-py-l-m-c">PyLMC</a></li><li>Class <a href="class_py_logger.html#exhale-class-class-py-logger">PyLogger</a></li><li>Class <a href="class_py_simulate_dispersal.html#exhale-class-class-py-simulate-dispersal">PySimulateDispersal</a></li><li>Template Class <a href="class_py_template.html#exhale-class-class-py-template">PyTemplate</a></li><li>Template Class <a href="class_row.html#exhale-class-class-row">Row</a></li><li>Class <a href="class_samplematrix.html#exhale-class-class-samplematrix">Samplematrix</a></li><li>Class <a href="class_simulate_dispersal.html#exhale-class-class-simulate-dispersal">SimulateDispersal</a></li><li>Class <a href="class_simulated_species_abundances_handler.html#exhale-class-class-simulated-species-abundances-handler">SimulatedSpeciesAbundancesHandler</a></li><li>Class <a href="class_spatial_tree.html#exhale-class-class-spatial-tree">SpatialTree</a></li><li>Class <a href="class_speciation_commands.html#exhale-class-class-speciation-commands">SpeciationCommands</a></li><li>Class <a href="class_species_abundances_handler.html#exhale-class-class-species-abundances-handler">SpeciesAbundancesHandler</a></li><li>Class <a href="class_species_list.html#exhale-class-class-species-list">SpeciesList</a></li><li>Class <a href="class_struct_spec_sim_parameters.html#exhale-class-struct-spec-sim-parameters">SpecSimParameters</a></li><li>Class <a href="class_struct_step.html#exhale-class-struct-step">Step</a></li><li>Class <a href="class_tree.html#exhale-class-class-tree">Tree</a></li><li class="lastChild">Class <a href="class_tree_node.html#exhale-class-class-tree-node">TreeNode</a></li>
        </ul>
      </li><!-- only tree view element -->
    </ul><!-- /treeView class-treeView -->

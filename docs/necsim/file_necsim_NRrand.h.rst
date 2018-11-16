@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_NRrand.h:
 
 File NRrand.h
 =============
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains a generic random number generator. Provided by James Rosindell (j.rosindell@imperial.ac.uk) with moderate modifications by Samuel Thompson (thomsonsed@gmail.com). 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -93,50 +95,50 @@ Classes
 -------
 
 
-- :ref:`class_NRrand`
+- :ref:`exhale_class_class_n_rrand`
 
 
 Functions
 ---------
 
 
-- :ref:`function_RNMX`
+- :ref:`exhale_function__n_rrand_8h_1a158cf46ef6c573278a62d3276db73f87`
 
 
 Defines
 -------
 
 
-- :ref:`define__USE_MATH_DEFINES`
+- :ref:`exhale_define__n_rrand_8h_1a525335710b53cb064ca56b936120431e`
 
 
 Variables
 ---------
 
 
-- :ref:`variable_AM`
+- :ref:`exhale_variable__n_rrand_8h_1a27e547c3105e6d0ace0de39307458bcf`
 
-- :ref:`variable_EPS`
+- :ref:`exhale_variable__n_rrand_8h_1afe01386a82fedc016455a43c20280a97`
 
-- :ref:`variable_IA1`
+- :ref:`exhale_variable__n_rrand_8h_1a45e1c589f86d9db759a39c3fec7173f7`
 
-- :ref:`variable_IA2`
+- :ref:`exhale_variable__n_rrand_8h_1a9e1b4a73494281fe5e9c3e4717e470f7`
 
-- :ref:`variable_IM1`
+- :ref:`exhale_variable__n_rrand_8h_1aa06e0b642514a0a81e24a934c642379e`
 
-- :ref:`variable_IM2`
+- :ref:`exhale_variable__n_rrand_8h_1ad1053cd943d3455299a7e41b0f7d543c`
 
-- :ref:`variable_IMM1`
+- :ref:`exhale_variable__n_rrand_8h_1a8d767b27f50367023701250182d9fd67`
 
-- :ref:`variable_IQ1`
+- :ref:`exhale_variable__n_rrand_8h_1af4fe82b357b5f8d862380d436c2c497b`
 
-- :ref:`variable_IQ2`
+- :ref:`exhale_variable__n_rrand_8h_1aa2531a5a05410cde54e39aa651340e71`
 
-- :ref:`variable_IR1`
+- :ref:`exhale_variable__n_rrand_8h_1af47ca7cc4d550afdb412b7501f0fba98`
 
-- :ref:`variable_IR2`
+- :ref:`exhale_variable__n_rrand_8h_1a0ed58a0578d5c19e0e21b8dd0c8e038b`
 
-- :ref:`variable_NDIV`
+- :ref:`exhale_variable__n_rrand_8h_1a2be17f0d1d943ecb2b25d470cad69f68`
 
-- :ref:`variable_NTAB`
+- :ref:`exhale_variable__n_rrand_8h_1aa10de89ce7a62fd9a5a8f515fac05646`
 

@@ -4,34 +4,27 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Program Listing for File CCommunity.h &#8212; pycoalescence 1.2.7a5 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.2.7a5',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
     <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="File Cell.cpp" href="file_necsim_Cell.cpp.html" />
     <link rel="prev" title="File CCommunity.h" href="file_CCommunity.h.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -60,10 +53,8 @@
             
   <div class="section" id="program-listing-for-file-ccommunity-h">
 <span id="program-listing-file-ccommunity-h"></span><h1>Program Listing for File CCommunity.h<a class="headerlink" href="#program-listing-for-file-ccommunity-h" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li>Return to documentation for <a class="reference internal" href="file_CCommunity.h.html#file-ccommunity-h"><span class="std std-ref">File CCommunity.h</span></a></li>
-</ul>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
+<p>↰ <a class="reference internal" href="file_CCommunity.h.html#file-ccommunity-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">CCommunity.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// This file is part of necsim project which is released under MIT license.</span>
 <span class="c1">// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details</span>
 <span class="cp">#ifndef NECSIM_C_COMMUNITY_H</span>
 <span class="cp">#define NECSIM_C_COMMUNITY_H</span>
@@ -178,7 +169,7 @@
 <span class="p">}</span>
 
 <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
-<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">addMetacommunityParameters</span><span class="p">(</span><span class="n">PyCommunityTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">pyAddMetacommunityParameters</span><span class="p">(</span><span class="n">PyCommunityTemplate</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">metacommunity_size</span><span class="p">;</span>
     <span class="kt">double</span> <span class="n">speciation_rate</span><span class="p">;</span>
@@ -338,7 +329,7 @@
                                                                                                                  <span class="s">&quot;Wipes the protracted current_metacommunity_parameters.&quot;</span><span class="p">},</span>
                     <span class="p">{</span><span class="s">&quot;add_protracted_parameters&quot;</span><span class="p">,</span>    <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addProtractedParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>     <span class="n">METH_VARARGS</span><span class="p">,</span>
                                                                                                                  <span class="s">&quot;Adds protracted speciation current_metacommunity_parameters to apply to the simulation.&quot;</span><span class="p">},</span>
-                    <span class="p">{</span><span class="s">&quot;add_metacommunity_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">addMetacommunityParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>  <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;Adds metacommunity current_metacommunity_parameters to be applied&quot;</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s">&quot;add_metacommunity_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">pyAddMetacommunityParameters</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>  <span class="n">METH_VARARGS</span><span class="p">,</span> <span class="s">&quot;Adds metacommunity current_metacommunity_parameters to be applied&quot;</span><span class="p">},</span>
                     <span class="p">{</span><span class="s">&quot;apply&quot;</span><span class="p">,</span>                        <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">apply</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                       <span class="n">METH_NOARGS</span><span class="p">,</span>
                                                                                                                  <span class="s">&quot;Applies the new speciation rate(s) to the coalescence tree.&quot;</span><span class="p">},</span>
                     <span class="p">{</span><span class="s">&quot;output&quot;</span><span class="p">,</span>                       <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span> <span class="n">output</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>                      <span class="n">METH_NOARGS</span><span class="p">,</span>  <span class="s">&quot;Outputs the database to file.&quot;</span><span class="p">},</span>
@@ -416,12 +407,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -450,7 +443,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright Copyright 2016, pycoalescence.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
 </html>

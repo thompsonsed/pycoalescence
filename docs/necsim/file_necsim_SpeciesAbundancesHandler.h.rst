@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SpeciesAbundancesHandler.h:
 
 File SpeciesAbundancesHandler.h
 ===============================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Base class for storing and generating species abundances. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -69,5 +71,5 @@ Classes
 -------
 
 
-- :ref:`class_SpeciesAbundancesHandler`
+- :ref:`exhale_class_class_species_abundances_handler`
 

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_DataPoint.h:
 
 File DataPoint.h
 ================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_DataPoint` class for storing objects during simulation run time. 
-
+Contains the :ref:`exhale_class_class_data_point` class for storing objects during simulation run time. 
+ 
 
 .. contents:: Contents
    :local:
@@ -30,7 +32,7 @@ Detailed Description
 
 Samuel Thompson 
 30/08/2016
-MIT Licence. This class is only used during simulation runs and is not outputted to a database. A :ref:`template_class_Row` of :ref:`class_DataPoint` objects is utilised by the main :ref:`class_Tree` objects. 
+MIT Licence. This class is only used during simulation runs and is not outputted to a database. A :ref:`exhale_class_class_row` of :ref:`exhale_class_class_data_point` objects is utilised by the main :ref:`exhale_class_class_tree` objects. 
 
 
 
@@ -62,5 +64,5 @@ Classes
 -------
 
 
-- :ref:`class_DataPoint`
+- :ref:`exhale_class_class_data_point`
 

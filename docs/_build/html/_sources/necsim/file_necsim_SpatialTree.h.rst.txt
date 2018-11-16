@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SpatialTree.h:
 
 File SpatialTree.h
 ==================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains :ref:`class_SpatialTree` for running simulations and outputting the phylogenetic tree. 
-
+Contains :ref:`exhale_class_class_spatial_tree` for running simulations and outputting the phylogenetic tree. 
+ 
 
 .. contents:: Contents
    :local:
@@ -114,5 +116,5 @@ Classes
 -------
 
 
-- :ref:`class_SpatialTree`
+- :ref:`exhale_class_class_spatial_tree`
 

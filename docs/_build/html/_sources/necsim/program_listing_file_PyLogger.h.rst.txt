@@ -4,7 +4,9 @@
 Program Listing for File PyLogger.h
 ===================================
 
-- Return to documentation for :ref:`file_PyLogger.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_PyLogger.h>` (``PyLogger.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

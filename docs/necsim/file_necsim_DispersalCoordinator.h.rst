@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_DispersalCoordinator.h:
 
 File DispersalCoordinator.h
 ===========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_DispersalCoordinator`, which contains all routines related to dispersal including utilisation of density maps and dispersal probability maps. 
-
+Contains the :ref:`exhale_class_class_dispersal_coordinator`, which contains all routines related to dispersal including utilisation of density maps and dispersal probability maps. 
+ 
 
 .. contents:: Contents
    :local:
@@ -82,5 +84,5 @@ Classes
 -------
 
 
-- :ref:`class_DispersalCoordinator`
+- :ref:`exhale_class_class_dispersal_coordinator`
 

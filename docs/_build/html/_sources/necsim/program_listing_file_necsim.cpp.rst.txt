@@ -4,7 +4,9 @@
 Program Listing for File necsim.cpp
 ===================================
 
-- Return to documentation for :ref:`file_necsim.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim.cpp>` (``necsim.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

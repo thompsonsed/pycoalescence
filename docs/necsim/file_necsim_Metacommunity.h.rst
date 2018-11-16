@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_Metacommunity.h:
 
 File Metacommunity.h
 ====================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Generates a neutral metacommunity. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -71,5 +73,5 @@ Classes
 -------
 
 
-- :ref:`class_Metacommunity`
+- :ref:`exhale_class_class_metacommunity`
 

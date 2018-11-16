@@ -4,7 +4,9 @@
 Program Listing for File double_comparison.cpp
 ==============================================
 
-- Return to documentation for :ref:`file_necsim_double_comparison.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_double_comparison.cpp>` (``necsim/double_comparison.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

@@ -1,12 +1,12 @@
 
-
 .. _file_necsim_double_comparison.cpp:
 
 File double_comparison.cpp
 ==========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
 
-
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. contents:: Contents
    :local:
@@ -40,9 +40,9 @@ Functions
 ---------
 
 
-- :ref:`function_doubleCompare`
+- :ref:`exhale_function_double__comparison_8cpp_1a15cd56115375f185c8a6f95c13800bfc`
 
-- :ref:`function_doubleCompare`
+- :ref:`exhale_function_double__comparison_8cpp_1a7d6dcddec98b5a2e2310370a2a11b3ab`
 
-- :ref:`function_doubleCompare`
+- :ref:`exhale_function_double__comparison_8cpp_1a691869ae2affd4d42f7ba9ea9839fe04`
 

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SimulateDispersal.cpp:
 
 File SimulateDispersal.cpp
 ==========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains the ability to simulate a given dispersal kernel on a specified density map, outputting the effect dispersal distance distribution to an SQL file after n number of dispersal events (specified by the user). 
-
+ 
 
 .. contents:: Contents
    :local:

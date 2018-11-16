@@ -1,12 +1,8 @@
 
-
 .. _file_CSimulateDispersal.h:
 
 File CSimulateDispersal.h
 =========================
-
-
-
 
 .. contents:: Contents
    :local:
@@ -132,43 +128,43 @@ Classes
 -------
 
 
-- :ref:`class_PySimulateDispersal`
+- :ref:`exhale_class_class_py_simulate_dispersal`
 
 
 Functions
 ---------
 
 
-- :ref:`function_genSimulateDispersalType`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a7925080e7962d12219434637b8c52a84`
 
-- :ref:`function_PySimulateDispersal_dealloc`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a760a1f17dcba36fec08e30575bb14e9b`
 
-- :ref:`function_PySimulateDispersal_init`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a901b5550b20c9675affd7bde6917c979`
 
-- :ref:`function_PySimulateDispersal_new`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1aa1e009c98d5dd3f8a958e7a7fa865e72`
 
-- :ref:`function_raiseErrorOnFalse`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1ac8082e3cdc255b3edf5d3b0873bb57eb`
 
-- :ref:`function_runMDT`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1ad6c6494da362cd934da703cb7b99a041`
 
-- :ref:`function_runMeanDispersal`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1ae1b502b045dc41a3f373be507194eeaf`
 
-- :ref:`function_set_all_map_parameters`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a0530e884b64335b8378d8342749ff304`
 
-- :ref:`function_set_dispersal_parameters`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a24b71f7005ebac8b60ec3883cc473642`
 
-- :ref:`function_set_historical_map_parameters`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a27affcf296d8f6b9d988ad27a3d9be7a`
 
-- :ref:`function_set_maps`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a22d532d682438bfb81f371ecc2b6b260`
 
-- :ref:`function_set_output_database`
+- :ref:`exhale_function__c_simulate_dispersal_8h_1a57684ef7868b4b9e4b0b2d03e17eab18`
 
 
 Variables
 ---------
 
 
-- :ref:`variable_C_SimulateDispersalType`
+- :ref:`exhale_variable__c_simulate_dispersal_8h_1a93a943fdcfea9a659170030de2f170a9`
 
-- :ref:`variable_SimulateDispersalMethods`
+- :ref:`exhale_variable__c_simulate_dispersal_8h_1ae1b96f346f55ede11cbbf3eab5b55f02`
 

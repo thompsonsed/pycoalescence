@@ -1,14 +1,12 @@
 
-
 .. _file_PyImports.h:
 
 File PyImports.h
 ================
 
 
-
 Routines for importing Python objects to C++ vectors. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -69,9 +67,9 @@ Functions
 ---------
 
 
-- :ref:`function_importPyListToVectorDouble`
+- :ref:`exhale_function__py_imports_8h_1a05fdbfcb6a0ea29a3242b796d654cc91`
 
-- :ref:`function_importPyListToVectorString`
+- :ref:`exhale_function__py_imports_8h_1a4938eb508ac5b2f1e03a13a3860689ab`
 
-- :ref:`function_importPyListToVectorULong`
+- :ref:`exhale_function__py_imports_8h_1aff3fb1ca36eb470ac911c35916c0d905`
 

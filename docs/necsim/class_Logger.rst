@@ -1,4 +1,4 @@
-.. _class_Logger:
+.. _exhale_class_class_logger:
 
 Class Logger
 ============
@@ -12,7 +12,7 @@ Inheritance Relationships
 Derived Type
 ************
 
-- ``public PyLogger`` (:ref:`class_PyLogger`)
+- ``public PyLogger`` (:ref:`exhale_class_class_py_logger`)
 
 
 Class Documentation

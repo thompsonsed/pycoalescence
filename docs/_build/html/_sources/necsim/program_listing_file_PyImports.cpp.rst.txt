@@ -4,7 +4,9 @@
 Program Listing for File PyImports.cpp
 ======================================
 
-- Return to documentation for :ref:`file_PyImports.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_PyImports.cpp>` (``PyImports.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

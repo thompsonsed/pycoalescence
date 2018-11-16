@@ -1,4 +1,4 @@
-.. _class_Community:
+.. _exhale_class_class_community:
 
 Class Community
 ===============
@@ -12,7 +12,7 @@ Inheritance Relationships
 Derived Type
 ************
 
-- ``public Metacommunity`` (:ref:`class_Metacommunity`)
+- ``public Metacommunity`` (:ref:`exhale_class_class_metacommunity`)
 
 
 Class Documentation

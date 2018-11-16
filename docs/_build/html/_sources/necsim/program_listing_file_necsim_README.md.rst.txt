@@ -4,9 +4,11 @@
 Program Listing for File README.md
 ==================================
 
-- Return to documentation for :ref:`file_necsim_README.md`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_README.md>` (``necsim/README.md``)
 
-.. code-block:: cpp
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: markdown
 
    # necsim #
    

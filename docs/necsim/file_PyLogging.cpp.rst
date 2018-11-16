@@ -1,14 +1,12 @@
 
-
 .. _file_PyLogging.cpp:
 
 File PyLogging.cpp
 ==================
 
 
-
 Routines for writing to Python logging module. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -59,21 +57,21 @@ Functions
 ---------
 
 
-- :ref:`function_getGlobalLogger`
+- :ref:`exhale_function__py_logging_8cpp_1a211ca84a4b539aa59a531cce6fd015e4`
 
-- :ref:`function_removeGlobalLogger`
+- :ref:`exhale_function__py_logging_8cpp_1a2ee01f3c6539e20979d44c3bb5a9073b`
 
 
 Defines
 -------
 
 
-- :ref:`define_PYTHON_COMPILE`
+- :ref:`exhale_define__py_logging_8cpp_1a9302692bd9a9cf56478cbae301f04d53`
 
 
 Variables
 ---------
 
 
-- :ref:`variable_pyLogger`
+- :ref:`exhale_variable__py_logging_8cpp_1a16abb5beca5fed84d447520249018248`
 

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_LogFile.cpp:
 
 File LogFile.cpp
 ================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains a class for logging to a logfile, including reporting level and timestamps. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -59,9 +61,9 @@ Functions
 ---------
 
 
-- :ref:`function_getDefaultLogFile`
+- :ref:`exhale_function__log_file_8cpp_1a0f519c044006aac9a55a4098570843bb`
 
-- :ref:`function_getTime`
+- :ref:`exhale_function__log_file_8cpp_1a4913b5d6d98757fe7a98730bf204dc90`
 
-- :ref:`function_getUniqueFileName`
+- :ref:`exhale_function__log_file_8cpp_1a96ac11c89504dd77c09235bbea7c1f67`
 

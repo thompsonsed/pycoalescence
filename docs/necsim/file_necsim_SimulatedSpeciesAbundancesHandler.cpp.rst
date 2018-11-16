@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SimulatedSpeciesAbundancesHandler.cpp:
 
 File SimulatedSpeciesAbundancesHandler.cpp
 ==========================================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Class for repeatedly selecting random species from a distribution of species abundances. 
-
+ 
 
 .. contents:: Contents
    :local:

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_ActivityMap.h:
 
 File ActivityMap.h
 ==================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_ActivityMap`, which inherits from :ref:`template_class_Matrix` and adds a few extra parameters. 
-
+Contains the :ref:`exhale_class_class_activity_map`, which inherits from :ref:`exhale_class_class_matrix` and adds a few extra parameters. 
+ 
 
 .. contents:: Contents
    :local:
@@ -74,5 +76,5 @@ Classes
 -------
 
 
-- :ref:`class_ActivityMap`
+- :ref:`exhale_class_class_activity_map`
 

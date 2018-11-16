@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_AnalyticalSpeciesAbundancesHandler.cpp:
 
 File AnalyticalSpeciesAbundancesHandler.cpp
 ===========================================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Class for repeatedly selecting random species from a distribution of species abundances using analytical solutions from Vallade and Houchmandzadeh (2003) and Alonso and McKane (2004). 
-
+ 
 
 .. contents:: Contents
    :local:

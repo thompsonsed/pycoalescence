@@ -1,14 +1,12 @@
 
-
 .. _file_LandscapeMetricsCalculator.h:
 
 File LandscapeMetricsCalculator.h
 =================================
 
 
-
-Contains the :ref:`class_LandscapeMetricsCalculator` class for calculating landscape metrics. 
-
+Contains the :ref:`exhale_class_class_landscape_metrics_calculator` class for calculating landscape metrics. 
+ 
 
 .. contents:: Contents
    :local:
@@ -65,5 +63,5 @@ Classes
 -------
 
 
-- :ref:`class_LandscapeMetricsCalculator`
+- :ref:`exhale_class_class_landscape_metrics_calculator`
 

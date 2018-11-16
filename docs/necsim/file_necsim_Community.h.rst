@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_Community.h:
 
 File Community.h
 ================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains various objects used for reconstructing the coalescence tree after simulations are complete. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -92,16 +94,16 @@ Classes
 -------
 
 
-- :ref:`struct_Fragment`
+- :ref:`exhale_struct_struct_fragment`
 
-- :ref:`class_Community`
+- :ref:`exhale_class_class_community`
 
-- :ref:`class_Samplematrix`
+- :ref:`exhale_class_class_samplematrix`
 
 
 Functions
 ---------
 
 
-- :ref:`function_checkSpeciation`
+- :ref:`exhale_function__community_8h_1ac0d535bc74d14e6a7c851f1242548dc0`
 

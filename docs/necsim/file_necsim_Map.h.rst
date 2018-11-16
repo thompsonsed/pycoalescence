@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_Map.h:
 
 File Map.h
 ==========
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains :ref:`template_class_Map` for importing .tif files and obtaining a variety of information from them. 
-
+Contains :ref:`exhale_class_class_map` for importing .tif files and obtaining a variety of information from them. 
+ 
 
 .. contents:: Contents
    :local:
@@ -77,5 +79,5 @@ Classes
 -------
 
 
-- :ref:`template_class_Map`
+- :ref:`exhale_class_class_map`
 

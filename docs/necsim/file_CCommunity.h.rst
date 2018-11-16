@@ -1,14 +1,12 @@
 
-
 .. _file_CCommunity.h:
 
 File CCommunity.h
 =================
 
 
-
 Wraps the various C++ community objects for accessing via Python. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -165,47 +163,47 @@ Classes
 -------
 
 
-- :ref:`template_class_PyCommunityTemplate`
+- :ref:`exhale_class_class_py_community_template`
 
 
 Functions
 ---------
 
 
-- :ref:`function_addMetacommunityParameters`
+- :ref:`exhale_function__c_community_8h_1a7158dc626fa3755275e6a82dbd243080`
 
-- :ref:`function_addProtractedParameters`
+- :ref:`exhale_function__c_community_8h_1a1f8271f44934647e7a632e54886cf2ac`
 
-- :ref:`function_addTime`
+- :ref:`exhale_function__c_community_8h_1a5ead9f33e67e11b4bad1e4c73a7f7460`
 
-- :ref:`function_apply`
+- :ref:`exhale_function__c_community_8h_1a3cdc099ed6706ea0281a2b753f0891e1`
 
-- :ref:`function_genCommunityMethods`
+- :ref:`exhale_function__c_community_8h_1a649144dd6457e0e55b7fe77bfdd641a1`
 
-- :ref:`function_genCommunityType`
+- :ref:`exhale_function__c_community_8h_1a7a905b7f80ed254393e458210b1aa35f`
 
-- :ref:`function_genCommunityType`
+- :ref:`exhale_function__c_community_8h_1a5a5e69c263db112d29cc2fe41a0a9f29`
 
-- :ref:`function_output`
+- :ref:`exhale_function__c_community_8h_1a0693dd618bc17bb176194223dbc5ac44`
 
-- :ref:`function_PyCommunity_dealloc`
+- :ref:`exhale_function__c_community_8h_1a1821b40c86cdfd4ebbf1b27b45a29b94`
 
-- :ref:`function_PyCommunity_init`
+- :ref:`exhale_function__c_community_8h_1a73dfa12ab7dff1a51d4195e438c6352d`
 
-- :ref:`function_pySpeciateRemainingLineages`
+- :ref:`exhale_function__c_community_8h_1aa611507695b100eb3df24868c962ba48`
 
-- :ref:`function_reset`
+- :ref:`exhale_function__c_community_8h_1a8d641f852eb1599cc34489c83a77e0b6`
 
-- :ref:`function_setupApplySpeciation`
+- :ref:`exhale_function__c_community_8h_1abc7dbff23a85753456bb7f9140e7a8ad`
 
-- :ref:`function_wipeProtractedParameters`
+- :ref:`exhale_function__c_community_8h_1a3233fe6d026603e71513b788e4079187`
 
 
 Variables
 ---------
 
 
-- :ref:`variable_C_CommunityType`
+- :ref:`exhale_variable__c_community_8h_1a68c4bfc1e5bd0f7b75d6338a4b13cac6`
 
-- :ref:`variable_C_MetacommunityType`
+- :ref:`exhale_variable__c_community_8h_1aaeb800bbf9821f0f36cad0a00abd1f80`
 

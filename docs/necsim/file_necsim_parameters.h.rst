@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_parameters.h:
 
 File parameters.h
 =================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains various objects used for storing parameters related to tree reconstruction. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -68,13 +70,13 @@ Classes
 -------
 
 
-- :ref:`struct_CommunitiesArray`
+- :ref:`exhale_struct_struct_communities_array`
 
-- :ref:`struct_CommunityParameters`
+- :ref:`exhale_struct_struct_community_parameters`
 
-- :ref:`struct_MetacommunitiesArray`
+- :ref:`exhale_struct_struct_metacommunities_array`
 
-- :ref:`struct_MetacommunityParameters`
+- :ref:`exhale_struct_struct_metacommunity_parameters`
 
-- :ref:`struct_ProtractedSpeciationParameters`
+- :ref:`exhale_struct_struct_protracted_speciation_parameters`
 

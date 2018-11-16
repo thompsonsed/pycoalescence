@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_DataMask.cpp:
 
 File DataMask.cpp
 =================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_DataMask` class for describing the spatial sampling pattern on a landscape. 
-
+Contains the :ref:`exhale_class_class_data_mask` class for describing the spatial sampling pattern on a landscape. 
+ 
 
 .. contents:: Contents
    :local:

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_Step.h:
 
 File Step.h
 ===========
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_Step` class for storing required data during a single step of a coalescence simulation. 
-
+Contains the :ref:`exhale_class_struct_step` class for storing required data during a single step of a coalescence simulation. 
+ 
 
 .. contents:: Contents
    :local:
@@ -58,5 +60,5 @@ Classes
 -------
 
 
-- :ref:`class_Step`
+- :ref:`exhale_class_struct_step`
 

@@ -1,4 +1,4 @@
-.. _template_class_Matrix:
+.. _exhale_class_class_matrix:
 
 Template Class Matrix
 =====================
@@ -12,7 +12,7 @@ Inheritance Relationships
 Derived Type
 ************
 
-- ``public Map< T >`` (:ref:`template_class_Map`)
+- ``public Map< T >`` (:ref:`exhale_class_class_map`)
 
 
 Class Documentation

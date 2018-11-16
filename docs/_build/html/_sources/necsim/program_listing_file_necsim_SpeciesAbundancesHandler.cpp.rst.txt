@@ -4,7 +4,9 @@
 Program Listing for File SpeciesAbundancesHandler.cpp
 =====================================================
 
-- Return to documentation for :ref:`file_necsim_SpeciesAbundancesHandler.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_SpeciesAbundancesHandler.cpp>` (``necsim/SpeciesAbundancesHandler.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

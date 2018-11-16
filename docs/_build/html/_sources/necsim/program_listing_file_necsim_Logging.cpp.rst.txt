@@ -4,7 +4,9 @@
 Program Listing for File Logging.cpp
 ====================================
 
-- Return to documentation for :ref:`file_necsim_Logging.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_Logging.cpp>` (``necsim/Logging.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

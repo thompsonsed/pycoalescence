@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SpecSimParameters.h:
 
 File SpecSimParameters.h
 ========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains parameters for applying speciation rates post-simulation. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -71,5 +73,5 @@ Classes
 -------
 
 
-- :ref:`class_SpecSimParameters`
+- :ref:`exhale_class_struct_spec_sim_parameters`
 

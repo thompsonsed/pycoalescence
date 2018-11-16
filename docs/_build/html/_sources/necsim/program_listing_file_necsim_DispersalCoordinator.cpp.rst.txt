@@ -4,7 +4,9 @@
 Program Listing for File DispersalCoordinator.cpp
 =================================================
 
-- Return to documentation for :ref:`file_necsim_DispersalCoordinator.cpp`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_DispersalCoordinator.cpp>` (``necsim/DispersalCoordinator.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

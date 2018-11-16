@@ -4,7 +4,9 @@
 Program Listing for File file_system.h
 ======================================
 
-- Return to documentation for :ref:`file_necsim_file_system.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_necsim_file_system.h>` (``necsim/file_system.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

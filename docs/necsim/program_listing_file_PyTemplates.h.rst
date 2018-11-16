@@ -4,7 +4,9 @@
 Program Listing for File PyTemplates.h
 ======================================
 
-- Return to documentation for :ref:`file_PyTemplates.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_PyTemplates.h>` (``PyTemplates.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

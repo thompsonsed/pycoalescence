@@ -17,13 +17,12 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import sys
 import re
-import textwrap
+import sys
+
 from recommonmark.parser import CommonMarkParser
 
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
-
 
 if read_the_docs_build:
 	try:
@@ -36,19 +35,20 @@ if read_the_docs_build:
 		@classmethod
 		def __getattr__(cls, name):
 			return MagicMock()
+
+
 	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "libnecsim", "necsimmodule"]
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 	sys.modules["scipy"] = Mock()
 	sys.modules["scipy.spatial"] = Mock()
 	sys.modules["scipy.spatial.Voronoi"] = Mock()
 
-
-
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.append(os.path.abspath('../'))
 sys.path.append(os.path.abspath('../pycoalescence'))
 
 import pycoalescence
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -134,7 +134,7 @@ language = None
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README_necsim.rst', 'README.md',
 					'*/cmake-*/*'
-					 # '*class_view_hierarchy.rst',
+					# '*class_view_hierarchy.rst',
 					'**.ipynb_checkpoints']
 
 # The reST default role (used for this markup: `text`) to use for all
@@ -574,6 +574,7 @@ stripPath = ".."
 # )
 
 import codecs
+
 # data="none"
 with codecs.open("README_necsim.rst", "r", "utf8") as readme:
 	data = readme.read()
@@ -618,22 +619,22 @@ exhale_args = {
 	# PREDEFINED            += DOXYGEN_SHOULD_SKIP_THIS
 	# # ADDITIONAL
 	# EXCLUDE_PATTERNS       = ../pycoalescence/lib/necsim/fast-cpp-csv-parser/* \
-     #                     */necsim/fast-cpp-csv-parser/* \
-     #                     */lib/autom4te.cache/* \
-     #                     */lib/build/* \
-     #                     */lib/cmake-*/* \
-     #                     */lib/Debug/* \
-     #                     */lib/m4/* \
-     #                     */lib/Makefiles/* \
-     #                     */lib/obj/* \
-     #                     */lib/Release/* \
-     #                     */lib/SimTest/* \
-     #                     *.d \
-     #                     *CMakeLists.txt\
-     #                     */LICENSE.txt
+	#                     */necsim/fast-cpp-csv-parser/* \
+	#                     */lib/autom4te.cache/* \
+	#                     */lib/build/* \
+	#                     */lib/cmake-*/* \
+	#                     */lib/Debug/* \
+	#                     */lib/m4/* \
+	#                     */lib/Makefiles/* \
+	#                     */lib/obj/* \
+	#                     */lib/Release/* \
+	#                     */lib/SimTest/* \
+	#                     *.d \
+	#                     *CMakeLists.txt\
+	#                     */LICENSE.txt
 	# EXCLUDE                = ../pycoalescence/lib/necsim/fast-cpp-csv-parser \
-     #                     necsim/fast-cpp-csv-parser/ \
-     #                     ../../necsim/fast-cpp-csv-parser/
+	#                     necsim/fast-cpp-csv-parser/ \
+	#                     ../../necsim/fast-cpp-csv-parser/
 	# '''
 }
 
@@ -641,25 +642,24 @@ exhale_args = {
 # Breathe compatibility
 def setup(app):
 	pass
-	# with open("README_NECSim.rst", mode="r") as readme:
-	# 	data = readme.read()
-	# stripPath = "../PyCoalescence/NECSim/Documentation/"
-	# generateDoxygenXML(stripPath)
-	# exhaleArgs = {
-	# 	"doxygenIndexXMLPath": "../PyCoalescence/NECSim/Documentation/xml/index.xml",
-	# 	"containmentFolder": "./Exhaled",
-	# 	"rootFileName": "exhaled_library.rst",
-	# 	"rootFileTitle": "NECSim",
-	# 	"doxygenStripFromPath": stripPath,
-	# 	"afterTitleDescription": data,
-	# 	"createTreeView": True,
-	# 	"exhaleExecutesDoxygen": True,
-	# 	"exhaleDoxygenStdin": "INPUT = ../PyCoalescence/NECSim"}
-	# create the dictionary to send to exhale
+# with open("README_NECSim.rst", mode="r") as readme:
+# 	data = readme.read()
+# stripPath = "../PyCoalescence/NECSim/Documentation/"
+# generateDoxygenXML(stripPath)
+# exhaleArgs = {
+# 	"doxygenIndexXMLPath": "../PyCoalescence/NECSim/Documentation/xml/index.xml",
+# 	"containmentFolder": "./Exhaled",
+# 	"rootFileName": "exhaled_library.rst",
+# 	"rootFileTitle": "NECSim",
+# 	"doxygenStripFromPath": stripPath,
+# 	"afterTitleDescription": data,
+# 	"createTreeView": True,
+# 	"exhaleExecutesDoxygen": True,
+# 	"exhaleDoxygenStdin": "INPUT = ../PyCoalescence/NECSim"}
+# create the dictionary to send to exhale
 
 
-
-	# import the exhale module from the current directory and generate the necsim
-	# sys.path.insert(0, os.path.abspath('.'))  # exhale.py is in this directory
-	# from exhale import generate
-	# generate(exhaleArgs)
+# import the exhale module from the current directory and generate the necsim
+# sys.path.insert(0, os.path.abspath('.'))  # exhale.py is in this directory
+# from exhale import generate
+# generate(exhaleArgs)

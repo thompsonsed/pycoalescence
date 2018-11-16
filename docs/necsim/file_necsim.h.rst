@@ -1,14 +1,12 @@
 
-
 .. _file_necsim.h:
 
 File necsim.h
 =============
 
 
-
 Contains the functions allowing integration of the pycoalescence Python module directly to the c++. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -67,30 +65,30 @@ Classes
 -------
 
 
-- :ref:`struct_module_state`
+- :ref:`exhale_struct_structmodule__state`
 
 
 Functions
 ---------
 
 
-- :ref:`function_initlibnecsim`
+- :ref:`exhale_function_necsim_8h_1aa680b1c5389c4819a544e348148af3ef`
 
 
 Defines
 -------
 
 
-- :ref:`define_GETSTATE`
+- :ref:`exhale_define_necsim_8h_1a6d1f389576656b98c42c69f7cf1d55c0`
 
-- :ref:`define_INITERROR`
+- :ref:`exhale_define_necsim_8h_1a3d94077229c2876134769daeeb28fa8a`
 
 
 Variables
 ---------
 
 
-- :ref:`variable__state`
+- :ref:`exhale_variable_necsim_8h_1adb5f4e26ed08b1f5e57d51f452404533`
 
-- :ref:`variable_necsimError`
+- :ref:`exhale_variable_necsim_8h_1aac3ff075b518e19d6ccde6d76325b0aa`
 

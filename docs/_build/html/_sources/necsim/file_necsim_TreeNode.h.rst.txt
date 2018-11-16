@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_TreeNode.h:
 
 File TreeNode.h
 ===============
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
-Contains the :ref:`class_TreeNode` class for storing the coalescence tree. 
-
+Contains the :ref:`exhale_class_class_tree_node` class for storing the coalescence tree. 
+ 
 
 .. contents:: Contents
    :local:
@@ -29,7 +31,7 @@ Detailed Description
 --------------------
 
 Samuel Thompson
-:ref:`class_TreeNode` objects are used both during simulation runs and afterwards, when different calculations need to be performed on the coalescence tree. 
+:ref:`exhale_class_class_tree_node` objects are used both during simulation runs and afterwards, when different calculations need to be performed on the coalescence tree. 
 
 
 
@@ -68,5 +70,5 @@ Classes
 -------
 
 
-- :ref:`class_TreeNode`
+- :ref:`exhale_class_class_tree_node`
 

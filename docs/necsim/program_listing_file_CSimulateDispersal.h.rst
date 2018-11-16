@@ -4,7 +4,9 @@
 Program Listing for File CSimulateDispersal.h
 =============================================
 
-- Return to documentation for :ref:`file_CSimulateDispersal.h`
+|exhale_lsh| :ref:`Return to documentation for file <file_CSimulateDispersal.h>` (``CSimulateDispersal.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. code-block:: cpp
 

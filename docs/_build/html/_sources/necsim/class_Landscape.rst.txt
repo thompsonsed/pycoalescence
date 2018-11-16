@@ -1,4 +1,4 @@
-.. _class_Landscape:
+.. _exhale_class_class_landscape:
 
 Class Landscape
 ===============

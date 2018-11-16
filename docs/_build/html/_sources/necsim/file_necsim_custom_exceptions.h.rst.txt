@@ -1,12 +1,12 @@
 
-
 .. _file_necsim_custom_exceptions.h:
 
 File custom_exceptions.h
 ========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
 
-
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 .. contents:: Contents
    :local:
@@ -78,9 +78,9 @@ Classes
 -------
 
 
-- :ref:`struct_ConfigException`
+- :ref:`exhale_struct_struct_config_exception`
 
-- :ref:`struct_FatalException`
+- :ref:`exhale_struct_struct_fatal_exception`
 
-- :ref:`struct_SpeciesException`
+- :ref:`exhale_struct_struct_species_exception`
 

@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_SimulateDispersal.h:
 
 File SimulateDispersal.h
 ========================
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Contains the ability to simulate a given dispersal kernel on a specified density map, outputting the effect dispersal distance distribution to an SQL file after n number of dispersal events (specified by the user). 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -81,12 +83,12 @@ Classes
 -------
 
 
-- :ref:`class_SimulateDispersal`
+- :ref:`exhale_class_class_simulate_dispersal`
 
 
 Defines
 -------
 
 
-- :ref:`define_PYTHON_COMPILE`
+- :ref:`exhale_define__simulate_dispersal_8h_1a9302692bd9a9cf56478cbae301f04d53`
 

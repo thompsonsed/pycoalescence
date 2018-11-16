@@ -1,14 +1,16 @@
 
-
 .. _file_necsim_Cell.cpp:
 
 File Cell.cpp
 =============
 
+|exhale_lsh| :ref:`Parent directory <dir_necsim>` (``necsim``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
 
 
 Basic container for location data. 
-
+ 
 
 .. contents:: Contents
    :local:
@@ -51,5 +53,5 @@ Functions
 ---------
 
 
-- :ref:`function_distanceBetweenCells`
+- :ref:`exhale_function__cell_8cpp_1a48edc8f7abe3fe6291412caa2cd65392`
 

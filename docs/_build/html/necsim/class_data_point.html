@@ -1,0 +1,433 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Class DataPoint &#8212; pycoalescence 1.2.7a5 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../_static/PyCoal_favicon_large.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class DispersalCoordinator" href="class_dispersal_coordinator.html" />
+    <link rel="prev" title="Class DataMask" href="class_data_mask.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_dispersal_coordinator.html" title="Class DispersalCoordinator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="class_data_mask.html" title="Class DataMask"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" accesskey="U">necsim</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="class-datapoint">
+<span id="exhale-class-class-data-point"></span><h1>Class DataPoint<a class="headerlink" href="#class-datapoint" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Defined in <a class="reference internal" href="file_necsim_DataPoint.h.html#file-necsim-datapoint-h"><span class="std std-ref">File DataPoint.h</span></a></li>
+</ul>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv39DataPoint">
+<span class="target" id="class_data_point"></span><em class="property">class </em><code class="descname">DataPoint</code><a class="headerlink" href="#_CPPv39DataPoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A data object used in coalescence simulations for calculating the output. Data from this object is outputted to an SQLite database after simulations are complete. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N9DataPoint9DataPointEv">
+<span class="target" id="class_data_point_1a1e1b3678b2d1522b7956148a57e1602f"></span><code class="descname">DataPoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint9DataPointEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standard constructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPointD0Ev">
+<span class="target" id="class_data_point_1aecfe4a3c98e1f29f9e7f8267a26eadd9"></span><code class="descname">~DataPoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPointD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standard destructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint5setupEmmllmmd">
+<span class="target" id="class_data_point_1a426e22fa33be467e3cddf71990d3ca8a"></span>void <code class="descname">setup</code><span class="sig-paren">(</span>unsigned long <em>x</em>, unsigned long <em>y</em>, long <em>xwrap_in</em>, long <em>ywrap_in</em>, unsigned long <em>reference_in</em>, unsigned long <em>list_position_in</em>, double <em>min_max_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint5setupEmmllmmd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Setup of lineage data with any information that’s wanted. Note that nwrap is set to 0 in this routine. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the x position on the grid </li>
+<li><code class="docutils literal notranslate"><span class="pre">y</span></code>: the y position on the grid </li>
+<li><code class="docutils literal notranslate"><span class="pre">xwrap_in</span></code>: the number of wraps of the location on the grid in the x direction </li>
+<li><code class="docutils literal notranslate"><span class="pre">ywrap_in</span></code>: the number of wraps of the location on the grid in the y direction </li>
+<li><code class="docutils literal notranslate"><span class="pre">reference_in</span></code>: the position in the <a class="reference internal" href="class_tree_node.html#class_tree_node"><span class="std std-ref">TreeNode</span></a> reference object </li>
+<li><code class="docutils literal notranslate"><span class="pre">list_position_in</span></code>: the position within the <a class="reference internal" href="class_species_list.html#class_species_list"><span class="std std-ref">SpeciesList</span></a> object at the relevant x,y position </li>
+<li><code class="docutils literal notranslate"><span class="pre">min_max_in</span></code>: the input maximum minimum speciation rate required for speciation to have occured </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint5setupEmmd">
+<span class="target" id="class_data_point_1abddc939aebb23f387a23ca5f9ce0eda0"></span>void <code class="descname">setup</code><span class="sig-paren">(</span>unsigned long <em>reference_in</em>, unsigned long <em>list_position_in</em>, double <em>min_max_in</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint5setupEmmd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Setup of lineage data with any information that’s wanted. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">reference_in</span></code>: the reference point for the <a class="reference internal" href="class_tree_node.html#class_tree_node"><span class="std std-ref">TreeNode</span></a> reference object </li>
+<li><code class="docutils literal notranslate"><span class="pre">list_position_in</span></code>: the list position of this lineage in <a class="reference internal" href="class_species_list.html#class_species_list"><span class="std std-ref">SpeciesList</span></a> object </li>
+<li><code class="docutils literal notranslate"><span class="pre">min_max_in</span></code>: the input maximum minimum speciation rate required for speciation to have occured </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint5setupE9DataPoint">
+<span class="target" id="class_data_point_1a1e8c41e56eb1d69a52f5246d9f7ee3f1"></span>void <code class="descname">setup</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv39DataPoint" title="DataPoint">DataPoint</a> <em>datin</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint5setupE9DataPoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy constructor from another Datapoint object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">datin</span></code>: a Datapoint object to copy the data from. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint12setReferenceEm">
+<span class="target" id="class_data_point_1a2433657bfd215678d40904310b926033"></span>void <code class="descname">setReference</code><span class="sig-paren">(</span>unsigned long <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint12setReferenceEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the mpos (the position within the <a class="reference internal" href="class_row.html#class_row"><span class="std std-ref">Row</span></a> of <a class="reference internal" href="class_tree_node.html#class_tree_node"><span class="std std-ref">TreeNode</span></a> objects.). </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">z</span></code>: the desired mpos. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint7setNextEm">
+<span class="target" id="class_data_point_1aa8279493a06f7c9f810e27673d38f5d4"></span>void <code class="descname">setNext</code><span class="sig-paren">(</span>unsigned long <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint7setNextEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the next link in the linked list. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the next Datapoint object. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint15setListPositionEm">
+<span class="target" id="class_data_point_1a8cbeb60a0cb7e46a2bf37973dc72c3b2"></span>void <code class="descname">setListPosition</code><span class="sig-paren">(</span>unsigned long <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint15setListPositionEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the list position within the <a class="reference internal" href="class_species_list.html#class_species_list"><span class="std std-ref">SpeciesList</span></a> object. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">l</span></code>: the input list position. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint8setNwrapEm">
+<span class="target" id="class_data_point_1ae73f807fa45356311a58953fb39b4e46"></span>void <code class="descname">setNwrap</code><span class="sig-paren">(</span>unsigned long <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint8setNwrapEm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the number of wraps from the first <a class="reference internal" href="class_species_list.html#class_species_list"><span class="std std-ref">SpeciesList</span></a> wrapped lineage. If and only if this is 0, the lineage is within the main grid (i.e xwrap and ywrap should be 0). </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">n</span></code>: the desired nwrap. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint9setMinmaxEd">
+<span class="target" id="class_data_point_1a45a301225a2d39b98d19ed88264b5d31"></span>void <code class="descname">setMinmax</code><span class="sig-paren">(</span>double <em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint9setMinmaxEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the minmax variable. This is the minimum maximum speciation rate required for speciation to have occured on this branch. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">d</span></code>: the minmax to set. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint7getXposEv">
+<span class="target" id="class_data_point_1a4b97b62d0d3438e0317e39084c9b95cb"></span>unsigned long <code class="descname">getXpos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint7getXposEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the x position. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the xpos. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint7getYposEv">
+<span class="target" id="class_data_point_1a185dbf2dc87c0cb9aaaa75e7ec65e79a"></span>unsigned long <code class="descname">getYpos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint7getYposEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the y position. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the ypos. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint8getXwrapEv">
+<span class="target" id="class_data_point_1a94c95a87b33ce5d986ff74f6a5c96fcd"></span>long <code class="descname">getXwrap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint8getXwrapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the x wrapping. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the xwrap. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint8getYwrapEv">
+<span class="target" id="class_data_point_1ab9d7976595edc06922c997767afc9424"></span>long <code class="descname">getYwrap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint8getYwrapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the y wrapping. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the ywrap. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint12getReferenceEv">
+<span class="target" id="class_data_point_1aa8b811037d67e2c74c16e9d85939969e"></span>unsigned long <code class="descname">getReference</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint12getReferenceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the reference position variable. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the mpos. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint7getNextEv">
+<span class="target" id="class_data_point_1a77bfe024c349550b8f0812cca41c8649"></span>unsigned long <code class="descname">getNext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint7getNextEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the next element linked to this <a class="reference internal" href="#class_data_point"><span class="std std-ref">DataPoint</span></a>. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the reference of the next individual in the linked list </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint10getListposEv">
+<span class="target" id="class_data_point_1a8c60a34fba35ffb915a57f0968043798"></span>unsigned long <code class="descname">getListpos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint10getListposEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the list position with the <a class="reference internal" href="class_species_list.html#class_species_list"><span class="std std-ref">SpeciesList</span></a> object at the relevant x,y position. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the listpos. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint8getNwrapEv">
+<span class="target" id="class_data_point_1a874d55e25ca0809ba5b8d5d5256731e5"></span>unsigned long <code class="descname">getNwrap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint8getNwrapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the position in the linked list from the <a class="reference internal" href="class_species_list.html#class_species_list"><span class="std std-ref">SpeciesList</span></a> object. If this is 0, indicates the lineage lies on the original grid, and xwrap and ywrap should be 0. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the nwrap. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint9getMinmaxEv">
+<span class="target" id="class_data_point_1a190823c53c821336c7a40d1aee6a5995"></span>double <code class="descname">getMinmax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint9getMinmaxEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the maximum minimum speciation rate required for speciation to have occured on this branch. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the minmax. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint13decreaseNwrapEv">
+<span class="target" id="class_data_point_1a2d939bcbc5abae0d80fdd42a1b26725f"></span>void <code class="descname">decreaseNwrap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint13decreaseNwrapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Decreases the nwrap by 1 (to a minimum of 0). </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N9DataPoint11setEndpointEllll">
+<span class="target" id="class_data_point_1a1d80702ad55b2c64f386b71052adc4d8"></span>void <code class="descname">setEndpoint</code><span class="sig-paren">(</span>long <em>x</em>, long <em>y</em>, long <em>xwrapin</em>, long <em>ywrapin</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N9DataPoint11setEndpointEllll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets the position in space. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">x</span></code>: the x position. </li>
+<li><code class="docutils literal notranslate"><span class="pre">y</span></code>: the y position. </li>
+<li><code class="docutils literal notranslate"><span class="pre">xwrapin</span></code>: the number of wraps in the x direction. </li>
+<li><code class="docutils literal notranslate"><span class="pre">ywrapin</span></code>: the number of wraps in the y direction. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Friends</p>
+<dl class="function">
+<dt id="_CPPv3lsR7ostreamRK9DataPoint">
+<span class="target" id="class_data_point_1adfa94e754617c0b58a39bf86925beeac"></span>ostream &amp;<code class="descname">operator&lt;&lt;</code><span class="sig-paren">(</span>ostream &amp;<em>os</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv39DataPoint" title="DataPoint">DataPoint</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3lsR7ostreamRK9DataPoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>An operator for piping the variables of the Datapoint object to the output stream. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>returns the output stream at the end. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">os</span></code>: the output stream. </li>
+<li><code class="docutils literal notranslate"><span class="pre">d</span></code>: the Datapoint object to output. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3rsR7istreamR9DataPoint">
+<span class="target" id="class_data_point_1a5ea22488fc99136335b4c8474623ccc3"></span>istream &amp;<code class="descname">operator&gt;&gt;</code><span class="sig-paren">(</span>istream &amp;<em>is</em>, <a class="reference internal" href="#_CPPv39DataPoint" title="DataPoint">DataPoint</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3rsR7istreamR9DataPoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>An operator for piping the variables in to the Datapoint object from the input stream. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>returns the input stream at the end. </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">is</span></code>: the input stream </li>
+<li><code class="docutils literal notranslate"><span class="pre">d</span></code>: the Datapoint object to input to. </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/PyCoal_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DataPoint</a><ul>
+<li><a class="reference internal" href="#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="class_data_mask.html"
+                        title="previous chapter">Class DataMask</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="class_dispersal_coordinator.html"
+                        title="next chapter">Class DispersalCoordinator</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/necsim/class_data_point.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="class_dispersal_coordinator.html" title="Class DispersalCoordinator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="class_data_mask.html" title="Class DataMask"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pycoalescence 1.2.7a5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="necsim_library.html" >necsim</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright 2016, pycoalescence.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>
