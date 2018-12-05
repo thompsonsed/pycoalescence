@@ -188,7 +188,7 @@ if not read_the_docs_build:
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = u'PyCoalescence v24/10/16'
+# html_title = u'pycoalescence v24/10/16'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -529,7 +529,7 @@ highlight_language = 'py'
 # 				FULL_PATH_NAMES        = YES
 # 				STRIP_FROM_PATH        = "%s/"
 # 				# Tell Doxygen where the source code is (yours may be different).
-# 				INPUT                  = ../PyCoalescence/NECSim/Documentation
+# 				INPUT                  = ../pycoalescence/NECSim/Documentation
 # 				# Nested folders will be ignored without this.  You may not need it.
 # 				RECURSIVE              = YES
 # 				# Set to YES if you are debugging or want to compare.
@@ -644,10 +644,10 @@ def setup(app):
 	pass
 # with open("README_NECSim.rst", mode="r") as readme:
 # 	data = readme.read()
-# stripPath = "../PyCoalescence/NECSim/Documentation/"
+# stripPath = "../pycoalescence/NECSim/Documentation/"
 # generateDoxygenXML(stripPath)
 # exhaleArgs = {
-# 	"doxygenIndexXMLPath": "../PyCoalescence/NECSim/Documentation/xml/index.xml",
+# 	"doxygenIndexXMLPath": "../pycoalescence/NECSim/Documentation/xml/index.xml",
 # 	"containmentFolder": "./Exhaled",
 # 	"rootFileName": "exhaled_library.rst",
 # 	"rootFileTitle": "NECSim",
@@ -655,7 +655,7 @@ def setup(app):
 # 	"afterTitleDescription": data,
 # 	"createTreeView": True,
 # 	"exhaleExecutesDoxygen": True,
-# 	"exhaleDoxygenStdin": "INPUT = ../PyCoalescence/NECSim"}
+# 	"exhaleDoxygenStdin": "INPUT = ../pycoalescence/NECSim"}
 # create the dictionary to send to exhale
 
 

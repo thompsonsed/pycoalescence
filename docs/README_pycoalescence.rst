@@ -50,7 +50,7 @@ finer control over installation methods if difficulties are encountered. Note th
 setuptools, which in turn runs ``installer.py``.
 
 .. important:: Mac OS X and Linux are supported through pip. Mac OS, Linux and Windows are supported through conda.
-               For manual installation it should be possible install **pycoalescence** on any system, but may require
+               For manual installation it should be possible to install **pycoalescence** on any system, but may require
                some tinkering.
 
 .. note:: Whichever installation option you use, it is important to ensure that the package is compiled in the same
@@ -105,7 +105,7 @@ source. Also ensure that you have a C++14 compliant compiler, `cmake <https://cm
 `sqlite <https://www.sqlite.org/download.html>`__ and `boost <http://www.boost.org>`__ installed. Finally make sure
 your Python 3 is >= 3.4 or Python 2 >= 2.7.9.
 
-With all requirements installled, it is recommended that you use a virtual environment (or pipenv) to control your
+With all requirements installed, it is recommended that you use a virtual environment (or pipenv) to control your
 Python packages (`see here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__).
 
 Finally, installation of **pycoalescence**, including Python dependencies, should just require
@@ -245,7 +245,7 @@ See the :ref:`examples <sim_examples>` for the full simulation process.
 Key Features
 ''''''''''''
 
-Some of key simulation features are listed below.
+Some key simulation features are:
 
 - **Set differing landscape types** using fine and coarse density maps, both current and historical (see
   :func:`set_map_files() <pycoalescence.simulation.Simulation.set_map_files>` and
@@ -363,7 +363,7 @@ process, see :ref:`here <simulate_landscapes>`.
 Differing demographic rates
 '''''''''''''''''''''''''''
 
-Simulations can use varying reproductive and/or death rates across the landscape, but using
+Simulations can use varying reproductive and/or death rates across the landscape, by using
 :func:`set_map_files(reproduction_map="/path/to/rep.tif", death_map="/path/to/death.tif") <pycoalescence.simulation.Simulation.set_map_files>`.
 In this scenario, all species have different per-capita reproduction and death rates across the landscape.
 
@@ -431,7 +431,7 @@ of the following:
     Run without infinite landscapes, with closed boundaries to the coarse map.
 
 - "infinite"
-    Run with a historical infinite landscape outside of the coares map boundaries.
+    Run with a historical infinite landscape outside of the coarse map boundaries.
 
 - "tiled_coarse"
     Tile the coarse map infinitely in all dimensions. A coarse map must be provided.
@@ -443,7 +443,7 @@ Optimising Simulations
 ''''''''''''''''''''''
 
 .. note:: As of version 1.2.6rc35 dynamic resizing of internal objects is implemented. Whilst this does reduce RAM usage
-          in all scenarios, it also means the optimisation process outlined below only relevent when the major
+          in all scenarios, it also means the optimisation process outlined below only relevant when the major
           constraint is the size of the density maps.
 
 The optimisation process below can reduce RAM usage in systems where the major limitation is that the size of the
@@ -572,8 +572,7 @@ rates is provided within the :class:`CoalescenceTree class<pycoalescence.coalesc
 The two functions for this routine are
 
 -  :func:`set_speciation_parameters() <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>` which
-   primarily takes a list of speciation rates to apply (for other arguments see
-   :func:`documentation <pycoalescence.coalescence_tree.CoalescenceTree.set_speciation_parameters>`.
+   primarily takes a list of speciation rates to apply with other options for generating the community.
 
 -  :func:`apply() <pycoalescence.coalescence_tree.CoalescenceTree.apply>` performs the analysis and writes to the output
    file. This can be extremely RAM and time-intensive for simulations of a large number of individuals. The calculations
