@@ -101,11 +101,11 @@ Optional
 ^^^^^^^^
 
 -  For work involving large csv files, the fast-cpp-csv-parser by Ben Strasser, available
-  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__ can be used. This provides much faster csv read and
-  write capabilities and is probably essential for larger-scale simulations, but not necessary if your simulations are
-  small or you are intending to use *.tif* files (the recommended method). The folder
-  *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory)
-  and requires manual installation.
+   `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__ can be used. This provides much faster csv read and
+   write capabilities and is probably essential for larger-scale simulations, but not necessary if your simulations are
+   small or you are intending to use *.tif* files (the recommended method). The folder
+   *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory)
+   and requires manual installation.
 
 .. note:: fast-cpp-csv-parser is no longer tested with updated versions of that package, but should still be functional.
 
