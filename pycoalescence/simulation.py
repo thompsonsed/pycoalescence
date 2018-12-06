@@ -1,5 +1,5 @@
 """
-Run spatially-explicit neutral simulations on provided landscapes with support for a wide range of scenarios and
+Run spatially explicit neutral simulations on provided landscapes with support for a wide range of scenarios and
 parameters. Detailed :ref:`here <performing_simulations>`.
 
 The main class is :class:`.Simulation`, which contains routines for setting up and running simulations, plus basic tree

@@ -630,7 +630,7 @@ class TestSimulationTifCoarse(unittest.TestCase):
 
 class TestSimulationNonSpatial(unittest.TestCase):
 	"""
-	Performs all the sanity checks for non spatially-explicit simulations, including protracted sims.
+	Performs all the sanity checks for non spatially explicit simulations, including protracted sims.
 	"""
 
 	@classmethod

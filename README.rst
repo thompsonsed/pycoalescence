@@ -1,18 +1,56 @@
 pycoalescence overview
 ======================
 
-*A Python package for coalescence-based spatially-explicit neutral
+*A Python package for coalescence-based spatially explicit neutral
 ecology simulations*
 
-.. include:: docs/builds.rst
+
+.. list-table::
+    :widths: auto
+    :align: center
+    :header-rows: 1
+
+    * - Documentation
+      - Examples
+    * - |Documentation|_
+      - |Binder|_
+
+|
+
+.. list-table::
+    :widths: auto
+    :align: center
+    :header-rows: 1
+
+    * - Windows
+      - macOS
+      - Linux
+    * - |AppVeyorWin|_
+      - |TravisCI|_
+      - |CircleCI|_
+
+.. |Documentation| image:: https://readthedocs.org/projects/pip/badge/?version=latest&style=flat
+.. _Documentation: https://pycoalescence.readthedocs.io
+
+.. |Binder| image:: https://mybinder.org/badge.svg
+.. _Binder: https://mybinder.org/v2/gh/thompsonsed/pycoalescence_examples/master?filepath=%2Fhome%2Fpycoalescence_examples%2F
+
+.. |CircleCI| image:: https://circleci.com/bb/thompsonsed/pycoalescence.svg?style=svg
+.. _CircleCI: https://circleci.com/bb/thompsonsed/pycoalescence
+
+.. |TravisCI| image:: https://travis-ci.org/pycoalescence/pycoalescence-ci.svg?branch=master
+.. _TravisCI: https://travis-ci.org/pycoalescence/pycoalescence-ci
+
+.. |AppVeyorWin| image:: https://ci.appveyor.com/api/projects/status/3qex6in9w1384f57/branch/master?svg=true
+.. _AppVeyorWin: https://ci.appveyor.com/project/thompsonsed1992/pycoalescence-ci
 
 
 Introduction
 ~~~~~~~~~~~~
 
-pycoalescence is a Python package for spatially-explicit coalescence
+pycoalescence is a Python package for spatially explicit coalescence
 neutral simulations. pycoalescence provides a pythonic interface for
-setting up, running and analysing spatially-explicit neutral
+setting up, running and analysing spatially explicit neutral
 simulations. Simulations themselves are performed in C++ using
 `necsim <https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html>`__
 for excellent performance, whilst the Python interface provides a simple

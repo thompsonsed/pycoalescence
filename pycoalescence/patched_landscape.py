@@ -1,6 +1,6 @@
 """
 
-Generate landscapes of interconnected patches for simulating within a spatially-explicit neutral model.
+Generate landscapes of interconnected patches for simulating within a spatially explicit neutral model.
 Detailed :ref:`here <generate_landscapes>`.
 
 Dispersal probabilities are defined between different patches, and each patch will be contain n individuals.

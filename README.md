@@ -1,5 +1,5 @@
 # pycoalescence overview
-*A Python package for coalescence-based spatially-explicit neutral ecology simulations*
+*A Python package for coalescence-based spatially explicit neutral ecology simulations*
 
 
 
@@ -11,8 +11,8 @@
 
 
 ###Introduction
-pycoalescence is a Python package for spatially-explicit coalescence neutral simulations. pycoalescence provides a
-pythonic interface for setting up, running and analysing spatially-explicit neutral simulations. Simulations themselves
+pycoalescence is a Python package for spatially explicit coalescence neutral simulations. pycoalescence provides a
+pythonic interface for setting up, running and analysing spatially explicit neutral simulations. Simulations themselves
 are performed in C++ using [necsim](https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html) for 
 excellent performance, whilst the Python interface provides a simple solution for
 setting up and analysing simulations.
@@ -45,8 +45,8 @@ simulations will be performed in.
 The Simulation class contains most of the operations required for setting up a coalescence simulation.
 The important set up functions are:
 
-* `set_simulation_parameters()` sets a variety of key simulation variables, including the seed, output directory, dispersal
-  parameters and speciation rate.
+* `set_simulation_parameters()` sets a variety of key simulation variables, including the seed, output directory, 
+  dispersal parameters and speciation rate.
 * `set_map()` is used to specify a map file to use. More complex map file set-ups can be provided using
   `set_map_files`. `set_map_parameters()` can also be used to customise parameters, instead of detecting from the
   provided tif files.
@@ -80,13 +80,13 @@ The basic procedure for this procedure is
 
 -  Python version 2 >= 2.7.9 or 3 >= 3.4.1
 -  C++ compiler (such as GNU g++) with C++14 support.
--  The SQLite library available [here](https://www.sqlite.org/download.html). Requires both ``C++`` 
-   and ``Python`` installations. Comes as standard with Python.
+-  The SQLite library available [here](https://www.sqlite.org/download.html). Requires both C++ 
+   and Python installations. Comes as standard with Python.
 -  The Boost library for C++ available [here](https://www.boost.org).
 -  Numerical Python (``numpy``) package (`pip install numpy`).
 - The gdal library for both Python and C++ ([available here](https://www.gdal.org/)). Although it is possible to turn
   off gdal support, this is not recommended as it is essential if you wish to use .tif files for
-  simulation. Both the Python package and ``C++`` binaries are required; installation differs between systems, so view
+  simulation. Both the Python package and C++ binaries are required; installation differs between systems, so view
   the gdal documentation for more help installing gdal properly.
 
 
@@ -110,8 +110,6 @@ Author: Samuel Thompson
 Contact: samuelthompson14@imperial.ac.uk - thompsonsed@gmail.com
 
 Institution: Imperial College London and National University of Singapore
-
-Version: 1.2.6
 
 This project is released under MIT licence. 
 See file **LICENSE.txt** or go to [here](https://opensource.org/licenses/MIT) for full license details.
