@@ -1,8 +1,7 @@
 pycoalescence overview
 ======================
 
-*A Python package for coalescence-based spatially explicit neutral
-ecology simulations*
+*A package for coalescence-based spatially explicit neutral ecology simulations*
 
 
 .. list-table::
@@ -48,39 +47,67 @@ ecology simulations*
 Introduction
 ~~~~~~~~~~~~
 
-pycoalescence is a Python package for spatially explicit coalescence
-neutral simulations. pycoalescence provides a pythonic interface for
-setting up, running and analysing spatially explicit neutral
-simulations. Simulations themselves are performed in C++ using
-`necsim <https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html>`__
-for excellent performance, whilst the Python interface provides a simple
-solution for setting up and analysing simulations.
+pycoalescence is a Python package for spatially explicit coalescence neutral simulations. pycoalescence provides a
+pythonic interface for setting up, running and analysing spatially explicit neutral simulations. Simulations themselves
+are performed in C++ using `necsim <https://pycoalescence.readthedocs.io/en/release/necsim/necsim_library.html>`__ for
+excellent performance, whilst the Python interface provides a simple solution for setting up and analysing simulations.
 
-For full documentation please see
-`here <https://pycoalescence.readthedocs.io/en/release/>`__.
+For full documentation please see `here <https://pycoalescence.readthedocs.io/en/release/>`__.
 
 Installation
 ~~~~~~~~~~~~
+Usage of conda is recommended to aid handling installation of dependencies.
 
-Installation is available through pip, conda or a manual installation.
-For full installation instructions, see
+Installation is available through pip, conda or a manual installation. For full installation instructions, see
 `here <https://pycoalescence.readthedocs.io/en/release/README_pycoalescence.html#installation>`__.
 
-Currently, pip is supported on Mac OS X and Linux and conda is supported
-on Mac OS X, Linux and Windows.
+Currently, pip is supported on Mac OS X and Linux and conda is supported on Mac OS X, Linux and Windows.
 
-Using pip, make sure all the prerequisites are installed and run
-``pip install pycoalescence``.
+Using pip, make sure all the prerequisites are installed and run ``pip install pycoalescence``.
 
-If you cannot install via pip, download the tar ball and run
-``python setup.py install``. The package can also be installed locally,
-(i.e not to the virtual or system environment) using
-``python installer.py`` in the module directory. Either method requires
-all dependencies have been installed. By default, .o files are compiled
-to lib/obj and the .so file is compiled to the necsim directory.
+If you cannot install via pip, download the tar ball and run ``python setup.py install``. The package can also be
+installed locally, (i.e not to the virtual or system environment) using ``python installer.py`` in the module directory.
+Either method requires all dependencies have been installed. By default, .o files are compiled to lib/obj and the .so
+or .dylib file is compiled to the necsim directory.
 
-Make sure compilation is performed under the same Python version
-simulations will be performed in.
+Make sure compilation is performed under the same Python version simulations will be performed in.
+
+Requirements
+~~~~~~~~~~~~
+
+Essential
+^^^^^^^^^
+
+-  Python version 2 >= 2.7.9 or 3 >= 3.6.1 (although earlier version may work)
+-  C++ compiler (such as GNU g++) with C++14 support.
+-  The SQLite library available `here <https://www.sqlite.org/download.html>`__ (comes included with Python). Requires
+   both C++ and Python installations.
+-  The Boost library for C++ available `here <https://www.boost.org>`__.
+-  Numerical Python (``numpy``) package (``pip install numpy``).
+-  The gdal library for both Python and C++ (`available here <https://www.gdal.org/>`__) including development options.
+   Both the Python package and C++ binaries are required; installation differs between systems, so view the gdal
+   documentation for more help installing gdal properly.
+
+Recommended
+^^^^^^^^^^^
+
+-  Scipy package for generating fragmented landscapes
+   (``pip install scipy``).
+
+-  Matplotlib package for plotting fragmented landscapes
+   (``pip install matplotlib``).
+
+Optional
+^^^^^^^^
+
+-  For work involving large csv files, the fast-cpp-csv-parser by Ben Strasser, available
+  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__ can be used. This provides much faster csv read and
+  write capabilities and is probably essential for larger-scale simulations, but not necessary if your simulations are
+  small or you are intending to use *.tif* files (the recommended method). The folder
+  *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory)
+  and requires manual installation.
+
+.. note:: fast-cpp-csv-parser is no longer tested with updated versions of that package, but should still be functional.
 
 Basic Usage
 ~~~~~~~~~~~
@@ -128,42 +155,6 @@ The basic procedure for this procedure is
 -  ``get_species_richness()`` or other equivalent functions to obtain the
    required metrics of biodiversity.
 
-Requirements
-~~~~~~~~~~~~
-
-Essential
-^^^^^^^^^
-
--  Python version 2 >= 2.7.9 or 3 >= 3.4.1
--  C++ compiler (such as GNU g++) with C++14 support.
--  The SQLite library available
-   `here <https://www.sqlite.org/download.html>`__. Requires both
-   ``C++`` and ``Python`` installations. Comes as standard with Python.
--  The Boost library for C++ available `here <https://www.boost.org>`__.
--  Numerical Python (``numpy``) package (``pip install numpy``).
--  The gdal library for both Python and C++ (`available
-   here <https://www.gdal.org/>`__). Although it is possible to turn off
-   gdal support, this is not recommended as it is essential if you wish
-   to use .tif files for simulation. Both the Python package and ``C++``
-   binaries are required; installation differs between systems, so view
-   the gdal documentation for more help installing gdal properly.
-
-Recommended
-^^^^^^^^^^^
-
--  The fast-cpp-csv-parser by Ben Strasser, available
-   `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__. This
-   provides much faster csv read and write capabilities and is probably
-   essential for larger-scale simulations, but not necessary if your
-   simulations are small. The folder *fast-cpp-csv-parser/* should be in
-   the same directory as your **necsim** C++ header files (the
-   lib/necsim directory).
-
--  Scipy package for generating fragmented landscapes
-   (``pip install scipy``).
-
--  Matplotlib package for plotting fragmented landscapes
-   (``pip install matplotlib``).
 
 CONTACTS
 ~~~~~~~~
@@ -174,8 +165,6 @@ Contact: samuelthompson14@imperial.ac.uk - thompsonsed@gmail.com
 
 Institution: Imperial College London and National University of
 Singapore
-
-Version: 1.2.6
 
 This project is released under MIT licence. See file **LICENSE.txt** or
 go to `here <https://opensource.org/licenses/MIT>`__ for full license

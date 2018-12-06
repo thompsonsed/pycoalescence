@@ -99,11 +99,11 @@ possible at this time. The solution is to build the package recipe on your local
 Installing via pip
 ''''''''''''''''''
 
-Installation via pip requires that the non-pythonic dependencies are installed manually first. Importantly, make sure that
-`gdal <http://www.gdal.org/>`__ is fully functional. On some systems this appears to need compilation directly from
+Installation via pip requires that the non-pythonic dependencies are installed manually first. Importantly, make sure
+that `gdal <http://www.gdal.org/>`__ is fully functional. On some systems this appears to need compilation directly from
 source. Also ensure that you have a C++14 compliant compiler, `cmake <https://cmake.org/>`_,
 `sqlite <https://www.sqlite.org/download.html>`__ and `boost <http://www.boost.org>`__ installed. Finally make sure
-your Python 3 is >= 3.4 or Python 2 >= 2.7.9.
+your Python 3 is >= 3.6.1 or Python 2 >= 2.7.9.
 
 With all requirements installed, it is recommended that you use a virtual environment (or pipenv) to control your
 Python packages (`see here <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`__).
@@ -167,11 +167,23 @@ provided.
 The most common issue for installing **pycoalescence** is gdal dependencies not being found (including errors relating
 to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
 location, or the header files not being included with the gdal install. To fix this, install the C++ library on your
-system first. Then download the Python package from `here <https://pypi.org/project/GDAL/#files>`_, and run
-``python setup.py build`` from the gdal directory. If this is successful, run ``python setup.py install`` to install
-gdal to your Python environment.
+system first. Then download the Python package from `here <https://pypi.org/project/GDAL/#files>`_ that matches your
+local C++ version, and run ``python setup.py build`` from the gdal directory. If this is successful, run
+``python setup.py install`` to install gdal to your Python environment.
 
-For issues related to missing boost headers, make sure that your system has boost properly installed.
+.. note:: The development versions of boost, sqlite3 and gdal are required, which looks something like ``gdal-devel``,
+          depending on your system.
+
+.. note:: Install scipy and matplotlib to remove warnings when importing **pycoalescence**
+          (``pip install scipy matplotlib``).
+
+
+
+For issues related to missing boost headers, make sure that your system has boost properly installed through your
+package manager. Development versions of boost are required on linux. Ensure that the paths to the boost headers are
+visible to **pycoalescence**.
+
+.. note:: boost 1.68.0 is currently not working on conda due to changes in compiler link options.
 
 .. _`performing_simulations`:
 
@@ -721,34 +733,39 @@ Essential
 Note that conda should detect and install all prerequisites automatically. Pip will detect and install Python
 prerequisites (such as numpy), although on some systems will fail to install gdal.
 
--  Python version 2 >= 2.7.9 or 3 >= 3.4.1. Other versions may work, but are not supported.
+-  Python version 2 >= 2.7.9 or 3 >= 3.6.1. Other versions may work, but are not supported.
 -  C++ compiler (such as GNU g++) with C++14 support.
 -  `Cmake <https://cmake.org/>`_ >= 3.6 for installing via pip or conda.
--  `The SQLite library <https://www.sqlite.org/download.html>`__ for both ``C++`` and ``Python``
+-  `The SQLite library <https://www.sqlite.org/download.html>`__ for both C++ and Python
    installations. Comes as standard with Python.
-- The gdal library for both Python and C++ (`available here <http://www.gdal.org/>`__). Although it is possible to turn
-  off gdal support, this is not recommended as it is essential if you wish to use .tif files for
-  :ref:`necsim <Introduction_necsim>`.  It allows reading parameter information from .tif files (using
-  :func:`detect_map_dimensions() <pycoalescence.simulation.Simulation.detect_map_dimensions>`). Both the Python package
-  and ``C++`` binaries are required; installation differs between systems, so view the gdal documentation for more
-  help installing gdal properly.
+-  The gdal library for both Python and C++ (`available here <http://www.gdal.org/>`__). It allows reading parameter
+   information from .tif files (using
+   :func:`detect_map_dimensions() <pycoalescence.simulation.Simulation.detect_map_dimensions>`). Both the Python package
+   and C++ binaries are required; installation differs between systems, so view the gdal documentation for more
+   help installing gdal properly.
 -  The Boost library for C++ available `here <http://www.boost.org>`__.
 -  Numerical Python (``numpy``) package (``pip install numpy``).
 
 Recommended
 ~~~~~~~~~~~
 
+- Scipy package for generating fragmented landscapes (``pip install scipy``).
+
+- Matplotlib package for plotting fragmented landscapes (``pip install matplotlib``).
+
+Optional
+~~~~~~~~
+
 
 - For work involving large csv files, the fast-cpp-csv-parser by Ben Strasser, available
-  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__ is recommended. This provides much faster csv read and
+  `here <https://github.com/ben-strasser/fast-cpp-csv-parser>`__ can be used. This provides much faster csv read and
   write capabilities and is probably essential for larger-scale simulations, but not necessary if your simulations are
   small or you are intending to use *.tif* files (the recommended method). The folder
   *fast-cpp-csv-parser/* should be in the same directory as your **necsim** C++ header files (the lib/necsim directory)
   and requires manual installation.
 
-- Scipy package for generating fragmented landscapes (``pip install scipy``).
+.. note:: fast-cpp-csv-parser is no longer tested with updated versions of that package, but should still be functional.
 
-- Matplotlib package for plotting fragmented landscapes (``pip install matplotlib``).
 
 .. include:: Glossary.rst
 
