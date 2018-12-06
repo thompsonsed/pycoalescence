@@ -53,7 +53,6 @@ pycoalescence overview
 .. |AppVeyorWin| image:: https://ci.appveyor.com/api/projects/status/3qex6in9w1384f57/branch/master?svg=true
 .. _AppVeyorWin: https://ci.appveyor.com/project/thompsonsed1992/pycoalescence-ci
 
-[![Conda Version]
 
 
 Introduction
