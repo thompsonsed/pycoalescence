@@ -40,11 +40,18 @@ class TestMapImports(unittest.TestCase):
 	def setUpClass(cls):
 		"""Mocks a fake subprocess call"""
 		cls.orig_call = subprocess.check_output
+		if "GDAL_DATA" in os.environ:
+			cls.gdal_dir = os.environ["GDAL_DATA"]
+			os.environ.pop("GDAL_DATA")
+		else:
+			cls.gdal_dir = None
 
 	@classmethod
 	def tearDownClass(cls):
 		"""Re imports the subprocess module to remove the MagicMocking."""
 		subprocess.check_output = cls.orig_call
+		if cls.gdal_dir:
+			os.environ["GDAL_DATA"] = cls.gdal_dir
 
 	def testRaisesImportError(self):
 		"""Mocks a fake subprocess call to ``gdal-config --datadir`` and checks that the correct errors are raised"""
