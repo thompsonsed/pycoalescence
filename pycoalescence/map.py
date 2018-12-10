@@ -8,8 +8,10 @@ import copy
 import numpy as np
 import os
 import types
+import subprocess
 
 from pycoalescence.spatial_algorithms import convert_coordinates
+
 try:
 	from matplotlib import pyplot as plt
 except (ImportError, RuntimeError) as ie:
@@ -71,6 +73,20 @@ class Map(object):
 		self.logging_level = logging_level
 		self.logger = logging.Logger("pycoalescence.map")
 		self._create_logger()
+		# Check to make sure that the GDAL_PATH is in the environmental variables
+		if "GDAL_DATA" not in os.environ:
+			try:
+				gdal_dir = subprocess.check_output(["gdal-config", "--datadir"]).decode("utf-8").replace("\n", "")
+			except AttributeError:
+				gdal_dir = None
+			if gdal_dir is None:
+				raise ImportError("No GDAL_DATA directory detected. "
+				                  "Please make sure that gdal has installed correctly.")
+			if not os.path.exists(gdal_dir):
+				raise ImportError("Gdal data directory does not exist at {}. "
+				                  "Check gdal install is completed successfully.".format(gdal_dir))
+			os.environ["GDAL_DATA"] = gdal_dir
+
 
 	def __del__(self):
 		"""
@@ -124,7 +140,7 @@ class Map(object):
 		ds = self.get_dataset(file=file)
 		self.band_number = band_no
 		self.data = np.array(ds.GetRasterBand(self.band_number).ReadAsArray(),
-							 dtype=np.float)
+		                     dtype=np.float)
 		ds = None
 
 	def get_dataset(self, file=None):
@@ -141,7 +157,7 @@ class Map(object):
 		"""
 		if not self.map_exists(file):
 			raise IOError("File {} does not exist or is not accessible."
-						  " Check read/write access.".format(self.file_name))
+			              " Check read/write access.".format(self.file_name))
 		if ".tif" not in self.file_name:
 			raise IOError("File {} is not a tif file.".format(self.file_name))
 		ds = gdal.Open(self.file_name)
@@ -246,8 +262,8 @@ class Map(object):
 		x, y = self.get_x_y()
 		if array.shape[0] > x or array.shape[1] > y:
 			raise ValueError("Array of size {}, {} is larger than map of size {}, {}.".format(array.shape[0],
-																							  array.shape[1],
-																							  x, y))
+			                                                                                  array.shape[1],
+			                                                                                  x, y))
 		ds = gdal.Open(self.file_name, gdal.GA_Update)
 		if not ds:
 			raise IOError("Could not open tif file {}.".format(self.file_name))
@@ -274,8 +290,8 @@ class Map(object):
 			raise IOError("File already exists at {}.".format(file))
 		check_parent(self.file_name)
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.file_name,
-															 self.data.shape[1], self.data.shape[0], bands,
-															 datatype)
+		                                                     self.data.shape[1], self.data.shape[0], bands,
+		                                                     datatype)
 		if not output_raster:
 			raise IOError("Could not create tif file at {}.".format(self.file_name))
 		output_raster.SetGeoTransform(geotransform)
@@ -363,11 +379,11 @@ class Map(object):
 	def check_map(self):
 		"""Checks that the dimensions for the map have been set and that the map file exists"""
 		if not (isinstance(self.x_size, NumberTypes) and isinstance(self.y_size, NumberTypes) and
-				isinstance(self.x_offset, NumberTypes) and isinstance(self.y_offset, NumberTypes) and
-				isinstance(self.x_res, NumberTypes) and isinstance(self.y_res, NumberTypes)):
+		        isinstance(self.x_offset, NumberTypes) and isinstance(self.y_offset, NumberTypes) and
+		        isinstance(self.x_res, NumberTypes) and isinstance(self.y_res, NumberTypes)):
 			raise ValueError("Values not set as numbers in {}: "
-							 "{}, {} | {}, {} | {}, {}.".format(self.file_name, self.x_size, self.y_size,
-																self.x_offset, self.y_offset, self.x_res, self.y_res))
+			                 "{}, {} | {}, {} | {}, {}.".format(self.file_name, self.x_size, self.y_size,
+			                                                    self.x_offset, self.y_offset, self.x_res, self.y_res))
 		if not self.dimensions_set:
 			raise RuntimeError("Dimensions for map file {} not set.".format(self.file_name))
 		check_file_exists(self.file_name)
@@ -418,7 +434,7 @@ class Map(object):
 			return self.read_dimensions()
 		else:
 			return [self.x_size, self.y_size, self.x_offset, self.y_offset, self.x_res, self.y_res,
-					self.x_ul, self.y_ul]
+			        self.x_ul, self.y_ul]
 
 	def get_projection(self):
 		"""
@@ -464,9 +480,9 @@ class Map(object):
 		x, y = self.get_x_y()
 		if not 0 <= x_size + x_offset <= x or not 0 <= y_size + y_offset <= y or x_offset < 0 or y_offset < 0:
 			raise ValueError("Requested x, y subset of [{}:{}, {}:{}]"
-							 " not within array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
-																			 y_offset, y_offset + y_size,
-																			 x, y))
+			                 " not within array of dimensions ({}, {})".format(x_offset, x_offset + x_size,
+			                                                                   y_offset, y_offset + y_size,
+			                                                                   x, y))
 		to_return = np.array(ds.GetRasterBand(1).ReadAsArray(x_offset, y_offset, x_size, y_size), dtype=np.float)
 		ds = None
 		if no_data_value is not None:
@@ -535,7 +551,7 @@ class Map(object):
 		try:
 			if offset.get_projection() != self.get_projection():
 				self.logger.error("Projection of {} does not match projection of {}.\n".format(self.file_name,
-																							   offset.file_name))
+				                                                                               offset.file_name))
 				self.logger.error("{} = {}.\n".format(self.file_name, self.get_projection()))
 				self.logger.error("{} = {}.\n".format(self.file_name, offset.get_projection()))
 				raise TypeError("Projections and spatial reference systems of two maps do not match.")
@@ -617,8 +633,8 @@ class Map(object):
 		return True
 
 	def rasterise(self, shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, geo_transform=None,
-				  field=None, burn_val=[1], data_type=default_val, attribute_filter=None,
-				  x_buffer=1, y_buffer=1, **kwargs):
+	              field=None, burn_val=[1], data_type=default_val, attribute_filter=None,
+	              x_buffer=1, y_buffer=1, **kwargs):
 		"""
 		Rasterises the provided shape file to produce the output raster.
 
@@ -697,7 +713,7 @@ class Map(object):
 		if "height" in kwargs:
 			y_dim = kwargs["height"]
 		target_ds = gdal.GetDriverByName('GTiff').Create(self.file_name, x_dim,
-														 y_dim, 1, data_type)
+		                                                 y_dim, 1, data_type)
 		if target_ds is None:
 			raise IOError("Could not create raster file at {} with dimensions {}, {} and data type {}".format(
 				self.file_name, x_dim, y_dim, data_type
@@ -713,7 +729,7 @@ class Map(object):
 				target_ds.SetProjection('LOCAL_CS["arbitrary"]')
 		if geo_transform is None:
 			geo_transform = (x_min - (self.x_res * x_buffer), self.x_res, 0,
-							 y_max + (self.y_res * y_buffer), 0, -self.y_res)
+			                 y_max + (self.y_res * y_buffer), 0, -self.y_res)
 		target_ds.SetGeoTransform(geo_transform)
 		# Generate the keyword arguments to pass to RasterizeLayer
 		opts = []
@@ -734,10 +750,10 @@ class Map(object):
 			raise RuntimeError("Error rasterising layer. Gdal error code: {}".format(err))
 
 	def reproject_raster(self, dest_projection=None,
-						 source_file=None, dest_file=None,
-						 x_scalar=1.0, y_scalar=1.0,
-						 resample_algorithm=gdal.GRA_NearestNeighbour,
-						 warp_memory_limit=0.0):
+	                     source_file=None, dest_file=None,
+	                     x_scalar=1.0, y_scalar=1.0,
+	                     resample_algorithm=gdal.GRA_NearestNeighbour,
+	                     warp_memory_limit=0.0):
 		"""
 		Re-writes the file with a new projection.
 
@@ -761,10 +777,10 @@ class Map(object):
 		source_ds = gdal.Open(self.file_name, gdal.GA_ReadOnly)
 		# Create the VRT for obtaining the new geotransform
 		tmp_ds = gdal.AutoCreateWarpedVRT(source_ds,
-										  None,  # src_wkt : left to default value --> will use the one from source
-										  dest_projection.ExportToWkt(),
-										  resample_algorithm,
-										  0)
+		                                  None,  # src_wkt : left to default value --> will use the one from source
+		                                  dest_projection.ExportToWkt(),
+		                                  resample_algorithm,
+		                                  0)
 		dst_xsize = int(tmp_ds.RasterXSize / x_scalar)
 		dst_ysize = int(tmp_ds.RasterYSize / y_scalar)
 		# Re-scale the resolutions
@@ -784,17 +800,17 @@ class Map(object):
 		if dest is None:
 			if dest_file is None:
 				raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize,
-																									 dst_ysize))
+				                                                                                     dst_ysize))
 			raise IOError("Could not create a file at {} of dimensions {}, {}.".format(dest_file,
-																					   dst_xsize, dst_ysize))
+			                                                                           dst_xsize, dst_ysize))
 		dest.SetProjection(dest_projection.ExportToWkt())
 		dest.SetGeoTransform(dst_gt)
 		try:
 			gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
-					  warpMemoryLimit=warp_memory_limit)
+			          warpMemoryLimit=warp_memory_limit)
 		except AttributeError as ae:
 			self.logger.critical("Cannot find the gdal.Warp functionality - it is possible this function is not "
-								 "provided by your version of gdal, or that your gdal installation is incomplete.")
+			                     "provided by your version of gdal, or that your gdal installation is incomplete.")
 			raise ae
 		dest.FlushCache()
 		if dest_file is None:
@@ -804,7 +820,6 @@ class Map(object):
 			dst_ds.FlushCache()
 			dst_ds = None
 		dest = None
-
 
 	def plot(self):
 		"""

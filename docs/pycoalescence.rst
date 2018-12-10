@@ -13,7 +13,7 @@ pycoalescence package
 Key submodules
 ''''''''''''''
 
-These are the most important modules for running and analysing spatially-explicit neutral models, and are most likely
+These are the most important modules for running and analysing spatially explicit neutral models, and are most likely
 to be used directly.
 
 simulation module

@@ -11,7 +11,7 @@ pycoalescence
 Introduction
 ------------
 
-**pycoalescence** is a Python module for the spatially-explicit coalescence neutral simulator, necsim, described
+**pycoalescence** is a Python module for the spatially explicit coalescence neutral simulator, necsim, described
 :ref:`here <Introduction_necsim>`. **pycoalescence** provides a pythonic interface to the C++ simulator for swift
 simulation set-up, initiation and analysis.
 
@@ -702,7 +702,7 @@ Additionally, one can provide the following if comparisons between fragments are
 Additional Package Features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These features are not required for spatially-explicit coalescence models, as they are utilised internally by the
+These features are not required for spatially explicit coalescence models, as they are utilised internally by the
 package. However, there are some features that could be of great convenience to users, especially for generating and
 manipulating landscapes using tif files.
 

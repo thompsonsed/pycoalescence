@@ -1,12 +1,19 @@
 """Tests the Map object for provision of geospatial data and map manipulation operations."""
 
 import logging
+import sys
 import unittest
 import gdal
 from osgeo import osr, ogr, gdal
 import numpy as np
 import shutil
 import os
+import subprocess
+try:
+	from unittest.mock import MagicMock, create_autospec
+except ImportError:
+	from mock import Mock as MagicMock
+	from mock import create_autospec
 
 from pycoalescence import Map, FragmentedLandscape
 from setupTests import setUpAll, tearDownAll, skipGdalWarp
@@ -26,6 +33,28 @@ def tearDownModule():
 	"""
 	tearDownAll()
 
+class TestMapImports(unittest.TestCase):
+	"""Tests that errors are thrown correctly when gdal is not detected."""
+
+	@classmethod
+	def setUpClass(cls):
+		"""Mocks a fake subprocess call"""
+		cls.orig_call = subprocess.check_output
+
+	@classmethod
+	def tearDownClass(cls):
+		"""Re imports the subprocess module to remove the MagicMocking."""
+		subprocess.check_output = cls.orig_call
+
+	def testRaisesImportError(self):
+		"""Mocks a fake subprocess call to ``gdal-config --datadir`` and checks that the correct errors are raised"""
+		subprocess.check_output = create_autospec(subprocess.check_output, return_value=b"/not/a/gdal/dir\n")
+		with self.assertRaises(ImportError):
+			m = Map()
+		subprocess.check_output = self.orig_call
+		subprocess.check_output = create_autospec(subprocess.check_output, return_value=None)
+		with self.assertRaises(ImportError):
+			m = Map()
 
 class TestMap(unittest.TestCase):
 	"""
@@ -446,7 +475,7 @@ class TestMapReprojection(unittest.TestCase):
 		cls.map_2 = "output/tmp_map1.tif"
 		cls.map_3 = "output/tmp_map2.tif"
 		cls.map_4 = "output/tmp_map3.tif"
-		cls.m = Map(cls.map_1)
+		cls.m = Map(cls.map_1, logging_level=20)
 		cls.destination_projection = osr.SpatialReference()
 		cls.destination_projection.ImportFromEPSG(3857)
 		cls.proj_wkt = cls.destination_projection.ExportToWkt()
