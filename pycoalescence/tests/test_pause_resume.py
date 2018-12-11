@@ -1,5 +1,6 @@
 """Tests the pause and resume functionality of simulations to ensure it is the same as a continuous simulation."""
 import logging
+import platform
 import sqlite3
 import sys
 import unittest
@@ -535,7 +536,7 @@ class TestPauseSpeciateRemaining(unittest.TestCase):
 		self.assertFalse(bool(database.cursor().execute(
 			"SELECT sim_complete FROM SIMULATION_PARAMETERS").fetchall()[0][0]))
 
-	@unittest.skipIf("win" in sys.platform, "Skipping tests not compatible with Windows.")
+	@unittest.skipIf(platform.system() == "Windows", "Skipping tests not compatible with Windows.")
 	def testForcedSpeciation(self):
 		"""Tests that the forced speciation of remaining lineages works as expected."""
 		ct = CoalescenceTree(self.sim)

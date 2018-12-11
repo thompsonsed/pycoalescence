@@ -5,6 +5,7 @@ import logging
 import math
 
 import copy
+import platform
 import sys
 
 import numpy as np
@@ -78,7 +79,7 @@ class Map(object):
 		# Check to make sure that the GDAL_PATH is in the environmental variables
 		if "GDAL_DATA" not in os.environ:
 			try:
-				if "win" in sys.platform:
+				if platform.system() == "Windows":
 					try:
 						gdal_dir = subprocess.check_output(["echo", "%GDAL_DATA%"],
 						                                   shell=True).decode("utf-8").replace("\n", "")

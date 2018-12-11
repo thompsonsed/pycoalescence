@@ -4,6 +4,7 @@ and CoalescenceTree
 """
 import logging
 import os
+import platform
 import shutil
 import sqlite3
 import sys
@@ -1897,7 +1898,7 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		self.assertEqual(ed7, com7_dict)
 		self.assertEqual(ed8, com8_dict)
 
-@unittest.skipIf("win" in sys.platform, "Skipping tests not compatible with Windows.")
+@unittest.skipIf(platform.system() == "Windows", "Skipping tests not compatible with Windows.")
 class TestSimulationDispersalMaps(unittest.TestCase):
 	"""
 	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
@@ -1909,7 +1910,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		"""
 		Sets up the objects for running coalescence simulations on dispersal maps.
 		"""
-		self.c = Simulation()
+		self.c = Simulation(logging_level=50)
 		self.c.set_simulation_parameters(seed=1, job_type=32, output_directory="output", min_speciation_rate=0.5,
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1,
