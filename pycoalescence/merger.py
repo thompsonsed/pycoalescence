@@ -33,6 +33,7 @@ class Merger(CoalescenceTree):
 	Merges simulation outputs into a single database. Inherits from
 	:py:class:`~pycoalescence.coal_analyse.CoalescenceTree` to provide all routines in the same object.
 	"""
+
 	def __init__(self, database=None, logging_level=logging.WARNING, log_output=None):
 		super(Merger, self).__init__(database, logging_level, log_output)
 		self.species_list_parent_counter = 0
@@ -59,20 +60,14 @@ class Merger(CoalescenceTree):
 			self.database.close()
 			self.database = None
 
-	def set_database(self, filename):
+	def _open_database(self, filename):
 		"""
-		Sets the output database for the merged simulations
+		Opens a connection to the database.
 
-		Assumes no database currently exists, and will create one.
-
-		:raises IOError: if the output database already exists
-
-		:param filename: the filename to output merged simulations into
+		:param filename: the path to the db file to open
 
 		:rtype: None
 		"""
-		if os.path.exists(filename):
-			raise IOError("Database already exists at {}".format(filename))
 		self.file = filename
 		check_parent(filename)
 		try:
@@ -84,6 +79,23 @@ class Merger(CoalescenceTree):
 				pass
 			self.database = None
 			raise IOError("Error opening SQLite database: " + str(e))
+
+	def set_database(self, filename, expected=False):
+		"""
+		Sets the output database for the merged simulations
+
+		Assumes no database currently exists, and will create one.
+
+		:raises IOError: if the output database already exists
+
+		:param filename: the filename to output merged simulations into
+		:param expected: if true, expects the output to exist
+
+		:rtype: None
+		"""
+		if os.path.exists(filename) and not expected:
+			raise IOError("Database already exists at {}".format(filename))
+		self._open_database(filename)
 		self._create_simulation_parameters()
 		self._create_species_list()
 
@@ -97,21 +109,21 @@ class Merger(CoalescenceTree):
 			raise IOError("Cannot create a SIMULATION_PARAMETERS table as the database has not been created.")
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE SIMULATION_PARAMETERS (seed INT not null, job_type INT NOT NULL, " \
-					 "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT " \
-					 "NULL, deme INT NOT NULL, sample_size DOUBLE NOT NULL, max_time INT NOT NULL, " \
-					 "dispersal_relative_cost DOUBLE NOT NULL, min_num_species INT NOT NULL, " \
-					 "habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, " \
-					 "time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, " \
-					 "coarse_map_y INT NOT NULL, coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, " \
-					 "coarse_map_scale DOUBLE NOT NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL, " \
-					 "fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, " \
-					 "sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, " \
-					 "sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, " \
-					 "historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
-					 "dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, " \
-					 "restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, " \
-					 "min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, " \
-					 "dispersal_map TEXT NOT NULL, guild INT PRIMARY KEY NOT NULL, filename TEXT NOT NULL);"
+		             "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT " \
+		             "NULL, deme INT NOT NULL, sample_size DOUBLE NOT NULL, max_time INT NOT NULL, " \
+		             "dispersal_relative_cost DOUBLE NOT NULL, min_num_species INT NOT NULL, " \
+		             "habitat_change_rate DOUBLE NOT NULL, gen_since_historical DOUBLE NOT NULL, " \
+		             "time_config_file TEXT NOT NULL, coarse_map_file TEXT NOT NULL, coarse_map_x INT NOT NULL, " \
+		             "coarse_map_y INT NOT NULL, coarse_map_x_offset INT NOT NULL, coarse_map_y_offset INT NOT NULL, " \
+		             "coarse_map_scale DOUBLE NOT NULL, fine_map_file TEXT NOT NULL, fine_map_x INT NOT NULL, " \
+		             "fine_map_y INT NOT NULL, fine_map_x_offset INT NOT NULL, fine_map_y_offset INT NOT NULL, " \
+		             "sample_file TEXT NOT NULL, grid_x INT NOT NULL, grid_y INT NOT NULL, sample_x INT NOT NULL, " \
+		             "sample_y INT NOT NULL, sample_x_offset INT NOT NULL, sample_y_offset INT NOT NULL, " \
+		             "historical_coarse_map TEXT NOT NULL, historical_fine_map TEXT NOT NULL, sim_complete INT NOT NULL, " \
+		             "dispersal_method TEXT NOT NULL, m_probability DOUBLE NOT NULL, cutoff DOUBLE NOT NULL, " \
+		             "restrict_self INT NOT NULL, landscape_type TEXT NOT NULL, protracted INT NOT NULL, " \
+		             "min_speciation_gen DOUBLE NOT NULL, max_speciation_gen DOUBLE NOT NULL, " \
+		             "dispersal_map TEXT NOT NULL, guild INT PRIMARY KEY NOT NULL, filename TEXT NOT NULL);"
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -128,8 +140,8 @@ class Merger(CoalescenceTree):
 			raise IOError("Cannot create a COMMUNITY_PARAMETERS table as the database has not been created.")
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS COMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL," \
-					 " speciation_rate DOUBLE NOT NULL, time DOUBLE NOT NULL, fragments INT NOT NULL, " \
-					 "metacommunity_reference INT);"
+		             " speciation_rate DOUBLE NOT NULL, time DOUBLE NOT NULL, fragments INT NOT NULL, " \
+		             "metacommunity_reference INT);"
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -146,7 +158,7 @@ class Merger(CoalescenceTree):
 			raise IOError("Cannot create a METACOMMUNITY_PARAMETERS table as the database has not been created.")
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS METACOMMUNITY_PARAMETERS (reference INT PRIMARY KEY NOT NULL," \
-					 " speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);"
+		             " speciation_rate DOUBLE NOT NULL, metacommunity_size DOUBLE NOT NULL);"
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -163,10 +175,10 @@ class Merger(CoalescenceTree):
 			raise IOError("Cannot create a SPECIES_LIST table as the database has not been created.")
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, " \
-					 "xval INT NOT NULL, yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, " \
-					 "speciated INT NOT NULL, " \
-					 "parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT NULL, " \
-					 "gen_added DOUBLE NOT NULL, guild INT NOT NULL);"
+		             "xval INT NOT NULL, yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, " \
+		             "speciated INT NOT NULL, " \
+		             "parent INT NOT NULL, existence INT NOT NULL, randnum DOUBLE NOT NULL, gen_alive INT NOT NULL, " \
+		             "gen_added DOUBLE NOT NULL, guild INT NOT NULL);"
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -183,7 +195,7 @@ class Merger(CoalescenceTree):
 			raise IOError("Cannot create a SPECIES_LOCATIONS table as the database has not been created.")
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS SPECIES_LOCATIONS (ID int PRIMARY KEY NOT NULL, species_id INT " \
-					 "NOT NULL, x INT NOT NULL, y INT NOT NULL, community_reference INT NOT NULL, guild INT NOT NULL);"
+		             "NOT NULL, x INT NOT NULL, y INT NOT NULL, community_reference INT NOT NULL, guild INT NOT NULL);"
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -206,8 +218,8 @@ class Merger(CoalescenceTree):
 			additional = ""
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS SPECIES_ABUNDANCES{} (ID int PRIMARY KEY NOT NULL, " \
-					 "species_id INT NOT NULL, no_individuals INT NOT NULL, community_reference INT NOT NULL, " \
-					 "guild INT NOT NULL);".format(additional)
+		             "species_id INT NOT NULL, no_individuals INT NOT NULL, community_reference INT NOT NULL, " \
+		             "guild INT NOT NULL);".format(additional)
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -229,9 +241,9 @@ class Merger(CoalescenceTree):
 		else:
 			additional = ""
 		create_sql = "CREATE TABLE IF NOT EXISTS FRAGMENT_ABUNDANCES{} (ID int PRIMARY KEY NOT NULL," \
-					 " fragment TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, " \
-					 "no_individuals INT NOT NULL, community_reference int NOT NULL," \
-					 " guild INT NOT NULL);".format(additional)
+		             " fragment TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, " \
+		             "no_individuals INT NOT NULL, community_reference int NOT NULL," \
+		             " guild INT NOT NULL);".format(additional)
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -254,9 +266,9 @@ class Merger(CoalescenceTree):
 			additional = ""
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS SPECIES_OCTAVES{} (ID int PRIMARY KEY NOT NULL," \
-					 " fragment TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, " \
-					 "no_individuals INT NOT NULL, community_reference int NOT NULL," \
-					 " guild INT NOT NULL);".format(additional)
+		             " fragment TEXT NOT NULL, area DOUBLE NOT NULL, size INT NOT NULL,  species_id INT NOT NULL, " \
+		             "no_individuals INT NOT NULL, community_reference int NOT NULL," \
+		             " guild INT NOT NULL);".format(additional)
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -281,7 +293,7 @@ class Merger(CoalescenceTree):
 			additional2 = ""
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS FRAGMENT_OCTAVES{} (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL, " \
-					 "octave INT NOT NULL, richness INT NOT NULL{});".format(additional1, additional2)
+		             "octave INT NOT NULL, richness INT NOT NULL{});".format(additional1, additional2)
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
@@ -304,7 +316,7 @@ class Merger(CoalescenceTree):
 			additional2 = ""
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE IF NOT EXISTS SPECIES_RICHNESS{} (ref INT PRIMARY KEY NOT NULL," \
-					 " community_reference INT NOT NULL, richness INT NOT NULL{})".format(additional1, additional2)
+		             " community_reference INT NOT NULL, richness INT NOT NULL{})".format(additional1, additional2)
 
 		try:
 			self.cursor.execute(create_sql)
@@ -330,13 +342,12 @@ class Merger(CoalescenceTree):
 			additional2 = ""
 		self.cursor = self.database.cursor()
 		create_sql = "CREATE TABLE FRAGMENT_RICHNESS{} (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL," \
-					 " community_reference INT NOT NULL,  richness INT NOT NULL{})".format(additional1, additional2)
+		             " community_reference INT NOT NULL,  richness INT NOT NULL{})".format(additional1, additional2)
 		try:
 			self.cursor.execute(create_sql)
 			self.database.commit()
 		except sqlite3.OperationalError as soe:
 			raise IOError("Could not create FRAGMENT_RICHNESS table in database {}: {}".format(self.file, soe))
-
 
 	def _read_simulation_parameters(self, input_simulation):
 		"""
@@ -349,7 +360,7 @@ class Merger(CoalescenceTree):
 		output = fetch_table_from_sql(input_simulation, "SIMULATION_PARAMETERS")
 		if len(output[0]) != 44:
 			raise IOError("SIMULATION_PARAMETERS table does not contain 44 columns, contains {}."
-						  " Check database.".format(len(output[0])))
+			              " Check database.".format(len(output[0])))
 		return output[0]
 
 	def _add_simulation_parameters(self, parameters_list, guild, filename):
@@ -375,7 +386,7 @@ class Merger(CoalescenceTree):
 			raise IOError("Cannot insert to SPECIES_PARAMETERS table as the database has not been created.")
 		self.cursor = self.database.cursor()
 		create_sql = "INSERT INTO SIMULATION_PARAMETERS VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," \
-					 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+		             "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
 		try:
 			self.cursor.executemany(create_sql, self.parameters_list)
 			self.database.commit()
@@ -399,7 +410,7 @@ class Merger(CoalescenceTree):
 		for i, row in enumerate(species_list):
 			row[0] = cantor_pairing(row[0], guild)
 			if i != 0 and row[8] != 0:
-					row[8] = row[8] + self.species_list_parent_counter
+				row[8] = row[8] + self.species_list_parent_counter
 			row.append(guild)
 		self.species_list_parent_counter += len(species_list)
 		self.species_list.extend([tuple(x) for x in species_list])
@@ -468,7 +479,6 @@ class Merger(CoalescenceTree):
 		:return:
 		"""
 		return fetch_table_from_sql(input_simulation, "SPECIES_ABUNDANCES")
-
 
 	def _add_species_abundances(self, species_abundances, guild):
 		"""
@@ -643,7 +653,6 @@ class Merger(CoalescenceTree):
 		except sqlite3.OperationalError as soe:
 			raise IOError("Cannot fetch FRAGMENT_OCTAVES from database {}: {}".format(input_simulation, soe))
 
-
 	def _add_fragment_octaves(self, fragment_octaves, guild):
 		"""
 		Adds to the fragment_octaves object with the provided list of species and guild reference.
@@ -691,22 +700,22 @@ class Merger(CoalescenceTree):
 		if len(self.community_parameters) > 0:
 			for reference, speciation_rate, time, fragments, metacommunity_reference in community_parameters:
 				subsetted_params = [x for x in self.community_parameters if
-									isclose(speciation_rate, x[1]) and isclose(time, x[2], abs_tol=0.00001) and
-									metacommunity_reference == x[4]]
+				                    isclose(speciation_rate, x[1]) and isclose(time, x[2], abs_tol=0.00001) and
+				                    metacommunity_reference == x[4]]
 				if len(subsetted_params) > 0:
 					if subsetted_params[0][0] != reference:
 						raise ValueError("Parameter mismatch in references for speciation rate = {} and"
-										 " time = {}".format(speciation_rate, time))
+						                 " time = {}".format(speciation_rate, time))
 				else:
 					self.logger.error("Parameter set for reference of {} "
-										"does not exist in all simulations.".format(reference))
+					                  "does not exist in all simulations.".format(reference))
 					self.community_parameters.extend(community_parameters)
 			for reference, speciation_rate, time, fragments, metacommunity_reference in self.community_parameters:
 				subsetted_params = [x for x in community_parameters if isclose(speciation_rate, x[1]) and
-									isclose(time, x[2], abs_tol=0.00001) and metacommunity_reference == x[4]]
+				                    isclose(time, x[2], abs_tol=0.00001) and metacommunity_reference == x[4]]
 				if len(subsetted_params) == 0:
 					self.logger.error("Parameter set for reference of {} "
-									  "does not exist in all simulations.".format(reference))
+					                  "does not exist in all simulations.".format(reference))
 					self.community_parameters.extend(community_parameters)
 		else:
 			self.community_parameters.extend(community_parameters)
@@ -738,21 +747,21 @@ class Merger(CoalescenceTree):
 		if len(self.community_parameters) > 0:
 			for reference, speciation_rate, metacommunity_size in metacommunity_parameters:
 				subsetted_params = [x for x in self.metacommunity_parameters if
-									isclose(speciation_rate, x[1]) and metacommunity_size == x[2]]
+				                    isclose(speciation_rate, x[1]) and metacommunity_size == x[2]]
 				if len(subsetted_params) > 0:
 					if subsetted_params[1] != reference:
 						raise ValueError("Parameter mismatch in metacommunity references for speciation rate = {} and"
-										 " size = {}".format(speciation_rate, metacommunity_size))
+						                 " size = {}".format(speciation_rate, metacommunity_size))
 				else:
 					self.logger.error("Parameter set for metacommunity reference of {} "
-									  "does not exist in all simulations.".format(reference))
+					                  "does not exist in all simulations.".format(reference))
 					self.metacommunity_parameters.extend(metacommunity_parameters)
 			for reference, speciation_rate, metacommunity_size in self.metacommunity_parameters:
 				subsetted_params = [x for x in metacommunity_parameters if isclose(speciation_rate, x[1]) and
-									metacommunity_size == x[2]]
+				                    metacommunity_size == x[2]]
 				if len(subsetted_params) == 0:
 					self.logger.error("Parameter set for metacommunity reference of {} "
-									  "does not exist in all simulations.".format(reference))
+					                  "does not exist in all simulations.".format(reference))
 					self.metacommunity_parameters.extend(metacommunity_parameters)
 		else:
 			self.metacommunity_parameters.extend(metacommunity_parameters)
@@ -766,7 +775,8 @@ class Merger(CoalescenceTree):
 			self.cursor.executemany(create_sql, self.community_parameters)
 			self.database.commit()
 		except sqlite3.OperationalError as soe:
-			raise IOError("Could not insert into METACOMMUNITY_PARAMETERS table in database {}: {}".format(self.file, soe))
+			raise IOError(
+				"Could not insert into METACOMMUNITY_PARAMETERS table in database {}: {}".format(self.file, soe))
 
 	def add_simulation(self, input_simulation):
 		"""
@@ -850,6 +860,30 @@ class Merger(CoalescenceTree):
 		if len(self.fragment_octaves) > 0:
 			self._write_fragment_octaves(guilds=True)
 
+	def apply(self):
+		"""
+		Generates the cooalescence tree for the set of speciation parameters.
+		This must be run after the main coalescence simulations are complete.
+		It will create additional fields and tables in the SQLite database which contains the requested data.
+		"""
+		self.database.close()
+		self.database = None
+		self.cursor = None
+		super(Merger, self).apply()
+		self._open_database(self.file)
+	def output(self):
+		"""
+		Outputs the coalescence trees to the same simulation database object.
+		"""
+		self.database.close()
+		self.database = None
+		self.cursor = None
+		try:
+			super(Merger, self).apply()
+		except Exception as e:
+			self._open_database(self.file)
+			raise e
+
 	def _create_combined_species_richness(self):
 		"""
 		Combines the species richness guilds so that richness values are for all guilds.
@@ -904,4 +938,3 @@ class Merger(CoalescenceTree):
 				i += 1
 		self.fragment_octaves = octaves
 		self._write_fragment_octaves(guild=False)
-

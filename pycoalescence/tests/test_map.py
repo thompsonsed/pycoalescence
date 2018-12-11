@@ -1,6 +1,7 @@
 """Tests the Map object for provision of geospatial data and map manipulation operations."""
 
 import logging
+import unittest
 import sys
 import unittest
 import gdal

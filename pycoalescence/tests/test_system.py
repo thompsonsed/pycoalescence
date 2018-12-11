@@ -6,6 +6,7 @@ import logging
 import os
 import shutil
 import sqlite3
+import sys
 import unittest
 
 try:
@@ -1896,7 +1897,7 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		self.assertEqual(ed7, com7_dict)
 		self.assertEqual(ed8, com8_dict)
 
-
+@unittest.skipIf("win" in sys.platform, "Skipping tests not compatible with Windows.")
 class TestSimulationDispersalMaps(unittest.TestCase):
 	"""
 	Tests the dispersal maps to ensure that values are read properly, and using dispersal maps for simulations works as
@@ -1908,14 +1909,13 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 		"""
 		Sets up the objects for running coalescence simulations on dispersal maps.
 		"""
-		self.c = Simulation(logging_level=logging.CRITICAL)
+		self.c = Simulation()
 		self.c.set_simulation_parameters(seed=1, job_type=32, output_directory="output", min_speciation_rate=0.5,
 										 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
 										 dispersal_relative_cost=1,
-										 min_num_species=1, habitat_change_rate=0, gen_since_historical=200,
-										 )
+										 min_num_species=1, habitat_change_rate=0, gen_since_historical=200)
 		self.c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
-							 dispersal_map="sample/dispersal_fine.tif")
+							 dispersal_map="sample/dispersal_fine.tif") # TODO put back
 		self.c.run()
 
 	def testDispersalSimulation(self):

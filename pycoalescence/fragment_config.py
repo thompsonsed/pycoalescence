@@ -6,6 +6,8 @@ The function :func:`generate_fragment_csv()` contains the full pipeline to gener
 import csv
 
 import os
+import sys
+
 try:
 	from osgeo import gdal, ogr, osr
 except ImportError as ie:
@@ -101,7 +103,11 @@ class FragmentConfigHandler(object):
 		"""
 		if os.path.exists(output_csv):
 			raise FileExistsError("Output csv {} already exists. Please remove first.".format(output_csv))
-		with open(output_csv, "w") as csv_file:
+		if sys.version_info[0] < 3:
+			infile = open(output_csv, "wb")
+		else:
+			infile = open(output_csv, "w", newline='') # TODO check this doesn't cause problems on *NIX systems
+		with infile as csv_file:
 			csv_writer = csv.writer(csv_file)
 			for key, value in sorted(self.fragment_list.items()):
 				csv_writer.writerow([key, value["min_x"], value["min_y"], value["max_x"], value["max_y"],

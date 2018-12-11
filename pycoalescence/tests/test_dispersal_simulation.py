@@ -336,15 +336,33 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.run_mean_distance_travelled()
 		self.assertAlmostEqual(9.657166679793269, m.get_mean_distance_travelled(parameter_reference=1), places=6)
 
+	def testDispersalDatabaseRemoval(self):
+		"""Tests that the dispersal database connection can be deleted properly, with simulation variables preserved."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal10.db", seed=2,
+		                            sigma=2, landscape_type="closed", number_steps=100)
+		m.set_map("sample/SA_sample_fine.tif")
+		m.run_mean_distance_travelled()
+		mean_dist1 = m.get_mean_distance_travelled()
+		self.assertTrue(os.path.exists(m.dispersal_database))
+		m._remove_existing_db()
+		self.assertFalse(os.path.exists(m.dispersal_database))
+		m.run_mean_distance_travelled()
+		self.assertTrue(os.path.exists(m.dispersal_database))
+		self.assertEqual(mean_dist1, m.get_mean_distance_travelled())
+
+
 	def testDispersalDatabaseCreation(self):
-		"""Tests that a dispersal database is created initially before the simulation is run, and re-created, if it
-		has been deleted, before any simulations."""
+		"""
+		Tests that a dispersal database is created initially before the simulation is run, and re-created, if it
+		has been deleted, before any simulations.
+		"""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
 		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal10.db", seed=2,
 									sigma=2, landscape_type="closed", number_steps=100)
 		m.set_map("sample/SA_sample_fine.tif")
 		self.assertTrue(os.path.exists(m.dispersal_database))
-		os.remove(m.dispersal_database)
+		m._remove_existing_db()
 		self.assertFalse(os.path.exists(m.dispersal_database))
 		m.run_mean_distance_travelled()
 		self.assertTrue(os.path.exists(m.dispersal_database))

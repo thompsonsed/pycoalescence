@@ -815,9 +815,6 @@ class CoalescenceTree(object):
 		This must be run after the main coalescence simulations are complete.
 		It will create additional fields and tables in the SQLite database which contains the requested data.
 		"""
-
-		# Convert fragment file to null if it is true
-		# Log warning if sample file is null and record fragments is true
 		self.apply_incremental()
 		self.c_community.output()
 		self.has_outputted = True

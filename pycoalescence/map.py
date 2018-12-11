@@ -5,6 +5,8 @@ import logging
 import math
 
 import copy
+import sys
+
 import numpy as np
 import os
 import types
@@ -76,8 +78,18 @@ class Map(object):
 		# Check to make sure that the GDAL_PATH is in the environmental variables
 		if "GDAL_DATA" not in os.environ:
 			try:
-				gdal_dir = subprocess.check_output(["gdal-config", "--datadir"]).decode("utf-8").replace("\n", "")
-			except AttributeError:
+				if "win" in sys.platform:
+					try:
+						gdal_dir = subprocess.check_output(["echo", "%GDAL_DATA%"],
+						                                   shell=True).decode("utf-8").replace("\n", "")
+					except (AttributeError, FileNotFoundError):
+						conda_dir = subprocess.check_output(["echo", "%CONDA_PREFIX%"],
+						                                    shell=True).decode("utf-8").replace("\n",
+						                                                                                        "")
+						gdal_dir = os.path.join(conda_dir, "Library", "share", "gdal")
+				else:
+					gdal_dir = subprocess.check_output(["gdal-config", "--datadir"]).decode("utf-8").replace("\n", "")
+			except (AttributeError, FileNotFoundError):
 				gdal_dir = None
 			if gdal_dir is None:
 				raise ImportError("No GDAL_DATA directory detected. "
@@ -757,8 +769,7 @@ class Map(object):
 		"""
 		Re-writes the file with a new projection.
 
-		.. note:: Writes to an in-memory file (filename_tmp.tif) which then overwrites the original file, unless
-				  dest_file is not None
+		.. note:: Writes to an in-memory file which then overwrites the original file, unless dest_file is not None.
 
 		:param dest_projection: the destination file projection, can only be None if rescaling
 		:param source_file: optionally provide a file name to reproject. Defaults to self.file_name
@@ -787,39 +798,43 @@ class Map(object):
 		dst_gt = list(tmp_ds.GetGeoTransform())
 		dst_gt[1] = dst_gt[1] * x_scalar
 		dst_gt[5] = dst_gt[5] * y_scalar
-		tmp_ds = None
+		tmp_ds.SetGeoTransform(dst_gt)
 		data_type = self.get_dtype()
-		if dest_file is None:
-			# Create in-memory driver and populate it
-			mem_drv = gdal.GetDriverByName('MEM')
-			dest = mem_drv.Create('', dst_xsize, dst_ysize, 1, data_type)
-		else:
-			if os.path.exists(dest_file):
-				raise IOError("Destination file already exists at {}.".format(dest_file))
-			dest = gdal.GetDriverByName('GTiff').Create(dest_file, dst_xsize, dst_ysize, 1, data_type)
+		# if dest_file is None:
+		# 	out_name = "{}_tmp.tif".format(os.path.splitext(self.file_name)[0])
+		# else:
+		# 	out_name = dest_file
+		if dest_file is not None and os.path.exists(dest_file):
+			raise IOError("Destination file already exists at {}.".format(dest_file))
+
+		# Create in-memory driver and populate it
+		dest = gdal.GetDriverByName('MEM').Create('', dst_xsize, dst_ysize, 1, data_type)
 		if dest is None:
-			if dest_file is None:
-				raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize,
-				                                                                                     dst_ysize))
-			raise IOError("Could not create a file at {} of dimensions {}, {}.".format(dest_file,
-			                                                                           dst_xsize, dst_ysize))
+			raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize, dst_ysize))
 		dest.SetProjection(dest_projection.ExportToWkt())
 		dest.SetGeoTransform(dst_gt)
 		try:
+
 			gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
 			          warpMemoryLimit=warp_memory_limit)
 		except AttributeError as ae:
-			self.logger.critical("Cannot find the gdal.Warp functionality - it is possible this function is not "
-			                     "provided by your version of gdal, or that your gdal installation is incomplete.")
-			raise ae
+			raise AttributeError("Cannot find the gdal.Warp functionality - it is possible this function is not "
+			                     "provided by your version of gdal, or that your gdal installation is incomplete:"
+			                     " {}".format(ae))
 		dest.FlushCache()
+		source_ds = None
+		tmp_ds = None
 		if dest_file is None:
-			os.remove(self.file_name)
-			driver = gdal.GetDriverByName("GTiff")
-			dst_ds = driver.CreateCopy(self.file_name, dest, strict=0)
-			dst_ds.FlushCache()
-			dst_ds = None
+			if os.path.exists(self.file_name):
+				os.remove(self.file_name)
+			output_name = self.file_name
+		else:
+			output_name = dest_file
+		dst_ds = gdal.GetDriverByName('GTiff').CreateCopy(output_name, dest)
+		dst_ds.FlushCache()
+		dst_ds = None
 		dest = None
+
 
 	def plot(self):
 		"""

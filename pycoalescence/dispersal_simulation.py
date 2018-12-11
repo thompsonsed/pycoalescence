@@ -144,6 +144,13 @@ class DispersalSimulation(Landscape):
 			self.setup_complete = False
 			self.c_dispersal_simulation.set_output_database(self.dispersal_database)
 
+	def _remove_existing_db(self):
+		"""Removes an existing database correctly."""
+		self._close_database_connection()
+		self.c_dispersal_simulation = None
+		self.setup_complete = False
+		os.remove(self.dispersal_database)
+
 	def set_map_files(self, fine_file, sample_file="null", coarse_file=None, historical_fine_file=None,
 					  historical_coarse_file=None, deme=1):
 		"""

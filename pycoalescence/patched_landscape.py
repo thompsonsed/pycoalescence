@@ -10,6 +10,7 @@ from __future__ import division
 import csv
 import math
 import os
+import sys
 
 import numpy as np
 
@@ -232,7 +233,11 @@ class PatchedLandscape:
 		if os.path.exists(fragment_csv):
 			raise IOError("Output file already exists at {}.".format(fragment_csv))
 		check_parent(fragment_csv)
-		with open(fragment_csv, "w") as csv_file:
+		if sys.version_info[0] < 3:
+			infile = open(fragment_csv, "wb")
+		else:
+			infile = open(fragment_csv, "w", newline='') # TODO check this doesn't cause problems on *NIX systems
+		with infile as csv_file:
 			csv_writer = csv.writer(csv_file)
 			for k1, patch in self.patches.items():
 				csv_writer.writerow([k1, patch.index, 0, patch.index, 0, patch.density])
