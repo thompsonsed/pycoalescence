@@ -106,7 +106,7 @@ class FragmentConfigHandler(object):
 		if sys.version_info[0] < 3:
 			infile = open(output_csv, "wb")
 		else:
-			infile = open(output_csv, "w", newline='') # TODO check this doesn't cause problems on *NIX systems
+			infile = open(output_csv, "w", newline='')
 		with infile as csv_file:
 			csv_writer = csv.writer(csv_file)
 			for key, value in sorted(self.fragment_list.items()):

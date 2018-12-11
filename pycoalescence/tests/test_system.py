@@ -1915,7 +1915,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
 										 dispersal_relative_cost=1,
 										 min_num_species=1, habitat_change_rate=0, gen_since_historical=200)
 		self.c.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_coarse.tif",
-							 dispersal_map="sample/dispersal_fine.tif") # TODO put back
+							 dispersal_map="sample/dispersal_fine.tif")
 		self.c.run()
 
 	def testDispersalSimulation(self):

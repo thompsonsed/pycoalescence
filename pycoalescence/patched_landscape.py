@@ -236,7 +236,7 @@ class PatchedLandscape:
 		if sys.version_info[0] < 3:
 			infile = open(fragment_csv, "wb")
 		else:
-			infile = open(fragment_csv, "w", newline='') # TODO check this doesn't cause problems on *NIX systems
+			infile = open(fragment_csv, "w", newline='')
 		with infile as csv_file:
 			csv_writer = csv.writer(csv_file)
 			for k1, patch in self.patches.items():
