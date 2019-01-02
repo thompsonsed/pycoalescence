@@ -2,12 +2,11 @@
 Generate landscapes and check map file combinations. Child class for :class:`.Simulation` and
 :class:`.DispersalSimulation`. Contains :class:`.Map` objects for each relevant map file internally.
 """
+import copy
 import logging
 
-import copy
-
-from .system_operations import check_file_exists, create_logger
 from .map import Map
+from .system_operations import check_file_exists, create_logger
 
 
 class Landscape:
@@ -54,22 +53,22 @@ class Landscape:
 			logging_level = self.logging_level
 		self.logger = create_logger(self.logger, file, logging_level, **kwargs)
 
-	def add_historical_map(self, fine_map, coarse_map, time, rate):
+	def add_historical_map(self, fine_file, coarse_file, time, rate):
 		"""
 		Adds an extra map to the list of historical maps.
 
-		:param fine_map: the historical fine map file to add
-		:param coarse_map: the historical coarse map file to add
+		:param str fine_file: the historical fine map file to add
+		:param str coarse_file: the historical coarse map file to add
 		:param time: the time to add (when the map is accurate)
 		:param rate: the rate to add (the rate of habitat change at this time)
 		"""
 		if not self.historical_fine_map_file or self.historical_fine_map_file == "none":
-			self.historical_fine_map_file = fine_map
-			self.historical_coarse_map_file = coarse_map
+			self.historical_fine_map_file = fine_file
+			self.historical_coarse_map_file = coarse_file
 			self.gen_since_historical = time
 			self.habitat_change_rate = rate
-		self.historical_fine_list.append(fine_map)
-		self.historical_coarse_list.append(coarse_map)
+		self.historical_fine_list.append(fine_file)
+		self.historical_coarse_list.append(coarse_file)
 		self.times_list.append(time)
 		self.rates_list.append(rate)
 
@@ -77,7 +76,10 @@ class Landscape:
 		"""
 		Sorts the historical maps by time.
 		"""
-		if len(self.historical_fine_list) > 0 and len(self.historical_coarse_list) > 0:
+		if len(self.historical_fine_list) > 0 or len(self.historical_coarse_list) > 0:
+			if any(len(self.historical_fine_list) != len(x) for x in
+				   [self.historical_coarse_list, self.times_list, self.rates_list]):
+				raise ValueError('Discrepancy between historical file list, time list or rate list. Check inputs: {}')
 			self.times_list, self.historical_fine_list, self.historical_coarse_list, self.rates_list = \
 				[list(x) for x in zip(*sorted(zip(self.times_list, self.historical_fine_list,
 												  self.historical_coarse_list, self.rates_list)))]
@@ -175,9 +177,8 @@ class Landscape:
 			self.historical_fine_map_file = historical_fine_map
 			self.historical_coarse_map_file = historical_coarse_map
 			self.is_setup_map = True
-		else:
-			err = "Map objects are already set up."
-			self.logger.warning(err)
+		else:  # pragma: no cover
+			self.logger.warning("Map objects are already set up.")
 
 	def detect_map_dimensions(self):
 		"""
@@ -230,44 +231,33 @@ class Landscape:
 
 		:return: None
 		"""
-		for map_file in [self.coarse_map, self.fine_map, self.sample_map]:
-			map_file.check_map()
-		for map_file in [self.historical_fine_map_file, self.historical_fine_map_file]:
-			check_file_exists(map_file)
 		# Now check that the rest of the map naming structures make sense.
 		if self.historical_fine_map_file in {"none", None} and len(self.historical_fine_list) == 0:
 			if self.historical_coarse_map_file not in {"none", None} or len(self.historical_coarse_list) > 1:
-				self.logger.warning(
-					"Historical fine file is 'none' but historical coarse file is not none. Check file names.")
-				self.logger.warning("Defaulting to historical_coarse_map_file = 'none'")
-				self.historical_coarse_map_file = "none"
-				self.historical_coarse_list = []
-			if len(self.historical_fine_list) > 1:
-				self.logger.warning(
-					"Set historical fine map file to 'none', but then added other historical maps. Changing.")
-				self.historical_fine_list = []
+				raise ValueError("Historical fine map is none, but coarse map is not none.")
+		if self.historical_coarse_map_file in {"none", None} and len(self.historical_coarse_list) == 0:
+			if self.historical_fine_map_file not in {"none", None} or len(self.historical_fine_list) > 1:
+				raise ValueError("Historical coarse map is none, but fine map is not none.")
+		if self.fine_map.file_name == "none":
+			raise ValueError("Fine map file cannot be none.")
 		if self.coarse_map.file_name in {"none", None}:
 			if self.historical_coarse_map_file not in {"none", None}:
-				self.logger.warning("Coarse file is 'none' but historical coarse file is not none. Check file names.")
-				self.logger.warning("Defaulting to historical_coarse_map_file = 'none'")
-				self.historical_coarse_map_file = "none"
-				self.historical_coarse_list = []
+				raise ValueError("Cannot have a historical coarse file with a coarse file of none.")
 		else:
 			if self.coarse_map.file_name != "null" and not self.fine_map.is_within(self.coarse_map):
 				raise ValueError("Offsets mean that coarse map does not fully encompass fine map. Check that your"
 								 " maps exist at the same spatial coordinates.")
-		if self.fine_map.file_name == "none":
-			self.logger.warning("Fine map file cannot be 'none', changing to 'null'.")
-			self.fine_map.file_name = "null"
-		# Check offset of sample mask with fine map
 		if self.sample_map.file_name != "null" and not self.sample_map.is_within(self.fine_map):
 			raise ValueError(
-				"Offsets mean that fine map does not fully encompass sample map. Check that your maps exist"
+				"Offsets mean that fine map does no	t fully encompass sample map. Check that your maps exist"
 				" at the same spatial coordinates.")
-
+		for map_file in [self.coarse_map, self.fine_map, self.sample_map]:
+			map_file.check_map()
+		for map_file in [self.historical_fine_map_file, self.historical_fine_map_file]:
+			check_file_exists(map_file)
 		if self.landscape_type == "tiled_fine":
 			if self.coarse_map.file_name not in {None, "none"}:
-				raise TypeError("Cannot use a coarse map with a tiled fine landscape.")
+				raise ValueError("Cannot use a coarse map with a tiled fine landscape.")
 		if self.landscape_type == "tiled_coarse":
 			if self.coarse_map.file_name in {None, "none"}:
-				raise TypeError("Cannot use a tiled_coarse landscape without a coarse map.")
+				raise ValueError("Cannot use a tiled_coarse landscape without a coarse map.")

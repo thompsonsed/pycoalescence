@@ -84,6 +84,7 @@ set(SOURCE_FILES
         CSimulation.h
         CLandscapeMetricsCalculator.h
         CSimulateDispersal.h
+        PyTemplates.h
         ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
         ${SOURCE_DIR_NECSIM}/neutral_analytical.cpp
         ${SOURCE_DIR_NECSIM}/neutral_analytical.h

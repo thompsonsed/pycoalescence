@@ -26,7 +26,7 @@ import numpy as np
 
 try:
 	from .necsim import libnecsim
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	logging.info(str(ie))
 	from necsim import libnecsim, necsimError
 
@@ -40,7 +40,7 @@ import pycoalescence
 try:
 	with open(os.path.join(mod_directory, "reference", "parameter_descriptions.json")) as f:
 		_parameter_descriptions = json.load(f)
-except (FileNotFoundError, IOError):
+except (FileNotFoundError, IOError):  # pragma: no cover
 	logging.error("Could not find parameter dictionary. Check install is complete.")
 
 
@@ -56,8 +56,8 @@ def get_parameter_description(key=None):
 		return _parameter_descriptions
 	try:
 		return _parameter_descriptions[key]
-	except ValueError:
-		raise ValueError("Key {} was not found in parameter dictionary. Use key=None to show the whole dictionary")
+	except KeyError:
+		raise KeyError("Key {} was not found in parameter dictionary. Use key=None to show the whole dictionary")
 
 
 class CoalescenceTree(object):
@@ -284,13 +284,14 @@ class CoalescenceTree(object):
 				if metacommunity_option in ["simulated", "analytical", "none"]:
 					raise ValueError("Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
 									 "generating a metacommunity.")
-				if metacommunity_size not in [0, None] or metacommunity_speciation_rate not in [0.0, None]:
-					raise ValueError("No metacommunity size of speciation rate should be supplied when using an "
+				if metacommunity_size not in [0, None] or \
+						metacommunity_speciation_rate not in [0.0, None]:  # pragma: no cover
+					raise ValueError("No metacommunity size or speciation rate should be supplied when using an "
 									 "external database for the metacommunity.")
 				if not os.path.exists(metacommunity_option):
 					raise IOError("No file exists to supply metacommunity at {}.".format(metacommunity_option))
 				if metacommunity_reference is None:
-					self.metacommunity_reference = 0
+					self.metacommunity_reference = 1
 				else:
 					self.metacommunity_reference = metacommunity_reference
 				self.metacommunity_size = 0
@@ -451,28 +452,27 @@ class CoalescenceTree(object):
 		:return: None
 		:rtype: None
 		"""
-		if self.equalised:
-			return
-		if not self.fragment_abundances:
-			self.calculate_fragment_abundances()
-		if not self.fragment_abundances or self.comparison_abundances is None:
-			raise ValueError("Cannot equalise fragment numbers if comparison or simulation data is missing.")
-		random.seed(self.get_simulation_parameters()['seed'])
-		for fragment in set([x[0] for x in self.fragment_abundances]):
-			for reference in set([x[3] for x in self.fragment_abundances]):
-				self._equalise_fragment_number(fragment, reference)
-		# now double check numbers match
-		if not self._check_fragment_numbers_match():
-			raise SystemError("Failure attempting to equalise fragment numbers.")
-		else:
-			self.equalised = True
+		if not self.equalised:
+			if not self.fragment_abundances:  # pragma: no cover
+				self.calculate_fragment_abundances()
+			if not self.fragment_abundances or self.comparison_abundances is None:
+				raise ValueError("Cannot equalise fragment numbers if comparison or simulation data is missing.")
+			random.seed(self.get_simulation_parameters()['seed'])
+			for fragment in set([x[0] for x in self.fragment_abundances]):
+				for reference in set([x[3] for x in self.fragment_abundances]):
+					self._equalise_fragment_number(fragment, reference)
+			# now double check numbers match
+			if not self._check_fragment_numbers_match():  # pragma: no cover
+				raise SystemError("Failure attempting to equalise fragment numbers.")
+			else:
+				self.equalised = True
 
 	def _adjust_species_abundances(self):
 		"""
 		Recalculates the species abundances from the equalised fragment abundances and writes over the
 		SPECIES_ABUNDANCES table
 		"""
-		if not self.equalised:
+		if not self.equalised:  # pragma: no cover
 			self._equalise_all_fragment_numbers()
 		species_abundances = []
 		id = 0
@@ -495,7 +495,7 @@ class CoalescenceTree(object):
 		output database.
 		"""
 		self._check_database()
-		if not self.equalised:
+		if not self.equalised:  # pragma: no cover
 			self._equalise_all_fragment_numbers()
 		self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_ABUNDANCES")
 		self.cursor.execute("CREATE TABLE FRAGMENT_ABUNDANCES (fragment TEXT NOT NULL, species_id INT NOT NULL,"
@@ -508,7 +508,7 @@ class CoalescenceTree(object):
 		Recalculates the species richnesses equating numbers from the comparison data.
 		"""
 		self._check_database()
-		if not self.equalised:
+		if not self.equalised:  # pragma: no cover
 			self._adjust_fragment_abundances()
 			self._adjust_species_abundances()
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_RICHNESS")
@@ -536,7 +536,7 @@ class CoalescenceTree(object):
 		"""
 		Gets the plot data table containing fragment names and numbers of individuals in each fragment.
 		"""
-		if self.comparison_file is None or not os.path.exists(self.comparison_file):
+		if self.comparison_file is None or not os.path.exists(self.comparison_file):  # pragma: no cover
 			raise ValueError("Cannot get plot data from comparison file {}".format(self.comparison_file))
 		db = sqlite3.connect(self.comparison_file)
 		c = db.cursor()
@@ -562,36 +562,21 @@ class CoalescenceTree(object):
 								" historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
 								" landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
 								" FROM SIMULATION_PARAMETERS WHERE guild == ?", (guild,))
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			self.logger.error("Failure to get SIMULATION_PARAMETERS table from database with guild {}"
 							  ". Check table exists.".format(guild))
 			raise e
 		out = self.cursor.fetchone()
-		if len(out) == 0:
+		if len(out) == 0:  # pragma: no cover
 			raise ValueError("No simulation parameters exist for guild {}".format(guild))
 		column_names = [member[0] for member in self.cursor.description]
 		values = [x for x in out]
-		if sys.version_info[0] is not 3:
+		if sys.version_info[0] is not 3:  # pragma: no cover
 			for i, each in enumerate(values):
 				if isinstance(each, unicode):
 					values[i] = each.encode('ascii')
 		# Now convert it into a dictionary
 		return dict(zip(column_names, values))
-
-	def setup(self, speciation_program=os.path.join(mod_directory, "build/default/SpeciationCounter")):
-		"""
-		Sets up the link to the SpeciationCounter program. Defaults to the build/default/SpeciationCounter
-		:param speciation_program: optionally provide a path to an alternative SpeciationCounter program.
-
-		.. deprecated:: 1.2.4
-			Deprecated due to movement towards using Python API for applying speciation rates.
-
-		:return: None
-		"""
-		self.speciation_simulator = speciation_program
-		if not os.path.exists(self.speciation_simulator):
-			raise IOError("Speciation simulator " + self.speciation_simulator +
-						  " not found. Check file path and access.")
 
 	def set_database(self, filename):
 		"""
@@ -608,20 +593,20 @@ class CoalescenceTree(object):
 		"""
 		if isinstance(filename, pycoalescence.simulation.Simulation):
 			filename = filename.output_database
-			if filename is None:
+			if filename is None:  # pragma: no cover
 				raise RuntimeError("Coalescence object does has not been set up properly and does not contain an output"
 								   " database location.")
 		if os.path.exists(filename):
 			self.file = filename
 			try:
 				self.database = sqlite3.connect(filename)
-			except sqlite3.OperationalError as e:
+			except sqlite3.Error as e:  # pragma: no cover
 				try:
 					self.database.close()
 				except AttributeError:
 					pass
 				self.database = None
-				raise IOError("Error opening SQLite database: " + str(e))
+				raise IOError("Error opening SQLite database: {}".format(e))
 			# Now make sure that the simulation has been completed
 			try:
 				self.cursor = self.database.cursor()
@@ -634,18 +619,18 @@ class CoalescenceTree(object):
 					self.times = [0.0]
 				if not complete:
 					self.is_complete = False
-					raise IOError(filename + " is not a complete simulation. Please finish " \
-											 "simulation before performing analysis.")
+					raise IOError("{} is not a complete simulation. "
+								  "Please finish simulation before performing analysis.".format(filename))
 				else:
 					self.is_complete = True
-			except sqlite3.OperationalError as soe:
+			except sqlite3.Error as soe:  # pragma: no cover
 				self.database.close()
-				raise sqlite3.OperationalError("Error checking simulation was complete: " + str(soe))
-			except IndexError:
+				raise sqlite3.Error("Error checking simulation was complete: " + str(soe))
+			except IndexError:  # pragma: no cover
 				self.database.close()
-				raise sqlite3.OperationalError("Could not fetch SIMULATION_PARAMETERS. Table contains no data.")
+				raise sqlite3.Error("Could not fetch SIMULATION_PARAMETERS. Table contains no data.")
 		else:
-			raise IOError("File " + filename + " does not exist.")
+			raise IOError("File {} does not exist.")
 
 	def set_speciation_parameters(self, speciation_rates, record_spatial=False, record_fragments=False,
 								  sample_file=None,
@@ -672,7 +657,7 @@ class CoalescenceTree(object):
 
 		:rtype: None
 		"""
-		if self.is_setup_speciation:
+		if self.is_setup_speciation:  # pragma: no cover
 			self.logger.warning("Speciation parameters already set.")
 		self._set_record_fragments(record_fragments)
 		self._set_speciation_rates(speciation_rates)
@@ -688,7 +673,6 @@ class CoalescenceTree(object):
 		if self.sample_file == "null" and self.record_fragments == "null":
 			raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
 							 "provide a samplemask or set record_fragments=False.")
-
 		self._setup_c_community()
 
 	def _set_c_community(self):
@@ -827,9 +811,10 @@ class CoalescenceTree(object):
 		# Check file exists
 		if self.times is None:
 			self.times = [0.0]
-		if not os.path.exists(self.file):
-			self.logger.warning(str("Check file existance for " + self.file +
-									". Potential lack of access (verify that definition is a relative path).\n"))
+		if not os.path.exists(self.file):  # pragma: no cover
+			self.logger.warning("Check file existance for {}. "
+								"Potential lack of access (verify that definition "
+								"is a relative path).\n".format(self.file))
 		self._set_c_community()
 		if self.has_outputted:
 			self.logger.warning("Output has already been written to file - regenerating internal object.\n")
@@ -844,7 +829,7 @@ class CoalescenceTree(object):
 		Outputs the coalescence trees to the same simulation database object.
 		"""
 		if self.has_applied:
-			if self.has_outputted:
+			if self.has_outputted:  # pragma: no cover
 				self.logger.error("Coalescence tree has already been written to output database.\n")
 			else:
 				self.c_community.output()
@@ -861,9 +846,10 @@ class CoalescenceTree(object):
 		"""
 		try:
 			self.set_database(database)
-			raise IOError("Database at {} is not a paused database.".format(self.file))
 		except IOError:
 			pass
+		else:
+			raise IOError("Database at {} is not a paused database.".format(self.file))
 		self.database.close()
 		self._set_c_community()
 		self.c_community.speciate_remaining_lineages(self.file)
@@ -891,12 +877,12 @@ class CoalescenceTree(object):
 		try:
 			return self.cursor.execute("SELECT richness FROM SPECIES_RICHNESS "
 									   "WHERE community_reference==?", (reference,)).fetchone()[0]
-		except (TypeError, sqlite3.OperationalError):
+		except (TypeError, sqlite3.Error):
 			try:
 				c = self.cursor.execute("SELECT species_id FROM SPECIES_ABUNDANCES WHERE no_individuals > 0 AND "
 										"community_reference == ?", (reference,)).fetchall()
 				return len(set([x[0] for x in c]))
-			except sqlite3.OperationalError as oe:
+			except sqlite3.Error as oe:  # pragma: no cover
 				self.logger.warning(str(oe) + "\n")
 				self.logger.warning("Could not find SPECIES_ABUNDANCES table in database " + self.file + "\n")
 				return 0
@@ -912,7 +898,7 @@ class CoalescenceTree(object):
 		:return: output from FRAGMENT_OCTAVES on the whole landscape for the selected variables
 		"""
 		self._check_database()
-		if check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
+		if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
 			self.calculate_octaves()
 		return self.get_fragment_octaves(fragment="whole", reference=reference)
 
@@ -962,12 +948,12 @@ class CoalescenceTree(object):
 			try:
 				self.cursor.execute(tmp_create)
 				self.database.commit()
-			except sqlite3.OperationalError as e:
-				raise sqlite3.OperationalError("Error creating biodiversity metric table: " + str(e))
+			except sqlite3.Error as e:  # pragma: no cover
+				raise sqlite3.Error("Error creating biodiversity metric table: " + str(e))
 			return 0
 		else:
 			maxval = self.database.cursor().execute("SELECT MAX(ref) FROM BIODIVERSITY_METRICS").fetchone()[0]
-			if maxval is None:
+			if maxval is None:  # pragma: no cover
 				return 0
 			return maxval
 
@@ -988,12 +974,12 @@ class CoalescenceTree(object):
 			try:
 				self.cursor.execute(tmp_create)
 				self.database.commit()
-			except Exception as e:
-				e.message = "Error creating SPECIES_RICHNESS table: " + str(e)
+			except Exception as e:  # pragma: no cover
+				e.message = "Error creating SPECIES_RICHNESS table: ".format(e)
 				raise e
 		else:
 			all_refs = [x[0] for x in self.cursor.execute("SELECT ref FROM SPECIES_RICHNESS").fetchall()]
-			if len(all_refs) == 0:
+			if len(all_refs) == 0:  # pragma: no cover
 				all_refs = [0]
 			ref = max(all_refs) + 1
 			existing_references.extend(all_refs)
@@ -1033,11 +1019,11 @@ class CoalescenceTree(object):
 										self.cursor.execute("SELECT fragment, species_id,"
 															" no_individuals, community_reference "
 															"FROM FRAGMENT_ABUNDANCES").fetchall() if x[2] > 0]
-			if not self.fragment_abundances:
+			if not self.fragment_abundances:  # pragma: no cover
 				raise ValueError("Fragment abundances table may be empty, or not properly stored.")
 			if self.comparison_abundances:
 				self._equalise_all_fragment_numbers()
-		else:
+		else:  # pragma: no cover
 			self.logger.warning("Fragment abundances already imported.")
 
 	def calculate_fragment_richness(self, output_metrics=True):
@@ -1060,8 +1046,8 @@ class CoalescenceTree(object):
 			try:
 				self.cursor.execute(tmp_create)
 				self.database.commit()
-			except sqlite3.OperationalError:
-				raise sqlite3.OperationalError("Could not create FRAGMENT_RICHNESS table")
+			except sqlite3.Error as soe:  # pragma: no cover
+				raise sqlite3.Error("Could not create FRAGMENT_RICHNESS table: {}".format(soe))
 			fragment_names = set([fa[0] for fa in self.fragment_abundances])
 			references = set([fa[3] for fa in self.fragment_abundances])
 			# self.fragments.extend(([]*len(times)-1))
@@ -1105,8 +1091,8 @@ class CoalescenceTree(object):
 			try:
 				self.cursor.execute(tmp_create)
 				self.database.commit()
-			except sqlite3.OperationalError:
-				raise sqlite3.OperationalError("Could not create ALPHA_DIVERSITY table")
+			except sqlite3.Error as soe:  # pragma: no cover
+				raise sqlite3.Error("Could not create ALPHA_DIVERSITY table: {}".format(soe))
 			all_community_references = self.get_community_references()
 			all_fragments = self.get_fragment_list()
 			output = []
@@ -1139,14 +1125,14 @@ class CoalescenceTree(object):
 					 "beta_diversity INT NOT NULL)"
 		if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):
 			self.calculate_alpha_diversity()
-		if not check_sql_table_exist(self.database, "SPECIES_RICHNESS"):
+		if not check_sql_table_exist(self.database, "SPECIES_RICHNESS"):  # pragma: no cover
 			self.calculate_richness()
 		if not check_sql_table_exist(self.database, "BETA_DIVERSITY"):
 			try:
 				self.cursor.execute(tmp_create)
 				self.database.commit()
-			except sqlite3.OperationalError:
-				raise sqlite3.OperationalError("Could not create BETA_DIVERSITY table")
+			except sqlite3.Error:  # pragma: no cover
+				raise sqlite3.Error("Could not create BETA_DIVERSITY table")
 			all_community_references = self.get_community_references()
 			output = []
 			for reference in all_community_references:
@@ -1159,7 +1145,7 @@ class CoalescenceTree(object):
 				output = [[i + ref, "beta_diversity", "whole", x[0], x[1]] for i, x in enumerate(output)]
 				self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES(?,?,?,?,?, NULL, NULL)", output)
 			self.database.commit()
-		else:
+		else:  # pragma: no cover
 			self.logger.warning("Beta diversity already calculated.")
 
 	def get_alpha_diversity(self, reference=1):
@@ -1170,11 +1156,11 @@ class CoalescenceTree(object):
 		:return: the alpha diversity of the system
 		"""
 		self._check_database()
-		if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):
+		if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):  # pragma: no cover
 			self.calculate_alpha_diversity()
 		self.cursor.execute("SELECT alpha_diversity FROM ALPHA_DIVERSITY WHERE reference == ?", (reference,))
 		res = self.cursor.fetchone()
-		if res is None:
+		if res is None:  # pragma: no cover
 			raise ValueError("No alpha diversity value for reference = {}".format(reference))
 		return res[0]
 
@@ -1186,11 +1172,11 @@ class CoalescenceTree(object):
 		:return: the beta diversity of the system
 		"""
 		self._check_database()
-		if not check_sql_table_exist(self.database, "BETA_DIVERSITY"):
+		if not check_sql_table_exist(self.database, "BETA_DIVERSITY"):  # pragma: no cover
 			self.calculate_beta_diversity()
 		self.cursor.execute("SELECT beta_diversity FROM BETA_DIVERSITY WHERE reference == ?", (reference,))
 		res = self.cursor.fetchone()
-		if res is None:
+		if res is None:  # pragma: no cover
 			raise ValueError("No beta diversity value for reference = {}.".format(reference))
 		return res[0]
 
@@ -1228,12 +1214,12 @@ class CoalescenceTree(object):
 					"SELECT fragment, species_id, no_individuals FROM FRAGMENT_ABUNDANCES").fetchall()]
 				self.comparison_abundances_whole = [list(x) for x in tmp_cursor.execute(
 					"SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES").fetchall()]
-			except sqlite3.OperationalError as oe:
-				raise sqlite3.OperationalError("Problem executing fetches from comparison data: " + str(oe))
+			except sqlite3.Error as oe:  # pragma: no cover
+				raise sqlite3.Error("Problem executing fetches from comparison data: ".format(oe))
 			self.comparison_file = filename
-		except sqlite3.OperationalError as oe:
+		except sqlite3.Error as oe:  # pragma: no cover
 			conn = None
-			raise RuntimeError("Could not import from comparison data: " + str(oe))
+			raise RuntimeError("Could not import from comparison data: ".format(oe))
 		conn = None
 		if self.fragment_abundances:
 			if not self._check_fragment_numbers_match() and not ignore_mismatch:
@@ -1264,7 +1250,7 @@ class CoalescenceTree(object):
 		"""
 		if self.comparison_octaves is None:
 			# If comparison_octaves has not been calculated, then do that now.
-			if self.comparison_abundances is None:
+			if self.comparison_abundances is None:  # pragma: no cover
 				self.logger.warning(
 					"Comparison abundances not yet imported, or FRAGMENT_ABUNDANCES does not exist in comparison file.")
 			# Check whether the FRAGMENT_OCTAVES table exists, if it is, just stored that in self.comparison_octaves
@@ -1278,13 +1264,12 @@ class CoalescenceTree(object):
 						self.comparison_octaves = tmp_list
 						store = False
 			# Need to calculate again if the fragment numbers don't match
-			if not self._check_fragment_numbers_match():
+			if not self._check_fragment_numbers_match():  # pragma: no cover
 				self.comparison_octaves = None
 			# Otherwise, if comparison abundances exists, we can calculate the comparison octaves manually
 			if self.comparison_abundances is not None and self.comparison_octaves is None:
-				if not self._check_fragment_numbers_match():
+				if not self._check_fragment_numbers_match():  # pragma: no cover
 					self._equalise_all_fragment_numbers()
-				# now calculate octaves
 				self.comparison_octaves = []
 				ref = 0
 				fragments = set([x[0] for x in self.comparison_abundances])
@@ -1293,44 +1278,34 @@ class CoalescenceTree(object):
 					octaves[0] = []
 					octaves[1] = []
 					abundances = [x for x in self.comparison_abundances if str(x[0]) == f]
-					# print(abundances)
-					# exit(0)
 					for each in abundances:
 						this_octave = int(math.floor(math.log(each[2], 2)))
 						if this_octave in octaves[0]:
 							pos = [i for i, x in enumerate(octaves[0]) if x == this_octave]
-							# print(octaves)
 							self.comparison_octaves[octaves[1][pos[0]]][2] += 1
 						else:
 							self.comparison_octaves.append([str(f), this_octave, 1])
-							# print(self.comparison_octaves)
 							octaves[0].append(this_octave)
 							octaves[1].append(ref)
 							ref += 1
-				# print(len(self.comparison_octaves)-1)
 				octaves = [[], []]
 				octaves[0] = []
 				octaves[1] = []
 				abundances = self.comparison_abundances_whole
-				# print(abundances)
-				# exit(0)
 				for each in abundances:
 					this_octave = int(math.floor(math.log(each[1], 2)))
 					if this_octave in octaves[0]:
 						pos = [i for i, x in enumerate(octaves[0]) if x == this_octave]
-						# print(octaves)
 						self.comparison_octaves[octaves[1][pos[0]]][2] += 1
 					else:
 						self.comparison_octaves.append(["whole", this_octave, 1])
-						# print(self.comparison_octaves)
 						octaves[0].append(this_octave)
 						octaves[1].append(ref)
 						ref += 1
-			# now sort the list
 			# If we want to store the comparison octaves, overwrite the original FRAGMENT_OCTAVES table (if it exists
 			# with the new calculated data
 			if store:
-				if self.comparison_file is None:
+				if self.comparison_file is None:  # pragma: no cover
 					raise ValueError("Comparison file has not been imported yet, and therefore cannot be written to.")
 				conn = sqlite3.connect(self.comparison_file)
 				cursor = conn.cursor()
@@ -1360,7 +1335,7 @@ class CoalescenceTree(object):
 		# Check what the maximum reference is in FRAGMENT_OCTAVES
 		try:
 			c = self.cursor.execute("SELECT max(ref) FROM FRAGMENT_OCTAVES").fetchone()[0] + 1
-		except (sqlite3.OperationalError, TypeError):
+		except (sqlite3.Error, TypeError):
 			c = 0
 		for ref in references:
 			select_abundances = [x[1] for x in abundances if x[2] == ref]
@@ -1371,13 +1346,13 @@ class CoalescenceTree(object):
 					tot = log_select.count(i)
 					out.append([c, "whole", ref, i, tot])
 					c += 1
-			except ValueError as ve:
+			except ValueError as ve:  # pragma: no cover
 				raise ve
 			try:
 				self.cursor.executemany("INSERT INTO FRAGMENT_OCTAVES VALUES (?,?,?,?,?)", out)
 				self.database.commit()
-			except sqlite3.OperationalError as oe:
-				raise sqlite3.OperationalError("Could not insert into FRAGMENT_OCTAVES." + str(oe))
+			except sqlite3.Error as oe:  # pragma: no cover
+				raise sqlite3.Error("Could not insert into FRAGMENT_OCTAVES." + str(oe))
 
 	def calculate_fragment_octaves(self):
 		"""
@@ -1387,9 +1362,9 @@ class CoalescenceTree(object):
 		self._check_database()
 		if check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
 			raise RuntimeError("FRAGMENT_OCTAVES already exists")
-		if self.fragment_abundances is None:
+		if self.fragment_abundances is None or len(self.fragment_abundances) == 0:  # pragma: no cover
 			self.calculate_fragment_abundances()
-		if len(self.fragments) == 0:
+		if len(self.fragment_abundances) == 0:  # pragma: no cover
 			raise RuntimeError("Fragments not imported correctly")
 		self.cursor.execute(
 			"CREATE TABLE IF NOT EXISTS FRAGMENT_OCTAVES (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL, "
@@ -1400,7 +1375,7 @@ class CoalescenceTree(object):
 		for f in fragments:
 			for ref in references:
 				select_abundances = [int(x[2]) for x in self.fragment_abundances if x[0] == f and x[3] == ref]
-				if len(select_abundances) == 0:
+				if len(select_abundances) == 0:  # pragma: no cover
 					raise ValueError("Could not calculate fragment octaves for {}, with reference = {}".format(f, ref))
 				log_select = [math.floor(math.log(x, 2)) for x in select_abundances]
 				out = []
@@ -1410,8 +1385,8 @@ class CoalescenceTree(object):
 					c += 1
 				try:
 					self.cursor.executemany("INSERT INTO FRAGMENT_OCTAVES VALUES (?,?,?,?,?)", out)
-				except sqlite3.OperationalError as oe:
-					raise sqlite3.OperationalError("Could not insert into FRAGMENT_OCTAVES." + str(oe))
+				except sqlite3.Error as oe:  # pragma: no cover
+					raise sqlite3.Error("Could not insert into FRAGMENT_OCTAVES." + str(oe))
 		self.database.commit()
 		self.calculate_octaves()
 
@@ -1423,7 +1398,7 @@ class CoalescenceTree(object):
 		:param fragment: the desired fragment (defaults to None)
 		:param reference: the reference key for the calculated community parameters
 
-		:raises: sqlite3.OperationalError if no table FRAGMENT_ABUNDANCES exists
+		:raises: sqlite3.Error if no table FRAGMENT_ABUNDANCES exists
 		:raises: RuntimeError if no data for the specified fragment, speciation rate and time exists.
 
 		:return: A list containing the fragment richness, or a value of the fragment richness
@@ -1447,8 +1422,10 @@ class CoalescenceTree(object):
 	def get_fragment_abundances(self, fragment, reference):
 		"""
 		Gets the species abundances for the supplied fragment and community reference.
+
 		:param fragment: the name of the fragment to obtain
 		:param reference: the reference for speciation parameters to obtain for
+
 		:return: a list of species ids and abundances
 		"""
 		self._check_database()
@@ -1456,7 +1433,7 @@ class CoalescenceTree(object):
 			raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
 		output = self.cursor.execute("SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE "
 									 "community_reference == ? AND fragment ==  ?", (reference, fragment)).fetchall()
-		if len(output) == 0:
+		if len(output) == 0:  # pragma: no cover
 			raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
 		return [list(x) for x in output]
 
@@ -1467,11 +1444,11 @@ class CoalescenceTree(object):
 		:return: a list of reference, fragment, species_id, no_individuals
 		"""
 		self._check_database()
-		if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
+		if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):  # pragma: no cover
 			raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
 		output = self.cursor.execute("SELECT community_reference, fragment, species_id, no_individuals FROM "
 									 "FRAGMENT_ABUNDANCES").fetchall()
-		if len(output) == 0:
+		if len(output) == 0:  # pragma: no cover
 			raise RuntimeError("No output while fetching all fragment abundances")
 		return [list(x) for x in output]
 
@@ -1487,8 +1464,8 @@ class CoalescenceTree(object):
 			raise RuntimeError("Fragment abundances have not been calculated; cannot obtain fragment list.")
 		fetch = self.cursor.execute("SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE "
 									"community_reference == ?", (community_reference,)).fetchall()
-		if len(fetch) == 0:
-			raise sqlite3.OperationalError("No fragments exist in FRAGMENT_ABUNDANCES.")
+		if len(fetch) == 0:  # pragma: no cover
+			raise sqlite3.Error("No fragments exist in FRAGMENT_ABUNDANCES.")
 		return [x[0] for x in fetch]
 
 	def get_fragment_octaves(self, fragment=None, reference=None):
@@ -1517,8 +1494,8 @@ class CoalescenceTree(object):
 			if len(output) == 0:
 				raise RuntimeError(
 					"No output while fetching fragment data for {} with ref: {}".format(fragment, reference))
-		except sqlite3.OperationalError as oe:
-			raise sqlite3.OperationalError("Failure whilst fetching fragment octave data." + str(oe))
+		except sqlite3.Error as oe:
+			raise sqlite3.Error("Failure whilst fetching fragment octave data." + str(oe))
 		output.sort(key=lambda x: x[0])
 		return output
 
@@ -1535,7 +1512,7 @@ class CoalescenceTree(object):
 		"""
 		self._check_database()
 		if fragment is None:
-			if reference is None:
+			if reference is None:  # pragma: no cover
 				reference = 1
 			return [list(x) for x in
 					self.cursor.execute("SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES WHERE "
@@ -1558,18 +1535,18 @@ class CoalescenceTree(object):
 		if self.comparison_octaves is None:
 			self.calculate_comparison_octaves()
 		self._check_database()
-		if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
+		if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):  # pragma: no cover
 			self.calculate_fragment_octaves()
 
 		data = self.cursor.execute("SELECT fragment, community_reference FROM FRAGMENT_OCTAVES").fetchall()
-		if len(data) == 0:
+		if len(data) == 0:  # pragma: no cover
 			self.calculate_fragment_octaves()
 		try:
 			self.cursor.execute("ALTER TABLE FRAGMENT_OCTAVES ADD COLUMN comparison FLOAT")
 			self.cursor.execute("ALTER TABLE FRAGMENT_OCTAVES ADD COLUMN error FLOAT")
 			col_add = True
-		except sqlite3.OperationalError as soe:
-			raise sqlite3.OperationalError("Could not alter FRAGMENT_OCTAVES table: " + str(soe))
+		except sqlite3.Error as soe:  # pragma: no cover
+			raise sqlite3.Error("Could not alter FRAGMENT_OCTAVES table: " + str(soe))
 		fragments = set([x[0] for x in data])
 		references = set([x[1] for x in data])
 		fragment_errors = []
@@ -1580,7 +1557,7 @@ class CoalescenceTree(object):
 				octaves = self.get_fragment_octaves(f, reference)
 				try:
 					maxval = max(max([x[0] for x in octaves]), max([x[1] for x in comparison_octaves]))
-				except ValueError:
+				except ValueError:  # pragma: no cover
 					try:
 						maxval = max([x[1] for x in comparison_octaves])
 					except ValueError:
@@ -1597,7 +1574,7 @@ class CoalescenceTree(object):
 						continue
 					try:
 						comp_val = [x[2] for x in comparison_octaves if x[1] == i][0]
-					except (ValueError, IndexError):
+					except (ValueError, IndexError):  # pragma: no cover
 						difference.append(1.0)
 						comp_val = 1.0
 					else:
@@ -1634,10 +1611,10 @@ class CoalescenceTree(object):
 		"""
 		# TODO fix this as it no longer works
 		## check that the comparison data has already been imported.
-		if self.comparison_data is None:
+		if self.comparison_data is None:  # pragma: no cover
 			raise RuntimeError("Comparison data not yet imported.")
 		self._check_database()
-		if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):
+		if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
 			raise ValueError("BIODIVERSITY_METRICS table does not exist in database: cannot calculate goodness of fit.")
 		bio_metrics = self.cursor.execute(
 			"SELECT metric, fragment, community_reference, value FROM BIODIVERSITY_METRICS"
@@ -1647,7 +1624,7 @@ class CoalescenceTree(object):
 														 " WHERE tip==1 AND gen_added==0.0").fetchone()[0]
 			try:
 				self.cursor.execute("SELECT comparison, error from FRAGMENT_OCTAVES")
-			except sqlite3.OperationalError:
+			except sqlite3.Error:  # pragma: no cover
 				self.cursor.execute("ALTER TABLE FRAGMENT_OCTAVES ADD COLUMN comparison FLOAT")
 				self.cursor.execute("ALTER TABLE FRAGMENT_OCTAVES ADD COLUMN error FLOAT")
 		# Remove the extra goodness of fit values
@@ -1669,7 +1646,7 @@ class CoalescenceTree(object):
 			if category != "fragment_octaves":
 				try:
 					total_ind = sum([f[3] for f in select_comparison])
-				except IndexError:
+				except IndexError:  # pragma: no cover
 					self.logger.warning("Could not find comparable metric for {} and {}".format(each[0], each[1]))
 					continue
 			else:
@@ -1692,11 +1669,10 @@ class CoalescenceTree(object):
 					no_ind = [p[1] for p in plot_data if p[0] == fragment][0]
 				for ref in references:
 					select_metrics = [b for b in bio_metrics if b[0] == category and b[1] == fragment and b[2] == ref]
-					if len(select_metrics) != 1:
+					if len(select_metrics) != 1:  # pragma: no cover
 						if len(select_metrics) == 0:
 							raise ValueError("Could not find metric for metric, {}, fragment = {}"
 											 " and community_reference = {}".format(category, fragment, ref))
-						print(select_metrics)
 						raise ValueError("Achieved multiple matches for biodiversity metrics"
 										 " for fragment {} and community reference = {}.".format(fragment, ref))
 					if category != "fragment_octaves":
@@ -1763,12 +1739,12 @@ class CoalescenceTree(object):
 		:rtype: list
 		"""
 		self._check_database()
-		if self.check_biodiversity_table_exists() == 0:
+		if self.check_biodiversity_table_exists() == 0:  # pragma: no cover
 			raise RuntimeError("Biodiversity table does not contain any values.")
 		ret = self.cursor.execute(
 			"SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND metric=='goodness_of_fit' AND "
 			"community_reference == ?", (reference,)).fetchall()
-		if len(ret) is 0:
+		if len(ret) is 0:  # pragma: no cover
 			raise RuntimeError("Biodiversity table does not contain goodness-of-fit values.")
 		else:
 			return ret[0][0]
@@ -1783,12 +1759,12 @@ class CoalescenceTree(object):
 		:rtype: float
 		"""
 		self._check_database()
-		if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):
+		if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
 			raise ValueError("Biodiversity table does not contain any values.")
 		metric_sql = "goodness_of_fit_{}".format(metric)
 		ret = self.cursor.execute("SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND metric==? and "
 								  "community_reference == ?", (metric_sql, reference,)).fetchone()
-		if len(ret) == 0:
+		if len(ret) == 0:  # pragma: no cover
 			raise ValueError("No goodness-of-fit for {} with"
 							 " community reference = {}".format(metric, reference))
 		return ret[0]
@@ -1819,12 +1795,12 @@ class CoalescenceTree(object):
 		"""
 		# TODO This needs to be fixed
 		self._check_database()
-		if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):
+		if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
 			raise ValueError("Biodiversity table does not contain any values.")
 		ret = self.cursor.execute("SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND "
 								  "metric=='goodness_of_fit_fragment_octaves' and "
 								  "community_reference == ?", (reference,)).fetchone()
-		if len(ret) == 0:
+		if len(ret) == 0:  # pragma: no cover
 			raise ValueError("No goodness-of-fit for fragment octaves with"
 							 " community reference = {}".format(reference))
 		return ret[0]
@@ -1833,10 +1809,11 @@ class CoalescenceTree(object):
 		"""
 		Reads the dispersal parameters from the database and returns them.
 
-		:return: a list of the dispersal parameters [sigma, tau, m_probability, cutoff]
+		:return: a dict of the dispersal parameters (dispersal method, sigma, tau, m_probability and cutoff)
 		"""
 		ret = self.get_simulation_parameters()
-		return [ret["sigma"], ret["tau"], ret["m_probability"], ret["cutoff"]]
+		return {"dispersal_method": ret["dispersal_method"], "sigma": ret["sigma"], "tau": ret["tau"],
+				"m_probability": ret["m_probability"], "cutoff": ret["cutoff"]}
 
 	def get_job(self):
 		"""
@@ -1870,12 +1847,12 @@ class CoalescenceTree(object):
 					" historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
 					" landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
 					" FROM SIMULATION_PARAMETERS")
-			except sqlite3.OperationalError as e:
+			except sqlite3.Error as e:
 				self.logger.error("Failure to get SIMULATION_PARAMETERS table from database. Check table exists.")
 				raise e
 			column_names = [member[0] for member in self.cursor.description]
 			values = [x for x in self.cursor.fetchone()]
-			if sys.version_info[0] is not 3:
+			if sys.version_info[0] is not 3:  # pragma: no cover
 				for i, each in enumerate(values):
 					if isinstance(each, unicode):
 						values[i] = each.encode('ascii')
@@ -1895,7 +1872,7 @@ class CoalescenceTree(object):
 		self._check_database()
 		try:
 			self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS")
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			self.logger.error("Failure to fetch references from COMMUNITY_PARAMETERS table in database."
 							  " Check table exists.")
 			raise e
@@ -1909,7 +1886,7 @@ class CoalescenceTree(object):
 		:param reference: the reference key for the calculated parameters (default is 1)
 
 		:return: dictionary containing the speciation_rate, time, fragments, metacommunity_reference and min/max
-		         speciation generation for protracted sims
+				 speciation generation for protracted sims
 
 		:rtype: dict
 		"""
@@ -1919,10 +1896,10 @@ class CoalescenceTree(object):
 				self.cursor.execute("SELECT speciation_rate, time, fragments, metacommunity_reference, "
 									"min_speciation_gen, max_speciation_gen "
 									"FROM COMMUNITY_PARAMETERS WHERE reference==?", (reference,))
-			except sqlite3.OperationalError:
+			except sqlite3.Error:
 				self.cursor.execute("SELECT speciation_rate, time, fragments, metacommunity_reference "
 									"FROM COMMUNITY_PARAMETERS WHERE reference==?", (reference,))
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			self.logger.error("Failure to fetch COMMUNITY_PARAMETERS table from database. Check table exists.")
 			raise e
 		fetch = self.cursor.fetchone()
@@ -1930,7 +1907,7 @@ class CoalescenceTree(object):
 			raise KeyError("No community parameters found for reference of {}".format(reference))
 		values = [x for x in fetch]
 		column_names = [member[0] for member in self.cursor.description]
-		if sys.version_info[0] is not 3:
+		if sys.version_info[0] is not 3:  # pragma: no cover
 			for i, each in enumerate(values):
 				if isinstance(each, unicode):
 					values[i] = each.encode('ascii')
@@ -1957,15 +1934,12 @@ class CoalescenceTree(object):
 		:param float max_speciation_gen: the maximum number of generations required before speciation
 		:return: the reference associated with this set of simulation parameters
 		"""
-		if fragments is False:
-			fragments = 0
-		elif fragments is True:
-			fragments = 1
+		fragments = int(fragments)
 		if metacommunity_size == 0 and external_reference == 0:
 			metacommunity_reference = 0
 		else:
 			self._check_database()
-			if not check_sql_table_exist(self.database, "METACOMMUNITY_PARAMETERS"):
+			if not check_sql_table_exist(self.database, "METACOMMUNITY_PARAMETERS"):  # pragma: no cover
 				raise KeyError("No table METACOMMUNITY_PARAMETERS exists in database {}".format(self.file))
 			self.cursor.execute("SELECT reference FROM METACOMMUNITY_PARAMETERS WHERE metacommunity_size == ? AND "
 								"speciation_rate == ? AND option == ? and external_reference == ?",
@@ -1984,7 +1958,7 @@ class CoalescenceTree(object):
 										(speciation_rate, time, int(fragments), metacommunity_reference,
 										 min_speciation_gen,
 										 max_speciation_gen))
-				except sqlite3.OperationalError:
+				except sqlite3.Error:
 					if min_speciation_gen != 0.0 or max_speciation_gen != 0.0:
 						raise IndexError
 					self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
@@ -2010,7 +1984,7 @@ class CoalescenceTree(object):
 			return []
 		try:
 			self.cursor.execute("SELECT reference FROM METACOMMUNITY_PARAMETERS")
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			self.logger.error("Failure to fetch references from METACOMMUNITY_PARAMETERS table in database."
 							  " Check table exists.")
 			raise e
@@ -2023,7 +1997,7 @@ class CoalescenceTree(object):
 
 		:param reference: the reference key for the calculated parameters. (default is 1)
 
-		:raises sqlite3.OperationalError: if the METACOMMUNITY_PARAMETERS table does not exist, or some other sqlite
+		:raises sqlite3.Error: if the METACOMMUNITY_PARAMETERS table does not exist, or some other sqlite
 			error occurs
 
 		:raises KeyError: if the supplied reference does not exist in the METACOMMUNITY_PARAMETERS table
@@ -2036,17 +2010,18 @@ class CoalescenceTree(object):
 		try:
 			self.cursor.execute("SELECT speciation_rate, metacommunity_size, option, external_reference FROM"
 								" METACOMMUNITY_PARAMETERS  WHERE reference== ?", (reference,))
-		except sqlite3.OperationalError as e:
-			self.logger.error("Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. \n")
+		except sqlite3.Error as e:
+			self.logger.error(
+				"Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. \n")
 			raise e
 		fetch = self.cursor.fetchone()
 		if fetch is None:
 			raise KeyError("No metacommunity parameters found for reference of {}".format(reference))
 		values = [x for x in fetch]
-		if len(values) == 0:
+		if len(values) == 0:  # pragma: no cover
 			raise KeyError("No metacommunity parameters found for reference of {}".format(reference))
 		column_names = [member[0] for member in self.cursor.description]
-		if sys.version_info[0] is not 3:
+		if sys.version_info[0] is not 3:  # pragma: no cover
 			for i, each in enumerate(values):
 				if isinstance(each, unicode):
 					values[i] = each.encode('ascii')
@@ -2064,15 +2039,6 @@ class CoalescenceTree(object):
 		:rtype: str
 		"""
 		return get_parameter_description(key)
-
-	def is_completed(self):
-		"""
-		Indicates whether the simulation has been performed to completion, or if the simulation has been paused and
-		needs to be completed before analysis can be performed.
-
-		:return: bool: true if simulation is complete
-		"""
-		return self.is_complete
 
 	def is_protracted(self):
 		"""
@@ -2098,7 +2064,7 @@ class CoalescenceTree(object):
 		self.cursor.execute("DROP TABLE IF EXISTS BETA_DIVERSITY")
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_DISTANCE_SIMILARITY")
 		self.database.commit()
-		if self.c_community is not None:
+		if self.c_community is not None:  # pragma: no cover
 			self.c_community.reset()
 
 	def wipe_data(self):
@@ -2114,7 +2080,7 @@ class CoalescenceTree(object):
 		self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LOCATIONS")
 		self.clear_calculations()
 		self.database.commit()
-		if self.c_community is not None:
+		if self.c_community is not None:  # pragma: no cover
 			self.c_community.reset()
 
 	def sample_fragment_richness(self, fragment, number_of_individuals, community_reference=1, n=1):
@@ -2134,16 +2100,14 @@ class CoalescenceTree(object):
 		:return: the mean of the richness from the repeats
 		:rtype: float
 		"""
-		if not self.fragment_abundances:
+		if not self.fragment_abundances:  # pragma: no cover
 			self.calculate_fragment_abundances()
 		try:
 			chosen, richness = zip(*[[x[1], x[2]] for x in self.fragment_abundances if x[0] == fragment and
 									 x[3] == community_reference])
-		except ValueError as ve:
+		except ValueError as ve:  # pragma: no cover
 			raise ValueError("Fragment abundances do not contain data"
-							 " for {} with reference={}: {}".format(fragment,
-																	number_of_individuals,
-																	ve))
+							 " for {} with reference={}: {}".format(fragment, number_of_individuals, ve))
 		species_ids = np.repeat(chosen, richness)
 		richness_out = []
 		for i in range(n):
@@ -2172,9 +2136,10 @@ class CoalescenceTree(object):
 		"""
 		richness_out = []
 		if isinstance(number_of_individuals, dict):
-			if not self.fragment_abundances:
+			if not self.fragment_abundances:  # pragma: no cover
 				self.calculate_fragment_abundances()
-			select_abundances = [[x[0], x[1], x[2]] for x in self.fragment_abundances if x[3] == community_reference]
+			select_abundances = [[x[0], x[1], x[2]] for x in self.fragment_abundances if
+								 x[3] == community_reference]
 			fragments = set([x[0] for x in select_abundances])
 			for f in fragments:
 				try:
@@ -2196,11 +2161,13 @@ class CoalescenceTree(object):
 			return np.mean(richness_out)
 		else:
 			# straightforward case
-			chosen, richness = zip(*[[x[0], x[1]] for x in self.get_species_abundances(reference=community_reference)])
+			chosen, richness = zip(
+				*[[x[0], x[1]] for x in self.get_species_abundances(reference=community_reference)])
 			species_ids = np.repeat(chosen, richness)
 			for i in range(n):
 				# Randomly select number_of_individuals
-				richness_out.append(len(set(np.random.choice(species_ids, size=number_of_individuals, replace=False))))
+				richness_out.append(
+					len(set(np.random.choice(species_ids, size=number_of_individuals, replace=False))))
 			return np.mean(richness_out)
 
 	def calculate_species_distance_similarity(self, output_metrics=True):
@@ -2224,14 +2191,15 @@ class CoalescenceTree(object):
 			try:
 				self.cursor.execute(tmp_create)
 				self.database.commit()
-			except Exception as e:
+			except Exception as e:  # pragma: no cover
 				e.message = "Error creating SPECIES_RICHNESS table: " + str(e)
 				raise e
-		else:
+		else:  # pragma: no cover
 			raise RuntimeError("SPECIES_DISTANCE_SIMILARITY table already exists in the output database.")
-		if not check_sql_table_exist(self.database, "SPECIES_LOCATIONS"):
-			raise RuntimeError("SPECIES_LOCATIONS table does not exist in output database - calculate species locations"
-							   "first.")
+		if not check_sql_table_exist(self.database, "SPECIES_LOCATIONS"):  # pragma: no cover
+			raise RuntimeError(
+				"SPECIES_LOCATIONS table does not exist in output database - calculate species locations"
+				"first.")
 		max_val = [x for x in self.cursor.execute("SELECT min(x), max(x),"
 												  " min(y), max(y) FROM SPECIES_LOCATIONS").fetchone()]
 		references = set([x[3] for x in species_locations])
@@ -2242,7 +2210,7 @@ class CoalescenceTree(object):
 		for reference in references:
 			select = [x[0:3] for x in species_locations if x[3] == reference]
 			species_list = {}
-			if len(select) == 0:
+			if len(select) == 0:  # pragma: no cover
 				continue
 			sum_distances = [0] * max_distance
 			# first loop over every individual
@@ -2266,7 +2234,7 @@ class CoalescenceTree(object):
 				output.append([distance, item, reference])
 				total_sim += item * distance
 				number_all += item
-			if number_all == 0:
+			if number_all == 0:  # pragma: no cover
 				self.logger.info("No distances found for {} - likely no species exist with more than one"
 								 " location.".format(reference))
 				mean = 0
@@ -2287,7 +2255,8 @@ class CoalescenceTree(object):
 				tmp = [ref, "mean_distance_between_individuals", "whole"]
 				tmp.extend([x[0], float(x[1])])
 				bio_output.append(tmp)
-			self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)", bio_output)
+			self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)",
+									bio_output)
 		self.cursor.executemany("INSERT INTO SPECIES_DISTANCE_SIMILARITY VALUES(?,?,?,?)", sql_output)
 		self.database.commit()
 
@@ -2298,89 +2267,11 @@ class CoalescenceTree(object):
 		:return: list containing the distance, number of similar species with that distance
 		"""
 		self._check_database()
-		if not check_sql_table_exist(self.database, "SPECIES_DISTANCE_SIMILARITY"):
+		if not check_sql_table_exist(self.database, "SPECIES_DISTANCE_SIMILARITY"):  # pragma: no cover
 			raise IOError("Database {} does not contain SPECIES_DISTANCE_SIMILARITY table".format(self.file))
 		sql_fetch = self.cursor.execute("SELECT distance, no_individuals FROM SPECIES_DISTANCE_SIMILARITY "
 										"WHERE community_reference == ?", (community_reference,)).fetchall()
 		return [list(x) for x in sql_fetch]
-
-
-def collate_fits(file_dir, filename="Collated_fits.db"):
-	"""
-	Collates the goodness of fit values from every file in the specified directory and places them in one new file.
-
-	.. note:: Files with 'collated' in the name will be ignored.
-
-	.. note:: If the output file exists, it will be deleted.
-
-	Creates three separate tables in the output file, one for overall goodness of fit, one for fragment richness fits,
-	and one for fragment octaves fits.
-
-	:param file_dir: the file directory to examine
-	:param filename: [optional] the output file name.
-	"""
-	if filename == "Collated_fits.db":
-		filename = os.path.join(file_dir, filename)
-	if os.path.exists(filename):
-		os.remove(filename)
-
-	try:
-		database = sqlite3.connect(filename)
-	except Exception as e:
-		raise IOError("Error opening SQLite database: " + e.message)
-	database.execute("CREATE TABLE GOODNESS_FIT (ref INT PRIMARY KEY NOT NULL, task INT NOT NULL, seed INT NOT NULL, "
-					 "sigma FLOAT NOT NULL, tau FLOAT NOT NULL, m_probability FLOAT NOT NULL, cutoff FLOAT NOT NULL," \
-					 "time FLOAT NOT NULL, speciation_rate FLOAT NOT NULL, value FLOAT NOT NULL)")
-	database.execute(
-		"CREATE TABLE GOODNESS_FIT_FRAGMENT_RICHNESS (ref INT PRIMARY KEY NOT NULL, task INT NOT NULL, seed INT NOT NULL, "
-		"sigma FLOAT NOT NULL, tau FLOAT NOT NULL, m_probability FLOAT NOT NULL, cutoff FLOAT NOT NULL," \
-		"time FLOAT NOT NULL, speciation_rate FLOAT NOT NULL, value FLOAT NOT NULL)")
-	database.execute(
-		"CREATE TABLE GOODNESS_FIT_FRAGMENT_OCTAVES (ref INT PRIMARY KEY NOT NULL, task INT NOT NULL, seed INT NOT NULL, "
-		"sigma FLOAT NOT NULL, tau FLOAT NOT NULL, m_probability FLOAT NOT NULL, cutoff FLOAT NOT NULL," \
-		"time FLOAT NOT NULL, speciation_rate FLOAT NOT NULL, value FLOAT NOT NULL)")
-	ref = 0
-	ref_richness = 0
-	ref_octaves = 0
-	out = []
-	out_richness = []
-	out_octaves = []
-	if os.path.exists(file_dir):
-		for file in os.listdir(file_dir):
-			if os.path.join(file_dir, file) == filename or "Collated" in file:
-				continue
-			elif ".db" in file and os.path.isfile(os.path.join(file_dir, file)):
-				temp = CoalescenceTree()
-				try:
-					temp.set_database(os.path.join(file_dir, file))
-				except IOError:
-					temp.logger.warning("Database {} is not complete or does not exist.\n".format(file))
-					continue
-				try:
-					gof = temp.get_goodness_of_fit()
-				except:
-					raise RuntimeError("File: " + file)
-				gof_octaves = temp.get_goodness_of_fit_fragment_octaves()
-				gof_richness = temp.get_goodness_of_fit_fragment_richness()
-				disp = temp.dispersal_parameters()
-				j = temp.get_job()
-				for each in gof:
-					out.append([ref, j[0], j[1], disp[0], disp[1], disp[2], disp[3], each[3], each[4], each[5]])
-					ref += 1
-				for each in gof_richness:
-					out_richness.append(
-						[ref_richness, j[0], j[1], disp[0], disp[1], disp[2], disp[3], each[3], each[4], each[5]])
-					ref_richness += 1
-				for each in gof_octaves:
-					out_octaves.append(
-						[ref_octaves, j[0], j[1], disp[0], disp[1], disp[2], disp[3], each[3], each[4], each[5]])
-					ref_octaves += 1
-		database.executemany("INSERT INTO GOODNESS_FIT VALUES(?,?,?,?,?,?,?,?,?,?)", out)
-		database.executemany("INSERT INTO GOODNESS_FIT_FRAGMENT_RICHNESS VALUES(?,?,?,?,?,?,?,?,?,?)", out_richness)
-		database.executemany("INSERT INTO GOODNESS_FIT_FRAGMENT_OCTAVES VALUES(?,?,?,?,?,?,?,?,?,?)", out_octaves)
-		database.commit()
-	else:
-		raise RuntimeError("Specified file directory " + file_dir + " does not exist")
 
 
 def scale_simulation_fit(simulated_value, actual_value, number_individuals, total_individuals):

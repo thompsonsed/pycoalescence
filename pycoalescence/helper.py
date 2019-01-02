@@ -26,7 +26,7 @@ def update_parameter_names(database):
 		db = sqlite3.connect(database)
 		c = db.cursor()
 		if not check_sql_table_exist(db, "SIMULATION_PARAMETERS"):
-			raise TypeError("Table SIMULATION_PARAMETERS does not exist in database.")
+			raise IOError("Table SIMULATION_PARAMETERS does not exist in database.")
 		# Check if the parameters are already updated
 		sql_query = ("SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme," 
 					" sample_size, max_time, dispersal_relative_cost, min_num_species, habitat_change_rate," 
@@ -34,17 +34,18 @@ def update_parameter_names(database):
 					" coarse_map_x_offset, coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, " 
 					"fine_map_y, fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y,"
 					"sample_x_offset, sample_y_offset, historical_coarse_map, historical_fine_map, sim_complete, "
-					"dispersal_method, m_probability, cutoff, restrict_self, landscape_type, protracted, "
+					"dispersal_method, m_probability, cutoff, landscape_type, protracted, "
 					"min_speciation_gen, max_speciation_gen, dispersal_map FROM SIMULATION_PARAMETERS")
 		try:
 			c.execute(sql_query)
+			db = None
 			return
-		except sqlite3.OperationalError:
+		except sqlite3.Error:
 			pass
 		sql_query = "ALTER TABLE SIMULATION_PARAMETERS RENAME TO SIM_P_backup; "
 		try:
 			c.execute(sql_query)
-		except sqlite3.OperationalError:
+		except sqlite3.Error:  # pragma: no cover
 			c.execute("DROP TABLE SIM_P_backup;")
 			c.execute(sql_query)
 		sql_query = "CREATE TABLE SIMULATION_PARAMETERS(seed INT PRIMARY KEY not null, job_type INT NOT NULL,"
@@ -81,7 +82,7 @@ def update_parameter_names(database):
 						"pristine_coarse_map, pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff, " \
 						"restrict_self, infinite_landscape, protracted, min_speciation_gen, max_speciation_gen, dispersal_map FROM SIM_P_backup;"
 			c.execute(sql_query)
-		except sqlite3.OperationalError:
+		except sqlite3.Error:
 			# Provide additional support for a different naming convention
 			try:
 				sql_query = "INSERT INTO SIMULATION_PARAMETERS(seed, job_type, output_dir, speciation_rate, sigma, tau, deme," \
@@ -99,7 +100,7 @@ def update_parameter_names(database):
 							"pristine_coarse_map, pristine_fine_map, sim_complete, dispersal_method, m_probability, cutoff, " \
 							"restrict_self, infinite_landscape, protracted, min_speciation_gen, max_speciation_gen, dispersal_map FROM SIM_P_backup;"
 				c.execute(sql_query)
-			except sqlite3.OperationalError:
+			except sqlite3.Error:
 				# Provide additional support for a different naming convention
 				sql_query = "INSERT INTO SIMULATION_PARAMETERS(seed, job_type, output_dir, speciation_rate, sigma, tau, deme," \
 							" sample_size, max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical," \
@@ -120,5 +121,5 @@ def update_parameter_names(database):
 		db.commit()
 		db.close()
 		db = None
-	except sqlite3.OperationalError as soe:
-		raise sqlite3.OperationalError("Could not update simulation parameters: {}".format(soe))
+	except sqlite3.Error as soe:  # pragma: no cover
+		raise sqlite3.Error("Could not update simulation parameters: {}".format(soe))

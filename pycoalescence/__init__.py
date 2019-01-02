@@ -25,8 +25,8 @@ try:
 	# Support for no scipy installed
 	try:
 		from pycoalescence.fragments import FragmentedLandscape
-	except ImportError as ie:
+	except ImportError as ie:  # pragma: no cover
 		logging.warning("Cannot generate fragmented landscapes: {}".format(ie))
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	logging.warning(ie)
 	logging.warning("Cannot import package - are you sure that it has been installed correctly?")

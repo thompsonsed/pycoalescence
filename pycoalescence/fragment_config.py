@@ -10,7 +10,7 @@ import sys
 
 try:
 	from osgeo import gdal, ogr, osr
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	try:
 		import gdal
 		from gdal import ogr, osr
@@ -76,7 +76,7 @@ class FragmentConfigHandler(object):
 		# Read the input Layer
 		src_driver = ogr.GetDriverByName("ESRI Shapefile")
 		src_ds = src_driver.Open(input_shapefile, gdal.GA_ReadOnly)
-		if src_ds is None:
+		if src_ds is None:  # pragma: no cover
 			raise IOError("Could not open {}".format(input_shapefile))
 		src_layer = src_ds.GetLayer()
 		for feature in src_layer:
@@ -103,7 +103,7 @@ class FragmentConfigHandler(object):
 		"""
 		if os.path.exists(output_csv):
 			raise FileExistsError("Output csv {} already exists. Please remove first.".format(output_csv))
-		if sys.version_info[0] < 3:
+		if sys.version_info[0] < 3:  # pragma: no cover
 			infile = open(output_csv, "wb")
 		else:
 			infile = open(output_csv, "w", newline='')

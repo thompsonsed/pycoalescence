@@ -10,25 +10,26 @@ Simulate dispersal kernels on landscapes. Detailed :ref:`here <Simulate_landscap
 	- A table is created for mean dispersal distance over a single step or for mean distance travelled.
 """
 from __future__ import absolute_import
+
 import logging
 import os
 import sys
-from numpy import std
 
+from numpy import std
 
 # Python 2
 try:
 	from .necsim import libnecsim
-except ImportError as ime:
+except ImportError as ime:  # pragma: no cover
 	from pycoalescence.necsim import libnecsim
 
 try:
 	try:
 		import sqlite3
-	except ImportError:
+	except ImportError:  # pragma: no cover
 		# Python 3 compatibility
 		import sqlite as sqlite3
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	sqlite3 = None
 	logging.warning("Problem importing sqlite module " + str(ie))
 
@@ -42,28 +43,26 @@ class DispersalSimulation(Landscape):
 	Simulates a dispersal kernel upon a tif file to calculate landscape-level dispersal metrics.
 	"""
 
-	def __init__(self, dispersal_db="output.db", file=None, logging_level=logging.WARNING):
+	def __init__(self, dispersal_db=None, file=None, logging_level=logging.WARNING):
 		"""
 		Default initialiser for members of DispersalSimulation. Ensures that the database is
 
-		:param dispersal_db: the output database to generate
-		:param file: sets the filename for reading tif files.
-		:param is_sample: sets the sample mask to true, if it is a sampled file
-		:param logging_level: the level of logging to output during dispersal simulations
-		:param dispersal_db: path to a complete dispersal simulation database. Can also be a Map object containing the
-							 completed simulation
+		:param str dispersal_db: path to a dispersal simulation database. Can also be a Map object containing the
+								 completed simulation.
+		:param str file: sets the filename for reading tif files.
+		:param bool is_sample: sets the sample mask to true, if it is a sampled file
+		:param int logging_level: the level of logging to output during dispersal simulations
 		"""
 		Landscape.__init__(self)
 		self.logger = logging.Logger("pycoalescence.dispersal_simulation")
 		self._create_logger(logging_level=logging_level)
 		self._db_conn = None
-		self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
-		# The dispersal simulation data
-		self.dispersal_database = dispersal_db
+		self.c_dispersal_simulation = None
+		self._create_c_dispersal_simulation()
 		self.deme = 1
 		self.number_repeats = None
 		self.number_steps = None
-		self.seed = 1
+		self.seed = None
 		self.dispersal_method = None
 		self.landscape_type = None
 		self.sigma = None
@@ -78,8 +77,6 @@ class DispersalSimulation(Landscape):
 			self.set_map(file)
 		if isinstance(dispersal_db, DispersalSimulation):
 			self.dispersal_database = dispersal_db.dispersal_database
-		elif isinstance(dispersal_db, Map):
-			self.file_name = dispersal_db.file_name
 		else:
 			self.dispersal_database = dispersal_db
 
@@ -90,6 +87,11 @@ class DispersalSimulation(Landscape):
 		self._close_database_connection()
 		self.c_dispersal_simulation = None
 
+	def _create_c_dispersal_simulation(self):
+		"""Creates the CDispersalSimulation object, if it has not already been created."""
+		if self.c_dispersal_simulation is None:
+			self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
+
 	def _open_database_connection(self, database=None):
 		"""
 		Opens the connection to the database, raising the appropriate errors if the database does not exist
@@ -97,29 +99,27 @@ class DispersalSimulation(Landscape):
 		file.
 		"""
 		if database is not None:
-			if self.dispersal_database is not None:
+			if self._db_conn is not None:  # pragma: no cover
 				return
 			self.dispersal_database = database
-		if self.dispersal_database is None:
+		if self.dispersal_database is None:  # pragma: no cover
 			raise ValueError("Dispersal database is not set, run test_average_dispersal() first or set dispersal_db.")
 		if not os.path.exists(self.dispersal_database):
 			raise IOError("Dispersal database does not exist: {}".format(self.dispersal_database))
 		# Open the SQLite connection
 		try:
 			self._db_conn = sqlite3.connect(self.dispersal_database)
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			self._db_conn = None
-			raise IOError("Error opening SQLite database: " + str(e))
+			raise IOError("Error opening SQLite database: {}".format(e))
 
 	def _close_database_connection(self):
-		"""
-		Safely closes the database connection
-		"""
+		"""Safely closes the database connection."""
 		if self._db_conn is not None:
 			try:
 				self._db_conn.close()
 				self._db_conn = None
-			except sqlite3.OperationalError as e:
+			except sqlite3.Error as e:  # pragma: no cover
 				self._db_conn = None
 				raise IOError("Could not close database: " + str(e))
 
@@ -139,8 +139,8 @@ class DispersalSimulation(Landscape):
 
 	def _check_output_database(self):
 		"""Sets the setup to false if the output database has not been generated already."""
+		self._create_c_dispersal_simulation()
 		if not os.path.exists(self.dispersal_database):
-			self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
 			self.setup_complete = False
 			self.c_dispersal_simulation.set_output_database(self.dispersal_database)
 
@@ -217,8 +217,8 @@ class DispersalSimulation(Landscape):
 
 		:rtype: None
 		"""
-		vars = locals()
-		for k, v in locals().items():
+		vars = locals().copy()
+		for k, v in vars.items():
 			if v is not None:
 				setattr(self, k, v)
 			if k == "number_steps" and v is not None:
@@ -262,11 +262,11 @@ class DispersalSimulation(Landscape):
 		self.landscape_type = landscape_type
 		self.sequential = sequential
 		self.restrict_self = restrict_self
-		if isinstance(number_steps, list):
+		if isinstance(number_steps, list):  # pragma: no cover
 			self.number_steps = [int(x) for x in number_steps]
 		else:
 			self.number_steps = [int(number_steps)]
-		if not os.path.exists(os.path.dirname(self.dispersal_database)):
+		if not os.path.exists(os.path.dirname(self.dispersal_database)):  # pragma: no cover
 			os.makedirs(os.path.dirname(self.dispersal_database))
 		self.c_dispersal_simulation.set_output_database(self.dispersal_database)
 		self.set_dispersal_parameters(dispersal_method, dispersal_file, sigma, tau, m_prob,
@@ -277,14 +277,13 @@ class DispersalSimulation(Landscape):
 		Completes the setup for the dispersal simulation, including importing the map files and setting the historical
 		maps.
 		"""
-		if not self.is_setup_map:
+		if not self.is_setup_map:  # pragma: no cover
 			raise RuntimeError("Maps have not been set up yet.")
 		self._check_output_database()
 		self.c_dispersal_simulation.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma,
-															 self.tau,
-															 self.m_prob, self.cutoff, self.dispersal_relative_cost,
-															 self.restrict_self)
-		if self.setup_complete:
+															 self.tau, self.m_prob, self.cutoff,
+															 self.dispersal_relative_cost, self.restrict_self)
+		if self.setup_complete:  # pragma: no cover
 			self.logger.info("Set up has already been completed.")
 		else:
 			if len(self.historical_fine_list) != 0:
@@ -314,6 +313,30 @@ class DispersalSimulation(Landscape):
 														self.landscape_type)
 			self.setup_complete = True
 
+	def check_base_parameters(self, number_repeats=None, seed=None, sequential=None):
+		"""
+		Checks that the parameters have been set properly.
+
+		:param int number_repeats: the number of times to iterate on the map
+		:param int seed: the random seed
+		:param bool sequential: if true, runs repeats sequentially
+
+		:rtype: None
+		"""
+		if number_repeats is None and self.number_repeats is None:
+			raise ValueError("number_repeats has not been set.")
+		if seed is None and self.seed is None:
+			raise ValueError("Seed has not been set.")
+		if sequential is None and self.sequential is None:
+			raise ValueError("sequential flag has not been set.")
+		if number_repeats is not None:
+			self.number_repeats = number_repeats
+		if seed is not None:
+			self.seed = seed
+		if sequential is not None:
+			self.sequential = sequential
+		self._check_output_database()
+
 	def run_mean_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, sequential=None):
 		"""
 		Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled
@@ -328,28 +351,17 @@ class DispersalSimulation(Landscape):
 		:param int/list number_steps: the number of steps to take each time before recording the distance travelled
 		:param int seed: the random seed
 		:param bool sequential: if true, runs repeats sequentially
-		:return:
+
+		:rtype: None
 		"""
 		self._close_database_connection()
 		# Delete the file if it exists, and recursively create the folder if it doesn't
 		check_parent(self.dispersal_database)
-		if number_repeats is None and self.number_repeats is None:
-			raise ValueError("number_repeats has not been set.")
 		if number_steps is None and self.number_steps in [None, [None], []]:
 			raise ValueError("number_steps has not been set.")
-		if seed is None and self.seed is None:
-			raise ValueError("Seed has not been set.")
-		if sequential is None and self.sequential is None:
-			raise ValueError("sequential flag has not been set.")
-		if number_repeats is not None:
-			self.number_repeats = number_repeats
+		self.check_base_parameters(number_repeats=number_repeats, seed=seed, sequential=sequential)
 		if number_steps is not None:
 			self.number_steps = number_steps
-		if seed is not None:
-			self.seed = seed
-		if sequential is not None:
-			self.sequential = sequential
-		self._check_output_database()
 		if not self.setup_complete:
 			self.complete_setup()
 		self.c_dispersal_simulation.run_mean_distance_travelled(self.number_repeats, self.number_steps, self.seed,
@@ -369,13 +381,7 @@ class DispersalSimulation(Landscape):
 		self._close_database_connection()
 		# Delete the file if it exists, and recursively create the folder if it doesn't
 		check_parent(self.dispersal_database)
-		if number_repeats:
-			self.number_repeats = number_repeats
-		if seed:
-			self.seed = seed
-		if sequential:
-			self.sequential = sequential
-		self._check_output_database()
+		self.check_base_parameters(number_repeats=number_repeats, seed=seed, sequential=sequential)
 		if not self.setup_complete:
 			self.complete_setup()
 		self.c_dispersal_simulation.run_mean_dispersal_distance(self.number_repeats, self.seed, self.sequential)
@@ -402,8 +408,8 @@ class DispersalSimulation(Landscape):
 				raise ValueError("Could not get mean distance for "
 								 "parameter reference of {} from {}.".format(parameter_reference,
 																			 self.dispersal_database))
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get average distance from database: " + str(e))
+		except sqlite3.Error as e:  # pragma: no cover
+			raise IOError("Could not get average distance from database: {}.".format(e))
 		return sql_fetch
 
 	def get_mean_distance_travelled(self, database=None, parameter_reference=1):
@@ -424,7 +430,7 @@ class DispersalSimulation(Landscape):
 			cursor = self._db_conn.cursor()
 			sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
 									   (parameter_reference,)).fetchall()[0][0]
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			raise IOError("Could not get average distance from database: " + str(e))
 		return sql_fetch
 
@@ -447,10 +453,10 @@ class DispersalSimulation(Landscape):
 			sql_fetch = [x[0] for x in cursor.execute("SELECT distance FROM DISPERSAL_DISTANCES "
 													  "WHERE parameter_reference = ?",
 													  (parameter_reference,)).fetchall()]
-			if len(sql_fetch) == 0:
+			if len(sql_fetch) == 0:  # pragma: no cover
 				raise ValueError("No distances in DISPERSAL_DISTANCES, cannot find standard deviation.")
 			stdev_distance = std(sql_fetch)
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			raise IOError("Could not get average distance from database: " + str(e))
 		return stdev_distance
 
@@ -476,11 +482,11 @@ class DispersalSimulation(Landscape):
 			sql_fetch = [x[0] for x in cursor.execute("SELECT distance FROM DISTANCES_TRAVELLED"
 													  " WHERE parameter_reference = ?",
 													  (parameter_reference,)).fetchall()]
-			if len(sql_fetch) == 0:
+			if len(sql_fetch) == 0:  # pragma: no cover
 				raise ValueError("No distances in DISTANCES_TRAVELLED, cannot find standard deviation.")
 			stdev_distance = std(sql_fetch)
-		except sqlite3.OperationalError as e:
-			raise IOError("Could not get average distance from database: " + str(e))
+		except sqlite3.Error as e:  # pragma: no cover
+			raise IOError("Could not get average distance from database: {}.".format(e))
 		return stdev_distance
 
 	def get_database_parameters(self, reference=None):
@@ -498,14 +504,14 @@ class DispersalSimulation(Landscape):
 			cursor = self._db_conn.cursor()
 			cursor.execute("SELECT ref, simulation_type, sigma, tau, m_prob, cutoff, dispersal_method, map_file, seed,"
 						   " number_steps, number_repeats FROM PARAMETERS")
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
 		column_names = [member[0] for member in cursor.description]
 		main_dict = {}
 		for row in cursor.fetchall():
 			values = [x for x in row]
 			# Python 2.x support
-			if sys.version_info[0] != 3:
+			if sys.version_info[0] != 3:  # pragma: no cover
 				for i, each in enumerate(values):
 					if isinstance(each, unicode):
 						values[i] = each.encode('ascii')
@@ -531,6 +537,6 @@ class DispersalSimulation(Landscape):
 		try:
 			cursor = self._db_conn.cursor()
 			cursor.execute("SELECT DISTINCT(ref) FROM PARAMETERS")
-		except sqlite3.OperationalError as e:
+		except sqlite3.Error as e:  # pragma: no cover
 			raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
 		return [x[0] for x in cursor.fetchall()]

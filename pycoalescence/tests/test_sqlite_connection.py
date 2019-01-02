@@ -81,7 +81,7 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		Test that community parameters are correctly read from the database.
 		"""
 		community_parameters = fetch_table_from_sql(database="sample/mergers/data_0_0.db",
-		                                            table_name="COMMUNITY_PARAMETERS")
+													table_name="COMMUNITY_PARAMETERS")
 		expected_community_parameters = [[1, 0.5, 0.0, 0, 0],
 		                                 [2, 0.5, 0.5, 0, 0],
 		                                 [3, 0.6, 0.0, 0, 0],
@@ -90,6 +90,8 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		                                 [6, 0.7, 0.5, 0, 0]]
 		for i, row in enumerate(expected_community_parameters):
 			self.assertListEqual(row, community_parameters[i])
+		with self.assertRaises(IOError):
+			_ = fetch_table_from_sql(database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMETERSXX")
 
 	def testDetectsTablesCorrectly(self):
 		"""
@@ -119,9 +121,9 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		Tests that the maximum value function works correctly.
 		"""
 		self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db", "COMMUNITY_PARAMETERS", "reference"))
-		with self.assertRaises(sqlite3.OperationalError):
+		with self.assertRaises(sqlite3.Error):
 			self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db",
 			                                            "COMMUNITY_PARAMETERS", "reference2"))
-		with self.assertRaises(sqlite3.OperationalError):
+		with self.assertRaises(sqlite3.Error):
 			self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db",
 			                                            "COMMUNITY_PARAMETERS2", "reference"))

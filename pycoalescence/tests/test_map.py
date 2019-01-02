@@ -1,25 +1,26 @@
 """Tests the Map object for provision of geospatial data and map manipulation operations."""
 
 import logging
-import unittest
-import sys
-import unittest
-import gdal
-from osgeo import osr, ogr, gdal
-import numpy as np
-import shutil
 import os
+import shutil
 import subprocess
+import unittest
+
+import gdal
+import numpy as np
+from osgeo import osr, ogr, gdal
+
 try:
-	from unittest.mock import MagicMock, create_autospec
-except ImportError:
+	from unittest.mock import MagicMock, create_autospec, patch
+except ImportError:  # pragma: no cover
 	from mock import Mock as MagicMock
-	from mock import create_autospec
+	from mock import create_autospec, patch
 
 from pycoalescence import Map, FragmentedLandscape
 from setupTests import setUpAll, tearDownAll, skipGdalWarp
 
 import scipy
+
 
 def setUpModule():
 	"""
@@ -34,6 +35,7 @@ def tearDownModule():
 	"""
 	tearDownAll()
 
+
 class TestMapImports(unittest.TestCase):
 	"""Tests that errors are thrown correctly when gdal is not detected."""
 
@@ -44,7 +46,7 @@ class TestMapImports(unittest.TestCase):
 		if "GDAL_DATA" in os.environ:
 			cls.gdal_dir = os.environ["GDAL_DATA"]
 			os.environ.pop("GDAL_DATA")
-		else:
+		else:  # pragma: no cover
 			cls.gdal_dir = None
 
 	@classmethod
@@ -63,6 +65,7 @@ class TestMapImports(unittest.TestCase):
 		subprocess.check_output = create_autospec(subprocess.check_output, return_value=None)
 		with self.assertRaises(ImportError):
 			m = Map()
+
 
 class TestMap(unittest.TestCase):
 	"""
@@ -157,19 +160,36 @@ class TestMap(unittest.TestCase):
 		self.assertFalse(self.coarse_map.has_equal_dimensions(self.fine_map))
 		m = Map("sample/SA_samplemaskINT.tif")
 		self.assertTrue(self.fine_map.has_equal_dimensions(m))
+		with self.assertRaises(TypeError):
+			self.fine_map.has_equal_dimensions(10)
+		m.x_size = "str"
+		with self.assertRaises(ValueError):
+			m.check_map()
 
 	def testOffset(self):
-		"""
-		Tests that the offsets are correctly calculated between the fine and coarse maps
-		"""
+		"""Tests that the offsets are correctly calculated between the fine and coarse maps."""
 		self.assertListEqual(self.coarse_map.calculate_offset(self.fine_map), [-11, -14])
+		self.assertListEqual(self.coarse_map.calculate_offset(self.fine_map.file_name), [-11, -14])
 		self.assertListEqual(self.coarse_map.calculate_offset(self.coarse_map), [0, 0])
 		self.assertListEqual(self.fine_map.calculate_offset(self.coarse_map), [11, 14])
 
+	def testScale(self):
+		"""Tests that the scale is correctly calculated."""
+		self.assertEqual(1, self.fine_map.calculate_scale(self.fine_map))
+		self.assertEqual(1, self.fine_map.calculate_scale(self.fine_map.file_name))
+		self.assertEqual(12.99959999999942, self.coarse_map.calculate_scale(os.path.join("sample", "null_coarse.tif")))
+		with self.assertRaises(ValueError):
+			_ = self.coarse_map.calculate_scale(10)
+
+	def testSample(self):
+		m = Map(os.path.join("sample", "SA_sample_fine.tif"))
+		m.set_sample(True)
+		self.assertTrue(m.is_sample)
+		self.assertEqual(0, m.x_offset)
+		self.assertEqual(0, m.y_offset)
+
 	def testExtents(self):
-		"""
-		Tests that the extents are correctly calculated for the Map files.
-		"""
+		"""Tests that the extents are correctly calculated for the Map files."""
 		self.assertListEqual([-78.3750000000000000, -78.2666666666666657, 0.8583333333333343, 0.7500000000000009],
 							 self.fine_map.get_extent())
 
@@ -357,7 +377,7 @@ class TestMap(unittest.TestCase):
 		"""
 		m = Map()
 		output_raster = "output/raster_out8.tif"
-		geo_transform = (-78.375,0.00833333, 0, 0.858333, 0, -0.00833333)
+		geo_transform = (-78.375, 0.00833333, 0, 0.858333, 0, -0.00833333)
 		output_ds = ogr.Open("sample/shape_sample.shp")
 		m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform)
 		self.assertTrue(os.path.exists(output_raster))
@@ -379,7 +399,7 @@ class TestMap(unittest.TestCase):
 		"""
 		m = Map()
 		output_raster = "output/raster_out9.tif"
-		geo_transform = (-78.375,0.00833333, 0, 0.858333, 0, -0.00833333)
+		geo_transform = (-78.375, 0.00833333, 0, 0.858333, 0, -0.00833333)
 		output_ds = ogr.Open("sample/shape_sample.shp")
 		m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform, width=13, height=13)
 		self.assertTrue(os.path.exists(output_raster))
@@ -409,7 +429,7 @@ class TestMap(unittest.TestCase):
 						y_res=0.001, field="field2", burn_val=100)
 		with self.assertRaises(ValueError):
 			m.rasterise(shape_file="sample/SA_sample.tif", raster_file="output.tif", x_res=0.00833333,
-							y_res=0.001, field="field2", burn_val=100)
+						y_res=0.001, field="field2", burn_val=100)
 		m = Map()
 		with self.assertRaises(ValueError):
 			m.rasterise(shape_file="sample/shape_sample.shp", raster_file="no_exist.tif")
@@ -423,10 +443,14 @@ class TestMap(unittest.TestCase):
 		Tests that create copy works as intended.
 		"""
 		m = Map()
-		src_file = "sample/SA_sample.tif"
-		dst_file = "output/copy.tif"
+		src_file = os.path.join("sample", "SA_sample.tif")
+		dst_file = os.path.join("output", "copy.tif")
 		m2 = Map(src_file)
 		m.create_copy(dst_file=dst_file, src_file=src_file)
+		self.assertTrue(os.path.exists(dst_file))
+		m.file_name = src_file
+		with self.assertRaises(IOError):
+			m.create_copy(dst_file=dst_file)
 		self.assertListEqual(m.get_dimensions(), m2.get_dimensions())
 		self.assertEqual(m.get_projection(), m2.get_projection())
 
@@ -443,6 +467,11 @@ class TestMap(unittest.TestCase):
 		m2.open()
 		self.assertEqual((10, 10), m2.data.shape)
 		self.assertEqual(0, np.sum(m2.data))
+		with self.assertRaises(IOError):
+			m.create(output_file)
+		m.data = None
+		with self.assertRaises(ValueError):
+			m.create(output_file)
 
 	def testCreateWithGeotransform(self):
 		"""
@@ -461,11 +490,42 @@ class TestMap(unittest.TestCase):
 		self.assertAlmostEqual(48.58779, np.sum(m2.data), places=5)
 
 	def testDataTypeFetch(self):
-		"""
-		Tests that the data type is correctly obtained
-		"""
+		"""Tests that the data type is correctly obtained."""
 		m = Map("sample/SA_sample.tif")
 		self.assertEqual(6, m.get_dtype())
+		self.assertEqual(6, m.get_dtype(band_no=1))
+
+	def testGetDataset(self):
+		"""Tests that the dataset is obtained correctly."""
+		m = Map(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		with self.assertRaises(IOError):
+			m.get_dataset()
+
+	def testCalculateOffset(self):
+		"""Tests that the calculate offset errors work as intended."""
+		m = Map(os.path.join("sample", "SA_sample_fine.tif"))
+		m2 = Map(os.path.join("sample", "SA_sample_coarse.tif"))
+		x, y = m.calculate_offset(m2)
+		self.assertEqual(11, x)
+		self.assertEqual(14, y)
+		with self.assertRaises(TypeError):
+			m.calculate_offset(10)
+
+	def get_null_projection(self):
+		"""Get null projection for mock testing."""
+		a = 0
+		while True:
+			a += 1
+			yield a
+
+	@patch.object(Map, "get_projection", get_null_projection)
+	def testCalculateOffsetMixedProjection(self):
+		"""Tests that the calculate offset errors work as intended."""
+		m = Map(os.path.join("sample", "SA_sample_fine.tif"), logging_level=50)
+		m2 = Map(os.path.join("sample", "SA_sample_coarse.tif"), logging_level=50)
+		with self.assertRaises(TypeError):
+			_, _ = m.calculate_offset(m2)
+
 
 @unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
 @skipGdalWarp
@@ -592,7 +652,7 @@ class MapAssignment(unittest.TestCase):
 		cls.map = Map(file=os.path.join("output", "null.tif"))
 		cls.map.open()
 		cls.map.data[0:5, 0:2] = 10
-		cls.map.write()
+		cls.map.write(band_no=1)
 
 	def testBaseMap(self):
 		"""
@@ -608,6 +668,20 @@ class MapAssignment(unittest.TestCase):
 		arr = ds.GetRasterBand(1).ReadAsArray()
 		self.assertEqual(np.sum(arr), 259)
 		ds = None
+
+	def testWriteError(self):
+		"""Tests that the write function raises the expected errors."""
+		m = Map("none.tif")
+		with self.assertRaises(IOError):
+			m.write()
+		m = Map(os.path.join("sample", "null.tif"))
+		with self.assertRaises(ValueError):
+			m.write()
+		m = Map()
+		with self.assertRaises(ValueError):
+			m.map_exists()
+
+
 
 @unittest.skipUnless(hasattr(scipy.spatial, "Voronoi"),
 					 "Skipping reprojection test as scipy.spatial.Voronoi not found.")
@@ -663,6 +737,11 @@ class TestFragmentedLandscape(unittest.TestCase):
 		m1 = Map(logging_level=logging.CRITICAL)
 		m1.file_name = self.l1.output_file
 		m1.set_dimensions()
+		self.assertEqual(m1.x_size, 10)
+		self.assertEqual(m1.y_size, 10)
+		m1 = Map(logging_level=logging.CRITICAL)
+		m1.file_name = self.l1.output_file
+		m1.set_dimensions(x_size=10)
 		self.assertEqual(m1.x_size, 10)
 		self.assertEqual(m1.y_size, 10)
 
@@ -761,6 +840,14 @@ class TestSubsettingMaps(unittest.TestCase):
 		m = Map(tmp_file)
 		tmp_array = np.ones((5, 5)) + 1
 		m.write_subset(tmp_array, 2, 2)
+		m.file_name = "none.tif"
+		with self.assertRaises(IOError):
+			m.write_subset(tmp_array, 2, 2)
+		tmp_array = np.ones((10000, 10000))
+		m.file_name = tmp_file
+		with self.assertRaises(ValueError):
+			m.write_subset(tmp_array, 2, 2)
+
 		m = Map(tmp_file)
 		m.open()
 		expected_array = np.ones((10, 10))

@@ -2,13 +2,15 @@
 Tests the Merger module for combining the outputs of multiple simulations
 """
 
+import os
+import sys
 import unittest
 
-import os
-
-from pycoalescence.sqlite_connection import fetch_table_from_sql
-from pycoalescence import Merger
 from setupTests import setUpAll, tearDownAll
+
+from pycoalescence import Merger, CoalescenceTree
+from pycoalescence.sqlite_connection import fetch_table_from_sql, check_sql_table_exist
+
 
 def setUpModule():
 	"""
@@ -16,11 +18,13 @@ def setUpModule():
 	"""
 	setUpAll()
 
+
 def tearDownModule():
 	"""
 	Removes the output directory
 	"""
 	tearDownAll()
+
 
 class TestSimulationReadingViaMerger(unittest.TestCase):
 	"""
@@ -33,7 +37,6 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
 	def tearDownClass(cls):
 		if os.path.exists(cls.dbname):
 			os.remove(cls.dbname)
-
 
 	def testReadsSimulationParameters(self):
 		"""
@@ -105,7 +108,6 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
 			self.assertListEqual(row, fragment_octaves[i])
 
 
-
 class TestSimulationMerging(unittest.TestCase):
 	"""
 	Tests that simulations can be successfully merged with a variety of tables and parameters.
@@ -114,12 +116,16 @@ class TestSimulationMerging(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		cls.dbname = "output/mergers/combined2.db"
-		if os.path.exists(cls.dbname):
-			os.remove(cls.dbname)
+		cls.dbname2 = "output/mergers/combined3.db"
+		for each in [cls.dbname, cls.dbname2]:
+			if os.path.exists(each):
+				os.remove(each)
 		cls.merger = Merger(database=cls.dbname)
 		cls.merger.add_simulation("sample/mergers/data_0_0.db")
 		cls.merger.add_simulation("sample/mergers/data_1_1.db")
 		cls.merger.write()
+		cls.merger2 = Merger(database=cls.dbname2)
+		cls.merger2.add_simulations(["sample/mergers/data_2_2.db", "sample/mergers/data_3_3.db"])
 
 	@classmethod
 	def tearDownClass(cls):
@@ -131,39 +137,87 @@ class TestSimulationMerging(unittest.TestCase):
 		if os.path.exists(cls.dbname):
 			os.remove(cls.dbname)
 
+	def testSetDatabase(self):
+		"""Tests that an error is raised if the output database already exists."""
+		m = Merger()
+		with self.assertRaises(IOError):
+			m.set_database(self.dbname)
+
+	def testMergerDeletion(self):
+		"""Tests that the merger deletes the database successfully."""
+		m = Merger()
+		m._open_database(filename=os.path.join("output", "mergertmp.db"))
+		self.assertFalse(m.database is None)
+		m.__del__()
+		self.assertTrue(m.database is None)
+
+	def testCreateTableErrors(self):
+		"""Tests that creating the simulation parameters raises the expected errors."""
+		m = Merger()
+		with self.assertRaises(IOError):
+			m._create_simulation_parameters()
+		with self.assertRaises(IOError):
+			m._create_community_parameters()
+		with self.assertRaises(IOError):
+			m._create_metacommunity_parameters()
+		with self.assertRaises(IOError):
+			m._create_species_list()
+		with self.assertRaises(IOError):
+			m._create_species_locations()
+		with self.assertRaises(IOError):
+			m._create_species_abundances()
+		with self.assertRaises(IOError):
+			m._create_fragment_abundances()
+		with self.assertRaises(IOError):
+			m._create_fragment_octaves()
+		with self.assertRaises(IOError):
+			m._create_species_richness()
+		with self.assertRaises(IOError):
+			m._create_fragment_richness()
+		with self.assertRaises(IOError):
+			m._write_simulation_parameters()
+		with self.assertRaises(IOError):
+			m._write_species_list()
+		with self.assertRaises(IOError):
+			m._write_species_locations()
+		with self.assertRaises(IOError):
+			m._write_species_abundances()
+		with self.assertRaises(IOError):
+			m._write_fragment_abundances()
+		with self.assertRaises(IOError):
+			m._write_species_richness()
+		with self.assertRaises(IOError):
+			m._write_fragment_richness()
+		with self.assertRaises(IOError):
+			m._write_fragment_octaves()
+		with self.assertRaises(IOError):
+			m._write_community_parameters()
+		with self.assertRaises(IOError):
+			m._write_metacommunity_parameters()
+		with self.assertRaises(ValueError):
+			m._create_combined_species_richness()
+		with self.assertRaises(ValueError):
+			m._create_combined_fragment_richness()
+		with self.assertRaises(ValueError):
+			m._create_combined_fragment_octaves()
+
 	def testSpeciesList(self):
 		"""
 		Tests that the species list object is correctly calculates for the database
 		"""
 		species_richness = fetch_table_from_sql(self.dbname, "SPECIES_LIST")
-		check_richness = [x for x in species_richness if x[0] == 28633529 or x[0] == 8]
+		check_richness = [x for x in species_richness if x[0] in [57236791, 57251923, 4, 5]]
 		check_richness.sort(key=lambda x: x[0])
-		expected_richness = [[8, 0, 0, 0, 0, 0, 1, 0, 11328, 0, 0.712285394568117, 0, 0.0, 2],
-							 [28633529, 0, 7, 3, 0, 0, 0, 1, 0, 0, 0.603760047033245, 2, 0.0, 1]]
+		expected_richness = [[4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0.0, 0, 0.0, 2],
+							 [5, 0, 0, 0, 0, 0, 1, 0, 11328, 0, 0.712285394568117, 0, 0.0, 2],
+							 [57236791, 0, 8, 6, -1, 0, 0, 1, 0, 0, 0.59455712863121, 2, 0.0, 1],
+							 [57251923, 0, 7, 3, 0, 0, 0, 1, 0, 0, 0.603760047033245, 2, 0.0, 1]]
 		for i, row in enumerate(expected_richness):
 			for j, each in enumerate(row):
 				if j == 10 or j == 12:
 					self.assertAlmostEqual(each, check_richness[i][j])
 				else:
 					self.assertEqual(each, check_richness[i][j])
-
-	def testSpeciesRichnessGuilds(self):
-		"""
-		Tests that the species richness with guilds is correctly calculated from the databases.
-		"""
-		richness = [[2, 1, 3644, 1],
-					[4, 2, 3643, 1],
-					[7, 3, 3674, 1],
-					[11, 4, 3675, 1],
-					[16, 5, 3697, 1],
-					[22, 6, 3695, 1],
-					[5, 1, 3644, 2],
-					[8, 2, 3643, 2],
-					[12, 3, 3674, 2],
-					[17, 4, 3675, 2],
-					[23, 5, 3697, 2],
-					[30, 6, 3695, 2]]
-		self.assertListEqual(fetch_table_from_sql(self.dbname, "SPECIES_RICHNESS_GUILDS"), richness)
 
 	def testSpeciesRichness(self):
 		"""
@@ -181,12 +235,13 @@ class TestSimulationMerging(unittest.TestCase):
 		"""
 		Tests that the species abundances are correctly calculated in the merged database
 		"""
-		abundances = [[238394531, 3495, 1, 6, 1],
-					  [91808, 4122, 1, 1, 2]]
-		species_richness = fetch_table_from_sql(self.dbname, "SPECIES_ABUNDANCES")
-		check_richness = [x for x in species_richness if x[0] == 238394531 or x[0] == 91808]
-		for i, each in enumerate(abundances):
-			self.assertListEqual(each, check_richness[i])
+		expected_abundances = [[5, 3697, 0, 1, 2], [1944632, 5090, 1, 1, 2], [485519191, 3695, 3, 6, 1]]
+		real_abundances = fetch_table_from_sql(self.dbname, "SPECIES_ABUNDANCES")
+		abundances = [x for x in real_abundances if x[0] == 1944632 or x[0] == 485519191 or x[0] == 5]
+		if sys.version_info[0] >= 3:
+			self.assertCountEqual(expected_abundances, abundances)
+		else:  # pragma: no cover
+			self.assertItemsEqual(expected_abundances, abundances)
 
 	def testSimulationParameters(self):
 		"""
@@ -235,30 +290,8 @@ class TestSimulationMerging(unittest.TestCase):
 		self.assertEqual(output_pars1, sim_pars1)
 		self.assertEqual(output_pars2, sim_pars2)
 
-	def testFragmentOctavesGuilds(self):
-		"""
-		Tests that the fragment octaves with guilds are correctly calculated in the merged database
-		"""
-		fragment_octaves = [[2, "whole", 0, 3560, 1],
-							[4, "whole", 0, 3559, 1],
-							[7, "whole", 0, 3617, 1],
-							[11, "whole", 0, 3619, 1],
-							[16, "whole", 0, 3662, 1],
-							[22, "whole", 0, 3658, 1],
-							[5, "whole", 0, 3560, 2],
-							[8, "whole", 0, 3559, 2],
-							[12, "whole", 0, 3617, 2],
-							[17, "whole", 0, 3619, 2],
-							[23, "whole", 0, 3662, 2],
-							[30, "whole", 0, 3658, 2]]
-		actual = fetch_table_from_sql(self.dbname, "FRAGMENT_OCTAVES_GUILDS")
-		for i, each in enumerate(fragment_octaves):
-			self.assertListEqual(each, actual[i])
-
 	def testCommunityParameters(self):
-		"""
-		Tests that the community parameters are correclty calculated in the merged database.
-		"""
+		"""Tests that the community parameters are correctly calculated in the merged database."""
 		community_params = [[1, 0.5, 0.0, 0, 0],
 							[2, 0.5, 0.5, 0, 0],
 							[3, 0.6, 0.0, 0, 0],
@@ -268,6 +301,36 @@ class TestSimulationMerging(unittest.TestCase):
 		actual = fetch_table_from_sql(self.dbname, "COMMUNITY_PARAMETERS")
 		for i, each in enumerate(community_params):
 			self.assertListEqual(each, actual[i])
+
+	def testGenerateGuildTables(self):
+		"""Tests that the guild tables are generated properly."""
+		self.assertFalse(check_sql_table_exist(self.merger2.file, "SPECIES_RICHNESS_GUILDS"))
+		self.assertFalse(check_sql_table_exist(self.merger2.file, "FRAGMENT_RICHNESS_GUILDS"))
+		self.assertFalse(check_sql_table_exist(self.merger2.file, "FRAGMENT_OCTAVES_GUILDS"))
+		self.merger2.generate_guild_tables()
+		self.assertTrue(check_sql_table_exist(self.merger2.file, "SPECIES_RICHNESS_GUILDS"))
+		self.assertTrue(check_sql_table_exist(self.merger2.file, "FRAGMENT_RICHNESS_GUILDS"))
+		self.assertTrue(check_sql_table_exist(self.merger2.file, "FRAGMENT_OCTAVES_GUILDS"))
+		fragment_octaves = [[1, 'fragment1', 0, 2, 1], [2, 'fragment1', 1, 3, 1], [7, 'fragment1', 0, 3, 1],
+							[13, 'fragment2', 0, 7, 1], [21, 'fragment2', 1, 7, 1], [31, 'fragment2', 0, 9, 1],
+							[43, 'fragment2', 1, 6, 1], [57, 'whole', 0, 626, 1], [73, 'whole', 1, 593, 1],
+							[91, 'whole', 2, 478, 1], [111, 'whole', 3, 287, 1], [133, 'whole', 4, 97, 1],
+							[157, 'whole', 0, 1035, 1], [183, 'whole', 1, 985, 1], [211, 'whole', 2, 651, 1],
+							[241, 'whole', 3, 238, 1], [273, 'whole', 4, 44, 1], [4, 'fragment1', 0, 6, 2],
+							[5, 'fragment1', 0, 10, 2], [6, 'fragment2', 0, 10, 2], [14, 'fragment2', 1, 6, 2],
+							[22, 'fragment2', 0, 18, 2], [32, 'whole', 0, 708, 2], [44, 'whole', 1, 563, 2],
+							[58, 'whole', 2, 494, 2], [74, 'whole', 3, 275, 2], [92, 'whole', 4, 97, 2],
+							[112, 'whole', 0, 1035, 2], [134, 'whole', 1, 920, 2], [158, 'whole', 2, 674, 2],
+							[184, 'whole', 3, 256, 2], [212, 'whole', 0, 708, 2], [242, 'whole', 1, 563, 2],
+							[274, 'whole', 2, 494, 2], [308, 'whole', 3, 275, 2], [344, 'whole', 4, 97, 2],
+							[382, 'whole', 0, 1035, 2], [422, 'whole', 1, 920, 2], [464, 'whole', 2, 674, 2],
+							[508, 'whole', 3, 256, 2]]
+		actual = fetch_table_from_sql(self.dbname2, "FRAGMENT_OCTAVES_GUILDS")
+		for i, each in enumerate(fragment_octaves):
+			self.assertListEqual(each, actual[i])
+		richness = [[1, 1, 2095, 1], [2, 2, 2954, 1], [4, 1, 2147, 2], [5, 2, 2923, 2]]
+		self.assertListEqual(fetch_table_from_sql(self.dbname2, "SPECIES_RICHNESS_GUILDS"), richness)
+
 
 class TestMergerInheritance(unittest.TestCase):
 	"""
@@ -315,7 +378,7 @@ class TestMergerAnalysis(unittest.TestCase):
 		cls.dbname = "output/mergers/combined4.db"
 		if os.path.exists(cls.dbname):
 			os.remove(cls.dbname)
-		cls.merger = Merger(database=cls.dbname)
+		cls.merger = Merger(database=cls.dbname, logging_level=50)
 		cls.merger.add_simulation("sample/mergers/data_0_0.db")
 		cls.merger.add_simulation("sample/mergers/data_1_1.db")
 		cls.merger.write()
@@ -323,6 +386,11 @@ class TestMergerAnalysis(unittest.TestCase):
 		cls.merger.set_speciation_parameters(speciation_rates=[0.5, 0.6], record_spatial=False,
 											 record_fragments="sample/FragmentsTest.csv")
 		cls.merger.apply()
+		cls.merger = Merger(database=cls.dbname, logging_level=50, expected=True)
+		cls.merger.set_speciation_parameters(speciation_rates=[0.7, 0.8], record_spatial=False,
+											 record_fragments="sample/FragmentsTest.csv")
+		cls.merger.apply_incremental()
+		cls.merger.output()
 		cls.merger.calculate_fragment_richness()
 
 	@classmethod
@@ -334,6 +402,12 @@ class TestMergerAnalysis(unittest.TestCase):
 		cls.merger.database = None
 		if os.path.exists(cls.dbname):
 			os.remove(cls.dbname)
+
+	def testMergerRepeatSimAdding(self):
+		"""Tests that an error is raised when a repeat simulation is added."""
+		ct = CoalescenceTree("sample/mergers/data_0_0.db")
+		with self.assertRaises(ValueError):
+			self.merger.add_simulation(ct)
 
 	def testMergerAnalysisRichness(self):
 		"""
@@ -350,3 +424,21 @@ class TestMergerAnalysis(unittest.TestCase):
 		"""
 		self.assertEqual(self.merger.get_fragment_richness("fragment1", 1), 672)
 		self.assertEqual(self.merger.get_fragment_richness("fragment2", 1), 1272)
+
+	def testMergerOutput(self):
+		"""Tests that the Merger outputs correctly."""
+		self.assertEqual(self.merger.get_species_richness(3), 7394)
+		self.assertEqual(self.merger.get_species_richness(4), 7426)
+		self.assertEqual(self.merger.get_fragment_richness("fragment2", 3), 1276)
+		self.assertEqual(self.merger.get_fragment_richness("fragment2", 4), 1280)
+
+	def testMergerAddedSimulations(self):
+		"""Tests that added simulations work as intended."""
+		added_sims = self.merger.get_added_simulations()
+		expected_sims = {"sample/mergers/data_0_0.db" : 1,
+						 "sample/mergers/data_1_1.db" : 2}
+		self.assertEqual(added_sims, expected_sims)
+		self.merger.simulation_list["sample/mergers/data_1_1.db"] = 4
+		with self.assertRaises(ValueError):
+			_ = self.merger.get_added_simulations()
+		self.merger.simulation_list = expected_sims

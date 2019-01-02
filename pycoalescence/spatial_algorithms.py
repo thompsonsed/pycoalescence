@@ -11,11 +11,11 @@ import logging
 
 try:
 	from osgeo import osr, ogr
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	logging.warning("Could not import from osgeo: {}".format(ie))
 try:
 	from scipy.spatial import Voronoi
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	logging.warning("Cannot import Voronoi from scipy.spatial: {}".format(ie))
 
 def calculate_distance_between(x1, y1, x2, y2):

@@ -17,7 +17,7 @@ from pycoalescence.spatial_algorithms import convert_coordinates
 
 try:
 	from matplotlib import pyplot as plt
-except (ImportError, RuntimeError) as ie:
+except (ImportError, RuntimeError) as ie:  # pragma: no cover
 	logging.warning(ie)
 try:
 	NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
@@ -28,7 +28,7 @@ try:
 	from osgeo import gdal, ogr, osr
 
 	default_val = gdal.GDT_Float32
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	default_val = 6
 	try:
 		import gdal
@@ -37,6 +37,8 @@ except ImportError as ie:
 		gdal = None
 		raise ie
 from .system_operations import check_file_exists, create_logger, check_parent, isclose
+
+from pycoalescence.future_except import FileNotFoundError
 
 
 class Map(object):
@@ -77,7 +79,7 @@ class Map(object):
 		self.logger = logging.Logger("pycoalescence.map")
 		self._create_logger()
 		# Check to make sure that the GDAL_PATH is in the environmental variables
-		if "GDAL_DATA" not in os.environ:
+		if "GDAL_DATA" not in os.environ:  # pragma: no cover
 			try:
 				if platform.system() == "Windows":
 					try:
@@ -174,7 +176,7 @@ class Map(object):
 		if ".tif" not in self.file_name:
 			raise IOError("File {} is not a tif file.".format(self.file_name))
 		ds = gdal.Open(self.file_name)
-		if ds is None:
+		if ds is None:  # pragma: no cover
 			raise IOError("Gdal could not open the file {}.".format(self.file_name))
 		return ds
 
@@ -227,7 +229,7 @@ class Map(object):
 		:return: true if the output file does exist
 		:rtype bool:
 		"""
-		if file:
+		if file is not None:
 			self.file_name = file
 		if self.file_name is None:
 			raise ValueError("Cannot check existence of {}".format(self.file_name))
@@ -249,7 +251,7 @@ class Map(object):
 		if not self.map_exists(file):
 			raise IOError("File {} does not exist for writing.".format(self.file_name))
 		ds = gdal.Open(self.file_name, gdal.GA_Update)
-		if not ds:
+		if not ds:  # pragma: no cover
 			raise IOError("Could not open tif file {}.".format(self.file_name))
 		if self.data is None:
 			raise ValueError("Cannot output None to tif file.")
@@ -278,7 +280,7 @@ class Map(object):
 			                                                                                  array.shape[1],
 			                                                                                  x, y))
 		ds = gdal.Open(self.file_name, gdal.GA_Update)
-		if not ds:
+		if not ds:  # pragma: no cover
 			raise IOError("Could not open tif file {}.".format(self.file_name))
 		if self.band_number is None:
 			self.band_number = 1
@@ -305,7 +307,7 @@ class Map(object):
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.file_name,
 		                                                     self.data.shape[1], self.data.shape[0], bands,
 		                                                     datatype)
-		if not output_raster:
+		if not output_raster:  # pragma: no cover
 			raise IOError("Could not create tif file at {}.".format(self.file_name))
 		output_raster.SetGeoTransform(geotransform)
 		if projection:
@@ -320,8 +322,8 @@ class Map(object):
 		"""
 		Creates a file copying projection and other attributes over from the desired copy
 
-		:param dst_file: existing file to copy attributes from
-		:param src_file: the output file to create
+		:param dst_file: existing file to create
+		:param src_file: the source file to copy from
 		"""
 		if src_file is None:
 			src_file = self.file_name
@@ -337,7 +339,7 @@ class Map(object):
 	def set_dimensions(self, file_name=None, x_size=None, y_size=None, x_offset=None, y_offset=None):
 		""" Sets the dimensions and file for the Map object
 
-		:param str file_name: the location of the map object (a csv or tif file). If None, required that file_name is already provided.
+		:param str/pycoalescence.Map file_name: the location of the map object (a csv or tif file). If None, required that file_name is already provided.
 		:param int x_size: the x dimension
 		:param int y_size: the y dimension
 		:param int x_offset: the x offset from the north-west corner
@@ -347,7 +349,10 @@ class Map(object):
 		"""
 		self.dimensions_set = False
 		if file_name is not None:
-			self.file_name = file_name
+			if isinstance(file_name, Map):
+				self.file_name = file_name.file_name
+			else:
+				self.file_name = file_name
 		elif self.file_name is None:
 			raise RuntimeError("No file name provided when trying to set dimensions.")
 		if (y_size is None and x_size is not None) or (x_size is None and y_size is not None):
@@ -532,7 +537,7 @@ class Map(object):
 		elif isinstance(file_scaled, Map):
 			scaled = file_scaled
 		else:
-			raise ValueError("supplied argument is not a string or Map type: " + str(file_scaled))
+			raise ValueError("supplied argument is not a string or Map type: {}".format(file_scaled))
 		src = np.array(self.read_dimensions())
 		dst = np.array(scaled.read_dimensions())
 		# Check that each of the dimensions matches
@@ -572,7 +577,7 @@ class Map(object):
 			pass
 		try:
 			src = np.array(self.read_dimensions())
-		except IOError:
+		except IOError:  # pragma: no cover
 			src = np.array(self.get_dimensions())
 		try:
 			off = np.array(offset.read_dimensions())
@@ -638,7 +643,7 @@ class Map(object):
 			if other_dims[i] != size:
 				return False
 		for i, coordinate in enumerate(this_dims[2:4]):
-			if not isclose(other_dims[i + 2], coordinate, abs_tol=0.0001):
+			if not isclose(other_dims[i + 2], coordinate, abs_tol=0.0001):  # pragma: no cover
 				return False
 		for i, dimension in enumerate(this_dims[4:]):
 			if not isclose(other_dims[i + 4], dimension, rel_tol=1e-4):
@@ -703,7 +708,7 @@ class Map(object):
 		else:
 			orig_data_src = shape_file
 		if not isinstance(output_srs, osr.SpatialReference):
-			if output_srs:
+			if output_srs:  # pragma: no cover
 				output_srs = osr.SpatialReference(wkt=output_srs)
 		if isinstance(burn_val, int) or isinstance(burn_val, float):
 			burn_val = [burn_val]
@@ -716,7 +721,7 @@ class Map(object):
 			source_layer.SetAttributeFilter(attribute_filter)
 		source_srs = source_layer.GetSpatialRef()
 		x_min, x_max, y_min, y_max = source_layer.GetExtent()
-		if output_srs and output_srs != source_srs:
+		if output_srs and output_srs != source_srs:  # pragma: no cover
 			x_min, y_min = convert_coordinates(x_min, y_min, source_srs, output_srs)
 			x_max, y_max = convert_coordinates(x_max, y_max, source_srs, output_srs)
 		x_dim = int(math.ceil((x_max - x_min) / self.x_res) + (2 * x_buffer))
@@ -727,17 +732,16 @@ class Map(object):
 			y_dim = kwargs["height"]
 		target_ds = gdal.GetDriverByName('GTiff').Create(self.file_name, x_dim,
 		                                                 y_dim, 1, data_type)
-		if target_ds is None:
+		if target_ds is None:  # pragma: no cover
 			raise IOError("Could not create raster file at {} with dimensions {}, {} and data type {}".format(
-				self.file_name, x_dim, y_dim, data_type
-			))
-		if output_srs:
+				self.file_name, x_dim, y_dim, data_type))
+		if output_srs:  # pragma: no cover
 			target_ds.SetProjection(output_srs.ExportToWkt())
 		else:
 			if source_srs:
 				# Make the target raster have the same projection as the source
 				target_ds.SetProjection(source_srs.ExportToWkt())
-			else:
+			else:  # pragma: no cover
 				# Source has no projection (needs GDAL >= 1.7.0 to work)
 				target_ds.SetProjection('LOCAL_CS["arbitrary"]')
 		if geo_transform is None:
@@ -759,7 +763,7 @@ class Map(object):
 		err = gdal.RasterizeLayer(target_ds, [1], source_layer, **kw)
 		target_ds.FlushCache()
 		del target_ds
-		if err != 0:
+		if err != 0:  # pragma: no cover
 			raise RuntimeError("Error rasterising layer. Gdal error code: {}".format(err))
 
 	def reproject_raster(self, dest_projection=None,
@@ -780,10 +784,10 @@ class Map(object):
 		:param resample_algorithm: should be one of the gdal.GRA algorithms
 		:param warp_memory_limit: optionally provide a memory cache limit (uses default if 0.0)
 		"""
-		if source_file is not None:
+		if source_file is not None:  # pragma: no cover
 			self.file_name = source_file
 		if dest_projection is None:
-			if x_scalar == 1.0 and y_scalar == 1.0:
+			if x_scalar == 1.0 and y_scalar == 1.0:  # pragma: no cover
 				raise ValueError("Destination projection not provided and no re-scaling - no reprojection possible.")
 			dest_projection = osr.SpatialReference(wkt=self.get_projection())
 		source_ds = gdal.Open(self.file_name, gdal.GA_ReadOnly)
@@ -805,20 +809,19 @@ class Map(object):
 		# 	out_name = "{}_tmp.tif".format(os.path.splitext(self.file_name)[0])
 		# else:
 		# 	out_name = dest_file
-		if dest_file is not None and os.path.exists(dest_file):
+		if dest_file is not None and os.path.exists(dest_file):  # pragma: no cover
 			raise IOError("Destination file already exists at {}.".format(dest_file))
 
 		# Create in-memory driver and populate it
 		dest = gdal.GetDriverByName('MEM').Create('', dst_xsize, dst_ysize, 1, data_type)
-		if dest is None:
+		if dest is None:  # pragma: no cover
 			raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize, dst_ysize))
 		dest.SetProjection(dest_projection.ExportToWkt())
 		dest.SetGeoTransform(dst_gt)
 		try:
-
 			gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
 			          warpMemoryLimit=warp_memory_limit)
-		except AttributeError as ae:
+		except AttributeError as ae:  # pragma: no cover
 			raise AttributeError("Cannot find the gdal.Warp functionality - it is possible this function is not "
 			                     "provided by your version of gdal, or that your gdal installation is incomplete:"
 			                     " {}".format(ae))
@@ -837,7 +840,7 @@ class Map(object):
 		dest = None
 
 
-	def plot(self):
+	def plot(self):  # pragma: no cover
 		"""
 		Returns a matplotlib.pyplot.figure object containing an image of the fragmented landscape (with axes removed).
 

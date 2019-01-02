@@ -6,7 +6,7 @@ try:
 	from .necsim import libnecsim
 	from .map import Map
 	from .system_operations import write_to_log
-except ImportError:
+except ImportError:  # pragma: no cover
 	from necsim import libnecsim
 	from map import Map
 	from system_operations import write_to_log

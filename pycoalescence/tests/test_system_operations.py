@@ -1,11 +1,16 @@
 """Tests system_operations module for basic system routines."""
 import logging
+import platform
 import unittest
 
 import os
+try:
+	from io import StringIO
+except ImportError:
+	from cStringIO import StringIO
 
 from pycoalescence.system_operations import cantor_pairing, check_file_exists, check_parent, create_logger, \
-	elegant_pairing
+	elegant_pairing, execute, execute_log_info, execute_silent, set_logging_method
 from setupTests import setUpAll, tearDownAll, skipLongTest
 
 
@@ -55,6 +60,7 @@ class TestSystemOperations(unittest.TestCase):
 		check_file_exists("sample/null.tif")
 		check_file_exists("test_merger.py")
 
+
 	def testFileExistenceErrors(self):
 		"""
 		Tests that the correct errors are thrown when files don't exist.
@@ -75,9 +81,10 @@ class TestSystemOperations(unittest.TestCase):
 		with self.assertRaises(ValueError):
 			check_parent(None)
 		check_parent("sample/not_here.tif")
-		check_parent("output/create_me/")
+		check_parent("output/create_me/create_me_as_well/")
 		check_parent("output/create_me_too/file_here.tif")
 		self.assertTrue(os.path.exists("output/create_me/"))
+		self.assertTrue(os.path.exists("output/create_me/create_me_as_well"))
 		self.assertTrue(os.path.exists("output/create_me_too/"))
 
 	def testFileLogger(self):
@@ -113,3 +120,69 @@ class TestSystemOperations(unittest.TestCase):
 		self.assertEqual(elegant_pairing(0, 1), 1)
 		self.assertEqual(elegant_pairing(1, 0), 2)
 		self.assertEqual(elegant_pairing(100000, 1000000), 1000000100000)
+
+	@unittest.skipIf(platform.platform == "Windows", "Skipping tests not compatible with Windows.")
+	def testExecute(self):
+		"""Tests that execution from command line produces the correct output."""
+		all_lines = []
+		for line in execute(["echo", "123"]):
+			all_lines.append(line)
+		self.assertEqual(["123\n"], all_lines)
+
+	@unittest.skipIf(platform.platform == "Windows", "Skipping tests not compatible with Windows.")
+	def testExecuteSilent(self):
+		"""Tests that silent execution from command line produces no output."""
+		execute_silent(["echo", "123"])
+		self.assertTrue(True)
+
+	@unittest.skipIf(platform.platform == "Windows", "Skipping tests not compatible with Windows.")
+	def testExecuteInfo(self):
+		"""Tests that logging info from command line output works as expected."""
+		log_stream = StringIO()
+		# Remove all handlers associated with the root logger object.
+		for handler in logging.root.handlers[:]:
+			handler.close()
+			logging.root.removeHandler(handler)
+		logging.basicConfig(stream=log_stream, level=logging.INFO)
+		execute_log_info(["echo", "123"])
+		self.assertEqual("INFO:root:123\n", log_stream.getvalue())
+		# Remove all handlers associated with the root logger object.
+		for handler in logging.root.handlers[:]:
+			handler.close()
+			logging.root.removeHandler(handler)
+		set_logging_method()
+
+	def testLoggingToFile(self):
+		"""Tests that logging the file works as intended."""
+		log_file = os.path.join("output", "log_output1.txt")
+		for handler in logging.root.handlers[:]:
+			handler.close()
+			logging.root.removeHandler(handler)
+		set_logging_method(logging_level=logging.INFO, output=log_file)
+		logging.info("Test1")
+		logging.warning("Test2")
+		with open(log_file, "r") as open_log_file:
+			self.assertEqual("INFO:Test1\n", open_log_file.readline())
+			self.assertEqual("WARNING:Test2\n", open_log_file.readline())
+		for handler in logging.root.handlers[:]:
+			handler.close()
+			logging.root.removeHandler(handler)
+		set_logging_method()
+
+	def testLoggingToStream(self):
+		"""Tests that logging the stream works as intended."""
+		log_stream = StringIO()
+		# Remove all handlers associated with the root logger object.
+		for handler in logging.root.handlers[:]:
+			handler.close()
+			logging.root.removeHandler(handler)
+		logger = create_logger(logging.Logger("temp"), logging_level=logging.INFO, stream=log_stream)
+		logger.info("123\n")
+		logger.warning("123w\n")
+		self.assertEqual("123\n123w\n", log_stream.getvalue())
+		# Remove all handlers associated with the root logger object.
+		for handler in logging.root.handlers[:]:
+			handler.close()
+			logging.root.removeHandler(handler)
+		set_logging_method()
+

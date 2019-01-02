@@ -1,6 +1,4 @@
-"""
-Tests that the fragment config correctly handlers creation of a configuration file from a shapefile and a raster.
-"""
+"""Tests that the fragment config correctly handlers creation of a configuration file from a shapefile and a raster."""
 import csv
 import unittest
 

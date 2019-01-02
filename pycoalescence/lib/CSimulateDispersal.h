@@ -66,14 +66,6 @@ public:
 	}
 };
 
-void raiseErrorOnFalse(bool error_raised)
-{
-	if(error_raised)
-	{
-
-	}
-}
-
 /**
  * @brief Sets all the map parameters, including historical maps, with a single import.
  * @param self the Python self object

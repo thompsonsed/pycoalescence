@@ -19,7 +19,7 @@ mod_directory = os.path.dirname(os.path.abspath(__file__))
 
 try:
 	from math import isclose
-except ImportError:
+except ImportError:  # pragma: no cover
 	# Python 2 compatibility
 	def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
 		"""
@@ -39,20 +39,16 @@ def check_parent(file_path):
 	"""
 	Checks if the parent file exists, and creates it if it doesn't.
 
-	.. note:: if file_path is a directory, it will be created
+	.. note:: if file_path is a directory (ends with a "/"), it will be created
 
 	:param file_path: the file or directory to check if the parent exists
 
 	:rtype: None
 	"""
 	if file_path:
-		if not os.path.exists(file_path):
-			if os.path.isdir(file_path):
-				os.makedirs(file_path)
-			else:
-				par_dir = os.path.dirname(file_path)
-				if not os.path.exists(par_dir) and par_dir != "":
-					os.makedirs(os.path.dirname(file_path))
+		par_dir, file_name = os.path.split(file_path)
+		if par_dir not in ["", None] and not os.path.exists(par_dir):
+			os.makedirs(par_dir)
 	else:
 		raise ValueError("File path is None")
 
@@ -92,18 +88,18 @@ def execute(cmd, silent=False, **kwargs):
 		if output:
 			yield output
 	error_logs = []
-	for stderr_line in iter(popen.stderr.readline, ""):
+	for stderr_line in iter(popen.stderr.readline, ""):  # pragma: no cover
 		error_logs.append(stderr_line)
 	popen.stdout.close()
 	popen.stderr.close()
 	popen.wait()
-	if popen.returncode != 0:
+	if popen.returncode != 0:  # pragma: no cover
 		for log in error_logs:
 			logging.critical(log)
 		raise RuntimeError(error_logs[-1])
 	else:
 		if not silent:
-			for log in error_logs:
+			for log in error_logs:  # pragma: no cover
 				logging.warning(log)
 
 
@@ -227,7 +223,7 @@ def cantor_pairing(x1, x2):
 
 	.. note:
 		For most use cases which are not performance-critical, :func:`~elegant_pairing` provides a more reliable outcome
-		by reducing the size of the integers and therefore reducing the change of an integer overflow.
+		by reducing the size of the integers and therefore reducing the chance of an integer overflow.
 
 	:param x1: the first number
 	:param x2: the second number

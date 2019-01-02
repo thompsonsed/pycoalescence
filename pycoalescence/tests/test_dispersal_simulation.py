@@ -1,15 +1,18 @@
 import logging
-import os
-import unittest
 import math
+import os
+import time
+import unittest
 
 # try:
 # 	import necsim
 # 	necsimError = necsim.libnecsim.necsimError
 # except ImportError:
 from pycoalescence.necsim.libnecsim import necsimError as nse
-from pycoalescence.dispersal_simulation import DispersalSimulation
 from setupTests import setUpAll, tearDownAll, skipLongTest
+
+from pycoalescence import Map
+from pycoalescence.dispersal_simulation import DispersalSimulation
 
 
 def setUpModule():
@@ -56,22 +59,24 @@ class TestDispersalSimulation(unittest.TestCase):
 										landscape_type="tiled_fine")
 		cls.m.run_mean_distance_travelled()
 
-	def testRaisesIOError(self):
-		"""
-		Tests that an IOerror is raised when the output database doesn't exist
-		"""
+	def testGetFromDatabaseErrors(self):
+		"""Tests that the correct errors are raised when obtaining from a database."""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
 		m.dispersal_database = "doesnotexist.db"
 		with self.assertRaises(IOError):
 			m.get_mean_dispersal()
-
-	def testRaisesValueErrorExistance(self):
-		"""
-		Tests that a value error is raised when dispersal_database does not exist
-		"""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
 		with self.assertRaises(IOError):
-			m.get_mean_dispersal()
+			m.get_mean_dispersal(database=os.path.join("sample", "sample.db"))
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		with self.assertRaises(IOError):
+			m.get_mean_distance_travelled(database=os.path.join("sample", "sample.db"))
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		with self.assertRaises(IOError):
+			m.get_stdev_dispersal(database=os.path.join("sample", "sample.db"))
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		with self.assertRaises(IOError):
+			m.get_stdev_distance_travelled(database=os.path.join("sample", "sample.db"))
 
 	def testRaisesValueErrorNullNotSet(self):
 		"""
@@ -199,11 +204,11 @@ class TestDispersalSimulation(unittest.TestCase):
 		"""
 		self.assertEqual([x for x in range(1, 7)], self.m.get_database_references())
 		expected_dict = {"simulation_type": "DISPERSAL_DISTANCES", "sigma": 2,
-						   "tau": 1, "m_prob": 1.0, "cutoff": 100.0,
-						   "dispersal_method": "normal",
-						   "map_file": os.path.join("sample", "SA_sample_fine.tif"),
-						   "seed": 2, "number_steps": 1,
-						   "number_repeats": 100}
+						 "tau": 1, "m_prob": 1.0, "cutoff": 100.0,
+						 "dispersal_method": "normal",
+						 "map_file": os.path.join("sample", "SA_sample_fine.tif"),
+						 "seed": 2, "number_steps": 1,
+						 "number_repeats": 100}
 		self.assertEqual(expected_dict, self.m.get_database_parameters()[1])
 		self.assertEqual(expected_dict, self.m.get_database_parameters(1))
 		for key in range(1, 6):
@@ -212,7 +217,6 @@ class TestDispersalSimulation(unittest.TestCase):
 			self.m.get_database_parameters(7)
 		with self.assertRaises(KeyError):
 			self.m.get_database_parameters("NotAKey")
-
 
 	def testDispersalMapReading(self):
 		"""
@@ -273,7 +277,6 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertAlmostEqual(11.093649928419898, m.get_mean_dispersal(parameter_reference=2), places=4)
 		self.assertAlmostEqual(467.58323, m.get_mean_distance_travelled(parameter_reference=3), places=4)
 
-
 	def testDispersalWithCoarse(self):
 		"""Tests a dispersal simulation using a coarse and fine map."""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
@@ -297,8 +300,8 @@ class TestDispersalSimulation(unittest.TestCase):
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
 		m.set_map_files(fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
 		m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal7.db", seed=1,
-									sigma=1, landscape_type="tiled_fine", number_steps=[10, 20, 30])
-		m.run_mean_distance_travelled()
+									sigma=1, landscape_type="tiled_fine")
+		m.run_mean_distance_travelled(number_steps=[10, 20, 30], number_repeats=100, seed=1, sequential=True)
 		m.update_parameters(number_steps=[40, 50, 60])
 		m.run_mean_distance_travelled()
 		for k, v in [(1, 10), (2, 20), (3, 30), (4, 40), (5, 50), (6, 60)]:
@@ -309,6 +312,24 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertAlmostEqual(8.020556813086024, m.get_mean_distance_travelled(parameter_reference=4), places=6)
 		self.assertAlmostEqual(9.171927160953157, m.get_mean_distance_travelled(parameter_reference=5), places=6)
 		self.assertAlmostEqual(9.752385114899754, m.get_mean_distance_travelled(parameter_reference=6), places=6)
+
+	def testRunMeanDistanceErrors(self):
+		"""Tests that the mean distance travelled errors are correctly raised."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map_files(fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+		with self.assertRaises(ValueError):
+			m.run_mean_distance_travelled()
+		with self.assertRaises(ValueError):
+			m.run_mean_distance_travelled(number_repeats=1)
+		with self.assertRaises(ValueError):
+			m.run_mean_distance_travelled(number_steps=1, number_repeats=1)
+
+	def testRunMeanDispersalErrors(self):
+		"""Tests that the mean dispersal errors are correctly raised."""
+		m = DispersalSimulation(logging_level=logging.CRITICAL)
+		m.set_map_files(fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+		with self.assertRaises(ValueError):
+			m.run_mean_dispersal()
 
 	@skipLongTest
 	def testNullDispersalWithCoarse(self):
@@ -322,25 +343,29 @@ class TestDispersalSimulation(unittest.TestCase):
 		m.run_mean_distance_travelled()
 		m.update_parameters(sigma=8)
 		m.run_mean_distance_travelled()
-		self.assertAlmostEqual(2*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=1), places=0)
-		self.assertAlmostEqual(4*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=2), places=0)
-		self.assertAlmostEqual(8*(math.pi*100/2)**0.5, m.get_mean_distance_travelled(parameter_reference=3), places=0)
+		self.assertAlmostEqual(2 * (math.pi * 100 / 2) ** 0.5, m.get_mean_distance_travelled(parameter_reference=1),
+							   places=0)
+		self.assertAlmostEqual(4 * (math.pi * 100 / 2) ** 0.5, m.get_mean_distance_travelled(parameter_reference=2),
+							   places=0)
+		self.assertAlmostEqual(8 * (math.pi * 100 / 2) ** 0.5, m.get_mean_distance_travelled(parameter_reference=3),
+							   places=0)
 
 	def testDispersalWithHistoricalMaps(self):
 		"""Tests that a simulation with a historical map works."""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
 		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal9.db", seed=2,
 									sigma=2, landscape_type="closed", number_steps=100)
-		m.set_map("sample/SA_sample_fine.tif")
-		m.add_historical_map(fine_map="sample/SA_sample_fine2.tif", coarse_map="none", time=10, rate=0.1)
+		m1 = Map("sample/SA_sample_fine.tif")
+		m.set_map_files(m1)
+		m.add_historical_map(fine_file="sample/SA_sample_fine2.tif", coarse_file="none", time=10, rate=0.1)
 		m.run_mean_distance_travelled()
 		self.assertAlmostEqual(9.657166679793269, m.get_mean_distance_travelled(parameter_reference=1), places=6)
 
 	def testDispersalDatabaseRemoval(self):
 		"""Tests that the dispersal database connection can be deleted properly, with simulation variables preserved."""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
-		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal10.db", seed=2,
-		                            sigma=2, landscape_type="closed", number_steps=100)
+		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal10.db", seed=2, sigma=2,
+									landscape_type="closed", number_steps=100)
 		m.set_map("sample/SA_sample_fine.tif")
 		m.run_mean_distance_travelled()
 		mean_dist1 = m.get_mean_distance_travelled()
@@ -351,14 +376,13 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertTrue(os.path.exists(m.dispersal_database))
 		self.assertEqual(mean_dist1, m.get_mean_distance_travelled())
 
-
 	def testDispersalDatabaseCreation(self):
 		"""
 		Tests that a dispersal database is created initially before the simulation is run, and re-created, if it
 		has been deleted, before any simulations.
 		"""
 		m = DispersalSimulation(logging_level=logging.CRITICAL)
-		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal10.db", seed=2,
+		m.set_simulation_parameters(number_repeats=2, output_database="output/realdispersal11.db", seed=2,
 									sigma=2, landscape_type="closed", number_steps=100)
 		m.set_map("sample/SA_sample_fine.tif")
 		self.assertTrue(os.path.exists(m.dispersal_database))
@@ -368,3 +392,20 @@ class TestDispersalSimulation(unittest.TestCase):
 		self.assertTrue(os.path.exists(m.dispersal_database))
 		self.assertAlmostEqual(8.920698713067242, m.get_mean_distance_travelled(parameter_reference=1), places=6)
 
+	def testRunMeanDistanceTravelledErrors(self):
+		"""Tests that run mean distance travelled produces the expected errors."""
+		d = DispersalSimulation(dispersal_db=os.path.join("output", "output.db"))
+		with self.assertRaises(ValueError):
+			d.run_mean_distance_travelled()
+
+	def testCheckBaseParametersErrors(self):
+		"""Tests that the correct errors are raised when the base parameters are checked."""
+		d = DispersalSimulation()
+		with self.assertRaises(ValueError):
+			d.check_base_parameters()
+		d.number_repeats = 1
+		with self.assertRaises(ValueError):
+			d.check_base_parameters()
+		d.seed = 1
+		with self.assertRaises(ValueError):
+			d.check_base_parameters()

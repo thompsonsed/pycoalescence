@@ -14,11 +14,11 @@ import sys
 try:
 	from matplotlib.pyplot import figure
 	from matplotlib import pyplot as plt
-except (ImportError, RuntimeError) as ie:
+except (ImportError, RuntimeError) as ie:  # pragma: no cover
 	logging.warning(ie)
 try:
 	from osgeo import gdal
-except ImportError as ie:
+except ImportError as ie:  # pragma: no cover
 	try:
 		import gdal
 	except ImportError:
@@ -159,11 +159,9 @@ class FragmentedLandscape():
 
 		:rtype: None
 		"""
-		smoothing = True
-		if override_smoothing:
+		smoothing = self.number_fragments > 10000
+		if override_smoothing is not None:
 			smoothing = override_smoothing
-		elif self.number_fragments > 10000:
-			smoothing = False
 		self.place_fragments(smoothing=smoothing, n=n)
 		self.fill_grid()
 
@@ -171,14 +169,16 @@ class FragmentedLandscape():
 		"""
 		Checks that the file does not already exist and the file path exists.
 
-		:raises FileExistsError if the file already exists.
+		:raises FileExistsError: if the file already exists.
+
+		:raises IOError: if the output file is None
 
 		:param file: the file to check for
 
 		:rtype: None
 		"""
 		if self.output_file is None:
-			raise FileExistsError("File is None")
+			raise IOError("File is None")
 		if os.path.exists(self.output_file):
 			raise FileExistsError("File already exists at {}.".format(self.output_file))
 		check_parent(self.output_file)
@@ -238,7 +238,7 @@ class FragmentedLandscape():
 		running_total = 0
 		for frag in self.fragments:
 			running_total += frag.size
-		if running_total > self.total:
+		if running_total > self.total:  # pragma: no cover
 			raise ValueError("Generated total greater than expected total: {} > {}".format(running_total, self.total))
 
 	def _fill_next_cell(self, cell_x, cell_y, radius, theta, size):
@@ -270,13 +270,12 @@ class FragmentedLandscape():
 					check_x, check_y = archimedes_spiral(cell_x, cell_y, radius, theta)
 					check_x = check_x % self.size
 					check_y = check_y % self.size
-					if radius > self.size:
+					if radius > self.size:  # pragma: no cover
 						raise TypeError("Grid too small for adding fragment sizes!")
 				self.grid[check_x, check_y] = 1
 				size -= 1
-		except IndexError as ie:
-			errmsg = "Error placing points. Please report this bug: {}".format(ie)
-			raise SystemError(errmsg)
+		except IndexError as ie:  # pragma: no cover
+			raise SystemError("Error placing points. Please report this bug: {}".format(ie))
 
 	def _calculate_dimensions(self):
 		"""
@@ -422,7 +421,7 @@ class FragmentedLandscape():
 		output_raster = gdal.GetDriverByName('GTiff').Create(self.output_file,
 															 self.size, self.size, 1,
 															 gdal.GDT_Byte)
-		if not output_raster:
+		if not output_raster:  # pragma: no cover
 			raise IOError("Could not create tif file at {}.".format(self.output_file))
 		output_raster.SetGeoTransform(geotransform)
 		out_band = output_raster.GetRasterBand(1)
@@ -431,7 +430,7 @@ class FragmentedLandscape():
 		out_band.SetNoDataValue(-99)
 		del output_raster
 
-	def plot(self):
+	def plot(self):  # pragma: no cover
 		"""
 		Returns a matplotlib.pyplot.figure object containing an image of the fragmented landscape (with axes removed).
 

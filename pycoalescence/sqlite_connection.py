@@ -38,7 +38,7 @@ class SQLiteConnection():
 			self.opened_here = True
 			try:
 				self.database = sqlite3.connect(self.filename)
-			except sqlite3.OperationalError as soe:
+			except sqlite3.Error as soe:  # pragma: no cover
 				self.opened_here = False
 				raise soe
 		return self.database.cursor()
@@ -84,7 +84,7 @@ def fetch_table_from_sql(database, table_name):
 	"""
 	Returns a list of the data contained by the provided table in the database.
 
-	:raises sqlite3.OperationalError: if the table is not contained in the database (protects SQL injections).
+	:raises sqlite3.Error: if the table is not contained in the database (protects SQL injections).
 
 	:param database: the database to obtain from
 	:param table_name: the table name to fetch data from
@@ -93,10 +93,10 @@ def fetch_table_from_sql(database, table_name):
 	try:
 		with SQLiteConnection(database) as c:
 			if not check_sql_table_exist(c, table_name):
-				raise sqlite3.OperationalError("Table {} does not exist in database.".format(table_name))
+				raise sqlite3.Error("Table {} does not exist in database.".format(table_name))
 			c.execute("SELECT * FROM {}".format(table_name))
 			return [list(x) for x in c.fetchall()]
-	except sqlite3.OperationalError as soe:
+	except sqlite3.Error as soe:  # pragma: no cover
 		raise IOError("Cannot fetch {} from database {}: {}".format(table_name, database, soe))
 
 
@@ -112,9 +112,9 @@ def sql_get_max_from_column(database, table_name, column_name):
 	"""
 	with SQLiteConnection(database) as cursor:
 		if not check_sql_table_exist(cursor, table_name):
-			raise sqlite3.OperationalError("Table {} does not exist in database.".format(table_name))
+			raise sqlite3.Error("Table {} does not exist in database.".format(table_name))
 		if not check_sql_column_exists(cursor, table_name, column_name):
-			raise sqlite3.OperationalError("Column {} does not exist in {}.".format(column_name, table_name))
+			raise sqlite3.Error("Column {} does not exist in {}.".format(column_name, table_name))
 		ex_str = "SELECT max({}) FROM {}".format(column_name, table_name)
 		cursor.execute(ex_str)
 		return cursor.fetchone()[0]

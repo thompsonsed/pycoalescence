@@ -11,6 +11,7 @@ import unittest
 import numpy as np
 from setupTests import setUpAll, tearDownAll
 
+from pycoalescence import Simulation
 from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description
 
 
@@ -137,11 +138,21 @@ class TestParameterDescriptions(unittest.TestCase):
 		sim_output = t.get_simulation_parameters()
 		for key in sim_output.keys():
 			self.assertIn(key, get_parameter_description().keys())
+			self.assertEqual(get_parameter_description(key), t.get_parameter_description(key))
 		for key in get_parameter_description().keys():
 			self.assertIn(key, sim_output.keys())
 		for key in tmp_dict.keys():
 			self.assertEqual(tmp_dict[key], get_parameter_description(key))
 		self.assertDictEqual(tmp_dict, get_parameter_description())
+		with self.assertRaises(KeyError):
+			get_parameter_description(key="notakey")
+		dispersal_parameters = t.dispersal_parameters()
+		expected_disp_dict = {"dispersal_method": "normal", "sigma": 3.55, "tau": 0.470149,
+							  "m_probability": 0, "cutoff": 0}
+		for key in dispersal_parameters.keys():
+			self.assertIn(key, tmp_dict.keys())
+			self.assertIn(key, expected_disp_dict.keys())
+		self.assertAlmostEqual(expected_disp_dict, dispersal_parameters, places=2)
 
 
 class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
@@ -288,7 +299,7 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
 						 "min_speciation_gen": 100.0,
 						 "max_speciation_gen": 10000.0}
 		self.assertEqual(expected_dict, params)
-		with self.assertRaises(sqlite3.OperationalError):
+		with self.assertRaises(sqlite3.Error):
 			t.get_metacommunity_parameters(1)
 		with self.assertRaises(KeyError):
 			t.get_community_parameters(2)
@@ -325,7 +336,7 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
 							"time": 0.0,
 							"fragments": 0,
 							"metacommunity_reference": 2}
-		expected_meta_params1 =  {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
+		expected_meta_params1 = {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
 								 "option": "simulated",
 								 "external_reference": 0}
 		expected_meta_params2 = {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
@@ -338,6 +349,7 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
 		params5 = t.get_community_parameters(5)
 		params6 = t.get_metacommunity_parameters(1)
 		params7 = t.get_metacommunity_parameters(2)
+		self.assertEqual([1, 2], t.get_metacommunity_references())
 		self.assertEqual(expected_params1, params1)
 		self.assertEqual(expected_params2, params2)
 		self.assertEqual(expected_params3, params3)
@@ -375,6 +387,11 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
 		self.assertEqual(4, ref4)
 		self.assertEqual(5, ref5)
 
+	def testIsComplete(self):
+		"""Tests sims are correctly identified as complete."""
+		t = CoalescenceTree(os.path.join("sample", "sample4.db"))
+		self.assertTrue(t.is_complete)
+
 
 class TestCoalescenceTreeAnalysis(unittest.TestCase):
 	"""Tests analysis is performed correctly"""
@@ -382,12 +399,14 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		"""Sets up the Coalescence object test case."""
-		dst = os.path.join("output", "sampledb0.db")
-		if os.path.exists(dst):
-			os.remove(dst)
-		shutil.copyfile(os.path.join("sample", "sample.db"), dst)
+		dst1 = os.path.join("output", "sampledb0.db")
+		for i in range(0, 9):
+			dst = os.path.join("output", "sampledb{}.db".format(i))
+			if os.path.exists(dst):
+				os.remove(dst)
+			shutil.copyfile(os.path.join("sample", "sample.db"), dst)
 		random.seed(2)
-		cls.test = CoalescenceTree(dst)
+		cls.test = CoalescenceTree(dst1)
 		cls.test.clear_calculations()
 		cls.test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
 		cls.test.calculate_fragment_richness()
@@ -397,6 +416,11 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		cls.test.calculate_beta_diversity()
 		cls.test2 = CoalescenceTree()
 		cls.test2.set_database(os.path.join("sample", "sample_nofrag.db"))
+		dstx = os.path.join("output", "sampledbx.db")
+		shutil.copyfile(dst1, dstx)
+		c = CoalescenceTree(dstx)
+		c.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		c.calculate_goodness_of_fit()
 
 	@classmethod
 	def tearDownClass(cls):
@@ -447,15 +471,21 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		self.assertEqual(num, 9, msg="Fragment abundances not correctly calculated.")
 
 	def testSpeciesAbundances(self):
-		"""
-		Tests that the produced species abundances are correct by comparing species richness.
-		"""
+		"""Tests that the produced species abundances are correct by comparing species richness."""
 		num = self.test.cursor.execute(
 			"SELECT COUNT(species_id) FROM SPECIES_ABUNDANCES WHERE community_reference == 2").fetchall()[0][0]
 		self.assertEqual(num, 1029, msg="Species abundances not correctly calculated.")
 		num = self.test.cursor.execute(
 			"SELECT COUNT(species_id) FROM SPECIES_ABUNDANCES WHERE community_reference == 1").fetchall()[0][0]
 		self.assertEqual(num, 884, msg="Species abundances not correctly calculated.")
+
+	def testGetOctaves(self):
+		"""Tests getting the octaves."""
+		c = CoalescenceTree(os.path.join("output", "sampledb4.db"))
+		c.clear_calculations()
+		c.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		c.calculate_richness()
+		self.assertEqual([[0, 585], [1, 231], [2, 59], [3, 5]], c.get_octaves(1))
 
 	def testSpeciesLocations(self):
 		"""
@@ -482,6 +512,47 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		"""
 		self.assertAlmostEqual(98.111111111, self.test.get_beta_diversity(1), places=5)
 		self.assertAlmostEqual(102.8, self.test.get_beta_diversity(2), places=5)
+
+	def testGetNumberIndividuals(self):
+		"""Tests that the number of individuals is obtained correctly."""
+		c = CoalescenceTree(os.path.join("output", "sampledb7.db"))
+		self.assertEqual(1504, c.get_number_individuals(community_reference=1))
+		self.assertEqual(28, c.get_number_individuals(fragment="P09", community_reference=1))
+		c.wipe_data()
+		c.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		with self.assertRaises(RuntimeError):
+			c.get_number_individuals(fragment="none")
+		with self.assertRaises(RuntimeError):
+			c.get_number_individuals()
+
+	def testGetFragmentAbundances(self):
+		"""Tests that fragment abundances are correctly obtained."""
+		c = CoalescenceTree(os.path.join("sample", "sample3.db"))
+		with self.assertRaises(RuntimeError):
+			c.get_fragment_abundances(fragment="P09", reference=1)
+		abundances = self.test.get_fragment_abundances(fragment="P09", reference=1)
+		expected_abundances = [[302, 1], [303, 1], [304, 1], [305, 1], [306, 1], [307, 1], [546, 2], [693, 1], [732, 3]]
+		self.assertEqual(expected_abundances, abundances[:10])
+		all_abundances = self.test.get_all_fragment_abundances()
+		expected_abundances2 = [[1, 'P09', 302, 1], [1, 'P09', 303, 1], [1, 'P09', 304, 1], [1, 'P09', 305, 1],
+								[1, 'P09', 306, 1], [1, 'P09', 307, 1], [1, 'P09', 546, 2], [1, 'P09', 693, 1],
+								[1, 'P09', 732, 3], [1, 'cerrogalera', 416, 1]]
+		self.assertEqual(expected_abundances2, all_abundances[:10])
+
+	def testGetFragmentListErrors(self):
+		"""Tests the error is raised when obtaining fragment list."""
+		c = CoalescenceTree(os.path.join("output", "sampledb8.db"))
+		c.wipe_data()
+		with self.assertRaises(RuntimeError):
+			c.get_fragment_list()
+
+	def testClearGoodnessFit(self):
+		"""Tests that goodness of fit are correctly cleared."""
+		c = CoalescenceTree(os.path.join("output", "sampledbx.db"))
+		exec_command = "SELECT * FROM BIODIVERSITY_METRICS WHERE metric LIKE 'goodness_%'"
+		self.assertTrue(len(c.cursor.execute(exec_command).fetchall()) >= 1)
+		c._clear_goodness_of_fit()
+		self.assertFalse(len(c.cursor.execute(exec_command).fetchall()) >= 1)
 
 	def testRaisesErrorNoFragmentsAlpha(self):
 		"""
@@ -539,6 +610,53 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 		with self.assertRaises(RuntimeError):
 			c.output()
 
+	def testFragmentNumbersMatching(self):
+		"""Checks behaviour when matching fragment numbers."""
+		test = CoalescenceTree(os.path.join("output", "sampledb1.db"), logging_level=50)
+		test.clear_calculations()
+		with self.assertRaises(ValueError):
+			test._check_fragment_numbers_match()
+		test.comparison_file = os.path.join("sample", "PlotBiodiversityMetrics.db")
+		self.assertTrue(test._check_fragment_numbers_match())
+		test.fragment_abundances.pop(0)
+		self.assertFalse(test._check_fragment_numbers_match())
+
+	def testFragmentNumbersEqualisation(self):
+		"""Checks behaviour when equalising fragment numbers."""
+		test = CoalescenceTree(os.path.join("output", "sampledb2.db"), logging_level=50)
+		test.clear_calculations()
+		test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		test.calculate_fragment_richness()
+		self.test._equalise_fragment_number("notafrag", 1)
+		test.fragment_abundances[0][2] += 1000
+		test._equalise_fragment_number("P09", 1)
+		self.assertTrue(test._check_fragment_numbers_match())
+
+	def testFragmentNumbersErrors(self):
+		"""Checks behaviour when equalising fragment numbers."""
+		test = CoalescenceTree(os.path.join("output", "sampledb3.db"), logging_level=50)
+		test.clear_calculations()
+		test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		test.comparison_abundances = None
+		with self.assertRaises(ValueError):
+			test._equalise_all_fragment_numbers()
+
+	def testAdjustBiodiversityMetrics(self):
+		"""Checks that biodiversity metrics are correctly adjusted."""
+		test = CoalescenceTree(os.path.join("output", "sampledb5.db"), logging_level=50)
+		test.clear_calculations()
+		test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+		test.adjust_data()
+
+	def testComparisonOctavesModification(self):
+		"""Tests that the comparison database is modified."""
+		test = CoalescenceTree(os.path.join("output", "sampledb6.db"), logging_level=50)
+		dst = os.path.join("output", "PlotBiodiversityMetricsNoAlpha2.db")
+		shutil.copy(os.path.join("sample", "PlotBiodiversityMetricsNoAlpha.db"), dst)
+		test.import_comparison_data(dst)
+		test.calculate_comparison_octaves(store=True)
+		self.assertTrue(os.path.exists(dst))
+
 
 class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
 	"""
@@ -590,7 +708,7 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copyfile(os.path.join("sample", "sample.db"), dst)
-		cls.test = CoalescenceTree()
+		cls.test = CoalescenceTree(logging_level=40)
 		cls.test.set_database(dst)
 		cls.test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetricsNoAlpha.db"))
 		cls.test.calculate_comparison_octaves(False)
@@ -598,6 +716,7 @@ class TestCoalescenceTreeAnalyseIncorrectComparison(unittest.TestCase):
 		cls.test.calculate_fragment_richness()
 		cls.test.calculate_fragment_octaves()
 		cls.test.calculate_octaves_error()
+		cls.test.calculate_alpha_diversity()
 		cls.test.calculate_alpha_diversity()
 		cls.test.calculate_beta_diversity()
 		cls.test2 = CoalescenceTree()
@@ -666,6 +785,16 @@ class TestSimulationAnalysis(unittest.TestCase):
 		cls.tree.calculate_fragment_richness()
 		cls.tree.calculate_fragment_octaves()
 		np.random.seed(100)
+
+	def testSetDatabaseErrors(self):
+		"""Tests that the set database errors are correctly raised."""
+		sim = Simulation()
+		c = CoalescenceTree()
+		with self.assertRaises(RuntimeError):
+			c.set_database(sim)
+		c = CoalescenceTree()
+		with self.assertRaises(IOError):
+			c.set_database(os.path.join("sample", "failsampledoesntexist.db"))
 
 	def testFragmentConfigNoExistError(self):
 		"""Tests that an error is raised if the fragment config file does not exist."""
@@ -737,14 +866,11 @@ class TestSimulationAnalysis(unittest.TestCase):
 	def testFragmentRichnessRaiseError(self):
 		"""
 		Tests that the correct errors are raised when no fragment exists with that name, or with the specified
-		speciation rate, or time. Also checks SyntaxErrors and sqlite3.OperationalErrors when no FRAGMENT_RICHNESS table
+		speciation rate, or time. Also checks SyntaxErrors and sqlite3.Errors when no FRAGMENT_RICHNESS table
 		exists.
 		"""
 		failtree = CoalescenceTree()
-		try:
-			failtree.set_database(os.path.join("sample", "failsample.db"))
-		except sqlite3.OperationalError:
-			pass
+		failtree.set_database(os.path.join("sample", "failsample.db"))
 		with self.assertRaises(RuntimeError):
 			failtree.get_fragment_richness()
 		with self.assertRaises(RuntimeError):
@@ -774,9 +900,9 @@ class TestSimulationAnalysis(unittest.TestCase):
 		failtree = CoalescenceTree()
 		try:
 			failtree.set_database("sample/failsample.db")
-		except sqlite3.OperationalError:
+		except sqlite3.Error:
 			pass
-		with self.assertRaises(sqlite3.OperationalError):
+		with self.assertRaises(sqlite3.Error):
 			failtree.get_fragment_octaves(fragment="fragment4", reference=100)
 		with self.assertRaises(RuntimeError):
 			self.tree.get_fragment_octaves(fragment="fragment4", reference=100)
@@ -839,10 +965,13 @@ class TestMetacommunityApplication(unittest.TestCase):
 		tree.wipe_data()
 		tree.set_speciation_parameters([0.1, 0.2])
 		for size, spec, opt, ref in [[0, 0.1, "simulated", None], [10, 0.0, "analytical", None],
+									 [None, None, "analytical", None], [10, 0.0, "path/to/file", None],
 									 [0, 0.0, "path/to/file", None], [0, 0.0, "path/to/not/a/file.db", 1]]:
 			with self.assertRaises(ValueError):
 				tree.add_metacommunity_parameters(metacommunity_size=size, metacommunity_speciation_rate=spec,
 												  metacommunity_option=opt, metacommunity_reference=ref)
+		with self.assertRaises(IOError):
+			tree.add_metacommunity_parameters(metacommunity_option="not/a/file/db.db", metacommunity_reference=1)
 
 	def testMetacommunitySimulation(self):
 		"""Tests that a simulated metacommunity works as intended."""
@@ -914,8 +1043,7 @@ class TestMetacommunityApplication(unittest.TestCase):
 		"""Tests that an external metacommunity works as intended."""
 		tree = CoalescenceTree(os.path.join("output", "sample_3.db"))
 		tree.wipe_data()
-		tree.set_speciation_parameters([0.1, 0.2], metacommunity_option=os.path.join("sample", "nse_reference.db"),
-									   metacommunity_reference=1)
+		tree.set_speciation_parameters([0.1, 0.2], metacommunity_option=os.path.join("sample", "nse_reference.db"))
 		tree.add_metacommunity_parameters(metacommunity_option=os.path.join("sample", "nse_reference.db"),
 										  metacommunity_reference=2)
 		tree.apply()
@@ -1022,3 +1150,8 @@ class TestMetacommunityApplicationOrdering(unittest.TestCase):
 			self.assertEqual(self.c1.get_species_richness(i), self.c2.get_species_richness(i))
 			self.assertEqual(self.proc1.get_species_richness(i), self.proc2.get_species_richness(i))
 			self.assertEqual(self.proc2.get_species_richness(i), self.proc3.get_species_richness(i))
+
+	def testMultipleProtractedError(self):
+		"""Tests that adding multiple protracted speciation parameters raises the correct error."""
+		with self.assertRaises(ValueError):
+			self.proc2.add_multiple_protracted_parameters()

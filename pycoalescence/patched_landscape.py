@@ -210,7 +210,7 @@ class PatchedLandscape:
 		for k1, src_patch in self.patches.items():
 			src_index = src_patch.index
 			self.fine_map.data[0, src_index] = src_patch.density
-			if len(src_patch.dispersal_probabilities) == 0:
+			if len(src_patch.dispersal_probabilities) == 0:  # pragma: no cover
 				raise ValueError("No dispersal probabilities supplied in patch {}".format(src_patch.id))
 			for k2, dst_patch in self.patches.items():
 				dst_index = dst_patch.index
@@ -233,7 +233,7 @@ class PatchedLandscape:
 		if os.path.exists(fragment_csv):
 			raise IOError("Output file already exists at {}.".format(fragment_csv))
 		check_parent(fragment_csv)
-		if sys.version_info[0] < 3:
+		if sys.version_info[0] < 3:  # pragma: no cover
 			infile = open(fragment_csv, "wb")
 		else:
 			infile = open(fragment_csv, "w", newline='')
