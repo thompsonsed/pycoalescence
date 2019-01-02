@@ -1,13 +1,16 @@
 """Tests system_operations module for basic system routines."""
 import logging
 import platform
+import sys
 import unittest
 
 import os
 try:
+	if sys.version_info[0] < 3:  # pragma: no cover
+		raise ImportError()
 	from io import StringIO
 except ImportError:
-	from cStringIO import StringIO
+	from io import BytesIO as StringIO
 
 from pycoalescence.system_operations import cantor_pairing, check_file_exists, check_parent, create_logger, \
 	elegant_pairing, execute, execute_log_info, execute_silent, set_logging_method
@@ -145,7 +148,7 @@ class TestSystemOperations(unittest.TestCase):
 			logging.root.removeHandler(handler)
 		logging.basicConfig(stream=log_stream, level=logging.INFO)
 		execute_log_info(["echo", "123"])
-		self.assertEqual("INFO:root:123\n", log_stream.getvalue())
+		self.assertEqual('INFO:root:123\n', log_stream.getvalue())
 		# Remove all handlers associated with the root logger object.
 		for handler in logging.root.handlers[:]:
 			handler.close()
@@ -177,9 +180,9 @@ class TestSystemOperations(unittest.TestCase):
 			handler.close()
 			logging.root.removeHandler(handler)
 		logger = create_logger(logging.Logger("temp"), logging_level=logging.INFO, stream=log_stream)
-		logger.info("123\n")
-		logger.warning("123w\n")
-		self.assertEqual("123\n123w\n", log_stream.getvalue())
+		logger.info('123\n')
+		logger.warning('123w\n')
+		self.assertEqual("123123w", log_stream.getvalue().replace("\n", ""))
 		# Remove all handlers associated with the root logger object.
 		for handler in logging.root.handlers[:]:
 			handler.close()
