@@ -152,7 +152,12 @@ class TestParameterDescriptions(unittest.TestCase):
 		for key in dispersal_parameters.keys():
 			self.assertIn(key, tmp_dict.keys())
 			self.assertIn(key, expected_disp_dict.keys())
-		self.assertAlmostEqual(expected_disp_dict, dispersal_parameters, places=2)
+		for key, val in expected_disp_dict.items():
+			self.assertIn(key, dispersal_parameters.keys())
+			if isinstance(val, float):
+				self.assertAlmostEqual(val, dispersal_parameters[key])
+			else:
+				self.assertEqual(val, dispersal_parameters[key])
 
 
 class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
@@ -775,7 +780,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copy(src, dst)
-		cls.tree = CoalescenceTree()
+		cls.tree = CoalescenceTree(logging_level=10) # TODO change logging level
 		cls.tree.set_database(dst)
 		cls.tree.wipe_data()
 		cls.tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
@@ -884,7 +889,6 @@ class TestSimulationAnalysis(unittest.TestCase):
 		"""
 		Tests that the fragment octaves can be read correctly.
 		"""
-
 		octaves = self.tree.get_fragment_octaves(fragment="fragment2", reference=1)
 		octaves2 = self.tree.get_fragment_octaves(fragment="fragment1", reference=1)
 		all_octaves = self.tree.get_fragment_octaves()
@@ -921,9 +925,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 																number_of_individuals=10, n=10, community_reference=2))
 
 	def testLandscapeSampling(self):
-		"""
-		Tests that the sampling from the landscape works as intended
-		"""
+		"""Tests that the sampling from the landscape works as intended."""
 		number_dict = {"fragment1": 3, "fragment2": 10}
 		np.random.seed(100)
 		self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1,
@@ -932,6 +934,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 																		 community_reference=1), places=3)
 
 	def testRaisesSamplingErrors(self):
+		"""Tests that sampling errors are correctly raised"""
 		number_dict = {"fragment1": 3000000, "fragment2": 10}
 		with self.assertRaises(KeyError):
 			self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1,
