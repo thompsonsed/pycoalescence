@@ -435,7 +435,7 @@ class Installer(build_ext):  # pragma: no cover
 		if platform.system() == "Windows":
 			libdir = get_python_library("{}.{}".format(sys.version_info.major, sys.version_info.minor))
 			if conda_prefix is not None:
-				gdal_inc_path = os.path.join(conda_prefix, "include") # TODO check this works
+				gdal_inc_path = os.path.join(conda_prefix, "include") # TODO check this works - this is the bug - change to gdal working location on Windows
 				gdal_dir = os.path.join(conda_prefix, "lib")
 		else:
 			libdir = sysconfig.get_config_var("LIBDIR")

@@ -780,7 +780,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 		if os.path.exists(dst):
 			os.remove(dst)
 		shutil.copy(src, dst)
-		cls.tree = CoalescenceTree(logging_level=20) # TODO change back
+		cls.tree = CoalescenceTree()
 		cls.tree.set_database(dst)
 		cls.tree.wipe_data()
 		cls.tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
