@@ -1392,7 +1392,7 @@ m4_define([_BOOST_mingw_test],
 # _BOOST_FIND_COMPILER_TAG()
 # --------------------------
 # Internal.  When Boost is installed without --layout=system, each library
-# filename will hold a suffix that encodes the compiler used during the
+# file_name will hold a suffix that encodes the compiler used during the
 # build.  The Boost build system seems to call this a `tag'.
 AC_DEFUN([_BOOST_FIND_COMPILER_TAG],
 [AC_REQUIRE([AC_PROG_CXX])dnl

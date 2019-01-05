@@ -177,8 +177,7 @@ class Installer(build_ext):  # pragma: no cover
 						command.append("OBJDIR={}".format(self.get_obj_dir()))
 					execute_log_info(command, cwd=os.path.join(self.mod_dir, "lib"))
 			except subprocess.CalledProcessError as cpe:
-				cpe.message += "Configuration attempted, but error thrown"
-				raise cpe
+				raise subprocess.CalledProcessError("Configuration attempted, but error thrown: ".format(cpe))
 		else:
 			raise RuntimeError("File src/configure does not exist. Check installation has been successful.")
 
@@ -203,8 +202,7 @@ class Installer(build_ext):  # pragma: no cover
 			execute_log_info(["make", "build_dir"], cwd=os.path.join(self.mod_dir, "lib/"))
 			execute_log_info(["make", "clean"], cwd=os.path.join(self.mod_dir, "lib/"))
 		except subprocess.CalledProcessError as cpe:
-			logging.warning(cpe.message)
-			raise RuntimeError("Make file has not been generated. Cannot clean.")
+			raise RuntimeError("Make file has not been generated. Cannot clean: ".format(cpe))
 
 	def get_ldflags(self):
 		"""Get the ldflags that Python was compiled with, removing some problematic options."""
@@ -277,7 +275,7 @@ class Installer(build_ext):  # pragma: no cover
 			call = [re.sub('-Wstrict-prototypes|-Wno-unused-result|-Wunused-variable|-Wall', '', x) for x in call]
 		return call
 
-	def run_configure(self, argv=[None], logging_level=logging.INFO, display_warnings=False):
+	def run_configure(self, argv=None, logging_level=logging.INFO, display_warnings=False):
 		"""
 		Configures the install for compile options provided via the command line, or with default options if no options exist.
 		Running with ``-help`` or `-h` will display the compilation configurations called from ``./configure``.
@@ -286,6 +284,8 @@ class Installer(build_ext):  # pragma: no cover
 		:param logging_level: the logging level to utilise (defaults to INFO).
 		:param display_warnings: If true, runs with the -Wall flag for compilation (displaying all warnings). Default is False.
 		"""
+		if argv is None:
+			argv = [None]
 		call = self.get_compilation_flags(display_warnings=display_warnings)
 		set_logging_method(logging_level=logging_level)
 		self.autoconf()
@@ -429,10 +429,29 @@ class Installer(build_ext):  # pragma: no cover
 			cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
 		else:
 			cflags = ""
+		conda_prefix = os.environ.get("PREFIX", None) # for conda only
+		gdal_inc_path = None
+		gdal_dir = None
 		if platform.system() == "Windows":
 			libdir = get_python_library("{}.{}".format(sys.version_info.major, sys.version_info.minor))
+			if conda_prefix is not None:
+				gdal_inc_path = os.path.join(conda_prefix, "include") # TODO check this works
+				gdal_dir = os.path.join(conda_prefix, "lib")
 		else:
 			libdir = sysconfig.get_config_var("LIBDIR")
+			if conda_prefix is not None:
+				gdal_inc_path = os.path.join(conda_prefix, "include")
+				gdal_dir = os.path.join(conda_prefix, "lib")
+			else:
+				try:
+					gdal_inc_path = subprocess.check_output(["gdal-config","--cflags"])
+					gdal_dir = subprocess.check_output(["gdal-config", "--prefix"])
+				except subprocess.CalledProcessError:
+					pass
+				if gdal_inc_path is not None:
+					gdal_inc_path = gdal_inc_path.decode("utf-8").split(" ")[0][2:].replace("\n", "")
+				if gdal_dir is not None:
+					gdal_dir = gdal_dir.decode("utf-8").replace("\n", "")
 		if libdir is None:
 			libdir = os.path.abspath(os.path.join(sysconfig.get_config_var('LIBDEST'), "..", "libs"))
 			if sysconfig.get_config_var("LIBDEST") is None:
@@ -445,6 +464,10 @@ class Installer(build_ext):  # pragma: no cover
 					  # 																				  sys.version_info.minor))),
 					  "-DPYTHON_INCLUDE_DIR:FILEPATH={}".format(sysconfig.get_python_inc()),
 					  '-DCMAKE_BUILD_TYPE={}'.format(cfg)]
+		if gdal_inc_path is not None:
+			cmake_args.append("-DGDAL_INCLUDE_DIR={}".format(gdal_inc_path))
+		if gdal_dir is not None:
+			cmake_args.append("-DGDAL_DIR={}".format(gdal_dir))
 		build_args = ['--config', cfg]
 		if platform.system() == "Windows":
 			cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}'.format(
