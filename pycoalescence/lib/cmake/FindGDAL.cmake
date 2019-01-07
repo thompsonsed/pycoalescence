@@ -86,7 +86,7 @@ if(UNIX)
 
         if(GDAL_CONFIG_LIBS)
             # treat the output as a command line and split it up
-            separate_arguments(args NATIVE_COMMAND "${GDAL_CONFIG_LIBS}")
+            separate_arguments(args UNIX_COMMAND "${GDAL_CONFIG_LIBS}")
 
             # only consider libraries whose name matches this pattern
             set(name_pattern "[gG][dD][aA][lL]")
