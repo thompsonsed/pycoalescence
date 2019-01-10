@@ -345,8 +345,6 @@ class Installer(build_ext):  # pragma: no cover
 		display_warnings = "display_warnings=True" in argv
 		self.run_configure(argv, logging_level=logging_level, display_warnings=display_warnings)
 		self.do_compile()
-		# move_shared_object_file()
-		# move_executable()
 		self.backup_makefile()
 
 	def setuptools_cmake(self, ext):
@@ -393,8 +391,8 @@ class Installer(build_ext):  # pragma: no cover
 		except subprocess.CalledProcessError as cpe:
 			raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
 		if platform.system() == "Windows":
-			shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(),
-																					 "libnecsim.pyd"))
+			shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"),
+						os.path.join(self.get_build_dir(), "libnecsim.pyd"))
 
 	def run(self):
 		"""Runs installation and generates the shared object files - entry point for setuptools"""
@@ -406,8 +404,6 @@ class Installer(build_ext):  # pragma: no cover
 		self.build_dir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)),
 													  "pycoalescence", "necsim"))
 		self.obj_dir = self.build_dir
-		# if platform.system() == "Windows":
-		# 	raise SyntaxError("Windows is not supported by pycoalescence at this time.")
 		if not os.path.exists(self.build_temp):
 			os.makedirs(self.build_temp)
 		self.setuptools_cmake(ext)
@@ -422,8 +418,6 @@ class Installer(build_ext):  # pragma: no cover
 		:rtype: tuple
 		"""
 		cfg = 'Debug' if self.debug else 'Release'
-		# pymalloc_ext = "m" if bool(sysconfig.get_config_var('WITH_PYMALLOC')) else ""
-		# v_info = sys.version_info
 		cflags = sysconfig.get_config_var('CFLAGS')
 		if cflags is not None:
 			cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
@@ -441,7 +435,7 @@ class Installer(build_ext):  # pragma: no cover
 				gdal_dir = os.path.join(conda_prefix, "lib")
 			else:
 				try:
-					gdal_inc_path = subprocess.check_output(["gdal-config","--cflags"])
+					gdal_inc_path = subprocess.check_output(["gdal-config", "--cflags"])
 					gdal_dir = subprocess.check_output(["gdal-config", "--prefix"])
 				except subprocess.CalledProcessError:
 					pass
@@ -454,11 +448,8 @@ class Installer(build_ext):  # pragma: no cover
 			if sysconfig.get_config_var("LIBDEST") is None:
 				raise SystemError("Cannot detect library directory for Python install.")
 		cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(libdir),
-					  # "-DPYTHON_LINKER:=-lpython{}.{}{}".format(v_info.major, v_info.minor, pymalloc_ext),
 					  "-DPYTHON_CPPFLAGS:='{}'".format(cflags),
 					  "-DPYTHON_LDFLAGS:='{}'".format(self.get_ldshared()),
-					  # "-DPYTHON_LIBRARY:FILEPATH={}".format(get_python_library("{}.{}".format(sys.version_info.major,
-					  # 																				  sys.version_info.minor))),
 					  "-DPYTHON_INCLUDE_DIR:FILEPATH={}".format(sysconfig.get_python_inc()),
 					  '-DCMAKE_BUILD_TYPE={}'.format(cfg)]
 		if gdal_inc_path is not None:
