@@ -185,8 +185,7 @@ class Simulation(Landscape):
 		:param str config_file: the config file to read in.
 		"""
 		# New method using ConfigParser
-		with open(config_file, "r") as f:
-			self.config.read_file(f)
+		self.config.read(config_file)
 		self.full_config_file = config_file
 		self.seed = self.config.getint("main", "seed")
 		self.job_type = self.config.getint("main", "job_type")
