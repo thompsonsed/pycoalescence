@@ -28,15 +28,13 @@ import numpy as np
 
 global sqlite_import
 
+from configparser import ConfigParser
+
 try:
-	import configparser as ConfigParser
 	from io import StringIO
 # Python 2.x support
 except ImportError as ie:  # pragma: no cover
-	import ConfigParser
 	from cStringIO import StringIO
-
-	ConfigParser.ConfigParser.read_file = ConfigParser.ConfigParser.read
 
 try:
 	NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
@@ -95,7 +93,7 @@ class Simulation(Landscape):
 		self._create_logger(file=log_output, logging_level=logging_level, **kwargs)
 		self.output_directory = ""
 		self.pause_directory = ""
-		self.config = ConfigParser.ConfigParser()
+		self.config = ConfigParser()
 		self.config_string = StringIO()
 		self.full_config_file = None
 		self.is_setup = False
