@@ -135,10 +135,10 @@ class CoalescenceTree(object):
 			self.cursor = None
 			self.database.close()
 			self.database = None
+		self.c_community = None
 		for handler in self.logger.handlers:
 			handler.close()
 			self.logger.removeHandler(handler)
-		self.c_community = None
 
 	def _create_logger(self, file=None, logging_level=None):
 		"""
