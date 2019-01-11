@@ -2,7 +2,6 @@
 Runs a variety of high-level tests to ensure that system integration works as intended, mostly utilising the Simulation
 and CoalescenceTree
 """
-import faulthandler # TODO remove this
 import logging
 import os
 import platform
@@ -24,8 +23,6 @@ from setupTests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Simulation, CoalescenceTree
 from pycoalescence.necsim import necsimError
-
-faulthandler.enable()
 
 def setUpModule():
 	"""
