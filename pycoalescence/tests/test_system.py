@@ -2,13 +2,14 @@
 Runs a variety of high-level tests to ensure that system integration works as intended, mostly utilising the Simulation
 and CoalescenceTree
 """
+import faulthandler # TODO remove this
 import logging
 import os
 import platform
 import shutil
 import sqlite3
-import sys
 import unittest
+
 try:
 	from unittest.mock import patch
 except ImportError:
@@ -24,6 +25,7 @@ from setupTests import setUpAll, tearDownAll, skipLongTest
 from pycoalescence import Simulation, CoalescenceTree
 from pycoalescence.necsim import necsimError
 
+faulthandler.enable()
 
 def setUpModule():
 	"""
@@ -37,6 +39,7 @@ def tearDownModule():
 	Removes the output directory
 	"""
 	tearDownAll()
+
 
 class TestImport(unittest.TestCase):
 	"""Tests that the extra parts of the package can be imported."""
@@ -506,7 +509,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
 		self.tree2 = CoalescenceTree()
 		self.coal2.set_simulation_parameters(seed=1, job_type=35, output_directory="output", min_speciation_rate=0.1,
 											 sigma=4, tau=4, deme=1, sample_size=0.1, max_time=2,
-											 dispersal_relative_cost=1,min_num_species=1, cutoff=0.0,
+											 dispersal_relative_cost=1, min_num_species=1, cutoff=0.0,
 											 landscape_type="closed")
 		self.coal2.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
 		self.coal2.set_speciation_rates([0.1, 0.2])
@@ -1129,7 +1132,7 @@ class TestSimulationComplexRun3(unittest.TestCase):
 		self.tree = CoalescenceTree()
 		self.coal.set_simulation_parameters(seed=6, job_type=13, output_directory="output", min_speciation_rate=0.5,
 											sigma=4, tau=4, deme=1, sample_size=0.1, max_time=10,
-											dispersal_relative_cost=1,min_num_species=1, dispersal_method="normal")
+											dispersal_relative_cost=1, min_num_species=1, dispersal_method="normal")
 		# self.coal.set_simulation_parameters(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
 								coarse_file="sample/SA_sample_coarse.tif")
@@ -1233,6 +1236,7 @@ class TestSimulationSimple(unittest.TestCase):
 	Tests the run_simple() which simply runs on a landscape with very low dispersal parameters at a tiny size.
 	Checks that the pycoalescence can set up a simple simulation run correctly.
 	"""
+
 	def testSimCompletes(self):
 		"""
 		Tests that the complex simulation setup returns the correct species richness.
@@ -1389,7 +1393,7 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
 		self.coal.run()
 		self.coal2.set_simulation_parameters(seed=1, job_type=16, output_directory="output", min_speciation_rate=0.01,
 											 sigma=2, tau=-4, deme=1, sample_size=0.1, max_time=3,
-											 dispersal_relative_cost=1, min_num_species=1,dispersal_method="normal",
+											 dispersal_relative_cost=1, min_num_species=1, dispersal_method="normal",
 											 landscape_type=True)
 		self.coal2.set_map_files(sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine.tif",
 								 coarse_file="sample/SA_sample_coarse.tif")
@@ -1495,7 +1499,7 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
 											 protracted=True, min_speciation_gen=10, max_speciation_gen=20)
 		self.coal4.set_simulation_parameters(seed=1, job_type=22, output_directory="output", min_speciation_rate=0.5,
 											 sigma=2, tau=2, deme=1, sample_size=0.1, max_time=10,
-											 dispersal_relative_cost=1, min_num_species=1,dispersal_method="normal",
+											 dispersal_relative_cost=1, min_num_species=1, dispersal_method="normal",
 											 protracted=False)
 		# self.coal.set_simulation_parameters(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
 		self.coal1.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
@@ -1896,6 +1900,7 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
 		self.assertEqual(ed7, com7_dict)
 		self.assertEqual(ed8, com8_dict)
 
+
 @unittest.skipIf(platform.system() == "Windows", "Skipping tests not compatible with Windows.")
 class TestSimulationDispersalMaps(unittest.TestCase):
 	"""
@@ -2045,7 +2050,7 @@ class TestDetectRamUsage(unittest.TestCase):
 		cls.c = Simulation(logging_level=logging.CRITICAL)
 		cls.c.set_simulation_parameters(seed=1, job_type=36, output_directory="output", min_speciation_rate=0.5,
 										sigma=2, tau=2, deme=1000, sample_size=0.01, max_time=100,
-										dispersal_relative_cost=1,min_num_species=1, landscape_type=False)
+										dispersal_relative_cost=1, min_num_species=1, landscape_type=False)
 		cls.c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 		cls.c.add_sample_time(1.0)
 		try:
