@@ -1198,10 +1198,7 @@ class TestSimulationComplexRun4(unittest.TestCase):
 
 	@classmethod
 	def tearDownClass(cls):
-		"""
-		Removes the files from output."
-		:return:
-		"""
+		"""Does nothing"""
 		pass  # rmtree("output", True)
 
 	def testComplexRichness(self):
