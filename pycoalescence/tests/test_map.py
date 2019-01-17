@@ -4,6 +4,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import unittest
 
 import gdal
@@ -21,6 +22,11 @@ from setupTests import setUpAll, tearDownAll, skipGdalWarp
 
 import scipy
 
+try:  # pragma: no cover
+	from importlib import reload
+except ImportError:  # pragma: no cover
+	pass
+
 
 def setUpModule():
 	"""
@@ -36,6 +42,7 @@ def tearDownModule():
 	tearDownAll()
 
 
+@unittest.skipIf(sys.version[0] == "2", "Skipping Python 3.x tests")
 class TestMapImports(unittest.TestCase):
 	"""Tests that errors are thrown correctly when gdal is not detected."""
 
@@ -59,12 +66,13 @@ class TestMapImports(unittest.TestCase):
 	def testRaisesImportError(self):
 		"""Mocks a fake subprocess call to ``gdal-config --datadir`` and checks that the correct errors are raised"""
 		subprocess.check_output = create_autospec(subprocess.check_output, return_value=b"/not/a/gdal/dir\n")
+		import pycoalescence.map
 		with self.assertRaises(ImportError):
-			m = Map()
+			reload(pycoalescence.map)
 		subprocess.check_output = self.orig_call
 		subprocess.check_output = create_autospec(subprocess.check_output, return_value=None)
 		with self.assertRaises(ImportError):
-			m = Map()
+			reload(pycoalescence.map)
 
 
 class TestMap(unittest.TestCase):
@@ -680,7 +688,6 @@ class MapAssignment(unittest.TestCase):
 		m = Map()
 		with self.assertRaises(ValueError):
 			m.map_exists()
-
 
 
 @unittest.skipUnless(hasattr(scipy.spatial, "Voronoi"),
