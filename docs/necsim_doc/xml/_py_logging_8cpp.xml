@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="_py_logging_8cpp" kind="file" language="C++">
+    <compoundname>PyLogging.cpp</compoundname>
+    <includes local="no">Python.h</includes>
+    <includes local="no">string</includes>
+    <includes local="no">sstream</includes>
+    <includes local="yes">necsim/Logger.h</includes>
+    <includes refid="_py_logger_8h" local="yes">PyLogger.h</includes>
+    <includes refid="_py_logging_8h" local="yes">PyLogging.h</includes>
+    <incdepgraph>
+      <node id="2448">
+        <label>PyLogging.cpp</label>
+        <link refid="PyLogging.cpp"/>
+        <childnode refid="2449" relation="include">
+        </childnode>
+        <childnode refid="2450" relation="include">
+        </childnode>
+        <childnode refid="2451" relation="include">
+        </childnode>
+        <childnode refid="2452" relation="include">
+        </childnode>
+        <childnode refid="2453" relation="include">
+        </childnode>
+        <childnode refid="2454" relation="include">
+        </childnode>
+      </node>
+      <node id="2452">
+        <label>necsim/Logger.h</label>
+      </node>
+      <node id="2450">
+        <label>string</label>
+      </node>
+      <node id="2453">
+        <label>PyLogger.h</label>
+        <link refid="_py_logger_8h_source"/>
+        <childnode refid="2449" relation="include">
+        </childnode>
+        <childnode refid="2450" relation="include">
+        </childnode>
+        <childnode refid="2451" relation="include">
+        </childnode>
+        <childnode refid="2452" relation="include">
+        </childnode>
+      </node>
+      <node id="2449">
+        <label>Python.h</label>
+      </node>
+      <node id="2451">
+        <label>sstream</label>
+      </node>
+      <node id="2455">
+        <label>necsim/LogFile.h</label>
+      </node>
+      <node id="2454">
+        <label>PyLogging.h</label>
+        <link refid="_py_logging_8h_source"/>
+        <childnode refid="2449" relation="include">
+        </childnode>
+        <childnode refid="2450" relation="include">
+        </childnode>
+        <childnode refid="2455" relation="include">
+        </childnode>
+        <childnode refid="2453" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="_py_logging_8cpp_1a9302692bd9a9cf56478cbae301f04d53" prot="public" static="no">
+        <name>PYTHON_COMPILE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogging.cpp" line="10" column="9" bodyfile="PyLogging.cpp" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="_py_logging_8cpp_1a16abb5beca5fed84d447520249018248" prot="public" static="no" mutable="no">
+        <type><ref refid="class_py_logger" kindref="compound">PyLogger</ref> *</type>
+        <definition>PyLogger* pyLogger</definition>
+        <argsstring></argsstring>
+        <name>pyLogger</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogging.cpp" line="20" column="1" bodyfile="PyLogging.cpp" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_py_logging_8cpp_1a211ca84a4b539aa59a531cce6fd015e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_py_logger" kindref="compound">PyLogger</ref> *</type>
+        <definition>PyLogger* getGlobalLogger</definition>
+        <argsstring>(PyObject *logger, PyObject *log_function)</argsstring>
+        <name>getGlobalLogger</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>logger</declname>
+        </param>
+        <param>
+          <type>PyObject *</type>
+          <declname>log_function</declname>
+        </param>
+        <briefdescription>
+<para>Generates the global logger object and adds the logger and log functions to the Python logger. </para>        </briefdescription>
+        <detaileddescription>
+<para>Each call to getGlobalLogger should be matched by a call to removeGlobalLogger <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>logger</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Python logger object to use </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>log_function</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Python logging function to use </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the global logger object as a pointer. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogging.cpp" line="22" column="1" bodyfile="PyLogging.cpp" bodystart="22" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="_py_logging_8cpp_1a2ee01f3c6539e20979d44c3bb5a9073b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void removeGlobalLogger</definition>
+        <argsstring>()</argsstring>
+        <name>removeGlobalLogger</name>
+        <briefdescription>
+<para>Safely deletes the global logger object. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogging.cpp" line="41" column="1" bodyfile="PyLogging.cpp" bodystart="41" bodyend="48"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Routines for writing to Python logging module. </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Sam Thompson</para></simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>necsim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"></highlight><highlight class="preprocessor">#ifndef<sp/>PYTHON_COMPILE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PYTHON_COMPILE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Python.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/Logger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyLogger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyLogging.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><ref refid="class_py_logger" kindref="compound">PyLogger</ref><sp/>*pyLogger<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><ref refid="class_py_logger" kindref="compound">PyLogger</ref><sp/>*getGlobalLogger(PyObject<sp/>*logger,<sp/>PyObject<sp/>*log_function)</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(pyLogger<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>removeGlobalLogger();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_py_logger" kindref="compound">PyLogger</ref>();</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(logger<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>||<sp/>log_function<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>errmsg<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;logger<sp/>or<sp/>log_function<sp/>is<sp/>nullptr<sp/>when<sp/>attempting<sp/>to<sp/>getGlobalLogger().<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Please<sp/>report<sp/>this<sp/>bug.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PyErr_SetString(PyExc_SystemError,<sp/>errmsg.c_str());</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1abedc912ce779111d343a739b72316498" kindref="member">setLogger</ref>(logger);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger-&gt;<ref refid="class_py_logger_1afee8574d4db27060530daf1c54daf4ce" kindref="member">setLogFunction</ref>(log_function);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pyLogger;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>removeGlobalLogger()</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(pyLogger<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>pyLogger;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>pyLogger<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="PyLogging.cpp"/>
+  </compounddef>
+</doxygen>

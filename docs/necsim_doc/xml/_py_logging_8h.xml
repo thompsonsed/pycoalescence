@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="_py_logging_8h" kind="file" language="C++">
+    <compoundname>PyLogging.h</compoundname>
+    <includes local="yes">Python.h</includes>
+    <includes local="no">string</includes>
+    <includes local="yes">necsim/LogFile.h</includes>
+    <includes refid="_py_logger_8h" local="yes">PyLogger.h</includes>
+    <includedby refid="_c_landscape_metrics_calculator_8h" local="yes">CLandscapeMetricsCalculator.h</includedby>
+    <includedby refid="_c_simulation_8h" local="yes">CSimulation.h</includedby>
+    <includedby refid="necsim_8cpp" local="yes">necsim.cpp</includedby>
+    <includedby refid="_py_logging_8cpp" local="yes">PyLogging.cpp</includedby>
+    <incdepgraph>
+      <node id="2463">
+        <label>necsim/Logger.h</label>
+      </node>
+      <node id="2459">
+        <label>string</label>
+      </node>
+      <node id="2461">
+        <label>PyLogger.h</label>
+        <link refid="_py_logger_8h_source"/>
+        <childnode refid="2458" relation="include">
+        </childnode>
+        <childnode refid="2459" relation="include">
+        </childnode>
+        <childnode refid="2462" relation="include">
+        </childnode>
+        <childnode refid="2463" relation="include">
+        </childnode>
+      </node>
+      <node id="2458">
+        <label>Python.h</label>
+      </node>
+      <node id="2462">
+        <label>sstream</label>
+      </node>
+      <node id="2460">
+        <label>necsim/LogFile.h</label>
+      </node>
+      <node id="2457">
+        <label>PyLogging.h</label>
+        <link refid="PyLogging.h"/>
+        <childnode refid="2458" relation="include">
+        </childnode>
+        <childnode refid="2459" relation="include">
+        </childnode>
+        <childnode refid="2460" relation="include">
+        </childnode>
+        <childnode refid="2461" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2466">
+        <label>CSimulation.h</label>
+        <link refid="_c_simulation_8h_source"/>
+        <childnode refid="2467" relation="include">
+        </childnode>
+      </node>
+      <node id="2465">
+        <label>CLandscapeMetricsCalculator.h</label>
+        <link refid="_c_landscape_metrics_calculator_8h_source"/>
+      </node>
+      <node id="2467">
+        <label>CSimulateDispersal.h</label>
+        <link refid="_c_simulate_dispersal_8h_source"/>
+      </node>
+      <node id="2464">
+        <label>PyLogging.h</label>
+        <link refid="PyLogging.h"/>
+        <childnode refid="2465" relation="include">
+        </childnode>
+        <childnode refid="2466" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_py_logging_8h_1a211ca84a4b539aa59a531cce6fd015e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_py_logger" kindref="compound">PyLogger</ref> *</type>
+        <definition>PyLogger* getGlobalLogger</definition>
+        <argsstring>(PyObject *logger, PyObject *log_function)</argsstring>
+        <name>getGlobalLogger</name>
+        <param>
+          <type>PyObject *</type>
+          <declname>logger</declname>
+        </param>
+        <param>
+          <type>PyObject *</type>
+          <declname>log_function</declname>
+        </param>
+        <briefdescription>
+<para>Generates the global logger object and adds the logger and log functions to the Python logger. </para>        </briefdescription>
+        <detaileddescription>
+<para>Each call to getGlobalLogger should be matched by a call to removeGlobalLogger <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>logger</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Python logger object to use </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>log_function</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Python logging function to use </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the global logger object as a pointer. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogging.h" line="25" column="1" bodyfile="PyLogging.cpp" bodystart="22" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="_py_logging_8h_1a2ee01f3c6539e20979d44c3bb5a9073b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void removeGlobalLogger</definition>
+        <argsstring>()</argsstring>
+        <name>removeGlobalLogger</name>
+        <briefdescription>
+<para>Safely deletes the global logger object. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="PyLogging.h" line="30" column="1" bodyfile="PyLogging.cpp" bodystart="41" bodyend="48"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Routines for writing to Python logging module. </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Sam Thompson</para></simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>necsim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="preprocessor">#ifndef<sp/>PYLOGGING_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PYLOGGING_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Python.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;necsim/LogFile.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PyLogger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><ref refid="class_py_logger" kindref="compound">PyLogger</ref><sp/>*<sp/>getGlobalLogger(PyObject<sp/>*<sp/>logger,<sp/>PyObject<sp/>*<sp/>log_function);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>removeGlobalLogger();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>PYLOGGING_H</highlight></codeline>
+    </programlisting>
+    <location file="PyLogging.h"/>
+  </compounddef>
+</doxygen>
