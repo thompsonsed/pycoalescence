@@ -59,6 +59,8 @@ setuptools, which in turn runs ``installer.py``.
 Installing via conda
 ''''''''''''''''''''
 
+.. include:: conda_version.rst
+
 `Conda <https://conda.io/docs/>`_ is a package manager that handles sourcing of all dependencies in a relatively
 straight-forward, cross-platform manner. **pycoalescence** is provided on conda-forge. Installation of the package and
 all dependencies including boost, gdal, cmake and the relevant C++ compiler, simply requires
@@ -98,6 +100,8 @@ possible at this time. The solution is to build the package recipe on your local
 
 Installing via pip
 ''''''''''''''''''
+
+.. include:: pypi_version.rst
 
 Installation via pip requires that the non-pythonic dependencies are installed manually first. Importantly, make sure
 that `gdal <http://www.gdal.org/>`__ is fully functional. On some systems this appears to need compilation directly from
@@ -183,7 +187,7 @@ For issues related to missing boost headers, make sure that your system has boos
 package manager. Development versions of boost are required on linux. Ensure that the paths to the boost headers are
 visible to **pycoalescence**.
 
-.. note:: boost 1.68.0 is currently not working on conda due to changes in compiler link options.
+.. note:: boost 1.68.0 is currently unsupported on conda due to changes in compiler link options.
 
 .. _`performing_simulations`:
 
