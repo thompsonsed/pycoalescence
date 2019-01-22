@@ -772,7 +772,9 @@ class TestCoalSampling2(unittest.TestCase):
 		"""
 		self.assertEqual(356, self.tree.get_number_individuals())
 		self.assertEqual(53, self.tree.get_number_individuals(fragment="fragment1"))
+		self.assertEqual(53, self.tree.get_number_individuals(fragment="fragment1", community_reference=1))
 		self.assertEqual(39, self.tree.get_number_individuals(fragment="fragment2"))
+		self.assertEqual(39, self.tree.get_number_individuals(fragment="fragment2", community_reference=1))
 
 	def testIncorrectFragmentsRaisesError(self):
 		"""

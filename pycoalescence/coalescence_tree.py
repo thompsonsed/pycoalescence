@@ -922,7 +922,8 @@ class CoalescenceTree(object):
 										   " FROM FRAGMENT_ABUNDANCES WHERE fragment == ?", (fragment,)).fetchone()[0]
 			else:
 				return self.cursor.execute("SELECT SUM(no_individuals) FROM FRAGMENT_ABUNDANCES "
-										   "WHERE community_reference==?", (community_reference,)).fetchone()[0]
+										   "WHERE community_reference==? AND fragment == ?",
+										   (community_reference, fragment,)).fetchone()[0]
 		else:
 			if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):
 				raise RuntimeError(
