@@ -100,7 +100,7 @@ source_parsers = {
 master_doc = 'index'
 
 # General information about the project.
-project = u'pycoalescence'
+project = "pycoalescence"
 copyright = pycoalescence.__copyright__
 author = pycoalescence.__author__
 
