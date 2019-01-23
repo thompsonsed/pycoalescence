@@ -5,7 +5,6 @@ log files to their original location.
 
 import logging
 import os
-import sys
 import time
 import unittest
 from shutil import rmtree

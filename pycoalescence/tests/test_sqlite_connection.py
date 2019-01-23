@@ -2,9 +2,9 @@
 import sqlite3
 import unittest
 
-from setupTests import setUpAll, tearDownAll
+from setup_tests import setUpAll, tearDownAll
 from pycoalescence.sqlite_connection import check_sql_table_exist, fetch_table_from_sql, SQLiteConnection, \
-	sql_get_max_from_column, check_sql_column_exists
+	sql_get_max_from_column, check_sql_column_exists, get_table_names
 
 
 def setUpModule():
@@ -90,6 +90,18 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		                                 [6, 0.7, 0.5, 0, 0]]
 		for i, row in enumerate(expected_community_parameters):
 			self.assertListEqual(row, community_parameters[i])
+		community_parameters2 = fetch_table_from_sql(database="sample/mergers/data_0_0.db",
+													 table_name="COMMUNITY_PARAMETERS", column_names=True)
+		expected_community_parameters2 = [["reference", "speciation_rate", "time", "fragments",
+										   "metacommunity_reference"],
+										  [1, 0.5, 0.0, 0, 0],
+										 [2, 0.5, 0.5, 0, 0],
+										 [3, 0.6, 0.0, 0, 0],
+										 [4, 0.6, 0.5, 0, 0],
+										 [5, 0.7, 0.0, 0, 0],
+										 [6, 0.7, 0.5, 0, 0]]
+		for i, row in enumerate(expected_community_parameters2):
+			self.assertListEqual(row, community_parameters2[i])
 		with self.assertRaises(IOError):
 			_ = fetch_table_from_sql(database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMETERSXX")
 
@@ -97,10 +109,15 @@ class TestSqlFetchAndCheck(unittest.TestCase):
 		"""
 		Checks that check_sql_table_exist correctly detects the existence of tables
 		"""
+		expected_table_names = ["COMMUNITY_PARAMETERS", "FRAGMENT_OCTAVES", "SIMULATION_PARAMETERS",
+		                        "SPECIES_ABUNDANCES", "SPECIES_LIST", "SPECIES_LOCATIONS", "SPECIES_RICHNESS"]
+		table_names = get_table_names("sample/mergers/data_0_0.db").sort()
+		self.assertEqual(expected_table_names, table_names)
 		self.assertFalse(check_sql_table_exist(database="sample/mergers/data_0_0.db",
 		                                       table_name="notarealtable"))
 		self.assertTrue(check_sql_table_exist(database="sample/mergers/data_0_0.db",
 		                                      table_name="COMMUNITY_PARAMETERS"))
+
 
 	def testDetectsColumnCorrectly(self):
 		"""

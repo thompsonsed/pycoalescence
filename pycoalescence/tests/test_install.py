@@ -8,12 +8,9 @@ Also performs limited tests of the pycoalescence setup routines.
 from __future__ import absolute_import
 
 import argparse
-import inspect
 import logging
 import sys
 import unittest
-
-import os
 
 try:
 	import sqlite3
@@ -23,7 +20,7 @@ except ImportError:
 try:
 	import pycoalescence
 	from pycoalescence.system_operations import set_logging_method
-	import setupTests
+	import setup_tests
 except ImportError as ie:
 	logging.warning("Cannot import pycoalescence globally, check package is properly installed: {}.".format(ie))
 	logging.warning("Continuing with local package")
@@ -31,7 +28,7 @@ except ImportError as ie:
 
 	# Conditional import for Python 2 being stupid
 	from system_operations import set_logging_method
-	import setupTests
+	import setup_tests
 if sys.version_info[0] is not 3:
 	class FileExistsError(IOError):
 		pass
@@ -58,15 +55,15 @@ if __name__ == "__main__":
 	parser.add_argument('-v', '--verbose', help='Use verbose mode.', action='store_true', default=False)
 	args, unknown = parser.parse_known_args()
 	if args.quick:
-		setupTests.quick_test = True
+		setup_tests.quick_test = True
 		sys.argv.remove('--quick')
 	else:
-		setupTests.quick_test = False
+		setup_tests.quick_test = False
 	if args.bypass_gdal_warp:
-		setupTests.bypass_gdal_warp = True
+		setup_tests.bypass_gdal_warp = True
 		sys.argv.remove('--bypass_gdal_warp')
 	else:
-		setupTests.bypass_gdal_warp = False
+		setup_tests.bypass_gdal_warp = False
 	if args.verbose:
 		main(2)
 	else:
