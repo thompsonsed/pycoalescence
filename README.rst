@@ -142,7 +142,7 @@ The basic procedure for this procedure is
    required metrics of biodiversity.
 
 
-CONTACTS
+Contacts
 ~~~~~~~~
 
 Author: Samuel Thompson
