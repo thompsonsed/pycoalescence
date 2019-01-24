@@ -72,7 +72,7 @@ class TestNullSimulationErrors(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             t.get_species_list()
         with self.assertRaises(RuntimeError):
-            s = t.get_simulation_parameters()
+            _ = t.get_simulation_parameters()
         with self.assertRaises(RuntimeError):
             t.get_fragment_abundances("null", 1)
         with self.assertRaises(RuntimeError):
@@ -241,7 +241,7 @@ class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
                 ct._set_record_spatial(False)
                 ct.times = [0.0]
                 ct._set_metacommunity_parameters(size, spec)
-        ct._set_metacommunity_parameters(None, None)
+        ct._set_metacommunity_parameters()
         self.assertEqual(0.0, ct.metacommunity_size)
         self.assertEqual(0.0, ct.metacommunity_speciation_rate)
         ct._set_metacommunity_parameters(10, 0.1, "simulated")
@@ -267,7 +267,7 @@ class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
         ct._set_protracted_parameters(50, 5000)
         self.assertEqual((50.0, 5000.0), ct.protracted_parameters[0])
         ct.protracted_parameters = []
-        ct._set_protracted_parameters(None, None)
+        ct._set_protracted_parameters()
         self.assertEqual((0.0, 0.0), ct.protracted_parameters[0])
 
     def testSetSampleFile(self):
@@ -276,7 +276,7 @@ class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
         for file in ["notafile.tif", os.path.join("sample", "sample.db")]:
             with self.assertRaises(IOError):
                 ct._set_sample_file(file)
-        ct._set_sample_file(None)
+        ct._set_sample_file()
         self.assertEqual("null", ct.sample_file)
         expected_file = os.path.join("sample", "SA_sample_coarse.tif")
         ct._set_sample_file(expected_file)
@@ -695,10 +695,10 @@ class TestCoalescenceTreeWriteCsvs(unittest.TestCase):
             infile = open(output_csv, "rb")
         else:
             infile = open(output_csv, "r")
-        expected_output = [["reference", "speciation_rate", "time", "fragment", "metacommunity_references"],
-                           [1, 0.000001, 0.0, 0, 0],
-                           [2, 0.99999, 0.0, 0, 0],
-                           [3, 0.5, 0.0, 0, 0]]
+        expected_output = [["reference", "speciation_rate", "time", "fragments", "metacommunity_reference"],
+                           ["1", "1e-06", "0.0", "0", "0"],
+                           ["2", "0.99999", "0.0", "0", "0"],
+                           ["3", "0.5", "0.0", "0", "0"]]
         actual_output = []
         with infile as csv_file:
             csv_reader = csv.reader(csv_file)
@@ -826,6 +826,7 @@ class TestSimulationAnalysisTemporal(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tree.set_speciation_parameters([0.4, 0.6], times=[0.1, 0.2, "notafloat"])
         with self.assertRaises(TypeError):
+            # noinspection PyTypeChecker
             self.tree.set_speciation_parameters([0.4, 0.6], times="notafloat")
         self.tree.times = []
         self.tree.set_speciation_parameters([0.4, 0.6], times=[0, 1, 10])

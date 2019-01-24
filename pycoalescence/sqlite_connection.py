@@ -64,8 +64,7 @@ def get_table_names(database):
     :rtype: list
     """
     with SQLiteConnection(database) as cursor:
-        table_names = [x[0] for x in cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
-    return table_names
+        return [x[0] for x in cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
 
 
 def check_sql_table_exist(database, table_name):

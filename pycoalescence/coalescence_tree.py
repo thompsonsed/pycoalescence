@@ -34,7 +34,7 @@ except ImportError as ie:  # pragma: no cover
 from .future_except import FileNotFoundError
 from .system_operations import mod_directory, create_logger, write_to_log
 from .spatial_algorithms import calculate_distance_between
-from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, get_table_names
+from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, get_table_names, SQLiteConnection
 import pycoalescence
 
 # Reads the parameter descriptions from the json file.
@@ -303,7 +303,7 @@ class CoalescenceTree(object):
             self.c_community.add_metacommunity_parameters(self.metacommunity_size, self.metacommunity_speciation_rate,
                                                           self.metacommunity_option, self.metacommunity_reference)
 
-    def _set_protracted_parameters(self, protracted_speciation_min, protracted_speciation_max):
+    def _set_protracted_parameters(self, protracted_speciation_min=None, protracted_speciation_max=None):
         """
         Checks that the protracted parameters are valid and adds them to the simulation object.
 
@@ -338,7 +338,7 @@ class CoalescenceTree(object):
             raise ValueError("Maximum generation for protracted speciation cannot be less than the minimum, or greater"
                              " than the initial value used during simulation ({}).".format(db_max))
 
-    def _set_sample_file(self, sample_file):
+    def _set_sample_file(self, sample_file=None):
         """
         Checks that the sample file has been correctly set and sets it within the object.
 
@@ -476,13 +476,13 @@ class CoalescenceTree(object):
         if not self.equalised:  # pragma: no cover
             self._equalise_all_fragment_numbers()
         species_abundances = []
-        id = 0
+        id_counter = 0
         for reference in set([x[3] for x in self.fragment_abundances]):
             reference_subset = [x for x in self.fragment_abundances if x[3] == reference]
             for species_id in set([x[1] for x in reference_subset]):
-                id += 1
+                id_counter += 1
                 total = sum([x[2] for x in reference_subset if x[1] == species_id])
-                species_abundances.append([id, species_id, total, reference])
+                species_abundances.append([id_counter, species_id, total, reference])
         self._check_database()
         self.cursor.execute("DROP TABLE IF EXISTS SPECIES_ABUNDANCES")
         self.cursor.execute("CREATE TABLE SPECIES_ABUNDANCES (ID INT NOT NULL PRIMARY KEY, species_id INT NOT NULL,"
@@ -539,11 +539,8 @@ class CoalescenceTree(object):
         """
         if self.comparison_file is None or not os.path.exists(self.comparison_file):  # pragma: no cover
             raise ValueError("Cannot get plot data from comparison file {}".format(self.comparison_file))
-        db = sqlite3.connect(self.comparison_file)
-        c = db.cursor()
-        plot_data = c.execute("SELECT fragment, no_individuals FROM PLOT_DATA").fetchall()
-        db.close()
-        db = None
+        with SQLiteConnection(self.comparison_file) as cursor:
+            plot_data = cursor.execute("SELECT fragment, no_individuals FROM PLOT_DATA").fetchall()
         return [x for x in plot_data]
 
     def _get_sim_parameters_guild(self, guild):
@@ -916,6 +913,8 @@ class CoalescenceTree(object):
         taken across time slices.
 
         :param fragment: the name of the fragment to get a count of individuals from
+        :param community_reference: the reference to the community parameters
+
         :return: the number of individuals that exists in the desired location
         """
         self._check_database()
@@ -1796,12 +1795,14 @@ class CoalescenceTree(object):
         """
         Returns the goodness of fit for fragment octaves from the file.
 
+        .. note:: If more than one metric matches the specified criteria, only the first will be returned.
+
         :raises ValueError: if BIODIVERSITY_METRICS table does not exist.
 
         :param reference: the community reference number
         :return: the full output from the SQL query
 
-        :rtype: list
+        :rtype: double
         """
         # TODO This needs to be fixed
         self._check_database()
