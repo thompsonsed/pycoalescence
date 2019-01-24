@@ -158,7 +158,7 @@ class Installer(build_ext):  # pragma: no cover
 
         :param opts: a list of options to pass to the ./configure call
         """
-        if "--with-debug" in opts:
+        if "--with-debug" in opts or self.debug:
             for i, each in enumerate(opts):
                 if "-DNDEBUG" in each:
                     opts[i] = opts[i].replace("-DNDEBUG", "")
@@ -408,6 +408,20 @@ class Installer(build_ext):  # pragma: no cover
             os.makedirs(self.build_temp)
         self.setuptools_cmake(ext)
 
+    def clean_cmake(self):
+        """Deletes the cmake files and object locations if they exist."""
+        for path in [os.path.join(self.get_build_dir(), "libnecsim.so"),
+                     os.path.join(self.get_build_dir(), "libnecsim.so.dSYM"),
+                     os.path.join(self.get_build_dir(), "libnecsim.pyd"),
+                     os.path.join(self.get_build_dir(), "libnecsim.dylib"),
+                     os.path.join(self.mod_dir, "obj")]:
+            if os.path.exists(path):
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+                else:
+                    os.remove(path)
+
+
     def get_default_cmake_args(self, output_dir):
         """
         Returns the default cmake configure and build arguments.
@@ -558,10 +572,12 @@ if __name__ == "__main__":  # pragma: no cover
     parser.add_argument('--cmake-build-args', metavar='N', type=str, nargs='+', dest="cmake_build_args",
                         default=[],
                         help='Additional arguments to pass to the cmake compiler at build time')
-    parser.add_argument('--debug', action='store_false', default=False, dest='debug',
+    parser.add_argument('--debug', action='store_true', default=False, dest='debug',
                         help='Compile using DEBUG defines')
     parser.add_argument('-c', '-C', '--compile', action='store_true', default=False, dest='compile_only',
                         help='Compile only, do not re-configure necsim')
+    parser.add_argument('--clean', action="store_true", default=False, dest="clean",
+                        help="Clean previous cmake builds from this directory.")
 
     args = parser.parse_args()
     if args.cmake and args.autotools:
@@ -570,22 +586,26 @@ if __name__ == "__main__":  # pragma: no cover
         raise ValueError("Must specify compilation either using autotools or cmake.")
     dist = Distribution()
     installer = Installer(dist)
-    if args.cmake:
-        env = os.environ.copy()
-        build_dir = installer.get_build_dir()
-        obj_dir = installer.get_obj_dir()
-        cmake_args, build_args = installer.get_default_cmake_args(build_dir)
-        cmake_args += args.cmake_args
-        build_args += args.cmake_build_args
-        src_dir = os.path.join(installer.mod_dir, "lib")
-        installer.run_cmake(src_dir, cmake_args, build_args, obj_dir, env)
+    installer.debug = args.debug
+    if args.clean:
+        installer.clean_cmake()
     else:
-        if platform.system() != "Windows":
-            raise SystemError("Usage of configure and make on a windows system is not supported.")
-        if args.compile_only:
-            set_logging_method(logging_level=logging.INFO)
-            installer.copy_makefile()
-            installer.do_compile()
-            fail = False
-        if fail:
-            installer.configure_and_compile(args.compiler_args)
+        if args.cmake:
+            env = os.environ.copy()
+            build_dir = installer.get_build_dir()
+            obj_dir = installer.get_obj_dir()
+            cmake_args, build_args = installer.get_default_cmake_args(build_dir)
+            cmake_args += args.cmake_args
+            build_args += args.cmake_build_args
+            src_dir = os.path.join(installer.mod_dir, "lib")
+            installer.run_cmake(src_dir, cmake_args, build_args, obj_dir, env)
+        else:
+            if platform.system() != "Windows":
+                raise SystemError("Usage of configure and make on a windows system is not supported.")
+            if args.compile_only:
+                set_logging_method(logging_level=logging.INFO)
+                installer.copy_makefile()
+                installer.do_compile()
+                fail = False
+            if fail:
+                installer.configure_and_compile(args.compiler_args)

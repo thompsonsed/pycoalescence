@@ -105,9 +105,9 @@ setting up a coalescence simulation. The important set up functions are:
    variables, including the seed, output directory, dispersal parameters
    and speciation rate.
 -  ``set_map()`` is used to specify a map file to use. More complex map
-   file set-ups can be provided using ``set_map_files``.
-   ``set_map_parameters()`` can also be used to customise parameters,
-   instead of detecting from the provided tif files.
+   file set-ups can be provided using ``set_map_files()`` can also be
+   used to customise parameters, instead of detecting from the provided
+   tif files.
 -  ``set_speciation_rates()`` takes a list of speciation rates to apply
    at the end of the simulation. This is optional.
 -  ``run()`` checks and starts the simulation, writing to the output
@@ -126,10 +126,10 @@ The basic procedure for this procedure is
    database
 -  ``set_speciation_parameters()`` which takes as arguments
 
+   -  list of speciation rates to apply
    -  T/F of recording full spatial data
    -  either a csv file containing fragment data, or T/F for whether
       fragments should be calculated from squares of continuous habitat.
-   -  list of speciation rates to apply
    -  [optional] a sample file to specify certain cells to sample from
    -  [optional] a config file containing the temporal sampling points
       desired.
