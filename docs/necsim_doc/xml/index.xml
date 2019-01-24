@@ -162,6 +162,7 @@
     <member refid="class_community_1abff2a27e961ddc09c0a1890face9a32b" kind="function"><name>getSpeciesRichness</name></member>
     <member refid="class_community_1a41945c01d1ece545f4dd2cae7f0de5dc" kind="function"><name>getSpeciesAbundances</name></member>
     <member refid="class_community_1ac6b35fedac0dc583482fe83373233087" kind="function"><name>getSpeciesAbundances</name></member>
+    <member refid="class_community_1a5d283805eec94bcc2f82bfa1242c035d" kind="function"><name>isDatabaseNullPtr</name></member>
   </compound>
   <compound refid="struct_community_parameters" kind="struct"><name>CommunityParameters</name>
     <member refid="struct_community_parameters_1a557474bb5acbee2483cf8176aaf2c2d6" kind="variable"><name>reference</name></member>
@@ -613,7 +614,7 @@
   </compound>
   <compound refid="class_metacommunity" kind="class"><name>Metacommunity</name>
     <member refid="class_metacommunity_1afd81750697ac8540b71de001ee53fc61" kind="variable"><name>seed</name></member>
-    <member refid="class_metacommunity_1a094dfd2d0bb737a1f5bd06ceb3c6da1f" kind="variable"><name>task</name></member>
+    <member refid="class_metacommunity_1a10c5eeecf9fe77dd9960b2625860e058" kind="variable"><name>job_type</name></member>
     <member refid="class_metacommunity_1a8b0ca689c1c638e49424d59fadb2e28d" kind="variable"><name>parameters_checked</name></member>
     <member refid="class_metacommunity_1a619bf571c7d030f176646076879da570" kind="variable"><name>species_abundances_handler</name></member>
     <member refid="class_metacommunity_1a8ec932132623452a02aa7bfa8823b889" kind="variable"><name>random</name></member>
@@ -721,6 +722,7 @@
     <member refid="class_community_1abff2a27e961ddc09c0a1890face9a32b" kind="function"><name>getSpeciesRichness</name></member>
     <member refid="class_community_1a41945c01d1ece545f4dd2cae7f0de5dc" kind="function"><name>getSpeciesAbundances</name></member>
     <member refid="class_community_1ac6b35fedac0dc583482fe83373233087" kind="function"><name>getSpeciesAbundances</name></member>
+    <member refid="class_community_1a5d283805eec94bcc2f82bfa1242c035d" kind="function"><name>isDatabaseNullPtr</name></member>
   </compound>
   <compound refid="struct_metacommunity_parameters" kind="struct"><name>MetacommunityParameters</name>
     <member refid="struct_metacommunity_parameters_1af6c04331c114ae95467ff2301789a67b" kind="variable"><name>reference</name></member>
@@ -809,7 +811,7 @@
     <member refid="class_tree_1a61b4349fe78d09ac06eff4b7d6833105" kind="variable"><name>speciation_rates</name></member>
     <member refid="class_tree_1a78935befd45946b8e69023bffca59c1d" kind="variable"><name>seeded</name></member>
     <member refid="class_tree_1a821c3c83d8bad2a6c3dba687533f6a53" kind="variable"><name>seed</name></member>
-    <member refid="class_tree_1a5f74fd75a2d2a606703b19a3a2d177d2" kind="variable"><name>task</name></member>
+    <member refid="class_tree_1a72b0b00a113b3964898512a6fc122e1d" kind="variable"><name>job_type</name></member>
     <member refid="class_tree_1a5e031ea8d94f48288547116a9e7d7add" kind="variable"><name>times_file</name></member>
     <member refid="class_tree_1a56bb1ea64368f5b705360a435350f9d5" kind="variable"><name>reference_times</name></member>
     <member refid="class_tree_1abed1688c75153c4af4e8c574a26dd636" kind="variable"><name>uses_temporal_sampling</name></member>
@@ -882,11 +884,12 @@
     <member refid="class_tree_1a9bbc17547248e676085fab58ab2022e7" kind="function"><name>internalSetup</name></member>
     <member refid="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78" kind="function"><name>checkOutputDirectory</name></member>
     <member refid="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad" kind="function"><name>checkSims</name></member>
-    <member refid="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c" kind="function"><name>checkSims</name></member>
+    <member refid="class_tree_1a00a49a7cee74573aeeb3a9e05f42ff2c" kind="function"><name>checkSims</name></member>
     <member refid="class_tree_1a891764ffc1e29d3edbe0fd08e67a184b" kind="function"><name>setProtractedVariables</name></member>
     <member refid="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" kind="function"><name>hasPaused</name></member>
     <member refid="class_tree_1ac03c034a5730ee4f4d8727aace776412" kind="function"><name>getTemporalSampling</name></member>
     <member refid="class_tree_1a857521315ca6bd9b3300d099488d74f1" kind="function"><name>getSeed</name></member>
+    <member refid="class_tree_1aa377bfcc87d736fb0a22c6b5caacdc09" kind="function"><name>getJobType</name></member>
     <member refid="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d" kind="function"><name>setSeed</name></member>
     <member refid="class_tree_1a869ab0aba75336f737cbb137c74b8abc" kind="function"><name>setObjectSizes</name></member>
     <member refid="class_tree_1aec2640897132a1b667e852bbafc14c78" kind="function"><name>setInitialValues</name></member>
@@ -938,7 +941,7 @@
     <member refid="class_tree_1a9cf1e86171d4a0e22e636bb2cdb01e27" kind="function"><name>dumpActive</name></member>
     <member refid="class_tree_1aef421096d19ced6d699b84b90a0a5bbc" kind="function"><name>dumpData</name></member>
     <member refid="class_tree_1abea4ba1f5340f9690b92008a3b049fba" kind="function"><name>completePause</name></member>
-    <member refid="class_tree_1ac545d844141db977920fc9fd76ce9dbb" kind="function"><name>setResumeParameters</name></member>
+    <member refid="class_tree_1a681b96367f10a3e0de572ab57fb002ba" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1acc6cbb7b0ac50a003a5e64ec3e37e3c0" kind="function"><name>openSaveFile</name></member>
     <member refid="class_tree_1a7f40faa0cd2c61d9acfa0915bdeecffe" kind="function"><name>loadMainSave</name></member>
@@ -981,11 +984,12 @@
     <member refid="class_tree_1a9bbc17547248e676085fab58ab2022e7" kind="function"><name>internalSetup</name></member>
     <member refid="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78" kind="function"><name>checkOutputDirectory</name></member>
     <member refid="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad" kind="function"><name>checkSims</name></member>
-    <member refid="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c" kind="function"><name>checkSims</name></member>
+    <member refid="class_tree_1a00a49a7cee74573aeeb3a9e05f42ff2c" kind="function"><name>checkSims</name></member>
     <member refid="class_tree_1ac374d237b7e2e7e11f6a0ff395003635" kind="function"><name>setParameters</name></member>
     <member refid="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" kind="function"><name>hasPaused</name></member>
     <member refid="class_tree_1ac03c034a5730ee4f4d8727aace776412" kind="function"><name>getTemporalSampling</name></member>
     <member refid="class_tree_1a857521315ca6bd9b3300d099488d74f1" kind="function"><name>getSeed</name></member>
+    <member refid="class_tree_1aa377bfcc87d736fb0a22c6b5caacdc09" kind="function"><name>getJobType</name></member>
     <member refid="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d" kind="function"><name>setSeed</name></member>
     <member refid="class_tree_1a1e0685310a5a9bca4d6069e8d4ce1f1b" kind="function"><name>getInitialCount</name></member>
     <member refid="class_tree_1a869ab0aba75336f737cbb137c74b8abc" kind="function"><name>setObjectSizes</name></member>
@@ -1041,7 +1045,7 @@
     <member refid="class_tree_1a9cf1e86171d4a0e22e636bb2cdb01e27" kind="function"><name>dumpActive</name></member>
     <member refid="class_tree_1aef421096d19ced6d699b84b90a0a5bbc" kind="function"><name>dumpData</name></member>
     <member refid="class_tree_1abea4ba1f5340f9690b92008a3b049fba" kind="function"><name>completePause</name></member>
-    <member refid="class_tree_1ac545d844141db977920fc9fd76ce9dbb" kind="function"><name>setResumeParameters</name></member>
+    <member refid="class_tree_1a681b96367f10a3e0de572ab57fb002ba" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1acc6cbb7b0ac50a003a5e64ec3e37e3c0" kind="function"><name>openSaveFile</name></member>
     <member refid="class_tree_1a7f40faa0cd2c61d9acfa0915bdeecffe" kind="function"><name>loadMainSave</name></member>
@@ -1056,7 +1060,7 @@
     <member refid="class_tree_1a61b4349fe78d09ac06eff4b7d6833105" kind="variable"><name>speciation_rates</name></member>
     <member refid="class_tree_1a78935befd45946b8e69023bffca59c1d" kind="variable"><name>seeded</name></member>
     <member refid="class_tree_1a821c3c83d8bad2a6c3dba687533f6a53" kind="variable"><name>seed</name></member>
-    <member refid="class_tree_1a5f74fd75a2d2a606703b19a3a2d177d2" kind="variable"><name>task</name></member>
+    <member refid="class_tree_1a72b0b00a113b3964898512a6fc122e1d" kind="variable"><name>job_type</name></member>
     <member refid="class_tree_1a5e031ea8d94f48288547116a9e7d7add" kind="variable"><name>times_file</name></member>
     <member refid="class_tree_1a56bb1ea64368f5b705360a435350f9d5" kind="variable"><name>reference_times</name></member>
     <member refid="class_tree_1abed1688c75153c4af4e8c574a26dd636" kind="variable"><name>uses_temporal_sampling</name></member>
@@ -1213,7 +1217,7 @@
     <member refid="struct_sim_parameters_1a0904ed1272de111c9e80c22dcdb2e039" kind="variable"><name>historical_fine_map_file</name></member>
     <member refid="struct_sim_parameters_1a621bfeaf44861f6b88d4117bc7da5a2b" kind="variable"><name>historical_coarse_map_file</name></member>
     <member refid="struct_sim_parameters_1ac5298525ed1d094d1668bc78491b0c69" kind="variable"><name>sample_mask_file</name></member>
-    <member refid="struct_sim_parameters_1acd3ec52b8146e506460d5949836ea0ce" kind="variable"><name>task</name></member>
+    <member refid="struct_sim_parameters_1ac8c58cb2d828b39f2f5fdc4e7390900a" kind="variable"><name>job_type</name></member>
     <member refid="struct_sim_parameters_1ab3fb7b5cee0725fee84f53f35f695d27" kind="variable"><name>seed</name></member>
     <member refid="struct_sim_parameters_1aba773a5ec7ad130d6009d319c7d2f591" kind="variable"><name>grid_x_size</name></member>
     <member refid="struct_sim_parameters_1a3d52bbca2ec77eb584b2940fce8b018f" kind="variable"><name>grid_y_size</name></member>
@@ -1260,7 +1264,7 @@
     <member refid="struct_sim_parameters_1a20f9639591099b3a4a0c2fc2b0400dbb" kind="function"><name>importParameters</name></member>
     <member refid="struct_sim_parameters_1a2c587f1f41e13c51696ca24e5edadc96" kind="function"><name>importParameters</name></member>
     <member refid="struct_sim_parameters_1a65833f22d1f30997727ed71e989af02e" kind="function"><name>importParameters</name></member>
-    <member refid="struct_sim_parameters_1aa6684caccd53613a5d08ff4071d0edc9" kind="function"><name>setKeyParameters</name></member>
+    <member refid="struct_sim_parameters_1a1fc01f6c9e2da534afee5c9b1e425ff8" kind="function"><name>setKeyParameters</name></member>
     <member refid="struct_sim_parameters_1a6753a70e7b9183c97fb1b304b089968d" kind="function"><name>setSpeciationParameters</name></member>
     <member refid="struct_sim_parameters_1a74782aab11b1e07a507cc60bdec3bf95" kind="function"><name>setDispersalParameters</name></member>
     <member refid="struct_sim_parameters_1afae472eb2788205a8587db87778f0333" kind="function"><name>setHistoricalMapParameters</name></member>
@@ -1269,7 +1273,7 @@
     <member refid="struct_sim_parameters_1adae32b41ebc9b9bd0ae89ceb039430b4" kind="function"><name>setHistorical</name></member>
     <member refid="struct_sim_parameters_1ac7072f58a9dccc718341d25a84148ffc" kind="function"><name>printVars</name></member>
     <member refid="struct_sim_parameters_1a04636fc2b0899400011b54bb1f175eb0" kind="function"><name>printSpatialVars</name></member>
-    <member refid="struct_sim_parameters_1a3f702a94e97b5dee554574b95ac10987" kind="function"><name>setMetacommunityParameters</name></member>
+    <member refid="struct_sim_parameters_1a217ec9e953ad9751629194f613319cb2" kind="function"><name>setMetacommunityParameters</name></member>
     <member refid="struct_sim_parameters_1ab774f2f5f6221536fcadeb2436abda57" kind="function"><name>operator=</name></member>
     <member refid="struct_sim_parameters_1a9a762d7dd8157c538a45194e17fed2e8" kind="friend"><name>operator&lt;&lt;</name></member>
     <member refid="struct_sim_parameters_1a5265cab3c1560ae4133b04a3a434a892" kind="friend"><name>operator&gt;&gt;</name></member>
@@ -1354,7 +1358,7 @@
     <member refid="class_tree_1a61b4349fe78d09ac06eff4b7d6833105" kind="variable"><name>speciation_rates</name></member>
     <member refid="class_tree_1a78935befd45946b8e69023bffca59c1d" kind="variable"><name>seeded</name></member>
     <member refid="class_tree_1a821c3c83d8bad2a6c3dba687533f6a53" kind="variable"><name>seed</name></member>
-    <member refid="class_tree_1a5f74fd75a2d2a606703b19a3a2d177d2" kind="variable"><name>task</name></member>
+    <member refid="class_tree_1a72b0b00a113b3964898512a6fc122e1d" kind="variable"><name>job_type</name></member>
     <member refid="class_tree_1a5e031ea8d94f48288547116a9e7d7add" kind="variable"><name>times_file</name></member>
     <member refid="class_tree_1a56bb1ea64368f5b705360a435350f9d5" kind="variable"><name>reference_times</name></member>
     <member refid="class_tree_1abed1688c75153c4af4e8c574a26dd636" kind="variable"><name>uses_temporal_sampling</name></member>
@@ -1429,11 +1433,12 @@
     <member refid="class_tree_1a9bbc17547248e676085fab58ab2022e7" kind="function"><name>internalSetup</name></member>
     <member refid="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78" kind="function"><name>checkOutputDirectory</name></member>
     <member refid="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad" kind="function"><name>checkSims</name></member>
-    <member refid="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c" kind="function"><name>checkSims</name></member>
+    <member refid="class_tree_1a00a49a7cee74573aeeb3a9e05f42ff2c" kind="function"><name>checkSims</name></member>
     <member refid="class_tree_1a891764ffc1e29d3edbe0fd08e67a184b" kind="function"><name>setProtractedVariables</name></member>
     <member refid="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" kind="function"><name>hasPaused</name></member>
     <member refid="class_tree_1ac03c034a5730ee4f4d8727aace776412" kind="function"><name>getTemporalSampling</name></member>
     <member refid="class_tree_1a857521315ca6bd9b3300d099488d74f1" kind="function"><name>getSeed</name></member>
+    <member refid="class_tree_1aa377bfcc87d736fb0a22c6b5caacdc09" kind="function"><name>getJobType</name></member>
     <member refid="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d" kind="function"><name>setSeed</name></member>
     <member refid="class_tree_1a869ab0aba75336f737cbb137c74b8abc" kind="function"><name>setObjectSizes</name></member>
     <member refid="class_tree_1aec2640897132a1b667e852bbafc14c78" kind="function"><name>setInitialValues</name></member>
@@ -1485,7 +1490,7 @@
     <member refid="class_tree_1a9cf1e86171d4a0e22e636bb2cdb01e27" kind="function"><name>dumpActive</name></member>
     <member refid="class_tree_1aef421096d19ced6d699b84b90a0a5bbc" kind="function"><name>dumpData</name></member>
     <member refid="class_tree_1abea4ba1f5340f9690b92008a3b049fba" kind="function"><name>completePause</name></member>
-    <member refid="class_tree_1ac545d844141db977920fc9fd76ce9dbb" kind="function"><name>setResumeParameters</name></member>
+    <member refid="class_tree_1a681b96367f10a3e0de572ab57fb002ba" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1acc6cbb7b0ac50a003a5e64ec3e37e3c0" kind="function"><name>openSaveFile</name></member>
     <member refid="class_tree_1a7f40faa0cd2c61d9acfa0915bdeecffe" kind="function"><name>loadMainSave</name></member>
@@ -1594,7 +1599,7 @@
     <member refid="class_tree_1a61b4349fe78d09ac06eff4b7d6833105" kind="variable"><name>speciation_rates</name></member>
     <member refid="class_tree_1a78935befd45946b8e69023bffca59c1d" kind="variable"><name>seeded</name></member>
     <member refid="class_tree_1a821c3c83d8bad2a6c3dba687533f6a53" kind="variable"><name>seed</name></member>
-    <member refid="class_tree_1a5f74fd75a2d2a606703b19a3a2d177d2" kind="variable"><name>task</name></member>
+    <member refid="class_tree_1a72b0b00a113b3964898512a6fc122e1d" kind="variable"><name>job_type</name></member>
     <member refid="class_tree_1a5e031ea8d94f48288547116a9e7d7add" kind="variable"><name>times_file</name></member>
     <member refid="class_tree_1a56bb1ea64368f5b705360a435350f9d5" kind="variable"><name>reference_times</name></member>
     <member refid="class_tree_1abed1688c75153c4af4e8c574a26dd636" kind="variable"><name>uses_temporal_sampling</name></member>
@@ -1638,12 +1643,13 @@
     <member refid="class_tree_1a9bbc17547248e676085fab58ab2022e7" kind="function"><name>internalSetup</name></member>
     <member refid="class_tree_1a5c6065ede9862e9fb6561eb8beaf5d78" kind="function"><name>checkOutputDirectory</name></member>
     <member refid="class_tree_1ad0bcc474a9ab1d4e3e2458c4de7304ad" kind="function"><name>checkSims</name></member>
-    <member refid="class_tree_1aafaede1da6c79583bf2e28b7a1881a5c" kind="function"><name>checkSims</name></member>
+    <member refid="class_tree_1a00a49a7cee74573aeeb3a9e05f42ff2c" kind="function"><name>checkSims</name></member>
     <member refid="class_tree_1ac374d237b7e2e7e11f6a0ff395003635" kind="function"><name>setParameters</name></member>
     <member refid="class_tree_1a891764ffc1e29d3edbe0fd08e67a184b" kind="function"><name>setProtractedVariables</name></member>
     <member refid="class_tree_1ae07761c0a91a44ebe459904b1b8ffb43" kind="function"><name>hasPaused</name></member>
     <member refid="class_tree_1ac03c034a5730ee4f4d8727aace776412" kind="function"><name>getTemporalSampling</name></member>
     <member refid="class_tree_1a857521315ca6bd9b3300d099488d74f1" kind="function"><name>getSeed</name></member>
+    <member refid="class_tree_1aa377bfcc87d736fb0a22c6b5caacdc09" kind="function"><name>getJobType</name></member>
     <member refid="class_tree_1ab240ab1988cbde281a6811b3fdc1dd5d" kind="function"><name>setSeed</name></member>
     <member refid="class_tree_1a1e0685310a5a9bca4d6069e8d4ce1f1b" kind="function"><name>getInitialCount</name></member>
     <member refid="class_tree_1a869ab0aba75336f737cbb137c74b8abc" kind="function"><name>setObjectSizes</name></member>
@@ -1706,7 +1712,7 @@
     <member refid="class_tree_1a9cf1e86171d4a0e22e636bb2cdb01e27" kind="function"><name>dumpActive</name></member>
     <member refid="class_tree_1aef421096d19ced6d699b84b90a0a5bbc" kind="function"><name>dumpData</name></member>
     <member refid="class_tree_1abea4ba1f5340f9690b92008a3b049fba" kind="function"><name>completePause</name></member>
-    <member refid="class_tree_1ac545d844141db977920fc9fd76ce9dbb" kind="function"><name>setResumeParameters</name></member>
+    <member refid="class_tree_1a681b96367f10a3e0de572ab57fb002ba" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1aeade4bccb8394937a53bc4fbcf2b4300" kind="function"><name>setResumeParameters</name></member>
     <member refid="class_tree_1acc6cbb7b0ac50a003a5e64ec3e37e3c0" kind="function"><name>openSaveFile</name></member>
     <member refid="class_tree_1a7f40faa0cd2c61d9acfa0915bdeecffe" kind="function"><name>loadMainSave</name></member>
