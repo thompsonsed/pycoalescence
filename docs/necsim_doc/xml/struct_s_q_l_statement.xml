@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="struct_s_q_l_statement" kind="struct" language="C++" prot="public">
+    <compoundname>SQLStatement</compoundname>
+    <includes refid="_s_q_lite_handler_8h" local="no">SQLiteHandler.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_s_q_l_statement_1a27e1976fe158acb3f91362202f137ca3" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string SQLStatement::last_command</definition>
+        <argsstring></argsstring>
+        <name>last_command</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="34" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_s_q_l_statement_1a6d6988541418c5ad47f76ff7d0848a1d" prot="public" static="no" mutable="no">
+        <type>sqlite3_stmt *</type>
+        <definition>sqlite3_stmt* SQLStatement::stmt</definition>
+        <argsstring></argsstring>
+        <name>stmt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="35" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_s_q_l_statement_1a0b9880f85e7a6659b88c7431e5a8341f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SQLStatement::SQLStatement</definition>
+        <argsstring>()</argsstring>
+        <name>SQLStatement</name>
+        <briefdescription>
+<para>Default constructor. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="40" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="14" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_s_q_l_statement_1a296e8656b2d89aa4404c13b7c9b2cf5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int SQLStatement::step</definition>
+        <argsstring>()</argsstring>
+        <name>step</name>
+        <briefdescription>
+<para>Steps the transaction forwards one step. </para>        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Waits 10 seconds for locks to be released before raising an error if there are problems. </para></simplesect>
+<simplesect kind="return"><para>the result code of the transaction step </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="47" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="19" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_s_q_l_statement_1a0ea981cf1b38143b4a202d5f79bab942" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SQLStatement::clearAndReset</definition>
+        <argsstring>()</argsstring>
+        <name>clearAndReset</name>
+        <briefdescription>
+<para>Destroys the previous bindings and resets the statement. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="52" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="36" bodyend="40"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Wrapper for sqlite3_stmt which stores the last command issued and the pointer to the statement object. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="785">
+        <label>SQLStatement</label>
+        <link refid="struct_s_q_l_statement"/>
+        <childnode refid="786" relation="usage">
+          <edgelabel>last_command</edgelabel>
+        </childnode>
+      </node>
+      <node id="787">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="786">
+        <label>std::string</label>
+        <childnode refid="787" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="necsim/SQLiteHandler.h" line="32" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="31" bodyend="54"/>
+    <listofallmembers>
+      <member refid="struct_s_q_l_statement_1a0ea981cf1b38143b4a202d5f79bab942" prot="public" virt="non-virtual"><scope>SQLStatement</scope><name>clearAndReset</name></member>
+      <member refid="struct_s_q_l_statement_1a27e1976fe158acb3f91362202f137ca3" prot="public" virt="non-virtual"><scope>SQLStatement</scope><name>last_command</name></member>
+      <member refid="struct_s_q_l_statement_1a0b9880f85e7a6659b88c7431e5a8341f" prot="public" virt="non-virtual"><scope>SQLStatement</scope><name>SQLStatement</name></member>
+      <member refid="struct_s_q_l_statement_1a296e8656b2d89aa4404c13b7c9b2cf5b" prot="public" virt="non-virtual"><scope>SQLStatement</scope><name>step</name></member>
+      <member refid="struct_s_q_l_statement_1a6d6988541418c5ad47f76ff7d0848a1d" prot="public" virt="non-virtual"><scope>SQLStatement</scope><name>stmt</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

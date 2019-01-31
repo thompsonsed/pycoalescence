@@ -1,6 +1,12 @@
-//
-// Created by Sam Thompson on 29/05/2018.
-//
+// This file is part of necsim project which is released under MIT license.
+// See file **LICENSE.txt** or visit https://opensource.org/licenses/MIT) for full license details.
+
+/**
+ * @file CSimulateDispersal.h
+ * @brief Python wrappers for dispersal simulation objects.
+ *
+ * @copyright <a href="https://opensource.org/licenses/MIT"> MIT Licence.</a>
+ */
 
 #ifndef NECSIM_CSIMULATEDISPERSAL_H
 #define NECSIM_CSIMULATEDISPERSAL_H

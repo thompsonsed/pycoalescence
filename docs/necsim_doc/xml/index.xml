@@ -66,7 +66,7 @@
   <compound refid="class_community" kind="class"><name>Community</name>
     <member refid="class_community_1abc144eeba19574b6b46df384a61acc6f" kind="variable"><name>in_mem</name></member>
     <member refid="class_community_1a7e00bcb1c5a24280346df94853e2919b" kind="variable"><name>database_set</name></member>
-    <member refid="class_community_1a382c0e6e90ca8055d3192bfe2af4d741" kind="variable"><name>database</name></member>
+    <member refid="class_community_1aa374e7ae161bf80a8bd5055f562fb5cf" kind="variable"><name>database</name></member>
     <member refid="class_community_1aa9fe335ff9e94c626d1e0d41ff145524" kind="variable"><name>bSqlConnection</name></member>
     <member refid="class_community_1a7019c54cac091bc6c15906f6faaf0a49" kind="variable"><name>nodes</name></member>
     <member refid="class_community_1aed2dedc597a747d86617b7010abaff51" kind="variable"><name>species_abundances</name></member>
@@ -87,8 +87,7 @@
     <member refid="class_community_1a0726a962287af565658aaa8f9d9ea6c1" kind="variable"><name>past_communities</name></member>
     <member refid="class_community_1ae00d8d9f52d163b040cc716955569ad3" kind="variable"><name>past_metacommunities</name></member>
     <member refid="class_community_1acab5a676e365934f9dfd2148ab9d5a60" kind="variable"><name>protracted</name></member>
-    <member refid="class_community_1a6b906ec2096b22631b60aa3511925fe0" kind="variable"><name>min_speciation_gen</name></member>
-    <member refid="class_community_1aeff6623b51fdd177e87b6eebfba27080" kind="variable"><name>max_speciation_gen</name></member>
+    <member refid="class_community_1a007488e71b550110a6b7ca8defce0651" kind="variable"><name>minimum_protracted_parameters</name></member>
     <member refid="class_community_1a28b02e78e3453599b678072b57a5ebf7" kind="variable"><name>applied_protracted_parameters</name></member>
     <member refid="class_community_1a31f80e452a92aabdf2d9ba7bcc798f84" kind="variable"><name>max_species_id</name></member>
     <member refid="class_community_1a5de3afc536570241b82489d1b9c87d03" kind="variable"><name>max_fragment_id</name></member>
@@ -98,7 +97,8 @@
     <member refid="class_community_1a995bd6adbfb7a4aad1bc5fb74e2a8ef2" kind="function"><name>Community</name></member>
     <member refid="class_community_1ac20910659d928af0dc4f7027bfece25c" kind="function"><name>~Community</name></member>
     <member refid="class_community_1aa98af8a7347472a2eb846342f72b8163" kind="function"><name>setList</name></member>
-    <member refid="class_community_1a6fe2fdb93911f403dd879ca2847e4933" kind="function"><name>setDatabase</name></member>
+    <member refid="class_community_1a17613be31d85037888e1e83cbaf1f2ad" kind="function"><name>setupInternal</name></member>
+    <member refid="class_community_1a1d340844589db0c318e2e051ea85cb0f" kind="function"><name>setDatabase</name></member>
     <member refid="class_community_1a045f762ca30c3a20e8ef5911a4982160" kind="function"><name>hasImportedData</name></member>
     <member refid="class_community_1a4e5dea65183810c3b27441736eca825a" kind="function"><name>getMinimumSpeciation</name></member>
     <member refid="class_community_1a01a137383e1e23f2191d63f16513a00a" kind="function"><name>importSamplemask</name></member>
@@ -107,8 +107,7 @@
     <member refid="class_community_1a7a51d163ec40883125fde38e6e85e52e" kind="function"><name>addSpecies</name></member>
     <member refid="class_community_1a502a409a75567d78575625346b6a969f" kind="function"><name>calcSpeciesAbundance</name></member>
     <member refid="class_community_1abd099aacb5332a9b89b3421e01269d24" kind="function"><name>resetTree</name></member>
-    <member refid="class_community_1a579c5f423fc2461838a80baf6b396310" kind="function"><name>detectDimensions</name></member>
-    <member refid="class_community_1a389c35f39ed73eb1e5dc1476c220c140" kind="function"><name>openSqlConnection</name></member>
+    <member refid="class_community_1af278138460a3fc8ad0e929ab192b48e9" kind="function"><name>openSqlConnection</name></member>
     <member refid="class_community_1ade889a6305f23cd5fd034a65134d7408" kind="function"><name>closeSqlConnection</name></member>
     <member refid="class_community_1acba6b894e62ad4ecccbcf86f064ebc46" kind="function"><name>setInternalDatabase</name></member>
     <member refid="class_community_1a527f03120e4cb211e466cab7e405ba9a" kind="function"><name>internalOption</name></member>
@@ -611,6 +610,7 @@
     <member refid="struct_metacommunities_array_1a8c1b6836f052ebb4fe2bb3c8833e3d6e" kind="function"><name>getReference</name></member>
     <member refid="struct_metacommunities_array_1aeeff79f170f9d4c5198c1b0373843504" kind="function"><name>getReference</name></member>
     <member refid="struct_metacommunities_array_1afea47da3543504b7aac4bd02ba8e290f" kind="function"><name>addNull</name></member>
+    <member refid="struct_metacommunities_array_1a44b9f2286850c90047fb2307af8280c0" kind="function"><name>hasMetacommunityOption</name></member>
   </compound>
   <compound refid="class_metacommunity" kind="class"><name>Metacommunity</name>
     <member refid="class_metacommunity_1afd81750697ac8540b71de001ee53fc61" kind="variable"><name>seed</name></member>
@@ -621,7 +621,7 @@
     <member refid="class_metacommunity_1a821a984eabc38041f5756e94663e78e9" kind="variable"><name>metacommunity_tree</name></member>
     <member refid="class_community_1abc144eeba19574b6b46df384a61acc6f" kind="variable"><name>in_mem</name></member>
     <member refid="class_community_1a7e00bcb1c5a24280346df94853e2919b" kind="variable"><name>database_set</name></member>
-    <member refid="class_community_1a382c0e6e90ca8055d3192bfe2af4d741" kind="variable"><name>database</name></member>
+    <member refid="class_community_1aa374e7ae161bf80a8bd5055f562fb5cf" kind="variable"><name>database</name></member>
     <member refid="class_community_1aa9fe335ff9e94c626d1e0d41ff145524" kind="variable"><name>bSqlConnection</name></member>
     <member refid="class_community_1a7019c54cac091bc6c15906f6faaf0a49" kind="variable"><name>nodes</name></member>
     <member refid="class_community_1aed2dedc597a747d86617b7010abaff51" kind="variable"><name>species_abundances</name></member>
@@ -642,8 +642,7 @@
     <member refid="class_community_1a0726a962287af565658aaa8f9d9ea6c1" kind="variable"><name>past_communities</name></member>
     <member refid="class_community_1ae00d8d9f52d163b040cc716955569ad3" kind="variable"><name>past_metacommunities</name></member>
     <member refid="class_community_1acab5a676e365934f9dfd2148ab9d5a60" kind="variable"><name>protracted</name></member>
-    <member refid="class_community_1a6b906ec2096b22631b60aa3511925fe0" kind="variable"><name>min_speciation_gen</name></member>
-    <member refid="class_community_1aeff6623b51fdd177e87b6eebfba27080" kind="variable"><name>max_speciation_gen</name></member>
+    <member refid="class_community_1a007488e71b550110a6b7ca8defce0651" kind="variable"><name>minimum_protracted_parameters</name></member>
     <member refid="class_community_1a28b02e78e3453599b678072b57a5ebf7" kind="variable"><name>applied_protracted_parameters</name></member>
     <member refid="class_community_1a31f80e452a92aabdf2d9ba7bcc798f84" kind="variable"><name>max_species_id</name></member>
     <member refid="class_community_1a5de3afc536570241b82489d1b9c87d03" kind="variable"><name>max_fragment_id</name></member>
@@ -660,7 +659,8 @@
     <member refid="class_metacommunity_1af91fb56ca0129f5c4df4c302d250dc55" kind="function"><name>readSAD</name></member>
     <member refid="class_metacommunity_1a53477d0f497884e3de005740ed799032" kind="function"><name>printMetacommunityParameters</name></member>
     <member refid="class_community_1aa98af8a7347472a2eb846342f72b8163" kind="function"><name>setList</name></member>
-    <member refid="class_community_1a6fe2fdb93911f403dd879ca2847e4933" kind="function"><name>setDatabase</name></member>
+    <member refid="class_community_1a17613be31d85037888e1e83cbaf1f2ad" kind="function"><name>setupInternal</name></member>
+    <member refid="class_community_1a1d340844589db0c318e2e051ea85cb0f" kind="function"><name>setDatabase</name></member>
     <member refid="class_community_1a045f762ca30c3a20e8ef5911a4982160" kind="function"><name>hasImportedData</name></member>
     <member refid="class_community_1a4e5dea65183810c3b27441736eca825a" kind="function"><name>getMinimumSpeciation</name></member>
     <member refid="class_community_1a01a137383e1e23f2191d63f16513a00a" kind="function"><name>importSamplemask</name></member>
@@ -668,8 +668,7 @@
     <member refid="class_community_1a7e59385b02c573b9ca3da5fe1bdad03a" kind="function"><name>calculateCoalescencetree</name></member>
     <member refid="class_community_1a502a409a75567d78575625346b6a969f" kind="function"><name>calcSpeciesAbundance</name></member>
     <member refid="class_community_1abd099aacb5332a9b89b3421e01269d24" kind="function"><name>resetTree</name></member>
-    <member refid="class_community_1a579c5f423fc2461838a80baf6b396310" kind="function"><name>detectDimensions</name></member>
-    <member refid="class_community_1a389c35f39ed73eb1e5dc1476c220c140" kind="function"><name>openSqlConnection</name></member>
+    <member refid="class_community_1af278138460a3fc8ad0e929ab192b48e9" kind="function"><name>openSqlConnection</name></member>
     <member refid="class_community_1ade889a6305f23cd5fd034a65134d7408" kind="function"><name>closeSqlConnection</name></member>
     <member refid="class_community_1acba6b894e62ad4ecccbcf86f064ebc46" kind="function"><name>setInternalDatabase</name></member>
     <member refid="class_community_1a527f03120e4cb211e466cab7e405ba9a" kind="function"><name>internalOption</name></member>
@@ -739,6 +738,8 @@
     <member refid="struct_metacommunity_parameters_1a01d2874885c2bc6622d46c519156c7e3" kind="function"><name>isMetacommunityOption</name></member>
     <member refid="struct_metacommunity_parameters_1a6f74de64524f1e07ec001f11d21cf1f5" kind="function"><name>clear</name></member>
     <member refid="struct_metacommunity_parameters_1a198c799e7f0d1ae1a6a1ebd7ebcf42cb" kind="function"><name>operator=</name></member>
+    <member refid="struct_metacommunity_parameters_1af8ce187edffe48dcc13fa3b68fe091f4" kind="function"><name>operator==</name></member>
+    <member refid="struct_metacommunity_parameters_1ae16c0bc4829e232cae27cb3631c85fe3" kind="function"><name>operator!=</name></member>
   </compound>
   <compound refid="structmodule__state" kind="struct"><name>module_state</name>
     <member refid="structmodule__state_1ae7c076709e128f5d18a6939bd4f0a320" kind="variable"><name>error</name></member>
@@ -834,7 +835,7 @@
     <member refid="class_tree_1ac7a1d0583d3dcb55c50fec0e1fd57985" kind="variable"><name>deme_sample</name></member>
     <member refid="class_tree_1a586678f7084086add3a4136476abd375" kind="variable"><name>spec</name></member>
     <member refid="class_tree_1a85615771af7b568adca1b801995cfdc7" kind="variable"><name>out_directory</name></member>
-    <member refid="class_tree_1aae24ce11e30fbd74fe078b23b46c14cd" kind="variable"><name>database</name></member>
+    <member refid="class_tree_1a872f69ad6792d7c7db941aec1fb5bb79" kind="variable"><name>database</name></member>
     <member refid="class_tree_1a07f9982fd6f6243c78ef42371603bbe4" kind="variable"><name>sim_complete</name></member>
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
@@ -927,9 +928,9 @@
     <member refid="class_tree_1a6ffc42e941f352cd74f01f6f7011f00b" kind="function"><name>getProtractedGenerationMin</name></member>
     <member refid="class_tree_1a0c5e746982a87f24c083f4534bf92b45" kind="function"><name>getProtractedGenerationMax</name></member>
     <member refid="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3" kind="function"><name>sqlOutput</name></member>
+    <member refid="class_tree_1a3e800a2843e232949dabd298bb884f80" kind="function"><name>createAndOutputData</name></member>
     <member refid="class_tree_1afdf680e187c25ed39d1e66542ce44cc3" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
+    <member refid="class_tree_1ac683b0002a5433231324bf1a2ad2639a" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
     <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
@@ -1030,9 +1031,9 @@
     <member refid="class_tree_1aaa85f6886029ee48472241cab746ded1" kind="function"><name>setupCommunityCalculation</name></member>
     <member refid="class_tree_1acfc7efdec999f6dbf2ac089514d22091" kind="function"><name>applyMultipleRates</name></member>
     <member refid="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3" kind="function"><name>sqlOutput</name></member>
+    <member refid="class_tree_1a3e800a2843e232949dabd298bb884f80" kind="function"><name>createAndOutputData</name></member>
     <member refid="class_tree_1afdf680e187c25ed39d1e66542ce44cc3" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
+    <member refid="class_tree_1ac683b0002a5433231324bf1a2ad2639a" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
     <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
@@ -1083,7 +1084,7 @@
     <member refid="class_tree_1ac7a1d0583d3dcb55c50fec0e1fd57985" kind="variable"><name>deme_sample</name></member>
     <member refid="class_tree_1a586678f7084086add3a4136476abd375" kind="variable"><name>spec</name></member>
     <member refid="class_tree_1a85615771af7b568adca1b801995cfdc7" kind="variable"><name>out_directory</name></member>
-    <member refid="class_tree_1aae24ce11e30fbd74fe078b23b46c14cd" kind="variable"><name>database</name></member>
+    <member refid="class_tree_1a872f69ad6792d7c7db941aec1fb5bb79" kind="variable"><name>database</name></member>
     <member refid="class_tree_1a07f9982fd6f6243c78ef42371603bbe4" kind="variable"><name>sim_complete</name></member>
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
@@ -1285,7 +1286,7 @@
     <member refid="class_simulate_dispersal_1abe4c7cc163059093528c621cc7bd041e" kind="variable"><name>simParameters</name></member>
     <member refid="class_simulate_dispersal_1a1b66ec7506a0cadab13f802de2d4d2c2" kind="variable"><name>random</name></member>
     <member refid="class_simulate_dispersal_1af9ab2fa8b2c3e1bb1ba49b31679ae0d7" kind="variable"><name>seed</name></member>
-    <member refid="class_simulate_dispersal_1afd3f96f169715aacbcc2939614a6a910" kind="variable"><name>database</name></member>
+    <member refid="class_simulate_dispersal_1a5e5bac00195f7ca73d53d6dc44440122" kind="variable"><name>database</name></member>
     <member refid="class_simulate_dispersal_1a87359ce728efca1ece43f52c7aa4ce9c" kind="variable"><name>distances</name></member>
     <member refid="class_simulate_dispersal_1a9d6fb5998b4b31837ff214b0bd216b18" kind="variable"><name>parameter_references</name></member>
     <member refid="class_simulate_dispersal_1abcb3ce61b835cbd007d09726302d692a" kind="variable"><name>cells</name></member>
@@ -1381,7 +1382,7 @@
     <member refid="class_tree_1ac7a1d0583d3dcb55c50fec0e1fd57985" kind="variable"><name>deme_sample</name></member>
     <member refid="class_tree_1a586678f7084086add3a4136476abd375" kind="variable"><name>spec</name></member>
     <member refid="class_tree_1a85615771af7b568adca1b801995cfdc7" kind="variable"><name>out_directory</name></member>
-    <member refid="class_tree_1aae24ce11e30fbd74fe078b23b46c14cd" kind="variable"><name>database</name></member>
+    <member refid="class_tree_1a872f69ad6792d7c7db941aec1fb5bb79" kind="variable"><name>database</name></member>
     <member refid="class_tree_1a07f9982fd6f6243c78ef42371603bbe4" kind="variable"><name>sim_complete</name></member>
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
@@ -1476,9 +1477,9 @@
     <member refid="class_tree_1a6ffc42e941f352cd74f01f6f7011f00b" kind="function"><name>getProtractedGenerationMin</name></member>
     <member refid="class_tree_1a0c5e746982a87f24c083f4534bf92b45" kind="function"><name>getProtractedGenerationMax</name></member>
     <member refid="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3" kind="function"><name>sqlOutput</name></member>
+    <member refid="class_tree_1a3e800a2843e232949dabd298bb884f80" kind="function"><name>createAndOutputData</name></member>
     <member refid="class_tree_1afdf680e187c25ed39d1e66542ce44cc3" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
+    <member refid="class_tree_1ac683b0002a5433231324bf1a2ad2639a" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
     <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
@@ -1519,10 +1520,6 @@
     <member refid="class_species_abundances_handler_1ae838648ecd291e74309a6b32634dc776" kind="function"><name>setAbundanceList</name></member>
     <member refid="class_species_abundances_handler_1a5bd4781276f15255431a00863d182cba" kind="function"><name>getRandomAbundanceOfIndividual</name></member>
     <member refid="class_species_abundances_handler_1a33708e99d7eb07385aea58aea925e1bc" kind="function"><name>getSpeciesRichnessOfAbundance</name></member>
-  </compound>
-  <compound refid="struct_species_exception" kind="struct"><name>SpeciesException</name>
-    <member refid="struct_species_exception_1aad9febae65922d3a68a3d70ddc8b6a16" kind="function"><name>SpeciesException</name></member>
-    <member refid="struct_species_exception_1aee4c223dc1b702be3b937556f39b26a5" kind="function"><name>SpeciesException</name></member>
   </compound>
   <compound refid="class_species_list" kind="class"><name>SpeciesList</name>
     <member refid="class_species_list_1a39646db101513863699ac63ee055b239" kind="variable"><name>list_size</name></member>
@@ -1569,6 +1566,8 @@
     <member refid="struct_spec_sim_parameters_1a806167a898b61bba29044f27139d633c" kind="variable"><name>metacommunity_parameters</name></member>
     <member refid="struct_spec_sim_parameters_1aa89c005a8e5ad40a0dc2b852bd9c19a4" kind="function"><name>SpecSimParameters</name></member>
     <member refid="struct_spec_sim_parameters_1af952a8e5648dfcd7edeb09e2817bf5bc" kind="function"><name>SpecSimParameters</name></member>
+    <member refid="struct_spec_sim_parameters_1a47e1c551b74118c5739e922623406ac0" kind="function"><name>addSpeciationRate</name></member>
+    <member refid="struct_spec_sim_parameters_1a721609af7f9b36d0269177dd7d6ace38" kind="function"><name>setup</name></member>
     <member refid="struct_spec_sim_parameters_1a8ccea55b45c88fec3c1ff43a4ce81279" kind="function"><name>setup</name></member>
     <member refid="struct_spec_sim_parameters_1a8db5ee32ba5da1872edb273cf846892a" kind="function"><name>setup</name></member>
     <member refid="struct_spec_sim_parameters_1af7213e036e74c8c6e7e1b8c2a8016b02" kind="function"><name>addMetacommunityParameters</name></member>
@@ -1576,6 +1575,35 @@
     <member refid="struct_spec_sim_parameters_1a10aac8e7ab592f53b071287e60483b88" kind="function"><name>wipe</name></member>
     <member refid="struct_spec_sim_parameters_1a78e27888e92d1b1ddfd9d9a8e129b618" kind="function"><name>addTime</name></member>
     <member refid="struct_spec_sim_parameters_1af88d55fcc175d52519a6c2a0843173eb" kind="function"><name>addProtractedParameters</name></member>
+  </compound>
+  <compound refid="class_s_q_lite_handler" kind="class"><name>SQLiteHandler</name>
+    <member refid="class_s_q_lite_handler_1acf20df90fd63d2838403fe88c1634aa9" kind="variable"><name>database</name></member>
+    <member refid="class_s_q_lite_handler_1ada3096a63544a107ba2ce93ac410b38d" kind="variable"><name>file_name</name></member>
+    <member refid="class_s_q_lite_handler_1a656bbab95b5ff6936505642c64773d7a" kind="variable"><name>stmt</name></member>
+    <member refid="class_s_q_lite_handler_1af2605298dd20e8619427ddf52d70bd5e" kind="function"><name>SQLiteHandler</name></member>
+    <member refid="class_s_q_lite_handler_1a3b818614bf80a9bc169f74dd72738d41" kind="function"><name>~SQLiteHandler</name></member>
+    <member refid="class_s_q_lite_handler_1a4f163ced00a5b227e7bc47891755fd33" kind="function"><name>open</name></member>
+    <member refid="class_s_q_lite_handler_1abaaf6bef77ae3eef99e9848a6d53cf5c" kind="function"><name>close</name></member>
+    <member refid="class_s_q_lite_handler_1a368cc649b6a491990d2af33b818c328d" kind="function"><name>getErrorMsg</name></member>
+    <member refid="class_s_q_lite_handler_1a18f387be42dcd44388edae088568753e" kind="function"><name>getErrorMsg</name></member>
+    <member refid="class_s_q_lite_handler_1ad3997486833555a9118677a3461941bd" kind="function"><name>backupFrom</name></member>
+    <member refid="class_s_q_lite_handler_1a2d43df52e740eb308087df98c0b8ef0f" kind="function"><name>prepare</name></member>
+    <member refid="class_s_q_lite_handler_1ae53eea6e0d7ce2666f55f12dd2605de8" kind="function"><name>createStatement</name></member>
+    <member refid="class_s_q_lite_handler_1a0abc9bab779da2d93b30b4376d04e1db" kind="function"><name>useStatement</name></member>
+    <member refid="class_s_q_lite_handler_1a637fde99d865e3fd1c6f1425b0ca929e" kind="function"><name>step</name></member>
+    <member refid="class_s_q_lite_handler_1a071e474509db8ac06753d2aed7cde53c" kind="function"><name>finalise</name></member>
+    <member refid="class_s_q_lite_handler_1ac52be7cf1228e4eb550a09906684c65e" kind="function"><name>execute</name></member>
+    <member refid="class_s_q_lite_handler_1a9ae3e804218d77490985533961ecb8d2" kind="function"><name>beginTransaction</name></member>
+    <member refid="class_s_q_lite_handler_1ac00ab0a46da9951dc74166912981db75" kind="function"><name>endTransaction</name></member>
+    <member refid="class_s_q_lite_handler_1ae2e3d630fb0007cffff23c02e9662f38" kind="function"><name>isOpen</name></member>
+    <member refid="class_s_q_lite_handler_1a45477f80d47793fa522106abb5021388" kind="function"><name>hasTable</name></member>
+  </compound>
+  <compound refid="struct_s_q_l_statement" kind="struct"><name>SQLStatement</name>
+    <member refid="struct_s_q_l_statement_1a27e1976fe158acb3f91362202f137ca3" kind="variable"><name>last_command</name></member>
+    <member refid="struct_s_q_l_statement_1a6d6988541418c5ad47f76ff7d0848a1d" kind="variable"><name>stmt</name></member>
+    <member refid="struct_s_q_l_statement_1a0b9880f85e7a6659b88c7431e5a8341f" kind="function"><name>SQLStatement</name></member>
+    <member refid="struct_s_q_l_statement_1a296e8656b2d89aa4404c13b7c9b2cf5b" kind="function"><name>step</name></member>
+    <member refid="struct_s_q_l_statement_1a0ea981cf1b38143b4a202d5f79bab942" kind="function"><name>clearAndReset</name></member>
   </compound>
   <compound refid="struct_step" kind="class"><name>Step</name>
     <member refid="struct_step_1a03a0984250a050752ff20129ff457510" kind="variable"><name>chosen</name></member>
@@ -1622,7 +1650,7 @@
     <member refid="class_tree_1ac7a1d0583d3dcb55c50fec0e1fd57985" kind="variable"><name>deme_sample</name></member>
     <member refid="class_tree_1a586678f7084086add3a4136476abd375" kind="variable"><name>spec</name></member>
     <member refid="class_tree_1a85615771af7b568adca1b801995cfdc7" kind="variable"><name>out_directory</name></member>
-    <member refid="class_tree_1aae24ce11e30fbd74fe078b23b46c14cd" kind="variable"><name>database</name></member>
+    <member refid="class_tree_1a872f69ad6792d7c7db941aec1fb5bb79" kind="variable"><name>database</name></member>
     <member refid="class_tree_1a07f9982fd6f6243c78ef42371603bbe4" kind="variable"><name>sim_complete</name></member>
     <member refid="class_tree_1a97bde28466a098bb9e58c1bd5610fd68" kind="variable"><name>has_imported_vars</name></member>
     <member refid="class_tree_1af7de4d4f04360edcbe2a20db882b1f87" kind="variable"><name>this_step</name></member>
@@ -1696,9 +1724,9 @@
     <member refid="class_tree_1a6ffc42e941f352cd74f01f6f7011f00b" kind="function"><name>getProtractedGenerationMin</name></member>
     <member refid="class_tree_1a0c5e746982a87f24c083f4534bf92b45" kind="function"><name>getProtractedGenerationMax</name></member>
     <member refid="class_tree_1a8cd3db7add1884ea53b0d98002d39cd3" kind="function"><name>sqlOutput</name></member>
+    <member refid="class_tree_1a3e800a2843e232949dabd298bb884f80" kind="function"><name>createAndOutputData</name></member>
     <member refid="class_tree_1afdf680e187c25ed39d1e66542ce44cc3" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a5acf7d0eea9ea2ef4928bb6691b87724" kind="function"><name>outputData</name></member>
-    <member refid="class_tree_1a2d2065bbebee8b55270d2691d40cd974" kind="function"><name>sortData</name></member>
+    <member refid="class_tree_1ac683b0002a5433231324bf1a2ad2639a" kind="function"><name>sortData</name></member>
     <member refid="class_tree_1ab8785fc9e27868a56335048321c13290" kind="function"><name>writeTimes</name></member>
     <member refid="class_tree_1a9e240bbfc3139b290a0dead741f560bf" kind="function"><name>openSQLDatabase</name></member>
     <member refid="class_tree_1ae784a6ed362f6c5263ee797759f715b6" kind="function"><name>sqlCreate</name></member>
@@ -1999,6 +2027,10 @@
   <compound refid="_species_list_8h" kind="file"><name>SpeciesList.h</name>
   </compound>
   <compound refid="_spec_sim_parameters_8h" kind="file"><name>SpecSimParameters.h</name>
+  </compound>
+  <compound refid="_s_q_lite_handler_8cpp" kind="file"><name>SQLiteHandler.cpp</name>
+  </compound>
+  <compound refid="_s_q_lite_handler_8h" kind="file"><name>SQLiteHandler.h</name>
   </compound>
   <compound refid="_step_8h" kind="file"><name>Step.h</name>
   </compound>

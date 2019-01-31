@@ -273,10 +273,10 @@ class CoalescenceTree(object):
                                      "a metacommunity size and speciation rate.")
                 if metacommunity_option == "none":
                     if metacommunity_size > 100000:
-                        self.logger.info("Using analytical method for generating metacommunity.")
+                        self.logger.info("Using analytical method for generating metacommunity.\n")
                         self.metacommunity_option = "analytical"
                     else:
-                        self.logger.info("Using simulated method of generating metacommunity.")
+                        self.logger.info("Using simulated method of generating metacommunity.\n")
                         self.metacommunity_option = "simulated"
                 else:
                     self.metacommunity_option = metacommunity_option

@@ -175,7 +175,7 @@ class TestParameterDescriptions(unittest.TestCase):
 
 
 class TestCoalescenceTreeSettingSpeciationParameters(unittest.TestCase):
-    "Tests that the correct errors are raised when speciation parameters are supplied incorrectly."
+    """Tests that the correct errors are raised when speciation parameters are supplied incorrectly."""
 
     @classmethod
     def setUpClass(cls):
@@ -325,7 +325,7 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
         with self.assertRaises(KeyError):
             t.get_community_reference(0.1, 0.0, 0, 0, 0.0, min_speciation_gen=100.0, max_speciation_gen=10000.0)
         with self.assertRaises(KeyError):
-            params = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False)
+            _ = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False)
         ref = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False,
                                         min_speciation_gen=100.0, max_speciation_gen=10000.0)
         self.assertEqual(1, ref)
@@ -841,6 +841,7 @@ class TestSimulationAnalysis(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """Copies the sample databases and applies a basic set of community parameters."""
         src = os.path.join("sample", "sample2.db")
         dst = os.path.join("output", "sample2.db")
         if os.path.exists(dst):
@@ -1224,3 +1225,23 @@ class TestMetacommunityApplicationOrdering(unittest.TestCase):
         """Tests that adding multiple protracted speciation parameters raises the correct error."""
         with self.assertRaises(ValueError):
             self.proc2.add_multiple_protracted_parameters()
+
+
+class TestProtractedSpeciationEquality(unittest.TestCase):
+    """Tests that analysis performs as expected when protracted speciation parameters match the minimums."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Copy the sample database."""
+        dst = os.path.join("output", "sample_protracted3.db")
+        shutil.copy(os.path.join("sample", "sample3.db"), dst)
+        cls.ct = CoalescenceTree(dst)
+        cls.ct.wipe_data()
+
+    def testApplyEqualParameters(self):
+        """Tests that equal protracted parameters can be applied"""
+        self.ct.set_speciation_parameters([0.001, 0.1], protracted_speciation_min=100.0,
+                                          protracted_speciation_max=10000.0)
+        self.ct.apply()
+        self.assertEqual(1, self.ct.get_species_richness(1))
+        self.assertEqual(3, self.ct.get_species_richness(2))

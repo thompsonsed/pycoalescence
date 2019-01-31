@@ -86,6 +86,9 @@ set(SOURCE_FILES
         CSimulateDispersal.h
         PyTemplates.h
         ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
+        ${SOURCE_DIR_NECSIM}/custom_exceptions.h
+        ${SOURCE_DIR_NECSIM}/SQLiteHandler.cpp
+        ${SOURCE_DIR_NECSIM}/SQLiteHandler.h
         ${SOURCE_DIR_NECSIM}/neutral_analytical.cpp
         ${SOURCE_DIR_NECSIM}/neutral_analytical.h
         ${SOURCE_DIR_NECSIM}/parameters.cpp

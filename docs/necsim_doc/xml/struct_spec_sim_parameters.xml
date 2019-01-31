@@ -179,6 +179,89 @@
         </inbodydescription>
         <location file="necsim/SpecSimParameters.h" line="54" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="54" bodyend="54"/>
       </memberdef>
+      <memberdef kind="function" id="struct_spec_sim_parameters_1a47e1c551b74118c5739e922623406ac0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpecSimParameters::addSpeciationRate</definition>
+        <argsstring>(const double &amp;speciation_rate)</argsstring>
+        <name>addSpeciationRate</name>
+        <param>
+          <type>const double &amp;</type>
+          <declname>speciation_rate</declname>
+        </param>
+        <briefdescription>
+<para>Adds a speciation rate to the speciation parameters list. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>speciation_rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the speciation rate to add </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SpecSimParameters.h" line="60" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="60" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_spec_sim_parameters_1a721609af7f9b36d0269177dd7d6ace38" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void SpecSimParameters::setup</definition>
+        <argsstring>(string file_in, bool use_spatial_in, string sample_file, const string &amp;use_fragments_in)</argsstring>
+        <name>setup</name>
+        <param>
+          <type>string</type>
+          <declname>file_in</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>use_spatial_in</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>sample_file</declname>
+        </param>
+        <param>
+          <type>const string &amp;</type>
+          <declname>use_fragments_in</declname>
+        </param>
+        <briefdescription>
+<para>Sets the application arguments for the inputs. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the database to apply speciation rates to </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>use_spatial_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, record full spatial data </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sample_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the sample file to select lineages from the map </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>use_fragments_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fragment file, or &quot;T&quot;/&quot;F&quot; for automatic detection/no detection </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SpecSimParameters.h" line="73" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="73" bodyend="80"/>
+      </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1a8ccea55b45c88fec3c1ff43a4ce81279" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void SpecSimParameters::setup</definition>
@@ -209,7 +292,7 @@
           <declname>speciation_rates</declname>
         </param>
         <briefdescription>
-<para>Sets the application arguments for the inputs. Intended for use with the applyspecmodule for integration with python. </para>        </briefdescription>
+<para>Sets the application arguments for the inputs. </para>        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -253,25 +336,11 @@
 <parameterdescription>
 <para>the speciation rates to apply </para></parameterdescription>
 </parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>min_speciation_gen_in</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>the minimum generation rate for speciation in protracted simulations </para></parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>max_speciation_gen_in</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>the maximum generation rate for speciation in protracted simulations </para></parameterdescription>
-</parameteritem>
 </parameterlist>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="69" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="69" bodyend="77"/>
+        <location file="necsim/SpecSimParameters.h" line="91" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="91" bodyend="99"/>
       </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1a8db5ee32ba5da1872edb273cf846892a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -299,12 +368,48 @@
           <declname>use_fragments_in</declname>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>Sets the application arguments for the inputs. Overloaded version without speciation rates. </para>        </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the database to apply speciation rates to </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>use_spatial_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, record full spatial data </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sample_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the sample file to select lineages from the map </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>times</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector of times to apply </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>use_fragments_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fragment file, or &quot;T&quot;/&quot;F&quot; for automatic detection/no detection </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="79" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="79" bodyend="101"/>
+        <location file="necsim/SpecSimParameters.h" line="109" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="109" bodyend="125"/>
       </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1af7213e036e74c8c6e7e1b8c2a8016b02" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -348,7 +453,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="108" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="108" bodyend="129"/>
+        <location file="necsim/SpecSimParameters.h" line="134" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="134" bodyend="155"/>
       </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1ae0196a50a551a821b75b6e92a35534a7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -361,7 +466,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="134" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="134" bodyend="151"/>
+        <location file="necsim/SpecSimParameters.h" line="160" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="160" bodyend="177"/>
       </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1a10aac8e7ab592f53b071287e60483b88" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -374,7 +479,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="156" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="156" bodyend="169"/>
+        <location file="necsim/SpecSimParameters.h" line="182" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="182" bodyend="195"/>
       </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1a78e27888e92d1b1ddfd9d9a8e129b618" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -399,7 +504,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="175" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="175" bodyend="178"/>
+        <location file="necsim/SpecSimParameters.h" line="201" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="201" bodyend="208"/>
       </memberdef>
       <memberdef kind="function" id="struct_spec_sim_parameters_1af88d55fcc175d52519a6c2a0843173eb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -435,7 +540,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/SpecSimParameters.h" line="185" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="185" bodyend="191"/>
+        <location file="necsim/SpecSimParameters.h" line="215" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="215" bodyend="221"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -443,62 +548,63 @@
     <detaileddescription>
     </detaileddescription>
     <collaborationgraph>
-      <node id="784">
+      <node id="778">
         <label>std::vector&lt; shared_ptr&lt; MetacommunityParameters &gt; &gt;</label>
       </node>
-      <node id="782">
+      <node id="776">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="778">
+      <node id="772">
         <label>SpecSimParameters</label>
         <link refid="struct_spec_sim_parameters"/>
-        <childnode refid="779" relation="usage">
+        <childnode refid="773" relation="usage">
           <edgelabel>protracted_parameters</edgelabel>
         </childnode>
-        <childnode refid="781" relation="usage">
+        <childnode refid="775" relation="usage">
           <edgelabel>times_file</edgelabel>
           <edgelabel>fragment_config_file</edgelabel>
           <edgelabel>samplemask</edgelabel>
           <edgelabel>filename</edgelabel>
         </childnode>
-        <childnode refid="783" relation="usage">
+        <childnode refid="777" relation="usage">
           <edgelabel>metacommunity_parameters</edgelabel>
         </childnode>
-        <childnode refid="785" relation="usage">
+        <childnode refid="779" relation="usage">
           <edgelabel>all_times</edgelabel>
           <edgelabel>all_speciation_rates</edgelabel>
         </childnode>
       </node>
-      <node id="780">
+      <node id="774">
         <label>ProtractedSpeciationParameters</label>
         <link refid="struct_protracted_speciation_parameters"/>
       </node>
-      <node id="783">
+      <node id="777">
         <label>MetacommunitiesArray</label>
         <link refid="struct_metacommunities_array"/>
-        <childnode refid="784" relation="usage">
+        <childnode refid="778" relation="usage">
           <edgelabel>metacomm_parameters</edgelabel>
         </childnode>
       </node>
-      <node id="785">
+      <node id="779">
         <label>std::set&lt; double &gt;</label>
       </node>
-      <node id="779">
+      <node id="773">
         <label>std::vector&lt; ProtractedSpeciationParameters &gt;</label>
-        <childnode refid="780" relation="usage">
+        <childnode refid="774" relation="usage">
           <edgelabel>elements</edgelabel>
         </childnode>
       </node>
-      <node id="781">
+      <node id="775">
         <label>std::string</label>
-        <childnode refid="782" relation="public-inheritance">
+        <childnode refid="776" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="necsim/SpecSimParameters.h" line="34" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="33" bodyend="192"/>
+    <location file="necsim/SpecSimParameters.h" line="34" column="1" bodyfile="necsim/SpecSimParameters.h" bodystart="33" bodyend="222"/>
     <listofallmembers>
       <member refid="struct_spec_sim_parameters_1af7213e036e74c8c6e7e1b8c2a8016b02" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>addMetacommunityParameters</name></member>
       <member refid="struct_spec_sim_parameters_1af88d55fcc175d52519a6c2a0843173eb" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>addProtractedParameters</name></member>
+      <member refid="struct_spec_sim_parameters_1a47e1c551b74118c5739e922623406ac0" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>addSpeciationRate</name></member>
       <member refid="struct_spec_sim_parameters_1a78e27888e92d1b1ddfd9d9a8e129b618" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>addTime</name></member>
       <member refid="struct_spec_sim_parameters_1aca1ed096bc62ab6914b34e12784daea1" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>all_speciation_rates</name></member>
       <member refid="struct_spec_sim_parameters_1ad9441471fbf455638a9598ba8aefe63e" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>all_times</name></member>
@@ -509,6 +615,7 @@
       <member refid="struct_spec_sim_parameters_1a806167a898b61bba29044f27139d633c" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>metacommunity_parameters</name></member>
       <member refid="struct_spec_sim_parameters_1a4eba5de74f81f0a81097b4159f6ae797" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>protracted_parameters</name></member>
       <member refid="struct_spec_sim_parameters_1add68fe2a48b1d80173c5066bf9cd0f6c" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>samplemask</name></member>
+      <member refid="struct_spec_sim_parameters_1a721609af7f9b36d0269177dd7d6ace38" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>setup</name></member>
       <member refid="struct_spec_sim_parameters_1a8ccea55b45c88fec3c1ff43a4ce81279" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>setup</name></member>
       <member refid="struct_spec_sim_parameters_1a8db5ee32ba5da1872edb273cf846892a" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>setup</name></member>
       <member refid="struct_spec_sim_parameters_1aa89c005a8e5ad40a0dc2b852bd9c19a4" prot="public" virt="non-virtual"><scope>SpecSimParameters</scope><name>SpecSimParameters</name></member>
