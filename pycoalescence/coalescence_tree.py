@@ -1804,7 +1804,7 @@ class CoalescenceTree(object):
 
         :rtype: double
         """
-        # TODO This needs to be fixed
+        # TODO This needs to be fixed (still)
         self._check_database()
         if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
             raise ValueError("Biodiversity table does not contain any values.")
