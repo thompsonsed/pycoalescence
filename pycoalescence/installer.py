@@ -387,7 +387,7 @@ class Installer(build_ext):  # pragma: no cover
             subprocess.check_call(['cmake', src_dir] + cmake_args,
                                   cwd=tmp_dir, env=env)
             subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,
-                                  cwd=tmp_dir)
+                                  cwd=tmp_dir, env=env)
         except subprocess.CalledProcessError as cpe:
             raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
         if platform.system() == "Windows":
@@ -449,8 +449,8 @@ class Installer(build_ext):  # pragma: no cover
                 gdal_dir = os.path.join(conda_prefix, "lib")
             else:
                 try:
-                    gdal_inc_path = subprocess.check_output(["gdal-config", "--cflags"])
-                    gdal_dir = subprocess.check_output(["gdal-config", "--prefix"])
+                    gdal_inc_path = subprocess.check_output(["gdal-config", "--cflags"], env=os.environ)
+                    gdal_dir = subprocess.check_output(["gdal-config", "--prefix"], env=os.environ)
                 except subprocess.CalledProcessError:
                     pass
                 if gdal_inc_path is not None:

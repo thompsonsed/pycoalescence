@@ -92,9 +92,7 @@ class TestMap(unittest.TestCase):
         self.fine_offset_map = Map("sample/SA_sample_fine_offset.tif")
 
     def testDetectGeoTransform(self):
-        """
-        Tests the fine and coarse map geo transforms
-        """
+        """Tests the fine and coarse map geo transforms."""
         # Test the fine map
         x, y, x_offset, y_offset, xres, yres, ulx, uly = self.fine_map.get_dimensions()
         self.assertEqual(x, 13)
@@ -116,10 +114,14 @@ class TestMap(unittest.TestCase):
         self.assertEqual(0, x_offset)
         self.assertEqual(0, y_offset)
 
+    def testCountBands(self):
+        """Tests that the number of bands is correctly identified"""
+        self.assertEqual(1, self.fine_map.get_band_number())
+        multi_band = Map(os.path.join("sample", "multi_band.tif"))
+        self.assertEqual(201, multi_band.get_band_number())
+
     def testGetXY(self):
-        """
-        Tests the get_x_y() functionality
-        """
+        """Tests the raster dimensions are correctly identified."""
         x, y = self.fine_map.get_x_y()
         self.assertEqual(x, 13)
         self.assertEqual(y, 13)

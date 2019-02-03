@@ -10,7 +10,6 @@ import subprocess
 import types
 
 import numpy as np
-
 from pycoalescence.spatial_algorithms import convert_coordinates
 
 try:
@@ -292,7 +291,9 @@ class Map(object):
 
         :param str file: the output file to create
         :param int bands: optionally provide a number of bands to create
-        :param tuple geotransform: optionally provide a geotransform to set for the raster - defaults to (0, 1, 0, 0, 0, -1)
+        :param gdal.GDT_Byte datatype: the databae of the output
+        :param tuple geotransform: optionally provide a geotransform to set for the raster - defaults to (0, 1, 0, 0,
+        0, -1)
         :param string projection: optionally provide a projection to set for the raster, in WKT format
         """
         if self.data is None:
@@ -337,7 +338,8 @@ class Map(object):
     def set_dimensions(self, file_name=None, x_size=None, y_size=None, x_offset=None, y_offset=None):
         """ Sets the dimensions and file for the Map object
 
-        :param str/pycoalescence.Map file_name: the location of the map object (a csv or tif file). If None, required that file_name is already provided.
+        :param str/pycoalescence.Map file_name: the location of the map object (a csv or tif file). If None, required
+        that file_name is already provided.
         :param int x_size: the x dimension
         :param int y_size: the y dimension
         :param int x_offset: the x offset from the north-west corner
@@ -465,15 +467,28 @@ class Map(object):
         ds = None
         return sr
 
+    def get_band_number(self):
+        """
+        Gets the number of raster bands in the file.
+
+        :rtype: int
+        :return: the number of bands in the raster
+        """
+        ds = self.get_dataset()
+        band_number = ds.RasterCount
+        ds = None
+        return band_number
+
     def get_cached_subset(self, x_offset, y_offset, x_size, y_size):
         """
         Gets a subset of the map file, BUT rounds all numbers to integers to save RAM and keeps the entire array in
         memory to speed up fetches.
 
-        :param x_offset: the x offset from the top left corner of the map
-        :param y_offset: the y offset from the top left corner of the map
-        :param x_size: the x size of the subset to obtain
-        :param y_size: the y size of the subset to obtain
+        :param int x_offset: the x offset from the top left corner of the map
+        :param int y_offset: the y offset from the top left corner of the map
+        :param int x_size: the x size of the subset to obtain
+        :param int y_size: the y size of the subset to obtain
+
         :return: a numpy array containing the subsetted data
         """
         if self.data is None:
@@ -484,11 +499,11 @@ class Map(object):
         """
         Gets a subset of the map file
 
-        :param x_offset: the x offset from the top left corner of the map
-        :param y_offset: the y offset from the top left corner of the map
-        :param x_size: the x size of the subset to obtain
-        :param y_size: the y size of the subset to obtain
-        :param no_data_value: optionally provide a value to replace all no data values with.
+        :param int x_offset: the x offset from the top left corner of the map
+        :param int y_offset: the y offset from the top left corner of the map
+        :param int x_size: the x size of the subset to obtain
+        :param int y_size: the y size of the subset to obtain
+        :param float/int no_data_value: optionally provide a value to replace all no data values with.
 
         :return: a numpy array containing the subsetted data
         """
@@ -649,7 +664,7 @@ class Map(object):
         return True
 
     def rasterise(self, shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, geo_transform=None,
-                  field=None, burn_val=[1], data_type=default_val, attribute_filter=None,
+                  field=None, burn_val=None, data_type=default_val, attribute_filter=None,
                   x_buffer=1, y_buffer=1, **kwargs):
         """
         Rasterises the provided shape file to produce the output raster.
@@ -660,19 +675,20 @@ class Map(object):
 
         If a geo_transform is provided, it overrides the x_res, y_res, x_buffer and y_buffer.
 
-        :param shape_file: path to the .shp vector file to rasterise, or an ogr.DataSource object contain the shape file
-        :param raster_file: path to the output raster file (should not already exist)
-        :param x_res: the x resolution of the output raster
-        :param y_res: the y resolution of the output raster
-        :param output_srs: optionally define the output projection of the raster file
-        :param geo_transform: optionally define the geotransform of the raster file (cannot use resolution or buffer
-                              arguments with this option)
-        :param field: the field to set as raster values
-        :param burn_val: the r,g,b value to use if there is no field for the location
-        :param data_type: the gdal type for output data
-        :param attribute_filter: optionally provide a filter to extract features by, of the form "field=fieldval"
-        :param x_buffer: number of extra pixels to include at left and right sides
-        :param y_buffer: number of extra pixels to include at top and bottom
+        :param str/os.path shape_file: path to the .shp vector file to rasterise, or an ogr.DataSource object contain
+        the shape file
+        :param str/os.path raster_file: path to the output raster file (should not already exist)
+        :param int x_res: the x resolution of the output raster
+        :param int y_res: the y resolution of the output raster
+        :param str/osr.SpatialReference output_srs: optionally define the output projection of the raster file
+        :param list geo_transform: optionally define the geotransform of the raster file (cannot use resolution or
+                                   buffer arguments with this option)
+        :param str field: the field to set as raster values
+        :param list burn_val: the r,g,b value to use if there is no field for the location
+        :param int data_type: the gdal type for output data
+        :param str attribute_filter: optionally provide a filter to extract features by, of the form "field=fieldval"
+        :param int x_buffer: number of extra pixels to include at left and right sides
+        :param int y_buffer: number of extra pixels to include at top and bottom
         :param kwargs: additional options to provide to gdal.RasterizeLayer
 
         :raises IOError: if the shape file does not exist
@@ -682,6 +698,8 @@ class Map(object):
 
         :rtype: None
         """
+        if burn_val is None:
+            burn_val = [1]
         if self.map_exists(raster_file):
             raise IOError("File already exists at {}".format(self.file_name))
         check_parent(self.file_name)
@@ -774,13 +792,13 @@ class Map(object):
 
         .. note:: Writes to an in-memory file which then overwrites the original file, unless dest_file is not None.
 
-        :param dest_projection: the destination file projection, can only be None if rescaling
-        :param source_file: optionally provide a file name to reproject. Defaults to self.file_name
-        :param dest_file: the destination file to output to (if None, overwrites original file)
-        :param x_scalar: multiplier to change the x resolution by, defaults to 1
-        :param y_scalar: multiplier to change the y resolution by, defaults to 1
-        :param resample_algorithm: should be one of the gdal.GRA algorithms
-        :param warp_memory_limit: optionally provide a memory cache limit (uses default if 0.0)
+        :param str/os.path dest_projection: the destination file projection, can only be None if rescaling
+        :param str/os.path source_file: optionally provide a file name to reproject. Defaults to self.file_name
+        :param str/ospath dest_file: the destination file to output to (if None, overwrites original file)
+        :param float x_scalar: multiplier to change the x resolution by, defaults to 1
+        :param float y_scalar: multiplier to change the y resolution by, defaults to 1
+        :param gdal.GRA resample_algorithm: should be one of the gdal.GRA algorithms
+        :param float warp_memory_limit: optionally provide a memory cache limit (uses default if 0.0)
         """
         if source_file is not None:  # pragma: no cover
             self.file_name = source_file
