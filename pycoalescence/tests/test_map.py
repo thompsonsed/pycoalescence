@@ -14,7 +14,7 @@ from osgeo import osr, ogr, gdal
 try:
     from unittest.mock import MagicMock, create_autospec, patch
 except ImportError:  # pragma: no cover
-    from mock import Mock as MagicMock
+    from pumock import Mock as MagicMock
     from mock import create_autospec, patch
 
 from pycoalescence import Map, FragmentedLandscape
@@ -492,7 +492,9 @@ class TestMap(unittest.TestCase):
         m.data = np.random.rand(10, 10)
         output_file = "output/test_create2.tif"
         gt = (-76.54166666666666, 0.008333333333333333, 0.0, 5.024999999999999, 0.0, -0.008333333333333333)
-        proj = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]'
+        proj = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],' \
+               'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG",' \
+               '"4326"]]'
         m.create(output_file, bands=1, datatype=gdal.GDT_Float32, geotransform=gt, projection=proj)
         m2 = Map(output_file)
         m2.open()
@@ -549,18 +551,24 @@ class TestMapReprojection(unittest.TestCase):
         """
         Performs the initial re-projections.
         """
-        cls.map_1 = "sample/SA_sample.tif"
-        cls.map_2 = "output/tmp_map1.tif"
-        cls.map_3 = "output/tmp_map2.tif"
-        cls.map_4 = "output/tmp_map3.tif"
-        cls.m = Map(cls.map_1, logging_level=20)
+        cls.map_0 = os.path.join("sample", "multi_band.tif")
+        cls.map_1 = os.path.join("sample", "SA_sample.tif")
+        cls.map_2 = os.path.join("output", "tmp_map1.tif")
+        cls.map_3 = os.path.join("output", "tmp_map2.tif")
+        cls.map_4 = os.path.join("output", "tmp_map3.tif")
+        cls.map_5 = os.path.join("output", "tmp_map5.tif")
+        cls.m0 = Map(cls.map_0)
+        cls.m = Map(cls.map_1)
         cls.destination_projection = osr.SpatialReference()
         cls.destination_projection.ImportFromEPSG(3857)
         cls.proj_wkt = cls.destination_projection.ExportToWkt()
+
         cls.m.reproject_raster(dest_file=cls.map_2, dest_projection=cls.destination_projection)
         cls.m.reproject_raster(dest_file=cls.map_3, dest_projection=cls.destination_projection, x_scalar=2, y_scalar=10)
+        cls.m0.reproject_raster(dest_file=cls.map_5, x_scalar=0.1, y_scalar=0.1)
         cls.m_2 = Map(cls.map_2)
         cls.m_3 = Map(cls.map_3)
+        cls.m_5 = Map(cls.map_5)
 
     def testCorrectNewProjection(self):
         """
@@ -568,8 +576,9 @@ class TestMapReprojection(unittest.TestCase):
         """
 
         self.assertNotEqual(self.m.get_projection(), self.proj_wkt)
-
+        self.assertEqual(self.m0.get_projection(), self.m_5.get_projection())
         self.assertEqual(self.proj_wkt, self.m_2.get_projection())
+        self.assertEqual(self.proj_wkt, self.m_3.get_projection())
         self.assertEqual(self.proj_wkt, self.m_3.get_projection())
 
     def testNewDimensions(self):
@@ -577,9 +586,11 @@ class TestMapReprojection(unittest.TestCase):
         Tests that the new dimensions are correctly set
         """
 
+        dims_0 = self.m0.get_dimensions()
         dims_1 = self.m.get_dimensions()
         dims_2 = self.m_2.get_dimensions()
         dims_3 = self.m_3.get_dimensions()
+        dims_5 = self.m_5.get_dimensions()
         self.assertListEqual(dims_1[:4], dims_2[:4])
         self.assertAlmostEqual(929.3830958815255, dims_2[4], places=5)
         self.assertAlmostEqual(-929.3830958815255, dims_2[5], places=5)
@@ -587,6 +598,10 @@ class TestMapReprojection(unittest.TestCase):
         self.assertAlmostEqual(560098.928515636, dims_2[7], places=5)
         self.assertAlmostEqual(dims_2[4] * 2, dims_3[4], places=5)
         self.assertAlmostEqual(dims_2[5] * 10, dims_3[5], places=5)
+        self.assertAlmostEqual(dims_0[0] * 10, dims_5[0], places=5)
+        self.assertAlmostEqual(dims_0[1] * 10, dims_5[1], places=5)
+        self.assertAlmostEqual(dims_0[4] * 0.1, dims_5[4], places=5)
+        self.assertAlmostEqual(dims_0[5] * 0.1, dims_5[5], places=5)
         shutil.copy2(self.map_1, self.map_4)
         m_4 = Map(self.map_4)
         m_4.reproject_raster(dest_projection=self.destination_projection)
@@ -610,12 +625,12 @@ class TestMapReprojection(unittest.TestCase):
         """
         Tests that re-scaling works without trying to reproject the raster.
         """
-        map_5 = "output/tmp_map5.tif"
-        shutil.copy2(self.map_2, map_5)
-        m_5 = Map(map_5)
-        m_5.reproject_raster(x_scalar=2.0, y_scalar=3.0)
+        map_6 = "output/tmp_map6.tif"
+        shutil.copy2(self.map_2, map_6)
+        m_6 = Map(map_6)
+        m_6.reproject_raster(x_scalar=2.0, y_scalar=3.0)
         m_4 = Map(self.map_2)
-        dims = m_5.read_dimensions()
+        dims = m_6.read_dimensions()
         dims_2 = m_4.get_dimensions()
         for i, each in enumerate(dims_2[6:]):
             self.assertAlmostEqual(each, dims[i + 6])
@@ -649,6 +664,16 @@ class TestMapReprojection(unittest.TestCase):
         self.assertIsNone(m2.get_no_data())
         m3 = Map("sample/example_historical_fine.tif")
         self.assertAlmostEqual(-3.4028234663852886e+38, m3.get_no_data(), places=7)
+
+    def testMultiBandsExist(self):
+        """Tests that the correct number of bands exist in the output raster."""
+        self.assertEqual(201, self.m_5.get_band_number())
+        # Test that the first 5 bands contain non-zero data (as this is what was in the original)
+        for i in range(1, 5, 1):
+            self.m_5.open(band_no=i)
+            self.assertGreater(np.sum(self.m_5.data), 0)
+            self.m0.open(band_no=i)
+            self.assertAlmostEqual(np.sum(self.m0.data) * 100, np.sum(self.m_5.data), places=5)
 
 
 class MapAssignment(unittest.TestCase):

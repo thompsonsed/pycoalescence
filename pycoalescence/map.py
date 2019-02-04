@@ -155,7 +155,7 @@ class Map(object):
                              dtype=np.float)
         ds = None
 
-    def get_dataset(self, file=None):
+    def get_dataset(self, file=None, permissions=gdal.GA_Update):
         """
         Gets the dataset from the file.
 
@@ -172,7 +172,7 @@ class Map(object):
                           " Check read/write access.".format(self.file_name))
         if ".tif" not in self.file_name:
             raise IOError("File {} is not a tif file.".format(self.file_name))
-        ds = gdal.Open(self.file_name)
+        ds = gdal.Open(self.file_name, permissions)
         if ds is None:  # pragma: no cover
             raise IOError("Gdal could not open the file {}.".format(self.file_name))
         return ds
@@ -678,17 +678,17 @@ class Map(object):
         :param str/os.path shape_file: path to the .shp vector file to rasterise, or an ogr.DataSource object contain
         the shape file
         :param str/os.path raster_file: path to the output raster file (should not already exist)
-        :param int x_res: the x resolution of the output raster
-        :param int y_res: the y resolution of the output raster
+        :param int/float x_res: the x resolution of the output raster
+        :param int/float y_res: the y resolution of the output raster
         :param str/osr.SpatialReference output_srs: optionally define the output projection of the raster file
-        :param list geo_transform: optionally define the geotransform of the raster file (cannot use resolution or
-                                   buffer arguments with this option)
+        :param list/tuple geo_transform: optionally define the geotransform of the raster file (cannot use resolution or
+                                         buffer arguments with this option)
         :param str field: the field to set as raster values
-        :param list burn_val: the r,g,b value to use if there is no field for the location
+        :param list/int burn_val: the r,g,b value to use if there is no field for the location
         :param int data_type: the gdal type for output data
         :param str attribute_filter: optionally provide a filter to extract features by, of the form "field=fieldval"
-        :param int x_buffer: number of extra pixels to include at left and right sides
-        :param int y_buffer: number of extra pixels to include at top and bottom
+        :param int/float x_buffer: number of extra pixels to include at left and right sides
+        :param int/float y_buffer: number of extra pixels to include at top and bottom
         :param kwargs: additional options to provide to gdal.RasterizeLayer
 
         :raises IOError: if the shape file does not exist
@@ -806,7 +806,7 @@ class Map(object):
             if x_scalar == 1.0 and y_scalar == 1.0:  # pragma: no cover
                 raise ValueError("Destination projection not provided and no re-scaling - no reprojection possible.")
             dest_projection = osr.SpatialReference(wkt=self.get_projection())
-        source_ds = gdal.Open(self.file_name, gdal.GA_ReadOnly)
+        source_ds = self.get_dataset(permissions=gdal.GA_ReadOnly)
         # Create the VRT for obtaining the new geotransform
         tmp_ds = gdal.AutoCreateWarpedVRT(source_ds,
                                           None,  # src_wkt : left to default value --> will use the one from source
@@ -829,13 +829,13 @@ class Map(object):
             raise IOError("Destination file already exists at {}.".format(dest_file))
 
         # Create in-memory driver and populate it
-        dest = gdal.GetDriverByName('MEM').Create('', dst_xsize, dst_ysize, 1, data_type)
+        dest = gdal.GetDriverByName('MEM').Create('', dst_xsize, dst_ysize, self.get_band_number(), data_type)
         if dest is None:  # pragma: no cover
             raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize, dst_ysize))
         dest.SetProjection(dest_projection.ExportToWkt())
         dest.SetGeoTransform(dst_gt)
         try:
-            gdal.Warp(dest, source_ds, outputType=gdal.GDT_Int16, resampleAlg=resample_algorithm,
+            gdal.Warp(dest, source_ds, outputType=data_type, resampleAlg=resample_algorithm,
                       warpMemoryLimit=warp_memory_limit)
         except AttributeError as ae:  # pragma: no cover
             raise AttributeError("Cannot find the gdal.Warp functionality - it is possible this function is not "
