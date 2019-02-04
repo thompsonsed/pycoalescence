@@ -794,7 +794,7 @@ class Map(object):
 
         :param str/os.path dest_projection: the destination file projection, can only be None if rescaling
         :param str/os.path source_file: optionally provide a file name to reproject. Defaults to self.file_name
-        :param str/ospath dest_file: the destination file to output to (if None, overwrites original file)
+        :param str/os.path dest_file: the destination file to output to (if None, overwrites original file)
         :param float x_scalar: multiplier to change the x resolution by, defaults to 1
         :param float y_scalar: multiplier to change the y resolution by, defaults to 1
         :param gdal.GRA resample_algorithm: should be one of the gdal.GRA algorithms
