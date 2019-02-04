@@ -9,16 +9,16 @@ import unittest
 
 import numpy as np
 
+from configparser import ConfigParser
+
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
 
 try:
-    import configparser as ConfigParser
     from io import StringIO
 except ImportError as ie:  # Python 2.x support
-    import ConfigParser
     from cStringIO import StringIO
 
 from pycoalescence import Simulation, CoalescenceTree, Map

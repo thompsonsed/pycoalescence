@@ -41,14 +41,14 @@ public:
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *setupApplySpeciation(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* self, PyObject* args)
 {
-    char *database;
+    char* database;
     int record_spatial;
-    char *sample_file;
-    char *fragment_file;
-    PyObject * list_speciation_rates;
-    PyObject * list_times;
+    char* sample_file;
+    char* fragment_file;
+    PyObject* list_speciation_rates;
+    PyObject* list_times;
     if(!PyArg_ParseTuple(args, "sissO!O!|kdsk", &database, &record_spatial, &sample_file,
                          &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times))
     {
@@ -94,7 +94,7 @@ static PyObject *setupApplySpeciation(PyCommunityTemplate<T> *self, PyObject *ar
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *addTime(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject* addTime(PyCommunityTemplate<T>* self, PyObject* args)
 {
     double time;
     if(!PyArg_ParseTuple(args, "d", &time))
@@ -123,7 +123,7 @@ static PyObject *addTime(PyCommunityTemplate<T> *self, PyObject *args)
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *addProtractedParameters(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject* addProtractedParameters(PyCommunityTemplate<T>* self, PyObject* args)
 {
     double proc_min, proc_max;
     if(!PyArg_ParseTuple(args, "dd", &proc_min, &proc_max))
@@ -152,11 +152,11 @@ static PyObject *addProtractedParameters(PyCommunityTemplate<T> *self, PyObject 
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *pyAddMetacommunityParameters(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject* pyAddMetacommunityParameters(PyCommunityTemplate<T>* self, PyObject* args)
 {
     unsigned long metacommunity_size;
     double speciation_rate;
-    char *metacommunity_option;
+    char* metacommunity_option;
     unsigned long metacommunity_reference;
     if(!PyArg_ParseTuple(args, "kdsk", &metacommunity_size, &speciation_rate, &metacommunity_option,
                          &metacommunity_reference))
@@ -185,7 +185,7 @@ static PyObject *pyAddMetacommunityParameters(PyCommunityTemplate<T> *self, PyOb
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *wipeProtractedParameters(PyCommunityTemplate<T> *self)
+static PyObject* wipeProtractedParameters(PyCommunityTemplate<T>* self)
 {
     try
     {
@@ -208,7 +208,7 @@ static PyObject *wipeProtractedParameters(PyCommunityTemplate<T> *self)
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *apply(PyCommunityTemplate<T> *self)
+static PyObject* apply(PyCommunityTemplate<T>* self)
 {
 
     // Now run the actual simulation
@@ -233,7 +233,7 @@ static PyObject *apply(PyCommunityTemplate<T> *self)
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *output(PyCommunityTemplate<T> *self)
+static PyObject* output(PyCommunityTemplate<T>* self)
 {
 
     // Now run the actual simulation
@@ -258,7 +258,7 @@ static PyObject *output(PyCommunityTemplate<T> *self)
  * @return Py_RETURN_NONE
  */
 template<class T>
-static PyObject *reset(PyCommunityTemplate<T> *self)
+static PyObject* reset(PyCommunityTemplate<T>* self)
 {
 
     // Now run the actual simulation
@@ -281,11 +281,11 @@ static PyObject *reset(PyCommunityTemplate<T> *self)
 }
 
 template<class T>
-static PyObject *pySpeciateRemainingLineages(PyCommunityTemplate<T> *self, PyObject *args)
+static PyObject* pySpeciateRemainingLineages(PyCommunityTemplate<T>* self, PyObject* args)
 {
     try
     {
-        char *database_char;
+        char* database_char;
         if(!PyArg_ParseTuple(args, "s", &database_char))
         {
             return nullptr;
@@ -305,7 +305,7 @@ static PyObject *pySpeciateRemainingLineages(PyCommunityTemplate<T> *self, PyObj
 
 template<class T>
 static void
-PyCommunity_dealloc(PyCommunityTemplate<T> *self)
+PyCommunity_dealloc(PyCommunityTemplate<T>* self)
 {
     if(self->specSimParameters != nullptr)
     {
@@ -325,7 +325,7 @@ PyCommunity_dealloc(PyCommunityTemplate<T> *self)
  */
 template<class T>
 static int
-PyCommunity_init(PyCommunityTemplate<T> *self, PyObject *args, PyObject *kwds)
+PyCommunity_init(PyCommunityTemplate<T>* self, PyObject* args, PyObject* kwds)
 {
     self->specSimParameters = make_shared<SpecSimParameters>();
     return PyTemplate_init<T>(self, args, kwds);
@@ -336,7 +336,7 @@ PyCommunity_init(PyCommunityTemplate<T> *self, PyObject *args, PyObject *kwds)
  * @tparam T the type of the Community
  */
 template<class T>
-PyMethodDef *genCommunityMethods()
+PyMethodDef* genCommunityMethods()
 {
     static PyMethodDef CommunityMethods[] =
             {
@@ -369,7 +369,7 @@ PyMethodDef *genCommunityMethods()
  * @return
  */
 template<class T>
-static PyTypeObject genCommunityType(char *tp_name, char *tp_doc)
+static PyTypeObject genCommunityType(char* tp_name, char* tp_doc)
 {
     PyTypeObject ret_Community_Type = {
             PyVarObject_HEAD_INIT(nullptr, 0)
@@ -383,10 +383,10 @@ static PyTypeObject genCommunityType(char *tp_name, char *tp_doc)
     ret_Community_Type.tp_init = (initproc) PyCommunity_init<T>;
     ret_Community_Type.tp_dealloc = (destructor) PyCommunity_dealloc<T>;
     ret_Community_Type.tp_traverse = (traverseproc) PyTemplate_traverse<T>;
-//		.tp_members = PyTemplate_members<T>,
+    //		.tp_members = PyTemplate_members<T>,
     ret_Community_Type.tp_methods = genCommunityMethods<T>();
     ret_Community_Type.tp_getset = PyTemplate_gen_getsetters<T>();
-//	static PyTypeObject outType = ret_Community_Type;
+    //	static PyTypeObject outType = ret_Community_Type;
     return ret_Community_Type;
 }
 
@@ -400,20 +400,20 @@ static PyTypeObject genCommunityType(char *tp_name, char *tp_doc)
 template<class T>
 static PyTypeObject genCommunityType(string tp_name, string tp_doc)
 {
-    return genCommunityType<T>(const_cast<char *>(tp_name.c_str()), const_cast<char *>(tp_doc.c_str()));
+    return genCommunityType<T>(const_cast<char*>(tp_name.c_str()), const_cast<char*>(tp_doc.c_str()));
 }
 
 /**
  * @brief The type object containing the Community to pass on to Python.
  */
 static PyTypeObject
-        C_CommunityType = genCommunityType<Community>((char *) "libnecsim.CCommunity",
-                                                      (char *) "C class for generating communities from neutral simulations");
+        C_CommunityType = genCommunityType<Community>((char*) "libnecsim.CCommunity",
+                                                      (char*) "C class for generating communities from neutral simulations");
 
 /**
  * @brief The type object containing the Metacommunity to pass on to Python.
  */
-static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char *) "libnecsim.CMetacommunity",
-                                                                          (char *) "C class for generating communities from neutral simulations");
+static PyTypeObject C_MetacommunityType = genCommunityType<Metacommunity>((char*) "libnecsim.CMetacommunity",
+                                                                          (char*) "C class for generating communities from neutral simulations");
 
 #endif //NECSIM_C_COMMUNITY_H
