@@ -45,7 +45,7 @@ include_directories(${SOURCE_DIR_NECSIM})
 set(SOURCE_FILES
         necsim.cpp
         necsim.h
-        ${SOURCE_DIR_NECSIM}/NRrand.h
+        ${SOURCE_DIR_NECSIM}/RNGController.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
         ${SOURCE_DIR_NECSIM}/parameters.h
@@ -98,7 +98,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/AnalyticalSpeciesAbundancesHandler.cpp
         ${SOURCE_DIR_NECSIM}/AnalyticalSpeciesAbundancesHandler.h
         ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.cpp
-        ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.h)
+        ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.h
+        ${SOURCE_DIR_NECSIM}/Xoroshiro256plus.h)
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
     set(CMAKE_FIND_FRAMEWORK "LAST")
