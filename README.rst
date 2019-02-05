@@ -27,7 +27,7 @@ pycoalescence overview
 .. _PyPiOSX: https://travis-ci.org/pycoalescence/pycoalescence-ci
 
 .. |PyPiLinux| image:: https://img.shields.io/circleci/project/bitbucket/thompsonsed/pycoalescence.svg?label=Linux&logo=circleci
-.. _PyPiLinux: https://travis-ci.org/pycoalescence/pycoalescence-ci
+.. _PyPiLinux: https://circleci.com/bb/thompsonsed/pycoalescence
 
 
 
