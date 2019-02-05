@@ -14,7 +14,7 @@ from osgeo import osr, ogr, gdal
 try:
     from unittest.mock import MagicMock, create_autospec, patch
 except ImportError:  # pragma: no cover
-    from pumock import Mock as MagicMock
+    from mock import Mock as MagicMock
     from mock import create_autospec, patch
 
 from pycoalescence import Map, FragmentedLandscape

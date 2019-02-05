@@ -1,4 +1,4 @@
-|CondaOSX|_ |CondaWin|_ |CondaLinux|
+|CondaOSX|_ |CondaWin|_ |CondaLinux|_
 
 .. |CondaOSX| image:: https://img.shields.io/travis/conda-forge/pycoalescence-feedstock/master.svg?label=macOS
 .. _CondaOSX: https://travis-ci.org/conda-forge/pycoalescence-feedstock
@@ -6,9 +6,8 @@
 .. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock/master.svg?label=Windows
 .. _CondaWin: https://ci.appveyor.com/project/conda-forge/pycoalescence-feedstock/branch/master
 
-.. TODO update this if Linux becomes a supported system.
-
-.. |CondaLinux| image:: https://img.shields.io/badge/linux-disabled-lightgrey.svg
+.. |CondaLinux| image:: https://img.shields.io/circleci/project/github/conda-forge/pycoalescence-feedstock.svg?label=Linux&style=flat
+.. _Conda_Linux: https://circleci.com/gh/conda-forge/pycoalescence-feedstock/
 
 
 |CondaVersion|_ |CondaLastUpdate|_ |CondaPlatforms|_ |CondaLicense|_ |CondaDownloads|_

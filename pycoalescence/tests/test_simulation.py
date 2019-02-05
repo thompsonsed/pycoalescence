@@ -336,7 +336,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         coal.write_config('output/output2/conf1b.txt')
         self.assertTrue(os.path.exists("output/conf1b.txt"))
         self.assertTrue(os.path.exists('output/output2/conf1b.txt'))
-        ref_config_parser = ConfigParser.ConfigParser()
+        ref_config_parser = ConfigParser()
         ref_config_parser.read("output/conf1b.txt")
         for section in ["sample_grid", "fine_map", "coarse_map", "main"]:
             self.assertTrue(ref_config_parser.has_section(section))
@@ -422,7 +422,7 @@ class TestSimulationSetMaps(unittest.TestCase):
         """
         Tests that the simulation completes successfully and outputs as intended.
         """
-        self.assertEqual(5, self.c.get_species_richness())
+        self.assertEqual(4, self.c.get_species_richness())
 
     def testOrdersHistoricalMaps(self):
         """
@@ -621,8 +621,8 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
         c.finalise_setup()
         self.assertTrue(c.run_coalescence())
         c.apply_speciation_rates(speciation_rates=[0.1, 0.5, 0.9999])
-        self.assertEqual(32, c.get_species_richness(reference=1))
-        self.assertEqual(75, c.get_species_richness(reference=2))
+        self.assertEqual(25, c.get_species_richness(reference=1))
+        self.assertEqual(69, c.get_species_richness(reference=2))
         self.assertEqual(100, c.get_species_richness(reference=3))
 
 
@@ -735,9 +735,9 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
         """
         self.assertNotEqual(self.base_sim.get_species_richness(), self.hist_sim.get_species_richness())
         self.assertNotEqual(self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness())
-        self.assertEqual(2682, self.base_sim.get_species_richness())
-        self.assertEqual(2498, self.hist_sim2.get_species_richness())
-        self.assertEqual(2431, self.hist_sim.get_species_richness())
+        self.assertEqual(2673, self.base_sim.get_species_richness())
+        self.assertEqual(2515, self.hist_sim2.get_species_richness())
+        self.assertEqual(2403, self.hist_sim.get_species_richness())
 
 
 @skipLongTest
@@ -757,12 +757,12 @@ class TestExpansionOverTime(unittest.TestCase):
 
     def testSpeciesRichnessAtTimes(self):
         """Checks the species richness is correct for each time point."""
-        self.assertEqual(373, self.sim.get_species_richness(1))
-        self.assertEqual(363, self.sim.get_species_richness(2))
-        self.assertEqual(371, self.sim.get_species_richness(3))
-        self.assertEqual(363, self.sim.get_species_richness(4))
-        self.assertEqual(377, self.sim.get_species_richness(5))
-        self.assertEqual(386, self.sim.get_species_richness(6))
+        self.assertEqual(336, self.sim.get_species_richness(1))
+        self.assertEqual(332, self.sim.get_species_richness(2))
+        self.assertEqual(332, self.sim.get_species_richness(3))
+        self.assertEqual(357, self.sim.get_species_richness(4))
+        self.assertEqual(340, self.sim.get_species_richness(5))
+        self.assertEqual(343, self.sim.get_species_richness(6))
 
 
 class TestSimulationParameters(unittest.TestCase):
@@ -790,7 +790,7 @@ class TestSimulationParameters(unittest.TestCase):
         sim.protracted = True
         self.assertTrue(sim.get_protracted())
         sim = Simulation()
-        self.assertEqual(33, sim.run_simple(6, 17, "output", 0.1, 4, 10))
+        self.assertEqual(27, sim.run_simple(6, 17, "output", 0.1, 4, 10))
         self.assertFalse(sim.get_protracted())
 
     def raise_ioerror(self, path):

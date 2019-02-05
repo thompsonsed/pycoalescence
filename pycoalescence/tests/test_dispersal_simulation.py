@@ -137,7 +137,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.set_simulation_parameters(number_repeats=10000, output_database="output/realdispersal.db", seed=1,
                                     sigma=1, landscape_type="tiled_fine")
         m.run_mean_dispersal()
-        self.assertAlmostEqual(1.2656337267587887, m.get_mean_dispersal(), places=4)
+        self.assertAlmostEqual(1.2641113312060646, m.get_mean_dispersal(), places=4)
 
     def testDispersalDistanceTravelled(self):
         m = DispersalSimulation(logging_level=logging.CRITICAL)
@@ -145,7 +145,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.set_simulation_parameters(number_repeats=100, number_steps=10, output_database="output/sim_pars_test2.db",
                                     seed=2, sigma=1, landscape_type="tiled_fine")
         m.run_mean_distance_travelled()
-        self.assertAlmostEqual(4.1785582664482375, m.get_mean_distance_travelled(), places=3)
+        self.assertAlmostEqual(4.206153698181416, m.get_mean_distance_travelled(), places=3)
 
     def testDispersalSimulationParametersStoredCorrectly(self):
         """
@@ -183,19 +183,19 @@ class TestDispersalSimulation(unittest.TestCase):
         Tests that with multiple simulations, the averages are outputted correctly.
         """
 
-        self.assertAlmostEqual(2.659304022276629, self.m.get_mean_dispersal(parameter_reference=2))
-        self.assertAlmostEqual(27.867571579115666, self.m.get_mean_dispersal(parameter_reference=3))
-        self.assertAlmostEqual(7.603058093414978, self.m.get_mean_distance_travelled(parameter_reference=4))
-        self.assertAlmostEqual(19.675007879680603, self.m.get_mean_distance_travelled(parameter_reference=5))
+        self.assertAlmostEqual(2.5016203799003596, self.m.get_mean_dispersal(parameter_reference=2))
+        self.assertAlmostEqual(17.448853121157676, self.m.get_mean_dispersal(parameter_reference=3))
+        self.assertAlmostEqual(7.7522237785164885, self.m.get_mean_distance_travelled(parameter_reference=4))
+        self.assertAlmostEqual(19.15984097911993, self.m.get_mean_distance_travelled(parameter_reference=5))
 
     def testStandardDeviationDistances(self):
         """
         Tests that the standard deviation is correctly returned from the simulated database
         """
-        self.assertAlmostEqual(1.4484826947890486, self.m.get_stdev_dispersal(parameter_reference=1))
-        self.assertAlmostEqual(1.4484826947890486, self.m.get_stdev_dispersal(parameter_reference=2))
-        self.assertAlmostEqual(3.9766201262073095, self.m.get_stdev_distance_travelled(parameter_reference=4))
-        self.assertAlmostEqual(10.186955626412916, self.m.get_stdev_distance_travelled(parameter_reference=5))
+        self.assertAlmostEqual(1.2537525572724404, self.m.get_stdev_dispersal(parameter_reference=1))
+        self.assertAlmostEqual(1.2537525572724404, self.m.get_stdev_dispersal(parameter_reference=2))
+        self.assertAlmostEqual(4.545660181734175, self.m.get_stdev_distance_travelled(parameter_reference=4))
+        self.assertAlmostEqual(11.1072270911707, self.m.get_stdev_distance_travelled(parameter_reference=5))
 
     def testDatabaseReferences(self):
         """
@@ -227,9 +227,9 @@ class TestDispersalSimulation(unittest.TestCase):
                                     sigma=1, landscape_type="tiled_fine")
         m.run_mean_dispersal()
         m2 = DispersalSimulation(dispersal_db=m.dispersal_database, logging_level=logging.CRITICAL)
-        self.assertAlmostEqual(1.2656337267587887, m2.get_mean_dispersal(), places=4)
+        self.assertAlmostEqual(1.2641113312060646, m2.get_mean_dispersal(), places=4)
         m3 = DispersalSimulation(dispersal_db=m, logging_level=logging.CRITICAL)
-        self.assertAlmostEqual(1.2656337267587887, m3.get_mean_dispersal(), places=4)
+        self.assertAlmostEqual(1.2641113312060646, m3.get_mean_dispersal(), places=4)
 
     def testAlternativeMapFileSetting(self):
         m = DispersalSimulation(file="sample/SA_sample_fine.tif", logging_level=logging.CRITICAL)
@@ -241,7 +241,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.run_mean_dispersal()
         with self.assertRaises(ValueError):
             m.get_mean_dispersal()
-        self.assertAlmostEqual(1.512899020449196, m.get_mean_dispersal(parameter_reference=2), places=4)
+        self.assertAlmostEqual(1.2892922226992172, m.get_mean_dispersal(parameter_reference=2), places=4)
 
     def testParameterUpdating(self):
         """
@@ -272,9 +272,9 @@ class TestDispersalSimulation(unittest.TestCase):
         actual_params = m.get_database_parameters()
         for key in expected_params.keys():
             self.assertEqual(expected_params[key], actual_params[key])
-        self.assertAlmostEqual(1.424052551380534, m.get_mean_dispersal(parameter_reference=1), places=4)
-        self.assertAlmostEqual(11.093649928419898, m.get_mean_dispersal(parameter_reference=2), places=4)
-        self.assertAlmostEqual(467.58323, m.get_mean_distance_travelled(parameter_reference=3), places=4)
+        self.assertAlmostEqual(1.245882030374995, m.get_mean_dispersal(parameter_reference=1), places=4)
+        self.assertAlmostEqual(12.035293581998125, m.get_mean_dispersal(parameter_reference=2), places=4)
+        self.assertAlmostEqual(507.88676714308644, m.get_mean_distance_travelled(parameter_reference=3), places=4)
 
     def testDispersalWithCoarse(self):
         """Tests a dispersal simulation using a coarse and fine map."""
@@ -283,7 +283,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal5.db", seed=1,
                                     sigma=1, landscape_type="tiled_fine")
         m.run_mean_dispersal()
-        self.assertAlmostEqual(1.4071243763639723, m.get_mean_dispersal(parameter_reference=1), places=4)
+        self.assertAlmostEqual(1.2964612543012595, m.get_mean_dispersal(parameter_reference=1), places=4)
 
     def testDispersalWithSample(self):
         """Tests a dispersal simulation using a sample and fine map."""
@@ -292,7 +292,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.set_simulation_parameters(number_repeats=100, output_database="output/realdispersal6.db", seed=1,
                                     sigma=1, landscape_type="closed")
         m.run_mean_dispersal()
-        self.assertAlmostEqual(1.0132852001800905, m.get_mean_dispersal(parameter_reference=1), places=4)
+        self.assertAlmostEqual(0.9840668874233433, m.get_mean_dispersal(parameter_reference=1), places=4)
 
     def testApplyingMultipleNumberSteps(self):
         """Tests running a single simulation with multiple number of steps at once."""
@@ -305,12 +305,12 @@ class TestDispersalSimulation(unittest.TestCase):
         m.run_mean_distance_travelled()
         for k, v in [(1, 10), (2, 20), (3, 30), (4, 40), (5, 50), (6, 60)]:
             self.assertEqual(v, m.get_database_parameters()[k]["number_steps"])
-        self.assertAlmostEqual(3.8925677384621986, m.get_mean_distance_travelled(parameter_reference=1), places=6)
-        self.assertAlmostEqual(5.788626609574867, m.get_mean_distance_travelled(parameter_reference=2), places=6)
-        self.assertAlmostEqual(7.363016675655021, m.get_mean_distance_travelled(parameter_reference=3), places=6)
-        self.assertAlmostEqual(8.020556813086024, m.get_mean_distance_travelled(parameter_reference=4), places=6)
-        self.assertAlmostEqual(9.171927160953157, m.get_mean_distance_travelled(parameter_reference=5), places=6)
-        self.assertAlmostEqual(9.752385114899754, m.get_mean_distance_travelled(parameter_reference=6), places=6)
+        self.assertAlmostEqual(4.001297548429019, m.get_mean_distance_travelled(parameter_reference=1), places=6)
+        self.assertAlmostEqual(6.1136500795111886, m.get_mean_distance_travelled(parameter_reference=2), places=6)
+        self.assertAlmostEqual(7.3630228316363295, m.get_mean_distance_travelled(parameter_reference=3), places=6)
+        self.assertAlmostEqual(8.497107432997838, m.get_mean_distance_travelled(parameter_reference=4), places=6)
+        self.assertAlmostEqual(9.723744156016298, m.get_mean_distance_travelled(parameter_reference=5), places=6)
+        self.assertAlmostEqual(10.81902521181573, m.get_mean_distance_travelled(parameter_reference=6), places=6)
 
     def testRunMeanDistanceErrors(self):
         """Tests that the mean distance travelled errors are correctly raised."""
@@ -335,7 +335,7 @@ class TestDispersalSimulation(unittest.TestCase):
         """Sanity checks that the distances are calculated properly on a coarse map."""
         m = DispersalSimulation(logging_level=logging.CRITICAL)
         m.set_map_files(fine_file="sample/null.tif", coarse_file="sample/null_large.tif")
-        m.set_simulation_parameters(number_repeats=10000, output_database="output/realdispersal8.db", seed=2,
+        m.set_simulation_parameters(number_repeats=100000, output_database="output/realdispersal8.db", seed=2,
                                     sigma=2, landscape_type="closed", number_steps=100)
         m.run_mean_distance_travelled()
         m.update_parameters(sigma=4)
@@ -358,7 +358,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.set_map_files(m1)
         m.add_historical_map(fine_file="sample/SA_sample_fine2.tif", coarse_file="none", time=10, rate=0.1)
         m.run_mean_distance_travelled()
-        self.assertAlmostEqual(9.657166679793269, m.get_mean_distance_travelled(parameter_reference=1), places=6)
+        self.assertAlmostEqual(4.3471617258268065, m.get_mean_distance_travelled(parameter_reference=1), places=6)
 
     def testDispersalDatabaseRemoval(self):
         """Tests that the dispersal database connection can be deleted properly, with simulation variables preserved."""
@@ -389,7 +389,7 @@ class TestDispersalSimulation(unittest.TestCase):
         self.assertFalse(os.path.exists(m.dispersal_database))
         m.run_mean_distance_travelled()
         self.assertTrue(os.path.exists(m.dispersal_database))
-        self.assertAlmostEqual(8.920698713067242, m.get_mean_distance_travelled(parameter_reference=1), places=6)
+        self.assertAlmostEqual(4.3471617258268065, m.get_mean_distance_travelled(parameter_reference=1), places=6)
 
     def testRunMeanDistanceTravelledErrors(self):
         """Tests that run mean distance travelled produces the expected errors."""

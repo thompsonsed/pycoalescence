@@ -18,9 +18,10 @@ pycoalescence overview
 .. |PyPiV| image:: https://img.shields.io/pypi/v/pycoalescence.svg
 .. _PyPiV: https://badge.fury.io/py/pycoalescence
 
-|PyPiWin| |PyPiOSX|_ |PyPiLinux|_
+|CondaWin|_ |PyPiOSX|_ |PyPiLinux|_
 
-.. |PyPiWin| image:: https://img.shields.io/badge/Windows-disabled-lightgrey.svg
+.. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock/master.svg?label=Windows
+.. _CondaWin: https://ci.appveyor.com/project/conda-forge/pycoalescence-feedstock/branch/master
 
 .. |PyPiOSX| image:: https://img.shields.io/travis/pycoalescence/pycoalescence-ci/master.svg?label=macOS&logo=travis
 .. _PyPiOSX: https://travis-ci.org/pycoalescence/pycoalescence-ci

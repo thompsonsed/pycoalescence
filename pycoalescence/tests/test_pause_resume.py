@@ -530,8 +530,8 @@ class TestPauseSpeciateRemaining(unittest.TestCase):
         # 	self.assertEqual(1172, ct.get_species_richness(2))
         # 	self.assertEqual(1173, ct.get_species_richness(3))
         # else:
-        self.assertEqual(1171, ct.get_species_richness(1))
-        self.assertEqual(1172, ct.get_species_richness(2))
+        self.assertEqual(1170, ct.get_species_richness(1))
+        self.assertEqual(1170, ct.get_species_richness(2))
         self.assertEqual(1173, ct.get_species_richness(3))
         ct = CoalescenceTree()
         with self.assertRaises(IOError):

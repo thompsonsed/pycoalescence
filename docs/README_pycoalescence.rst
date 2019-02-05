@@ -54,6 +54,8 @@ setuptools, which in turn runs ``installer.py``.
                For manual installation it should be possible to install **pycoalescence** on any system, but may require
                some tinkering.
 
+.. note:: See :ref:`here <installation_issues>` for solutions to some common installation issues.
+
 .. note:: Whichever installation option you use, it is important to ensure that the package is compiled in the same
           environment as you intend to run simulations.
 
@@ -105,6 +107,8 @@ Installing via pip
 ''''''''''''''''''
 
 .. include:: pypi_version.rst
+
+.. note:: See :ref:`here <installation_issues>` for solutions to some common installation issues.
 
 Installation via pip requires that the non-pythonic dependencies are installed manually first. Importantly, make sure
 that `gdal <http://www.gdal.org/>`__ is fully functional. On some systems this appears to need compilation directly from
@@ -164,6 +168,8 @@ Alternatively, ``python hpc_setup.py`` provides a custom installation with a few
 including usage of the intel compiler by default and optimisation flags for HPC. Note that this option uses the
 autotools process (``./configure`` and ``make``) instead of cmake for compilation.
 
+.. _`installation_issues`:
+
 Installation issues
 '''''''''''''''''''
 
@@ -171,20 +177,35 @@ Consider using `conda <https://conda.io/docs/>`_ to manage package dependencies 
 report any problems you have. On Mac OS X, installation via pip requires that the dependencies have already been
 provided.
 
+Gdal issues
+```````````
+
+First, make sure the gdal C++ library has been installed on your system. On macOS run ``brew install gdal`` and for
+linux distributions run ``apt-get install gdal-devel`` or equivalent.
+
 The most common issue for installing **pycoalescence** is gdal dependencies not being found (including errors relating
 to cpl_error.h, gdal.h, gdal_priv.h or cpl_conv.h). This is usually the result of gdal installing in a non-standard
-location, or the header files not being included with the gdal install. To fix this, install the C++ library on your
-system first. Then download the Python package from `here <https://pypi.org/project/GDAL/#files>`_ that matches your
-local C++ version, and run ``python setup.py build`` from the gdal directory. If this is successful, run
-``python setup.py install`` to install gdal to your Python environment.
+location, or the header files not being included with the gdal install. One option to test that gdal is installed
+properly on your system is to run ``from osgeo.gdal_array import _gdal_array`` from a python interpreter. If this gives
+an error, one possible fix on Unix systems is to uninstall the gdal python package and reinstall using
+``pip install gdal==$(gdal-config --version) --global-option=build_ext --global-option=$(gdal-config --cflags)`` to make
+sure that the gdal links to your system's version.
 
-.. note:: The development versions of boost, sqlite3 and gdal are required, which looks something like ``gdal-devel``,
-          depending on your system.
+If this still doesn't fix your problems, try compiling the C++ library on your system from source first. Then download
+the Python package from `here <https://pypi.org/project/GDAL/#files>`_ that matches your local C++ version, and run
+``python setup.py build`` from the gdal directory. If this is successful, run ``python setup.py install`` to install
+gdal to your Python environment.
+
+.. note:: The development versions of boost, sqlite3 and gdal are required, which looks something like ``gdal-devel``
+          for Linux distributions.
 
 .. note:: Install scipy and matplotlib to remove warnings when importing **pycoalescence**
           (``pip install scipy matplotlib``).
 
+Boost issues
+````````````
 
+If you are on macOS, use brew install
 
 For issues related to missing boost headers, make sure that your system has boost properly installed through your
 package manager. Development versions of boost are required on linux. Ensure that the paths to the boost headers are

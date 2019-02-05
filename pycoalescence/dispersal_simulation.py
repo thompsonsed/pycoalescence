@@ -46,8 +46,9 @@ class DispersalSimulation(Landscape):
         """
         Default initialiser for members of DispersalSimulation. Ensures that the database is
 
-        :param str dispersal_db: path to a dispersal simulation database. Can also be a Map object containing the
-                                 completed simulation.
+        :param str/pycoalescence.DispersalSimulation dispersal_db: path to a dispersal simulation database. Can also be
+                                                                   a DispersalSimulation object containing the completed
+                                                                   simulation.
         :param str file: sets the filename for reading tif files.
         :param bool is_sample: sets the sample mask to true, if it is a sampled file
         :param int logging_level: the level of logging to output during dispersal simulations
