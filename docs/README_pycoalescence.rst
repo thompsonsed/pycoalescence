@@ -22,7 +22,7 @@ Features
 A large number of performance-enhancing features have been implemented, as well as support for a wide number of
 scenarios. The features include:
 
-- Coalescence methods for excellent performance.
+- Coalescence methods written in C++ for excellent performance.
 - Full output of community structure, with species IDs generated for every individual.
 - Full spatial modelling, using a dispersal kernel to simulate spatial dynamics.
 - Multiple sampling points, both spatially and temporally.
