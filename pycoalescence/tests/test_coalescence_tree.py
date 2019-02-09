@@ -1102,12 +1102,12 @@ class TestMetacommunityApplication(unittest.TestCase):
         self.assertEqual(0.001, params_3["speciation_rate"])
         self.assertEqual("analytical", params_3["option"])
         self.assertEqual(0, params_3["external_reference"])
-        self.assertEqual(87, tree.get_species_richness(1))
-        self.assertEqual(84, tree.get_species_richness(2))
-        self.assertEqual(700, tree.get_species_richness(3))
-        self.assertEqual(767, tree.get_species_richness(4))
-        self.assertEqual(236, tree.get_species_richness(5))
-        self.assertEqual(262, tree.get_species_richness(6))
+        self.assertEqual(73, tree.get_species_richness(1))
+        self.assertEqual(52, tree.get_species_richness(2))
+        self.assertEqual(745, tree.get_species_richness(3))
+        self.assertEqual(815, tree.get_species_richness(4))
+        self.assertEqual(225, tree.get_species_richness(5))
+        self.assertEqual(238, tree.get_species_richness(6))
 
     def testMetacommunityExternal(self):
         """Tests that an external metacommunity works as intended."""
