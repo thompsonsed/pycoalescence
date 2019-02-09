@@ -51,7 +51,7 @@ if "GDAL_DATA" not in os.environ:  # pragma: no cover
                 gdal_dir = os.path.join(conda_dir, "Library", "share", "gdal")
         else:
             gdal_dir = subprocess.check_output(["gdal-config", "--datadir"]).decode("utf-8").replace("\n", "")
-    except (AttributeError, FileNotFoundError):
+    except (AttributeError, FileNotFoundError, OSError):
         gdal_dir = None
     if gdal_dir is None:
         raise ImportError("No GDAL_DATA directory detected. "
