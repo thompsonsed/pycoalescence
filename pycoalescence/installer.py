@@ -421,7 +421,6 @@ class Installer(build_ext):  # pragma: no cover
                 else:
                     os.remove(path)
 
-
     def get_default_cmake_args(self, output_dir):
         """
         Returns the default cmake configure and build arguments.
