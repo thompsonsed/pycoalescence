@@ -18,7 +18,7 @@ double LandscapeMetricsCalculator::calculateMNN()
     {
         for(unsigned long j = 0; j < getCols(); j++)
         {
-            if(matrix[i][j] != 0)
+            if(get(i, j) != 0)
             {
                 distances.push_back(findNearestNeighbourDistance(i, j));
             }
@@ -36,7 +36,7 @@ void LandscapeMetricsCalculator::checkMinDistance(Cell &home_cell, const long &x
     Cell this_cell{};
     this_cell.x = x;
     this_cell.y = y;
-    if(this_cell != home_cell && matrix[y][x] > 0)
+    if(this_cell != home_cell && get(y, x) > 0)
     {
         auto distance = distanceBetweenCells(home_cell, this_cell);
         if(distance >= 1.0)
@@ -127,7 +127,7 @@ void LandscapeMetricsCalculator::createCellList()
     {
         for(unsigned long j = 0; j < getCols(); j++)
         {
-            if(matrix[i][j] != 0)
+            if(get(i, j) != 0)
             {
                 Cell cell;
                 cell.x = j;
@@ -180,7 +180,7 @@ unsigned long LandscapeMetricsCalculator::calculateNoAdjacencies()
                     if(this_cell.x >= 0 && this_cell.x < static_cast<long>(getCols()) &&
                        this_cell.y >= 0 && this_cell.y < static_cast<long>(getRows()))
                     {
-                        if(matrix[this_cell.y][this_cell.x] >= 1.0)
+                        if(get(this_cell.y, this_cell.x) >= 1.0)
                         {
                             totalAdj++;
                         }
