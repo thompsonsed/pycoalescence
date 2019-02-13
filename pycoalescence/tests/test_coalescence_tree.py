@@ -1078,7 +1078,7 @@ class TestMetacommunityApplication(unittest.TestCase):
 
     def testMetacommunityAnalytical(self):
         """Tests that an analytical metacommunity works as intended."""
-        tree = CoalescenceTree(os.path.join("output", "sample_2.db"))
+        tree = CoalescenceTree(os.path.join("output", "sample_2.db"), logging_level=20) # TODO change logging level
         tree.wipe_data()
         tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
                                        metacommunity_speciation_rate=0.001, metacommunity_option="analytical")
@@ -1168,6 +1168,36 @@ class TestMetacommunityApplication(unittest.TestCase):
         self.assertEqual(0.5, params_2["speciation_rate"])
         self.assertEqual("simulated", params_2["option"])
 
+class TestMetacommunityApplicationSpeciesAbundances(unittest.TestCase):
+    """Tests that the metacommunity application produces the expected species abundance distribution."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Run a non-spatial sim and apply a metacommunity."""
+        cls.sim = Simulation()
+        cls.sim.set_simulation_parameters(seed=11, job_type=110, output_directory="output",
+                                          min_speciation_rate=0.1, spatial=False, deme=20541)
+        cls.sim.run()
+        cls.ct = CoalescenceTree(cls.sim, logging_level=20)
+        cls.ct.wipe_data()
+        cls.ct.set_speciation_parameters(speciation_rates=0.1)
+        cls.ct.add_metacommunity_parameters(metacommunity_option="analytical", metacommunity_size=1000000,
+                                            metacommunity_speciation_rate=0.00005)
+        cls.ct.add_metacommunity_parameters(metacommunity_option="simulated", metacommunity_size=1000000,
+                                            metacommunity_speciation_rate=0.00005)
+        cls.ct.apply()
+
+    def testRichnessMatchness(self):
+        """Tests that the species richness is roughly equivalent between the two methods."""
+        self.assertAlmostEqual(244, self.ct.get_species_richness(2), delta=10)
+        self.assertAlmostEqual(self.ct.get_species_richness(1), self.ct.get_species_richness(2))
+
+    def testSpeciesAbundances(self):
+        """Tests the species abundance distribution is roughly equivalent between the two methods."""
+        sad_1 = [x[1] for x in self.ct.get_species_abundances(reference=1)]
+        sad_2 = [x[1] for x in self.ct.get_species_abundances(reference=2)]
+        # Check the mean abundance is roughly equivalent
+        self.assertAlmostEqual(sum(sad_1)/len(sad_1), sum(sad_2)/len(sad_2))
 
 class TestMetacommunityApplicationOrdering(unittest.TestCase):
     """Tests that the ordering of adding parameters to the metacommunity does not matter."""
@@ -1245,3 +1275,5 @@ class TestProtractedSpeciationEquality(unittest.TestCase):
         self.ct.apply()
         self.assertEqual(1, self.ct.get_species_richness(1))
         self.assertEqual(3, self.ct.get_species_richness(2))
+
+
