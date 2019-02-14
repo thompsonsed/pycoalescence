@@ -2538,29 +2538,29 @@ class TestAnalyticalMatchesSimulated(unittest.TestCase):
         self.assertEqual(332, c1.get_species_richness(6))
         self.assertEqual(438, c1.get_species_richness(7))
         self.assertEqual(470, c1.get_species_richness(8))
-        self.assertEqual(171, c1.get_species_richness(9))
-        self.assertEqual(317, c1.get_species_richness(10))
-        self.assertEqual(412, c1.get_species_richness(11))
-        self.assertEqual(449, c1.get_species_richness(12))
+        self.assertEqual(159, c1.get_species_richness(9))
+        self.assertEqual(314, c1.get_species_richness(10))
+        self.assertEqual(424, c1.get_species_richness(11))
+        self.assertEqual(459, c1.get_species_richness(12))
         self.assertEqual(167, c2.get_species_richness(5))
         self.assertEqual(334, c2.get_species_richness(6))
         self.assertEqual(413, c2.get_species_richness(7))
         self.assertEqual(470, c2.get_species_richness(8))
-        self.assertEqual(158, c2.get_species_richness(9))
-        self.assertEqual(321, c2.get_species_richness(10))
-        self.assertEqual(389, c2.get_species_richness(11))
-        self.assertEqual(414, c2.get_species_richness(12))
+        self.assertEqual(164, c2.get_species_richness(9))
+        self.assertEqual(338, c2.get_species_richness(10))
+        self.assertEqual(424, c2.get_species_richness(11))
+        self.assertEqual(464, c2.get_species_richness(12))
         self.assertEqual(163, c3.get_species_richness(5))
         self.assertEqual(318, c3.get_species_richness(6))
-        self.assertEqual(448, c3.get_species_richness(11))
-        self.assertEqual(479, c3.get_species_richness(12))
+        self.assertEqual(439, c3.get_species_richness(11))
+        self.assertEqual(446, c3.get_species_richness(12))
 
     def testMeansClose(self):
         """Tests that the means are roughly equivalent between the simulated and the analytical methods."""
         mean_sim = {}
         mean_ana = {}
         expected_sim = {0.01: 168.0, 0.1: 327.2, 0.5: 433.8, 0.9: 466.0}
-        expected_ana = {0.01: 174.3, 0.1: 329.8, 0.5: 427.9, 0.9: 455.0}
+        expected_ana = {0.01: 175.0, 0.1: 328.9, 0.5: 430.2, 0.9: 457.5}
         for k in self.species_richnesses_sim.keys():
             mean_sim[k] = float(sum(self.species_richnesses_sim[k])) / float(len(self.species_richnesses_sim[k]))
             mean_ana[k] = float(sum(self.species_richnesses_ana[k])) / float(len(self.species_richnesses_ana[k]))
@@ -2587,5 +2587,5 @@ class TestLargeScaleAnalytical(unittest.TestCase):
         self.assertEqual(69311, c.get_species_richness(1))
         self.assertEqual(20626, c.get_species_richness(2))
         self.assertEqual(23362, c.get_species_richness(3))
-        self.assertEqual(20608, c.get_species_richness(4))
-        self.assertEqual(23369, c.get_species_richness(5))
+        self.assertEqual(20690, c.get_species_richness(4))
+        self.assertEqual(23495, c.get_species_richness(5))
