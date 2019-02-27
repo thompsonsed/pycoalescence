@@ -780,8 +780,7 @@ class CoalescenceTree(object):
             self.add_protracted_parameters(min_g, max_g)
 
     def add_metacommunity_parameters(self, metacommunity_size=None, metacommunity_speciation_rate=None,
-                                     metacommunity_option=None,
-                                     metacommunity_reference=0):
+                                     metacommunity_option=None, metacommunity_reference=0):
         """
         Adds the metacommunity parameters to the object.
 

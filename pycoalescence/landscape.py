@@ -53,7 +53,7 @@ class Landscape:
             logging_level = self.logging_level
         self.logger = create_logger(self.logger, file, logging_level, **kwargs)
 
-    def add_historical_map(self, fine_file, coarse_file, time, rate):
+    def add_historical_map(self, fine_file, coarse_file, time, rate=0.0):
         """
         Adds an extra map to the list of historical maps.
 
