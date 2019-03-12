@@ -62,6 +62,49 @@ if "GDAL_DATA" not in os.environ:  # pragma: no cover
     os.environ["GDAL_DATA"] = gdal_dir
 
 
+# TODO write tests for this
+def wkt_from_csv_featured(
+        wkts, dest_file, EPSG=4326, fields=None
+):
+    """
+    Generates a shape file from a WKT string in a csv file.
+
+    :param wkts: a list of well-known text polygons to create in the shapefile
+    :param dest_file: a destination file to create
+    :param EPSG: the EPSG to use for the spatial referencing
+    :param fields: list of dictionaries containing fields to add to the geometries
+
+    :rtype: None
+    """
+    if os.path.exists(dest_file):
+        raise IOError(dest_file)
+    src_file = ogr.GetDriverByName("ESRI Shapefile").CreateDataSource(dest_file)
+    src_osr = osr.SpatialReference()
+    src_osr.ImportFromEPSG(EPSG)
+    # Create the layer
+    layer = src_file.CreateLayer("WKTImport", src_osr, ogr.wkbPolygon)
+    # Import the shapes from the WKT file.
+    if fields is None:
+        fields = [{"index": x} for x in range(1, len(wkts) + 1)]
+    for key in fields.keys():
+        # Ignore the WKT column
+        if key is not "WKT":
+            field_defn = ogr.FieldDefn(str(key), ogr.OFTString)
+            field_defn.SetWidth(32)
+            if layer.CreateField(field_defn) != 0:
+                raise ValueError("Could not create field {}".format(key))
+    for i, wkt in enumerate(wkts):
+        point = ogr.CreateGeometryFromWkt(wkt)
+        feature = ogr.Feature(layer.GetLayerDefn())
+        for key, val in fields[i]:
+            # Ignore the WKT column
+            if key is not "WKT":
+                feature.SetField(str(key), val)
+        feature.SetGeometry(point)
+        layer.CreateFeature(feature)
+        feature.Destroy()
+
+
 class Map(object):
     """
     Contains the file name and the variables associated with this map object.
@@ -855,9 +898,8 @@ class Map(object):
         dst_ds = None
         dest = None
 
-
     # TODO write tests for this
-    def translate(self, dest_file, source_file = None, **kwargs):
+    def translate(self, dest_file, source_file=None, **kwargs):
         """
         Translates the provided source file to the output file, given a set of options to pass to gdal.Translate()
 
@@ -881,8 +923,6 @@ class Map(object):
         output_ds.FlushCache()
         output_ds = None
         source_ds = None
-
-
 
     def plot(self):  # pragma: no cover
         """
