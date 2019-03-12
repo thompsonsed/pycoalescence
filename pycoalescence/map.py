@@ -855,6 +855,35 @@ class Map(object):
         dst_ds = None
         dest = None
 
+
+    # TODO write tests for this
+    def translate(self, dest_file, source_file = None, **kwargs):
+        """
+        Translates the provided source file to the output file, given a set of options to pass to gdal.Translate()
+
+        :param str dest_file: the destination file to create
+        :param str source_file: the source file to translate, or None to translate this file
+        :param kwargs: additional keywords to pass to gdal.Translate()
+
+        :rtype: None
+        """
+        if source_file is not None:  # pragma: no cover
+            self.file_name = source_file
+        if dest_file is None:
+            raise ValueError("Must supply a destination file.")
+        if os.path.exists(dest_file):
+            raise IOError("Destination file already exists at {}.".format(dest_file))
+        source_ds = self.get_dataset(permissions=gdal.GA_ReadOnly)
+        output_ds = gdal.Translate(destName=dest_file, srcDS=source_ds, **kwargs)
+        if output_ds is None:
+            raise SystemError("Could not create file at {} using translation options of {}.".format(dest_file,
+                                                                                                    kwargs))
+        output_ds.FlushCache()
+        output_ds = None
+        source_ds = None
+
+
+
     def plot(self):  # pragma: no cover
         """
         Returns a matplotlib.pyplot.figure object containing an image of the fragmented landscape (with axes removed).
