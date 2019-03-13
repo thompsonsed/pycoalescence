@@ -200,7 +200,7 @@ class TestMap(unittest.TestCase):
 
     def testExtents(self):
         """Tests that the extents are correctly calculated for the Map files."""
-        self.assertListEqual([-78.3750000000000000, -78.2666666666666657, 0.8583333333333343, 0.7500000000000009],
+        self.assertListEqual([-78.3750000000000000,-78.2666666666666657, 0.7500000000000009, 0.8583333333333343],
                              self.fine_map.get_extent())
 
     def testIsWithin(self):

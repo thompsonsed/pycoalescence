@@ -644,14 +644,25 @@ class Map(object):
 
     def get_extent(self):
         """
-        Gets the left and right x, and lower and upper y values.
-        :return: list of the left x, right x, upper y, lower y values.
+        Gets the min and max x, and min and max y values, including accounting for skew
+        :return: list of the x min, x max, y min, y max values.
         :rtype: list
         """
-        x, y, _, _, x_res, y_res, left_x, upp_y = self.get_dimensions()
-        right_x = left_x + (x * x_res)
-        low_y = upp_y + (y * y_res)
-        return [left_x, right_x, upp_y, low_y]
+        x_up, x_res, x_skew, y_up, y_skew, y_res = self.get_geo_transform()
+        x_dim, y_dim = self.get_x_y()
+
+        ul_x = x_up + 0 * x_res + 0 * x_skew
+        ul_y = y_up + 0 * y_skew + 0 * y_res
+
+        ll_x = x_up + 0 * x_res + y_dim * x_skew
+        ll_y = y_up + 0 * y_skew + y_dim * y_res
+
+        lr_x = x_up + x_dim * x_res + y_dim * x_skew
+        lr_y = y_up + x_dim * y_skew + y_dim * y_res
+
+        ur_x = x_up + x_dim * x_res + 0 * x_skew
+        ur_y = y_up + x_dim * y_skew + 0 * y_res
+        return [min(ul_x, ll_x), max(lr_x, ur_x),  min(ll_y, lr_y), max(ul_y, ur_y)]
 
     def is_within(self, map):
         """
@@ -667,10 +678,10 @@ class Map(object):
         """
         if not isinstance(map, Map):
             raise TypeError("Supplied object must be of Map class.")
-        outer_left_x, outer_right_x, outer_upp_y, outer_low_y = map.get_extent()
-        inner_left_x, inner_right_x, inner_upp_y, inner_low__y = self.get_extent()
-        smaller_list = [outer_left_x, inner_right_x, inner_upp_y, outer_low_y]
-        larger_list = [inner_left_x, outer_right_x, outer_upp_y, inner_low__y]
+        outer_x_min, outer_x_max, outer_y_min, outer_y_max = map.get_extent()
+        inner_x_min, inner_x_max, inner_y_min, inner_y_max = self.get_extent()
+        smaller_list = [outer_x_min, outer_y_min, inner_x_max, inner_y_max]
+        larger_list = [inner_x_min, inner_y_min, outer_x_max, outer_y_max]
         for i, smaller in enumerate(smaller_list):
             if smaller > larger_list[i]:
                 if not isclose(smaller, larger_list[i], rel_tol=1e-5):
@@ -706,9 +717,10 @@ class Map(object):
                 return False
         return True
 
+    # TODO write test using extent
     def rasterise(self, shape_file, raster_file=None, x_res=None, y_res=None, output_srs=None, geo_transform=None,
                   field=None, burn_val=None, data_type=default_val, attribute_filter=None,
-                  x_buffer=1, y_buffer=1, **kwargs):
+                  x_buffer=None, y_buffer=None, extent=None, **kwargs):
         """
         Rasterises the provided shape file to produce the output raster.
 
@@ -732,6 +744,7 @@ class Map(object):
         :param str attribute_filter: optionally provide a filter to extract features by, of the form "field=fieldval"
         :param int/float x_buffer: number of extra pixels to include at left and right sides
         :param int/float y_buffer: number of extra pixels to include at top and bottom
+        :param list extent: list containing the new extent, provided as [ulx, lrx, uly, lry] (output from get_extent())
         :param kwargs: additional options to provide to gdal.RasterizeLayer
 
         :raises IOError: if the shape file does not exist
@@ -741,6 +754,23 @@ class Map(object):
 
         :rtype: None
         """
+        if x_buffer is None:
+            if extent is None:
+                if geo_transform is None:
+                    x_buffer = 1
+                else:
+                    x_buffer = 0.5
+            else:
+                x_buffer = 0
+
+        if y_buffer is None:
+            if extent is None:
+                if geo_transform is None:
+                    y_buffer = 1
+                else:
+                    y_buffer = 0.5
+            else:
+                y_buffer = 0
         if burn_val is None:
             burn_val = [1]
         if self.map_exists(raster_file):
@@ -756,8 +786,6 @@ class Map(object):
         if geo_transform is not None:
             self.x_res = geo_transform[1]
             self.y_res = -geo_transform[5]
-            x_buffer = 0.5
-            y_buffer = 0.5
         if not isinstance(shape_file, ogr.DataSource):
             if not os.path.exists(shape_file):
                 raise IOError("Shape file does not exist at {}".format(shape_file))
@@ -779,12 +807,19 @@ class Map(object):
         if attribute_filter is not None:
             source_layer.SetAttributeFilter(attribute_filter)
         source_srs = source_layer.GetSpatialRef()
-        x_min, x_max, y_min, y_max = source_layer.GetExtent()
+        if extent is not None:
+            x_min, x_max, y_min, y_max = extent
+        else:
+            x_min, x_max, y_min, y_max = source_layer.GetExtent()
         if output_srs and output_srs != source_srs:  # pragma: no cover
             x_min, y_min = convert_coordinates(x_min, y_min, source_srs, output_srs)
             x_max, y_max = convert_coordinates(x_max, y_max, source_srs, output_srs)
         x_dim = int(math.ceil((x_max - x_min) / self.x_res) + (2 * x_buffer))
         y_dim = int(math.ceil((y_max - y_min) / self.y_res) + (2 * y_buffer))
+        # Correct for the extent being an inclusive boundary
+        if extent is not None:
+            x_dim -= 1
+            y_dim -= 1
         if "width" in kwargs:
             x_dim = kwargs["width"]
         if "height" in kwargs:
