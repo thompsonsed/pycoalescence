@@ -386,6 +386,32 @@ class DispersalSimulation(Landscape):
             self.complete_setup()
         self.c_dispersal_simulation.run_mean_dispersal_distance(self.number_repeats, self.seed, self.sequential)
 
+    def get_all_dispersal(self, database=None, parameter_reference=1):
+        """
+        Gets all mean dispersal values from the database if run_mean_dispersal has already been run.
+
+        :raises: ValueError if dispersal_database is None and so run_mean_dispersal() has not been run
+        :raises: IOError if the output database does not exist
+
+        :param str database: the database to open
+        :param int parameter_reference: the parameter reference to use (default 1)
+        :return: the dispersal values from the database
+        """
+        if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
+            raise IOError("Database {} does not have a DISPERSAL_DISTANCES table".format(self.dispersal_database))
+        try:
+            self._open_database_connection(database=database)
+            cursor = self._db_conn.cursor()
+            sql_fetch = cursor.execute("SELECT distance FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
+                                       (parameter_reference,)).fetchall()
+            if not sql_fetch:
+                raise ValueError("Could not get dispersal distances for "
+                                 "parameter reference of {} from {}.".format(parameter_reference,
+                                                                             self.dispersal_database))
+        except sqlite3.Error as e:  # pragma: no cover
+            raise IOError("Could not get all dispersals from database: {}.".format(e))
+        return [x[0] for x in sql_fetch]
+
     def get_mean_dispersal(self, database=None, parameter_reference=1):
         """
         Gets the mean dispersal for the map if run_mean_dispersal has already been run.
@@ -394,7 +420,7 @@ class DispersalSimulation(Landscape):
         :raises: IOError if the output database does not exist
 
         :param str database: the database to open
-        :param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
+        :param int parameter_reference: the parameter reference to use (default 1)).
         :return: mean dispersal from the database
         """
         if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
@@ -405,12 +431,38 @@ class DispersalSimulation(Landscape):
             sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
                                        (parameter_reference,)).fetchall()[0][0]
             if not sql_fetch:
-                raise ValueError("Could not get mean distance for "
+                raise ValueError("Could not get mean dispersal for "
                                  "parameter reference of {} from {}.".format(parameter_reference,
                                                                              self.dispersal_database))
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get average distance from database: {}.".format(e))
+            raise IOError("Could not get mean dispersal from database: {}.".format(e))
         return sql_fetch
+
+    def get_all_distances(self, database=None, parameter_reference=1):
+        """
+        Gets all total distances travelled from the database if run_distance_travelled has already been run.
+
+        :raises: ValueError if dispersal_database is None and so run_mean_dispersal() has not been run
+        :raises: IOError if the output database does not exist
+
+        :param str database: the database to open
+        :param int parameter_reference: the parameter reference to use (default 1)
+        :return: the dispersal values from the database
+        """
+        if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
+            raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
+        try:
+            self._open_database_connection(database=database)
+            cursor = self._db_conn.cursor()
+            sql_fetch = cursor.execute("SELECT distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
+                                       (parameter_reference,)).fetchall()
+            if not sql_fetch:
+                raise ValueError("Could not get distances travelled for "
+                                 "parameter reference of {} from {}.".format(parameter_reference,
+                                                                             self.dispersal_database))
+        except sqlite3.Error as e:  # pragma: no cover
+            raise IOError("Could not get all distances travelled from database: {}.".format(e))
+        return [x[0] for x in sql_fetch]
 
     def get_mean_distance_travelled(self, database=None, parameter_reference=1):
         """
@@ -430,8 +482,12 @@ class DispersalSimulation(Landscape):
             cursor = self._db_conn.cursor()
             sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
                                        (parameter_reference,)).fetchall()[0][0]
+            if not sql_fetch:
+                raise ValueError("Could not get mean distance travelled for "
+                                 "parameter reference of {} from {}.".format(parameter_reference,
+                                                                             self.dispersal_database))
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get average distance from database: " + str(e))
+            raise IOError("Could not get average distance from database: {}.".format(e))
         return sql_fetch
 
     def get_stdev_dispersal(self, database=None, parameter_reference=1):
@@ -457,7 +513,7 @@ class DispersalSimulation(Landscape):
                 raise ValueError("No distances in DISPERSAL_DISTANCES, cannot find standard deviation.")
             stdev_distance = std(sql_fetch)
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get average distance from database: " + str(e))
+            raise IOError("Could not get average distance from database: {}".format(e))
         return stdev_distance
 
     def get_stdev_distance_travelled(self, database=None, parameter_reference=1):

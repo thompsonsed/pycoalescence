@@ -76,6 +76,12 @@ class TestDispersalSimulation(unittest.TestCase):
         m = DispersalSimulation(logging_level=logging.CRITICAL)
         with self.assertRaises(IOError):
             m.get_stdev_distance_travelled(database=os.path.join("sample", "sample.db"))
+        m = DispersalSimulation(logging_level=logging.CRITICAL)
+        with self.assertRaises(IOError):
+            m.get_all_distances(database=os.path.join("sample", "sample.db"))
+        m = DispersalSimulation(logging_level=logging.CRITICAL)
+        with self.assertRaises(IOError):
+            m.get_all_dispersal(database=os.path.join("sample", "sample.db"))
 
     def testRaisesValueErrorNullNotSet(self):
         """
@@ -110,6 +116,13 @@ class TestDispersalSimulation(unittest.TestCase):
                                     sigma=10, landscape_type="infinite", restrict_self=False)
         m.run_mean_dispersal()
         self.assertAlmostEqual(m.get_mean_dispersal(), 10 * (3.14 ** 0.5) / 2 ** 0.5, places=2)
+        expected_dispersal = [3.1622776601683795, 27.202941017470888, 16.1245154965971, 15.132745950421556,
+                              13.038404810405298, 13.601470508735444, 11.180339887498949, 13.038404810405298,
+                              8.48528137423857, 12.083045973594572]
+
+        actual_dispersal = m.get_all_dispersal()[:10]
+        for expected, actual in zip(expected_dispersal, actual_dispersal):
+            self.assertAlmostEqual(expected, actual, places=3)
 
     @skipLongTest
     def testLandscapeTypesMatch(self):
@@ -146,6 +159,12 @@ class TestDispersalSimulation(unittest.TestCase):
                                     seed=2, sigma=1, landscape_type="tiled_fine")
         m.run_mean_distance_travelled()
         self.assertAlmostEqual(4.206153698181416, m.get_mean_distance_travelled(), places=3)
+        expected_distances = [4.123105625617661, 6.4031242374328485, 6.0, 5.0, 5.0, 1.4142135623730951,
+                              2.23606797749979, 2.23606797749979, 2.8284271247461903, 3.1622776601683795]
+
+        actual_dispersal = m.get_all_distances()[:10]
+        for expected, actual in zip(expected_distances, actual_dispersal):
+            self.assertAlmostEqual(expected, actual, places=3)
 
     def testDispersalSimulationParametersStoredCorrectly(self):
         """
@@ -240,7 +259,13 @@ class TestDispersalSimulation(unittest.TestCase):
         m.run_mean_distance_travelled()
         m.run_mean_dispersal()
         with self.assertRaises(ValueError):
-            m.get_mean_dispersal()
+            m.get_mean_dispersal(parameter_reference=3)
+        with self.assertRaises(ValueError):
+            m.get_all_dispersal(parameter_reference=3)
+        with self.assertRaises(ValueError):
+            m.get_mean_distance_travelled(parameter_reference=3)
+        with self.assertRaises(ValueError):
+            m.get_all_distances(parameter_reference=3)
         self.assertAlmostEqual(1.2892922226992172, m.get_mean_dispersal(parameter_reference=2), places=4)
 
     def testParameterUpdating(self):
