@@ -807,7 +807,7 @@ Contacts
 
 Author: Samuel Thompson
 
-Contact: samuelthompson14@imperial.ac.uk - thompsonsed@gmail.com
+Contact: samuel.thompson14@imperial.ac.uk - thompsonsed@gmail.com
 
 Institution: Imperial College London and National University of Singapore
 
