@@ -632,7 +632,7 @@ class CoalescenceTree(object):
                 self.database.close()
                 raise sqlite3.Error("Could not fetch SIMULATION_PARAMETERS. Table contains no data.")
         else:
-            raise IOError("File {} does not exist.")
+            raise IOError("File {} does not exist.".format(filename))
 
     def set_speciation_parameters(self, speciation_rates, record_spatial=False, record_fragments=False,
                                   sample_file=None,
