@@ -1226,7 +1226,7 @@ class CoalescenceTree(object):
             self.comparison_file = filename
         except sqlite3.Error as oe:  # pragma: no cover
             conn = None
-            raise RuntimeError("Could not import from comparison data: ".format(oe))
+            raise RuntimeError("Could not import from comparison data: {}".format(oe))
         conn = None
         if self.fragment_abundances:
             if not self._check_fragment_numbers_match() and not ignore_mismatch:
@@ -1674,7 +1674,11 @@ class CoalescenceTree(object):
                     no_ind = fragment_comparison[3]
                 else:
                     actual_val = 0.0
-                    no_ind = [p[1] for p in plot_data if p[0] == fragment][0]
+                    try:
+                        no_ind = [p[1] for p in plot_data if p[0] == fragment][0]
+                    except IndexError:  # pragma: no cover
+                        raise IndexError(
+                            "Could not get fragment {} from comparison plot data for {}.".format(fragment, category))
                 for ref in references:
                     select_metrics = [b for b in bio_metrics if b[0] == category and b[1] == fragment and b[2] == ref]
                     if len(select_metrics) != 1:  # pragma: no cover

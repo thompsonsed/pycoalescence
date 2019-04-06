@@ -677,6 +677,11 @@ Example application with more complicated parameters
     times=times)
     t.apply()
 
+.. note:: The record_fragments variable can either be boolean (to automatically detect contiguous fragments from the
+          data), or a path to a csv file. The csv file should contain the fragment name, x min, y min, x max, y max and
+          area (a weighting parameter usually equal to the number of variables). The x and y minima and maxima define
+          the extremes of the fragment.
+
 A few biodiversity metrics can then be obtained directly from the database using built-in functions, relieving the user
 of having to generate these manually. These include
 
@@ -694,7 +699,7 @@ Check out other full examples in `this jupyter notebook <src/examples.ipynb>`_.
 
 .. tip:: Equivalent functions also exist for obtaining individual fragment biodiversity metrics.
 
-.. tip:: The entire list of species can be outputted using
+.. tip:: The entire coalescence tree can be outputted using
          :func:`get_species_list <pycoalescence.coalescence_tree.CoalescenceTree.get_species_list>`. This may be useful
          for scenarios where it is desirable to calculate custom biodiversity metrics.
 
