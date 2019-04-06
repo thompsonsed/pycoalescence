@@ -661,7 +661,9 @@ The :class:`CoalescenceTree class<pycoalescence.coalescence_tree.CoalescenceTree
     # Now import our completed simulation without needing to run t.set_database("filepath")
     t = CoalescenceTree(sim)
 
-Example application with more complicated parameters
+Example application with more complicated parameters, including using a csv file defining each "fragment" within the
+landscape (`record_fragments`), for which species abundances and species richness values are calculated separately.
+There is also a parameter defining which locations to sample from (the `sample_file`).
 
 .. code-block:: python
 
