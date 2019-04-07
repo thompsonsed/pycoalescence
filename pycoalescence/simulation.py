@@ -439,7 +439,7 @@ class Simulation(Landscape):
         """
         self.set_simulation_parameters(seed=seed, job_type=task, output_directory=output,
                                        min_speciation_rate=speciation_rate,
-                                       sigma=sigma, tau=1, deme=1, sample_size=1.0, max_time=36000,
+                                       sigma=sigma, tau=1, deme=1.0, sample_size=1.0, max_time=36000,
                                        dispersal_relative_cost=1,
                                        min_num_species=1)
         self.set_map("null", size, size)
@@ -641,7 +641,7 @@ class Simulation(Landscape):
                                      "unsupported.".format(name))
 
     def set_simulation_parameters(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0,
-                                  deme=1, sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
+                                  deme=1.0, sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
                                   dispersal_relative_cost=1, min_num_species=1, restrict_self=False,
                                   landscape_type=False, protracted=False, min_speciation_gen=None,
                                   max_speciation_gen=None, spatial=True, uses_spatial_sampling=False, times=None):
@@ -654,7 +654,7 @@ class Simulation(Landscape):
         :param float min_speciation_rate: the minimum speciation rate to simulate
         :param float sigma: the dispersal sigma value
         :param float tau: the fat-tailed dispersal tau value
-        :param int deme: the deme size (in individuals per cell)
+        :param float deme: the deme size (in individuals per cell)
         :param float sample_size: the sample size of the deme (decimal 0-1)
         :param float max_time: the maximum allowed simulation time (in seconds)
         :param str dispersal_method: the dispersal kernel method. Should be one of [normal, fat-tail, norm-uniform]

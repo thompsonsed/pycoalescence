@@ -599,6 +599,120 @@ class TestSimulationTifCoarse(unittest.TestCase):
         self.assertEqual(279, self.tree.get_species_richness(1))
         self.assertEqual(281, self.tree.get_species_richness(2))
 
+    def testNumberIndividuals(self):
+        """Tests the number of simulated individuals is correct"""
+        self.assertEqual(self.tree.get_number_individuals(community_reference=1), 284)
+
+
+class TestSimulationDemeProportions(unittest.TestCase):
+    """
+    Tests the coarse tif reading and correct parameter detection.
+    This requires the files SA_sample_fine.tif and SA_sample_coarse.tif in sample/
+    """
+
+    @classmethod
+    def setUpClass(self):
+        """
+        Sets up the Coalescence object test case.
+        """
+        self.coal = Simulation()
+
+        self.coal.set_simulation_parameters(seed=5, job_type=4, output_directory="output",
+                                            min_speciation_rate=0.1, sigma=4, deme=0.25)
+        self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+                                coarse_file="sample/SA_sample_coarse.tif")
+        self.coal.run()
+        self.coal2 = Simulation()
+
+        self.coal2.set_simulation_parameters(seed=6, job_type=4, output_directory="output",
+                                            min_speciation_rate=0.1, sigma=4, deme=0.01)
+        self.coal2.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+                                coarse_file="sample/SA_sample_coarse.tif")
+        self.coal2.run()
+        self.tree = CoalescenceTree(self.coal)
+        self.tree2 = CoalescenceTree(self.coal2)
+
+    def testSimParamsStored(self):
+        """
+        Tests the full simulation setup, checking species richness is correct and species abundance calculations are
+        correct.
+        :return:
+        """
+        params = self.tree.get_simulation_parameters()
+        actual_sim_parameters = dict(seed=5, job_type=4, output_dir='output', speciation_rate=0.1, sigma=4.0, tau=1.0,
+                                     deme=0.25, sample_size=1.0, max_time=3600.0, dispersal_relative_cost=1.0,
+                                     min_num_species=1, habitat_change_rate=0.0, gen_since_historical=0.0,
+                                     time_config_file='null', coarse_map_file='sample/SA_sample_coarse.tif',
+                                     coarse_map_x=35, coarse_map_y=41, coarse_map_x_offset=11, coarse_map_y_offset=14,
+                                     coarse_map_scale=1.0, fine_map_file='sample/SA_sample_fine.tif', fine_map_x=13,
+                                     fine_map_y=13, fine_map_x_offset=0, fine_map_y_offset=0, sample_file='null',
+                                     grid_x=13, grid_y=13,
+                                     sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
+                                     historical_coarse_map='none', historical_fine_map='none',
+                                     sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
+                                     landscape_type='closed', protracted=0, min_speciation_gen=0.0,
+                                     max_speciation_gen=0.0, dispersal_map="none")
+        for key in params.keys():
+            self.assertEqual(params[key], actual_sim_parameters[key],
+                             msg="Error in {}: {}!={}".format(key, params[key], actual_sim_parameters[key]))
+        self.assertEqual(self.tree.get_job()[0], 5, msg="Seed not stored correctly.")
+        self.assertEqual(self.tree.get_job()[1], 4, msg="Job number not stored correctly.")
+
+    def testNumberIndividuals(self):
+        """Tests that the number of simulated individuals is correct"""
+        self.assertEqual(396, self.tree2.get_number_individuals(community_reference=1))
+        self.assertEqual(9549, self.tree.get_number_individuals(community_reference=1))
+
+class TestSimulationDemeOversampling(unittest.TestCase):
+    """
+    Tests the coarse tif reading and correct parameter detection.
+    This requires the files SA_sample_fine.tif and SA_sample_coarse.tif in sample/
+    """
+
+    @classmethod
+    def setUpClass(self):
+        """
+        Sets up the Coalescence object test case.
+        """
+        self.coal = Simulation()
+
+        self.coal.set_simulation_parameters(seed=7, job_type=4, output_directory="output",
+                                            min_speciation_rate=0.1, sigma=4, deme=0.01,
+                                            sample_size=1.5)
+        self.coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif",
+                                coarse_file="sample/SA_sample_coarse.tif")
+        self.coal.run()
+        self.tree = CoalescenceTree(self.coal)
+
+    def testSimParamsStored(self):
+        """
+        Tests the full simulation setup, checking species richness is correct and species abundance calculations are
+        correct.
+        :return:
+        """
+        params = self.tree.get_simulation_parameters()
+        actual_sim_parameters = dict(seed=7, job_type=4, output_dir='output', speciation_rate=0.1, sigma=4.0, tau=1.0,
+                                     deme=0.01, sample_size=1.5, max_time=3600.0, dispersal_relative_cost=1.0,
+                                     min_num_species=1, habitat_change_rate=0.0, gen_since_historical=0.0,
+                                     time_config_file='null', coarse_map_file='sample/SA_sample_coarse.tif',
+                                     coarse_map_x=35, coarse_map_y=41, coarse_map_x_offset=11, coarse_map_y_offset=14,
+                                     coarse_map_scale=1.0, fine_map_file='sample/SA_sample_fine.tif', fine_map_x=13,
+                                     fine_map_y=13, fine_map_x_offset=0, fine_map_y_offset=0, sample_file='null',
+                                     grid_x=13, grid_y=13,
+                                     sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
+                                     historical_coarse_map='none', historical_fine_map='none',
+                                     sim_complete=1, dispersal_method='normal', m_probability=0.0, cutoff=0.0,
+                                     landscape_type='closed', protracted=0, min_speciation_gen=0.0,
+                                     max_speciation_gen=0.0, dispersal_map="none")
+        for key in params.keys():
+            self.assertEqual(params[key], actual_sim_parameters[key],
+                             msg="Error in {}: {}!={}".format(key, params[key], actual_sim_parameters[key]))
+        self.assertEqual(self.tree.get_job()[0], 7, msg="Seed not stored correctly.")
+        self.assertEqual(self.tree.get_job()[1], 4, msg="Job number not stored correctly.")
+
+    def testNumberIndividuals(self):
+        """Tests that the number of simulated individuals is correct"""
+        self.assertEqual(557, self.tree.get_number_individuals(community_reference=1))
 
 class TestSimulationNonSpatial(unittest.TestCase):
     """
