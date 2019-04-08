@@ -20,6 +20,7 @@ def build_hpc():  # pragma: no cover
     :rtype: None
     """
     from distutils.dist import Distribution
+
     dist = Distribution()
     installer = Installer(dist)
 

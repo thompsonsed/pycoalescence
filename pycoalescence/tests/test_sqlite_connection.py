@@ -5,8 +5,14 @@ import unittest
 
 from setup_tests import setUpAll, tearDownAll
 
-from pycoalescence.sqlite_connection import check_sql_table_exist, fetch_table_from_sql, SQLiteConnection, \
-    sql_get_max_from_column, check_sql_column_exists, get_table_names
+from pycoalescence.sqlite_connection import (
+    check_sql_table_exist,
+    fetch_table_from_sql,
+    SQLiteConnection,
+    sql_get_max_from_column,
+    check_sql_column_exists,
+    get_table_names,
+)
 
 
 def setUpModule():
@@ -82,26 +88,31 @@ class TestSqlFetchAndCheck(unittest.TestCase):
         """
         Test that community parameters are correctly read from the database.
         """
-        community_parameters = fetch_table_from_sql(database="sample/mergers/data_0_0.db",
-                                                    table_name="COMMUNITY_PARAMETERS")
-        expected_community_parameters = [[1, 0.5, 0.0, 0, 0],
-                                         [2, 0.5, 0.5, 0, 0],
-                                         [3, 0.6, 0.0, 0, 0],
-                                         [4, 0.6, 0.5, 0, 0],
-                                         [5, 0.7, 0.0, 0, 0],
-                                         [6, 0.7, 0.5, 0, 0]]
+        community_parameters = fetch_table_from_sql(
+            database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMETERS"
+        )
+        expected_community_parameters = [
+            [1, 0.5, 0.0, 0, 0],
+            [2, 0.5, 0.5, 0, 0],
+            [3, 0.6, 0.0, 0, 0],
+            [4, 0.6, 0.5, 0, 0],
+            [5, 0.7, 0.0, 0, 0],
+            [6, 0.7, 0.5, 0, 0],
+        ]
         for i, row in enumerate(expected_community_parameters):
             self.assertListEqual(row, community_parameters[i])
-        community_parameters2 = fetch_table_from_sql(database="sample/mergers/data_0_0.db",
-                                                     table_name="COMMUNITY_PARAMETERS", column_names=True)
-        expected_community_parameters2 = [["reference", "speciation_rate", "time", "fragments",
-                                           "metacommunity_reference"],
-                                          [1, 0.5, 0.0, 0, 0],
-                                          [2, 0.5, 0.5, 0, 0],
-                                          [3, 0.6, 0.0, 0, 0],
-                                          [4, 0.6, 0.5, 0, 0],
-                                          [5, 0.7, 0.0, 0, 0],
-                                          [6, 0.7, 0.5, 0, 0]]
+        community_parameters2 = fetch_table_from_sql(
+            database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMETERS", column_names=True
+        )
+        expected_community_parameters2 = [
+            ["reference", "speciation_rate", "time", "fragments", "metacommunity_reference"],
+            [1, 0.5, 0.0, 0, 0],
+            [2, 0.5, 0.5, 0, 0],
+            [3, 0.6, 0.0, 0, 0],
+            [4, 0.6, 0.5, 0, 0],
+            [5, 0.7, 0.0, 0, 0],
+            [6, 0.7, 0.5, 0, 0],
+        ]
         for i, row in enumerate(expected_community_parameters2):
             self.assertListEqual(row, community_parameters2[i])
         with self.assertRaises(IOError):
@@ -112,29 +123,40 @@ class TestSqlFetchAndCheck(unittest.TestCase):
         Checks that check_sql_table_exist correctly detects the existence of tables
         """
         input_db = os.path.join("sample", "mergers", "data_0_0.db")
-        expected_table_names = ["COMMUNITY_PARAMETERS", "FRAGMENT_OCTAVES", "SIMULATION_PARAMETERS",
-                                "SPECIES_ABUNDANCES", "SPECIES_LIST", "SPECIES_LOCATIONS", "SPECIES_RICHNESS"]
+        expected_table_names = [
+            "COMMUNITY_PARAMETERS",
+            "FRAGMENT_OCTAVES",
+            "SIMULATION_PARAMETERS",
+            "SPECIES_ABUNDANCES",
+            "SPECIES_LIST",
+            "SPECIES_LOCATIONS",
+            "SPECIES_RICHNESS",
+        ]
         table_names = get_table_names(input_db)
         table_names.sort()
         self.assertEqual(expected_table_names, table_names)
-        self.assertFalse(check_sql_table_exist(database=input_db,
-                                               table_name="notarealtable"))
-        self.assertTrue(check_sql_table_exist(database=input_db,
-                                              table_name="COMMUNITY_PARAMETERS"))
+        self.assertFalse(check_sql_table_exist(database=input_db, table_name="notarealtable"))
+        self.assertTrue(check_sql_table_exist(database=input_db, table_name="COMMUNITY_PARAMETERS"))
 
     def testDetectsColumnCorrectly(self):
         """
         Checks that detection of the column names works as intended.
         """
-        self.assertTrue(check_sql_column_exists(database="sample/mergers/data_0_0.db",
-                                                table_name="COMMUNITY_PARAMETERS",
-                                                column_name="reference"))
-        self.assertFalse(check_sql_column_exists(database="sample/mergers/data_0_0.db",
-                                                 table_name="COMMUNITY_PARAMETERS",
-                                                 column_name="referencenot"))
-        self.assertFalse(check_sql_column_exists(database="sample/mergers/data_0_0.db",
-                                                 table_name="COMMUNITY_PARAMET2ERS",
-                                                 column_name="referencenot"))
+        self.assertTrue(
+            check_sql_column_exists(
+                database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMETERS", column_name="reference"
+            )
+        )
+        self.assertFalse(
+            check_sql_column_exists(
+                database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMETERS", column_name="referencenot"
+            )
+        )
+        self.assertFalse(
+            check_sql_column_exists(
+                database="sample/mergers/data_0_0.db", table_name="COMMUNITY_PARAMET2ERS", column_name="referencenot"
+            )
+        )
 
     def testGetMaxValue(self):
         """
@@ -142,8 +164,10 @@ class TestSqlFetchAndCheck(unittest.TestCase):
         """
         self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db", "COMMUNITY_PARAMETERS", "reference"))
         with self.assertRaises(sqlite3.Error):
-            self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db",
-                                                        "COMMUNITY_PARAMETERS", "reference2"))
+            self.assertEqual(
+                6, sql_get_max_from_column("sample/mergers/data_0_0.db", "COMMUNITY_PARAMETERS", "reference2")
+            )
         with self.assertRaises(sqlite3.Error):
-            self.assertEqual(6, sql_get_max_from_column("sample/mergers/data_0_0.db",
-                                                        "COMMUNITY_PARAMETERS2", "reference"))
+            self.assertEqual(
+                6, sql_get_max_from_column("sample/mergers/data_0_0.db", "COMMUNITY_PARAMETERS2", "reference")
+            )

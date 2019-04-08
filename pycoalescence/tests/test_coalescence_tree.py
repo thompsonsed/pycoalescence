@@ -90,64 +90,61 @@ class TestParameterDescriptions(unittest.TestCase):
         """
         Tests that the dictionary is read correctly.
         """
-        tmp_dict = {"habitat_change_rate": "the rate of change from present density maps to historic density maps",
-                    "sample_file": "the sample area map for spatially selective sampling. Can be null to sample all "
-                                   "cells",
-                    "sample_x": "the sample map x dimension",
-                    "sample_y": "the sample map y dimension",
-                    "sample_x_offset": "the sample x map offset from the grid",
-                    "sample_y_offset": "the sample y map offset from the grid",
-                    "output_dir": "the output directory for the simulation database",
-                    "seed": "the random seed to start the simulation, for repeatability",
-                    "coarse_map_x": "the coarse density map x dimension",
-                    "fine_map_file": "the density map file location at the finer resolution, covering a smaller area",
-                    "tau": "the tau dispersal value for fat-tailed dispersal",
-                    "grid_y": "the simulated grid y dimension",
-                    "dispersal_relative_cost": "the relative rate of moving through non-habitat compared to habitat",
-                    "fine_map_y_offset": "the number of cells the fine map is offset from the sample map in the y "
-                                         "dimension, at the fine resolution",
-                    "gen_since_historical": "the number of generations that occur before the historical, or historic,"
-                                            " state is reached",
-                    "dispersal_method": "the dispersal method used. Can be one of 'normal', 'norm-uniform' or "
-                                        "'fat-tail'.",
-                    "historical_fine_map": "the historical, or historic, coarse density map file location",
-                    "coarse_map_scale": "the scale of the coarse density map compared to the fine density map. 1 "
-                                        "means equal density",
-                    "grid_x": "the simulated grid x dimension",
-                    "coarse_map_file": "the density map file location at the coarser resolution, covering a larger "
-                                       "area",
-                    "min_num_species": "the minimum number of species known to exist (currently has no effect)",
-                    "historical_coarse_map": "the historical, or historic, coarse density map file location",
-                    "m_probability": "the probability of choosing from the uniform dispersal kernel in normal-uniform"
-                                     " dispersal",
-                    "sigma": "the sigma dispersal value for normal, fat-tailed and normal-uniform dispersals",
-                    "deme": "the number of individuals inhabiting a cell at a map density of 1",
-                    "time_config_file": "will be 'set' if temporal sampling is used, 'null' otherwise",
-                    "coarse_map_y": "the coarse density map y dimension",
-                    "fine_map_x": "the fine density map x dimension",
-                    "coarse_map_y_offset": "the number of cells the coarse map is offset from the fine map in the y "
-                                           "dimension, at the fine resolution",
-                    "cutoff": "the maximal dispersal distance possible, for normal-uniform dispersal",
-                    "fine_map_y": "the fine density map y dimension",
-                    "sample_size": "the proportion of individuals to sample from each cell (0-1)",
-                    "fine_map_x_offset": "the number of cells the fine map is offset from the sample map in the x "
-                                         "dimension, at the fine resolution",
-                    "speciation_rate": "the minimum speciation rate the simulation was run with",
-                    "job_type": "the job reference number given to this simulation",
-                    "coarse_map_x_offset": "the number of cells the coarse map is offset from the fine map in the x "
-                                           "dimension, at the fine resolution",
-                    "landscape_type": "if false, landscapes have hard boundaries. Otherwise, can be infinite, "
-                                      "with 1s everywhere, or tiled_coarse or tiled_fine for repeated units of tiled "
-                                      "maps",
-                    "max_time": "the maximum simulation time to run for (in seconds)",
-                    "sim_complete": "set to true upon simulation completion, false for incomplete simulations",
-                    "protracted": "if true, the simulation was run with protracted speciation.",
-                    "min_speciation_gen": "the minimum number of generations required before speciation can occur",
-                    "max_speciation_gen": "the maximum number of generations a lineage can exist before it is "
-                                          "speciated",
-                    "dispersal_map": "a tif file where rows represent cumulative dispersal probability to every other "
-                                     "cell, using the row number = x + (y * x_max)"
-                    }
+        tmp_dict = {
+            "habitat_change_rate": "the rate of change from present density maps to historic density maps",
+            "sample_file": "the sample area map for spatially selective sampling. Can be null to sample all " "cells",
+            "sample_x": "the sample map x dimension",
+            "sample_y": "the sample map y dimension",
+            "sample_x_offset": "the sample x map offset from the grid",
+            "sample_y_offset": "the sample y map offset from the grid",
+            "output_dir": "the output directory for the simulation database",
+            "seed": "the random seed to start the simulation, for repeatability",
+            "coarse_map_x": "the coarse density map x dimension",
+            "fine_map_file": "the density map file location at the finer resolution, covering a smaller area",
+            "tau": "the tau dispersal value for fat-tailed dispersal",
+            "grid_y": "the simulated grid y dimension",
+            "dispersal_relative_cost": "the relative rate of moving through non-habitat compared to habitat",
+            "fine_map_y_offset": "the number of cells the fine map is offset from the sample map in the y "
+            "dimension, at the fine resolution",
+            "gen_since_historical": "the number of generations that occur before the historical, or historic,"
+            " state is reached",
+            "dispersal_method": "the dispersal method used. Can be one of 'normal', 'norm-uniform' or " "'fat-tail'.",
+            "historical_fine_map": "the historical, or historic, coarse density map file location",
+            "coarse_map_scale": "the scale of the coarse density map compared to the fine density map. 1 "
+            "means equal density",
+            "grid_x": "the simulated grid x dimension",
+            "coarse_map_file": "the density map file location at the coarser resolution, covering a larger " "area",
+            "min_num_species": "the minimum number of species known to exist (currently has no effect)",
+            "historical_coarse_map": "the historical, or historic, coarse density map file location",
+            "m_probability": "the probability of choosing from the uniform dispersal kernel in normal-uniform"
+            " dispersal",
+            "sigma": "the sigma dispersal value for normal, fat-tailed and normal-uniform dispersals",
+            "deme": "the number of individuals inhabiting a cell at a map density of 1",
+            "time_config_file": "will be 'set' if temporal sampling is used, 'null' otherwise",
+            "coarse_map_y": "the coarse density map y dimension",
+            "fine_map_x": "the fine density map x dimension",
+            "coarse_map_y_offset": "the number of cells the coarse map is offset from the fine map in the y "
+            "dimension, at the fine resolution",
+            "cutoff": "the maximal dispersal distance possible, for normal-uniform dispersal",
+            "fine_map_y": "the fine density map y dimension",
+            "sample_size": "the proportion of individuals to sample from each cell (0-1)",
+            "fine_map_x_offset": "the number of cells the fine map is offset from the sample map in the x "
+            "dimension, at the fine resolution",
+            "speciation_rate": "the minimum speciation rate the simulation was run with",
+            "job_type": "the job reference number given to this simulation",
+            "coarse_map_x_offset": "the number of cells the coarse map is offset from the fine map in the x "
+            "dimension, at the fine resolution",
+            "landscape_type": "if false, landscapes have hard boundaries. Otherwise, can be infinite, "
+            "with 1s everywhere, or tiled_coarse or tiled_fine for repeated units of tiled "
+            "maps",
+            "max_time": "the maximum simulation time to run for (in seconds)",
+            "sim_complete": "set to true upon simulation completion, false for incomplete simulations",
+            "protracted": "if true, the simulation was run with protracted speciation.",
+            "min_speciation_gen": "the minimum number of generations required before speciation can occur",
+            "max_speciation_gen": "the maximum number of generations a lineage can exist before it is " "speciated",
+            "dispersal_map": "a tif file where rows represent cumulative dispersal probability to every other "
+            "cell, using the row number = x + (y * x_max)",
+        }
         t = CoalescenceTree("sample/sample.db")
         sim_output = t.get_simulation_parameters()
         for key in sim_output.keys():
@@ -161,8 +158,13 @@ class TestParameterDescriptions(unittest.TestCase):
         with self.assertRaises(KeyError):
             get_parameter_description(key="notakey")
         dispersal_parameters = t.dispersal_parameters()
-        expected_disp_dict = {"dispersal_method": "normal", "sigma": 3.55, "tau": 0.470149,
-                              "m_probability": 0, "cutoff": 0}
+        expected_disp_dict = {
+            "dispersal_method": "normal",
+            "sigma": 3.55,
+            "tau": 0.470149,
+            "m_probability": 0,
+            "cutoff": 0,
+        }
         for key in dispersal_parameters.keys():
             self.assertIn(key, tmp_dict.keys())
             self.assertIn(key, expected_disp_dict.keys())
@@ -311,12 +313,14 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
         self.assertEqual([], t.get_metacommunity_references())
         self.assertEqual([1], t.get_community_references())
         params = t.get_community_parameters(1)
-        expected_dict = {"speciation_rate": 0.001,
-                         "time": 0.0,
-                         "fragments": 0,
-                         "metacommunity_reference": 0,
-                         "min_speciation_gen": 100.0,
-                         "max_speciation_gen": 10000.0}
+        expected_dict = {
+            "speciation_rate": 0.001,
+            "time": 0.0,
+            "fragments": 0,
+            "metacommunity_reference": 0,
+            "min_speciation_gen": 100.0,
+            "max_speciation_gen": 10000.0,
+        }
         self.assertEqual(expected_dict, params)
         with self.assertRaises(sqlite3.Error):
             t.get_metacommunity_parameters(1)
@@ -326,8 +330,9 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
             t.get_community_reference(0.1, 0.0, 0, 0, 0.0, min_speciation_gen=100.0, max_speciation_gen=10000.0)
         with self.assertRaises(KeyError):
             _ = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False)
-        ref = t.get_community_reference(speciation_rate=0.001, time=0.0, fragments=False,
-                                        min_speciation_gen=100.0, max_speciation_gen=10000.0)
+        ref = t.get_community_reference(
+            speciation_rate=0.001, time=0.0, fragments=False, min_speciation_gen=100.0, max_speciation_gen=10000.0
+        )
         self.assertEqual(1, ref)
         self.assertEqual(expected_dict, t.get_community_parameters(ref))
 
@@ -335,32 +340,23 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
         """Tests the community parameters make sense in a very simple community."""
         t = CoalescenceTree(os.path.join("sample", "sample4.db"))
         self.assertEqual([1, 2, 3, 4, 5], t.get_community_references())
-        expected_params1 = {"speciation_rate": 0.1,
-                            "time": 0.0,
-                            "fragments": 0,
-                            "metacommunity_reference": 0}
-        expected_params2 = {"speciation_rate": 0.1,
-                            "time": 0.0,
-                            "fragments": 0,
-                            "metacommunity_reference": 1}
-        expected_params3 = {"speciation_rate": 0.2,
-                            "time": 0.0,
-                            "fragments": 0,
-                            "metacommunity_reference": 1}
-        expected_params4 = {"speciation_rate": 0.1,
-                            "time": 0.0,
-                            "fragments": 0,
-                            "metacommunity_reference": 2}
-        expected_params5 = {"speciation_rate": 0.2,
-                            "time": 0.0,
-                            "fragments": 0,
-                            "metacommunity_reference": 2}
-        expected_meta_params1 = {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
-                                 "option": "simulated",
-                                 "external_reference": 0}
-        expected_meta_params2 = {"speciation_rate": 0.001, "metacommunity_size": 10000.0,
-                                 "option": "analytical",
-                                 "external_reference": 0}
+        expected_params1 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 0}
+        expected_params2 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 1}
+        expected_params3 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 1}
+        expected_params4 = {"speciation_rate": 0.1, "time": 0.0, "fragments": 0, "metacommunity_reference": 2}
+        expected_params5 = {"speciation_rate": 0.2, "time": 0.0, "fragments": 0, "metacommunity_reference": 2}
+        expected_meta_params1 = {
+            "speciation_rate": 0.001,
+            "metacommunity_size": 10000.0,
+            "option": "simulated",
+            "external_reference": 0,
+        }
+        expected_meta_params2 = {
+            "speciation_rate": 0.001,
+            "metacommunity_size": 10000.0,
+            "option": "analytical",
+            "external_reference": 0,
+        }
         params1 = t.get_community_parameters(1)
         params2 = t.get_community_parameters(2)
         params3 = t.get_community_parameters(3)
@@ -382,24 +378,50 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
             t.get_metacommunity_parameters(3)
         ref1 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False)
         with self.assertRaises(KeyError):
-            t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False, min_speciation_gen=0.1,
-                                      max_speciation_gen=10000.0)
-        ref2 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False,
-                                         metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
-                                         metacommunity_option="simulated")
+            t.get_community_reference(
+                speciation_rate=0.1, time=0.0, fragments=False, min_speciation_gen=0.1, max_speciation_gen=10000.0
+            )
+        ref2 = t.get_community_reference(
+            speciation_rate=0.1,
+            time=0.0,
+            fragments=False,
+            metacommunity_size=10000.0,
+            metacommunity_speciation_rate=0.001,
+            metacommunity_option="simulated",
+        )
         with self.assertRaises(KeyError):
-            t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False,
-                                      metacommunity_size=10000.0, metacommunity_speciation_rate=0.01,
-                                      metacommunity_option="simulated")
-        ref3 = t.get_community_reference(speciation_rate=0.2, time=0.0, fragments=False,
-                                         metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
-                                         metacommunity_option="simulated")
-        ref4 = t.get_community_reference(speciation_rate=0.1, time=0.0, fragments=False,
-                                         metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
-                                         metacommunity_option="analytical")
-        ref5 = t.get_community_reference(speciation_rate=0.2, time=0.0, fragments=False,
-                                         metacommunity_size=10000.0, metacommunity_speciation_rate=0.001,
-                                         metacommunity_option="analytical")
+            t.get_community_reference(
+                speciation_rate=0.1,
+                time=0.0,
+                fragments=False,
+                metacommunity_size=10000.0,
+                metacommunity_speciation_rate=0.01,
+                metacommunity_option="simulated",
+            )
+        ref3 = t.get_community_reference(
+            speciation_rate=0.2,
+            time=0.0,
+            fragments=False,
+            metacommunity_size=10000.0,
+            metacommunity_speciation_rate=0.001,
+            metacommunity_option="simulated",
+        )
+        ref4 = t.get_community_reference(
+            speciation_rate=0.1,
+            time=0.0,
+            fragments=False,
+            metacommunity_size=10000.0,
+            metacommunity_speciation_rate=0.001,
+            metacommunity_option="analytical",
+        )
+        ref5 = t.get_community_reference(
+            speciation_rate=0.2,
+            time=0.0,
+            fragments=False,
+            metacommunity_size=10000.0,
+            metacommunity_speciation_rate=0.001,
+            metacommunity_option="analytical",
+        )
         self.assertEqual(1, ref1)
         self.assertEqual(2, ref2)
         self.assertEqual(3, ref3)
@@ -456,19 +478,23 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
     def testFragmentOctaves(self):
         num = self.test.cursor.execute(
             "SELECT richness FROM FRAGMENT_OCTAVES WHERE fragment == 'P09' AND octave == 0"
-            " AND community_reference == 1").fetchall()[0][0]
+            " AND community_reference == 1"
+        ).fetchall()[0][0]
         self.assertEqual(num, 7, msg="Fragment octaves not correctly calculated.")
         num = self.test.cursor.execute(
             "SELECT richness FROM FRAGMENT_OCTAVES WHERE fragment == 'P09' AND octave == 0 "
-            " AND community_reference == 2").fetchall()[0][0]
+            " AND community_reference == 2"
+        ).fetchall()[0][0]
         self.assertEqual(num, 7, msg="Fragment octaves not correctly calculated.")
         num = self.test.cursor.execute(
             "SELECT richness FROM FRAGMENT_OCTAVES WHERE fragment == 'cerrogalera' AND octave == 1 "
-            " AND community_reference == 1").fetchall()[0][0]
+            " AND community_reference == 1"
+        ).fetchall()[0][0]
         self.assertEqual(num, 3, msg="Fragment octaves not correctly calculated.")
         num = self.test.cursor.execute(
             "SELECT richness FROM FRAGMENT_OCTAVES WHERE fragment == 'whole' AND octave == 1 "
-            " AND community_reference == 2").fetchall()[0][0]
+            " AND community_reference == 2"
+        ).fetchall()[0][0]
         self.assertEqual(num, 221, msg="Fragment octaves not correctly calculated.")
 
     def testFragmentAbundances(self):
@@ -477,25 +503,28 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
 
         """
         num = self.test.cursor.execute(
-            "SELECT COUNT(fragment) FROM FRAGMENT_ABUNDANCES WHERE fragment == 'P09' "
-            " AND community_reference == 1").fetchall()[0][0]
+            "SELECT COUNT(fragment) FROM FRAGMENT_ABUNDANCES WHERE fragment == 'P09' " " AND community_reference == 1"
+        ).fetchall()[0][0]
         self.assertEqual(num, 9, msg="Fragment abundances not correctly calculated.")
         num = self.test.cursor.execute(
-            "SELECT COUNT(fragment) FROM FRAGMENT_ABUNDANCES WHERE fragment == 'P09' "
-            " AND community_reference == 2").fetchall()[0][0]
+            "SELECT COUNT(fragment) FROM FRAGMENT_ABUNDANCES WHERE fragment == 'P09' " " AND community_reference == 2"
+        ).fetchall()[0][0]
         self.assertEqual(num, 9, msg="Fragment abundances not correctly calculated.")
         num = self.test.cursor.execute(
             "SELECT COUNT(fragment) FROM FRAGMENT_ABUNDANCES WHERE fragment == 'cerrogalera' "
-            " AND community_reference == 1").fetchall()[0][0]
+            " AND community_reference == 1"
+        ).fetchall()[0][0]
         self.assertEqual(num, 9, msg="Fragment abundances not correctly calculated.")
 
     def testSpeciesAbundances(self):
         """Tests that the produced species abundances are correct by comparing species richness."""
         num = self.test.cursor.execute(
-            "SELECT COUNT(species_id) FROM SPECIES_ABUNDANCES WHERE community_reference == 2").fetchall()[0][0]
+            "SELECT COUNT(species_id) FROM SPECIES_ABUNDANCES WHERE community_reference == 2"
+        ).fetchall()[0][0]
         self.assertEqual(num, 1029, msg="Species abundances not correctly calculated.")
         num = self.test.cursor.execute(
-            "SELECT COUNT(species_id) FROM SPECIES_ABUNDANCES WHERE community_reference == 1").fetchall()[0][0]
+            "SELECT COUNT(species_id) FROM SPECIES_ABUNDANCES WHERE community_reference == 1"
+        ).fetchall()[0][0]
         self.assertEqual(num, 884, msg="Species abundances not correctly calculated.")
 
     def testGetOctaves(self):
@@ -510,8 +539,9 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         """
         Tests that species locations have been correctly assigned.
         """
-        num = self.test.cursor.execute("SELECT species_id FROM SPECIES_LOCATIONS WHERE x==1662 AND y==4359 "
-                                       " AND community_reference == 1").fetchall()
+        num = self.test.cursor.execute(
+            "SELECT species_id FROM SPECIES_LOCATIONS WHERE x==1662 AND y==4359 " " AND community_reference == 1"
+        ).fetchall()
         self.assertEqual(len(set(num)), 2, msg="Species locations not correctly assigned")
         all_list = self.test.get_species_locations()
         select_list = self.test.get_species_locations(community_reference=1)
@@ -553,9 +583,18 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         expected_abundances = [[302, 1], [303, 1], [304, 1], [305, 1], [306, 1], [307, 1], [546, 2], [693, 1], [732, 3]]
         self.assertEqual(expected_abundances, abundances[:10])
         all_abundances = self.test.get_all_fragment_abundances()
-        expected_abundances2 = [[1, 'P09', 302, 1], [1, 'P09', 303, 1], [1, 'P09', 304, 1], [1, 'P09', 305, 1],
-                                [1, 'P09', 306, 1], [1, 'P09', 307, 1], [1, 'P09', 546, 2], [1, 'P09', 693, 1],
-                                [1, 'P09', 732, 3], [1, 'cerrogalera', 416, 1]]
+        expected_abundances2 = [
+            [1, "P09", 302, 1],
+            [1, "P09", 303, 1],
+            [1, "P09", 304, 1],
+            [1, "P09", 305, 1],
+            [1, "P09", 306, 1],
+            [1, "P09", 307, 1],
+            [1, "P09", 546, 2],
+            [1, "P09", 693, 1],
+            [1, "P09", 732, 3],
+            [1, "cerrogalera", 416, 1],
+        ]
         self.assertEqual(expected_abundances2, all_abundances[:10])
 
     def testGetFragmentListErrors(self):
@@ -601,7 +640,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.test2.calculate_fragment_octaves()
 
-    @unittest.skipIf(sys.version[0] != '3', "Skipping Python 3.x tests")
+    @unittest.skipIf(sys.version[0] != "3", "Skipping Python 3.x tests")
     def testModelFitting2(self):
         """
         Tests that the goodness-of-fit calculations are correctly performed.
@@ -612,7 +651,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_octaves(), 0.0680205429120108, places=6)
         self.assertAlmostEqual(self.test.get_goodness_of_fit_fragment_richness(), 0.9244977999898334, places=6)
 
-    @unittest.skipIf(sys.version[0] == '3', "Skipping Python 2.x tests")
+    @unittest.skipIf(sys.version[0] == "3", "Skipping Python 2.x tests")
     def testModelFitting3(self):
         """
         Tests that the goodness-of-fit calculations are correctly performed.
@@ -691,14 +730,17 @@ class TestCoalescenceTreeWriteCsvs(unittest.TestCase):
         self.c.write_to_csv(output_csv, "COMMUNITY_PARAMETERS")
         self.assertTrue(os.path.exists(output_csv))
         import csv
+
         if sys.version_info[0] < 3:  # pragma: no cover
             infile = open(output_csv, "rb")
         else:
             infile = open(output_csv, "r")
-        expected_output = [["reference", "speciation_rate", "time", "fragments", "metacommunity_reference"],
-                           ["1", "1e-06", "0.0", "0", "0"],
-                           ["2", "0.99999", "0.0", "0", "0"],
-                           ["3", "0.5", "0.0", "0", "0"]]
+        expected_output = [
+            ["reference", "speciation_rate", "time", "fragments", "metacommunity_reference"],
+            ["1", "1e-06", "0.0", "0", "0"],
+            ["2", "0.99999", "0.0", "0", "0"],
+            ["3", "0.5", "0.0", "0", "0"],
+        ]
         actual_output = []
         with infile as csv_file:
             csv_reader = csv.reader(csv_file)
@@ -753,7 +795,8 @@ class TestCoalescenceTreeSpeciesDistances(unittest.TestCase):
         """
         mean = self.test.cursor.execute(
             "SELECT value FROM BIODIVERSITY_METRICS WHERE community_reference == 1 AND "
-            "metric == 'mean_distance_between_individuals'").fetchone()[0]
+            "metric == 'mean_distance_between_individuals'"
+        ).fetchone()[0]
         self.assertAlmostEqual(mean, 5.423769507803121, places=5)
         species_distances = self.test.get_species_distance_similarity(community_reference=1)
         # for distance, similar in species_distances:
@@ -850,9 +893,12 @@ class TestSimulationAnalysis(unittest.TestCase):
         cls.tree = CoalescenceTree()
         cls.tree.set_database(dst)
         cls.tree.wipe_data()
-        cls.tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
-                                           record_fragments=os.path.join("sample", "FragmentsTest.csv"),
-                                           sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+        cls.tree.set_speciation_parameters(
+            speciation_rates=[0.5, 0.7],
+            record_spatial="T",
+            record_fragments=os.path.join("sample", "FragmentsTest.csv"),
+            sample_file=os.path.join("sample", "SA_samplemaskINT.tif"),
+        )
         cls.tree.apply()
         cls.tree.calculate_fragment_richness()
         cls.tree.calculate_fragment_octaves()
@@ -872,37 +918,78 @@ class TestSimulationAnalysis(unittest.TestCase):
         """Tests that an error is raised if the fragment config file does not exist."""
         tree = CoalescenceTree(self.tree.file)
         with self.assertRaises(IOError):
-            tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
-                                           record_fragments=os.path.join("sample", "notafragmentconfig.csv"),
-                                           sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+            tree.set_speciation_parameters(
+                speciation_rates=[0.5, 0.7],
+                record_spatial="T",
+                record_fragments=os.path.join("sample", "notafragmentconfig.csv"),
+                sample_file=os.path.join("sample", "SA_samplemaskINT.tif"),
+            )
         with self.assertRaises(IOError):
-            tree.set_speciation_parameters(speciation_rates=[0.5, 0.7], record_spatial="T",
-                                           record_fragments=os.path.join("sample", "example_historical_fine.tif"),
-                                           sample_file=os.path.join("sample", "SA_samplemaskINT.tif"))
+            tree.set_speciation_parameters(
+                speciation_rates=[0.5, 0.7],
+                record_spatial="T",
+                record_fragments=os.path.join("sample", "example_historical_fine.tif"),
+                sample_file=os.path.join("sample", "SA_samplemaskINT.tif"),
+            )
 
     def testReadsFragmentsRichness(self):
         """
         Tests that the fragment richness can be read correctly
         """
         sim_params = self.tree.get_simulation_parameters()
-        expected_params = dict(seed=9, job_type=1, output_dir='output', speciation_rate=0.5, sigma=2.828427, tau=2.0,
-                               deme=1, sample_size=0.1, max_time=2.0, dispersal_relative_cost=1.0,
-                               min_num_species=1, habitat_change_rate=0.0, gen_since_historical=200.0,
-                               time_config_file='null', coarse_map_file="sample/SA_sample_coarse.tif",
-                               coarse_map_x=35, coarse_map_y=41, coarse_map_x_offset=11, coarse_map_y_offset=14,
-                               coarse_map_scale=1.0, fine_map_file="sample/SA_sample_fine.tif",
-                               fine_map_x=13, fine_map_y=13, fine_map_x_offset=0, fine_map_y_offset=0,
-                               sample_file="sample/SA_samplemaskINT.tif", grid_x=13, grid_y=13,
-                               sample_x=13, sample_y=13, sample_x_offset=0, sample_y_offset=0,
-                               historical_coarse_map='none', historical_fine_map='none', sim_complete=1,
-                               dispersal_method='normal', m_probability=0.0, cutoff=0.0, landscape_type='closed',
-                               protracted=0, min_speciation_gen=0.0, max_speciation_gen=0.0, dispersal_map="none")
+        expected_params = dict(
+            seed=9,
+            job_type=1,
+            output_dir="output",
+            speciation_rate=0.5,
+            sigma=2.828427,
+            tau=2.0,
+            deme=1,
+            sample_size=0.1,
+            max_time=2.0,
+            dispersal_relative_cost=1.0,
+            min_num_species=1,
+            habitat_change_rate=0.0,
+            gen_since_historical=200.0,
+            time_config_file="null",
+            coarse_map_file="sample/SA_sample_coarse.tif",
+            coarse_map_x=35,
+            coarse_map_y=41,
+            coarse_map_x_offset=11,
+            coarse_map_y_offset=14,
+            coarse_map_scale=1.0,
+            fine_map_file="sample/SA_sample_fine.tif",
+            fine_map_x=13,
+            fine_map_y=13,
+            fine_map_x_offset=0,
+            fine_map_y_offset=0,
+            sample_file="sample/SA_samplemaskINT.tif",
+            grid_x=13,
+            grid_y=13,
+            sample_x=13,
+            sample_y=13,
+            sample_x_offset=0,
+            sample_y_offset=0,
+            historical_coarse_map="none",
+            historical_fine_map="none",
+            sim_complete=1,
+            dispersal_method="normal",
+            m_probability=0.0,
+            cutoff=0.0,
+            landscape_type="closed",
+            protracted=0,
+            min_speciation_gen=0.0,
+            max_speciation_gen=0.0,
+            dispersal_map="none",
+        )
         for key in sim_params.keys():
-            self.assertEqual(sim_params[key], expected_params[key],
-                             msg="Error in {}: {} != {}".format(key, sim_params[key], expected_params[key]))
+            self.assertEqual(
+                sim_params[key],
+                expected_params[key],
+                msg="Error in {}: {} != {}".format(key, sim_params[key], expected_params[key]),
+            )
         fragment2_richness = ["fragment2", 1, 129]
-        self.assertEqual(self.tree.get_fragment_richness(fragment="fragment2", reference=1),
-                         129)
+        self.assertEqual(self.tree.get_fragment_richness(fragment="fragment2", reference=1), 129)
         self.assertEqual(self.tree.get_fragment_richness(fragment="fragment1", reference=2), 175)
         octaves = self.tree.get_fragment_richness()
         self.assertListEqual(fragment2_richness, [list(x) for x in octaves if x[0] == "fragment2" and x[1] == 1][0])
@@ -919,16 +1006,18 @@ class TestSimulationAnalysis(unittest.TestCase):
         """
         Tests that the fragment abundances are correctly read
         """
-        expected_abundances = [[610, 1],
-                               [611, 1],
-                               [612, 1],
-                               [613, 1],
-                               [614, 1],
-                               [615, 1],
-                               [616, 1],
-                               [617, 1],
-                               [618, 1],
-                               [619, 1]]
+        expected_abundances = [
+            [610, 1],
+            [611, 1],
+            [612, 1],
+            [613, 1],
+            [614, 1],
+            [615, 1],
+            [616, 1],
+            [617, 1],
+            [618, 1],
+            [619, 1],
+        ]
         actual_abundances = self.tree.get_species_abundances(fragment="fragment2", reference=1)
         for i, each in enumerate(expected_abundances):
             self.assertListEqual(actual_abundances[i], each)
@@ -959,7 +1048,7 @@ class TestSimulationAnalysis(unittest.TestCase):
         octaves = self.tree.get_fragment_octaves(fragment="fragment2", reference=1)
         octaves2 = self.tree.get_fragment_octaves(fragment="fragment1", reference=1)
         all_octaves = self.tree.get_fragment_octaves()
-        desired = ['fragment1', 1, 0, 173]
+        desired = ["fragment1", 1, 0, 173]
         self.assertListEqual([0, 128], octaves[0])
         self.assertListEqual([0, 173], octaves2[0])
         self.assertListEqual(desired, [x for x in all_octaves if x[0] == "fragment1" and x[1] == 1 and x[2] == 0][0])
@@ -986,30 +1075,42 @@ class TestSimulationAnalysis(unittest.TestCase):
         """
         Tests that sampling from fragments is accurate.
         """
-        self.assertEqual(10, self.tree.sample_fragment_richness(fragment="fragment1",
-                                                                number_of_individuals=10, n=1, community_reference=2))
-        self.assertEqual(10, self.tree.sample_fragment_richness(fragment="fragment2",
-                                                                number_of_individuals=10, n=10, community_reference=2))
+        self.assertEqual(
+            10,
+            self.tree.sample_fragment_richness(
+                fragment="fragment1", number_of_individuals=10, n=1, community_reference=2
+            ),
+        )
+        self.assertEqual(
+            10,
+            self.tree.sample_fragment_richness(
+                fragment="fragment2", number_of_individuals=10, n=10, community_reference=2
+            ),
+        )
 
     def testLandscapeSampling(self):
         """Tests that the sampling from the landscape works as intended."""
         number_dict = {"fragment1": 3, "fragment2": 10}
         np.random.seed(100)
-        self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1,
-                                                                 community_reference=2))
-        self.assertAlmostEqual(99.9, self.tree.sample_landscape_richness(number_of_individuals=100, n=10,
-                                                                         community_reference=1), places=3)
+        self.assertEqual(
+            13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1, community_reference=2)
+        )
+        self.assertAlmostEqual(
+            99.9, self.tree.sample_landscape_richness(number_of_individuals=100, n=10, community_reference=1), places=3
+        )
 
     def testRaisesSamplingErrors(self):
         """Tests that sampling errors are correctly raised"""
         number_dict = {"fragment1": 3000000, "fragment2": 10}
         with self.assertRaises(KeyError):
-            self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1,
-                                                                     community_reference=2))
+            self.assertEqual(
+                13, self.tree.sample_landscape_richness(number_of_individuals=number_dict, n=1, community_reference=2)
+            )
         number_dict2 = {"fragment": 10, "fragment2": 10}
         with self.assertRaises(KeyError):
-            self.assertEqual(13, self.tree.sample_landscape_richness(number_of_individuals=number_dict2, n=1,
-                                                                     community_reference=2))
+            self.assertEqual(
+                13, self.tree.sample_landscape_richness(number_of_individuals=number_dict2, n=1, community_reference=2)
+            )
 
 
 class TestMetacommunityApplication(unittest.TestCase):
@@ -1034,12 +1135,21 @@ class TestMetacommunityApplication(unittest.TestCase):
         tree = CoalescenceTree(os.path.join("output", "sample_0.db"))
         tree.wipe_data()
         tree.set_speciation_parameters([0.1, 0.2])
-        for size, spec, opt, ref in [[0, 0.1, "simulated", None], [10, 0.0, "analytical", None],
-                                     [None, None, "analytical", None], [10, 0.0, "path/to/file", None],
-                                     [0, 0.0, "path/to/file", None], [0, 0.0, "path/to/not/a/file.db", 1]]:
+        for size, spec, opt, ref in [
+            [0, 0.1, "simulated", None],
+            [10, 0.0, "analytical", None],
+            [None, None, "analytical", None],
+            [10, 0.0, "path/to/file", None],
+            [0, 0.0, "path/to/file", None],
+            [0, 0.0, "path/to/not/a/file.db", 1],
+        ]:
             with self.assertRaises(ValueError):
-                tree.add_metacommunity_parameters(metacommunity_size=size, metacommunity_speciation_rate=spec,
-                                                  metacommunity_option=opt, metacommunity_reference=ref)
+                tree.add_metacommunity_parameters(
+                    metacommunity_size=size,
+                    metacommunity_speciation_rate=spec,
+                    metacommunity_option=opt,
+                    metacommunity_reference=ref,
+                )
         with self.assertRaises(IOError):
             tree.add_metacommunity_parameters(metacommunity_option="not/a/file/db.db", metacommunity_reference=1)
 
@@ -1047,12 +1157,15 @@ class TestMetacommunityApplication(unittest.TestCase):
         """Tests that a simulated metacommunity works as intended."""
         tree = CoalescenceTree(os.path.join("output", "sample_1.db"))
         tree.wipe_data()
-        tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
-                                       metacommunity_speciation_rate=0.001, metacommunity_option="simulated")
-        tree.add_metacommunity_parameters(metacommunity_size=15000, metacommunity_speciation_rate=0.1,
-                                          metacommunity_option="simulated")
-        tree.add_metacommunity_parameters(metacommunity_size=100000, metacommunity_speciation_rate=0.001,
-                                          metacommunity_option="simulated")
+        tree.set_speciation_parameters(
+            [0.1, 0.2], metacommunity_size=10000, metacommunity_speciation_rate=0.001, metacommunity_option="simulated"
+        )
+        tree.add_metacommunity_parameters(
+            metacommunity_size=15000, metacommunity_speciation_rate=0.1, metacommunity_option="simulated"
+        )
+        tree.add_metacommunity_parameters(
+            metacommunity_size=100000, metacommunity_speciation_rate=0.001, metacommunity_option="simulated"
+        )
         tree.apply()
         params_1 = tree.get_metacommunity_parameters(1)
         params_2 = tree.get_metacommunity_parameters(2)
@@ -1080,12 +1193,15 @@ class TestMetacommunityApplication(unittest.TestCase):
         """Tests that an analytical metacommunity works as intended."""
         tree = CoalescenceTree(os.path.join("output", "sample_2.db"))
         tree.wipe_data()
-        tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=10000,
-                                       metacommunity_speciation_rate=0.001, metacommunity_option="analytical")
-        tree.add_metacommunity_parameters(metacommunity_size=15000, metacommunity_speciation_rate=0.1,
-                                          metacommunity_option="analytical")
-        tree.add_metacommunity_parameters(metacommunity_size=100000, metacommunity_speciation_rate=0.001,
-                                          metacommunity_option="analytical")
+        tree.set_speciation_parameters(
+            [0.1, 0.2], metacommunity_size=10000, metacommunity_speciation_rate=0.001, metacommunity_option="analytical"
+        )
+        tree.add_metacommunity_parameters(
+            metacommunity_size=15000, metacommunity_speciation_rate=0.1, metacommunity_option="analytical"
+        )
+        tree.add_metacommunity_parameters(
+            metacommunity_size=100000, metacommunity_speciation_rate=0.001, metacommunity_option="analytical"
+        )
         tree.apply()
         params_1 = tree.get_metacommunity_parameters(1)
         params_2 = tree.get_metacommunity_parameters(2)
@@ -1114,8 +1230,9 @@ class TestMetacommunityApplication(unittest.TestCase):
         tree = CoalescenceTree(os.path.join("output", "sample_3.db"))
         tree.wipe_data()
         tree.set_speciation_parameters([0.1, 0.2], metacommunity_option=os.path.join("sample", "nse_reference.db"))
-        tree.add_metacommunity_parameters(metacommunity_option=os.path.join("sample", "nse_reference.db"),
-                                          metacommunity_reference=2)
+        tree.add_metacommunity_parameters(
+            metacommunity_option=os.path.join("sample", "nse_reference.db"), metacommunity_reference=2
+        )
         tree.apply()
         params_1 = tree.get_metacommunity_parameters(1)
         params_2 = tree.get_metacommunity_parameters(2)
@@ -1136,10 +1253,12 @@ class TestMetacommunityApplication(unittest.TestCase):
         """Tests that the analytical method detection works correctly."""
         tree = CoalescenceTree(os.path.join("output", "sample_4.db"))
         tree.wipe_data()
-        tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=110000, metacommunity_speciation_rate=0.5,
-                                       metacommunity_option="none")
-        tree.add_metacommunity_parameters(metacommunity_speciation_rate=0.5, metacommunity_size=120000,
-                                          metacommunity_option="none")
+        tree.set_speciation_parameters(
+            [0.1, 0.2], metacommunity_size=110000, metacommunity_speciation_rate=0.5, metacommunity_option="none"
+        )
+        tree.add_metacommunity_parameters(
+            metacommunity_speciation_rate=0.5, metacommunity_size=120000, metacommunity_option="none"
+        )
         tree.apply()
         params_1 = tree.get_metacommunity_parameters(1)
         params_2 = tree.get_metacommunity_parameters(2)
@@ -1154,10 +1273,12 @@ class TestMetacommunityApplication(unittest.TestCase):
         """Tests that the simulated method detection works correctly."""
         tree = CoalescenceTree(os.path.join("output", "sample_5.db"))
         tree.wipe_data()
-        tree.set_speciation_parameters([0.1, 0.2], metacommunity_size=1000, metacommunity_speciation_rate=0.5,
-                                       metacommunity_option="none")
-        tree.add_metacommunity_parameters(metacommunity_speciation_rate=0.5, metacommunity_size=2000,
-                                          metacommunity_option="none")
+        tree.set_speciation_parameters(
+            [0.1, 0.2], metacommunity_size=1000, metacommunity_speciation_rate=0.5, metacommunity_option="none"
+        )
+        tree.add_metacommunity_parameters(
+            metacommunity_speciation_rate=0.5, metacommunity_size=2000, metacommunity_option="none"
+        )
         tree.apply()
         params_1 = tree.get_metacommunity_parameters(1)
         params_2 = tree.get_metacommunity_parameters(2)
@@ -1177,19 +1298,23 @@ class TestMetacommunityApplicationSpeciesAbundances(unittest.TestCase):
     def setUpClass(cls):
         """Run a non-spatial sim and apply a metacommunity."""
         cls.sim = Simulation()
-        cls.sim.set_simulation_parameters(seed=11, job_type=110, output_directory="output",
-                                          min_speciation_rate=0.1, spatial=False, deme=20541)
+        cls.sim.set_simulation_parameters(
+            seed=11, job_type=110, output_directory="output", min_speciation_rate=0.1, spatial=False, deme=20541
+        )
         cls.sim.run()
         cls.ct = CoalescenceTree(cls.sim)
         cls.ct.wipe_data()
         cls.ct.set_speciation_parameters(speciation_rates=0.1)
-        cls.ct.add_metacommunity_parameters(metacommunity_option="analytical", metacommunity_size=1000000,
-                                            metacommunity_speciation_rate=0.00005)
-        cls.ct.add_metacommunity_parameters(metacommunity_option="simulated", metacommunity_size=1000000,
-                                            metacommunity_speciation_rate=0.00005)
+        cls.ct.add_metacommunity_parameters(
+            metacommunity_option="analytical", metacommunity_size=1000000, metacommunity_speciation_rate=0.00005
+        )
+        cls.ct.add_metacommunity_parameters(
+            metacommunity_option="simulated", metacommunity_size=1000000, metacommunity_speciation_rate=0.00005
+        )
         # This just tests that it doesn't take forever and produces a sensible output
-        cls.ct.add_metacommunity_parameters(metacommunity_option="analytical", metacommunity_size=1000000000,
-                                            metacommunity_speciation_rate=0.1)
+        cls.ct.add_metacommunity_parameters(
+            metacommunity_option="analytical", metacommunity_size=1000000000, metacommunity_speciation_rate=0.1
+        )
         cls.ct.apply()
 
     def testRichnessMatchness(self):
@@ -1237,26 +1362,38 @@ class TestMetacommunityApplicationOrdering(unittest.TestCase):
         cls.proc1 = CoalescenceTree(os.path.join("output", "sample_order_3.db"))
         cls.proc2 = CoalescenceTree(os.path.join("output", "sample_order_4.db"))
         cls.proc3 = CoalescenceTree(os.path.join("output", "sample_order_5.db"))
-        cls.c1.set_speciation_parameters([0.1, 0.5, 0.9], metacommunity_speciation_rate=0.001,
-                                         metacommunity_option="simulated", metacommunity_size=10000)
+        cls.c1.set_speciation_parameters(
+            [0.1, 0.5, 0.9],
+            metacommunity_speciation_rate=0.001,
+            metacommunity_option="simulated",
+            metacommunity_size=10000,
+        )
         cls.c1.apply()
         cls.c2.set_speciation_parameters([0.1, 0.5, 0.9])
-        cls.c2.add_metacommunity_parameters(metacommunity_size=10000, metacommunity_speciation_rate=0.001,
-                                            metacommunity_option="simulated")
+        cls.c2.add_metacommunity_parameters(
+            metacommunity_size=10000, metacommunity_speciation_rate=0.001, metacommunity_option="simulated"
+        )
         cls.c2.apply()
-        cls.proc1.set_speciation_parameters([0.1, 0.5, 0.9], protracted_speciation_min=5,
-                                            protracted_speciation_max=1000, metacommunity_option="simulated",
-                                            metacommunity_speciation_rate=0.001, metacommunity_size=10000)
+        cls.proc1.set_speciation_parameters(
+            [0.1, 0.5, 0.9],
+            protracted_speciation_min=5,
+            protracted_speciation_max=1000,
+            metacommunity_option="simulated",
+            metacommunity_speciation_rate=0.001,
+            metacommunity_size=10000,
+        )
         cls.proc1.apply()
         cls.proc2.set_speciation_parameters([0.1, 0.5, 0.9])
-        cls.proc2.add_metacommunity_parameters(metacommunity_size=10000, metacommunity_speciation_rate=0.001,
-                                               metacommunity_option="simulated")
+        cls.proc2.add_metacommunity_parameters(
+            metacommunity_size=10000, metacommunity_speciation_rate=0.001, metacommunity_option="simulated"
+        )
         cls.proc2.add_protracted_parameters(min_speciation_gen=5, max_speciation_gen=1000)
         cls.proc2.apply()
         cls.proc3.set_speciation_parameters([0.1, 0.5, 0.9])
         cls.proc3.add_protracted_parameters(min_speciation_gen=5, max_speciation_gen=1000)
-        cls.proc3.add_metacommunity_parameters(metacommunity_size=10000, metacommunity_speciation_rate=0.001,
-                                               metacommunity_option="simulated")
+        cls.proc3.add_metacommunity_parameters(
+            metacommunity_size=10000, metacommunity_speciation_rate=0.001, metacommunity_option="simulated"
+        )
         cls.proc3.apply()
 
     def testEquivalentMethodsMatch(self):
@@ -1285,8 +1422,9 @@ class TestProtractedSpeciationEquality(unittest.TestCase):
 
     def testApplyEqualParameters(self):
         """Tests that equal protracted parameters can be applied"""
-        self.ct.set_speciation_parameters([0.001, 0.1], protracted_speciation_min=100.0,
-                                          protracted_speciation_max=10000.0)
+        self.ct.set_speciation_parameters(
+            [0.001, 0.1], protracted_speciation_min=100.0, protracted_speciation_max=10000.0
+        )
         self.ct.apply()
         self.assertEqual(1, self.ct.get_species_richness(1))
         self.assertEqual(3, self.ct.get_species_richness(2))

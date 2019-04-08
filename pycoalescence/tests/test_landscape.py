@@ -27,8 +27,11 @@ class TestLandscape(unittest.TestCase):
     def testCheckMaps(self):
         """Tests that the map checks work as intended."""
         l = Landscape()
-        l.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_fine.tif"),
-                        coarse_file=os.path.join("sample", "SA_sample_coarse.tif"))
+        l.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_fine.tif"),
+            coarse_file=os.path.join("sample", "SA_sample_coarse.tif"),
+        )
         l.historical_coarse_map_file = "null"
         with self.assertRaises(ValueError):
             l.check_maps()
@@ -43,16 +46,21 @@ class TestLandscape(unittest.TestCase):
             l.check_maps()
         l2 = Landscape()
         with self.assertRaises(ValueError):
-            l2.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
-                             coarse_file=os.path.join("sample", "SA_sample_fine.tif"))
+            l2.set_map_files(
+                sample_file="null",
+                fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                coarse_file=os.path.join("sample", "SA_sample_fine.tif"),
+            )
         l2.fine_map.file_name = "none"
         with self.assertRaises(ValueError):
             l2.check_maps()
         l3 = Landscape()
         with self.assertRaises(ValueError):
-            l3.set_map_files(sample_file=os.path.join("sample", "SA_sample_coarse.tif"),
-                             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
-                             coarse_file=os.path.join("sample", "SA_sample_coarse.tif"))
+            l3.set_map_files(
+                sample_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                fine_file=os.path.join("sample", "SA_sample_fine.tif"),
+                coarse_file=os.path.join("sample", "SA_sample_coarse.tif"),
+            )
         l3.landscape_type = "tiled_fine"
         with self.assertRaises(ValueError):
             l3.check_maps()
@@ -62,8 +70,11 @@ class TestLandscape(unittest.TestCase):
         with self.assertRaises(ValueError):
             l4.check_maps()
         l5 = Landscape()
-        l5.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_fine.tif"),
-                         coarse_file=os.path.join("sample", "SA_sample_coarse.tif"))
+        l5.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_fine.tif"),
+            coarse_file=os.path.join("sample", "SA_sample_coarse.tif"),
+        )
         l5.landscape_type = "tiled_fine"
         with self.assertRaises(ValueError):
             l5.check_maps()

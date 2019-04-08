@@ -133,8 +133,12 @@ class DispersalSimulation(Landscape):
         :rtype: bool
         """
         self._open_database_connection(database)
-        existence = self._db_conn.cursor().execute("SELECT name FROM sqlite_master WHERE type='table' AND"
-                                                   " name='{}';".format(table_name)).fetchone() is not None
+        existence = (
+            self._db_conn.cursor()
+            .execute("SELECT name FROM sqlite_master WHERE type='table' AND" " name='{}';".format(table_name))
+            .fetchone()
+            is not None
+        )
         return existence
 
     def _check_output_database(self):
@@ -151,8 +155,15 @@ class DispersalSimulation(Landscape):
         self.setup_complete = False
         os.remove(self.dispersal_database)
 
-    def set_map_files(self, fine_file, sample_file="null", coarse_file=None, historical_fine_file=None,
-                      historical_coarse_file=None, deme=1):
+    def set_map_files(
+        self,
+        fine_file,
+        sample_file="null",
+        coarse_file=None,
+        historical_fine_file=None,
+        historical_coarse_file=None,
+        deme=1,
+    ):
         """
         Sets the map files.
 
@@ -166,13 +177,27 @@ class DispersalSimulation(Landscape):
 
         :rtype: None
         """
-        Landscape.set_map_files(self, sample_file=sample_file, fine_file=fine_file, coarse_file=coarse_file,
-                                historical_fine_file=historical_fine_file,
-                                historical_coarse_file=historical_coarse_file)
+        Landscape.set_map_files(
+            self,
+            sample_file=sample_file,
+            fine_file=fine_file,
+            coarse_file=coarse_file,
+            historical_fine_file=historical_fine_file,
+            historical_coarse_file=historical_coarse_file,
+        )
         self.deme = deme
 
-    def set_dispersal_parameters(self, dispersal_method="normal", dispersal_file="none", sigma=1, tau=1, m_prob=1,
-                                 cutoff=100, dispersal_relative_cost=1, restrict_self=False):
+    def set_dispersal_parameters(
+        self,
+        dispersal_method="normal",
+        dispersal_file="none",
+        sigma=1,
+        tau=1,
+        m_prob=1,
+        cutoff=100,
+        dispersal_relative_cost=1,
+        restrict_self=False,
+    ):
         """
         Sets the dispersal parameters.
 
@@ -193,13 +218,31 @@ class DispersalSimulation(Landscape):
         self.dispersal_relative_cost = dispersal_relative_cost
         self.restrict_self = restrict_self
         self.dispersal_file = dispersal_file
-        self.c_dispersal_simulation.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma,
-                                                             self.tau, self.m_prob, self.cutoff,
-                                                             self.dispersal_relative_cost, self.restrict_self)
+        self.c_dispersal_simulation.set_dispersal_parameters(
+            self.dispersal_method,
+            self.dispersal_file,
+            self.sigma,
+            self.tau,
+            self.m_prob,
+            self.cutoff,
+            self.dispersal_relative_cost,
+            self.restrict_self,
+        )
 
-    def update_parameters(self, number_repeats=None, number_steps=None, seed=None, dispersal_method=None,
-                          dispersal_file=None, sigma=None, tau=None, m_prob=None, cutoff=None,
-                          dispersal_relative_cost=None, restrict_self=None):
+    def update_parameters(
+        self,
+        number_repeats=None,
+        number_steps=None,
+        seed=None,
+        dispersal_method=None,
+        dispersal_file=None,
+        sigma=None,
+        tau=None,
+        m_prob=None,
+        cutoff=None,
+        dispersal_relative_cost=None,
+        restrict_self=None,
+    ):
         """
         Provides a convenience function for updating all parameters which can be updated.
 
@@ -226,14 +269,34 @@ class DispersalSimulation(Landscape):
                     self.number_steps = v
                 else:
                     self.number_steps = [v]
-        self.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma, self.tau, self.m_prob,
-                                      self.cutoff, self.dispersal_relative_cost, self.restrict_self)
+        self.set_dispersal_parameters(
+            self.dispersal_method,
+            self.dispersal_file,
+            self.sigma,
+            self.tau,
+            self.m_prob,
+            self.cutoff,
+            self.dispersal_relative_cost,
+            self.restrict_self,
+        )
 
-    def set_simulation_parameters(self, number_repeats=None, output_database="output.db", seed=1,
-                                  dispersal_method="normal",
-                                  landscape_type="closed", sigma=1, tau=1, m_prob=1, cutoff=100, sequential=False,
-                                  dispersal_relative_cost=1, restrict_self=False, number_steps=1,
-                                  dispersal_file="none"):
+    def set_simulation_parameters(
+        self,
+        number_repeats=None,
+        output_database="output.db",
+        seed=1,
+        dispersal_method="normal",
+        landscape_type="closed",
+        sigma=1,
+        tau=1,
+        m_prob=1,
+        cutoff=100,
+        sequential=False,
+        dispersal_relative_cost=1,
+        restrict_self=False,
+        number_steps=1,
+        dispersal_file="none",
+    ):
         """
         Sets the simulation parameters for the dispersal simulations.
 
@@ -269,8 +332,9 @@ class DispersalSimulation(Landscape):
         if not os.path.exists(os.path.dirname(self.dispersal_database)):  # pragma: no cover
             os.makedirs(os.path.dirname(self.dispersal_database))
         self.c_dispersal_simulation.set_output_database(self.dispersal_database)
-        self.set_dispersal_parameters(dispersal_method, dispersal_file, sigma, tau, m_prob,
-                                      cutoff, dispersal_relative_cost, restrict_self)
+        self.set_dispersal_parameters(
+            dispersal_method, dispersal_file, sigma, tau, m_prob, cutoff, dispersal_relative_cost, restrict_self
+        )
 
     def complete_setup(self):
         """
@@ -280,37 +344,63 @@ class DispersalSimulation(Landscape):
         if not self.is_setup_map:  # pragma: no cover
             raise RuntimeError("Maps have not been set up yet.")
         self._check_output_database()
-        self.c_dispersal_simulation.set_dispersal_parameters(self.dispersal_method, self.dispersal_file, self.sigma,
-                                                             self.tau, self.m_prob, self.cutoff,
-                                                             self.dispersal_relative_cost, self.restrict_self)
+        self.c_dispersal_simulation.set_dispersal_parameters(
+            self.dispersal_method,
+            self.dispersal_file,
+            self.sigma,
+            self.tau,
+            self.m_prob,
+            self.cutoff,
+            self.dispersal_relative_cost,
+            self.restrict_self,
+        )
         if self.setup_complete:  # pragma: no cover
             self.logger.info("Set up has already been completed.")
         else:
             if len(self.historical_fine_list) != 0:
-                self.c_dispersal_simulation.import_all_maps(self.deme, self.fine_map.file_name, self.fine_map.x_size,
-                                                            self.fine_map.y_size, self.fine_map.x_offset,
-                                                            self.fine_map.y_offset, self.sample_map.x_size,
-                                                            self.sample_map.y_size, self.coarse_map.file_name,
-                                                            self.coarse_map.x_size, self.coarse_map.y_size,
-                                                            self.coarse_map.x_offset, self.coarse_map.y_offset,
-                                                            int(self.coarse_scale), self.landscape_type,
-                                                            self.historical_fine_list,
-                                                            [x for x in range(len(self.historical_fine_list))],
-                                                            [float(x) for x in self.rates_list],
-                                                            [float(x) for x in self.times_list],
-                                                            self.historical_coarse_list,
-                                                            [x for x in range(len(self.historical_fine_list))],
-                                                            [float(x) for x in self.rates_list],
-                                                            [float(x) for x in self.times_list])
+                self.c_dispersal_simulation.import_all_maps(
+                    self.deme,
+                    self.fine_map.file_name,
+                    self.fine_map.x_size,
+                    self.fine_map.y_size,
+                    self.fine_map.x_offset,
+                    self.fine_map.y_offset,
+                    self.sample_map.x_size,
+                    self.sample_map.y_size,
+                    self.coarse_map.file_name,
+                    self.coarse_map.x_size,
+                    self.coarse_map.y_size,
+                    self.coarse_map.x_offset,
+                    self.coarse_map.y_offset,
+                    int(self.coarse_scale),
+                    self.landscape_type,
+                    self.historical_fine_list,
+                    [x for x in range(len(self.historical_fine_list))],
+                    [float(x) for x in self.rates_list],
+                    [float(x) for x in self.times_list],
+                    self.historical_coarse_list,
+                    [x for x in range(len(self.historical_fine_list))],
+                    [float(x) for x in self.rates_list],
+                    [float(x) for x in self.times_list],
+                )
             else:
-                self.c_dispersal_simulation.import_maps(self.deme, self.fine_map.file_name, self.fine_map.x_size,
-                                                        self.fine_map.y_size, self.fine_map.x_offset,
-                                                        self.fine_map.y_offset,
-                                                        self.sample_map.x_size, self.sample_map.y_size,
-                                                        self.coarse_map.file_name, self.coarse_map.x_size,
-                                                        self.coarse_map.y_size, self.coarse_map.x_offset,
-                                                        self.coarse_map.y_offset, int(self.coarse_scale),
-                                                        self.landscape_type)
+                self.c_dispersal_simulation.import_maps(
+                    self.deme,
+                    self.fine_map.file_name,
+                    self.fine_map.x_size,
+                    self.fine_map.y_size,
+                    self.fine_map.x_offset,
+                    self.fine_map.y_offset,
+                    self.sample_map.x_size,
+                    self.sample_map.y_size,
+                    self.coarse_map.file_name,
+                    self.coarse_map.x_size,
+                    self.coarse_map.y_size,
+                    self.coarse_map.x_offset,
+                    self.coarse_map.y_offset,
+                    int(self.coarse_scale),
+                    self.landscape_type,
+                )
             self.setup_complete = True
 
     def check_base_parameters(self, number_repeats=None, seed=None, sequential=None):
@@ -364,8 +454,9 @@ class DispersalSimulation(Landscape):
             self.number_steps = number_steps
         if not self.setup_complete:
             self.complete_setup()
-        self.c_dispersal_simulation.run_mean_distance_travelled(self.number_repeats, self.number_steps, self.seed,
-                                                                self.sequential)
+        self.c_dispersal_simulation.run_mean_distance_travelled(
+            self.number_repeats, self.number_steps, self.seed, self.sequential
+        )
 
     def run_mean_dispersal(self, number_repeats=None, seed=None, sequential=None):
         """
@@ -402,12 +493,14 @@ class DispersalSimulation(Landscape):
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
-            sql_fetch = cursor.execute("SELECT distance FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
-                                       (parameter_reference,)).fetchall()
+            sql_fetch = cursor.execute(
+                "SELECT distance FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?", (parameter_reference,)
+            ).fetchall()
             if not sql_fetch:
-                raise ValueError("Could not get dispersal distances for "
-                                 "parameter reference of {} from {}.".format(parameter_reference,
-                                                                             self.dispersal_database))
+                raise ValueError(
+                    "Could not get dispersal distances for "
+                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get all dispersals from database: {}.".format(e))
         return [x[0] for x in sql_fetch]
@@ -428,12 +521,14 @@ class DispersalSimulation(Landscape):
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
-            sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
-                                       (parameter_reference,)).fetchall()[0][0]
+            sql_fetch = cursor.execute(
+                "SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?", (parameter_reference,)
+            ).fetchall()[0][0]
             if not sql_fetch:
-                raise ValueError("Could not get mean dispersal for "
-                                 "parameter reference of {} from {}.".format(parameter_reference,
-                                                                             self.dispersal_database))
+                raise ValueError(
+                    "Could not get mean dispersal for "
+                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get mean dispersal from database: {}.".format(e))
         return sql_fetch
@@ -454,12 +549,14 @@ class DispersalSimulation(Landscape):
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
-            sql_fetch = cursor.execute("SELECT distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
-                                       (parameter_reference,)).fetchall()
+            sql_fetch = cursor.execute(
+                "SELECT distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
+            ).fetchall()
             if not sql_fetch:
-                raise ValueError("Could not get distances travelled for "
-                                 "parameter reference of {} from {}.".format(parameter_reference,
-                                                                             self.dispersal_database))
+                raise ValueError(
+                    "Could not get distances travelled for "
+                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get all distances travelled from database: {}.".format(e))
         return [x[0] for x in sql_fetch]
@@ -480,12 +577,14 @@ class DispersalSimulation(Landscape):
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
-            sql_fetch = cursor.execute("SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
-                                       (parameter_reference,)).fetchall()[0][0]
+            sql_fetch = cursor.execute(
+                "SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
+            ).fetchall()[0][0]
             if not sql_fetch:
-                raise ValueError("Could not get mean distance travelled for "
-                                 "parameter reference of {} from {}.".format(parameter_reference,
-                                                                             self.dispersal_database))
+                raise ValueError(
+                    "Could not get mean distance travelled for "
+                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get average distance from database: {}.".format(e))
         return sql_fetch
@@ -506,9 +605,12 @@ class DispersalSimulation(Landscape):
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
-            sql_fetch = [x[0] for x in cursor.execute("SELECT distance FROM DISPERSAL_DISTANCES "
-                                                      "WHERE parameter_reference = ?",
-                                                      (parameter_reference,)).fetchall()]
+            sql_fetch = [
+                x[0]
+                for x in cursor.execute(
+                    "SELECT distance FROM DISPERSAL_DISTANCES " "WHERE parameter_reference = ?", (parameter_reference,)
+                ).fetchall()
+            ]
             if len(sql_fetch) == 0:  # pragma: no cover
                 raise ValueError("No distances in DISPERSAL_DISTANCES, cannot find standard deviation.")
             stdev_distance = std(sql_fetch)
@@ -535,9 +637,12 @@ class DispersalSimulation(Landscape):
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
-            sql_fetch = [x[0] for x in cursor.execute("SELECT distance FROM DISTANCES_TRAVELLED"
-                                                      " WHERE parameter_reference = ?",
-                                                      (parameter_reference,)).fetchall()]
+            sql_fetch = [
+                x[0]
+                for x in cursor.execute(
+                    "SELECT distance FROM DISTANCES_TRAVELLED" " WHERE parameter_reference = ?", (parameter_reference,)
+                ).fetchall()
+            ]
             if len(sql_fetch) == 0:  # pragma: no cover
                 raise ValueError("No distances in DISTANCES_TRAVELLED, cannot find standard deviation.")
             stdev_distance = std(sql_fetch)
@@ -558,8 +663,10 @@ class DispersalSimulation(Landscape):
         self._open_database_connection()
         try:
             cursor = self._db_conn.cursor()
-            cursor.execute("SELECT ref, simulation_type, sigma, tau, m_prob, cutoff, dispersal_method, map_file, seed,"
-                           " number_steps, number_repeats FROM PARAMETERS")
+            cursor.execute(
+                "SELECT ref, simulation_type, sigma, tau, m_prob, cutoff, dispersal_method, map_file, seed,"
+                " number_steps, number_repeats FROM PARAMETERS"
+            )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
         column_names = [member[0] for member in cursor.description]
@@ -570,7 +677,7 @@ class DispersalSimulation(Landscape):
             if sys.version_info[0] != 3:  # pragma: no cover
                 for i, each in enumerate(values):
                     if isinstance(each, unicode):
-                        values[i] = each.encode('ascii')
+                        values[i] = each.encode("ascii")
             # Now convert it into a dictionary
             main_dict[values[0]] = dict(zip(column_names[1:], values[1:]))
         if reference is None:

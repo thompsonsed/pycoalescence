@@ -12,8 +12,17 @@ try:
 except ImportError:
     from io import BytesIO as StringIO
 
-from pycoalescence.system_operations import cantor_pairing, check_file_exists, check_parent, create_logger, \
-    elegant_pairing, execute, execute_log_info, execute_silent, set_logging_method
+from pycoalescence.system_operations import (
+    cantor_pairing,
+    check_file_exists,
+    check_parent,
+    create_logger,
+    elegant_pairing,
+    execute,
+    execute_log_info,
+    execute_silent,
+    set_logging_method,
+)
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 
@@ -97,7 +106,7 @@ class TestSystemOperations(unittest.TestCase):
         file_name = "output/log.txt"
         create_logger(logger, file=file_name)
         logger.warning("test output")
-        with open(file_name, 'r') as f:
+        with open(file_name, "r") as f:
             s = f.readline()
             self.assertTrue("test output" in s)
         handlers = logger.handlers[:]
@@ -147,7 +156,7 @@ class TestSystemOperations(unittest.TestCase):
             logging.root.removeHandler(handler)
         logging.basicConfig(stream=log_stream, level=logging.INFO)
         execute_log_info(["echo", "123"])
-        self.assertEqual('INFO:root:123\n', log_stream.getvalue())
+        self.assertEqual("INFO:root:123\n", log_stream.getvalue())
         # Remove all handlers associated with the root logger object.
         for handler in logging.root.handlers[:]:
             handler.close()
@@ -179,8 +188,8 @@ class TestSystemOperations(unittest.TestCase):
             handler.close()
             logging.root.removeHandler(handler)
         logger = create_logger(logging.Logger("temp"), logging_level=logging.INFO, stream=log_stream)
-        logger.info('123\n')
-        logger.warning('123w\n')
+        logger.info("123\n")
+        logger.warning("123w\n")
         self.assertEqual("123123w", log_stream.getvalue().replace("\n", ""))
         # Remove all handlers associated with the root logger object.
         for handler in logging.root.handlers[:]:

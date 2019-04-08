@@ -56,16 +56,14 @@ class TestBasicFragmentedLandscape(unittest.TestCase):
     def testDisabledSmoothing(self):
         """Tests that smoothing can be disabled correctly"""
         output = os.path.join("output", "frag_gen1.tif")
-        fl = FragmentedLandscape(number_fragments=10, size=100, total=1000,
-                                 output_file=output)
+        fl = FragmentedLandscape(number_fragments=10, size=100, total=1000, output_file=output)
         fl.generate(override_smoothing=False)
         self.assertTrue(os.path.exists(output))
 
     def testEnabledSmoothing(self):
         """Tests that smoothing can be disabled correctly"""
         output = os.path.join("output", "frag_gen2.tif")
-        fl = FragmentedLandscape(number_fragments=10, size=100, total=1000,
-                                 output_file=output)
+        fl = FragmentedLandscape(number_fragments=10, size=100, total=1000, output_file=output)
         fl.generate(override_smoothing=True)
         self.assertTrue(os.path.exists(output))
 

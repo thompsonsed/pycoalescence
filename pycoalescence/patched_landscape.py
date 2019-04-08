@@ -46,9 +46,9 @@ class Patch(object):
         Prints the patch data to a string.
         :return: string containing the object data
         """
-        str = "Patch class object with id: {}, density: {}," \
-              " index: {} and dispersal probabilities: {}".format(self.id, self.density, self.index,
-                                                                  self.dispersal_probabilities)
+        str = "Patch class object with id: {}, density: {}," " index: {} and dispersal probabilities: {}".format(
+            self.id, self.density, self.index, self.dispersal_probabilities
+        )
         return str
 
     def add_patch(self, patch, probability):
@@ -152,8 +152,9 @@ class PatchedLandscape:
         patch.add_patch(id, self_dispersal if self_dispersal is not None else 0.0)
         if dispersal_probabilities:
             if not isinstance(dispersal_probabilities, dict):
-                raise TypeError("Dispersal probabilities must be provided as a dictionary of "
-                                "ids->relative probabilities.")
+                raise TypeError(
+                    "Dispersal probabilities must be provided as a dictionary of " "ids->relative probabilities."
+                )
             if self_dispersal is None:
                 if id not in dispersal_probabilities.keys():
                     raise KeyError("Must provide self dispersal value either separately or within dictionary.")
@@ -236,7 +237,7 @@ class PatchedLandscape:
         if sys.version_info[0] < 3:  # pragma: no cover
             infile = open(fragment_csv, "wb")
         else:
-            infile = open(fragment_csv, "w", newline='')
+            infile = open(fragment_csv, "w", newline="")
         with infile as csv_file:
             csv_writer = csv.writer(csv_file)
             for k1, patch in self.patches.items():

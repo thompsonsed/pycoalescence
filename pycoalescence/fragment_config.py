@@ -21,6 +21,7 @@ except ImportError as ie:  # pragma: no cover
 from .future_except import FileNotFoundError, FileExistsError
 from .map import Map
 
+
 def generate_fragment_csv(input_shapefile, input_raster, output_csv, field_name="fragment", field_area="area"):
     """
     Generates the fragment csv from the provided shapefile and raster file. Coordinates for outputted to the csv are
@@ -41,6 +42,7 @@ def generate_fragment_csv(input_shapefile, input_raster, output_csv, field_name=
     f = FragmentConfigHandler()
     f.generate_config(input_shapefile, input_raster, field_name, field_area)
     f.write_csv(output_csv)
+
 
 class FragmentConfigHandler(object):
     """
@@ -86,12 +88,25 @@ class FragmentConfigHandler(object):
             min_long, max_long, min_lat, max_lat = geom.GetEnvelope()
             min_x, min_y = m.convert_lat_long(max_lat, min_long)
             max_x, max_y = m.convert_lat_long(min_lat, max_long)
-            if min_x < 0 or min_y < 0 or max_x < 0 or max_y < 0 or \
-                    min_x > dim_x or min_y > dim_y or max_x > dim_x or max_y > dim_y:
+            if (
+                min_x < 0
+                or min_y < 0
+                or max_x < 0
+                or max_y < 0
+                or min_x > dim_x
+                or min_y > dim_y
+                or max_x > dim_x
+                or max_y > dim_y
+            ):
                 src_ds = None
                 raise ValueError("Shapefile is not contained within the raster - cannot generate fragment config.")
-            self.fragment_list[fragment] =  {"min_x" : min_x, "max_x" : max_x, "min_y" : min_y, "max_y" : max_y,
-                                             "area" : area}
+            self.fragment_list[fragment] = {
+                "min_x": min_x,
+                "max_x": max_x,
+                "min_y": min_y,
+                "max_y": max_y,
+                "area": area,
+            }
         src_ds = None
 
     def write_csv(self, output_csv):
@@ -106,9 +121,10 @@ class FragmentConfigHandler(object):
         if sys.version_info[0] < 3:  # pragma: no cover
             infile = open(output_csv, "wb")
         else:
-            infile = open(output_csv, "w", newline='')
+            infile = open(output_csv, "w", newline="")
         with infile as csv_file:
             csv_writer = csv.writer(csv_file)
             for key, value in sorted(self.fragment_list.items()):
-                csv_writer.writerow([key, value["min_x"], value["min_y"], value["max_x"], value["max_y"],
-                                     value["area"]])
+                csv_writer.writerow(
+                    [key, value["min_x"], value["min_y"], value["max_x"], value["max_y"], value["area"]]
+                )

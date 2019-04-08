@@ -60,8 +60,10 @@ class Installer(build_ext):  # pragma: no cover
         Used to generate a default dependency file on a system where makedepend exists, for a system where it does not.
         """
         try:
-            execute_silent(["makedepend", "*.cpp", "necsim/*.cpp", "-f" "depends_default", "-p", "obj/", "-Y"],
-                           cwd=os.path.join(self.mod_dir, "lib/"))
+            execute_silent(
+                ["makedepend", "*.cpp", "necsim/*.cpp", "-f" "depends_default", "-p", "obj/", "-Y"],
+                cwd=os.path.join(self.mod_dir, "lib/"),
+            )
         except (RuntimeError, subprocess.CalledProcessError) as rte:
             logging.error("Could not execute makedepend: " + str(rte))
 
@@ -113,7 +115,7 @@ class Installer(build_ext):  # pragma: no cover
         :return:
         """
         directory = os.path.join(self.mod_dir, "necsim")
-        dirv = 'sharedpy' + sys.version[0]
+        dirv = "sharedpy" + sys.version[0]
         for file in ["libnecsim.so"]:
             src = os.path.join(self.mod_dir, "lib", file)
             version_dir = os.path.join(directory, dirv)
@@ -123,8 +125,8 @@ class Installer(build_ext):  # pragma: no cover
                 os.mkdir(directory)
             if not os.path.exists(version_dir):
                 os.mkdir(version_dir)
-            if not os.path.exists(os.path.join(version_dir, '__init__.py')):
-                open(os.path.join(version_dir, '__init__.py'), 'a').close()
+            if not os.path.exists(os.path.join(version_dir, "__init__.py")):
+                open(os.path.join(version_dir, "__init__.py"), "a").close()
             dst = os.path.join(directory, dirv, file)
             if os.path.exists(dst):
                 os.remove(dst)
@@ -165,9 +167,15 @@ class Installer(build_ext):  # pragma: no cover
         if os.path.exists(os.path.join(self.mod_dir, "lib", "configure")):
             try:
                 if opts is None:
-                    execute_log_info(["./configure", "--with-verbose", "BUILDDIR={}".format(self.get_build_dir()),
-                                      "OBJDIR={}".format(self.get_obj_dir())],
-                                     cwd=os.path.join(self.mod_dir, "lib"))
+                    execute_log_info(
+                        [
+                            "./configure",
+                            "--with-verbose",
+                            "BUILDDIR={}".format(self.get_build_dir()),
+                            "OBJDIR={}".format(self.get_obj_dir()),
+                        ],
+                        cwd=os.path.join(self.mod_dir, "lib"),
+                    )
                 else:
                     command = ["./configure"]
                     command.extend(opts)
@@ -188,8 +196,10 @@ class Installer(build_ext):  # pragma: no cover
         try:
             execute_log_info(["autoconf"], cwd=os.path.join(self.mod_dir, "lib/"))
         except (RuntimeError, subprocess.CalledProcessError, FileNotFoundError, OSError, IOError) as cpe:
-            logging.warning("Could not run autoconf function to generate configure executable. "
-                            "Please run this functionality manually if installation fails.")
+            logging.warning(
+                "Could not run autoconf function to generate configure executable. "
+                "Please run this functionality manually if installation fails."
+            )
             logging.warning(str(cpe))
 
     def clean(self):
@@ -235,11 +245,15 @@ class Installer(build_ext):  # pragma: no cover
         """
         # Get the relevant flags that Python was originally compiled with, to be passed to the C++ code.
         include = str("CPPFLAGS=-I" + sysconfig.get_python_inc()).replace("\n", "")
-        cflags = " " + sysconfig.get_config_var('CFLAGS')
+        cflags = " " + sysconfig.get_config_var("CFLAGS")
         cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
         cflags += " "
-        py_ldflags = str("-L" + sysconfig.get_python_lib(standard_lib=True) +
-                         " -L" + sysconfig.get_config_var('DESTDIRS').replace(" ", " -L")).replace("\n", "")
+        py_ldflags = str(
+            "-L"
+            + sysconfig.get_python_lib(standard_lib=True)
+            + " -L"
+            + sysconfig.get_config_var("DESTDIRS").replace(" ", " -L")
+        ).replace("\n", "")
         py_lib = "PYTHON_LIB=-lpython"
         ldflags = str("LDFLAGS=" + self.get_ldflags())
         # Get the shared object platform-specific compilation flags.
@@ -250,21 +264,22 @@ class Installer(build_ext):  # pragma: no cover
             platform_so += "-dynamiclib"
         elif platform.system() == "Windows":
             raise SystemError(
-                "COMPILATION FAILURE: Windows is not yet supported. You must compile the libraries yourself.")
+                "COMPILATION FAILURE: Windows is not yet supported. You must compile the libraries yourself."
+            )
         else:
             logging.critical("OS not detected, compilation failures likely. Please report this error.")
         # Make sure that the linker directs to the correct Python library (such as -lpython3.5m)
         # Eventually this will also detect if the install is for an anaconda distribution.
-        if 'conda' not in sys.version and 'Continuum' not in sys.version:
+        if "conda" not in sys.version and "Continuum" not in sys.version:
             py_lib += sys.version[0:3]
-            if 'm' in sysconfig.get_config_var('LIBRARY'):
-                py_lib += 'm'
+            if "m" in sysconfig.get_config_var("LIBRARY"):
+                py_lib += "m"
         else:
             cflags += "-I{}/include {}".format(os.environ["PREFIX"], "--enable-shared")
             ldflags += "-L{}/lib".format(os.environ["PREFIX"])
             py_lib += sys.version[0:3]
-            if 'm' in sysconfig.get_config_var('LIBRARY'):
-                py_lib += 'm'
+            if "m" in sysconfig.get_config_var("LIBRARY"):
+                py_lib += "m"
             cflags += " -DANACONDA"
         ldflags += " " + py_ldflags
         py_ldflags = "PYTHON_LDFLAGS=" + py_ldflags
@@ -272,7 +287,7 @@ class Installer(build_ext):  # pragma: no cover
         # Remove the flags which would potentially cause unnecessary warnings to be thrown.
         # This can be disabled by passing display_warnings=True
         if not display_warnings:
-            call = [re.sub('-Wstrict-prototypes|-Wno-unused-result|-Wunused-variable|-Wall', '', x) for x in call]
+            call = [re.sub("-Wstrict-prototypes|-Wno-unused-result|-Wunused-variable|-Wall", "", x) for x in call]
         return call
 
     def run_configure(self, argv=None, logging_level=logging.INFO, display_warnings=False):
@@ -293,8 +308,7 @@ class Installer(build_ext):  # pragma: no cover
             logging.info("No compile options provided, using defaults.")
             print("Obj: {}".format(self.get_obj_dir()))
             print("Build: {}".format(self.get_build_dir()))
-            call.extend(["--with-verbose", "OBJDIR={}", "BUILDDIR={}".format(self.get_obj_dir(),
-                                                                             self.get_build_dir())])
+            call.extend(["--with-verbose", "OBJDIR={}", "BUILDDIR={}".format(self.get_obj_dir(), self.get_build_dir())])
         else:
             if argv[1] == "--h" or argv[1] == "-h" or argv[1] == "-help" or argv[1] == "--help":
                 execute_log_info(["./configure", "--help"], cwd=os.path.join(self.mod_dir, "lib/"))
@@ -353,9 +367,10 @@ class Installer(build_ext):  # pragma: no cover
 
         :param ext: the extension to build cmake on
         """
-        if 'conda' not in sys.version and 'Continuum' not in sys.version:
-            extdir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)), "pycoalescence",
-                                                  "necsim"))
+        if "conda" not in sys.version and "Continuum" not in sys.version:
+            extdir = os.path.abspath(
+                os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)), "pycoalescence", "necsim")
+            )
         else:
             sp_dir = os.environ.get("SP_DIR")
             if sp_dir is None:
@@ -363,9 +378,7 @@ class Installer(build_ext):  # pragma: no cover
             extdir = os.path.join(sp_dir, "pycoalescence", "necsim")
         cmake_args, build_args = self.get_default_cmake_args(extdir)
         env = os.environ.copy()
-        env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
-            env.get('CXXFLAGS', ''),
-            self.distribution.get_version())
+        env["CXXFLAGS"] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get("CXXFLAGS", ""), self.distribution.get_version())
         if "INTEL_LICENSE_FILE" in env.keys():
             env["CXX"] = "icpc"
             env["CC"] = "icc"
@@ -384,15 +397,14 @@ class Installer(build_ext):  # pragma: no cover
         if not os.path.exists(tmp_dir):
             os.makedirs(tmp_dir)
         try:
-            subprocess.check_call(['cmake', src_dir] + cmake_args,
-                                  cwd=tmp_dir, env=env)
-            subprocess.check_call(['cmake', '--build', ".", "--target", "necsim"] + build_args,
-                                  cwd=tmp_dir, env=env)
+            subprocess.check_call(["cmake", src_dir] + cmake_args, cwd=tmp_dir, env=env)
+            subprocess.check_call(["cmake", "--build", ".", "--target", "necsim"] + build_args, cwd=tmp_dir, env=env)
         except subprocess.CalledProcessError as cpe:
             raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
         if platform.system() == "Windows":
-            shutil.copy(os.path.join(tmp_dir, "Release", "necsim.pyd"),
-                        os.path.join(self.get_build_dir(), "libnecsim.pyd"))
+            shutil.copy(
+                os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(), "libnecsim.pyd")
+            )
 
     def run(self):
         """Runs installation and generates the shared object files - entry point for setuptools"""
@@ -401,8 +413,9 @@ class Installer(build_ext):  # pragma: no cover
 
     def build_extension(self, ext):
         """Builds the C++ and Python extension."""
-        self.build_dir = os.path.abspath(os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)),
-                                                      "pycoalescence", "necsim"))
+        self.build_dir = os.path.abspath(
+            os.path.join(os.path.dirname(self.get_ext_fullpath(ext.name)), "pycoalescence", "necsim")
+        )
         self.obj_dir = self.build_dir
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
@@ -410,11 +423,13 @@ class Installer(build_ext):  # pragma: no cover
 
     def clean_cmake(self):
         """Deletes the cmake files and object locations if they exist."""
-        for path in [os.path.join(self.get_build_dir(), "libnecsim.so"),
-                     os.path.join(self.get_build_dir(), "libnecsim.so.dSYM"),
-                     os.path.join(self.get_build_dir(), "libnecsim.pyd"),
-                     os.path.join(self.get_build_dir(), "libnecsim.dylib"),
-                     os.path.join(self.mod_dir, "obj")]:
+        for path in [
+            os.path.join(self.get_build_dir(), "libnecsim.so"),
+            os.path.join(self.get_build_dir(), "libnecsim.so.dSYM"),
+            os.path.join(self.get_build_dir(), "libnecsim.pyd"),
+            os.path.join(self.get_build_dir(), "libnecsim.dylib"),
+            os.path.join(self.mod_dir, "obj"),
+        ]:
             if os.path.exists(path):
                 if os.path.isdir(path):
                     shutil.rmtree(path)
@@ -430,8 +445,8 @@ class Installer(build_ext):  # pragma: no cover
         :return: tuple of two lists, first containing cmake configure arguments, second containing build arguments
         :rtype: tuple
         """
-        cfg = 'Debug' if self.debug else 'Release'
-        cflags = sysconfig.get_config_var('CFLAGS')
+        cfg = "Debug" if self.debug else "Release"
+        cflags = sysconfig.get_config_var("CFLAGS")
         if cflags is not None:
             cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
         else:
@@ -457,31 +472,35 @@ class Installer(build_ext):  # pragma: no cover
                 if gdal_dir is not None:
                     gdal_dir = gdal_dir.decode("utf-8").replace("\n", "")
         if libdir is None:
-            libdir = os.path.abspath(os.path.join(sysconfig.get_config_var('LIBDEST'), "..", "libs"))
+            libdir = os.path.abspath(os.path.join(sysconfig.get_config_var("LIBDEST"), "..", "libs"))
             if sysconfig.get_config_var("LIBDEST") is None:
                 raise SystemError("Cannot detect library directory for Python install.")
-        cmake_args = ["-DPYTHON_LIBRARY:FILEPATH={}".format(libdir),
-                      "-DPYTHON_CPPFLAGS:='{}'".format(cflags),
-                      "-DPYTHON_LDFLAGS:='{}'".format(self.get_ldshared()),
-                      "-DPYTHON_INCLUDE_DIR:FILEPATH={}".format(sysconfig.get_python_inc()),
-                      '-DCMAKE_BUILD_TYPE={}'.format(cfg)]
+        cmake_args = [
+            "-DPYTHON_LIBRARY:FILEPATH={}".format(libdir),
+            "-DPYTHON_CPPFLAGS:='{}'".format(cflags),
+            "-DPYTHON_LDFLAGS:='{}'".format(self.get_ldshared()),
+            "-DPYTHON_INCLUDE_DIR:FILEPATH={}".format(sysconfig.get_python_inc()),
+            "-DCMAKE_BUILD_TYPE={}".format(cfg),
+        ]
         if gdal_inc_path is not None:
             cmake_args.append("-DGDAL_INCLUDE_DIR={}".format(gdal_inc_path))
         if gdal_dir is not None:
             cmake_args.append("-DGDAL_DIR={}".format(gdal_dir))
-        build_args = ['--config', cfg]
+        build_args = ["--config", cfg]
         if platform.system() == "Windows":
-            cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}'.format(
-                # cfg.upper(),
-                output_dir)]
+            cmake_args += [
+                "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}".format(
+                    # cfg.upper(),
+                    output_dir
+                )
+            ]
             if sys.maxsize > 2 ** 32:
-                cmake_args += ['-A', 'x64']
-            build_args += ['--', '/m']
+                cmake_args += ["-A", "x64"]
+            build_args += ["--", "/m"]
         else:
 
-            cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg,
-                           '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}'.format(output_dir)]
-            build_args += ['--', '-j2']
+            cmake_args += ["-DCMAKE_BUILD_TYPE=" + cfg, "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}".format(output_dir)]
+            build_args += ["--", "-j2"]
         return cmake_args, build_args
 
 
@@ -489,56 +508,48 @@ def get_python_library(python_version):  # pragma: no cover
     """Get path to the Python library associated with the current Python
     interpreter."""
     # determine direct path to libpython
-    python_library = sysconfig.get_config_var('LIBRARY')
+    python_library = sysconfig.get_config_var("LIBRARY")
     potential_library = None
     # if static (or nonexistent), try to find a suitable dynamic libpython
-    if python_library is None or python_library[-2:] == '.a':
+    if python_library is None or python_library[-2:] == ".a":
 
-        candidate_lib_prefixes = ['', 'lib']
+        candidate_lib_prefixes = ["", "lib"]
 
-        candidate_extensions = ['.lib', '.so']
-        if sysconfig.get_config_var('WITH_DYLD'):
-            candidate_extensions.insert(0, '.dylib')
+        candidate_extensions = [".lib", ".so"]
+        if sysconfig.get_config_var("WITH_DYLD"):
+            candidate_extensions.insert(0, ".dylib")
 
         candidate_versions = [python_version]
         if python_version:
-            candidate_versions.append('')
-            candidate_versions.insert(
-                0, "".join(python_version.split(".")[:2]))
+            candidate_versions.append("")
+            candidate_versions.insert(0, "".join(python_version.split(".")[:2]))
 
-        abiflags = getattr(sys, 'abiflags', '')
+        abiflags = getattr(sys, "abiflags", "")
         candidate_abiflags = [abiflags]
         if abiflags:
-            candidate_abiflags.append('')
+            candidate_abiflags.append("")
 
         # Ensure the value injected by virtualenv is
         # returned on windows.
         # Because calling `sysconfig.get_config_var('multiarchsubdir')`
         # returns an empty string on Linux, `du_sysconfig` is only used to
         # get the value of `LIBDIR`.
-        libdir = sysconfig.get_config_var('LIBDIR')
-        if sysconfig.get_config_var('MULTIARCH'):
-            masd = sysconfig.get_config_var('multiarchsubdir')
+        libdir = sysconfig.get_config_var("LIBDIR")
+        if sysconfig.get_config_var("MULTIARCH"):
+            masd = sysconfig.get_config_var("multiarchsubdir")
             if masd:
                 if masd.startswith(os.sep):
-                    masd = masd[len(os.sep):]
+                    masd = masd[len(os.sep) :]
                 libdir = os.path.join(libdir, masd)
 
         if libdir is None:
-            libdir = os.path.abspath(os.path.join(
-                sysconfig.get_config_var('LIBDEST'), "..", "libs"))
+            libdir = os.path.abspath(os.path.join(sysconfig.get_config_var("LIBDEST"), "..", "libs"))
 
         candidates = (
-            os.path.join(
-                libdir,
-                ''.join((pre, 'python', ver, abi, ext))
-            )
+            os.path.join(libdir, "".join((pre, "python", ver, abi, ext)))
             for (pre, ext, ver, abi) in itertools.product(
-            candidate_lib_prefixes,
-            candidate_extensions,
-            candidate_versions,
-            candidate_abiflags
-        )
+                candidate_lib_prefixes, candidate_extensions, candidate_versions, candidate_abiflags
+            )
         )
         for candidate in candidates:
             if os.path.exists(candidate):
@@ -557,26 +568,59 @@ if __name__ == "__main__":  # pragma: no cover
     from distutils.dist import Distribution
     import argparse
 
-    parser = argparse.ArgumentParser(description='Build the C++ library (necsim) required for pycoalescence.')
-    parser.add_argument('--cmake', action='store_true', default=True, dest="cmake",
-                        help='use the cmake build process')
-    parser.add_argument('--autotools', action='store_true', default=False, dest="autotools",
-                        help='Use the autotools build process (./configure and make)')
-    parser.add_argument('--compiler-args', metavar='N', type=str, nargs='+', dest="compiler_args",
-                        default=[],
-                        help='Additional arguments to pass to the autotools compiler')
-    parser.add_argument('--cmake-args', metavar='N', type=str, nargs='+', dest="cmake_args",
-                        default=[],
-                        help='Additional arguments to pass to the cmake compiler during configuration')
-    parser.add_argument('--cmake-build-args', metavar='N', type=str, nargs='+', dest="cmake_build_args",
-                        default=[],
-                        help='Additional arguments to pass to the cmake compiler at build time')
-    parser.add_argument('--debug', action='store_true', default=False, dest='debug',
-                        help='Compile using DEBUG defines')
-    parser.add_argument('-c', '-C', '--compile', action='store_true', default=False, dest='compile_only',
-                        help='Compile only, do not re-configure necsim')
-    parser.add_argument('--clean', action="store_true", default=False, dest="clean",
-                        help="Clean previous cmake builds from this directory.")
+    parser = argparse.ArgumentParser(description="Build the C++ library (necsim) required for pycoalescence.")
+    parser.add_argument("--cmake", action="store_true", default=True, dest="cmake", help="use the cmake build process")
+    parser.add_argument(
+        "--autotools",
+        action="store_true",
+        default=False,
+        dest="autotools",
+        help="Use the autotools build process (./configure and make)",
+    )
+    parser.add_argument(
+        "--compiler-args",
+        metavar="N",
+        type=str,
+        nargs="+",
+        dest="compiler_args",
+        default=[],
+        help="Additional arguments to pass to the autotools compiler",
+    )
+    parser.add_argument(
+        "--cmake-args",
+        metavar="N",
+        type=str,
+        nargs="+",
+        dest="cmake_args",
+        default=[],
+        help="Additional arguments to pass to the cmake compiler during configuration",
+    )
+    parser.add_argument(
+        "--cmake-build-args",
+        metavar="N",
+        type=str,
+        nargs="+",
+        dest="cmake_build_args",
+        default=[],
+        help="Additional arguments to pass to the cmake compiler at build time",
+    )
+    parser.add_argument("--debug", action="store_true", default=False, dest="debug", help="Compile using DEBUG defines")
+    parser.add_argument(
+        "-c",
+        "-C",
+        "--compile",
+        action="store_true",
+        default=False,
+        dest="compile_only",
+        help="Compile only, do not re-configure necsim",
+    )
+    parser.add_argument(
+        "--clean",
+        action="store_true",
+        default=False,
+        dest="clean",
+        help="Clean previous cmake builds from this directory.",
+    )
 
     args = parser.parse_args()
     if args.cmake and args.autotools:

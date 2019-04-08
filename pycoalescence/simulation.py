@@ -72,8 +72,7 @@ class Simulation(Landscape):
     A class containing routines to set up and run simulations, including detecting map dimensions from tif files.
     """
 
-    def __init__(self, logging_level=logging.WARNING,
-                 log_output=None, **kwargs):
+    def __init__(self, logging_level=logging.WARNING, log_output=None, **kwargs):
         """
         Sets up the simulation object, setting the logging object and assigning default variables.
 
@@ -172,8 +171,9 @@ class Simulation(Landscape):
         :param output_file: path to config file to output to
         """
         if self.full_config_file and output_file != self.full_config_file and output_file:
-            self.logger.warning("Config file has already been set to {}, changing to {}.".format(self.full_config_file,
-                                                                                                 output_file))
+            self.logger.warning(
+                "Config file has already been set to {}, changing to {}.".format(self.full_config_file, output_file)
+            )
         if output_file is not None:
             self.full_config_file = output_file
 
@@ -211,20 +211,28 @@ class Simulation(Landscape):
             for each in opts:
                 self.times.append(self.config.getfloat("times", each))
         if self.config.has_section("sample_grid"):
-            self.sample_map.set_dimensions(self.config.get("sample_grid", "path"),
-                                           self.config.getint("sample_grid", "x", fallback=0),
-                                           self.config.getint("sample_grid", "y", fallback=0), 0, 0)
+            self.sample_map.set_dimensions(
+                self.config.get("sample_grid", "path"),
+                self.config.getint("sample_grid", "x", fallback=0),
+                self.config.getint("sample_grid", "y", fallback=0),
+                0,
+                0,
+            )
             self.uses_spatial_sampling = self.config.getboolean("sample_grid", "uses_spatial_sampling", fallback=False)
-            self.fine_map.set_dimensions(self.config.get("fine_map", "path"),
-                                         self.config.getint("fine_map", "x", fallback=0),
-                                         self.config.getint("fine_map", "y", fallback=0),
-                                         self.config.getint("fine_map", "x_off", fallback=0),
-                                         self.config.getint("fine_map", "y_off", fallback=0))
-            self.coarse_map.set_dimensions(self.config.get("coarse_map", "path"),
-                                           self.config.getint("coarse_map", "x", fallback=0),
-                                           self.config.getint("coarse_map", "y", fallback=0),
-                                           self.config.getint("coarse_map", "x_off", fallback=0),
-                                           self.config.getint("coarse_map", "y_off", fallback=0))
+            self.fine_map.set_dimensions(
+                self.config.get("fine_map", "path"),
+                self.config.getint("fine_map", "x", fallback=0),
+                self.config.getint("fine_map", "y", fallback=0),
+                self.config.getint("fine_map", "x_off", fallback=0),
+                self.config.getint("fine_map", "y_off", fallback=0),
+            )
+            self.coarse_map.set_dimensions(
+                self.config.get("coarse_map", "path"),
+                self.config.getint("coarse_map", "x", fallback=0),
+                self.config.getint("coarse_map", "y", fallback=0),
+                self.config.getint("coarse_map", "x_off", fallback=0),
+                self.config.getint("coarse_map", "y_off", fallback=0),
+            )
             self.coarse_scale = self.config.getfloat("coarse_map", "scale", fallback=1.0)
             i = 0
             while True:
@@ -437,11 +445,19 @@ class Simulation(Landscape):
 
         :return: the species richness in the simulation
         """
-        self.set_simulation_parameters(seed=seed, job_type=task, output_directory=output,
-                                       min_speciation_rate=speciation_rate,
-                                       sigma=sigma, tau=1, deme=1.0, sample_size=1.0, max_time=36000,
-                                       dispersal_relative_cost=1,
-                                       min_num_species=1)
+        self.set_simulation_parameters(
+            seed=seed,
+            job_type=task,
+            output_directory=output,
+            min_speciation_rate=speciation_rate,
+            sigma=sigma,
+            tau=1,
+            deme=1.0,
+            sample_size=1.0,
+            max_time=36000,
+            dispersal_relative_cost=1,
+            min_num_species=1,
+        )
         self.set_map("null", size, size)
         self.set_speciation_rates([speciation_rate])
         self.run()
@@ -449,12 +465,15 @@ class Simulation(Landscape):
         try:
             richness = self.get_species_richness()
             if richness == 0:
-                raise AssertionError("Richness is 0, error in program. This should never be the case for a complete "
-                                     "sim.")
+                raise AssertionError(
+                    "Richness is 0, error in program. This should never be the case for a complete " "sim."
+                )
             return richness
         except IOError:
-            raise RuntimeError("Simulation didn't complete in 10 hours (maximum time for run_simple). Try running a "
-                               "custom simulation instead.")
+            raise RuntimeError(
+                "Simulation didn't complete in 10 hours (maximum time for run_simple). Try running a "
+                "custom simulation instead."
+            )
 
     def get_species_richness(self, reference=1):
         """
@@ -487,8 +506,17 @@ class Simulation(Landscape):
                 pass
             return t.is_protracted()
 
-    def set_map_files(self, sample_file, fine_file=None, coarse_file=None, historical_fine_file=None,
-                      historical_coarse_file=None, dispersal_map=None, death_map=None, reproduction_map=None):
+    def set_map_files(
+        self,
+        sample_file,
+        fine_file=None,
+        coarse_file=None,
+        historical_fine_file=None,
+        historical_coarse_file=None,
+        dispersal_map=None,
+        death_map=None,
+        reproduction_map=None,
+    ):
         """
         Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
         the specified dimensions.
@@ -550,28 +578,34 @@ class Simulation(Landscape):
         """Checks that the dispersal map dimensions match the fine map dimensions."""
         if self.dispersal_map.file_name not in {"none", "null", None}:
             if self.coarse_map.file_name not in {None, "none"}:
-                raise ValueError("Cannot use a coarse map if using a dispersal map. "
-                                 "This feature is currently unsupported.")
+                raise ValueError(
+                    "Cannot use a coarse map if using a dispersal map. " "This feature is currently unsupported."
+                )
             self.dispersal_map.set_dimensions()
-            if self.dispersal_map.x_size != self.fine_map.x_size * self.fine_map.y_size or \
-                    self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size:
-                raise ValueError("Dimensions of dispersal map do not match dimensions of fine map. This is currently"
-                                 " unsupported.")
+            if (
+                self.dispersal_map.x_size != self.fine_map.x_size * self.fine_map.y_size
+                or self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size
+            ):
+                raise ValueError(
+                    "Dimensions of dispersal map do not match dimensions of fine map. This is currently" " unsupported."
+                )
 
     def check_reproduction_map(self):
         """Checks that the reproduction map dimensions match the fine map dimensions."""
         if self.reproduction_map.file_name not in {None, "none", "null"}:
             if self.coarse_map.file_name not in {None, "none", "null"}:
-                raise ValueError("Cannot use a coarse map if using a reproduction map. "
-                                 "This feature is currently unsupported.")
+                raise ValueError(
+                    "Cannot use a coarse map if using a reproduction map. " "This feature is currently unsupported."
+                )
         self.check_dimensions_match_fine(self.reproduction_map, "reproduction")
 
     def check_death_map(self):
         """Checks that the death map dimensions match the fine map dimensions."""
         if self.death_map.file_name not in {None, "none", "null"}:
             if self.coarse_map.file_name not in {None, "none", "null"}:
-                raise ValueError("Cannot use a coarse map if using a death map. "
-                                 "This feature is currently unsupported.")
+                raise ValueError(
+                    "Cannot use a coarse map if using a death map. " "This feature is currently unsupported."
+                )
         self.check_dimensions_match_fine(self.death_map, "death")
 
     def add_dispersal_map(self, dispersal_map):
@@ -629,22 +663,43 @@ class Simulation(Landscape):
             map_to_check.set_dimensions()
             if not map_to_check.has_equal_dimensions(self.fine_map):
                 # if the sizes match, then proceed with a warning
-                if map_to_check.x_size == self.fine_map.x_size and \
-                        map_to_check.y_size == self.fine_map.y_size:
+                if map_to_check.x_size == self.fine_map.x_size and map_to_check.y_size == self.fine_map.y_size:
                     self.logger.warning("Coordinates of {} map did not match fine map.".format(name))
                     map_to_check.x_offset = self.fine_map.x_offset
                     map_to_check.y_offset = self.fine_map.y_offset
                     map_to_check.x_res = self.fine_map.x_res
                     map_to_check.y_res = self.fine_map.y_res
                 else:
-                    raise ValueError("Dimensions of the {} map do not match the fine map. This is currently "
-                                     "unsupported.".format(name))
+                    raise ValueError(
+                        "Dimensions of the {} map do not match the fine map. This is currently "
+                        "unsupported.".format(name)
+                    )
 
-    def set_simulation_parameters(self, seed, job_type, output_directory, min_speciation_rate, sigma=1.0, tau=1.0,
-                                  deme=1.0, sample_size=1.0, max_time=3600, dispersal_method=None, m_prob=0.0, cutoff=0,
-                                  dispersal_relative_cost=1, min_num_species=1, restrict_self=False,
-                                  landscape_type=False, protracted=False, min_speciation_gen=None,
-                                  max_speciation_gen=None, spatial=True, uses_spatial_sampling=False, times=None):
+    def set_simulation_parameters(
+        self,
+        seed,
+        job_type,
+        output_directory,
+        min_speciation_rate,
+        sigma=1.0,
+        tau=1.0,
+        deme=1.0,
+        sample_size=1.0,
+        max_time=3600,
+        dispersal_method=None,
+        m_prob=0.0,
+        cutoff=0,
+        dispersal_relative_cost=1,
+        min_num_species=1,
+        restrict_self=False,
+        landscape_type=False,
+        protracted=False,
+        min_speciation_gen=None,
+        max_speciation_gen=None,
+        spatial=True,
+        uses_spatial_sampling=False,
+        times=None,
+    ):
         """
         Set all the simulation parameters apart from the map objects.
 
@@ -709,14 +764,17 @@ class Simulation(Landscape):
             if protracted:
                 self.protracted = True
                 if max_speciation_gen is None:
-                    self.logger.warning("Using protracted speciation, but no maximum speciation generation supplied."
-                                        " Default to 10^100")
+                    self.logger.warning(
+                        "Using protracted speciation, but no maximum speciation generation supplied."
+                        " Default to 10^100"
+                    )
                     self.max_speciation_gen = 10 ** 100
                 else:
                     self.max_speciation_gen = max_speciation_gen
                 if min_speciation_gen is None:
-                    self.logger.warning("Using protracted speciation, but no minimum speciation generation supplied."
-                                        " Default to 0.0")
+                    self.logger.warning(
+                        "Using protracted speciation, but no minimum speciation generation supplied." " Default to 0.0"
+                    )
                     self.min_speciation_gen = 0.0
                 else:
                     self.min_speciation_gen = min_speciation_gen
@@ -756,8 +814,8 @@ class Simulation(Landscape):
         """
         if not self.is_setup_param or (self.seed == 0 and self.job_type == 0):
             raise RuntimeError("Simulation parameters have not been set.")
-        if self.output_directory in {"", None, 'null'}:
-            raise RuntimeError('Output directory not set.')
+        if self.output_directory in {"", None, "null"}:
+            raise RuntimeError("Output directory not set.")
         if self.full_config_file is not None:
             check_parent(self.full_config_file)
         try:
@@ -770,8 +828,9 @@ class Simulation(Landscape):
             else:
                 self.logger.info(str(err))
 
-    def resume_coalescence(self, pause_directory, seed, job_type, max_time, out_directory=None,
-                           protracted=None, spatial=None):
+    def resume_coalescence(
+        self, pause_directory, seed, job_type, max_time, out_directory=None, protracted=None, spatial=None
+    ):
         """
         Resumes the simulation from the specified directory, looking for the simulation with the specified seed and task
         referencing.
@@ -804,7 +863,8 @@ class Simulation(Landscape):
         file_path = os.path.join(pause_directory, "Pause", "Dump_main_{}_{}.csv".format(job_type, seed))
         if not os.path.exists(file_path):
             raise IOError(
-                "Paused file " + file_path + " not found. Ensure pause directory is correct and is accessible.")
+                "Paused file " + file_path + " not found. Ensure pause directory is correct and is accessible."
+            )
         self.setup_necsim()
         self.c_simulation.setup_resume(pause_directory, out_directory, seed, job_type, max_time)
         self.is_setup_complete = True
@@ -853,8 +913,7 @@ class Simulation(Landscape):
             else:
                 ds = gdal.Open(self.sample_map.file_name)
                 ds_array = ds.GetRasterBand(1).ReadAsArray()
-            self.count_total = np.sum(ds_array) * \
-                               self.sample_size * self.get_average_density()
+            self.count_total = np.sum(ds_array) * self.sample_size * self.get_average_density()
             if len(self.times_list) > 0:
                 self.count_total *= len(self.times_list)
             return self.count_total
@@ -871,8 +930,9 @@ class Simulation(Landscape):
             if self.fine_map.file_name == "null":
                 self.fine_map_array = np.ones((self.fine_map.x_size, self.fine_map.y_size))
             else:
-                self.fine_map_array = self.fine_map.get_subset(self.fine_map.x_offset, self.fine_map.y_offset,
-                                                               self.sample_map.x_size, self.sample_map.y_size)
+                self.fine_map_array = self.fine_map.get_subset(
+                    self.fine_map.x_offset, self.fine_map.y_offset, self.sample_map.x_size, self.sample_map.y_size
+                )
 
     def import_sample_map_array(self):
         """
@@ -909,11 +969,13 @@ class Simulation(Landscape):
         :rtype: int
         """
         self.import_fine_map_array()
-        if self.sample_map.file_name not in ["none", "null", None] and \
-                self.sample_map.file_name != self.fine_map.file_name:
+        if (
+            self.sample_map.file_name not in ["none", "null", None]
+            and self.sample_map.file_name != self.fine_map.file_name
+        ):
             self.import_sample_map_array()
             # Less accurate, but faster way.
-            arr_subset = self.sample_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim]
+            arr_subset = self.sample_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim]
             return int(np.sum(np.floor(arr_subset * self.get_average_density() * self.sample_size)))
         return int(np.sum(np.floor(self.fine_map_array * self.deme * self.sample_size)))
 
@@ -933,16 +995,32 @@ class Simulation(Landscape):
         :rtype: int
         """
         self.import_fine_map_array()
-        if self.sample_map.file_name not in ["none", "null", None] and \
-                self.sample_map.file_name != self.fine_map.file_name:
+        if (
+            self.sample_map.file_name not in ["none", "null", None]
+            and self.sample_map.file_name != self.fine_map.file_name
+        ):
             self.import_sample_map_array()
             # Less accurate, but faster way.
-            return int(np.sum(np.floor(np.multiply(self.fine_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim],
-                                                   self.sample_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim]) *
-                                       self.deme * self.sample_size)))
+            return int(
+                np.sum(
+                    np.floor(
+                        np.multiply(
+                            self.fine_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim],
+                            self.sample_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim],
+                        )
+                        * self.deme
+                        * self.sample_size
+                    )
+                )
+            )
         else:
-            return int(np.sum(np.floor(self.fine_map_array[y_off:y_off + y_dim, x_off:x_off + x_dim] *
-                                       self.deme * self.sample_size)))
+            return int(
+                np.sum(
+                    np.floor(
+                        self.fine_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim] * self.deme * self.sample_size
+                    )
+                )
+            )
 
     def get_average_density(self):
         """
@@ -961,8 +1039,12 @@ class Simulation(Landscape):
         :return: true if the grid and sample map dimensions and offsets are equal
         :rtype: bool
         """
-        return self.grid.x_size == self.sample_map.x_size and self.grid.y_size == self.sample_map.x_size and \
-               self.grid.x_offset == 0 and self.grid.y_offset == 0
+        return (
+            self.grid.x_size == self.sample_map.x_size
+            and self.grid.y_size == self.sample_map.x_size
+            and self.grid.x_offset == 0
+            and self.grid.y_offset == 0
+        )
 
     def optimise_ram(self, ram_limit):
         """
@@ -985,8 +1067,7 @@ class Simulation(Landscape):
         # Over-estimate static usage slightly
         static_usage = 1.1 * self.persistent_ram_usage() / 1024 ** 3
         if static_usage > ram_limit:
-            raise MemoryError(
-                "Cannot achieve RAM limit: minimum requirements are {}GB.".format(round(static_usage, 2)))
+            raise MemoryError("Cannot achieve RAM limit: minimum requirements are {}GB.".format(round(static_usage, 2)))
         remaining_space = (ram_limit - static_usage) * 1024 ** 3
         self.logger.info("Remaining space is {}GB.\n".format(round(remaining_space / 1024 ** 3, 2)))
         # Rough calculation of number of cells we have remaining (aim for 75% to be sure)
@@ -1039,10 +1120,8 @@ class Simulation(Landscape):
                 if max_x + size > self.sample_map.x_size or max_y + size > self.sample_map.y_size:  # pragma: no cover
                     self.logger.debug("Max x,y: {}, {}".format(max_x, max_y))
                     self.logger.debug("Size: {}".format(size))
-                    self.logger.debug("Fine map size: {}, {}".format(self.fine_map.x_size,
-                                                                     self.fine_map.y_size))
-                    self.logger.debug("Sample map size: {}, {}".format(self.sample_map.x_size,
-                                                                       self.sample_map.y_size))
+                    self.logger.debug("Fine map size: {}, {}".format(self.fine_map.x_size, self.fine_map.y_size))
+                    self.logger.debug("Sample map size: {}, {}".format(self.sample_map.x_size, self.sample_map.y_size))
                     raise RuntimeError("Incorrect dimension setting - please report this bug")
                 self.grid.x_size = size
                 self.grid.y_size = size
@@ -1052,8 +1131,10 @@ class Simulation(Landscape):
                 if self.check_sample_map_equals_sample_grid():  # pragma: no cover
                     self.grid.file_name = "none"
             else:  # pragma: no cover
-                raise MemoryError("Could not optimise maps for desired memory usage. "
-                                  "Attempted grid size of {} and achived max of {}".format(size, max_attained))
+                raise MemoryError(
+                    "Could not optimise maps for desired memory usage. "
+                    "Attempted grid size of {} and achived max of {}".format(size, max_attained)
+                )
         self._wipe_objects()
 
     def get_optimised_solution(self):
@@ -1064,11 +1145,13 @@ class Simulation(Landscape):
         :return: dict containing the important optimised variables
         :rtype: dict
         """
-        return {"grid_x_size": self.grid.x_size,
-                "grid_y_size": self.grid.y_size,
-                "sample_x_offset": self.sample_map.x_offset,
-                "sample_y_offset": self.sample_map.y_offset,
-                "grid_file_name": self.grid.file_name}.copy()
+        return {
+            "grid_x_size": self.grid.x_size,
+            "grid_y_size": self.grid.y_size,
+            "sample_x_offset": self.sample_map.x_offset,
+            "sample_y_offset": self.sample_map.y_offset,
+            "grid_file_name": self.grid.file_name,
+        }.copy()
 
     def set_optimised_solution(self, dict_in):
         """
@@ -1134,8 +1217,9 @@ class Simulation(Landscape):
         """
         Saves the output database location to self.output_database.
         """
-        self.output_database = os.path.join(self.output_directory, "data_{}_{}.db".format(str(self.job_type),
-                                                                                          str(self.seed)))
+        self.output_database = os.path.join(
+            self.output_directory, "data_{}_{}.db".format(str(self.job_type), str(self.seed))
+        )
 
     def check_sql_database(self, expected=False):
         """
@@ -1172,9 +1256,11 @@ class Simulation(Landscape):
         """
         if self.is_spatial:
             Landscape.check_maps(self)
-            if self.grid.file_name == "set" and \
-                    self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size or \
-                    self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size:
+            if (
+                self.grid.file_name == "set"
+                and self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size
+                or self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size
+            ):
                 raise ValueError("Grid is not within the sample map - please check offsets of sample map.")
             self.check_dispersal_map()
             self.check_reproduction_map()

@@ -72,7 +72,7 @@ class Fragment:
         self.y = int(math.floor(self.y))
 
 
-class FragmentedLandscape():
+class FragmentedLandscape:
     """
     Contains hexagonal packing algorithms for spacing clumps evenly on the landscape. Includes a LLoyd's smoothing
     algorithm for better spacing of fragments.
@@ -324,8 +324,10 @@ class FragmentedLandscape():
         :rtype: None
         """
         if self.total_added + self.remainder != self.number_fragments:
-            raise ValueError("Total added ({}) plus remainder ({}) != the number of fragments ({})."
-                             " Please report this bug.".format(self.total_added, self.remainder, self.number_fragments))
+            raise ValueError(
+                "Total added ({}) plus remainder ({}) != the number of fragments ({})."
+                " Please report this bug.".format(self.total_added, self.remainder, self.number_fragments)
+            )
         tot = 0
         if self.remainder > 0:
             iteration = self.number_cols / self.remainder
@@ -400,8 +402,7 @@ class FragmentedLandscape():
             if self.remainder != 0:
                 raise ValueError("Remainders not correct. Please report this bug.")
             if np.sum(self.grid) != float(self.total):
-                raise ValueError("Total does not equal size: {} != {}.".format(np.sum(self.grid),
-                                                                               float(self.total)))
+                raise ValueError("Total does not equal size: {} != {}.".format(np.sum(self.grid), float(self.total)))
         except ValueError as ve:
             raise ValueError("Validation failed: {}".format(ve))
 
@@ -421,9 +422,7 @@ class FragmentedLandscape():
         for i in range(self.size):
             if self.grid[i, i] == 0:
                 self.grid[i, i] == 0
-        output_raster = gdal.GetDriverByName('GTiff').Create(self.output_file,
-                                                             self.size, self.size, 1,
-                                                             gdal.GDT_Byte)
+        output_raster = gdal.GetDriverByName("GTiff").Create(self.output_file, self.size, self.size, 1, gdal.GDT_Byte)
         if not output_raster:  # pragma: no cover
             raise IOError("Could not create tif file at {}.".format(self.output_file))
         output_raster.SetGeoTransform(geotransform)

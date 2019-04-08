@@ -67,6 +67,7 @@ class TestMapImports(unittest.TestCase):
         """Mocks a fake subprocess call to ``gdal-config --datadir`` and checks that the correct errors are raised"""
         subprocess.check_output = create_autospec(subprocess.check_output, return_value=b"/not/a/gdal/dir\n")
         import pycoalescence.map
+
         with self.assertRaises(ImportError):
             reload(pycoalescence.map)
         subprocess.check_output = self.orig_call
@@ -200,8 +201,10 @@ class TestMap(unittest.TestCase):
 
     def testExtents(self):
         """Tests that the extents are correctly calculated for the Map files."""
-        self.assertListEqual([-78.3750000000000000,-78.2666666666666657, 0.7500000000000009, 0.8583333333333343],
-                             self.fine_map.get_extent())
+        self.assertListEqual(
+            [-78.3750000000000000, -78.2666666666666657, 0.7500000000000009, 0.8583333333333343],
+            self.fine_map.get_extent(),
+        )
 
     def testIsWithin(self):
         """
@@ -235,7 +238,9 @@ class TestMap(unittest.TestCase):
         self.assertEqual(
             'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
             'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],'
-            'AUTHORITY["EPSG","4326"]]', proj)
+            'AUTHORITY["EPSG","4326"]]',
+            proj,
+        )
 
     def testRasteriseShapefile(self):
         """
@@ -243,15 +248,17 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out1.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001)
+        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster, x_res=0.00833333, y_res=0.001)
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         self.assertEqual(361, np.sum(m.data))
         self.assertEqual(1, m.data[20, 4])
@@ -263,15 +270,24 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out2.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001, field="field1", burn_val=100)
+        m.rasterise(
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            field="field1",
+            burn_val=100,
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         self.assertEqual(4460, np.sum(m.data))
         self.assertEqual(10, m.data[21, 5])
@@ -284,15 +300,24 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out3.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001, field="field2", burn_val=100)
+        m.rasterise(
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            field="field2",
+            burn_val=100,
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         self.assertEqual(67705, np.sum(m.data))
         self.assertEqual(245, m.data[20, 4])
@@ -305,15 +330,19 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out4.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001, burn_val=100)
+        m.rasterise(
+            shape_file="sample/shape_sample.shp", raster_file=output_raster, x_res=0.00833333, y_res=0.001, burn_val=100
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         self.assertEqual(36100, np.sum(m.data))
         self.assertEqual(100, m.data[20, 4])
@@ -326,15 +355,23 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out5.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001, attribute_filter="field1=10")
+        m.rasterise(
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            attribute_filter="field1=10",
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([10, 65, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         self.assertEqual(274, np.sum(m.data))
         self.assertEqual(1, m.data[1, 4])
@@ -345,15 +382,24 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out6.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001, x_buffer=2.0, y_buffer=3.0)
+        m.rasterise(
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            x_buffer=2.0,
+            y_buffer=3.0,
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([15, 75, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         self.assertEqual(361, np.sum(m.data))
         self.assertEqual(1, m.data[20, 4])
@@ -366,15 +412,19 @@ class TestMap(unittest.TestCase):
         m = Map()
         output_raster = "output/raster_out7.tif"
         output_ds = ogr.Open("sample/shape_sample.shp")
-        m.rasterise(shape_file=output_ds, raster_file=output_raster,
-                    x_res=0.00833333, y_res=0.001, x_buffer=2.0, y_buffer=3.0)
+        m.rasterise(
+            shape_file=output_ds, raster_file=output_raster, x_res=0.00833333, y_res=0.001, x_buffer=2.0, y_buffer=3.0
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([15, 75, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         output_ds = None
         self.assertEqual(361, np.sum(m.data))
@@ -394,9 +444,12 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([12, 10, 0, 0, 0.00833333, -0.00833333]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         output_ds = None
         self.assertEqual(53, np.sum(m.data))
@@ -416,9 +469,12 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([13, 13, 0, 0, 0.00833333, -0.00833333]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual('GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-                         'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-                         'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]', m.get_projection())
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
+            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
         m.open()
         output_ds = None
         self.assertEqual(53, np.sum(m.data))
@@ -431,22 +487,45 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         with self.assertRaises(IOError):
-            m.rasterise(shape_file="not_exist", raster_file="output.tif", x_res=0.00833333, y_res=0.001, field="field2",
-                        burn_val=100)
+            m.rasterise(
+                shape_file="not_exist",
+                raster_file="output.tif",
+                x_res=0.00833333,
+                y_res=0.001,
+                field="field2",
+                burn_val=100,
+            )
         m = Map()
         with self.assertRaises(IOError):
-            m.rasterise(shape_file="sample/shape_sample.shp", raster_file="sample/SA_sample.tif", x_res=0.00833333,
-                        y_res=0.001, field="field2", burn_val=100)
+            m.rasterise(
+                shape_file="sample/shape_sample.shp",
+                raster_file="sample/SA_sample.tif",
+                x_res=0.00833333,
+                y_res=0.001,
+                field="field2",
+                burn_val=100,
+            )
         with self.assertRaises(ValueError):
-            m.rasterise(shape_file="sample/SA_sample.tif", raster_file="output.tif", x_res=0.00833333,
-                        y_res=0.001, field="field2", burn_val=100)
+            m.rasterise(
+                shape_file="sample/SA_sample.tif",
+                raster_file="output.tif",
+                x_res=0.00833333,
+                y_res=0.001,
+                field="field2",
+                burn_val=100,
+            )
         m = Map()
         with self.assertRaises(ValueError):
             m.rasterise(shape_file="sample/shape_sample.shp", raster_file="no_exist.tif")
         m = Map()
         with self.assertRaises(ValueError):
-            m.rasterise(shape_file="sample/shape_sample.shp", raster_file="output.tif",
-                        geo_transform=(1, 1, 1, 1, 1, 1), x_res=1.0, y_res=1.0)
+            m.rasterise(
+                shape_file="sample/shape_sample.shp",
+                raster_file="output.tif",
+                geo_transform=(1, 1, 1, 1, 1, 1),
+                x_res=1.0,
+                y_res=1.0,
+            )
 
     def testCreateCopy(self):
         """
@@ -492,9 +571,11 @@ class TestMap(unittest.TestCase):
         m.data = np.random.rand(10, 10)
         output_file = "output/test_create2.tif"
         gt = (-76.54166666666666, 0.008333333333333333, 0.0, 5.024999999999999, 0.0, -0.008333333333333333)
-        proj = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],' \
-               'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG",' \
-               '"4326"]]'
+        proj = (
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
+            'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG",'
+            '"4326"]]'
+        )
         m.create(output_file, bands=1, datatype=gdal.GDT_Float32, geotransform=gt, projection=proj)
         m2 = Map(output_file)
         m2.open()
@@ -663,7 +744,7 @@ class TestMapReprojection(unittest.TestCase):
         m2 = Map("sample/bytesample.tif")
         self.assertIsNone(m2.get_no_data())
         m3 = Map("sample/example_historical_fine.tif")
-        self.assertAlmostEqual(-3.4028234663852886e+38, m3.get_no_data(), places=7)
+        self.assertAlmostEqual(-3.4028234663852886e38, m3.get_no_data(), places=7)
 
     def testMultiBandsExist(self):
         """Tests that the correct number of bands exist in the output raster."""
@@ -717,8 +798,9 @@ class MapAssignment(unittest.TestCase):
             m.map_exists()
 
 
-@unittest.skipUnless(hasattr(scipy.spatial, "Voronoi"),
-                     "Skipping reprojection test as scipy.spatial.Voronoi not found.")
+@unittest.skipUnless(
+    hasattr(scipy.spatial, "Voronoi"), "Skipping reprojection test as scipy.spatial.Voronoi not found."
+)
 class TestFragmentedLandscape(unittest.TestCase):
     """
     Tests that the fragmented landscape generation creates successfully for a range of fragment numbers and sizes.
@@ -732,20 +814,25 @@ class TestFragmentedLandscape(unittest.TestCase):
         """
         if os.path.exists("landscapes"):
             shutil.rmtree("landscapes")
-        cls.l1 = FragmentedLandscape(size=10, number_fragments=2, total=4,
-                                     output_file=os.path.join("landscapes", "l1.tif"))
-        cls.l2 = FragmentedLandscape(size=100, number_fragments=57, total=150,
-                                     output_file=os.path.join("landscapes", "l2.tif"))
-        cls.l3 = FragmentedLandscape(size=24, number_fragments=5, total=5,
-                                     output_file=os.path.join("landscapes", "l3.tif"))
+        cls.l1 = FragmentedLandscape(
+            size=10, number_fragments=2, total=4, output_file=os.path.join("landscapes", "l1.tif")
+        )
+        cls.l2 = FragmentedLandscape(
+            size=100, number_fragments=57, total=150, output_file=os.path.join("landscapes", "l2.tif")
+        )
+        cls.l3 = FragmentedLandscape(
+            size=24, number_fragments=5, total=5, output_file=os.path.join("landscapes", "l3.tif")
+        )
         cls.l1.generate()
         cls.l2.generate()
         cls.l3.generate()
-        cls.l4 = FragmentedLandscape(size=10, number_fragments=1, total=2,
-                                     output_file=os.path.join("landscapes", "l4.tif"))
+        cls.l4 = FragmentedLandscape(
+            size=10, number_fragments=1, total=2, output_file=os.path.join("landscapes", "l4.tif")
+        )
         cls.l4.generate()
-        cls.l5 = FragmentedLandscape(size=100, number_fragments=100, total=2000,
-                                     output_file=os.path.join("landscapes", "l5.tif"))
+        cls.l5 = FragmentedLandscape(
+            size=100, number_fragments=100, total=2000, output_file=os.path.join("landscapes", "l5.tif")
+        )
         cls.l5.generate()
 
     @classmethod

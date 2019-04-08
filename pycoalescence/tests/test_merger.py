@@ -43,10 +43,52 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
         Tests that simulation parameters are correctly read from the database.
         """
         simulation_parameters = Merger()._read_simulation_parameters(input_simulation="sample/mergers/data_0_0.db")
-        expected_parameters = [6, 6, "output", 0.5, 4.0, 4.0, 1, 0.1, 10, 1.0, 1, 0.0, 200.0,
-                               "set", "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0,
-                               "sample/SA_sample_fine.tif", 13, 13, 0, 0, "null", 13, 13, 13, 13, 0, 0, "none",
-                               "none", 1, "normal", 0.0, 0.0, 0, "closed", 0, 0.0, 0.0, "none"]
+        expected_parameters = [
+            6,
+            6,
+            "output",
+            0.5,
+            4.0,
+            4.0,
+            1,
+            0.1,
+            10,
+            1.0,
+            1,
+            0.0,
+            200.0,
+            "set",
+            "sample/SA_sample_coarse.tif",
+            35,
+            41,
+            11,
+            14,
+            1.0,
+            "sample/SA_sample_fine.tif",
+            13,
+            13,
+            0,
+            0,
+            "null",
+            13,
+            13,
+            13,
+            13,
+            0,
+            0,
+            "none",
+            "none",
+            1,
+            "normal",
+            0.0,
+            0.0,
+            0,
+            "closed",
+            0,
+            0.0,
+            0.0,
+            "none",
+        ]
         self.assertListEqual(simulation_parameters, expected_parameters)
 
     def testReadsSpeciesList(self):
@@ -54,11 +96,13 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
         Tests that the species list object is correctly read from the database.
         """
         species_list = Merger()._read_species_list(input_simulation="sample/mergers/data_0_0.db")[0:5]
-        expected_list = [[0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0.0, 0, 0.0, ],
-                         [1, 0, 0, 0, 0, 0, 1, 0, 3761, 0, 0.712285394568117, 0, 0.0],
-                         [2, 0, 0, 0, 0, 0, 1, 0, 3762, 0, 0.113159547847957, 0, 0.0],
-                         [3, 0, 0, 0, 0, 0, 1, 0, 3763, 0, 0.95236636044045, 0, 0.0],
-                         [4, 0, 0, 0, 0, 0, 1, 0, 3764, 0, 0.679672305831754, 0, 0.0]]
+        expected_list = [
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0.0, 0, 0.0],
+            [1, 0, 0, 0, 0, 0, 1, 0, 3761, 0, 0.712285394568117, 0, 0.0],
+            [2, 0, 0, 0, 0, 0, 1, 0, 3762, 0, 0.113159547847957, 0, 0.0],
+            [3, 0, 0, 0, 0, 0, 1, 0, 3763, 0, 0.95236636044045, 0, 0.0],
+            [4, 0, 0, 0, 0, 0, 1, 0, 3764, 0, 0.679672305831754, 0, 0.0],
+        ]
         for i, row in enumerate(expected_list):
             for j, each in enumerate(row):
                 if j == 10 or j == 12:
@@ -71,11 +115,7 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
         Tests that the species richness object is correctly read from the database
         """
         species_richness = Merger()._read_species_richness(input_simulation="sample/mergers/data_0_0.db")
-        expected_richness = [[0, 1, 3644],
-                             [1, 2, 3643],
-                             [2, 3, 3674], [3, 4, 3675],
-                             [4, 5, 3697],
-                             [5, 6, 3695]]
+        expected_richness = [[0, 1, 3644], [1, 2, 3643], [2, 3, 3674], [3, 4, 3675], [4, 5, 3697], [5, 6, 3695]]
         for i, row in enumerate(expected_richness):
             self.assertListEqual(row, species_richness[i])
 
@@ -84,12 +124,14 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
         Tests that the species abundances object is correctly read from the database
         """
         species_abundances = Merger()._read_species_abundances(input_simulation="sample/mergers/data_0_0.db")[-6:]
-        expected_abundances = [[22029, 3690, 2, 6],
-                               [22030, 3691, 1, 6],
-                               [22031, 3692, 1, 6],
-                               [22032, 3693, 1, 6],
-                               [22033, 3694, 1, 6],
-                               [22034, 3695, 3, 6]]
+        expected_abundances = [
+            [22029, 3690, 2, 6],
+            [22030, 3691, 1, 6],
+            [22031, 3692, 1, 6],
+            [22032, 3693, 1, 6],
+            [22033, 3694, 1, 6],
+            [22034, 3695, 3, 6],
+        ]
         for i, row in enumerate(expected_abundances):
             self.assertListEqual(row, species_abundances[i])
 
@@ -98,12 +140,14 @@ class TestSimulationReadingViaMerger(unittest.TestCase):
         Tests that the fragment octaves object is correctly read from the database.
         """
         fragment_octaves = Merger()._read_fragment_octaves(input_simulation="sample/mergers/data_0_0.db")
-        expected_octaves = [[0, "whole", 0, 3560],
-                            [1, "whole", 0, 3559],
-                            [2, "whole", 0, 3617],
-                            [3, "whole", 0, 3619],
-                            [4, "whole", 0, 3662],
-                            [5, "whole", 0, 3658]]
+        expected_octaves = [
+            [0, "whole", 0, 3560],
+            [1, "whole", 0, 3559],
+            [2, "whole", 0, 3617],
+            [3, "whole", 0, 3619],
+            [4, "whole", 0, 3662],
+            [5, "whole", 0, 3658],
+        ]
         for i, row in enumerate(expected_octaves):
             self.assertListEqual(row, fragment_octaves[i])
 
@@ -208,10 +252,12 @@ class TestSimulationMerging(unittest.TestCase):
         species_richness = fetch_table_from_sql(self.dbname, "SPECIES_LIST")
         check_richness = [x for x in species_richness if x[0] in [57236791, 57251923, 4, 5]]
         check_richness.sort(key=lambda x: x[0])
-        expected_richness = [[4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0.0, 0, 0.0, 2],
-                             [5, 0, 0, 0, 0, 0, 1, 0, 11328, 0, 0.712285394568117, 0, 0.0, 2],
-                             [57236791, 0, 8, 6, -1, 0, 0, 1, 0, 0, 0.59455712863121, 2, 0.0, 1],
-                             [57251923, 0, 7, 3, 0, 0, 0, 1, 0, 0, 0.603760047033245, 2, 0.0, 1]]
+        expected_richness = [
+            [4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0.0, 0, 0.0, 2],
+            [5, 0, 0, 0, 0, 0, 1, 0, 11328, 0, 0.712285394568117, 0, 0.0, 2],
+            [57236791, 0, 8, 6, -1, 0, 0, 1, 0, 0, 0.59455712863121, 2, 0.0, 1],
+            [57251923, 0, 7, 3, 0, 0, 0, 1, 0, 0, 0.603760047033245, 2, 0.0, 1],
+        ]
         for i, row in enumerate(expected_richness):
             for j, each in enumerate(row):
                 if j == 10 or j == 12:
@@ -223,12 +269,7 @@ class TestSimulationMerging(unittest.TestCase):
         """
         Tests that the landscape species richness is correctly calculated from the databases.
         """
-        richness = [[0, 1, 7288],
-                    [1, 2, 7286],
-                    [2, 3, 7348],
-                    [3, 4, 7350],
-                    [4, 5, 7394],
-                    [5, 6, 7390]]
+        richness = [[0, 1, 7288], [1, 2, 7286], [2, 3, 7348], [3, 4, 7350], [4, 5, 7394], [5, 6, 7390]]
         self.assertListEqual(fetch_table_from_sql(self.dbname, "SPECIES_RICHNESS"), richness)
 
     def testSpeciesAbundances(self):
@@ -247,44 +288,199 @@ class TestSimulationMerging(unittest.TestCase):
         """
         Tests that the simulation parameters are correctly calculated in the merged database.
         """
-        sim_pars = [[6, 6, "output", 0.5, 4.0, 4.0, 1, 0.1, 10, 1.0, 1, 0.0, 200.0,
-                     "set", "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0,
-                     "sample/SA_sample_fine.tif", 13, 13, 0, 0, "null", 13, 13, 13, 13, 0, 0, "none", "none", 1,
-                     "normal", 0.0, 0.0, 0, "closed", 0, 0.0, 0.0,
-                     "none", 1, "sample/mergers/data_0_0.db"],
-                    [6, 6, "output", 0.5, 4.0, 4.0, 2, 0.1, 10, 1.0, 1, 0.0, 200.0, "set",
-                     "sample/SA_sample_coarse.tif", 35, 41, 11, 14, 1.0, "sample/SA_sample_fine.tif", 13, 13, 0, 0,
-                     "null", 13, 13, 13, 13, 0, 0, "none", "none", 1, "normal", 0.0, 0.0, 0, "closed", 0, 0.0, 0.0,
-                     "none", 2, "sample/mergers/data_1_1.db"]]
+        sim_pars = [
+            [
+                6,
+                6,
+                "output",
+                0.5,
+                4.0,
+                4.0,
+                1,
+                0.1,
+                10,
+                1.0,
+                1,
+                0.0,
+                200.0,
+                "set",
+                "sample/SA_sample_coarse.tif",
+                35,
+                41,
+                11,
+                14,
+                1.0,
+                "sample/SA_sample_fine.tif",
+                13,
+                13,
+                0,
+                0,
+                "null",
+                13,
+                13,
+                13,
+                13,
+                0,
+                0,
+                "none",
+                "none",
+                1,
+                "normal",
+                0.0,
+                0.0,
+                0,
+                "closed",
+                0,
+                0.0,
+                0.0,
+                "none",
+                1,
+                "sample/mergers/data_0_0.db",
+            ],
+            [
+                6,
+                6,
+                "output",
+                0.5,
+                4.0,
+                4.0,
+                2,
+                0.1,
+                10,
+                1.0,
+                1,
+                0.0,
+                200.0,
+                "set",
+                "sample/SA_sample_coarse.tif",
+                35,
+                41,
+                11,
+                14,
+                1.0,
+                "sample/SA_sample_fine.tif",
+                13,
+                13,
+                0,
+                0,
+                "null",
+                13,
+                13,
+                13,
+                13,
+                0,
+                0,
+                "none",
+                "none",
+                1,
+                "normal",
+                0.0,
+                0.0,
+                0,
+                "closed",
+                0,
+                0.0,
+                0.0,
+                "none",
+                2,
+                "sample/mergers/data_1_1.db",
+            ],
+        ]
         actual = fetch_table_from_sql(self.dbname, "SIMULATION_PARAMETERS")
         for i, each in enumerate(sim_pars):
             self.assertListEqual(actual[i], each)
 
     def testSimulationParametersFetching(self):
-        output_pars1 = {'coarse_map_file': 'sample/SA_sample_coarse.tif', 'coarse_map_scale': 1.0, 'coarse_map_x': 35,
-                        'coarse_map_x_offset': 11, 'coarse_map_y': 41, 'coarse_map_y_offset': 14, 'cutoff': 0.0,
-                        'deme': 1, 'dispersal_map': 'none', 'dispersal_method': 'normal',
-                        'dispersal_relative_cost': 1.0, 'fine_map_file': 'sample/SA_sample_fine.tif', 'fine_map_x': 13,
-                        'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_historical': 200.0,
-                        'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'landscape_type': 'closed',
-                        'job_type': 6, 'm_probability': 0.0, 'max_speciation_gen': 0.0, 'max_time': 10,
-                        'min_num_species': 1, 'min_speciation_gen': 0.0, 'output_dir': 'output',
-                        'historical_coarse_map': 'none', 'historical_fine_map': 'none', 'protracted': 0,
-                        'sample_file': 'null', 'sample_size': 0.1, 'sample_x': 13, 'sample_x_offset': 0, 'sample_y': 13,
-                        'sample_y_offset': 0, 'seed': 6, 'sigma': 4.0, 'sim_complete': 1, 'speciation_rate': 0.5,
-                        'tau': 4.0, 'time_config_file': 'set'}
-        output_pars2 = {'coarse_map_file': 'sample/SA_sample_coarse.tif', 'coarse_map_scale': 1.0, 'coarse_map_x': 35,
-                        'coarse_map_x_offset': 11, 'coarse_map_y': 41, 'coarse_map_y_offset': 14, 'cutoff': 0.0,
-                        'deme': 2, 'dispersal_map': 'none', 'dispersal_method': 'normal',
-                        'dispersal_relative_cost': 1.0, 'fine_map_file': 'sample/SA_sample_fine.tif', 'fine_map_x': 13,
-                        'fine_map_x_offset': 0, 'fine_map_y': 13, 'fine_map_y_offset': 0, 'gen_since_historical': 200.0,
-                        'grid_x': 13, 'grid_y': 13, 'habitat_change_rate': 0.0, 'landscape_type': 'closed',
-                        'job_type': 6, 'm_probability': 0.0, 'max_speciation_gen': 0.0, 'max_time': 10,
-                        'min_num_species': 1, 'min_speciation_gen': 0.0, 'output_dir': 'output',
-                        'historical_coarse_map': 'none', 'historical_fine_map': 'none', 'protracted': 0,
-                        'sample_file': 'null', 'sample_size': 0.1, 'sample_x': 13, 'sample_x_offset': 0, 'sample_y': 13,
-                        'sample_y_offset': 0, 'seed': 6, 'sigma': 4.0, 'sim_complete': 1, 'speciation_rate': 0.5,
-                        'tau': 4.0, 'time_config_file': 'set'}
+        output_pars1 = {
+            "coarse_map_file": "sample/SA_sample_coarse.tif",
+            "coarse_map_scale": 1.0,
+            "coarse_map_x": 35,
+            "coarse_map_x_offset": 11,
+            "coarse_map_y": 41,
+            "coarse_map_y_offset": 14,
+            "cutoff": 0.0,
+            "deme": 1,
+            "dispersal_map": "none",
+            "dispersal_method": "normal",
+            "dispersal_relative_cost": 1.0,
+            "fine_map_file": "sample/SA_sample_fine.tif",
+            "fine_map_x": 13,
+            "fine_map_x_offset": 0,
+            "fine_map_y": 13,
+            "fine_map_y_offset": 0,
+            "gen_since_historical": 200.0,
+            "grid_x": 13,
+            "grid_y": 13,
+            "habitat_change_rate": 0.0,
+            "landscape_type": "closed",
+            "job_type": 6,
+            "m_probability": 0.0,
+            "max_speciation_gen": 0.0,
+            "max_time": 10,
+            "min_num_species": 1,
+            "min_speciation_gen": 0.0,
+            "output_dir": "output",
+            "historical_coarse_map": "none",
+            "historical_fine_map": "none",
+            "protracted": 0,
+            "sample_file": "null",
+            "sample_size": 0.1,
+            "sample_x": 13,
+            "sample_x_offset": 0,
+            "sample_y": 13,
+            "sample_y_offset": 0,
+            "seed": 6,
+            "sigma": 4.0,
+            "sim_complete": 1,
+            "speciation_rate": 0.5,
+            "tau": 4.0,
+            "time_config_file": "set",
+        }
+        output_pars2 = {
+            "coarse_map_file": "sample/SA_sample_coarse.tif",
+            "coarse_map_scale": 1.0,
+            "coarse_map_x": 35,
+            "coarse_map_x_offset": 11,
+            "coarse_map_y": 41,
+            "coarse_map_y_offset": 14,
+            "cutoff": 0.0,
+            "deme": 2,
+            "dispersal_map": "none",
+            "dispersal_method": "normal",
+            "dispersal_relative_cost": 1.0,
+            "fine_map_file": "sample/SA_sample_fine.tif",
+            "fine_map_x": 13,
+            "fine_map_x_offset": 0,
+            "fine_map_y": 13,
+            "fine_map_y_offset": 0,
+            "gen_since_historical": 200.0,
+            "grid_x": 13,
+            "grid_y": 13,
+            "habitat_change_rate": 0.0,
+            "landscape_type": "closed",
+            "job_type": 6,
+            "m_probability": 0.0,
+            "max_speciation_gen": 0.0,
+            "max_time": 10,
+            "min_num_species": 1,
+            "min_speciation_gen": 0.0,
+            "output_dir": "output",
+            "historical_coarse_map": "none",
+            "historical_fine_map": "none",
+            "protracted": 0,
+            "sample_file": "null",
+            "sample_size": 0.1,
+            "sample_x": 13,
+            "sample_x_offset": 0,
+            "sample_y": 13,
+            "sample_y_offset": 0,
+            "seed": 6,
+            "sigma": 4.0,
+            "sim_complete": 1,
+            "speciation_rate": 0.5,
+            "tau": 4.0,
+            "time_config_file": "set",
+        }
         sim_pars1 = self.merger.get_simulation_parameters(guild=1)
         sim_pars2 = self.merger.get_simulation_parameters(guild=2)
         self.assertEqual(output_pars1, sim_pars1)
@@ -292,12 +488,14 @@ class TestSimulationMerging(unittest.TestCase):
 
     def testCommunityParameters(self):
         """Tests that the community parameters are correctly calculated in the merged database."""
-        community_params = [[1, 0.5, 0.0, 0, 0],
-                            [2, 0.5, 0.5, 0, 0],
-                            [3, 0.6, 0.0, 0, 0],
-                            [4, 0.6, 0.5, 0, 0],
-                            [5, 0.7, 0.0, 0, 0],
-                            [6, 0.7, 0.5, 0, 0]]
+        community_params = [
+            [1, 0.5, 0.0, 0, 0],
+            [2, 0.5, 0.5, 0, 0],
+            [3, 0.6, 0.0, 0, 0],
+            [4, 0.6, 0.5, 0, 0],
+            [5, 0.7, 0.0, 0, 0],
+            [6, 0.7, 0.5, 0, 0],
+        ]
         actual = fetch_table_from_sql(self.dbname, "COMMUNITY_PARAMETERS")
         for i, each in enumerate(community_params):
             self.assertListEqual(each, actual[i])
@@ -311,20 +509,48 @@ class TestSimulationMerging(unittest.TestCase):
         self.assertTrue(check_sql_table_exist(self.merger2.file, "SPECIES_RICHNESS_GUILDS"))
         self.assertTrue(check_sql_table_exist(self.merger2.file, "FRAGMENT_RICHNESS_GUILDS"))
         self.assertTrue(check_sql_table_exist(self.merger2.file, "FRAGMENT_OCTAVES_GUILDS"))
-        fragment_octaves = [[1, 'fragment1', 0, 2, 1], [2, 'fragment1', 1, 3, 1], [7, 'fragment1', 0, 3, 1],
-                            [13, 'fragment2', 0, 7, 1], [21, 'fragment2', 1, 7, 1], [31, 'fragment2', 0, 9, 1],
-                            [43, 'fragment2', 1, 6, 1], [57, 'whole', 0, 626, 1], [73, 'whole', 1, 593, 1],
-                            [91, 'whole', 2, 478, 1], [111, 'whole', 3, 287, 1], [133, 'whole', 4, 97, 1],
-                            [157, 'whole', 0, 1035, 1], [183, 'whole', 1, 985, 1], [211, 'whole', 2, 651, 1],
-                            [241, 'whole', 3, 238, 1], [273, 'whole', 4, 44, 1], [4, 'fragment1', 0, 6, 2],
-                            [5, 'fragment1', 0, 10, 2], [6, 'fragment2', 0, 10, 2], [14, 'fragment2', 1, 6, 2],
-                            [22, 'fragment2', 0, 18, 2], [32, 'whole', 0, 708, 2], [44, 'whole', 1, 563, 2],
-                            [58, 'whole', 2, 494, 2], [74, 'whole', 3, 275, 2], [92, 'whole', 4, 97, 2],
-                            [112, 'whole', 0, 1035, 2], [134, 'whole', 1, 920, 2], [158, 'whole', 2, 674, 2],
-                            [184, 'whole', 3, 256, 2], [212, 'whole', 0, 708, 2], [242, 'whole', 1, 563, 2],
-                            [274, 'whole', 2, 494, 2], [308, 'whole', 3, 275, 2], [344, 'whole', 4, 97, 2],
-                            [382, 'whole', 0, 1035, 2], [422, 'whole', 1, 920, 2], [464, 'whole', 2, 674, 2],
-                            [508, 'whole', 3, 256, 2]]
+        fragment_octaves = [
+            [1, "fragment1", 0, 2, 1],
+            [2, "fragment1", 1, 3, 1],
+            [7, "fragment1", 0, 3, 1],
+            [13, "fragment2", 0, 7, 1],
+            [21, "fragment2", 1, 7, 1],
+            [31, "fragment2", 0, 9, 1],
+            [43, "fragment2", 1, 6, 1],
+            [57, "whole", 0, 626, 1],
+            [73, "whole", 1, 593, 1],
+            [91, "whole", 2, 478, 1],
+            [111, "whole", 3, 287, 1],
+            [133, "whole", 4, 97, 1],
+            [157, "whole", 0, 1035, 1],
+            [183, "whole", 1, 985, 1],
+            [211, "whole", 2, 651, 1],
+            [241, "whole", 3, 238, 1],
+            [273, "whole", 4, 44, 1],
+            [4, "fragment1", 0, 6, 2],
+            [5, "fragment1", 0, 10, 2],
+            [6, "fragment2", 0, 10, 2],
+            [14, "fragment2", 1, 6, 2],
+            [22, "fragment2", 0, 18, 2],
+            [32, "whole", 0, 708, 2],
+            [44, "whole", 1, 563, 2],
+            [58, "whole", 2, 494, 2],
+            [74, "whole", 3, 275, 2],
+            [92, "whole", 4, 97, 2],
+            [112, "whole", 0, 1035, 2],
+            [134, "whole", 1, 920, 2],
+            [158, "whole", 2, 674, 2],
+            [184, "whole", 3, 256, 2],
+            [212, "whole", 0, 708, 2],
+            [242, "whole", 1, 563, 2],
+            [274, "whole", 2, 494, 2],
+            [308, "whole", 3, 275, 2],
+            [344, "whole", 4, 97, 2],
+            [382, "whole", 0, 1035, 2],
+            [422, "whole", 1, 920, 2],
+            [464, "whole", 2, 674, 2],
+            [508, "whole", 3, 256, 2],
+        ]
         actual = fetch_table_from_sql(self.dbname2, "FRAGMENT_OCTAVES_GUILDS")
         for i, each in enumerate(fragment_octaves):
             self.assertListEqual(each, actual[i])
@@ -383,12 +609,14 @@ class TestMergerAnalysis(unittest.TestCase):
         cls.merger.add_simulation("sample/mergers/data_1_1.db")
         cls.merger.write()
         cls.merger.wipe_data()
-        cls.merger.set_speciation_parameters(speciation_rates=[0.5, 0.6], record_spatial=False,
-                                             record_fragments="sample/FragmentsTest.csv")
+        cls.merger.set_speciation_parameters(
+            speciation_rates=[0.5, 0.6], record_spatial=False, record_fragments="sample/FragmentsTest.csv"
+        )
         cls.merger.apply()
         cls.merger = Merger(database=cls.dbname, logging_level=50, expected=True)
-        cls.merger.set_speciation_parameters(speciation_rates=[0.7, 0.8], record_spatial=False,
-                                             record_fragments="sample/FragmentsTest.csv")
+        cls.merger.set_speciation_parameters(
+            speciation_rates=[0.7, 0.8], record_spatial=False, record_fragments="sample/FragmentsTest.csv"
+        )
         cls.merger.apply_incremental()
         cls.merger.output()
         cls.merger.calculate_fragment_richness()
@@ -435,8 +663,7 @@ class TestMergerAnalysis(unittest.TestCase):
     def testMergerAddedSimulations(self):
         """Tests that added simulations work as intended."""
         added_sims = self.merger.get_added_simulations()
-        expected_sims = {"sample/mergers/data_0_0.db": 1,
-                         "sample/mergers/data_1_1.db": 2}
+        expected_sims = {"sample/mergers/data_0_0.db": 1, "sample/mergers/data_1_1.db": 2}
         self.assertEqual(added_sims, expected_sims)
         self.merger.simulation_list["sample/mergers/data_1_1.db"] = 4
         with self.assertRaises(ValueError):

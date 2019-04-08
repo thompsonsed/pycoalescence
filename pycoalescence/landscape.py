@@ -77,12 +77,19 @@ class Landscape:
         Sorts the historical maps by time.
         """
         if len(self.historical_fine_list) > 0 or len(self.historical_coarse_list) > 0:
-            if any(len(self.historical_fine_list) != len(x) for x in
-                   [self.historical_coarse_list, self.times_list, self.rates_list]):
-                raise ValueError('Discrepancy between historical file list, time list or rate list. Check inputs: {}')
-            self.times_list, self.historical_fine_list, self.historical_coarse_list, self.rates_list = \
-                [list(x) for x in zip(*sorted(zip(self.times_list, self.historical_fine_list,
-                                                  self.historical_coarse_list, self.rates_list)))]
+            if any(
+                len(self.historical_fine_list) != len(x)
+                for x in [self.historical_coarse_list, self.times_list, self.rates_list]
+            ):
+                raise ValueError("Discrepancy between historical file list, time list or rate list. Check inputs: {}")
+            self.times_list, self.historical_fine_list, self.historical_coarse_list, self.rates_list = [
+                list(x)
+                for x in zip(
+                    *sorted(
+                        zip(self.times_list, self.historical_fine_list, self.historical_coarse_list, self.rates_list)
+                    )
+                )
+            ]
 
     def set_map(self, map_file, x_size=None, y_size=None):
         """
@@ -104,8 +111,9 @@ class Landscape:
         self.is_setup_map = True
         self.coarse_scale = 1.0
 
-    def set_map_files(self, sample_file, fine_file=None, coarse_file=None, historical_fine_file=None,
-                      historical_coarse_file=None):
+    def set_map_files(
+        self, sample_file, fine_file=None, coarse_file=None, historical_fine_file=None, historical_coarse_file=None
+    ):
         """
         Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
         the specified dimensions.
@@ -126,25 +134,59 @@ class Landscape:
         :return: None
         """
         if fine_file in [None, "null", "none"]:
-            raise ValueError("Fine map file cannot be 'none' or 'null' for automatic parameter detection."
-                             "Use set_map_parameters() instead.")
+            raise ValueError(
+                "Fine map file cannot be 'none' or 'null' for automatic parameter detection."
+                "Use set_map_parameters() instead."
+            )
         if coarse_file is None:
             coarse_file = "none"
         if historical_fine_file is None:
             historical_fine_file = "none"
         if historical_coarse_file is None:
             historical_coarse_file = "none"
-        self.set_map_parameters(sample_file, 0, 0, fine_file, 0, 0, 0, 0, coarse_file, 0, 0, 0, 0, 0,
-                                historical_fine_file, historical_coarse_file)
+        self.set_map_parameters(
+            sample_file,
+            0,
+            0,
+            fine_file,
+            0,
+            0,
+            0,
+            0,
+            coarse_file,
+            0,
+            0,
+            0,
+            0,
+            0,
+            historical_fine_file,
+            historical_coarse_file,
+        )
         try:
             self.detect_map_dimensions()
         except Exception as e:
             self.is_setup_map = False
             raise e
 
-    def set_map_parameters(self, sample_file, sample_x, sample_y, fine_file, fine_x, fine_y, fine_x_offset,
-                           fine_y_offset, coarse_file, coarse_x, coarse_y,
-                           coarse_x_offset, coarse_y_offset, coarse_scale, historical_fine_map, historical_coarse_map):
+    def set_map_parameters(
+        self,
+        sample_file,
+        sample_x,
+        sample_y,
+        fine_file,
+        fine_x,
+        fine_y,
+        fine_x_offset,
+        fine_y_offset,
+        coarse_file,
+        coarse_x,
+        coarse_y,
+        coarse_x_offset,
+        coarse_y_offset,
+        coarse_scale,
+        historical_fine_map,
+        historical_coarse_map,
+    ):
         """
 
         Set up the map objects with the required parameters. This is required for csv file usage.
@@ -197,8 +239,12 @@ class Landscape:
         """
         self.fine_map.set_dimensions()
         if self.sample_map.file_name == "null":
-            self.sample_map.set_dimensions(x_size=self.fine_map.x_size, y_size=self.fine_map.y_size,
-                                           x_offset=self.fine_map.x_offset, y_offset=self.fine_map.y_offset)
+            self.sample_map.set_dimensions(
+                x_size=self.fine_map.x_size,
+                y_size=self.fine_map.y_size,
+                x_offset=self.fine_map.x_offset,
+                y_offset=self.fine_map.y_offset,
+            )
             self.sample_map.x_ul = self.fine_map.x_ul
             self.sample_map.y_ul = self.fine_map.y_ul
         else:
@@ -245,12 +291,15 @@ class Landscape:
                 raise ValueError("Cannot have a historical coarse file with a coarse file of none.")
         else:
             if self.coarse_map.file_name != "null" and not self.fine_map.is_within(self.coarse_map):
-                raise ValueError("Offsets mean that coarse map does not fully encompass fine map. Check that your"
-                                 " maps exist at the same spatial coordinates.")
+                raise ValueError(
+                    "Offsets mean that coarse map does not fully encompass fine map. Check that your"
+                    " maps exist at the same spatial coordinates."
+                )
         if self.sample_map.file_name != "null" and not self.sample_map.is_within(self.fine_map):
             raise ValueError(
                 "Offsets mean that fine map does no	t fully encompass sample map. Check that your maps exist"
-                " at the same spatial coordinates.")
+                " at the same spatial coordinates."
+            )
         for map_file in [self.coarse_map, self.fine_map, self.sample_map]:
             map_file.check_map()
         for map_file in [self.historical_fine_map_file, self.historical_fine_map_file]:

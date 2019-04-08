@@ -174,8 +174,7 @@ class CoalescenceTree(object):
                 raise ValueError("Cannot check matched numbers before importing comparison database.")
         for fragment in set([x[0] for x in self.fragment_abundances]):
             for ref in set([x[3] for x in self.fragment_abundances]):
-                sum_simulated = sum([x[2] for x in self.fragment_abundances if x[0] == fragment and
-                                     x[3] == ref])
+                sum_simulated = sum([x[2] for x in self.fragment_abundances if x[0] == fragment and x[3] == ref])
                 if sum_simulated != sum([x[2] for x in self.comparison_abundances if x[0] == fragment]):
                     return False
         return True
@@ -240,8 +239,13 @@ class CoalescenceTree(object):
                 raise ValueError("Speciation rates must be between 0.0 and 1.0.")
         self.applied_speciation_rates_list = speciation_rates
 
-    def _set_metacommunity_parameters(self, metacommunity_size=None, metacommunity_speciation_rate=None,
-                                      metacommunity_option=None, metacommunity_reference=None):
+    def _set_metacommunity_parameters(
+        self,
+        metacommunity_size=None,
+        metacommunity_speciation_rate=None,
+        metacommunity_option=None,
+        metacommunity_reference=None,
+    ):
         """
         Checks that the metacommunity parameters make sense and assigns them within the object.
 
@@ -252,8 +256,12 @@ class CoalescenceTree(object):
 
         :rtype: None
         """
-        if not metacommunity_size and not metacommunity_speciation_rate and not metacommunity_option and not \
-                metacommunity_reference:
+        if (
+            not metacommunity_size
+            and not metacommunity_speciation_rate
+            and not metacommunity_option
+            and not metacommunity_reference
+        ):
             self.metacommunity_size = 0
             self.metacommunity_speciation_rate = 0.0
             self.metacommunity_option = "none"
@@ -266,11 +274,15 @@ class CoalescenceTree(object):
                     self.metacommunity_size = metacommunity_size
                     self.metacommunity_speciation_rate = metacommunity_speciation_rate
                 else:
-                    raise ValueError("Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
-                                     "generating a metacommunity.")
+                    raise ValueError(
+                        "Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
+                        "generating a metacommunity."
+                    )
                 if metacommunity_option not in ["simulated", "analytical", "none"]:
-                    raise ValueError("Must use 'simulated' or 'analytical' for metacommunity option when supplying "
-                                     "a metacommunity size and speciation rate.")
+                    raise ValueError(
+                        "Must use 'simulated' or 'analytical' for metacommunity option when supplying "
+                        "a metacommunity size and speciation rate."
+                    )
                 if metacommunity_option == "none":
                     if metacommunity_size > 100000:
                         self.logger.info("Using analytical method for generating metacommunity.\n")
@@ -283,12 +295,18 @@ class CoalescenceTree(object):
                 self.metacommunity_reference = 0
             else:
                 if metacommunity_option in ["simulated", "analytical", "none"]:
-                    raise ValueError("Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
-                                     "generating a metacommunity.")
-                if metacommunity_size not in [0, None] or \
-                        metacommunity_speciation_rate not in [0.0, None]:  # pragma: no cover
-                    raise ValueError("No metacommunity size or speciation rate should be supplied when using an "
-                                     "external database for the metacommunity.")
+                    raise ValueError(
+                        "Must supply both metacommunity size >0 and speciation rate between 0 and 1 for "
+                        "generating a metacommunity."
+                    )
+                if metacommunity_size not in [0, None] or metacommunity_speciation_rate not in [
+                    0.0,
+                    None,
+                ]:  # pragma: no cover
+                    raise ValueError(
+                        "No metacommunity size or speciation rate should be supplied when using an "
+                        "external database for the metacommunity."
+                    )
                 if not os.path.exists(metacommunity_option):
                     raise IOError("No file exists to supply metacommunity at {}.".format(metacommunity_option))
                 if metacommunity_reference is None:
@@ -300,8 +318,12 @@ class CoalescenceTree(object):
                 self.metacommunity_option = metacommunity_option
             if not isinstance(self.c_community, libnecsim.CMetacommunity):
                 self._reset_parameters()
-            self.c_community.add_metacommunity_parameters(self.metacommunity_size, self.metacommunity_speciation_rate,
-                                                          self.metacommunity_option, self.metacommunity_reference)
+            self.c_community.add_metacommunity_parameters(
+                self.metacommunity_size,
+                self.metacommunity_speciation_rate,
+                self.metacommunity_option,
+                self.metacommunity_reference,
+            )
 
     def _set_protracted_parameters(self, protracted_speciation_min=None, protracted_speciation_max=None):
         """
@@ -332,11 +354,15 @@ class CoalescenceTree(object):
         db_min = self.get_simulation_parameters()["min_speciation_gen"]
         db_max = self.get_simulation_parameters()["max_speciation_gen"]
         if min_speciation_gen < 0.0 or min_speciation_gen > db_min:
-            raise ValueError("Minimum generation for protracted speciation cannot be less than 0.0, or greater than "
-                             "the initial value used during simulation ({}).".format(db_min))
+            raise ValueError(
+                "Minimum generation for protracted speciation cannot be less than 0.0, or greater than "
+                "the initial value used during simulation ({}).".format(db_min)
+            )
         if max_speciation_gen < min_speciation_gen or max_speciation_gen > db_max:
-            raise ValueError("Maximum generation for protracted speciation cannot be less than the minimum, or greater"
-                             " than the initial value used during simulation ({}).".format(db_max))
+            raise ValueError(
+                "Maximum generation for protracted speciation cannot be less than the minimum, or greater"
+                " than the initial value used during simulation ({}).".format(db_max)
+            )
 
     def _set_sample_file(self, sample_file=None):
         """
@@ -458,7 +484,7 @@ class CoalescenceTree(object):
                 self.calculate_fragment_abundances()
             if not self.fragment_abundances or self.comparison_abundances is None:
                 raise ValueError("Cannot equalise fragment numbers if comparison or simulation data is missing.")
-            random.seed(self.get_simulation_parameters()['seed'])
+            random.seed(self.get_simulation_parameters()["seed"])
             for fragment in set([x[0] for x in self.fragment_abundances]):
                 for reference in set([x[3] for x in self.fragment_abundances]):
                     self._equalise_fragment_number(fragment, reference)
@@ -485,8 +511,10 @@ class CoalescenceTree(object):
                 species_abundances.append([id_counter, species_id, total, reference])
         self._check_database()
         self.cursor.execute("DROP TABLE IF EXISTS SPECIES_ABUNDANCES")
-        self.cursor.execute("CREATE TABLE SPECIES_ABUNDANCES (ID INT NOT NULL PRIMARY KEY, species_id INT NOT NULL,"
-                            "no_individuals INT NOT NULL, community_reference INT NOT NULL)")
+        self.cursor.execute(
+            "CREATE TABLE SPECIES_ABUNDANCES (ID INT NOT NULL PRIMARY KEY, species_id INT NOT NULL,"
+            "no_individuals INT NOT NULL, community_reference INT NOT NULL)"
+        )
         self.cursor.executemany("INSERT INTO SPECIES_ABUNDANCES VALUES(?,?,?,?)", species_abundances)
         self.database.commit()
 
@@ -499,8 +527,10 @@ class CoalescenceTree(object):
         if not self.equalised:  # pragma: no cover
             self._equalise_all_fragment_numbers()
         self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_ABUNDANCES")
-        self.cursor.execute("CREATE TABLE FRAGMENT_ABUNDANCES (fragment TEXT NOT NULL, species_id INT NOT NULL,"
-                            " no_individuals INT NOT NULL, community_reference INT NOT NULL)")
+        self.cursor.execute(
+            "CREATE TABLE FRAGMENT_ABUNDANCES (fragment TEXT NOT NULL, species_id INT NOT NULL,"
+            " no_individuals INT NOT NULL, community_reference INT NOT NULL)"
+        )
         self.cursor.executemany("INSERT INTO FRAGMENT_ABUNDANCES VALUES(?,?,?,?)", self.fragment_abundances)
         self.database.commit()
 
@@ -553,20 +583,25 @@ class CoalescenceTree(object):
         """
         self._check_database()
         try:
-            self.cursor.execute("SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
-                                "max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, "
-                                "gen_since_historical, "
-                                "time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
-                                "coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, "
-                                "fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, "
-                                "sample_y, "
-                                "sample_x_offset, sample_y_offset, historical_coarse_map, "
-                                " historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
-                                " landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
-                                " FROM SIMULATION_PARAMETERS WHERE guild == ?", (guild,))
+            self.cursor.execute(
+                "SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
+                "max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, "
+                "gen_since_historical, "
+                "time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
+                "coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, "
+                "fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, "
+                "sample_y, "
+                "sample_x_offset, sample_y_offset, historical_coarse_map, "
+                " historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
+                " landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
+                " FROM SIMULATION_PARAMETERS WHERE guild == ?",
+                (guild,),
+            )
         except sqlite3.Error as e:  # pragma: no cover
-            self.logger.error("Failure to get SIMULATION_PARAMETERS table from database with guild {}"
-                              ". Check table exists.".format(guild))
+            self.logger.error(
+                "Failure to get SIMULATION_PARAMETERS table from database with guild {}"
+                ". Check table exists.".format(guild)
+            )
             raise e
         out = self.cursor.fetchone()
         if len(out) == 0:  # pragma: no cover
@@ -576,7 +611,7 @@ class CoalescenceTree(object):
         if sys.version_info[0] is not 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
-                    values[i] = each.encode('ascii')
+                    values[i] = each.encode("ascii")
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
 
@@ -596,8 +631,10 @@ class CoalescenceTree(object):
         if isinstance(filename, pycoalescence.simulation.Simulation):
             filename = filename.output_database
             if filename is None:  # pragma: no cover
-                raise RuntimeError("Coalescence object does has not been set up properly and does not contain an output"
-                                   " database location.")
+                raise RuntimeError(
+                    "Coalescence object does has not been set up properly and does not contain an output"
+                    " database location."
+                )
         if os.path.exists(filename):
             self.file = filename
             try:
@@ -612,17 +649,19 @@ class CoalescenceTree(object):
             # Now make sure that the simulation has been completed
             try:
                 self.cursor = self.database.cursor()
-                sql_fetch = \
-                    self.cursor.execute("SELECT sim_complete, time_config_file FROM SIMULATION_PARAMETERS").fetchall()[
-                        0]
+                sql_fetch = self.cursor.execute(
+                    "SELECT sim_complete, time_config_file FROM SIMULATION_PARAMETERS"
+                ).fetchall()[0]
                 # print(sql_fetch)
                 complete = bool(sql_fetch[0])
                 if sql_fetch[1] != "null":
                     self.times = [0.0]
                 if not complete:
                     self.is_complete = False
-                    raise IOError("{} is not a complete simulation. "
-                                  "Please finish simulation before performing analysis.".format(filename))
+                    raise IOError(
+                        "{} is not a complete simulation. "
+                        "Please finish simulation before performing analysis.".format(filename)
+                    )
                 else:
                     self.is_complete = True
             except sqlite3.Error as soe:  # pragma: no cover
@@ -634,11 +673,20 @@ class CoalescenceTree(object):
         else:
             raise IOError("File {} does not exist.".format(filename))
 
-    def set_speciation_parameters(self, speciation_rates, record_spatial=False, record_fragments=False,
-                                  sample_file=None,
-                                  times=None, protracted_speciation_min=None, protracted_speciation_max=None,
-                                  metacommunity_size=None, metacommunity_speciation_rate=None,
-                                  metacommunity_option=None, metacommunity_reference=None):
+    def set_speciation_parameters(
+        self,
+        speciation_rates,
+        record_spatial=False,
+        record_fragments=False,
+        sample_file=None,
+        times=None,
+        protracted_speciation_min=None,
+        protracted_speciation_max=None,
+        metacommunity_size=None,
+        metacommunity_speciation_rate=None,
+        metacommunity_option=None,
+        metacommunity_reference=None,
+    ):
         """
 
         Set the parameters for the application of speciation rates. If no config files or time_config files are
@@ -666,15 +714,19 @@ class CoalescenceTree(object):
         self._set_record_spatial(record_spatial)
         self._set_sample_file(sample_file)
         self._set_times(times)
-        self._set_metacommunity_parameters(metacommunity_size=metacommunity_size,
-                                           metacommunity_speciation_rate=metacommunity_speciation_rate,
-                                           metacommunity_option=metacommunity_option,
-                                           metacommunity_reference=metacommunity_reference)
+        self._set_metacommunity_parameters(
+            metacommunity_size=metacommunity_size,
+            metacommunity_speciation_rate=metacommunity_speciation_rate,
+            metacommunity_option=metacommunity_option,
+            metacommunity_reference=metacommunity_reference,
+        )
         self._set_protracted_parameters(protracted_speciation_min, protracted_speciation_max)
 
         if self.sample_file == "null" and self.record_fragments == "null":
-            raise ValueError("Cannot specify a null samplemask and expect automatic fragment detection; "
-                             "provide a samplemask or set record_fragments=False.")
+            raise ValueError(
+                "Cannot specify a null samplemask and expect automatic fragment detection; "
+                "provide a samplemask or set record_fragments=False."
+            )
         self._setup_c_community()
 
     def _set_c_community(self):
@@ -696,8 +748,14 @@ class CoalescenceTree(object):
         :rtype: None
         """
         self._set_c_community()
-        self.c_community.setup(self.file, self.record_spatial, self.sample_file, self.record_fragments,
-                               self.applied_speciation_rates_list, self.times)
+        self.c_community.setup(
+            self.file,
+            self.record_spatial,
+            self.sample_file,
+            self.record_fragments,
+            self.applied_speciation_rates_list,
+            self.times,
+        )
 
     def _check_metacommunity(self):
         """
@@ -755,8 +813,9 @@ class CoalescenceTree(object):
             self._set_c_community()
             self.c_community.add_protracted_parameters(float(min_speciation_gen), float(max_speciation_gen))
 
-    def add_multiple_protracted_parameters(self, min_speciation_gens=None, max_speciation_gens=None,
-                                           speciation_gens=None):
+    def add_multiple_protracted_parameters(
+        self, min_speciation_gens=None, max_speciation_gens=None, speciation_gens=None
+    ):
         """
         Adds the protracted parameter set, taking an iterable as an input.
 
@@ -774,13 +833,20 @@ class CoalescenceTree(object):
         elif speciation_gens:
             tmp = speciation_gens
         else:
-            raise ValueError("Must supply either minimum and maximum speciation gens, or a list of tuples containing "
-                             "matching speciation generations.")
+            raise ValueError(
+                "Must supply either minimum and maximum speciation gens, or a list of tuples containing "
+                "matching speciation generations."
+            )
         for min_g, max_g in tmp:
             self.add_protracted_parameters(min_g, max_g)
 
-    def add_metacommunity_parameters(self, metacommunity_size=None, metacommunity_speciation_rate=None,
-                                     metacommunity_option=None, metacommunity_reference=0):
+    def add_metacommunity_parameters(
+        self,
+        metacommunity_size=None,
+        metacommunity_speciation_rate=None,
+        metacommunity_option=None,
+        metacommunity_reference=0,
+    ):
         """
         Adds the metacommunity parameters to the object.
 
@@ -791,8 +857,9 @@ class CoalescenceTree(object):
 
         :rtype: None
         """
-        self._set_metacommunity_parameters(metacommunity_size, metacommunity_speciation_rate, metacommunity_option,
-                                           metacommunity_reference)
+        self._set_metacommunity_parameters(
+            metacommunity_size, metacommunity_speciation_rate, metacommunity_option, metacommunity_reference
+        )
 
     def apply(self):
         """
@@ -813,14 +880,17 @@ class CoalescenceTree(object):
         if self.times is None:
             self.times = [0.0]
         if not os.path.exists(self.file):  # pragma: no cover
-            self.logger.warning("Check file existance for {}. "
-                                "Potential lack of access (verify that definition "
-                                "is a relative path).\n".format(self.file))
+            self.logger.warning(
+                "Check file existance for {}. "
+                "Potential lack of access (verify that definition "
+                "is a relative path).\n".format(self.file)
+            )
         self._set_c_community()
         if self.has_outputted:
             self.logger.warning("Output has already been written to file - regenerating internal object.\n")
-            self.logger.info("To avoid this message in future, use apply_incremental() and then output() to generate "
-                             "the file.\n")
+            self.logger.info(
+                "To avoid this message in future, use apply_incremental() and then output() to generate " "the file.\n"
+            )
             self.c_community.reset()
         self.has_applied = True
         self.c_community.apply()
@@ -876,12 +946,16 @@ class CoalescenceTree(object):
         """
         self._check_database()
         try:
-            return self.cursor.execute("SELECT richness FROM SPECIES_RICHNESS "
-                                       "WHERE community_reference==?", (reference,)).fetchone()[0]
+            return self.cursor.execute(
+                "SELECT richness FROM SPECIES_RICHNESS " "WHERE community_reference==?", (reference,)
+            ).fetchone()[0]
         except (TypeError, sqlite3.Error):
             try:
-                c = self.cursor.execute("SELECT species_id FROM SPECIES_ABUNDANCES WHERE no_individuals > 0 AND "
-                                        "community_reference == ?", (reference,)).fetchall()
+                c = self.cursor.execute(
+                    "SELECT species_id FROM SPECIES_ABUNDANCES WHERE no_individuals > 0 AND "
+                    "community_reference == ?",
+                    (reference,),
+                ).fetchall()
                 return len(set([x[0] for x in c]))
             except sqlite3.Error as oe:  # pragma: no cover
                 self.logger.warning(str(oe) + "\n")
@@ -921,22 +995,31 @@ class CoalescenceTree(object):
             if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
                 raise RuntimeError("Cannot get a count from a fragment without calculating fragment abundances.")
             if not community_reference:
-                return self.cursor.execute("SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference))"
-                                           " FROM FRAGMENT_ABUNDANCES WHERE fragment == ?", (fragment,)).fetchone()[0]
+                return self.cursor.execute(
+                    "SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference))"
+                    " FROM FRAGMENT_ABUNDANCES WHERE fragment == ?",
+                    (fragment,),
+                ).fetchone()[0]
             else:
-                return self.cursor.execute("SELECT SUM(no_individuals) FROM FRAGMENT_ABUNDANCES "
-                                           "WHERE community_reference==? AND fragment == ?",
-                                           (community_reference, fragment,)).fetchone()[0]
+                return self.cursor.execute(
+                    "SELECT SUM(no_individuals) FROM FRAGMENT_ABUNDANCES "
+                    "WHERE community_reference==? AND fragment == ?",
+                    (community_reference, fragment),
+                ).fetchone()[0]
         else:
             if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):
                 raise RuntimeError(
-                    "No species abundances table to fetch data from. Ensure your simulation is complete.")
+                    "No species abundances table to fetch data from. Ensure your simulation is complete."
+                )
             if not community_reference:
-                return self.cursor.execute("SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference)) "
-                                           "FROM SPECIES_ABUNDANCES").fetchone()[0]
+                return self.cursor.execute(
+                    "SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference)) " "FROM SPECIES_ABUNDANCES"
+                ).fetchone()[0]
             else:
-                return self.cursor.execute("SELECT SUM(no_individuals) FROM SPECIES_ABUNDANCES "
-                                           "WHERE community_reference==?", (community_reference,)).fetchone()[0]
+                return self.cursor.execute(
+                    "SELECT SUM(no_individuals) FROM SPECIES_ABUNDANCES " "WHERE community_reference==?",
+                    (community_reference,),
+                ).fetchone()[0]
 
     def check_biodiversity_table_exists(self):
         """
@@ -945,9 +1028,11 @@ class CoalescenceTree(object):
         :return: the max reference value currently existing
         """
         self._check_database()
-        tmp_create = "CREATE TABLE BIODIVERSITY_METRICS (ref INT PRIMARY KEY NOT NULL, metric TEXT NOT NULL," \
-                     " fragment TEXT NOT NULL, community_reference INT NOT NULL," \
-                     " value FLOAT NOT NULL, simulated FLOAT, actual FLOAT)"
+        tmp_create = (
+            "CREATE TABLE BIODIVERSITY_METRICS (ref INT PRIMARY KEY NOT NULL, metric TEXT NOT NULL,"
+            " fragment TEXT NOT NULL, community_reference INT NOT NULL,"
+            " value FLOAT NOT NULL, simulated FLOAT, actual FLOAT)"
+        )
         if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):
             try:
                 self.cursor.execute(tmp_create)
@@ -970,8 +1055,10 @@ class CoalescenceTree(object):
         :param bool output_metrics: output to the BIODIVERSITY_METRICS table
         """
         self._check_database()
-        tmp_create = "CREATE TABLE SPECIES_RICHNESS (ref INT PRIMARY KEY NOT NULL, community_reference INT NOT NULL," \
-                     " richness INT NOT NULL)"
+        tmp_create = (
+            "CREATE TABLE SPECIES_RICHNESS (ref INT PRIMARY KEY NOT NULL, community_reference INT NOT NULL,"
+            " richness INT NOT NULL)"
+        )
         existing_references = []
         ref = 0
         if not check_sql_table_exist(self.database, "SPECIES_RICHNESS"):
@@ -1003,8 +1090,9 @@ class CoalescenceTree(object):
                     tmp = [ref, "fragment_richness", "whole"]
                     tmp.extend([x[1], x[2]])
                     bio_output.append(tmp)
-                self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)",
-                                        bio_output)
+                self.cursor.executemany(
+                    "INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)", bio_output
+                )
             self.cursor.executemany("INSERT INTO SPECIES_RICHNESS VALUES(?,?,?)", output)
             self.database.commit()
 
@@ -1019,10 +1107,13 @@ class CoalescenceTree(object):
             self._check_database()
             if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
                 raise RuntimeError("Database does not contain FRAGMENT_ABUNDANCES table.")
-            self.fragment_abundances = [list(x) for x in
-                                        self.cursor.execute("SELECT fragment, species_id,"
-                                                            " no_individuals, community_reference "
-                                                            "FROM FRAGMENT_ABUNDANCES").fetchall() if x[2] > 0]
+            self.fragment_abundances = [
+                list(x)
+                for x in self.cursor.execute(
+                    "SELECT fragment, species_id," " no_individuals, community_reference " "FROM FRAGMENT_ABUNDANCES"
+                ).fetchall()
+                if x[2] > 0
+            ]
             if not self.fragment_abundances:  # pragma: no cover
                 raise ValueError("Fragment abundances table may be empty, or not properly stored.")
             if self.comparison_abundances:
@@ -1040,8 +1131,10 @@ class CoalescenceTree(object):
         :param bool output_metrics: output to the BIODIVERSITY_METRICS table
         """
         self._check_database()
-        tmp_create = "CREATE TABLE FRAGMENT_RICHNESS (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL," \
-                     " community_reference INT NOT NULL,  richness INT NOT NULL)"
+        tmp_create = (
+            "CREATE TABLE FRAGMENT_RICHNESS (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL,"
+            " community_reference INT NOT NULL,  richness INT NOT NULL)"
+        )
         # First check the FRAGMENT_ABUNDANCES TABLE EXISTS
         if not self.fragment_abundances:
             self.calculate_fragment_abundances()
@@ -1064,8 +1157,12 @@ class CoalescenceTree(object):
                     ref += 1
             self.cursor.executemany("INSERT INTO FRAGMENT_RICHNESS VALUES(?, ?, ?, ?)", self.fragments)
             self.database.commit()
-        self.fragments = [list(x) for x in self.cursor.execute("SELECT fragment, community_reference, richness"
-                                                               " FROM FRAGMENT_RICHNESS").fetchall()]
+        self.fragments = [
+            list(x)
+            for x in self.cursor.execute(
+                "SELECT fragment, community_reference, richness" " FROM FRAGMENT_RICHNESS"
+            ).fetchall()
+        ]
         # Move fragment richnesses into BIODIVERSITY METRICS
         if output_metrics:
             ref = self.check_biodiversity_table_exists()
@@ -1090,8 +1187,9 @@ class CoalescenceTree(object):
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
             raise RuntimeError("Fragment abundances must be calculated before alpha diversity.")
         if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):
-            tmp_create = "CREATE TABLE ALPHA_DIVERSITY (reference INT PRIMARY KEY NOT NULL, " \
-                         "alpha_diversity INT NOT NULL)"
+            tmp_create = (
+                "CREATE TABLE ALPHA_DIVERSITY (reference INT PRIMARY KEY NOT NULL, " "alpha_diversity INT NOT NULL)"
+            )
             try:
                 self.cursor.execute(tmp_create)
                 self.database.commit()
@@ -1125,8 +1223,7 @@ class CoalescenceTree(object):
         :param bool output_metrics: output to the BIODIVERSITY_METRICS table
         """
         self._check_database()
-        tmp_create = "CREATE TABLE BETA_DIVERSITY (reference INT PRIMARY KEY NOT NULL, " \
-                     "beta_diversity INT NOT NULL)"
+        tmp_create = "CREATE TABLE BETA_DIVERSITY (reference INT PRIMARY KEY NOT NULL, " "beta_diversity INT NOT NULL)"
         if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):
             self.calculate_alpha_diversity()
         if not check_sql_table_exist(self.database, "SPECIES_RICHNESS"):  # pragma: no cover
@@ -1214,13 +1311,20 @@ class CoalescenceTree(object):
             self.logger.warning("Comparison data has already been imported.")
         try:
             if check_sql_table_exist(conn, "BIODIVERSITY_METRICS"):
-                self.comparison_data = tmp_cursor.execute("SELECT metric, fragment, value, no_individuals"
-                                                          " FROM BIODIVERSITY_METRICS").fetchall()
+                self.comparison_data = tmp_cursor.execute(
+                    "SELECT metric, fragment, value, no_individuals" " FROM BIODIVERSITY_METRICS"
+                ).fetchall()
             try:
-                self.comparison_abundances = [list(x) for x in tmp_cursor.execute(
-                    "SELECT fragment, species_id, no_individuals FROM FRAGMENT_ABUNDANCES").fetchall()]
-                self.comparison_abundances_whole = [list(x) for x in tmp_cursor.execute(
-                    "SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES").fetchall()]
+                self.comparison_abundances = [
+                    list(x)
+                    for x in tmp_cursor.execute(
+                        "SELECT fragment, species_id, no_individuals FROM FRAGMENT_ABUNDANCES"
+                    ).fetchall()
+                ]
+                self.comparison_abundances_whole = [
+                    list(x)
+                    for x in tmp_cursor.execute("SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES").fetchall()
+                ]
             except sqlite3.Error as oe:  # pragma: no cover
                 raise sqlite3.Error("Problem executing fetches from comparison data: ".format(oe))
             self.comparison_file = filename
@@ -1259,7 +1363,8 @@ class CoalescenceTree(object):
             # If comparison_octaves has not been calculated, then do that now.
             if self.comparison_abundances is None:  # pragma: no cover
                 self.logger.warning(
-                    "Comparison abundances not yet imported, or FRAGMENT_ABUNDANCES does not exist in comparison file.")
+                    "Comparison abundances not yet imported, or FRAGMENT_ABUNDANCES does not exist in comparison file."
+                )
             # Check whether the FRAGMENT_OCTAVES table exists, if it is, just stored that in self.comparison_octaves
             if self.comparison_file is not None:
                 # read the data from the database
@@ -1319,9 +1424,12 @@ class CoalescenceTree(object):
                 cursor.execute("DROP TABLE IF EXISTS FRAGMENT_OCTAVES")
                 cursor.execute(
                     "CREATE TABLE FRAGMENT_OCTAVES (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL, "
-                    "octave INT NOT NULL, richness INT NOT NULL)")
-                cursor.executemany("INSERT INTO FRAGMENT_OCTAVES VALUES(?,?,?,?)",
-                                   [[i, x[0], x[1], x[2]] for i, x in enumerate(self.comparison_octaves)])
+                    "octave INT NOT NULL, richness INT NOT NULL)"
+                )
+                cursor.executemany(
+                    "INSERT INTO FRAGMENT_OCTAVES VALUES(?,?,?,?)",
+                    [[i, x[0], x[1], x[2]] for i, x in enumerate(self.comparison_octaves)],
+                )
                 conn.commit()
             conn = None
 
@@ -1334,10 +1442,11 @@ class CoalescenceTree(object):
         self._check_database()
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS FRAGMENT_OCTAVES (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL, "
-            "community_reference INT NOT NULL, octave INT NOT NULL, richness INT NOT NULL)")
+            "community_reference INT NOT NULL, octave INT NOT NULL, richness INT NOT NULL)"
+        )
         abundances = self.cursor.execute(
-            "SELECT species_id, no_individuals, community_reference FROM SPECIES_ABUNDANCES"
-            " WHERE no_individuals>0").fetchall()
+            "SELECT species_id, no_individuals, community_reference FROM SPECIES_ABUNDANCES" " WHERE no_individuals>0"
+        ).fetchall()
         references = set([x[2] for x in abundances])
         # Check what the maximum reference is in FRAGMENT_OCTAVES
         try:
@@ -1375,7 +1484,8 @@ class CoalescenceTree(object):
             raise RuntimeError("Fragments not imported correctly")
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS FRAGMENT_OCTAVES (ref INT PRIMARY KEY NOT NULL, fragment TEXT NOT NULL, "
-            "community_reference INT NOT NULL, octave INT NOT NULL, richness INT NOT NULL)")
+            "community_reference INT NOT NULL, octave INT NOT NULL, richness INT NOT NULL)"
+        )
         fragments = set([x[0] for x in self.fragment_abundances])
         references = set([x[3] for x in self.fragment_abundances])
         c = 0
@@ -1419,8 +1529,10 @@ class CoalescenceTree(object):
             return self.fragments
         elif fragment is None:
             raise SyntaxError("Must supply a fragment name when supplying a reference.")
-        output = self.cursor.execute("SELECT richness FROM FRAGMENT_RICHNESS WHERE community_reference == ? AND "
-                                     "fragment ==  ?", (reference, fragment)).fetchall()
+        output = self.cursor.execute(
+            "SELECT richness FROM FRAGMENT_RICHNESS WHERE community_reference == ? AND " "fragment ==  ?",
+            (reference, fragment),
+        ).fetchall()
         if len(output) == 0:
             raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
         else:
@@ -1438,8 +1550,11 @@ class CoalescenceTree(object):
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
             raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
-        output = self.cursor.execute("SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE "
-                                     "community_reference == ? AND fragment ==  ?", (reference, fragment)).fetchall()
+        output = self.cursor.execute(
+            "SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE "
+            "community_reference == ? AND fragment ==  ?",
+            (reference, fragment),
+        ).fetchall()
         if len(output) == 0:  # pragma: no cover
             raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
         return [list(x) for x in output]
@@ -1453,8 +1568,9 @@ class CoalescenceTree(object):
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):  # pragma: no cover
             raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
-        output = self.cursor.execute("SELECT community_reference, fragment, species_id, no_individuals FROM "
-                                     "FRAGMENT_ABUNDANCES").fetchall()
+        output = self.cursor.execute(
+            "SELECT community_reference, fragment, species_id, no_individuals FROM " "FRAGMENT_ABUNDANCES"
+        ).fetchall()
         if len(output) == 0:  # pragma: no cover
             raise RuntimeError("No output while fetching all fragment abundances")
         return [list(x) for x in output]
@@ -1469,8 +1585,10 @@ class CoalescenceTree(object):
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
             raise RuntimeError("Fragment abundances have not been calculated; cannot obtain fragment list.")
-        fetch = self.cursor.execute("SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE "
-                                    "community_reference == ?", (community_reference,)).fetchall()
+        fetch = self.cursor.execute(
+            "SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE " "community_reference == ?",
+            (community_reference,),
+        ).fetchall()
         if len(fetch) == 0:  # pragma: no cover
             raise sqlite3.Error("No fragments exist in FRAGMENT_ABUNDANCES.")
         return [x[0] for x in fetch]
@@ -1490,17 +1608,26 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if fragment is None and reference is None:
-            return [list(x) for x in self.cursor.execute("SELECT fragment, community_reference, octave, richness"
-                                                         " FROM FRAGMENT_OCTAVES")]
+            return [
+                list(x)
+                for x in self.cursor.execute(
+                    "SELECT fragment, community_reference, octave, richness" " FROM FRAGMENT_OCTAVES"
+                )
+            ]
         elif fragment is None or reference is None:
             raise SyntaxError("Only one of fragment or reference supplied: must supply both, or neither.")
         try:
-            output = [list(x) for x in self.cursor.execute("SELECT octave, richness FROM FRAGMENT_OCTAVES WHERE "
-                                                           "community_reference == ? AND fragment == ?",
-                                                           (reference, fragment)).fetchall()]
+            output = [
+                list(x)
+                for x in self.cursor.execute(
+                    "SELECT octave, richness FROM FRAGMENT_OCTAVES WHERE " "community_reference == ? AND fragment == ?",
+                    (reference, fragment),
+                ).fetchall()
+            ]
             if len(output) == 0:
                 raise RuntimeError(
-                    "No output while fetching fragment data for {} with ref: {}".format(fragment, reference))
+                    "No output while fetching fragment data for {} with ref: {}".format(fragment, reference)
+                )
         except sqlite3.Error as oe:
             raise sqlite3.Error("Failure whilst fetching fragment octave data." + str(oe))
         output.sort(key=lambda x: x[0])
@@ -1520,16 +1647,25 @@ class CoalescenceTree(object):
         if fragment is None:
             if reference is None:  # pragma: no cover
                 reference = 1
-            return [list(x) for x in
-                    self.cursor.execute("SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES WHERE "
-                                        "community_reference==?", (reference,)).fetchall()]
+            return [
+                list(x)
+                for x in self.cursor.execute(
+                    "SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES WHERE " "community_reference==?",
+                    (reference,),
+                ).fetchall()
+            ]
         elif reference is None:
             raise RuntimeError("Must specify a community reference to get a fragment species abundance")
         else:
-            return [list(x) for x in
-                    self.cursor.execute("SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE"
-                                        " fragment == ? AND "
-                                        "community_reference == ?", (fragment, reference))]
+            return [
+                list(x)
+                for x in self.cursor.execute(
+                    "SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE"
+                    " fragment == ? AND "
+                    "community_reference == ?",
+                    (fragment, reference),
+                )
+            ]
 
     def calculate_octaves_error(self):
         """
@@ -1586,15 +1722,19 @@ class CoalescenceTree(object):
                     else:
                         ## The error is calculated
                         difference.append(
-                            float(max(richness_val, comp_val) - min(richness_val, comp_val)) / max(comp_val,
-                                                                                                   richness_val))
+                            float(max(richness_val, comp_val) - min(richness_val, comp_val))
+                            / max(comp_val, richness_val)
+                        )
                     if col_add:
-                        self.cursor.execute("UPDATE FRAGMENT_OCTAVES SET comparison = ?, error = ? WHERE ref == ?",
-                                            (comp_val, difference[-1], reference))
+                        self.cursor.execute(
+                            "UPDATE FRAGMENT_OCTAVES SET comparison = ?, error = ? WHERE ref == ?",
+                            (comp_val, difference[-1], reference),
+                        )
                 # now average the errors
                 ref += 1
                 fragment_errors.append(
-                    [ref, "fragment_octaves", f, reference, float(sum(difference) / float(len(difference)))])
+                    [ref, "fragment_octaves", f, reference, float(sum(difference) / float(len(difference)))]
+                )
 
         self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES(?,?,?,?,?, NULL, NULL)", fragment_errors)
         self.database.commit()
@@ -1624,10 +1764,12 @@ class CoalescenceTree(object):
             raise ValueError("BIODIVERSITY_METRICS table does not exist in database: cannot calculate goodness of fit.")
         bio_metrics = self.cursor.execute(
             "SELECT metric, fragment, community_reference, value FROM BIODIVERSITY_METRICS"
-            " WHERE metric != 'goodness_of_fit'").fetchall()
+            " WHERE metric != 'goodness_of_fit'"
+        ).fetchall()
         if check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
-            self.total_individuals = self.cursor.execute("SELECT COUNT(tip) FROM SPECIES_LIST"
-                                                         " WHERE tip==1 AND gen_added==0.0").fetchone()[0]
+            self.total_individuals = self.cursor.execute(
+                "SELECT COUNT(tip) FROM SPECIES_LIST" " WHERE tip==1 AND gen_added==0.0"
+            ).fetchone()[0]
             try:
                 self.cursor.execute("SELECT comparison, error from FRAGMENT_OCTAVES")
             except sqlite3.Error:  # pragma: no cover
@@ -1635,7 +1777,7 @@ class CoalescenceTree(object):
                 self.cursor.execute("ALTER TABLE FRAGMENT_OCTAVES ADD COLUMN error FLOAT")
         # Remove the extra goodness of fit values
         # TODO first print out biodiversity metrics in each database
-        bio_metrics = [b for b in bio_metrics if 'goodness_of_fit' not in b[0]]
+        bio_metrics = [b for b in bio_metrics if "goodness_of_fit" not in b[0]]
         references = set([x[2] for x in bio_metrics])
         categories = set([f[0] for f in bio_metrics])
         # this will contain: metric, fragment, community_reference, relative_goodness_of_fit, num_individuals,
@@ -1655,7 +1797,8 @@ class CoalescenceTree(object):
                     total_ind = sum([f[3] for f in select_comparison])
                 except IndexError:  # pragma: no cover
                     self.logger.warning(
-                        "Could not find comparable metric for {} and {}".format(category[0], category[1]))
+                        "Could not find comparable metric for {} and {}".format(category[0], category[1])
+                    )
                     continue
             else:
                 total_ind = abundance_total
@@ -1668,8 +1811,7 @@ class CoalescenceTree(object):
                     try:
                         fragment_comparison = [f for f in select_comparison if f[1] == fragment][0]
                     except IndexError:
-                        raise ValueError("Could not find comparable metric for"
-                                         " {}, in {}".format(category, fragment))
+                        raise ValueError("Could not find comparable metric for" " {}, in {}".format(category, fragment))
                     actual_val = fragment_comparison[2]
                     no_ind = fragment_comparison[3]
                 else:
@@ -1678,21 +1820,28 @@ class CoalescenceTree(object):
                         no_ind = [p[1] for p in plot_data if p[0] == fragment][0]
                     except IndexError:  # pragma: no cover
                         raise IndexError(
-                            "Could not get fragment {} from comparison plot data for {}.".format(fragment, category))
+                            "Could not get fragment {} from comparison plot data for {}.".format(fragment, category)
+                        )
                 for ref in references:
                     select_metrics = [b for b in bio_metrics if b[0] == category and b[1] == fragment and b[2] == ref]
                     if len(select_metrics) != 1:  # pragma: no cover
                         if len(select_metrics) == 0:
-                            raise ValueError("Could not find metric for metric, {}, fragment = {}"
-                                             " and community_reference = {}".format(category, fragment, ref))
-                        raise ValueError("Achieved multiple matches for biodiversity metrics"
-                                         " for fragment {} and community reference = {}.".format(fragment, ref))
+                            raise ValueError(
+                                "Could not find metric for metric, {}, fragment = {}"
+                                " and community_reference = {}".format(category, fragment, ref)
+                            )
+                        raise ValueError(
+                            "Achieved multiple matches for biodiversity metrics"
+                            " for fragment {} and community reference = {}.".format(fragment, ref)
+                        )
                     if category != "fragment_octaves":
                         sim_val = select_metrics[0][3]
                         scaled_fit = scale_simulation_fit(sim_val, actual_val, no_ind, total_ind)
-                        self.cursor.execute("UPDATE BIODIVERSITY_METRICS SET simulated = ?, actual = ?, value=?"
-                                            " WHERE metric == ? AND fragment == ? AND community_reference == ?",
-                                            (sim_val, actual_val, scaled_fit, category, fragment, ref))
+                        self.cursor.execute(
+                            "UPDATE BIODIVERSITY_METRICS SET simulated = ?, actual = ?, value=?"
+                            " WHERE metric == ? AND fragment == ? AND community_reference == ?",
+                            (sim_val, actual_val, scaled_fit, category, fragment, ref),
+                        )
                     else:
                         scaled_fit = (1 - select_metrics[0][3]) * float(no_ind) / float(total_ind)
                     ref_dict[ref].append(scaled_fit)
@@ -1735,11 +1884,17 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if community_reference:
-            return [list(x) for x in self.cursor.execute("SELECT species_id, x, y"
-                                                         " FROM SPECIES_LOCATIONS WHERE community_reference==?",
-                                                         (community_reference,))]
-        return [list(x) for x in self.cursor.execute("SELECT species_id, x, y, community_reference"
-                                                     " FROM SPECIES_LOCATIONS")]
+            return [
+                list(x)
+                for x in self.cursor.execute(
+                    "SELECT species_id, x, y" " FROM SPECIES_LOCATIONS WHERE community_reference==?",
+                    (community_reference,),
+                )
+            ]
+        return [
+            list(x)
+            for x in self.cursor.execute("SELECT species_id, x, y, community_reference" " FROM SPECIES_LOCATIONS")
+        ]
 
     def get_goodness_of_fit(self, reference=1):
         """
@@ -1755,7 +1910,9 @@ class CoalescenceTree(object):
             raise RuntimeError("Biodiversity table does not contain any values.")
         ret = self.cursor.execute(
             "SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND metric=='goodness_of_fit' AND "
-            "community_reference == ?", (reference,)).fetchall()
+            "community_reference == ?",
+            (reference,),
+        ).fetchall()
         if len(ret) is 0:  # pragma: no cover
             raise RuntimeError("Biodiversity table does not contain goodness-of-fit values.")
         else:
@@ -1774,11 +1931,13 @@ class CoalescenceTree(object):
         if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
             raise ValueError("Biodiversity table does not contain any values.")
         metric_sql = "goodness_of_fit_{}".format(metric)
-        ret = self.cursor.execute("SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND metric==? and "
-                                  "community_reference == ?", (metric_sql, reference,)).fetchone()
+        ret = self.cursor.execute(
+            "SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND metric==? and "
+            "community_reference == ?",
+            (metric_sql, reference),
+        ).fetchone()
         if len(ret) == 0:  # pragma: no cover
-            raise ValueError("No goodness-of-fit for {} with"
-                             " community reference = {}".format(metric, reference))
+            raise ValueError("No goodness-of-fit for {} with" " community reference = {}".format(metric, reference))
         return ret[0]
 
     def get_goodness_of_fit_fragment_richness(self, reference=1):
@@ -1811,12 +1970,16 @@ class CoalescenceTree(object):
         self._check_database()
         if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
             raise ValueError("Biodiversity table does not contain any values.")
-        ret = self.cursor.execute("SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND "
-                                  "metric=='goodness_of_fit_fragment_octaves' and "
-                                  "community_reference == ?", (reference,)).fetchone()
+        ret = self.cursor.execute(
+            "SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND "
+            "metric=='goodness_of_fit_fragment_octaves' and "
+            "community_reference == ?",
+            (reference,),
+        ).fetchone()
         if len(ret) == 0:  # pragma: no cover
-            raise ValueError("No goodness-of-fit for fragment octaves with"
-                             " community reference = {}".format(reference))
+            raise ValueError(
+                "No goodness-of-fit for fragment octaves with" " community reference = {}".format(reference)
+            )
         return ret[0]
 
     def dispersal_parameters(self):
@@ -1826,8 +1989,13 @@ class CoalescenceTree(object):
         :return: a dict of the dispersal parameters (dispersal method, sigma, tau, m_probability and cutoff)
         """
         ret = self.get_simulation_parameters()
-        return {"dispersal_method": ret["dispersal_method"], "sigma": ret["sigma"], "tau": ret["tau"],
-                "m_probability": ret["m_probability"], "cutoff": ret["cutoff"]}
+        return {
+            "dispersal_method": ret["dispersal_method"],
+            "sigma": ret["sigma"],
+            "tau": ret["tau"],
+            "m_probability": ret["m_probability"],
+            "cutoff": ret["cutoff"],
+        }
 
     def get_job(self):
         """
@@ -1862,7 +2030,8 @@ class CoalescenceTree(object):
                     "sample_x_offset, sample_y_offset, historical_coarse_map, "
                     " historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
                     " landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
-                    " FROM SIMULATION_PARAMETERS")
+                    " FROM SIMULATION_PARAMETERS"
+                )
             except sqlite3.Error as e:
                 self.logger.error("Failure to get SIMULATION_PARAMETERS table from database. Check table exists.")
                 raise e
@@ -1871,7 +2040,7 @@ class CoalescenceTree(object):
             if sys.version_info[0] is not 3:  # pragma: no cover
                 for i, each in enumerate(values):
                     if isinstance(each, unicode):
-                        values[i] = each.encode('ascii')
+                        values[i] = each.encode("ascii")
             # Now convert it into a dictionary
             return dict(zip(column_names, values))
         else:
@@ -1889,8 +2058,9 @@ class CoalescenceTree(object):
         try:
             self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS")
         except sqlite3.Error as e:  # pragma: no cover
-            self.logger.error("Failure to fetch references from COMMUNITY_PARAMETERS table in database."
-                              " Check table exists.")
+            self.logger.error(
+                "Failure to fetch references from COMMUNITY_PARAMETERS table in database." " Check table exists."
+            )
             raise e
         references = [x[0] for x in self.cursor.fetchall()]
         return references
@@ -1909,12 +2079,18 @@ class CoalescenceTree(object):
         self._check_database()
         try:
             try:
-                self.cursor.execute("SELECT speciation_rate, time, fragments, metacommunity_reference, "
-                                    "min_speciation_gen, max_speciation_gen "
-                                    "FROM COMMUNITY_PARAMETERS WHERE reference==?", (reference,))
+                self.cursor.execute(
+                    "SELECT speciation_rate, time, fragments, metacommunity_reference, "
+                    "min_speciation_gen, max_speciation_gen "
+                    "FROM COMMUNITY_PARAMETERS WHERE reference==?",
+                    (reference,),
+                )
             except sqlite3.Error:
-                self.cursor.execute("SELECT speciation_rate, time, fragments, metacommunity_reference "
-                                    "FROM COMMUNITY_PARAMETERS WHERE reference==?", (reference,))
+                self.cursor.execute(
+                    "SELECT speciation_rate, time, fragments, metacommunity_reference "
+                    "FROM COMMUNITY_PARAMETERS WHERE reference==?",
+                    (reference,),
+                )
         except sqlite3.Error as e:  # pragma: no cover
             self.logger.error("Failure to fetch COMMUNITY_PARAMETERS table from database. Check table exists.")
             raise e
@@ -1926,13 +2102,22 @@ class CoalescenceTree(object):
         if sys.version_info[0] is not 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
-                    values[i] = each.encode('ascii')
+                    values[i] = each.encode("ascii")
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
 
-    def get_community_reference(self, speciation_rate, time, fragments, metacommunity_size=0,
-                                metacommunity_speciation_rate=0.0, metacommunity_option=None, external_reference=0,
-                                min_speciation_gen=0.0, max_speciation_gen=0.0):
+    def get_community_reference(
+        self,
+        speciation_rate,
+        time,
+        fragments,
+        metacommunity_size=0,
+        metacommunity_speciation_rate=0.0,
+        metacommunity_option=None,
+        external_reference=0,
+        min_speciation_gen=0.0,
+        max_speciation_gen=0.0,
+    ):
         """
         Gets the community reference associated with the supplied community parameters
 
@@ -1957,10 +2142,11 @@ class CoalescenceTree(object):
             self._check_database()
             if not check_sql_table_exist(self.database, "METACOMMUNITY_PARAMETERS"):  # pragma: no cover
                 raise KeyError("No table METACOMMUNITY_PARAMETERS exists in database {}".format(self.file))
-            self.cursor.execute("SELECT reference FROM METACOMMUNITY_PARAMETERS WHERE metacommunity_size == ? AND "
-                                "speciation_rate == ? AND option == ? and external_reference == ?",
-                                (float(metacommunity_size), metacommunity_speciation_rate, metacommunity_option,
-                                 external_reference))
+            self.cursor.execute(
+                "SELECT reference FROM METACOMMUNITY_PARAMETERS WHERE metacommunity_size == ? AND "
+                "speciation_rate == ? AND option == ? and external_reference == ?",
+                (float(metacommunity_size), metacommunity_speciation_rate, metacommunity_option, external_reference),
+            )
             try:
                 metacommunity_reference = self.cursor.fetchone()[0]
             except (IndexError, TypeError):
@@ -1968,18 +2154,27 @@ class CoalescenceTree(object):
         try:
             if check_sql_table_exist(self.database, "COMMUNITY_PARAMETERS"):
                 try:
-                    self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
-                                        "time == ? AND fragments == ? AND metacommunity_reference == ? AND "
-                                        "min_speciation_gen == ? AND max_speciation_gen == ?",
-                                        (speciation_rate, time, int(fragments), metacommunity_reference,
-                                         min_speciation_gen,
-                                         max_speciation_gen))
+                    self.cursor.execute(
+                        "SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
+                        "time == ? AND fragments == ? AND metacommunity_reference == ? AND "
+                        "min_speciation_gen == ? AND max_speciation_gen == ?",
+                        (
+                            speciation_rate,
+                            time,
+                            int(fragments),
+                            metacommunity_reference,
+                            min_speciation_gen,
+                            max_speciation_gen,
+                        ),
+                    )
                 except sqlite3.Error:
                     if min_speciation_gen != 0.0 or max_speciation_gen != 0.0:
                         raise IndexError
-                    self.cursor.execute("SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
-                                        "time == ? AND fragments == ? AND metacommunity_reference == ?",
-                                        (speciation_rate, time, int(fragments), metacommunity_reference))
+                    self.cursor.execute(
+                        "SELECT reference FROM COMMUNITY_PARAMETERS WHERE speciation_rate == ? AND "
+                        "time == ? AND fragments == ? AND metacommunity_reference == ?",
+                        (speciation_rate, time, int(fragments), metacommunity_reference),
+                    )
                 return self.cursor.fetchone()[0]
         except (IndexError, TypeError):
             raise KeyError("Cannot obtain community reference from database with provided parameters.")
@@ -2001,8 +2196,9 @@ class CoalescenceTree(object):
         try:
             self.cursor.execute("SELECT reference FROM METACOMMUNITY_PARAMETERS")
         except sqlite3.Error as e:  # pragma: no cover
-            self.logger.error("Failure to fetch references from METACOMMUNITY_PARAMETERS table in database."
-                              " Check table exists.")
+            self.logger.error(
+                "Failure to fetch references from METACOMMUNITY_PARAMETERS table in database." " Check table exists."
+            )
             raise e
         references = [x[0] for x in self.cursor.fetchall()]
         return references
@@ -2024,11 +2220,13 @@ class CoalescenceTree(object):
         """
         self._check_database()
         try:
-            self.cursor.execute("SELECT speciation_rate, metacommunity_size, option, external_reference FROM"
-                                " METACOMMUNITY_PARAMETERS  WHERE reference== ?", (reference,))
+            self.cursor.execute(
+                "SELECT speciation_rate, metacommunity_size, option, external_reference FROM"
+                " METACOMMUNITY_PARAMETERS  WHERE reference== ?",
+                (reference,),
+            )
         except sqlite3.Error as e:
-            self.logger.error(
-                "Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. \n")
+            self.logger.error("Failure to fetch METACOMMUNITY_PARAMETERS table from database. Check table exists. \n")
             raise e
         fetch = self.cursor.fetchone()
         if fetch is None:
@@ -2040,7 +2238,7 @@ class CoalescenceTree(object):
         if sys.version_info[0] is not 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
-                    values[i] = each.encode('ascii')
+                    values[i] = each.encode("ascii")
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
 
@@ -2072,11 +2270,11 @@ class CoalescenceTree(object):
         .. note:: that this cannot be undone (other than re-running the calculations).
         """
         self._check_database()
-        self.cursor.execute('DROP TABLE IF EXISTS BIODIVERSITY_METRICS')
-        self.cursor.execute('DROP TABLE IF EXISTS FRAGMENT_OCTAVES')
-        self.cursor.execute('DROP TABLE IF EXISTS FRAGMENT_RICHNESS')
-        self.cursor.execute('DROP TABLE IF EXISTS PLOT_DATA')
-        self.cursor.execute('DROP TABLE IF EXISTS SPECIES_RICHNESS')
+        self.cursor.execute("DROP TABLE IF EXISTS BIODIVERSITY_METRICS")
+        self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_OCTAVES")
+        self.cursor.execute("DROP TABLE IF EXISTS FRAGMENT_RICHNESS")
+        self.cursor.execute("DROP TABLE IF EXISTS PLOT_DATA")
+        self.cursor.execute("DROP TABLE IF EXISTS SPECIES_RICHNESS")
         self.cursor.execute("DROP TABLE IF EXISTS ALPHA_DIVERSITY")
         self.cursor.execute("DROP TABLE IF EXISTS BETA_DIVERSITY")
         self.cursor.execute("DROP TABLE IF EXISTS SPECIES_DISTANCE_SIMILARITY")
@@ -2120,11 +2318,14 @@ class CoalescenceTree(object):
         if not self.fragment_abundances:  # pragma: no cover
             self.calculate_fragment_abundances()
         try:
-            chosen, richness = zip(*[[x[1], x[2]] for x in self.fragment_abundances if x[0] == fragment and
-                                     x[3] == community_reference])
+            chosen, richness = zip(
+                *[[x[1], x[2]] for x in self.fragment_abundances if x[0] == fragment and x[3] == community_reference]
+            )
         except ValueError as ve:  # pragma: no cover
-            raise ValueError("Fragment abundances do not contain data"
-                             " for {} with reference={}: {}".format(fragment, number_of_individuals, ve))
+            raise ValueError(
+                "Fragment abundances do not contain data"
+                " for {} with reference={}: {}".format(fragment, number_of_individuals, ve)
+            )
         species_ids = np.repeat(chosen, richness)
         richness_out = []
         for i in range(n):
@@ -2155,8 +2356,7 @@ class CoalescenceTree(object):
         if isinstance(number_of_individuals, dict):
             if not self.fragment_abundances:  # pragma: no cover
                 self.calculate_fragment_abundances()
-            select_abundances = [[x[0], x[1], x[2]] for x in self.fragment_abundances if
-                                 x[3] == community_reference]
+            select_abundances = [[x[0], x[1], x[2]] for x in self.fragment_abundances if x[3] == community_reference]
             fragments = set([x[0] for x in select_abundances])
             for f in fragments:
                 try:
@@ -2165,9 +2365,10 @@ class CoalescenceTree(object):
                     raise KeyError("Fragment not found in number_of_individuals dictionary: {}".format(ke))
                 sum_total = sum([x[2] for x in select_abundances if x[0] == f])
                 if sum_total < number_of_individuals[f]:
-                    raise KeyError("Sampled number of individuals is greater"
-                                   " than exists for fragment {}: {} < {}".format(f, sum_total,
-                                                                                  number_of_individuals[f]))
+                    raise KeyError(
+                        "Sampled number of individuals is greater"
+                        " than exists for fragment {}: {} < {}".format(f, sum_total, number_of_individuals[f])
+                    )
             for n in range(n):
                 ids = []
                 for f in fragments:
@@ -2178,13 +2379,11 @@ class CoalescenceTree(object):
             return np.mean(richness_out)
         else:
             # straightforward case
-            chosen, richness = zip(
-                *[[x[0], x[1]] for x in self.get_species_abundances(reference=community_reference)])
+            chosen, richness = zip(*[[x[0], x[1]] for x in self.get_species_abundances(reference=community_reference)])
             species_ids = np.repeat(chosen, richness)
             for i in range(n):
                 # Randomly select number_of_individuals
-                richness_out.append(
-                    len(set(np.random.choice(species_ids, size=number_of_individuals, replace=False))))
+                richness_out.append(len(set(np.random.choice(species_ids, size=number_of_individuals, replace=False))))
             return np.mean(richness_out)
 
     def calculate_species_distance_similarity(self, output_metrics=True):
@@ -2200,10 +2399,13 @@ class CoalescenceTree(object):
 
         """
         self._check_database()
-        species_locations = self.cursor.execute("SELECT species_id, x, y, community_reference FROM "
-                                                "SPECIES_LOCATIONS").fetchall()
-        tmp_create = "CREATE TABLE SPECIES_DISTANCE_SIMILARITY (ref INT PRIMARY KEY NOT NULL, distance INT NOT NULL," \
-                     " no_individuals INT NOT NULL, community_reference INT NOT NULL)"
+        species_locations = self.cursor.execute(
+            "SELECT species_id, x, y, community_reference FROM " "SPECIES_LOCATIONS"
+        ).fetchall()
+        tmp_create = (
+            "CREATE TABLE SPECIES_DISTANCE_SIMILARITY (ref INT PRIMARY KEY NOT NULL, distance INT NOT NULL,"
+            " no_individuals INT NOT NULL, community_reference INT NOT NULL)"
+        )
         if not check_sql_table_exist(self.database, "SPECIES_DISTANCE_SIMILARITY"):
             try:
                 self.cursor.execute(tmp_create)
@@ -2215,10 +2417,11 @@ class CoalescenceTree(object):
             raise RuntimeError("SPECIES_DISTANCE_SIMILARITY table already exists in the output database.")
         if not check_sql_table_exist(self.database, "SPECIES_LOCATIONS"):  # pragma: no cover
             raise RuntimeError(
-                "SPECIES_LOCATIONS table does not exist in output database - calculate species locations"
-                "first.")
-        max_val = [x for x in self.cursor.execute("SELECT min(x), max(x),"
-                                                  " min(y), max(y) FROM SPECIES_LOCATIONS").fetchone()]
+                "SPECIES_LOCATIONS table does not exist in output database - calculate species locations" "first."
+            )
+        max_val = [
+            x for x in self.cursor.execute("SELECT min(x), max(x)," " min(y), max(y) FROM SPECIES_LOCATIONS").fetchone()
+        ]
         references = set([x[3] for x in species_locations])
         ref = 0
         output = []
@@ -2240,8 +2443,9 @@ class CoalescenceTree(object):
                 total_length = len(locations)
                 for i, location in enumerate(locations):
                     for j in range(i + 1, total_length):
-                        distance = int(calculate_distance_between(location[0], location[1],
-                                                                  locations[j][0], locations[j][1]))
+                        distance = int(
+                            calculate_distance_between(location[0], location[1], locations[j][0], locations[j][1])
+                        )
                         sum_distances[distance] += 1
             total_sim = 0
             number_all = 0
@@ -2252,8 +2456,10 @@ class CoalescenceTree(object):
                 total_sim += item * distance
                 number_all += item
             if number_all == 0:  # pragma: no cover
-                self.logger.info("No distances found for {} - likely no species exist with more than one"
-                                 " location.".format(reference))
+                self.logger.info(
+                    "No distances found for {} - likely no species exist with more than one"
+                    " location.".format(reference)
+                )
                 mean = 0
             else:
                 mean = total_sim / number_all
@@ -2272,8 +2478,7 @@ class CoalescenceTree(object):
                 tmp = [ref, "mean_distance_between_individuals", "whole"]
                 tmp.extend([x[0], float(x[1])])
                 bio_output.append(tmp)
-            self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)",
-                                    bio_output)
+            self.cursor.executemany("INSERT INTO BIODIVERSITY_METRICS VALUES (?, ?, ?, ?, ?, NULL, NULL)", bio_output)
         self.cursor.executemany("INSERT INTO SPECIES_DISTANCE_SIMILARITY VALUES(?,?,?,?)", sql_output)
         self.database.commit()
 
@@ -2286,8 +2491,10 @@ class CoalescenceTree(object):
         self._check_database()
         if not check_sql_table_exist(self.database, "SPECIES_DISTANCE_SIMILARITY"):  # pragma: no cover
             raise IOError("Database {} does not contain SPECIES_DISTANCE_SIMILARITY table".format(self.file))
-        sql_fetch = self.cursor.execute("SELECT distance, no_individuals FROM SPECIES_DISTANCE_SIMILARITY "
-                                        "WHERE community_reference == ?", (community_reference,)).fetchall()
+        sql_fetch = self.cursor.execute(
+            "SELECT distance, no_individuals FROM SPECIES_DISTANCE_SIMILARITY " "WHERE community_reference == ?",
+            (community_reference,),
+        ).fetchall()
         return [list(x) for x in sql_fetch]
 
     def write_to_csv(self, output_csv, table_name):
@@ -2309,7 +2516,7 @@ class CoalescenceTree(object):
         if sys.version_info[0] < 3:  # pragma: no cover
             infile = open(output_csv, "wb")
         else:
-            infile = open(output_csv, "w", newline='')
+            infile = open(output_csv, "w", newline="")
         with infile as csv_file:
             csv_writer = csv.writer(csv_file)
             for each in table_data:
@@ -2347,5 +2554,8 @@ def scale_simulation_fit(simulated_value, actual_value, number_individuals, tota
     :param total_individuals: the total number of individuals across all sites for this metric
     :return: the scaled fit value
     """
-    return (1 - (abs(simulated_value - actual_value)) / max(simulated_value, actual_value)) * \
-           number_individuals / total_individuals
+    return (
+        (1 - (abs(simulated_value - actual_value)) / max(simulated_value, actual_value))
+        * number_individuals
+        / total_individuals
+    )

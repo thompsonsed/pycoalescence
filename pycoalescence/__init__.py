@@ -3,7 +3,7 @@ pycoalescence provides the facilities for running spatially explicit neutral coa
 and performing basic analysis of the simulation outputs. The program requires necsim to function properly.
 
 """
-__version__ = '1.2.7a34'
+__version__ = "1.2.7a34"
 
 import logging
 
@@ -15,18 +15,18 @@ __maintainer__ = "Samuel Thompson"
 __email__ = "thompsonsed@gmail.com"
 
 try:
-	from pycoalescence.simulation import Simulation, Map
-	from pycoalescence.coalescence_tree import CoalescenceTree
-	from pycoalescence.system_operations import set_logging_method
-	from pycoalescence.merger import Merger
-	from pycoalescence.dispersal_simulation import DispersalSimulation
-	from pycoalescence.landscape_metrics import LandscapeMetrics
+    from pycoalescence.simulation import Simulation, Map
+    from pycoalescence.coalescence_tree import CoalescenceTree
+    from pycoalescence.system_operations import set_logging_method
+    from pycoalescence.merger import Merger
+    from pycoalescence.dispersal_simulation import DispersalSimulation
+    from pycoalescence.landscape_metrics import LandscapeMetrics
 
-	# Support for no scipy installed
-	try:
-		from pycoalescence.fragments import FragmentedLandscape
-	except ImportError as ie:  # pragma: no cover
-		logging.warning("Cannot generate fragmented landscapes: {}".format(ie))
+    # Support for no scipy installed
+    try:
+        from pycoalescence.fragments import FragmentedLandscape
+    except ImportError as ie:  # pragma: no cover
+        logging.warning("Cannot generate fragmented landscapes: {}".format(ie))
 except ImportError as ie:  # pragma: no cover
-	logging.warning(ie)
-	logging.warning("Cannot import package - are you sure that it has been installed correctly?")
+    logging.warning(ie)
+    logging.warning("Cannot import package - are you sure that it has been installed correctly?")

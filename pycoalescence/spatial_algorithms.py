@@ -141,8 +141,7 @@ def archimedes_spiral(centre_x, centre_y, radius, theta):
     :return: tuple of x and y coordinates
     :rtype: tuple
     """
-    return int(math.floor(radius * math.cos(theta) + centre_x)), \
-           int(math.floor(radius * math.sin(theta) + centre_y))
+    return int(math.floor(radius * math.cos(theta) + centre_x)), int(math.floor(radius * math.sin(theta) + centre_y))
 
 
 def convert_coordinates(x, y, input_srs, output_srs):

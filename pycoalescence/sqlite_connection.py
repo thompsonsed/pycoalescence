@@ -7,7 +7,7 @@ detecting existence and structure of databases.
 import sqlite3
 
 
-class SQLiteConnection():
+class SQLiteConnection:
     """
     Class containing context management for opening sqlite3 connections. The file name provided can either be a string
     containing the path to the file, or an sqlite3.Connection object, which will NOT be closed on destruction. This
@@ -93,7 +93,7 @@ def check_sql_column_exists(database, table_name, column_name):
     :rtype: bool
     """
     with SQLiteConnection(database) as cursor:
-        c = [i[1] for i in cursor.execute('PRAGMA table_info({})'.format(table_name)) if i[1] == column_name]
+        c = [i[1] for i in cursor.execute("PRAGMA table_info({})".format(table_name)) if i[1] == column_name]
         return len(c) != 0
 
 

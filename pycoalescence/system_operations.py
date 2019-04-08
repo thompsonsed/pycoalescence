@@ -64,8 +64,10 @@ def check_file_exists(file_name):
     :raises: IOError if no file exists
     """
     if file_name not in {"null", "none", None} and not os.path.exists(file_name):
-        err = "Map file " + file_name + " does not exist. Check that this is an absolute path or disable map " \
-                                        "file check"
+        err = (
+            "Map file " + file_name + " does not exist. Check that this is an absolute path or disable map "
+            "file check"
+        )
         raise IOError(err)
 
 
@@ -79,11 +81,10 @@ def execute(cmd, silent=False, **kwargs):
 
     :return a line from the execution output
     """
-    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             universal_newlines=True, **kwargs)
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, **kwargs)
     while True:
         output = popen.stdout.readline()
-        if output == '' and popen.poll() is not None:
+        if output == "" and popen.poll() is not None:
             break
         if output:
             yield output
@@ -146,9 +147,9 @@ def set_logging_method(logging_level=logging.INFO, output=None, **kwargs):
     """
     if not logging_set:
         if output is None:
-            logging.basicConfig(stream=sys.stdout, format='%(levelname)s:%(message)s', level=logging_level, **kwargs)
+            logging.basicConfig(stream=sys.stdout, format="%(levelname)s:%(message)s", level=logging_level, **kwargs)
         else:
-            logging.basicConfig(filename=output, format='%(levelname)s:%(message)s', level=logging_level, **kwargs)
+            logging.basicConfig(filename=output, format="%(levelname)s:%(message)s", level=logging_level, **kwargs)
         logging.captureWarnings(True)
 
 
@@ -182,7 +183,7 @@ def create_logger(logger, file=None, logging_level=logging.WARNING, **kwargs):
 
     :return:
     """
-    formatter = logging.Formatter('%(message)s')
+    formatter = logging.Formatter("%(message)s")
     if file is None:
         sh = logging.StreamHandler(kwargs.get("stream", None))
     else:

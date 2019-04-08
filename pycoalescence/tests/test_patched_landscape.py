@@ -113,8 +113,7 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
         """Tests the base functions from the PatchedLandscape class."""
         fine_map = os.path.join("output", "none.tif")
         dispersal_map = os.path.join("output", "dispersal_none.tif")
-        pl = PatchedLandscape(output_fine_map=fine_map,
-                              output_dispersal_map=dispersal_map)
+        pl = PatchedLandscape(output_fine_map=fine_map, output_dispersal_map=dispersal_map)
         self.assertEqual("PatchedLandscape({}, {})".format(fine_map, dispersal_map), repr(pl))
 
     def testPatchedLandscapeInit(self):
@@ -123,13 +122,17 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
         appropriately set up.
         """
         with self.assertRaises(IOError):
-            pl = PatchedLandscape(output_fine_map=os.path.join("sample", "SA_sample_fine.tif"),
-                                  output_dispersal_map="notexist")
+            pl = PatchedLandscape(
+                output_fine_map=os.path.join("sample", "SA_sample_fine.tif"), output_dispersal_map="notexist"
+            )
         with self.assertRaises(IOError):
-            pl = PatchedLandscape(output_dispersal_map=os.path.join("sample", "SA_sample_fine.tif"),
-                                  output_fine_map="notexist")
-        pl = PatchedLandscape(output_fine_map=os.path.join("output", "patched1", "patched1.tif"),
-                              output_dispersal_map=os.path.join("output", "patched2", "patched2.tif"))
+            pl = PatchedLandscape(
+                output_dispersal_map=os.path.join("sample", "SA_sample_fine.tif"), output_fine_map="notexist"
+            )
+        pl = PatchedLandscape(
+            output_fine_map=os.path.join("output", "patched1", "patched1.tif"),
+            output_dispersal_map=os.path.join("output", "patched2", "patched2.tif"),
+        )
         self.assertTrue(os.path.exists(os.path.join("output", "patched2")))
         self.assertTrue(os.path.exists(os.path.join("output", "patched2")))
 
@@ -164,37 +167,34 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
         m_fine = os.path.join("output", "matrix_pl_fine.tif")
         m_dispersal = os.path.join("output", "matrix_pl_dispersal.tif")
         pl = PatchedLandscape(m_fine, m_dispersal)
-        density_matrix = np.asarray([[1, 2, 3],
-                                     [40, 50, 60],
-                                     [700, 800, 900]])
+        density_matrix = np.asarray([[1, 2, 3], [40, 50, 60], [700, 800, 900]])
         density_matrix_out = np.asarray([[1, 2, 3, 40, 50, 60, 700, 800, 900]])
-        dispersal_matrix = np.asarray([[1, 0, 0, 1, 1, 0, 1, 1, 1],
-                                       [1, 1, 0, 0, 0, 0, 0, 0, 0],
-                                       [0, 0, 1, 1, 1, 1, 0, 0, 0],
-                                       [0, 0, 0, 1, 1, 1, 1, 1, 1],
-                                       [0, 0, 0, 1, 1, 1, 1, 1, 1],
-                                       [0, 0, 0, 1, 1, 1, 1, 1, 1],
-                                       [0, 0, 0, 1, 1, 1, 1, 1, 1],
-                                       [0, 0, 0, 1, 1, 1, 1, 1, 1],
-                                       [0, 0, 0, 1, 1, 1, 1, 1, 1]])
-        dispersal_matrix_out = np.asarray([[0.1666666, 0., 0., 0.16666673, 0.16666667,
-                                            0., 0.1666666, 0.16666673, 0.16666667],
-                                           [0.5, 0.5, 0., 0., 0.,
-                                            0., 0., 0., 0.],
-                                           [0., 0., 0.25, 0.25, 0.25,
-                                            0.25, 0., 0., 0.],
-                                           [0., 0., 0., 0.1666666, 0.16666673,
-                                            0.16666667, 0.1666666, 0.1666667, 0.1666667],
-                                           [0., 0., 0., 0.1666666, 0.16666673,
-                                            0.16666667, 0.1666666, 0.1666667, 0.1666667],
-                                           [0., 0., 0., 0.1666666, 0.16666673,
-                                            0.16666667, 0.1666666, 0.1666667, 0.1666667],
-                                           [0., 0., 0., 0.1666666, 0.16666673,
-                                            0.16666667, 0.1666666, 0.1666667, 0.1666667],
-                                           [0., 0., 0., 0.1666666, 0.16666673,
-                                            0.16666667, 0.1666666, 0.1666667, 0.1666667],
-                                           [0., 0., 0., 0.1666666, 0.16666673,
-                                            0.16666667, 0.1666666, 0.1666667, 0.1666667]])
+        dispersal_matrix = np.asarray(
+            [
+                [1, 0, 0, 1, 1, 0, 1, 1, 1],
+                [1, 1, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 1, 0, 0, 0],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1],
+            ]
+        )
+        dispersal_matrix_out = np.asarray(
+            [
+                [0.1666666, 0.0, 0.0, 0.16666673, 0.16666667, 0.0, 0.1666666, 0.16666673, 0.16666667],
+                [0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.25, 0.25, 0.25, 0.25, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.1666666, 0.16666673, 0.16666667, 0.1666666, 0.1666667, 0.1666667],
+                [0.0, 0.0, 0.0, 0.1666666, 0.16666673, 0.16666667, 0.1666666, 0.1666667, 0.1666667],
+                [0.0, 0.0, 0.0, 0.1666666, 0.16666673, 0.16666667, 0.1666666, 0.1666667, 0.1666667],
+                [0.0, 0.0, 0.0, 0.1666666, 0.16666673, 0.16666667, 0.1666666, 0.1666667, 0.1666667],
+                [0.0, 0.0, 0.0, 0.1666666, 0.16666673, 0.16666667, 0.1666666, 0.1666667, 0.1666667],
+                [0.0, 0.0, 0.0, 0.1666666, 0.16666673, 0.16666667, 0.1666666, 0.1666667, 0.1666667],
+            ]
+        )
         pl.generate_from_matrix(density_matrix, dispersal_matrix)
         dispersal_matrix2 = np.ones((2, 2))
         with self.assertRaises(TypeError):
@@ -260,8 +260,7 @@ class TestPatchedLandscapeFunctions(unittest.TestCase):
         self.assertTrue(os.path.exists(output_csv))
         with self.assertRaises(IOError):
             pl.generate_fragment_csv(output_csv)
-        expected_output = [[str(x) for x in ["patch1", 1, 0, 1, 0, 10]],
-                           [str(x) for x in ["patch2", 2, 0, 2, 0, 200]]]
+        expected_output = [[str(x) for x in ["patch1", 1, 0, 1, 0, 10]], [str(x) for x in ["patch2", 2, 0, 2, 0, 200]]]
         with open(output_csv, "r") as csvfile:
             csv_reader = csv.reader(csvfile)
             for i, row in enumerate(csv_reader):
@@ -313,9 +312,7 @@ class TestPatchedLandscapeSystems(unittest.TestCase):
         _ = pl.patches.pop(4)
         _ = pl.patches[1].dispersal_probabilities.pop(3)
         pl.generate_files()
-        expected_dict = {1: {1: 0.4, 2: 0.6, 3: 0.0},
-                         2: {1: 0.7, 2: 0.3, 3: 0.0},
-                         3: {1: 0.9, 2: 0.05, 3: 0.05}}
+        expected_dict = {1: {1: 0.4, 2: 0.6, 3: 0.0}, 2: {1: 0.7, 2: 0.3, 3: 0.0}, 3: {1: 0.9, 2: 0.05, 3: 0.05}}
         for k1, v1 in expected_dict.items():
             for k2, v2 in v1.items():
                 self.assertAlmostEqual(self.pl.patches[k1].dispersal_probabilities[k2], v2, places=4)
@@ -345,9 +342,7 @@ class TestPatchedLandscapeSystems(unittest.TestCase):
     def testDispersalMapValues(self):
         """Tests that the dispersal map values are correct."""
         self.dispersal.open()
-        expected_data = np.array([[0.4, 0.6, 0.0],
-                                  [0.7, 0.3, 0.0],
-                                  [0.9, 0.05, 0.05]])
+        expected_data = np.array([[0.4, 0.6, 0.0], [0.7, 0.3, 0.0], [0.9, 0.05, 0.05]])
         for x in range(3):
             for y in range(3):
                 self.assertAlmostEqual(expected_data[y, x], self.dispersal.data[y, x], places=5)
