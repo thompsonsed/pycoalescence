@@ -315,7 +315,7 @@ class Map(object):
         if not self.map_exists(self.file_name):
             raise IOError("File {} does not exist for writing.".format(self.file_name))
         x, y = self.get_x_y()
-        if array.shape[0] > x or array.shape[1] > y:
+        if array.shape[1] > x or array.shape[0] > y:
             raise ValueError(
                 "Array of size {}, {} is larger than map of size {}, {}.".format(array.shape[0], array.shape[1], x, y)
             )
