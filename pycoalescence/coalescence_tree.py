@@ -166,7 +166,7 @@ class CoalescenceTree(object):
         :rtype: bool
         """
         if not self.fragment_abundances:
-            self.calculate_fragment_abundances()
+            raise RuntimeError("No fragment abundances imported.")
         if self.comparison_abundances is None:
             if self.comparison_file is not None:
                 self.import_comparison_data(self.comparison_file)
@@ -480,9 +480,9 @@ class CoalescenceTree(object):
         :rtype: None
         """
         if not self.equalised:
-            if not self.fragment_abundances:  # pragma: no cover
+            if self.fragment_abundances is None:  # pragma: no cover
                 self.calculate_fragment_abundances()
-            if not self.fragment_abundances or self.comparison_abundances is None:
+            if self.fragment_abundances is None or self.comparison_abundances is None:
                 raise ValueError("Cannot equalise fragment numbers if comparison or simulation data is missing.")
             random.seed(self.get_simulation_parameters()["seed"])
             for fragment in set([x[0] for x in self.fragment_abundances]):
@@ -1103,7 +1103,7 @@ class CoalescenceTree(object):
 
         Sets fragment_abundances object.
         """
-        if not self.fragment_abundances:
+        if self.fragment_abundances is None or len(self.fragment_abundances) == 0:
             self._check_database()
             if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
                 raise RuntimeError("Database does not contain FRAGMENT_ABUNDANCES table.")
@@ -1114,9 +1114,10 @@ class CoalescenceTree(object):
                 ).fetchall()
                 if x[2] > 0
             ]
-            if not self.fragment_abundances:  # pragma: no cover
+            if self.fragment_abundances is None or len(self.fragment_abundances) == 0:  # pragma: no cover
+                self.fragment_abundances = None
                 raise ValueError("Fragment abundances table may be empty, or not properly stored.")
-            if self.comparison_abundances:
+            if self.comparison_abundances is not None:
                 self._equalise_all_fragment_numbers()
         else:  # pragma: no cover
             self.logger.warning("Fragment abundances already imported.")
@@ -1136,8 +1137,10 @@ class CoalescenceTree(object):
             " community_reference INT NOT NULL,  richness INT NOT NULL)"
         )
         # First check the FRAGMENT_ABUNDANCES TABLE EXISTS
-        if not self.fragment_abundances:
+        if self.fragment_abundances is None or len(self.fragment_abundances) == 0:
             self.calculate_fragment_abundances()
+        if len(self.fragment_abundances) == 0 or self.fragment_abundances is None:
+            raise RuntimeError("No fragment abundances detected.")
         # Now try and create FRAGMENT_RICHNESS
         if not check_sql_table_exist(self.database, "FRAGMENT_RICHNESS"):
             try:
