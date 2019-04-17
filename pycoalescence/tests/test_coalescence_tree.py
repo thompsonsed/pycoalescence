@@ -672,7 +672,10 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         """Checks behaviour when matching fragment numbers."""
         test = CoalescenceTree(os.path.join("output", "sampledb1.db"), logging_level=50)
         test.clear_calculations()
+        with self.assertRaises(RuntimeError):
+            test._check_fragment_numbers_match()
         with self.assertRaises(ValueError):
+            test.calculate_fragment_abundances()
             test._check_fragment_numbers_match()
         test.comparison_file = os.path.join("sample", "PlotBiodiversityMetrics.db")
         self.assertTrue(test._check_fragment_numbers_match())

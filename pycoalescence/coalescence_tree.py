@@ -480,9 +480,9 @@ class CoalescenceTree(object):
         :rtype: None
         """
         if not self.equalised:
-            if self.fragment_abundances is None:  # pragma: no cover
+            if not self.fragment_abundances:  # pragma: no cover
                 self.calculate_fragment_abundances()
-            if self.fragment_abundances is None or self.comparison_abundances is None:
+            if not self.fragment_abundances or not self.comparison_abundances:
                 raise ValueError("Cannot equalise fragment numbers if comparison or simulation data is missing.")
             random.seed(self.get_simulation_parameters()["seed"])
             for fragment in set([x[0] for x in self.fragment_abundances]):
@@ -1103,7 +1103,7 @@ class CoalescenceTree(object):
 
         Sets fragment_abundances object.
         """
-        if self.fragment_abundances is None or len(self.fragment_abundances) == 0:
+        if not self.fragment_abundances:
             self._check_database()
             if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
                 raise RuntimeError("Database does not contain FRAGMENT_ABUNDANCES table.")
@@ -1114,7 +1114,7 @@ class CoalescenceTree(object):
                 ).fetchall()
                 if x[2] > 0
             ]
-            if self.fragment_abundances is None or len(self.fragment_abundances) == 0:  # pragma: no cover
+            if not self.fragment_abundances:  # pragma: no cover
                 self.fragment_abundances = None
                 raise ValueError("Fragment abundances table may be empty, or not properly stored.")
             if self.comparison_abundances is not None:
@@ -1378,6 +1378,8 @@ class CoalescenceTree(object):
                     if len(tmp_list) > 0:
                         self.comparison_octaves = tmp_list
                         store = False
+            if not self.fragment_abundances:
+                self.calculate_fragment_abundances()
             # Need to calculate again if the fragment numbers don't match
             if not self._check_fragment_numbers_match():  # pragma: no cover
                 self.comparison_octaves = None
