@@ -22,6 +22,7 @@ import random
 import sqlite3
 import sys
 from collections import defaultdict, Iterable
+from operator import itemgetter
 
 import numpy as np
 
@@ -2302,6 +2303,76 @@ class CoalescenceTree(object):
         self.database.commit()
         if self.c_community is not None:  # pragma: no cover
             self.c_community.reset()
+
+    # TODO write unittest
+    def downsample(self, sample_proportion):
+        """
+        Down-samples the individuals by a given proportion globally, and at each location. The original SPECIES_LIST
+        is stored in a new table called SPECIES_LIST_ORIGINAL and a new SPECIES_LIST object is created containing the
+        down-sampled coalescence tree.
+
+        :param sample_proportion: the proportion of individuals to sample at each location
+
+        :return: None
+        :rtype: None
+        """
+        self._check_database()
+        species_list = [list(x) for x in self.cursor.execute("SELECT * FROM SPECIES_LIST").fetchall()]
+        try:
+            if check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):
+                raise IOError("SPECIES_LIST_ORIGINAL already exists in database.")
+            self.cursor.execute("ALTER TABLE SPECIES_LIST RENAME TO SPECIES_LIST_ORIGINAL")
+            self.database.commit()
+            tips = [x for x in species_list if x[6] == 1]
+            no_tips = [x for x in species_list if x[6] == 0]
+            for row in tips:
+                row.append("{}-{}-{}-{}".format(row[2], row[3], row[4], row[5]))
+            unique_locations = set([x[13] for x in tips])
+            out_tips = []
+            for i in unique_locations:
+                select_tips = [x[0:13] for x in tips if x[13] == i]
+                out_number = max(math.floor(sample_proportion * len(select_tips)), 1)
+                select_indices = random.sample(range(0, len(select_tips)), out_number)
+                for i, each in enumerate(select_tips):
+                    if i not in select_indices:
+                        each[6] = 0
+                out_tips.extend(select_tips)
+            out_tips.extend(no_tips)
+            out_tips = sorted(out_tips, key=itemgetter(0))
+            self.cursor.execute(
+                "CREATE TABLE SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, xval INT NOT NULL, "
+                "yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, speciated INT NOT "
+                "NULL, parent INT NOT NULL, existence INT NOT NULL, randnum REAL NOT NULL, gen_alive INT NOT "
+                "NULL, gen_added REAL NOT NULL)"
+            )
+            self.cursor.executemany(
+                "INSERT INTO SPECIES_LIST (ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence, "
+                "randnum,gen_alive,gen_added) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                out_tips,
+            )
+            self.database.commit()
+        except Exception as e:
+            try:
+                self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
+                self.cursor.commit()
+            except Exception as e2:
+                self.logger.error(e2)
+            raise e
+
+    # TODO write unittest
+    def revert_downsample(self):
+        """
+        Reverts the downsample process by restoring the original SPECIES_LIST table.
+
+        :return: None
+        :rtype: None
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):
+            raise IOError("SPECIES_LIST_ORIGINAL table does not exist in database")
+        self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LIST")
+        self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
+        self.database.commit()
 
     def sample_fragment_richness(self, fragment, number_of_individuals, community_reference=1, n=1):
         """
