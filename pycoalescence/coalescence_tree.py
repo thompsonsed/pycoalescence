@@ -23,6 +23,7 @@ import sqlite3
 import sys
 from collections import defaultdict, Iterable
 from operator import itemgetter
+import pandas as pd  # TODO make pandas a dependency
 
 import numpy as np
 
@@ -963,6 +964,19 @@ class CoalescenceTree(object):
                 self.logger.warning("Could not find SPECIES_ABUNDANCES table in database " + self.file + "\n")
                 return 0
 
+    # TODO finish
+    def get_species_richness_pd(self):
+        self._check_database()
+        if check_sql_table_exist(self.database, "SPECIES_RICHNESS"):
+            output = pd.read_sql_query("SELECT community_reference, richness FROM SPECIES_RICHNESS", self.database)
+        else:
+            output = pd.read_sql_query(
+                "SELECT community_reference, COUNT(DISTINCT(species_id)) FROM SPECIES_ABUNDANCES WHERE "
+                "no_individuals > 0 GROUP BY community_reference", self.database
+            )
+            output = output.rename(index=str, columns={"COUNT(DISTINCT(species_id))" : "richness"})
+        return output
+
     def get_octaves(self, reference):
         """
         Get the pre-calculated octave data for the parameters associated with the supplied reference.
@@ -1544,6 +1558,16 @@ class CoalescenceTree(object):
         else:
             return output[0][0]
 
+    # TODO implement tests and delete obsolete functions
+    def get_fragment_richness_pd(self):
+        self._check_database()
+        output = pd.read_sql_query(
+            "SELECT fragment, community_reference, LENGTH(DISTINCT(species_id)) FROM FRAGMENT_ABUNDANCES "
+            "GROUP BY fragment, community_reference",
+            self.database,
+        )
+        return output
+
     def get_fragment_abundances(self, fragment, reference):
         """
         Gets the species abundances for the supplied fragment and community reference.
@@ -1564,6 +1588,13 @@ class CoalescenceTree(object):
         if len(output) == 0:  # pragma: no cover
             raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
         return [list(x) for x in output]
+
+    def get_fragment_abundances_pd(self):
+        self._check_database()
+        output = pd.read_sql_query(
+            "SELECT fragment, community_reference, species_id, no_individuals FROM FRAGMENT_ABUNDANCES", self.database
+        )
+        return output
 
     def get_all_fragment_abundances(self):
         """
@@ -2112,6 +2143,11 @@ class CoalescenceTree(object):
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
 
+    # TODO complete
+    def get_community_parameters_pd(self):
+        self._check_database()
+        return pd.read_sql_query("SELECT * FROM COMMUNITY_PARAMETERS", self.database)
+
     def get_community_reference(
         self,
         speciation_rate,
@@ -2247,6 +2283,11 @@ class CoalescenceTree(object):
                     values[i] = each.encode("ascii")
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
+
+    # TODO finish
+    def get_metacommunity_parameters_pd(self):
+        self._check_database()
+        return pd.read_sql_query("SELECT * FROM METACOMMUNITY_PARAMETERS", self.database)
 
     def get_parameter_description(self, key=None):
         """
