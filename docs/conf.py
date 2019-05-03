@@ -37,7 +37,7 @@ if read_the_docs_build:
 			return MagicMock()
 
 
-	MOCK_MODULES = ['numpy', 'gdal', 'sqlite3', 'osgeo', "libnecsim", "necsimmodule", "matplotlib"  ]
+	MOCK_MODULES = ['numpy', 'gdal', 'pandas', 'sqlite3', 'osgeo', "libnecsim", "necsimmodule", "matplotlib"  ]
 	sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 	sys.modules["scipy"] = Mock()
 	sys.modules["scipy.spatial"] = Mock()
