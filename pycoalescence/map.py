@@ -156,7 +156,7 @@ class Map(object):
         """
         Overriding the default deep copy operator to ignore copying the logger object
 
-        :param memo: the memorised key values
+        :param dict memo: the memorised key values
 
         :return: the copy of the Map object
         """
@@ -201,7 +201,8 @@ class Map(object):
         """
         Gets the dataset from the file.
 
-        :param file: path to the file to open
+        :param str file: path to the file to open
+        :param int permissions: the gdal permission reference to open the dataset
 
         :raises ImportError: if the gdal module has not been imported correctly
         :raises IOError: if the supplied filename is not a tif
@@ -684,21 +685,21 @@ class Map(object):
         ur_y = y_up + x_dim * y_skew + 0 * y_res
         return [min(ul_x, ll_x), max(lr_x, ur_x), min(ll_y, lr_y), max(ul_y, ur_y)]
 
-    def is_within(self, map):
+    def is_within(self, outside_map):
         """
         Checks if the object is within the provided Map object.
 
         .. note:: Uses the extents of the raster file for checking location, ignoring any offsetting
 
-        :type map: Map
-        :param map: the Map object to check if this class is within
+        :type outside_map: Map
+        :param outside_map: the Map object to check if this class is within
 
         :return: true if this Map is entirely within the supplied Map
         :rtype: bool
         """
-        if not isinstance(map, Map):
+        if not isinstance(outside_map, Map):
             raise TypeError("Supplied object must be of Map class.")
-        outer_x_min, outer_x_max, outer_y_min, outer_y_max = map.get_extent()
+        outer_x_min, outer_x_max, outer_y_min, outer_y_max = outside_map.get_extent()
         inner_x_min, inner_x_max, inner_y_min, inner_y_max = self.get_extent()
         smaller_list = [outer_x_min, outer_y_min, inner_x_max, inner_y_max]
         larger_list = [inner_x_min, inner_y_min, outer_x_max, outer_y_max]
@@ -708,7 +709,7 @@ class Map(object):
                     return False
         return True
 
-    def has_equal_dimensions(self, map):
+    def has_equal_dimensions(self, equal_map):
         """
         Checks if the supplied Map has equal dimensions to this Map.
 
@@ -716,16 +717,16 @@ class Map(object):
                   pixel resolution. The map sizes must fit perfectly.
 
 
-        :type map: Map
-        :param map: the Map object to check if dimensions match
+        :type equal_map: Map
+        :param equal_map: the Map object to check if dimensions match
 
         :return: true if the dimensions match, false otherwise
         :rtype: bool
         """
-        if not isinstance(map, Map):
+        if not isinstance(equal_map, Map):
             raise TypeError("Supplied object must be of Map class.")
         this_dims = self.get_dimensions()
-        other_dims = map.get_dimensions()
+        other_dims = equal_map.get_dimensions()
         for i, size in enumerate(this_dims[0:2]):
             if other_dims[i] != size:
                 return False

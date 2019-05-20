@@ -23,9 +23,9 @@ import sqlite3
 import sys
 from collections import defaultdict, Iterable
 from operator import itemgetter
-import pandas as pd  # TODO make pandas a dependency
 
 import numpy as np
+import pandas as pd
 
 try:
     from .necsim import libnecsim
@@ -242,11 +242,11 @@ class CoalescenceTree(object):
         self.applied_speciation_rates_list = speciation_rates
 
     def _set_metacommunity_parameters(
-        self,
-        metacommunity_size=None,
-        metacommunity_speciation_rate=None,
-        metacommunity_option=None,
-        metacommunity_reference=None,
+            self,
+            metacommunity_size=None,
+            metacommunity_speciation_rate=None,
+            metacommunity_option=None,
+            metacommunity_reference=None,
     ):
         """
         Checks that the metacommunity parameters make sense and assigns them within the object.
@@ -259,10 +259,10 @@ class CoalescenceTree(object):
         :rtype: None
         """
         if (
-            not metacommunity_size
-            and not metacommunity_speciation_rate
-            and not metacommunity_option
-            and not metacommunity_reference
+                not metacommunity_size
+                and not metacommunity_speciation_rate
+                and not metacommunity_option
+                and not metacommunity_reference
         ):
             self.metacommunity_size = 0
             self.metacommunity_speciation_rate = 0.0
@@ -676,18 +676,18 @@ class CoalescenceTree(object):
             raise IOError("File {} does not exist.".format(filename))
 
     def set_speciation_parameters(
-        self,
-        speciation_rates,
-        record_spatial=False,
-        record_fragments=False,
-        sample_file=None,
-        times=None,
-        protracted_speciation_min=None,
-        protracted_speciation_max=None,
-        metacommunity_size=None,
-        metacommunity_speciation_rate=None,
-        metacommunity_option=None,
-        metacommunity_reference=None,
+            self,
+            speciation_rates,
+            record_spatial=False,
+            record_fragments=False,
+            sample_file=None,
+            times=None,
+            protracted_speciation_min=None,
+            protracted_speciation_max=None,
+            metacommunity_size=None,
+            metacommunity_speciation_rate=None,
+            metacommunity_option=None,
+            metacommunity_reference=None,
     ):
         """
 
@@ -816,7 +816,7 @@ class CoalescenceTree(object):
             self.c_community.add_protracted_parameters(float(min_speciation_gen), float(max_speciation_gen))
 
     def add_multiple_protracted_parameters(
-        self, min_speciation_gens=None, max_speciation_gens=None, speciation_gens=None
+            self, min_speciation_gens=None, max_speciation_gens=None, speciation_gens=None
     ):
         """
         Adds the protracted parameter set, taking an iterable as an input.
@@ -843,11 +843,11 @@ class CoalescenceTree(object):
             self.add_protracted_parameters(min_g, max_g)
 
     def add_metacommunity_parameters(
-        self,
-        metacommunity_size=None,
-        metacommunity_speciation_rate=None,
-        metacommunity_option=None,
-        metacommunity_reference=0,
+            self,
+            metacommunity_size=None,
+            metacommunity_speciation_rate=None,
+            metacommunity_option=None,
+            metacommunity_reference=0,
     ):
         """
         Adds the metacommunity parameters to the object.
@@ -964,17 +964,23 @@ class CoalescenceTree(object):
                 self.logger.warning("Could not find SPECIES_ABUNDANCES table in database " + self.file + "\n")
                 return 0
 
-    # TODO finish
     def get_species_richness_pd(self):
+        """
+        Gets the species richness for all calculated parameters from the database.
+
+        :return: all species richness values with their associated community reference
+        :rtype: pandas.DataFrame
+        """
         self._check_database()
         if check_sql_table_exist(self.database, "SPECIES_RICHNESS"):
             output = pd.read_sql_query("SELECT community_reference, richness FROM SPECIES_RICHNESS", self.database)
         else:
             output = pd.read_sql_query(
                 "SELECT community_reference, COUNT(DISTINCT(species_id)) FROM SPECIES_ABUNDANCES WHERE "
-                "no_individuals > 0 GROUP BY community_reference", self.database
+                "no_individuals > 0 GROUP BY community_reference",
+                self.database,
             )
-            output = output.rename(index=str, columns={"COUNT(DISTINCT(species_id))" : "richness"})
+            output = output.rename(index=str, columns={"COUNT(DISTINCT(species_id))": "richness"})
         return output
 
     def get_octaves(self, reference):
@@ -991,6 +997,22 @@ class CoalescenceTree(object):
         if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
             self.calculate_octaves()
         return self.get_fragment_octaves(fragment="whole", reference=reference)
+
+    # TODO write test
+    def get_octaves_pd(self):
+        """
+        Gets the species octaves for all calculated community parameters
+
+        :return: all octave classes for the whole landscape
+        :rtype: pandas.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
+            self.calculate_octaves()
+        return pd.read_sql_query(
+            "SELECT community_reference, octave, richness FROM FRAGMENT_OCTAVES WHERE fragment == 'whole'",
+            self.database,
+        )
 
     def get_number_individuals(self, fragment=None, community_reference=None):
         """
@@ -1283,6 +1305,21 @@ class CoalescenceTree(object):
             raise ValueError("No alpha diversity value for reference = {}".format(reference))
         return res[0]
 
+    # TODO write unittest
+    def get_alpha_diversity_pd(self):
+        """
+        Gets the alpha diversity for each set of community parameters.
+
+        :return: all alpha diversity values
+        :rtype: pandas.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):  # pragma: no cover
+            self.calculate_alpha_diversity()
+        output = pd.read_sql_query("SELECT reference, alpha_diversity FROM ALPHA_DIVERSITY", self.database)
+        output = output.rename(index=str, columns={"reference": "community_reference"})
+        return output
+
     def get_beta_diversity(self, reference=1):
         """
         Gets the system beta diversity for the provided community reference parameters.
@@ -1298,6 +1335,21 @@ class CoalescenceTree(object):
         if res is None:  # pragma: no cover
             raise ValueError("No beta diversity value for reference = {}.".format(reference))
         return res[0]
+
+    # TODO complete unittest
+    def get_beta_diversity_pd(self):
+        """
+        Gets the beta diversity for each set of community parameters.
+
+        :return: all beta diversity values
+        :rtype: pd.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "BETA_DIVERSITY"):  # pragma: no cover
+            self.calculate_beta_diversity()
+        output = pd.read_sql_query("SELECT reference, beta_diversity FROM BETA_DIVERSITY", self.database)
+        output = output.rename(index=str, columns={"reference": "community_reference"})
+        return output
 
     def import_comparison_data(self, filename, ignore_mismatch=False):
         """
@@ -1477,13 +1529,10 @@ class CoalescenceTree(object):
             select_abundances = [x[1] for x in abundances if x[2] == ref]
             log_select = [math.floor(math.log(x, 2)) for x in select_abundances]
             out = []
-            try:
-                for i in range(0, int(max(log_select)), 1):
-                    tot = log_select.count(i)
-                    out.append([c, "whole", ref, i, tot])
-                    c += 1
-            except ValueError as ve:  # pragma: no cover
-                raise ve
+            for i in range(0, int(max(log_select)), 1):
+                tot = log_select.count(i)
+                out.append([c, "whole", ref, i, tot])
+                c += 1
             try:
                 self.cursor.executemany("INSERT INTO FRAGMENT_OCTAVES VALUES (?,?,?,?,?)", out)
                 self.database.commit()
@@ -1529,16 +1578,18 @@ class CoalescenceTree(object):
 
     def get_fragment_richness(self, fragment=None, reference=None):
         """
-        Gets the fragment richness for each speciation rate and time for the specified simulation. If the fragment
-        richness has not yet been calculated, it tries to calculate the fragment richness,
+        Gets the fragment richness for each speciation rate and time for the specified simulation.
 
-        :param fragment: the desired fragment (defaults to None)
-        :param reference: the reference key for the calculated community parameters
+        If the fragment richness has not yet been calculated, it tries to calculate the fragment richness,
+
+        :param str fragment: the desired fragment (defaults to None)
+        :param int reference: the reference key for the calculated community parameters
 
         :raises: sqlite3.Error if no table FRAGMENT_ABUNDANCES exists
         :raises: RuntimeError if no data for the specified fragment, speciation rate and time exists.
 
         :return: A list containing the fragment richness, or a value of the fragment richness
+        :rtype: list
         """
         self._check_database()
         if reference is None:
@@ -1560,7 +1611,15 @@ class CoalescenceTree(object):
 
     # TODO implement tests and delete obsolete functions
     def get_fragment_richness_pd(self):
+        """
+        Gets the fragment richness for each set of community parameters.
+
+        :return: the fragment richness for each associated community reference
+        :rtype: pandas.DataFrame
+        """
         self._check_database()
+        if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
+            raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment richness.")
         output = pd.read_sql_query(
             "SELECT fragment, community_reference, LENGTH(DISTINCT(species_id)) FROM FRAGMENT_ABUNDANCES "
             "GROUP BY fragment, community_reference",
@@ -1590,7 +1649,15 @@ class CoalescenceTree(object):
         return [list(x) for x in output]
 
     def get_fragment_abundances_pd(self):
+        """
+        Gets the fragment abundances for each set of community parameters.
+
+        :return: the fragment abundances for each associated community reference
+        :rtype: pandas.DataFrame
+        """
         self._check_database()
+        if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
+            raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
         output = pd.read_sql_query(
             "SELECT fragment, community_reference, species_id, no_individuals FROM FRAGMENT_ABUNDANCES", self.database
         )
@@ -1602,6 +1669,7 @@ class CoalescenceTree(object):
 
         :return: a list of reference, fragment, species_id, no_individuals
         """
+        self.logger.warning("Deprecated - please use get_fragment_abundances_pd() instead.")
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):  # pragma: no cover
             raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
@@ -1670,6 +1738,20 @@ class CoalescenceTree(object):
         output.sort(key=lambda x: x[0])
         return output
 
+    def get_fragment_octaves_pd(self):
+        """
+        Gets the octave classes for each fragment and community parameter set
+
+        :return: all fragment octave classes
+        :rtype: pandas.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
+            self.calculate_octaves()
+        return pd.read_sql_query(
+            "SELECT fragment, community_reference, octave, richness FROM FRAGMENT_OCTAVES", self.database
+        )
+
     def get_species_abundances(self, fragment=None, reference=None):
         """
         Gets the species abundance for a particular fragment, speciation rate and time. If fragment is None, returns the
@@ -1703,6 +1785,20 @@ class CoalescenceTree(object):
                     (fragment, reference),
                 )
             ]
+
+    def get_species_abundances_pd(self):
+        """
+        Gets the species abundances for all community parameter sets.
+
+        :return: all species abundances
+        :rtype: pandas.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):
+            self.calculate_octaves()
+        return pd.read_sql_query(
+            "SELECT species_id, community_reference, no_individuals FROM SPECIES_ABUNDANCES", self.database
+        )
 
     def calculate_octaves_error(self):
         """
@@ -1955,6 +2051,24 @@ class CoalescenceTree(object):
         else:
             return ret[0][0]
 
+    # TODO add unittest
+    def get_biodiversity_metrics(self):
+        """
+        Get calculated biodiversity metrics.
+
+        :return: all biodiversity metrics
+        :rtype: pandas.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
+            raise ValueError("Biodiversity table does not exist in database.")
+        try:
+            output = pd.read_sql_query(
+                "SELECT community_reference, metric, fragment, value, simulated, actual FROM BIODIVERSITY METRICS")
+        except sqlite3.OperationalError:
+            output = pd.read_sql_query("SELECT community_reference, metric, fragment, value FROM BIODIVERSITY METRICS")
+        return output
+
     def get_goodness_of_fit_metric(self, metric, reference=1):
         """
         Gets the goodness-of-fit measure for the specified metric and community reference.
@@ -2149,16 +2263,16 @@ class CoalescenceTree(object):
         return pd.read_sql_query("SELECT * FROM COMMUNITY_PARAMETERS", self.database)
 
     def get_community_reference(
-        self,
-        speciation_rate,
-        time,
-        fragments,
-        metacommunity_size=0,
-        metacommunity_speciation_rate=0.0,
-        metacommunity_option=None,
-        external_reference=0,
-        min_speciation_gen=0.0,
-        max_speciation_gen=0.0,
+            self,
+            speciation_rate,
+            time,
+            fragments,
+            metacommunity_size=0,
+            metacommunity_speciation_rate=0.0,
+            metacommunity_option=None,
+            external_reference=0,
+            min_speciation_gen=0.0,
+            max_speciation_gen=0.0,
     ):
         """
         Gets the community reference associated with the supplied community parameters
@@ -2672,7 +2786,7 @@ def scale_simulation_fit(simulated_value, actual_value, number_individuals, tota
     :return: the scaled fit value
     """
     return (
-        (1 - (abs(simulated_value - actual_value)) / max(simulated_value, actual_value))
-        * number_individuals
-        / total_individuals
+            (1 - (abs(simulated_value - actual_value)) / max(simulated_value, actual_value))
+            * number_individuals
+            / total_individuals
     )

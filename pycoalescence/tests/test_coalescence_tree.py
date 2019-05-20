@@ -996,6 +996,7 @@ class TestSimulationAnalysis(unittest.TestCase):
         self.assertEqual(self.tree.get_fragment_richness(fragment="fragment1", reference=2), 175)
         octaves = self.tree.get_fragment_richness()
         self.assertListEqual(fragment2_richness, [list(x) for x in octaves if x[0] == "fragment2" and x[1] == 1][0])
+        # TODO add fragment richness pd test
 
     def testGetsFragmentList(self):
         """
@@ -1114,6 +1115,9 @@ class TestSimulationAnalysis(unittest.TestCase):
             self.assertEqual(
                 13, self.tree.sample_landscape_richness(number_of_individuals=number_dict2, n=1, community_reference=2)
             )
+
+    def testSpeciesRichness(self):
+        """Tests that the simulation species richness is read correctly."""
 
 
 class TestMetacommunityApplication(unittest.TestCase):
