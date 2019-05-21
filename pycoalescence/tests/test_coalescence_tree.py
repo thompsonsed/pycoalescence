@@ -1118,6 +1118,8 @@ class TestSimulationAnalysis(unittest.TestCase):
 
     def testSpeciesRichness(self):
         """Tests that the simulation species richness is read correctly."""
+        actual = self.tree.get_species_richness_pd()
+        
 
 
 class TestMetacommunityApplication(unittest.TestCase):
