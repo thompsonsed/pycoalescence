@@ -824,7 +824,7 @@ class Map(object):
         if not isinstance(shape_file, ogr.DataSource):
             if not os.path.exists(shape_file):
                 raise IOError("Shape file does not exist at {}".format(shape_file))
-            if not shape_file.endswith(".shp"):
+            if not shape_file.endswith(".shp") and not shape_file.endswith("gpkg"):
                 raise ValueError("Provided shape file is not .shp file: {}".format(shape_file))
             orig_data_src = ogr.Open(shape_file)
         else:
