@@ -1527,7 +1527,7 @@ class TestSimulationComplexRun(unittest.TestCase):
         """
         Tests that a RuntimeError is raised when trying to get the fragments list (as none exists).
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             self.tree.get_fragment_list()
 
     def testComplexRichness(self):

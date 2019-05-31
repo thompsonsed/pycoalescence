@@ -9,10 +9,13 @@ import sys
 import unittest
 
 import numpy as np
+import pandas as pd
+from pandas.util.testing import assert_frame_equal
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Simulation
 from pycoalescence.coalescence_tree import CoalescenceTree, get_parameter_description
+from pycoalescence.sqlite_connection import check_sql_table_exist
 
 
 def setUpModule():
@@ -105,45 +108,45 @@ class TestParameterDescriptions(unittest.TestCase):
             "grid_y": "the simulated grid y dimension",
             "dispersal_relative_cost": "the relative rate of moving through non-habitat compared to habitat",
             "fine_map_y_offset": "the number of cells the fine map is offset from the sample map in the y "
-            "dimension, at the fine resolution",
+                                 "dimension, at the fine resolution",
             "gen_since_historical": "the number of generations that occur before the historical, or historic,"
-            " state is reached",
+                                    " state is reached",
             "dispersal_method": "the dispersal method used. Can be one of 'normal', 'norm-uniform' or " "'fat-tail'.",
             "historical_fine_map": "the historical, or historic, coarse density map file location",
             "coarse_map_scale": "the scale of the coarse density map compared to the fine density map. 1 "
-            "means equal density",
+                                "means equal density",
             "grid_x": "the simulated grid x dimension",
             "coarse_map_file": "the density map file location at the coarser resolution, covering a larger " "area",
             "min_num_species": "the minimum number of species known to exist (currently has no effect)",
             "historical_coarse_map": "the historical, or historic, coarse density map file location",
             "m_probability": "the probability of choosing from the uniform dispersal kernel in normal-uniform"
-            " dispersal",
+                             " dispersal",
             "sigma": "the sigma dispersal value for normal, fat-tailed and normal-uniform dispersals",
             "deme": "the number of individuals inhabiting a cell at a map density of 1",
             "time_config_file": "will be 'set' if temporal sampling is used, 'null' otherwise",
             "coarse_map_y": "the coarse density map y dimension",
             "fine_map_x": "the fine density map x dimension",
             "coarse_map_y_offset": "the number of cells the coarse map is offset from the fine map in the y "
-            "dimension, at the fine resolution",
+                                   "dimension, at the fine resolution",
             "cutoff": "the maximal dispersal distance possible, for normal-uniform dispersal",
             "fine_map_y": "the fine density map y dimension",
             "sample_size": "the proportion of individuals to sample from each cell (0-1)",
             "fine_map_x_offset": "the number of cells the fine map is offset from the sample map in the x "
-            "dimension, at the fine resolution",
+                                 "dimension, at the fine resolution",
             "speciation_rate": "the minimum speciation rate the simulation was run with",
             "job_type": "the job reference number given to this simulation",
             "coarse_map_x_offset": "the number of cells the coarse map is offset from the fine map in the x "
-            "dimension, at the fine resolution",
+                                   "dimension, at the fine resolution",
             "landscape_type": "if false, landscapes have hard boundaries. Otherwise, can be infinite, "
-            "with 1s everywhere, or tiled_coarse or tiled_fine for repeated units of tiled "
-            "maps",
+                              "with 1s everywhere, or tiled_coarse or tiled_fine for repeated units of tiled "
+                              "maps",
             "max_time": "the maximum simulation time to run for (in seconds)",
             "sim_complete": "set to true upon simulation completion, false for incomplete simulations",
             "protracted": "if true, the simulation was run with protracted speciation.",
             "min_speciation_gen": "the minimum number of generations required before speciation can occur",
             "max_speciation_gen": "the maximum number of generations a lineage can exist before it is " "speciated",
             "dispersal_map": "a tif file where rows represent cumulative dispersal probability to every other "
-            "cell, using the row number = x + (y * x_max)",
+                             "cell, using the row number = x + (y * x_max)",
         }
         t = CoalescenceTree("sample/sample.db")
         sim_output = t.get_simulation_parameters()
@@ -309,7 +312,9 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
 
     def testCommunityParameters1(self):
         """Tests the community parameters make sense in a very simple community."""
-        t = CoalescenceTree(os.path.join("sample", "sample3.db"), logging_level=50)
+        shutil.copyfile(os.path.join("sample", "sample3.db"),
+                        os.path.join("output", "temp_sample3.db"))
+        t = CoalescenceTree(os.path.join("output", "temp_sample3.db"), logging_level=50)
         self.assertEqual([], t.get_metacommunity_references())
         self.assertEqual([1], t.get_community_references())
         params = t.get_community_parameters(1)
@@ -335,6 +340,9 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
         )
         self.assertEqual(1, ref)
         self.assertEqual(expected_dict, t.get_community_parameters(ref))
+        t.wipe_data()
+        with self.assertRaises(IOError):
+            t.get_community_parameters_pd()
 
     def testCommunityParameters2(self):
         """Tests the community parameters make sense in a very simple community."""
@@ -357,6 +365,7 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
             "option": "analytical",
             "external_reference": 0,
         }
+
         params1 = t.get_community_parameters(1)
         params2 = t.get_community_parameters(2)
         params3 = t.get_community_parameters(3)
@@ -427,6 +436,9 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
         self.assertEqual(3, ref3)
         self.assertEqual(4, ref4)
         self.assertEqual(5, ref5)
+        expected_output = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_community_params1.csv"))
+        actual_output = t.get_community_parameters_pd()
+        assert_frame_equal(expected_output, actual_output)
 
     def testIsComplete(self):
         """Tests sims are correctly identified as complete."""
@@ -441,13 +453,14 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
     def setUpClass(cls):
         """Sets up the Coalescence object test case."""
         dst1 = os.path.join("output", "sampledb0.db")
-        for i in range(0, 9):
+        for i in range(0, 10):
             dst = os.path.join("output", "sampledb{}.db".format(i))
             if os.path.exists(dst):
                 os.remove(dst)
             shutil.copyfile(os.path.join("sample", "sample.db"), dst)
+        shutil.copyfile(os.path.join("sample", "nse_reference.db"), os.path.join("output", "nse_reference1.db"))
         random.seed(2)
-        cls.test = CoalescenceTree(dst1)
+        cls.test = CoalescenceTree(dst1, logging_level=50)
         cls.test.clear_calculations()
         cls.test.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
         cls.test.calculate_fragment_richness()
@@ -534,6 +547,18 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         c.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
         c.calculate_richness()
         self.assertEqual([[0, 585], [1, 231], [2, 59], [3, 5]], c.get_octaves(1))
+        c = CoalescenceTree(os.path.join("output", "sampledb4.db"))
+        c.clear_calculations()
+        c.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
+        c.calculate_richness()
+        actual = c.get_octaves_pd().head()
+        expected = pd.DataFrame([
+            [1, 0, 585],
+            [1, 1, 231],
+            [1, 2, 59],
+            [1, 3, 5],
+            [2, 0, 760]], columns=["community_reference", "octave", "richness"])
+        assert_frame_equal(actual, expected, check_like=True)
 
     def testSpeciesLocations(self):
         """
@@ -552,15 +577,29 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         """
         Tests that alpha diversity is correctly calculated and fetched for each parameter reference
         """
+        c = CoalescenceTree(os.path.join("sample", "sample.db"))
+        with self.assertRaises(IOError):
+            c.get_alpha_diversity_pd()
         self.assertEqual(9, self.test.get_alpha_diversity(1))
         self.assertEqual(10, self.test.get_alpha_diversity(2))
+        expected_alphas = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_alphas1.csv")).reset_index(
+            drop=True)
+        actual_alphas = self.test.get_alpha_diversity_pd().reset_index(drop=True)
+        assert_frame_equal(expected_alphas, actual_alphas)
 
     def testBetaDiversity(self):
         """
         Tests that beta diversity is correctly calculated and fetched for the reference
         """
+        c = CoalescenceTree(os.path.join("sample", "sample.db"))
+        with self.assertRaises(IOError):
+            c.get_beta_diversity_pd()
         self.assertAlmostEqual(98.111111111, self.test.get_beta_diversity(1), places=5)
         self.assertAlmostEqual(102.8, self.test.get_beta_diversity(2), places=5)
+        expected_betas = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_betas1.csv")).reset_index(
+            drop=True)
+        actual_betas = self.test.get_beta_diversity_pd().reset_index(drop=True)
+        assert_frame_equal(expected_betas, actual_betas)
 
     def testGetNumberIndividuals(self):
         """Tests that the number of individuals is obtained correctly."""
@@ -569,16 +608,18 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         self.assertEqual(12, c.get_number_individuals(fragment="P09", community_reference=1))
         c.wipe_data()
         c.import_comparison_data(os.path.join("sample", "PlotBiodiversityMetrics.db"))
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             c.get_number_individuals(fragment="none")
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             c.get_number_individuals()
 
     def testGetFragmentAbundances(self):
         """Tests that fragment abundances are correctly obtained."""
         c = CoalescenceTree(os.path.join("sample", "sample3.db"))
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             c.get_fragment_abundances(fragment="P09", reference=1)
+        with self.assertRaises(IOError):
+            c.get_fragment_abundances_pd()
         abundances = self.test.get_fragment_abundances(fragment="P09", reference=1)
         expected_abundances = [[302, 1], [303, 1], [304, 1], [305, 1], [306, 1], [307, 1], [546, 2], [693, 1], [732, 3]]
         self.assertEqual(expected_abundances, abundances[:10])
@@ -596,12 +637,16 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
             [1, "cerrogalera", 416, 1],
         ]
         self.assertEqual(expected_abundances2, all_abundances[:10])
+        df = pd.DataFrame(expected_abundances2,
+                          columns=["community_reference", "fragment", "species_id", "no_individuals"])
+        actual_df = self.test.get_fragment_abundances_pd().head(n=10)
+        assert_frame_equal(df, actual_df, check_like=True)
 
     def testGetFragmentListErrors(self):
         """Tests the error is raised when obtaining fragment list."""
         c = CoalescenceTree(os.path.join("output", "sampledb8.db"))
         c.wipe_data()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             c.get_fragment_list()
 
     def testClearGoodnessFit(self):
@@ -612,32 +657,44 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         c._clear_goodness_of_fit()
         self.assertFalse(len(c.cursor.execute(exec_command).fetchall()) >= 1)
 
+    def testGetBiodiversityMetrics(self):
+        """Tests that biodiversity metrics are correctly obtained from the database."""
+        c1 = CoalescenceTree(os.path.join("sample", "sample.db"))
+        with self.assertRaises(IOError):
+            c1.get_biodiversity_metrics()
+        c2 = CoalescenceTree(os.path.join("sample", "sample2.db"))
+        expected_biodiversity_metrics = pd.read_csv(
+            os.path.join("sample", "dataframes", "dataframe_biodiversity_metrics1.csv")).reset_index(
+            drop=True)
+        actual_biodiversity_metrics = c2.get_biodiversity_metrics().reset_index(drop=True).fillna(value=pd.np.nan)
+        assert_frame_equal(expected_biodiversity_metrics, actual_biodiversity_metrics)
+
     def testRaisesErrorNoFragmentsAlpha(self):
         """
         Tests that an error is raised when alpha diversity is calculated without any fragment abundance data
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             self.test2.calculate_alpha_diversity()
 
     def testRaisesErrorNoFragmentsBeta(self):
         """
         Tests that an error is raised when alpha diversity is calculated without any fragment abundance data
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             self.test2.calculate_beta_diversity()
 
     def testRaisesErrorNoFragmentsRichness(self):
         """
         Tests that an error is raised when fragment richness is calculated without any fragment abundance data
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             self.test2.calculate_fragment_richness()
 
     def testRaisesErrorNoFragmentsOctaves(self):
         """
         Tests that an error is raised when fragment richness is calculated without any fragment abundance data
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             self.test2.calculate_fragment_octaves()
 
     @unittest.skipIf(sys.version[0] != "3", "Skipping Python 3.x tests")
@@ -717,6 +774,58 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         test.import_comparison_data(dst)
         test.calculate_comparison_octaves(store=True)
         self.assertTrue(os.path.exists(dst))
+
+    def testDownsamplingAndRevert(self):
+        """Tests that downsampling works as intended and can be reverted."""
+        c = CoalescenceTree(os.path.join("output", "sampledb9.db"))
+        random.seed(a=10, version=3)
+        original_individuals = c.get_number_individuals()
+        original_richness = c.get_species_richness_pd()
+        c.wipe_data()
+        c.downsample(sample_proportion=0.1)
+        c.set_speciation_parameters([0.1, 0.2])
+        c.apply()
+        new_individuals = c.get_number_individuals()
+        self.assertEqual(1452, new_individuals)
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
+        c = CoalescenceTree(os.path.join("output", "sampledb9.db"))
+        c.revert_downsample()
+        c.wipe_data()
+        c.set_speciation_parameters([0.1, 0.2])
+        c.apply()
+        final_individuals = c.get_number_individuals()
+        assert_frame_equal(original_richness, c.get_species_richness_pd())
+        self.assertEqual(original_individuals, final_individuals)
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
+        self.assertFalse(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
+        # Now test with NSE sim to ensure correct sampling
+        c = CoalescenceTree(os.path.join("output", "nse_reference1.db"))
+        nse_richness = c.get_species_richness_pd()
+        nse_no_individuals = c.get_number_individuals()
+        c.wipe_data()
+        c.downsample(sample_proportion=0.1)
+        c.set_speciation_parameters([0.000001, 0.999999])
+        c.apply()
+        new_no_individuals = c.get_number_individuals()
+        self.assertAlmostEqual(new_no_individuals / nse_no_individuals, 0.1, 5)
+        self.assertEqual(1000, c.get_species_richness(reference=2))
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
+        c = CoalescenceTree(os.path.join("output", "nse_reference1.db"))
+        c.revert_downsample()
+        c.wipe_data()
+        c.set_speciation_parameters([0.000001, 0.999999])
+        c.apply_incremental()
+        c.set_speciation_parameters([0.5])
+        c.apply()
+        actual_richness = c.get_species_richness_pd()
+        assert_frame_equal(nse_richness, actual_richness)
+        self.assertEqual(nse_no_individuals, c.get_number_individuals())
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
+        self.assertFalse(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
+        with self.assertRaises(IOError):
+            c.revert_downsample()
 
 
 class TestCoalescenceTreeWriteCsvs(unittest.TestCase):
@@ -996,7 +1105,10 @@ class TestSimulationAnalysis(unittest.TestCase):
         self.assertEqual(self.tree.get_fragment_richness(fragment="fragment1", reference=2), 175)
         octaves = self.tree.get_fragment_richness()
         self.assertListEqual(fragment2_richness, [list(x) for x in octaves if x[0] == "fragment2" and x[1] == 1][0])
-        # TODO add fragment richness pd test
+        expected_fragment_richness = pd.read_csv(os.path.join("sample", "dataframes",
+                                                              "dataframe_fragment_richness1.csv")).reset_index(
+            drop=True)
+        assert_frame_equal(expected_fragment_richness, self.tree.get_fragment_richness_pd().reset_index(drop=True))
 
     def testGetsFragmentList(self):
         """
@@ -1025,8 +1137,15 @@ class TestSimulationAnalysis(unittest.TestCase):
         actual_abundances = self.tree.get_species_abundances(fragment="fragment2", reference=1)
         for i, each in enumerate(expected_abundances):
             self.assertListEqual(actual_abundances[i], each)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(ValueError):
             self.tree.get_species_abundances(fragment="fragment2")
+        expected_fragment_abundances = pd.read_csv(os.path.join("sample", "dataframes",
+                                                                "dataframe_fragment_abundances1.csv")).sort_values(
+            by=["fragment", "community_reference", "species_id"]).reset_index(
+            drop=True)
+        actual_fragment_abundances = self.tree.get_fragment_abundances_pd().sort_values(
+            by=["fragment", "community_reference", "species_id"]).reset_index(drop=True)
+        assert_frame_equal(expected_fragment_abundances, actual_fragment_abundances)
 
     def testFragmentRichnessRaiseError(self):
         """
@@ -1036,9 +1155,11 @@ class TestSimulationAnalysis(unittest.TestCase):
         """
         failtree = CoalescenceTree()
         failtree.set_database(os.path.join("sample", "failsample.db"))
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
             failtree.get_fragment_richness()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IOError):
+            failtree.get_fragment_richness_pd()
+        with self.assertRaises(IOError):
             self.tree.get_fragment_richness(fragment="fragment4", reference=1)
         with self.assertRaises(SyntaxError):
             self.tree.get_fragment_richness(fragment="fragment4")
@@ -1056,6 +1177,14 @@ class TestSimulationAnalysis(unittest.TestCase):
         self.assertListEqual([0, 128], octaves[0])
         self.assertListEqual([0, 173], octaves2[0])
         self.assertListEqual(desired, [x for x in all_octaves if x[0] == "fragment1" and x[1] == 1 and x[2] == 0][0])
+        expected_fragment_octaves = (pd.read_csv(os.path.join("sample", "dataframes",
+                                                              "dataframe_fragment_octaves1.csv"))
+            .sort_values(["fragment", "community_reference", "octave"], axis=0).reset_index(
+            drop=True))
+        actual_fragment_octaves = self.tree.get_fragment_octaves_pd().sort_values(
+            ["fragment", "community_reference", "octave"], axis=0).reset_index(drop=True)
+        assert_frame_equal(expected_fragment_octaves, actual_fragment_octaves,
+                           check_like=True)
 
     def testFragmentOctavesRaiseError(self):
         """
@@ -1118,8 +1247,21 @@ class TestSimulationAnalysis(unittest.TestCase):
 
     def testSpeciesRichness(self):
         """Tests that the simulation species richness is read correctly."""
-        actual = self.tree.get_species_richness_pd()
-        
+        actual_species_richness = self.tree.get_species_richness_pd().sort_values(
+            by=["community_reference"]).reset_index(drop=True)
+        expected_species_richness = pd.read_csv(os.path.join("sample", "dataframes",
+                                                             "dataframe_species_richness1.csv"))
+        assert_frame_equal(actual_species_richness, expected_species_richness,
+                           check_like=True)
+
+    def testOctaves(self):
+        """Tests that the simulation octave classes are correctly calculated."""
+        actual_species_octaves = self.tree.get_octaves_pd().sort_values(
+            by=["community_reference", "octave"]).reset_index(drop=True)
+        expected_species_octaves = pd.read_csv(os.path.join("sample", "dataframes",
+                                                            "dataframe_octaves1.csv"))
+        assert_frame_equal(actual_species_octaves, expected_species_octaves,
+                           check_like=True)
 
 
 class TestMetacommunityApplication(unittest.TestCase):
@@ -1143,6 +1285,8 @@ class TestMetacommunityApplication(unittest.TestCase):
         """Tests that adding invalid parameter for a metacommunity raises the appropriate errors."""
         tree = CoalescenceTree(os.path.join("output", "sample_0.db"))
         tree.wipe_data()
+        with self.assertRaises(IOError):
+            tree.get_metacommunity_parameters_pd()
         tree.set_speciation_parameters([0.1, 0.2])
         for size, spec, opt, ref in [
             [0, 0.1, "simulated", None],
@@ -1197,6 +1341,11 @@ class TestMetacommunityApplication(unittest.TestCase):
         self.assertEqual(783, tree.get_species_richness(4))
         self.assertEqual(247, tree.get_species_richness(5))
         self.assertEqual(241, tree.get_species_richness(6))
+        expected_metacommunity_parameters = pd.read_csv(os.path.join("sample", "dataframes",
+                                                                     "dataframe_metacommunity_params1.csv")).sort_values(
+            ["reference"])
+        actual_metacommunity_parameters = tree.get_metacommunity_parameters_pd().sort_values(["reference"])
+        assert_frame_equal(expected_metacommunity_parameters, actual_metacommunity_parameters)
 
     def testMetacommunityAnalytical(self):
         """Tests that an analytical metacommunity works as intended."""
@@ -1346,6 +1495,9 @@ class TestMetacommunityApplicationSpeciesAbundances(unittest.TestCase):
         var_1 = sum(var_list_1) / len(var_list_1)
         var_2 = sum(var_list_2) / len(var_list_2)
         self.assertAlmostEqual(var_1, var_2, delta=5)
+        expected_abundances = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_species_abundances1.csv"))
+        actual_abundances = self.ct.get_species_abundances_pd()
+        assert_frame_equal(actual_abundances, expected_abundances, check_like=True)
 
 
 class TestMetacommunityApplicationOrdering(unittest.TestCase):

@@ -998,7 +998,6 @@ class CoalescenceTree(object):
             self.calculate_octaves()
         return self.get_fragment_octaves(fragment="whole", reference=reference)
 
-    # TODO write test
     def get_octaves_pd(self):
         """
         Gets the species octaves for all calculated community parameters
@@ -1030,7 +1029,7 @@ class CoalescenceTree(object):
         self._check_database()
         if fragment:
             if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-                raise RuntimeError("Cannot get a count from a fragment without calculating fragment abundances.")
+                raise IOError("No FRAGMENT_ABUNDANCES table - cannot get a count from a fragment.")
             if not community_reference:
                 return self.cursor.execute(
                     "SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference))"
@@ -1045,7 +1044,7 @@ class CoalescenceTree(object):
                 ).fetchone()[0]
         else:
             if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):
-                raise RuntimeError(
+                raise IOError(
                     "No species abundances table to fetch data from. Ensure your simulation is complete."
                 )
             if not community_reference:
@@ -1143,7 +1142,7 @@ class CoalescenceTree(object):
         if not self.fragment_abundances:
             self._check_database()
             if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-                raise RuntimeError("Database does not contain FRAGMENT_ABUNDANCES table.")
+                raise IOError("Database does not contain FRAGMENT_ABUNDANCES table.")
             self.fragment_abundances = [
                 list(x)
                 for x in self.cursor.execute(
@@ -1176,8 +1175,8 @@ class CoalescenceTree(object):
         # First check the FRAGMENT_ABUNDANCES TABLE EXISTS
         if self.fragment_abundances is None or len(self.fragment_abundances) == 0:
             self.calculate_fragment_abundances()
-        if len(self.fragment_abundances) == 0 or self.fragment_abundances is None:
-            raise RuntimeError("No fragment abundances detected.")
+        if len(self.fragment_abundances) == 0 or self.fragment_abundances is None:  # pragma: no cover
+            raise IOError("No fragment abundances detected.")
         # Now try and create FRAGMENT_RICHNESS
         if not check_sql_table_exist(self.database, "FRAGMENT_RICHNESS"):
             try:
@@ -1224,8 +1223,9 @@ class CoalescenceTree(object):
         :param bool output_metrics: output to the BIODIVERSITY_METRICS table
         """
         self._check_database()
-        if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-            raise RuntimeError("Fragment abundances must be calculated before alpha diversity.")
+        if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES") or not check_sql_table_exist(self.database,
+                                                                                                        "FRAGMENT_RICHNESS"):
+            raise IOError("Fragment abundances and richnesses must be calculated before alpha diversity.")
         if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):
             tmp_create = (
                 "CREATE TABLE ALPHA_DIVERSITY (reference INT PRIMARY KEY NOT NULL, " "alpha_diversity INT NOT NULL)"
@@ -1305,7 +1305,6 @@ class CoalescenceTree(object):
             raise ValueError("No alpha diversity value for reference = {}".format(reference))
         return res[0]
 
-    # TODO write unittest
     def get_alpha_diversity_pd(self):
         """
         Gets the alpha diversity for each set of community parameters.
@@ -1336,7 +1335,6 @@ class CoalescenceTree(object):
             raise ValueError("No beta diversity value for reference = {}.".format(reference))
         return res[0]
 
-    # TODO complete unittest
     def get_beta_diversity_pd(self):
         """
         Gets the beta diversity for each set of community parameters.
@@ -1546,7 +1544,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
-            raise RuntimeError("FRAGMENT_OCTAVES already exists")
+            raise IOError("FRAGMENT_OCTAVES already exists")
         if self.fragment_abundances is None or len(self.fragment_abundances) == 0:  # pragma: no cover
             self.calculate_fragment_abundances()
         if len(self.fragment_abundances) == 0:  # pragma: no cover
@@ -1605,11 +1603,10 @@ class CoalescenceTree(object):
             (reference, fragment),
         ).fetchall()
         if len(output) == 0:
-            raise RuntimeError("No output while fetching fragment data for {}.".format(fragment))
+            raise IOError("No output while fetching fragment data for {}.".format(fragment))
         else:
             return output[0][0]
 
-    # TODO implement tests and delete obsolete functions
     def get_fragment_richness_pd(self):
         """
         Gets the fragment richness for each set of community parameters.
@@ -1619,12 +1616,12 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-            raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment richness.")
+            raise IOError("Fragments abundances must be calculated before attempting to get fragment richness.")
         output = pd.read_sql_query(
             "SELECT fragment, community_reference, LENGTH(DISTINCT(species_id)) FROM FRAGMENT_ABUNDANCES "
             "GROUP BY fragment, community_reference",
             self.database,
-        )
+        ).rename(index=str, columns={"LENGTH(DISTINCT(species_id))": "fragment_richness"})
         return output
 
     def get_fragment_abundances(self, fragment, reference):
@@ -1638,7 +1635,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-            raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
+            raise IOError("Fragments abundances must be calculated before attempting to get fragment abundances.")
         output = self.cursor.execute(
             "SELECT species_id, no_individuals FROM FRAGMENT_ABUNDANCES WHERE "
             "community_reference == ? AND fragment ==  ?",
@@ -1657,7 +1654,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-            raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
+            raise IOError("Fragments abundances must be calculated before attempting to get fragment abundances.")
         output = pd.read_sql_query(
             "SELECT fragment, community_reference, species_id, no_individuals FROM FRAGMENT_ABUNDANCES", self.database
         )
@@ -1672,7 +1669,7 @@ class CoalescenceTree(object):
         self.logger.warning("Deprecated - please use get_fragment_abundances_pd() instead.")
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):  # pragma: no cover
-            raise RuntimeError("Fragments abundances must be calculated before attempting to get fragment abundances.")
+            raise IOError("Fragments abundances must be calculated before attempting to get fragment abundances.")
         output = self.cursor.execute(
             "SELECT community_reference, fragment, species_id, no_individuals FROM " "FRAGMENT_ABUNDANCES"
         ).fetchall()
@@ -1689,7 +1686,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-            raise RuntimeError("Fragment abundances have not been calculated; cannot obtain fragment list.")
+            raise IOError("Fragment abundances have not been calculated; cannot obtain fragment list.")
         fetch = self.cursor.execute(
             "SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE " "community_reference == ?",
             (community_reference,),
@@ -1746,7 +1743,7 @@ class CoalescenceTree(object):
         :rtype: pandas.DataFrame
         """
         self._check_database()
-        if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):
+        if not check_sql_table_exist(self.database, "FRAGMENT_OCTAVES"):  # pragma: no cover
             self.calculate_octaves()
         return pd.read_sql_query(
             "SELECT fragment, community_reference, octave, richness FROM FRAGMENT_OCTAVES", self.database
@@ -1774,7 +1771,7 @@ class CoalescenceTree(object):
                 ).fetchall()
             ]
         elif reference is None:
-            raise RuntimeError("Must specify a community reference to get a fragment species abundance")
+            raise ValueError("Must specify a community reference to get a fragment species abundance")
         else:
             return [
                 list(x)
@@ -1794,7 +1791,7 @@ class CoalescenceTree(object):
         :rtype: pandas.DataFrame
         """
         self._check_database()
-        if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):
+        if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):  # pragma: no cover
             self.calculate_octaves()
         return pd.read_sql_query(
             "SELECT species_id, community_reference, no_individuals FROM SPECIES_ABUNDANCES", self.database
@@ -2040,7 +2037,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if self.check_biodiversity_table_exists() == 0:  # pragma: no cover
-            raise RuntimeError("Biodiversity table does not contain any values.")
+            raise IOError("Biodiversity table does not contain any values.")
         ret = self.cursor.execute(
             "SELECT value FROM BIODIVERSITY_METRICS WHERE fragment=='whole' AND metric=='goodness_of_fit' AND "
             "community_reference == ?",
@@ -2051,7 +2048,6 @@ class CoalescenceTree(object):
         else:
             return ret[0][0]
 
-    # TODO add unittest
     def get_biodiversity_metrics(self):
         """
         Get calculated biodiversity metrics.
@@ -2061,12 +2057,14 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not check_sql_table_exist(self.database, "BIODIVERSITY_METRICS"):  # pragma: no cover
-            raise ValueError("Biodiversity table does not exist in database.")
+            raise IOError("Biodiversity table does not exist in database.")
         try:
             output = pd.read_sql_query(
-                "SELECT community_reference, metric, fragment, value, simulated, actual FROM BIODIVERSITY METRICS")
-        except sqlite3.OperationalError:
-            output = pd.read_sql_query("SELECT community_reference, metric, fragment, value FROM BIODIVERSITY METRICS")
+                "SELECT community_reference, metric, fragment, value, simulated, actual FROM BIODIVERSITY_METRICS",
+                self.database)
+        except sqlite3.OperationalError:  # pragma: no cover
+            output = pd.read_sql_query("SELECT community_reference, metric, fragment, value FROM BIODIVERSITY_METRICS",
+                                       self.database)
         return output
 
     def get_goodness_of_fit_metric(self, metric, reference=1):
@@ -2257,9 +2255,16 @@ class CoalescenceTree(object):
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
 
-    # TODO complete
     def get_community_parameters_pd(self):
+        """
+        Gets all the calculated community parameter sets from the database.
+
+        :return: the community parameters
+        :rtype: pd.DataFrame
+        """
         self._check_database()
+        if not check_sql_table_exist(self.database, "COMMUNITY_PARAMETERS"):
+            raise IOError("No community parameters table exists in the database - no communities have been calculated.")
         return pd.read_sql_query("SELECT * FROM COMMUNITY_PARAMETERS", self.database)
 
     def get_community_reference(
@@ -2398,9 +2403,16 @@ class CoalescenceTree(object):
         # Now convert it into a dictionary
         return dict(zip(column_names, values))
 
-    # TODO finish
     def get_metacommunity_parameters_pd(self):
+        """
+        Gets all the calculated metacommunity parameter sets from the database.
+
+        :return: the metacommunity parameters
+        :rtype: pd.DataFrame
+        """
         self._check_database()
+        if not check_sql_table_exist(self.database, "METACOMMUNITY_PARAMETERS"):
+            raise IOError("No metacommunity parameters table exists in the database.")
         return pd.read_sql_query("SELECT * FROM METACOMMUNITY_PARAMETERS", self.database)
 
     def get_parameter_description(self, key=None):
@@ -2459,14 +2471,14 @@ class CoalescenceTree(object):
         if self.c_community is not None:  # pragma: no cover
             self.c_community.reset()
 
-    # TODO write unittest
     def downsample(self, sample_proportion):
         """
-        Down-samples the individuals by a given proportion globally, and at each location. The original SPECIES_LIST
-        is stored in a new table called SPECIES_LIST_ORIGINAL and a new SPECIES_LIST object is created containing the
-        down-sampled coalescence tree.
+        Down-samples the individuals by a given proportion globally, and at each location.
 
-        :param sample_proportion: the proportion of individuals to sample at each location
+        The original SPECIES_LIST is stored in a new table called SPECIES_LIST_ORIGINAL and a new SPECIES_LIST object is
+        created containing the down-sampled coalescence tree.
+
+        :param float sample_proportion: the proportion of individuals to sample at each location
 
         :return: None
         :rtype: None
@@ -2474,7 +2486,7 @@ class CoalescenceTree(object):
         self._check_database()
         species_list = [list(x) for x in self.cursor.execute("SELECT * FROM SPECIES_LIST").fetchall()]
         try:
-            if check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):
+            if check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):  # pragma: no cover
                 raise IOError("SPECIES_LIST_ORIGINAL already exists in database.")
             self.cursor.execute("ALTER TABLE SPECIES_LIST RENAME TO SPECIES_LIST_ORIGINAL")
             self.database.commit()
@@ -2506,7 +2518,7 @@ class CoalescenceTree(object):
                 out_tips,
             )
             self.database.commit()
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             try:
                 self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
                 self.cursor.commit()
@@ -2514,7 +2526,6 @@ class CoalescenceTree(object):
                 self.logger.error(e2)
             raise e
 
-    # TODO write unittest
     def revert_downsample(self):
         """
         Reverts the downsample process by restoring the original SPECIES_LIST table.
@@ -2645,9 +2656,9 @@ class CoalescenceTree(object):
                 e.message = "Error creating SPECIES_RICHNESS table: " + str(e)
                 raise e
         else:  # pragma: no cover
-            raise RuntimeError("SPECIES_DISTANCE_SIMILARITY table already exists in the output database.")
+            raise IOError("SPECIES_DISTANCE_SIMILARITY table already exists in the output database.")
         if not check_sql_table_exist(self.database, "SPECIES_LOCATIONS"):  # pragma: no cover
-            raise RuntimeError(
+            raise IOError(
                 "SPECIES_LOCATIONS table does not exist in output database - calculate species locations" "first."
             )
         max_val = [

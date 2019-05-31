@@ -25,9 +25,7 @@ except KeyError:
 
 
 def setUpAll():
-    """
-	Copies the log folder to a new folder so that the normal log folder can be removed entirely.
-	"""
+    """Copies the log folder to a new folder so that the normal log folder can be removed entirely."""
     set_logging_method(logging_level=logging.CRITICAL)
     np.random.seed(0)
     if os.path.exists("output"):
@@ -56,7 +54,9 @@ def setUpAll():
 
 def tearDownAll():
     """
-	Overrides the in-built behaviour for tearing down the module. Removes the output folder to clean up after testing.
+	Overrides the in-built behaviour for tearing down the module.
+
+	Removes the output folder to clean up after testing.
 	"""
     rmtree("output", True)
     start = time.time()
@@ -86,7 +86,9 @@ def skipLongTest(f):
 
 def skipGdalWarp(f):
     """
-	Decorator to skip a test containing gdal warp - required for systems where gdal.Warp does not function properly
+	Decorator to skip a test containing gdal warp.
+
+	Required for systems where gdal.Warp does not function properly
 	"""
     name = f.__name__
     if bypass_gdal_warp:
