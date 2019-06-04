@@ -1,5 +1,5 @@
 """Tests the Map object for provision of geospatial data and map manipulation operations."""
-
+import csv
 import logging
 import os
 import shutil
@@ -18,6 +18,7 @@ except ImportError:  # pragma: no cover
     from mock import create_autospec, patch
 
 from pycoalescence import Map, FragmentedLandscape
+from pycoalescence.map import shapefile_from_wkt
 from setup_tests import setUpAll, tearDownAll, skipGdalWarp
 
 import scipy
@@ -40,7 +41,6 @@ def tearDownModule():
     Removes the output directory
     """
     tearDownAll()
-
 
 @unittest.skipIf(sys.version[0] == "2", "Skipping Python 3.x tests")
 class TestMapImports(unittest.TestCase):
@@ -95,6 +95,15 @@ class TestMap(unittest.TestCase):
     def testDetectGeoTransform(self):
         """Tests the fine and coarse map geo transforms."""
         # Test the fine map
+        x, y, x_offset, y_offset, xres, yres, ulx, uly = self.fine_map.get_dimensions()
+        self.assertEqual(x, 13)
+        self.assertEqual(y, 13)
+        self.assertAlmostEqual(ulx, -78.375, 8)
+        self.assertAlmostEqual(uly, 0.8583333333333, 8)
+        self.assertAlmostEqual(xres, 0.00833333333333, 8)
+        self.assertAlmostEqual(yres, -0.0083333333333333, 8)
+        self.assertEqual(0, x_offset)
+        self.assertEqual(0, y_offset)
         x, y, x_offset, y_offset, xres, yres, ulx, uly = self.fine_map.get_dimensions()
         self.assertEqual(x, 13)
         self.assertEqual(y, 13)
@@ -263,6 +272,29 @@ class TestMap(unittest.TestCase):
         self.assertEqual(361, np.sum(m.data))
         self.assertEqual(1, m.data[20, 4])
         self.assertEqual(0, m.data[20, 6])
+
+    def testRasteriseShapefileWithExtent(self):
+        """
+        Tests rasterisation using an extent is successful.
+        """
+        m = Map()
+        output_raster = "output/raster_out1b.tif"
+        new_extent = [-78.363529863, -78.321863213, 0.817435788, 0.850435788]
+
+        m.rasterise(shape_file="sample/shape_sample.shp",
+                    raster_file=output_raster, x_res=0.00833333, y_res=0.001, extent=new_extent)
+        self.assertTrue(os.path.exists(output_raster))
+        dims = m.get_dimensions()
+        for i, each in enumerate([4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]):
+            self.assertAlmostEqual(each, dims[i], places=5)
+        self.assertEqual(
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            m.get_projection(),
+        )
+        m.open()
+        self.assertEqual(73, np.sum(m.data))
+        self.assertEqual(0, m.data[2, 2])
+        self.assertEqual(1, m.data[10, 2])
 
     def testRasteriseShapefileWithFields(self):
         """
@@ -619,6 +651,36 @@ class TestMap(unittest.TestCase):
         with self.assertRaises(TypeError):
             _, _ = m.calculate_offset(m2)
 
+    def testTranslate(self):
+        """Tests the translation process works as intended."""
+        source_file = os.path.join("sample", "SA_sample_fine.tif")
+        dest_file1=os.path.join("output", "translated1.tif")
+        dest_file2 = os.path.join("output", "translated2.tif")
+        m = Map(source_file)
+        new_x, new_y = 10, 10
+        new_proj_win = [-78.375,  0.8583333333333343, -78.3, 0.8]
+        expected_extent = [-78.375, -78.3, 0.8, 0.8583333333333343]
+        m.translate(dest_file=dest_file1,
+                    projWin = new_proj_win)
+        with self.assertRaises(ValueError):
+            m.translate(dest_file=None,
+                        projWin=new_proj_win)
+        with self.assertRaises(IOError):
+            m.translate(dest_file=dest_file1,
+                        projWin=new_proj_win)
+        m = Map()
+        m.translate(source_file=source_file,
+                    dest_file=dest_file2,
+                    width=new_x, height=new_y)
+        self.assertTrue(os.path.exists(dest_file1))
+        m1 = Map(dest_file1)
+        actual_extent = m1.get_extent()
+        for expected, actual in zip(expected_extent, actual_extent):
+            self.assertAlmostEqual(expected, actual,  places=5)
+        self.assertTrue(os.path.exists(dest_file1))
+        m2 = Map(dest_file2)
+        self.assertEqual([new_x, new_y], m2.get_x_y())
+
 
 @unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
 @skipGdalWarp
@@ -643,13 +705,13 @@ class TestMapReprojection(unittest.TestCase):
         cls.destination_projection = osr.SpatialReference()
         cls.destination_projection.ImportFromEPSG(3857)
         cls.proj_wkt = cls.destination_projection.ExportToWkt()
-
         cls.m.reproject_raster(dest_file=cls.map_2, dest_projection=cls.destination_projection)
         cls.m.reproject_raster(dest_file=cls.map_3, dest_projection=cls.destination_projection, x_scalar=2, y_scalar=10)
         cls.m0.reproject_raster(dest_file=cls.map_5, x_scalar=0.1, y_scalar=0.1)
         cls.m_2 = Map(cls.map_2)
         cls.m_3 = Map(cls.map_3)
         cls.m_5 = Map(cls.map_5)
+
 
     def testCorrectNewProjection(self):
         """
@@ -974,3 +1036,21 @@ class TestSubsettingMaps(unittest.TestCase):
         expected_array = np.ones((10, 10))
         expected_array[2:7, 2:7] = 2
         self.assertTrue(np.array_equal(expected_array, m.data))
+
+class TestWKTFunctions(unittest.TestCase):
+    """Tests converting WKTs in csvs to shapefiles"""
+
+    def testDefaultShapefileFromWKT(self):
+        """Tests the default conversion of WKT to shapefile."""
+        output_shapefile1 = os.path.join("output", "wkt_shapefile1.shp")
+        output_shapefile2 = os.path.join("output", "wkt_shapefile2.shp")
+        with open(os.path.join("sample", "wkt_test.csv"), "r") as input_file:
+            csv_reader = csv.DictReader(input_file)
+            lines = [x for x in csv_reader]
+            wkts = [[z for x, z in y.items() if x == "WKT"][0] for y in lines]
+            shapefile_from_wkt(wkts=wkts, dest_file=output_shapefile1)
+            shapefile_from_wkt(wkts=wkts, dest_file=output_shapefile2, fields=lines)
+            with self.assertRaises(IOError):
+                shapefile_from_wkt(wkts=wkts, dest_file=output_shapefile1)
+        self.assertTrue(os.path.exists(output_shapefile1))
+        self.assertTrue(os.path.exists(output_shapefile2))

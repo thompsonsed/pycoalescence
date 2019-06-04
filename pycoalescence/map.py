@@ -64,10 +64,9 @@ if "GDAL_DATA" not in os.environ:  # pragma: no cover
     os.environ["GDAL_DATA"] = gdal_dir
 
 
-# TODO write tests for this
-def wkt_from_csv_featured(wkts, dest_file, EPSG=4326, fields=None):
+def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
     """
-    Generates a shape file from a WKT string in a csv file.
+    Generates a shape file from a WKT string.
 
     :param wkts: a list of well-known text polygons to create in the shapefile
     :param dest_file: a destination file to create
@@ -77,7 +76,7 @@ def wkt_from_csv_featured(wkts, dest_file, EPSG=4326, fields=None):
     :rtype: None
     """
     if os.path.exists(dest_file):
-        raise IOError(dest_file)
+        raise IOError("File already exists at {}.".format(dest_file))
     src_file = ogr.GetDriverByName("ESRI Shapefile").CreateDataSource(dest_file)
     src_osr = osr.SpatialReference()
     src_osr.ImportFromEPSG(EPSG)
@@ -86,17 +85,17 @@ def wkt_from_csv_featured(wkts, dest_file, EPSG=4326, fields=None):
     # Import the shapes from the WKT file.
     if fields is None:
         fields = [{"index": x} for x in range(1, len(wkts) + 1)]
-    for key in fields.keys():
+    for key in fields[0].keys():
         # Ignore the WKT column
         if key is not "WKT":
             field_defn = ogr.FieldDefn(str(key), ogr.OFTString)
             field_defn.SetWidth(32)
-            if layer.CreateField(field_defn) != 0:
+            if layer.CreateField(field_defn) != 0:  # pragma: no cover
                 raise ValueError("Could not create field {}".format(key))
     for i, wkt in enumerate(wkts):
         point = ogr.CreateGeometryFromWkt(wkt)
         feature = ogr.Feature(layer.GetLayerDefn())
-        for key, val in fields[i]:
+        for key, val in fields[i].items():
             # Ignore the WKT column
             if key is not "WKT":
                 feature.SetField(str(key), val)
@@ -205,7 +204,7 @@ class Map(object):
         :param int permissions: the gdal permission reference to open the dataset
 
         :raises ImportError: if the gdal module has not been imported correctly
-        :raises IOError: if the supplied filename is not a tif
+        :raises IOError: if the supplied filename is not a tif or vrt
         :raises IOError: if the map does not exist
 
         :return: an opened dataset object
@@ -214,8 +213,9 @@ class Map(object):
             raise IOError(
                 "File {} does not exist or is not accessible." " Check read/write access.".format(self.file_name)
             )
-        if ".tif" not in self.file_name:
-            raise IOError("File {} is not a tif file.".format(self.file_name))
+        _, ext = os.path.splitext(self.file_name)
+        if ext not in [".tif", ".vrt"]:
+            raise IOError("File {} is not a tif or vrt file.".format(self.file_name))
         ds = gdal.Open(self.file_name, permissions)
         if ds is None:  # pragma: no cover
             raise IOError("Gdal could not open the file {}.".format(self.file_name))
@@ -738,7 +738,6 @@ class Map(object):
                 return False
         return True
 
-    # TODO write test using extent
     def rasterise(
         self,
         shape_file,
@@ -986,7 +985,6 @@ class Map(object):
         dst_ds = None
         dest = None
 
-    # TODO write tests for this
     def translate(self, dest_file, source_file=None, **kwargs):
         """
         Translates the provided source file to the output file, given a set of options to pass to gdal.Translate()
@@ -1005,7 +1003,7 @@ class Map(object):
             raise IOError("Destination file already exists at {}.".format(dest_file))
         source_ds = self.get_dataset(permissions=gdal.GA_ReadOnly)
         output_ds = gdal.Translate(destName=dest_file, srcDS=source_ds, **kwargs)
-        if output_ds is None:
+        if output_ds is None:  # pragma: no cover
             raise SystemError("Could not create file at {} using translation options of {}.".format(dest_file, kwargs))
         output_ds.FlushCache()
         output_ds = None

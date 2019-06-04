@@ -436,9 +436,14 @@ class TestCoalescenceTreeParameters(unittest.TestCase):
         self.assertEqual(3, ref3)
         self.assertEqual(4, ref4)
         self.assertEqual(5, ref5)
-        expected_output = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_community_params1.csv"))
+        expected_community_params_list = []
+        for reference in t.get_community_references():
+            params = t.get_community_parameters(reference)
+            params["reference"] = reference
+            expected_community_params_list.append(params)
+        expected_community_params = pd.DataFrame(expected_community_params_list)
         actual_output = t.get_community_parameters_pd()
-        assert_frame_equal(expected_output, actual_output)
+        assert_frame_equal(expected_community_params, actual_output, check_like=True)
 
     def testIsComplete(self):
         """Tests sims are correctly identified as complete."""
@@ -582,10 +587,14 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
             c.get_alpha_diversity_pd()
         self.assertEqual(9, self.test.get_alpha_diversity(1))
         self.assertEqual(10, self.test.get_alpha_diversity(2))
-        expected_alphas = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_alphas1.csv")).reset_index(
+        expected_alphas_list = []
+        for reference in self.test.get_community_references():
+            expected_alphas_list.append({"community_reference" : reference,
+                                         "alpha_diversity" : self.test.get_alpha_diversity(reference)})
+        expected_alphas = pd.DataFrame(expected_alphas_list).reset_index(
             drop=True)
         actual_alphas = self.test.get_alpha_diversity_pd().reset_index(drop=True)
-        assert_frame_equal(expected_alphas, actual_alphas)
+        assert_frame_equal(expected_alphas, actual_alphas, check_like=True)
 
     def testBetaDiversity(self):
         """
@@ -596,10 +605,13 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
             c.get_beta_diversity_pd()
         self.assertAlmostEqual(98.111111111, self.test.get_beta_diversity(1), places=5)
         self.assertAlmostEqual(102.8, self.test.get_beta_diversity(2), places=5)
-        expected_betas = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_betas1.csv")).reset_index(
+        expected_betas_list = []
+        for reference in self.test.get_community_references():
+            expected_betas_list.append({"community_reference": reference, "beta_diversity": self.test.get_beta_diversity(reference)})
+        expected_betas = pd.DataFrame(expected_betas_list).reset_index(
             drop=True)
         actual_betas = self.test.get_beta_diversity_pd().reset_index(drop=True)
-        assert_frame_equal(expected_betas, actual_betas)
+        assert_frame_equal(expected_betas, actual_betas, check_like=True)
 
     def testGetNumberIndividuals(self):
         """Tests that the number of individuals is obtained correctly."""
@@ -663,8 +675,15 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         with self.assertRaises(IOError):
             c1.get_biodiversity_metrics()
         c2 = CoalescenceTree(os.path.join("sample", "sample2.db"))
-        expected_biodiversity_metrics = pd.read_csv(
-            os.path.join("sample", "dataframes", "dataframe_biodiversity_metrics1.csv")).reset_index(
+
+        expected_biodiversity_metrics = pd.DataFrame([
+            [1, "fragment_richness", "fragment2", 129.0, np.NaN, np.NaN ],
+            [2, "fragment_richness", "fragment2", 130.0, np.NAN, np.NaN],
+            [1, "fragment_richness", "fragment1", 174.0, np.NaN, np.NaN],
+            [2, "fragment_richness", "fragment1", 175.0, np.NaN, np.NaN],
+            [1, "fragment_richness", "whole", 1163.0, np.NaN, np.NaN],
+            [2, "fragment_richness", "whole", 1170.0, np.NaN, np.NaN],
+        ], columns=["community_reference", "metric", "fragment", "value", "simulated", "actual"]).reset_index(
             drop=True)
         actual_biodiversity_metrics = c2.get_biodiversity_metrics().reset_index(drop=True).fillna(value=pd.np.nan)
         assert_frame_equal(expected_biodiversity_metrics, actual_biodiversity_metrics)
@@ -1105,10 +1124,17 @@ class TestSimulationAnalysis(unittest.TestCase):
         self.assertEqual(self.tree.get_fragment_richness(fragment="fragment1", reference=2), 175)
         octaves = self.tree.get_fragment_richness()
         self.assertListEqual(fragment2_richness, [list(x) for x in octaves if x[0] == "fragment2" and x[1] == 1][0])
-        expected_fragment_richness = pd.read_csv(os.path.join("sample", "dataframes",
-                                                              "dataframe_fragment_richness1.csv")).reset_index(
-            drop=True)
-        assert_frame_equal(expected_fragment_richness, self.tree.get_fragment_richness_pd().reset_index(drop=True))
+        expected_fragment_richness = []
+        for reference in self.tree.get_community_references():
+            for fragment in self.tree.get_fragment_list(reference):
+                fragment_richness = self.tree.get_fragment_richness(fragment=fragment, reference=reference)
+                expected_fragment_richness.append({"fragment": fragment, "community_reference": reference,
+                                                   "fragment_richness": fragment_richness})
+        expected_fragment_richness_df = pd.DataFrame(expected_fragment_richness).sort_values(
+            by=["fragment", "community_reference"]).reset_index(drop=True)
+        actual_fragment_richness = self.tree.get_fragment_richness_pd().reset_index(drop=True)
+        assert_frame_equal(expected_fragment_richness_df, actual_fragment_richness,
+                           check_like=True)
 
     def testGetsFragmentList(self):
         """
@@ -1139,13 +1165,19 @@ class TestSimulationAnalysis(unittest.TestCase):
             self.assertListEqual(actual_abundances[i], each)
         with self.assertRaises(ValueError):
             self.tree.get_species_abundances(fragment="fragment2")
-        expected_fragment_abundances = pd.read_csv(os.path.join("sample", "dataframes",
-                                                                "dataframe_fragment_abundances1.csv")).sort_values(
+        expected_fragment_abundances_list = []
+        for reference in self.tree.get_community_references():
+            for fragment in self.tree.get_fragment_list(reference):
+                fragment_abundances = self.tree.get_fragment_abundances(fragment=fragment, reference=reference)
+                for species_id, abundance in fragment_abundances:
+                    expected_fragment_abundances_list.append({"fragment": fragment, "community_reference": reference,
+                                                              "species_id": species_id, "no_individuals": abundance})
+        expected_fragment_abundances = pd.DataFrame(expected_fragment_abundances_list).sort_values(
             by=["fragment", "community_reference", "species_id"]).reset_index(
             drop=True)
         actual_fragment_abundances = self.tree.get_fragment_abundances_pd().sort_values(
             by=["fragment", "community_reference", "species_id"]).reset_index(drop=True)
-        assert_frame_equal(expected_fragment_abundances, actual_fragment_abundances)
+        assert_frame_equal(expected_fragment_abundances, actual_fragment_abundances, check_like=True)
 
     def testFragmentRichnessRaiseError(self):
         """
@@ -1177,10 +1209,22 @@ class TestSimulationAnalysis(unittest.TestCase):
         self.assertListEqual([0, 128], octaves[0])
         self.assertListEqual([0, 173], octaves2[0])
         self.assertListEqual(desired, [x for x in all_octaves if x[0] == "fragment1" and x[1] == 1 and x[2] == 0][0])
-        expected_fragment_octaves = (pd.read_csv(os.path.join("sample", "dataframes",
-                                                              "dataframe_fragment_octaves1.csv"))
-            .sort_values(["fragment", "community_reference", "octave"], axis=0).reset_index(
-            drop=True))
+        expected_fragment_octaves_list = []
+        for reference in self.tree.get_community_references():
+            fragment_list = self.tree.get_fragment_list(reference)
+            fragment_list.append("whole")
+            for fragment in fragment_list:
+                try:
+                    octaves = self.tree.get_fragment_octaves(fragment=fragment, reference=reference)
+                    for octave, richness in octaves:
+                        expected_fragment_octaves_list.append({"fragment": fragment, "community_reference": reference,
+                                                               "octave": octave, "richness": richness})
+                except RuntimeError:
+                    continue
+        expected_fragment_octaves = (
+            pd.DataFrame(expected_fragment_octaves_list).sort_values(["fragment", "community_reference", "octave"],
+                                                                     axis=0).reset_index(
+                drop=True))
         actual_fragment_octaves = self.tree.get_fragment_octaves_pd().sort_values(
             ["fragment", "community_reference", "octave"], axis=0).reset_index(drop=True)
         assert_frame_equal(expected_fragment_octaves, actual_fragment_octaves,
@@ -1249,8 +1293,11 @@ class TestSimulationAnalysis(unittest.TestCase):
         """Tests that the simulation species richness is read correctly."""
         actual_species_richness = self.tree.get_species_richness_pd().sort_values(
             by=["community_reference"]).reset_index(drop=True)
-        expected_species_richness = pd.read_csv(os.path.join("sample", "dataframes",
-                                                             "dataframe_species_richness1.csv"))
+        expected_species_richness_list = []
+        for reference in self.tree.get_community_references():
+            expected_species_richness_list.append({"community_reference": reference,
+                                                   "richness": self.tree.get_species_richness(reference=reference)})
+        expected_species_richness = pd.DataFrame(expected_species_richness_list)
         assert_frame_equal(actual_species_richness, expected_species_richness,
                            check_like=True)
 
@@ -1258,8 +1305,12 @@ class TestSimulationAnalysis(unittest.TestCase):
         """Tests that the simulation octave classes are correctly calculated."""
         actual_species_octaves = self.tree.get_octaves_pd().sort_values(
             by=["community_reference", "octave"]).reset_index(drop=True)
-        expected_species_octaves = pd.read_csv(os.path.join("sample", "dataframes",
-                                                            "dataframe_octaves1.csv"))
+        expected_species_octaves_list = []
+        for reference in self.tree.get_community_references():
+            for octave, richness in self.tree.get_octaves(reference):
+                expected_species_octaves_list.append({"community_reference": reference,
+                                                     "octave": octave, "richness": richness})
+        expected_species_octaves = pd.DataFrame(expected_species_octaves_list)
         assert_frame_equal(actual_species_octaves, expected_species_octaves,
                            check_like=True)
 
@@ -1341,11 +1392,18 @@ class TestMetacommunityApplication(unittest.TestCase):
         self.assertEqual(783, tree.get_species_richness(4))
         self.assertEqual(247, tree.get_species_richness(5))
         self.assertEqual(241, tree.get_species_richness(6))
-        expected_metacommunity_parameters = pd.read_csv(os.path.join("sample", "dataframes",
-                                                                     "dataframe_metacommunity_params1.csv")).sort_values(
+        expected_metacommunity_parameters_list = []
+        for reference in tree.get_community_references():
+            try:
+                params = tree.get_metacommunity_parameters(reference)
+                params["reference"] = reference
+                expected_metacommunity_parameters_list.append(params)
+            except KeyError:
+                continue
+        expected_metacommunity_parameters = pd.DataFrame(expected_metacommunity_parameters_list).sort_values(
             ["reference"])
         actual_metacommunity_parameters = tree.get_metacommunity_parameters_pd().sort_values(["reference"])
-        assert_frame_equal(expected_metacommunity_parameters, actual_metacommunity_parameters)
+        assert_frame_equal(expected_metacommunity_parameters, actual_metacommunity_parameters, check_like=True)
 
     def testMetacommunityAnalytical(self):
         """Tests that an analytical metacommunity works as intended."""
@@ -1495,7 +1553,12 @@ class TestMetacommunityApplicationSpeciesAbundances(unittest.TestCase):
         var_1 = sum(var_list_1) / len(var_list_1)
         var_2 = sum(var_list_2) / len(var_list_2)
         self.assertAlmostEqual(var_1, var_2, delta=5)
-        expected_abundances = pd.read_csv(os.path.join("sample", "dataframes", "dataframe_species_abundances1.csv"))
+        expected_abundances_list = []
+        for reference in self.ct.get_community_references():
+            for species_id, abundance in self.ct.get_species_abundances(reference=reference):
+                expected_abundances_list.append({"community_reference": reference, "species_id": species_id,
+                                                 "no_individuals": abundance})
+        expected_abundances = pd.DataFrame(expected_abundances_list)
         actual_abundances = self.ct.get_species_abundances_pd()
         assert_frame_equal(actual_abundances, expected_abundances, check_like=True)
 

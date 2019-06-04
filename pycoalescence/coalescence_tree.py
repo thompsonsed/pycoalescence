@@ -1618,10 +1618,10 @@ class CoalescenceTree(object):
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
             raise IOError("Fragments abundances must be calculated before attempting to get fragment richness.")
         output = pd.read_sql_query(
-            "SELECT fragment, community_reference, LENGTH(DISTINCT(species_id)) FROM FRAGMENT_ABUNDANCES "
+            "SELECT fragment, community_reference, COUNT(DISTINCT(species_id)) FROM FRAGMENT_ABUNDANCES "
             "GROUP BY fragment, community_reference",
             self.database,
-        ).rename(index=str, columns={"LENGTH(DISTINCT(species_id))": "fragment_richness"})
+        ).rename(index=str, columns={"COUNT(DISTINCT(species_id))": "fragment_richness"})
         return output
 
     def get_fragment_abundances(self, fragment, reference):
