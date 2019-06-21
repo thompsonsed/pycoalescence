@@ -1180,6 +1180,11 @@ class Simulation(Landscape):
         self.create_config()
         self.create_map_config()
         self.calculate_sql_database()
+        try:
+            from pycoalescence.__init__ import __version__
+            self.logger.info("Simulation set-up under pycoalescence version {}".format(__version__))
+        except ImportError:  # pragma: no cover
+            self.logger.info("pycoalescence version not found.")
         self.setup_necsim()
         if self.full_config_file is not None:  # pragma: no cover
             self.c_simulation.import_from_config(self.full_config_file)

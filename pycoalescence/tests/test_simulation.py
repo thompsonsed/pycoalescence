@@ -22,6 +22,7 @@ except ImportError as ie:  # Python 2.x support
     from cStringIO import StringIO
 
 from pycoalescence import Simulation, CoalescenceTree, Map
+from pycoalescence import __version__ as pycoalescence_version
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 
@@ -591,17 +592,18 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         """
         log_stream = StringIO()
         with open("sample/log_12_2.txt", "r") as content_file:
-            expected_log = content_file.read().replace("\r", "").replace("\n", "")[-10]
+            expected_log = content_file.read().replace("\r", "\n").split("\n")[:-6]
+            expected_log[0] = expected_log[0].format(pycoalescence_version)
         s = Simulation(logging_level=logging.INFO, stream=log_stream)
         s.set_simulation_parameters(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
         s.set_map("null", 10, 10)
         s.run()
-        log = log_stream.getvalue().replace("\r", "").replace("\n", "")[-10]
+        log = log_stream.getvalue().replace("\r", "\n").split("\n")[:-6]
         self.assertEqual(expected_log, log)
 
     def testOutputStreamerWarning(self):
         """
-        Tests that info output streaming works as intended.
+        Tests that warning output streaming works as intended.
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.WARNING, stream=log_stream)

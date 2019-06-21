@@ -79,7 +79,7 @@ void PyLogger::write(const int &level, string message)
 	}
 	if(py_logger == nullptr)
 	{
-		throw invalid_argument("Logger object has been deferenced, please report this bug!");
+		throw invalid_argument("Logger object has been deferenced, please report this bug.");
 	}
 #endif // DEBUG
 	const char * msg = const_cast<char *>(message.c_str());
@@ -95,7 +95,7 @@ void PyLogger::write(const int &level, string message)
 	if(py_log_function == nullptr)
 	{
 		Py_XDECREF(arglist);
-		throw invalid_argument("Logging function has been dereferenced, please report this bug!");
+		throw invalid_argument("Logging function has been dereferenced, please report this bug.");
 	}
 #endif // DEBUG
 	res = PyObject_CallObject(py_log_function, arglist);
@@ -126,7 +126,7 @@ void writeError(string message)
 #ifdef DEBUG
 	if(pyLogger == nullptr)
 	{
-		cerr << "Pylogger is nullptr!" << endl;
+		cerr << "Pylogger is nullptr. Report this bug." << endl;
 		throw runtime_error("Pylogger is nullptr");
 	}
 #endif // DEBUG
