@@ -63,6 +63,50 @@ if "GDAL_DATA" not in os.environ:  # pragma: no cover
         )
     os.environ["GDAL_DATA"] = gdal_dir
 
+gdal.UseExceptions()
+
+class GdalErrorHandler(object):
+    """
+    Custom error handler for GDAL warnings and errors.
+    """
+
+    def __init__(self, logger):
+        """
+        Creates the error handler.
+        """
+        self.err_level = gdal.CE_None
+        self.err_no = 0
+        self.err_msg = ''
+        self.logger = logger
+
+    def handler(self, err_level, err_no, err_msg):
+        """
+
+        :param err_level: the level at which to log outputs
+        :param err_no: the error number to use
+        :param err_msg: the error message
+        :return:
+        """
+        self.err_level = err_level
+        self.err_no = err_no
+        self.err_msg = err_msg
+        self.logger.log(err_level, err_msg)
+
+
+
+def _gdalPushErrorHandler(gdal_err_handler):
+    """
+    Push a new error handler for gdal to use.
+    :param gdal_err_handler: the GdalErrorHandler object to use
+    """
+    handler = gdal_err_handler.handler
+    gdal.PushErrorHandler(handler)
+
+def _gdalPopErrorHandler():
+    """
+    Pop the error handler for gdal off.
+    """
+    gdal.PopErrorHandler()
 
 def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
     """
@@ -77,6 +121,9 @@ def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
     """
     if os.path.exists(dest_file):
         raise IOError("File already exists at {}.".format(dest_file))
+
+    err_handler = GdalErrorHandler(logging.getLogger())
+    _gdalPushErrorHandler(err_handler)
     src_file = ogr.GetDriverByName("ESRI Shapefile").CreateDataSource(dest_file)
     src_osr = osr.SpatialReference()
     src_osr.ImportFromEPSG(EPSG)
@@ -102,6 +149,7 @@ def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
         feature.SetGeometry(point)
         layer.CreateFeature(feature)
         feature.Destroy()
+    _gdalPopErrorHandler()
 
 
 class Map(object):
@@ -141,15 +189,19 @@ class Map(object):
         self.logging_level = logging_level
         self.logger = logging.Logger("pycoalescence.map")
         self._create_logger()
+        self._gdal_error_handler = GdalErrorHandler(self.logger)
+        _gdalPushErrorHandler(self._gdal_error_handler)
 
     def __del__(self):
         """
         Overriding the destructor for proper destruction of the logger object
         """
+        _gdalPopErrorHandler()
         if hasattr(self, "logger"):
             for handler in self.logger.handlers:
                 handler.close()
                 self.logger.removeHandler(handler)
+
 
     def __deepcopy__(self, memo):
         """
@@ -163,7 +215,7 @@ class Map(object):
         result = cls.__new__(cls)
         memo[id(self)] = result
         for k, v in self.__dict__.items():
-            if k != "logger":
+            if k not in ["logger", "_gdal_error_handler"]:
                 setattr(result, k, copy.deepcopy(v, memo))
         return result
 
@@ -442,12 +494,12 @@ class Map(object):
     def check_map(self):
         """Checks that the dimensions for the map have been set and that the map file exists"""
         if not (
-            isinstance(self.x_size, NumberTypes)
-            and isinstance(self.y_size, NumberTypes)
-            and isinstance(self.x_offset, NumberTypes)
-            and isinstance(self.y_offset, NumberTypes)
-            and isinstance(self.x_res, NumberTypes)
-            and isinstance(self.y_res, NumberTypes)
+                isinstance(self.x_size, NumberTypes)
+                and isinstance(self.y_size, NumberTypes)
+                and isinstance(self.x_offset, NumberTypes)
+                and isinstance(self.y_offset, NumberTypes)
+                and isinstance(self.x_res, NumberTypes)
+                and isinstance(self.y_res, NumberTypes)
         ):
             raise ValueError(
                 "Values not set as numbers in {}: "
@@ -554,7 +606,7 @@ class Map(object):
         """
         if self.data is None:
             self.open()
-        return self.data[y_offset : (y_offset + y_size), x_offset : (x_offset + x_size)]
+        return self.data[y_offset: (y_offset + y_size), x_offset: (x_offset + x_size)]
 
     def get_subset(self, x_offset, y_offset, x_size, y_size, no_data_value=None):
         """
@@ -739,21 +791,21 @@ class Map(object):
         return True
 
     def rasterise(
-        self,
-        shape_file,
-        raster_file=None,
-        x_res=None,
-        y_res=None,
-        output_srs=None,
-        geo_transform=None,
-        field=None,
-        burn_val=None,
-        data_type=default_val,
-        attribute_filter=None,
-        x_buffer=None,
-        y_buffer=None,
-        extent=None,
-        **kwargs
+            self,
+            shape_file,
+            raster_file=None,
+            x_res=None,
+            y_res=None,
+            output_srs=None,
+            geo_transform=None,
+            field=None,
+            burn_val=None,
+            data_type=default_val,
+            attribute_filter=None,
+            x_buffer=None,
+            y_buffer=None,
+            extent=None,
+            **kwargs
     ):
         """
         Rasterises the provided shape file to produce the output raster.
@@ -903,14 +955,14 @@ class Map(object):
             raise RuntimeError("Error rasterising layer. Gdal error code: {}".format(err))
 
     def reproject_raster(
-        self,
-        dest_projection=None,
-        source_file=None,
-        dest_file=None,
-        x_scalar=1.0,
-        y_scalar=1.0,
-        resample_algorithm=gdal.GRA_NearestNeighbour,
-        warp_memory_limit=0.0,
+            self,
+            dest_projection=None,
+            source_file=None,
+            dest_file=None,
+            x_scalar=1.0,
+            y_scalar=1.0,
+            resample_algorithm=gdal.GRA_NearestNeighbour,
+            warp_memory_limit=0.0,
     ):
         """
         Re-writes the file with a new projection.
@@ -954,16 +1006,19 @@ class Map(object):
         # 	out_name = dest_file
         if dest_file is not None and os.path.exists(dest_file):  # pragma: no cover
             raise IOError("Destination file already exists at {}.".format(dest_file))
-
+        # TODO remove this
         # Create in-memory driver and populate it
-        dest = gdal.GetDriverByName("MEM").Create("", dst_xsize, dst_ysize, self.get_band_number(), data_type)
-        if dest is None:  # pragma: no cover
-            raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize, dst_ysize))
-        dest.SetProjection(dest_projection.ExportToWkt())
-        dest.SetGeoTransform(dst_gt)
+        # dest = gdal.GetDriverByName("MEM").Create("", dst_xsize, dst_ysize, self.get_band_number(), data_type)
+        # if dest is None:  # pragma: no cover
+        #     raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize, dst_ysize))
+        # dest.SetProjection(dest_projection.ExportToWkt())
+        # dest.SetGeoTransform(dst_gt)
+        dest = None
         try:
-            gdal.Warp(
-                dest, source_ds, outputType=data_type, resampleAlg=resample_algorithm, warpMemoryLimit=warp_memory_limit
+            dest = gdal.Warp(
+                "", source_ds, dstSRS=dest_projection, format="VRT",
+                xRes=dst_gt[1], yRes=dst_gt[5],
+                outputType=data_type, resampleAlg=resample_algorithm, warpMemoryLimit=warp_memory_limit
             )
         except AttributeError as ae:  # pragma: no cover
             raise AttributeError(

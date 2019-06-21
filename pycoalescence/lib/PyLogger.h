@@ -57,6 +57,12 @@ public:
 	void setLogFunction(PyObject * log_function);
 
 	/**
+	 * @brief Checks if the logger has been setup.
+	 * @return true if the logger object and the logger function have been set
+	 */
+	bool isSetup();
+
+	/**
 	 * @brief Writes a message to the log object with level 20.
 	 * @param message the message to write out
 	 */

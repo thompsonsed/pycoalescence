@@ -794,6 +794,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         test.calculate_comparison_octaves(store=True)
         self.assertTrue(os.path.exists(dst))
 
+    @unittest.skipIf(sys.version[0] == "2", "Skipping Python 3.x tests")
     def testDownsamplingAndRevert(self):
         """Tests that downsampling works as intended and can be reverted."""
         c = CoalescenceTree(os.path.join("output", "sampledb9.db"))

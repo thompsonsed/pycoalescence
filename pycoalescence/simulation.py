@@ -50,7 +50,7 @@ except ImportError as ie:  # pragma: no cover
         import gdal
     except ImportError:
         gdal = None
-        logging.warning("Problem importing  (gdal) modules. " + str(ie))
+        logging.warning("Problem importing gdal modules: {}".format(ie))
 
 try:
     import sqlite3
@@ -58,7 +58,7 @@ try:
     from .coalescence_tree import CoalescenceTree
 except ImportError as ie:  # pragma: no cover
     CoalescenceTree = None
-    logging.error("Problem importing sqlite module: {}".format(ie))
+    logging.error("Problem importing sqlite or coalescence_tree modules: {}".format(ie))
 
 from pycoalescence.necsim import libnecsim
 from pycoalescence.future_except import FileNotFoundError, FileExistsError

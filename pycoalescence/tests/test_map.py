@@ -770,7 +770,7 @@ class TestMapReprojection(unittest.TestCase):
         """
         map_6 = "output/tmp_map6.tif"
         shutil.copy2(self.map_2, map_6)
-        m_6 = Map(map_6)
+        m_6 = Map(map_6, logging_level=20)
         m_6.reproject_raster(x_scalar=2.0, y_scalar=3.0)
         m_4 = Map(self.map_2)
         dims = m_6.read_dimensions()
