@@ -10,7 +10,6 @@ jobs:
 
     working_directory: ~/pycoalescence
 
-
     steps:
       - checkout
 
@@ -21,7 +20,7 @@ jobs:
             git clone git@bitbucket.org:thompsonsed/necsim.git
             cd ../../
             python3 setup.py install
-        
+
       # run tests!
       - run:
           name: run tests
@@ -33,4 +32,70 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
-          
+
+  build_py2:
+    docker:
+      - image: thompsonsed/pycoalescence-circleci-py2-0.0.1
+
+    working_directory: ~/pycoalescence
+
+    steps:
+      - checkout
+
+      - run:
+          name: build package
+          command: |
+            cd pycoalescence/lib
+            git clone git@bitbucket.org:thompsonsed/necsim.git
+            cd ../../
+            python setup.py install
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            cd pycoalescence/tests
+            python test_install.py --quick
+
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+  build_py3_latest:
+    docker:
+      - image: thompsonsed/pycoalescence-circleci-py3_latest-0.0.1
+
+    working_directory: ~/pycoalescence
+
+    steps:
+      - checkout
+
+      - run:
+          name: build package
+          command: |
+            cd pycoalescence/lib
+            git clone git@bitbucket.org:thompsonsed/necsim.git
+            cd ../../
+            python3 setup.py install
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            cd pycoalescence/tests
+            python3 test_install.py --quick
+
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - build_py2
+      - build_py3_latest
+
