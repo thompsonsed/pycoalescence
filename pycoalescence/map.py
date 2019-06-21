@@ -1006,14 +1006,6 @@ class Map(object):
         # 	out_name = dest_file
         if dest_file is not None and os.path.exists(dest_file):  # pragma: no cover
             raise IOError("Destination file already exists at {}.".format(dest_file))
-        # TODO remove this
-        # Create in-memory driver and populate it
-        # dest = gdal.GetDriverByName("MEM").Create("", dst_xsize, dst_ysize, self.get_band_number(), data_type)
-        # if dest is None:  # pragma: no cover
-        #     raise IOError("Could not create a gdal driver in memory of dimensions {}, {}".format(dst_xsize, dst_ysize))
-        # dest.SetProjection(dest_projection.ExportToWkt())
-        # dest.SetGeoTransform(dst_gt)
-        dest = None
         try:
             dest = gdal.Warp(
                 "", source_ds, dstSRS=dest_projection, format="VRT",
@@ -1021,6 +1013,7 @@ class Map(object):
                 outputType=data_type, resampleAlg=resample_algorithm, warpMemoryLimit=warp_memory_limit
             )
         except AttributeError as ae:  # pragma: no cover
+            dest = None
             raise AttributeError(
                 "Cannot find the gdal.Warp functionality - it is possible this function is not "
                 "provided by your version of gdal, or that your gdal installation is incomplete:"
