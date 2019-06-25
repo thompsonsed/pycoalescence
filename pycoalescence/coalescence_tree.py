@@ -1394,7 +1394,7 @@ class CoalescenceTree(object):
                     for x in tmp_cursor.execute("SELECT species_id, no_individuals FROM SPECIES_ABUNDANCES").fetchall()
                 ]
             except sqlite3.Error as oe:  # pragma: no cover
-                raise sqlite3.Error("Problem executing fetches from comparison data: ".format(oe))
+                raise sqlite3.Error("Problem executing fetches from comparison data: {}".format(oe))
             self.comparison_file = filename
         except sqlite3.Error as oe:  # pragma: no cover
             conn = None
