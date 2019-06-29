@@ -1287,7 +1287,7 @@ class Simulation(Landscape):
 
     def run(self):
         """
-        Convenience function which completes setp, runs the simulation and calculates the coalescence tree for the set
+        Convenience function which completes setup, runs the simulation and calculates the coalescence tree for the set
         speciation rates in one step.
 
         :rtype: None

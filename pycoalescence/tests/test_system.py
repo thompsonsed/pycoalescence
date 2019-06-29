@@ -3164,7 +3164,7 @@ class TestDetectRamUsage(unittest.TestCase):
         except MemoryError as me:
             cls.fail(
                 msg="Cannot run a larger scale simulation. This should require around 500MB of RAM. If your computer"
-                "does not have these requirements, ignore this failure: {}".format(me)
+                    "does not have these requirements, ignore this failure: {}".format(me)
             )
 
     def testExcessiveRamUsage(self):
@@ -3800,6 +3800,74 @@ class TestReproductionMaps(unittest.TestCase):
         self.assertEqual(186, sim1.get_species_richness())
         self.assertEqual(195, sim2.get_species_richness())
         self.assertEqual("Density is zero where reproduction map is non-zero. This is likely incorrect.", log1)
+
+
+class TestAnalyticalMetacommunityLimits(unittest.TestCase):
+    """Tests that the limits on the analytical method for supplying a metacommunity work as intended."""
+
+    @classmethod
+    def setUpClass(cls):
+
+        cls.sim = Simulation(logging_level=50)
+        cls.sim.set_simulation_parameters(
+            seed=10,
+            job_type=48,
+            output_directory="output",
+            min_speciation_rate=0.000001,
+            sigma=1,
+        )
+        cls.sim.set_map("null", 10, 10)
+        cls.sim.run()
+        cls.ct = CoalescenceTree(cls.sim)
+        cls.ct.wipe_data()
+        cls.speciation_rates = [0.001, 0.5, 0.999]
+        cls.metacommunity_speciation_rates = [0.000000001, 0.5, 0.99999999]
+        cls.ct.set_speciation_parameters(speciation_rates=cls.speciation_rates)
+        for metacommunity_speciation_rate in cls.metacommunity_speciation_rates:
+            for option in ["simulated", "analytical"]:
+                cls.ct.add_metacommunity_parameters(
+                    metacommunity_option=option,
+                    metacommunity_size=100000,
+                    metacommunity_speciation_rate=metacommunity_speciation_rate,
+                )
+        cls.ct.apply()
+
+    def testMetacommunityParameters(self):
+        """Tests that the metacommunity parameters are correctly set"""
+        community_reference = 0
+        expected_community_parameters = []
+
+        for speciation_rate in self.speciation_rates:
+            community_reference += 1
+            expected_community_parameters.append({"community_reference": community_reference,
+                                                  "speciation_rate": speciation_rate,
+                                                  })
+        expected_metacommunity_parameters = {}
+        metacommunity_reference = 0
+        for metacommunity_speciation_rate in self.metacommunity_speciation_rates:
+            for option in ["simulated", "analytical"]:
+                metacommunity_reference += 1
+                expected_metacommunity_parameters[metacommunity_reference] = {
+                    "speciation_rate": metacommunity_speciation_rate,
+                    "option": option}
+        for each in expected_community_parameters:
+            community_parameters = self.ct.get_community_parameters(each["community_reference"])
+            self.assertEqual(each["speciation_rate"], community_parameters["speciation_rate"])
+            metacommunity_reference = community_parameters["metacommunity_reference"]
+            expected_metacommunity_parameters_local = expected_metacommunity_parameters[metacommunity_reference]
+            metacommunity_parameters = {k: v for k, v in
+                                        self.ct.get_metacommunity_parameters(metacommunity_reference).items() if
+                                        k in expected_metacommunity_parameters_local.keys()}
+
+            self.assertEqual(expected_metacommunity_parameters_local, metacommunity_parameters)
+
+    def testSpeciesRichnessMetacommunity(self):
+        """Tests that the species richness is correctly reproduced by the metacommunity."""
+        expected_richnesses = [1, 1, 1, 1, 1, 1, 2, 69, 100, 2, 69, 100, 2, 69, 100, 2, 69, 100]
+        actual_richnesses = []
+        for ref in self.ct.get_community_references():
+            actual_richnesses.append(self.ct.get_species_richness(ref))
+        self.assertEqual(expected_richnesses, actual_richnesses)
 
 
 @skipLongTest
