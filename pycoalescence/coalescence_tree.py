@@ -242,11 +242,11 @@ class CoalescenceTree(object):
         self.applied_speciation_rates_list = speciation_rates
 
     def _set_metacommunity_parameters(
-            self,
-            metacommunity_size=None,
-            metacommunity_speciation_rate=None,
-            metacommunity_option=None,
-            metacommunity_reference=None,
+        self,
+        metacommunity_size=None,
+        metacommunity_speciation_rate=None,
+        metacommunity_option=None,
+        metacommunity_reference=None,
     ):
         """
         Checks that the metacommunity parameters make sense and assigns them within the object.
@@ -259,10 +259,10 @@ class CoalescenceTree(object):
         :rtype: None
         """
         if (
-                not metacommunity_size
-                and not metacommunity_speciation_rate
-                and not metacommunity_option
-                and not metacommunity_reference
+            not metacommunity_size
+            and not metacommunity_speciation_rate
+            and not metacommunity_option
+            and not metacommunity_reference
         ):
             self.metacommunity_size = 0
             self.metacommunity_speciation_rate = 0.0
@@ -676,18 +676,18 @@ class CoalescenceTree(object):
             raise IOError("File {} does not exist.".format(filename))
 
     def set_speciation_parameters(
-            self,
-            speciation_rates,
-            record_spatial=False,
-            record_fragments=False,
-            sample_file=None,
-            times=None,
-            protracted_speciation_min=None,
-            protracted_speciation_max=None,
-            metacommunity_size=None,
-            metacommunity_speciation_rate=None,
-            metacommunity_option=None,
-            metacommunity_reference=None,
+        self,
+        speciation_rates,
+        record_spatial=False,
+        record_fragments=False,
+        sample_file=None,
+        times=None,
+        protracted_speciation_min=None,
+        protracted_speciation_max=None,
+        metacommunity_size=None,
+        metacommunity_speciation_rate=None,
+        metacommunity_option=None,
+        metacommunity_reference=None,
     ):
         """
 
@@ -816,7 +816,7 @@ class CoalescenceTree(object):
             self.c_community.add_protracted_parameters(float(min_speciation_gen), float(max_speciation_gen))
 
     def add_multiple_protracted_parameters(
-            self, min_speciation_gens=None, max_speciation_gens=None, speciation_gens=None
+        self, min_speciation_gens=None, max_speciation_gens=None, speciation_gens=None
     ):
         """
         Adds the protracted parameter set, taking an iterable as an input.
@@ -843,11 +843,11 @@ class CoalescenceTree(object):
             self.add_protracted_parameters(min_g, max_g)
 
     def add_metacommunity_parameters(
-            self,
-            metacommunity_size=None,
-            metacommunity_speciation_rate=None,
-            metacommunity_option=None,
-            metacommunity_reference=0,
+        self,
+        metacommunity_size=None,
+        metacommunity_speciation_rate=None,
+        metacommunity_option=None,
+        metacommunity_reference=0,
     ):
         """
         Adds the metacommunity parameters to the object.
@@ -1044,9 +1044,7 @@ class CoalescenceTree(object):
                 ).fetchone()[0]
         else:
             if not check_sql_table_exist(self.database, "SPECIES_ABUNDANCES"):
-                raise IOError(
-                    "No species abundances table to fetch data from. Ensure your simulation is complete."
-                )
+                raise IOError("No species abundances table to fetch data from. Ensure your simulation is complete.")
             if not community_reference:
                 return self.cursor.execute(
                     "SELECT SUM(no_individuals)/COUNT(DISTINCT(community_reference)) " "FROM SPECIES_ABUNDANCES"
@@ -1223,8 +1221,9 @@ class CoalescenceTree(object):
         :param bool output_metrics: output to the BIODIVERSITY_METRICS table
         """
         self._check_database()
-        if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES") or not check_sql_table_exist(self.database,
-                                                                                                        "FRAGMENT_RICHNESS"):
+        if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES") or not check_sql_table_exist(
+            self.database, "FRAGMENT_RICHNESS"
+        ):
             raise IOError("Fragment abundances and richnesses must be calculated before alpha diversity.")
         if not check_sql_table_exist(self.database, "ALPHA_DIVERSITY"):
             tmp_create = (
@@ -2061,10 +2060,12 @@ class CoalescenceTree(object):
         try:
             output = pd.read_sql_query(
                 "SELECT community_reference, metric, fragment, value, simulated, actual FROM BIODIVERSITY_METRICS",
-                self.database)
+                self.database,
+            )
         except sqlite3.OperationalError:  # pragma: no cover
-            output = pd.read_sql_query("SELECT community_reference, metric, fragment, value FROM BIODIVERSITY_METRICS",
-                                       self.database)
+            output = pd.read_sql_query(
+                "SELECT community_reference, metric, fragment, value FROM BIODIVERSITY_METRICS", self.database
+            )
         return output
 
     def get_goodness_of_fit_metric(self, metric, reference=1):
@@ -2268,16 +2269,16 @@ class CoalescenceTree(object):
         return pd.read_sql_query("SELECT * FROM COMMUNITY_PARAMETERS", self.database)
 
     def get_community_reference(
-            self,
-            speciation_rate,
-            time,
-            fragments,
-            metacommunity_size=0,
-            metacommunity_speciation_rate=0.0,
-            metacommunity_option=None,
-            external_reference=0,
-            min_speciation_gen=0.0,
-            max_speciation_gen=0.0,
+        self,
+        speciation_rate,
+        time,
+        fragments,
+        metacommunity_size=0,
+        metacommunity_speciation_rate=0.0,
+        metacommunity_option=None,
+        external_reference=0,
+        min_speciation_gen=0.0,
+        max_speciation_gen=0.0,
     ):
         """
         Gets the community reference associated with the supplied community parameters
@@ -2483,6 +2484,8 @@ class CoalescenceTree(object):
         :return: None
         :rtype: None
         """
+        if sample_proportion > 1.0:
+            raise ValueError("Sample proportion cannot be greater than 1.0: supplied {}.".format(sample_proportion))
         self._check_database()
         species_list = [list(x) for x in self.cursor.execute("SELECT * FROM SPECIES_LIST").fetchall()]
         try:
@@ -2499,6 +2502,15 @@ class CoalescenceTree(object):
             for i in unique_locations:
                 select_tips = [x[0:13] for x in tips if x[13] == i]
                 out_number = max(math.floor(sample_proportion * len(select_tips)), 1)
+                if out_number > len(select_tips):  # pragma: no cover
+                    if out_number == len(select_tips) + 1: # correct for rounding errors
+                        out_number = len(select_tips)
+                    else:
+                        raise ValueError(
+                            "Number of tips at location {} ({}) too few for sampling {} individuals.".format(
+                                i, len(select_tips), out_number
+                            )
+                        )
                 select_indices = random.sample(range(0, len(select_tips)), out_number)
                 for i, each in enumerate(select_tips):
                     if i not in select_indices:
@@ -2521,7 +2533,7 @@ class CoalescenceTree(object):
         except Exception as e:  # pragma: no cover
             try:
                 self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
-                self.cursor.commit()
+                self.database.commit()
             except Exception as e2:
                 self.logger.error(e2)
             raise e
@@ -2797,7 +2809,7 @@ def scale_simulation_fit(simulated_value, actual_value, number_individuals, tota
     :return: the scaled fit value
     """
     return (
-            (1 - (abs(simulated_value - actual_value)) / max(simulated_value, actual_value))
-            * number_individuals
-            / total_individuals
+        (1 - (abs(simulated_value - actual_value)) / max(simulated_value, actual_value))
+        * number_individuals
+        / total_individuals
     )

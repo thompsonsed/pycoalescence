@@ -802,6 +802,8 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         original_individuals = c.get_number_individuals()
         original_richness = c.get_species_richness_pd()
         c.wipe_data()
+        with self.assertRaises(ValueError):
+            c.downsample(sample_proportion=2.0)
         c.downsample(sample_proportion=0.1)
         c.set_speciation_parameters([0.1, 0.2])
         c.apply()
