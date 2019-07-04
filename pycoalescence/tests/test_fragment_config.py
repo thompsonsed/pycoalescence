@@ -110,6 +110,13 @@ class TestFragmentConfigHandler(unittest.TestCase):
         f = FragmentConfigHandler()
         f.read_csv(os.path.join("sample", "FragmentsTest.csv"))
         self.assertEqual(self.expected_dict2, f.fragment_list)
+        with self.assertRaises(IOError):
+            f.read_csv("not_a_file.csv")
+        for file in ["FragmentsTestFail1.csv", "FragmentsTestFail2.csv"]:
+            with self.assertRaises(IOError):
+                f.read_csv(os.path.join("sample", file))
+        with self.assertRaises(Exception):
+            f.read_csv(os.path.join("sample", "dispersal_fine.tif"))
 
 
 

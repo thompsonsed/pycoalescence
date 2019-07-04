@@ -865,7 +865,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         c.set_speciation_parameters([0.1, 0.2])
         c.apply()
         new_individuals = c.get_number_individuals()
-        self.assertEqual(3, new_individuals)
+        self.assertEqual(2, new_individuals)
         self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
         self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
         c = CoalescenceTree(os.path.join("output", "sampledb10.db"))

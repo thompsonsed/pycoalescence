@@ -11,6 +11,7 @@ from setup_tests import setUpAll, tearDownAll, skipLongTest
 from pycoalescence import Simulation, CoalescenceTree
 from pycoalescence.necsim import necsimError
 from pycoalescence.sqlite_connection import check_sql_table_exist
+from pycoalescence.future_except import FileNotFoundError, FileExistsError
 
 
 def setUpModule():
@@ -918,5 +919,7 @@ class TestPauseSpeciateRemaining(unittest.TestCase):
         self.assertEqual(1170, ct.get_species_richness(2))
         self.assertEqual(1173, ct.get_species_richness(3))
         ct = CoalescenceTree()
+        with self.assertRaises(FileNotFoundError):
+            ct.speciate_remaining("notafile.db")
         with self.assertRaises(IOError):
             ct.speciate_remaining(self.sim)

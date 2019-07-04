@@ -919,8 +919,8 @@ class CoalescenceTree(object):
         """
         try:
             self.set_database(database)
-        except IOError as e:
-            if e is FileNotFoundError:
+        except Exception as e:
+            if self.is_complete or not isinstance(e, IOError) or isinstance(e, FileNotFoundError):
                 raise e
         else:
             raise IOError("Database at {} is not a paused database.".format(self.file))
@@ -2585,7 +2585,7 @@ class CoalescenceTree(object):
         :rtype: None
         """
         self._check_database()
-        if not check_sql_table_exist(self.database, "SPECIES_LIST"):
+        if not check_sql_table_exist(self.database, "SPECIES_LIST"):  # pragma: no cover
             raise IOError("SPECIES_LIST table does not exist in {}.".format(self.file))
         if not os.path.exists(fragment_csv):
             raise IOError("Fragment csv does not exist at {}.".format(fragment_csv))
@@ -2611,7 +2611,7 @@ class CoalescenceTree(object):
             out_tips = []
             for k, out_number in location_dict.items():
                 select_tips = [x[0:13] for x in tips if x[13] == k]
-                if len(select_tips) == 0:
+                if len(select_tips) == 0:  # pragma: no cover
                     self.logger.info("Skipping sampling location {} as there are no recorded individuals.".format(k))
                 if out_number > len(select_tips):  # pragma: no cover
                     if not ignore_errors:
@@ -2647,7 +2647,7 @@ class CoalescenceTree(object):
         except Exception as e:
             try:
                 self._restore_backup_species_list()
-            except Exception as e1:
+            except Exception as e1:  # pragma: no cover
                 self.logger.info("{}.".format(e1))
             raise e
 

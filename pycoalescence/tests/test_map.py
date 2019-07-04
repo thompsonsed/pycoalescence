@@ -18,7 +18,7 @@ except ImportError:  # pragma: no cover
     from mock import create_autospec, patch
 
 from pycoalescence import Map, FragmentedLandscape
-from pycoalescence.map import shapefile_from_wkt
+from pycoalescence.map import shapefile_from_wkt, GdalErrorHandler
 from setup_tests import setUpAll, tearDownAll, skipGdalWarp
 
 import scipy
@@ -41,6 +41,7 @@ def tearDownModule():
     Removes the output directory
     """
     tearDownAll()
+
 
 @unittest.skipIf(sys.version[0] == "2", "Skipping Python 3.x tests")
 class TestMapImports(unittest.TestCase):
@@ -654,14 +655,14 @@ class TestMap(unittest.TestCase):
     def testTranslate(self):
         """Tests the translation process works as intended."""
         source_file = os.path.join("sample", "SA_sample_fine.tif")
-        dest_file1=os.path.join("output", "translated1.tif")
+        dest_file1 = os.path.join("output", "translated1.tif")
         dest_file2 = os.path.join("output", "translated2.tif")
         m = Map(source_file)
         new_x, new_y = 10, 10
-        new_proj_win = [-78.375,  0.8583333333333343, -78.3, 0.8]
+        new_proj_win = [-78.375, 0.8583333333333343, -78.3, 0.8]
         expected_extent = [-78.375, -78.3, 0.8, 0.8583333333333343]
         m.translate(dest_file=dest_file1,
-                    projWin = new_proj_win)
+                    projWin=new_proj_win)
         with self.assertRaises(ValueError):
             m.translate(dest_file=None,
                         projWin=new_proj_win)
@@ -676,7 +677,7 @@ class TestMap(unittest.TestCase):
         m1 = Map(dest_file1)
         actual_extent = m1.get_extent()
         for expected, actual in zip(expected_extent, actual_extent):
-            self.assertAlmostEqual(expected, actual,  places=5)
+            self.assertAlmostEqual(expected, actual, places=5)
         self.assertTrue(os.path.exists(dest_file1))
         m2 = Map(dest_file2)
         self.assertEqual([new_x, new_y], m2.get_x_y())
@@ -711,7 +712,6 @@ class TestMapReprojection(unittest.TestCase):
         cls.m_2 = Map(cls.map_2)
         cls.m_3 = Map(cls.map_3)
         cls.m_5 = Map(cls.map_5)
-
 
     def testCorrectNewProjection(self):
         """
@@ -1037,6 +1037,7 @@ class TestSubsettingMaps(unittest.TestCase):
         expected_array[2:7, 2:7] = 2
         self.assertTrue(np.array_equal(expected_array, m.data))
 
+
 class TestWKTFunctions(unittest.TestCase):
     """Tests converting WKTs in csvs to shapefiles"""
 
@@ -1054,3 +1055,26 @@ class TestWKTFunctions(unittest.TestCase):
                 shapefile_from_wkt(wkts=wkts, dest_file=output_shapefile1)
         self.assertTrue(os.path.exists(output_shapefile1))
         self.assertTrue(os.path.exists(output_shapefile2))
+
+
+class TestGdalErrorHandler(unittest.TestCase):
+
+    def testErrorHandler(self):
+        class TempLogger(object):
+            """Test logger for testing outputting."""
+            def __init__(self):
+                self.logs = []
+
+            def log(self, err_level, err_msg):
+                self.logs.append([err_level, err_msg])
+
+        tl = TempLogger()
+        geh = GdalErrorHandler(tl)
+        geh.handler(10, 1, "test message")
+        geh.handler(20, 2, "test message 2")
+        expected_output = [[10, "test message"], [20, "test message 2"]]
+        self.assertEqual(expected_output, tl.logs)
+        self.assertEqual("test message 2", geh.err_msg)
+        self.assertEqual(20, geh.err_level)
+        self.assertEqual(2, geh.err_no)
+

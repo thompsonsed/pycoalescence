@@ -992,18 +992,11 @@ class Map(object):
             resample_algorithm,
             0,
         )
-        dst_xsize = int(tmp_ds.RasterXSize / x_scalar)
-        dst_ysize = int(tmp_ds.RasterYSize / y_scalar)
-        # Re-scale the resolutions
         dst_gt = list(tmp_ds.GetGeoTransform())
         dst_gt[1] = dst_gt[1] * x_scalar
         dst_gt[5] = dst_gt[5] * y_scalar
         tmp_ds.SetGeoTransform(dst_gt)
         data_type = self.get_dtype()
-        # if dest_file is None:
-        # 	out_name = "{}_tmp.tif".format(os.path.splitext(self.file_name)[0])
-        # else:
-        # 	out_name = dest_file
         if dest_file is not None and os.path.exists(dest_file):  # pragma: no cover
             raise IOError("Destination file already exists at {}.".format(dest_file))
         try:
