@@ -89,14 +89,14 @@ class FragmentConfigHandler(object):
             min_x, min_y = m.convert_lat_long(max_lat, min_long)
             max_x, max_y = m.convert_lat_long(min_lat, max_long)
             if (
-                min_x < 0
-                or min_y < 0
-                or max_x < 0
-                or max_y < 0
-                or min_x > dim_x
-                or min_y > dim_y
-                or max_x > dim_x
-                or max_y > dim_y
+                    min_x < 0
+                    or min_y < 0
+                    or max_x < 0
+                    or max_y < 0
+                    or min_x > dim_x
+                    or min_y > dim_y
+                    or max_x > dim_x
+                    or max_y > dim_y
             ):
                 src_ds = None
                 raise ValueError("Shapefile is not contained within the raster - cannot generate fragment config.")
@@ -108,6 +108,35 @@ class FragmentConfigHandler(object):
                 "area": area,
             }
         src_ds = None
+
+    def read_csv(self, input_csv):
+        """
+        Reads the input csv file into the fragments object.
+
+        :param input_csv: the csv file to read in
+
+        :return: None
+        :rtype: None
+        """
+        if not os.path.exists(input_csv):
+            raise FileNotFoundError("Input csv does not exist at {}.".format(input_csv))
+        if sys.version_info[0] < 3:  # pragma: no cover
+            infile = open(input_csv, "rb")
+        else:
+            infile = open(input_csv, "r", newline="")
+        with infile as csv_file:
+            csv_reader = csv.reader(csv_file)
+            for row in csv_reader:
+                if len(row) != 6:
+                    raise IOError("Csv file {} does not contain 6 elements in row ({}).".format(input_csv, len(row)))
+                fragment, min_x, min_y, max_x, max_y, area = row
+                self.fragment_list[fragment] = {
+                    "min_x": int(min_x),
+                    "max_x": int(max_x),
+                    "min_y": int(min_y),
+                    "max_y": int(max_y),
+                    "area": int(area),
+                }
 
     def write_csv(self, output_csv):
         """

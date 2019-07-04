@@ -33,7 +33,7 @@ except ImportError as ie:  # pragma: no cover
     logging.info(str(ie))
     from necsim import libnecsim, necsimError
 
-from .future_except import FileNotFoundError
+from .future_except import FileNotFoundError, FileExistsError
 from .system_operations import mod_directory, create_logger, write_to_log
 from .spatial_algorithms import calculate_distance_between
 from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, get_table_names, SQLiteConnection
@@ -198,7 +198,7 @@ class CoalescenceTree(object):
             record_fragments = "null"
         if record_fragments not in ["F", "null"]:
             if not os.path.exists(record_fragments):
-                raise IOError("Fragment config does not exist at {}.".format(record_fragments))
+                raise FileNotFoundError("Fragment config does not exist at {}.".format(record_fragments))
             if not (record_fragments.endswith(".csv") or record_fragments.endswith(".txt")):
                 raise IOError("Supplied fragment config file is not a csv or txt file: {}.".format(record_fragments))
         self.record_fragments = record_fragments
@@ -310,7 +310,7 @@ class CoalescenceTree(object):
                         "external database for the metacommunity."
                     )
                 if not os.path.exists(metacommunity_option):
-                    raise IOError("No file exists to supply metacommunity at {}.".format(metacommunity_option))
+                    raise FileNotFoundError("No file exists to supply metacommunity at {}.".format(metacommunity_option))
                 if metacommunity_reference is None:
                     self.metacommunity_reference = 1
                 else:
@@ -380,7 +380,7 @@ class CoalescenceTree(object):
         else:
             if sample_file != "null":
                 if not os.path.exists(sample_file):
-                    raise IOError("Sample file does not exist at {}.".format(sample_file))
+                    raise FileNotFoundError("Sample file does not exist at {}.".format(sample_file))
                 ext = os.path.splitext(sample_file)[1]
                 if ext not in [".tif", ".csv"]:
                     raise IOError("Extension is not .tif or .csv: {}.".format(ext))
@@ -673,7 +673,7 @@ class CoalescenceTree(object):
                 self.database.close()
                 raise sqlite3.Error("Could not fetch SIMULATION_PARAMETERS. Table contains no data.")
         else:
-            raise IOError("File {} does not exist.".format(filename))
+            raise FileNotFoundError("File {} does not exist.".format(filename))
 
     def set_speciation_parameters(
         self,
@@ -919,8 +919,9 @@ class CoalescenceTree(object):
         """
         try:
             self.set_database(database)
-        except IOError:
-            pass
+        except IOError as e:
+            if e is FileNotFoundError:
+                raise e
         else:
             raise IOError("Database at {} is not a paused database.".format(self.file))
         self.database.close()
@@ -1371,7 +1372,7 @@ class CoalescenceTree(object):
         data.
         """
         if not os.path.exists(filename):
-            raise IOError("Comparison database does not exist at {}.".format(filename))
+            raise FileNotFoundError("Comparison database does not exist at {}.".format(filename))
         conn = sqlite3.connect(filename)
         tmp_cursor = conn.cursor()
         if self.comparison_file is not None:
@@ -1685,7 +1686,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not check_sql_table_exist(self.database, "FRAGMENT_ABUNDANCES"):
-            raise IOError("Fragment abundances have not been calculated; cannot obtain fragment list.")
+            raise IOError("Fragment abundances have not been calculated: cannot obtain fragment list.")
         fetch = self.cursor.execute(
             "SELECT DISTINCT(fragment) FROM FRAGMENT_ABUNDANCES WHERE " "community_reference == ?",
             (community_reference,),
@@ -2472,6 +2473,29 @@ class CoalescenceTree(object):
         if self.c_community is not None:  # pragma: no cover
             self.c_community.reset()
 
+    def _backup_species_list(self):
+        """
+        Backs up the SPECIES_LIST table to SPECIES_LIST_ORIGINAL
+
+        :return: None
+        :rtype: None
+        """
+        self._check_database()
+        if check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):  # pragma: no cover
+            raise IOError("SPECIES_LIST_ORIGINAL already exists in database.")
+        self.cursor.execute("ALTER TABLE SPECIES_LIST RENAME TO SPECIES_LIST_ORIGINAL")
+        self.database.commit()
+
+    def _restore_backup_species_list(self):
+        """
+        Restores the backed up SPECIES_LIST table.
+
+        :return: None
+        :rtype: None
+        """
+        self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
+        self.database.commit()
+
     def downsample(self, sample_proportion):
         """
         Down-samples the individuals by a given proportion globally, and at each location.
@@ -2489,10 +2513,7 @@ class CoalescenceTree(object):
         self._check_database()
         species_list = [list(x) for x in self.cursor.execute("SELECT * FROM SPECIES_LIST").fetchall()]
         try:
-            if check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):  # pragma: no cover
-                raise IOError("SPECIES_LIST_ORIGINAL already exists in database.")
-            self.cursor.execute("ALTER TABLE SPECIES_LIST RENAME TO SPECIES_LIST_ORIGINAL")
-            self.database.commit()
+            self._backup_species_list()
             tips = [x for x in species_list if x[6] == 1]
             no_tips = [x for x in species_list if x[6] == 0]
             for row in tips:
@@ -2532,8 +2553,7 @@ class CoalescenceTree(object):
             self.database.commit()
         except Exception as e:  # pragma: no cover
             try:
-                self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
-                self.database.commit()
+                self._restore_backup_species_list()
             except Exception as e2:
                 self.logger.error(e2)
             raise e
@@ -2549,8 +2569,89 @@ class CoalescenceTree(object):
         if not check_sql_table_exist(self.database, "SPECIES_LIST_ORIGINAL"):
             raise IOError("SPECIES_LIST_ORIGINAL table does not exist in database")
         self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LIST")
-        self.cursor.execute("ALTER TABLE SPECIES_LIST_ORIGINAL RENAME TO SPECIES_LIST")
-        self.database.commit()
+        self._restore_backup_species_list()
+
+    def downsample_at_locations(self, fragment_csv, ignore_errors=False):
+        """
+        Downsamples the SPECIES_LIST object using a fragment csv.
+
+        Each row in the csv file should contain the fragment name, x min, y min, x max, y max and the number of
+        individuals per cell in that fragment.
+
+        :param fragment_csv: a csv file to use for downsampling individuals
+        :param ignore_errors: ignore the errors from mismatches in numbers of individuals
+
+        :return: None
+        :rtype: None
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "SPECIES_LIST"):
+            raise IOError("SPECIES_LIST table does not exist in {}.".format(self.file))
+        if not os.path.exists(fragment_csv):
+            raise IOError("Fragment csv does not exist at {}.".format(fragment_csv))
+        species_list = [list(x) for x in self.cursor.execute("SELECT * FROM SPECIES_LIST").fetchall()]
+        self._backup_species_list()
+        try:
+            location_dict = {}
+            with open(fragment_csv, "r") as csv_file:
+                rows = csv.reader(csv_file)
+                # Check that the rows contains the correct number of elements.
+                for row in rows:
+                    if len(row) != 6:
+                        raise ValueError("Row length in {} contains {} instead of 6 elements.".format(fragment_csv,
+                                                                                                      len(row)))
+                    name, x_min, y_min, x_max, y_max, no_individuals = row
+                    for x in range(int(x_min), int(x_max) + 1, 1):
+                        for y in range(int(y_min), int(y_max) + 1, 1):
+                            location_dict["{}-{}-{}-{}".format(x_min, y_min, 0, 0)] = int(no_individuals)
+            tips = [x for x in species_list if x[6] == 1]
+            no_tips = [x for x in species_list if x[6] == 0]
+            for row in tips:
+                row.append("{}-{}-{}-{}".format(row[2], row[3], row[4], row[5]))
+            out_tips = []
+            for k, out_number in location_dict.items():
+                select_tips = [x[0:13] for x in tips if x[13] == k]
+                if len(select_tips) == 0:
+                    self.logger.info("Skipping sampling location {} as there are no recorded individuals.".format(k))
+                if out_number > len(select_tips):  # pragma: no cover
+                    if not ignore_errors:
+                        raise ValueError(
+                            "Number of tips at location {} ({}) too few for sampling {} individuals.".format(
+                                k, len(select_tips), out_number
+                            )
+                        )
+                    out_number = len(select_tips)
+                select_indices = random.sample(range(0, len(select_tips)), out_number)
+                for i, each in enumerate(select_tips):
+                    if i not in select_indices:
+                        each[6] = 0
+                out_tips.extend(select_tips)
+            zero_tips = [x[0:13] for x in tips if x[13] not in location_dict.keys()]
+            for each in zero_tips:
+                each[6] = 0
+            out_tips.extend(zero_tips)
+            out_tips.extend(no_tips)
+            out_tips = sorted(out_tips, key=itemgetter(0))
+            self.cursor.execute(
+                "CREATE TABLE SPECIES_LIST (ID int PRIMARY KEY NOT NULL, unique_spec INT NOT NULL, xval INT NOT NULL, "
+                "yval INT NOT NULL, xwrap INT NOT NULL, ywrap INT NOT NULL, tip INT NOT NULL, speciated INT NOT "
+                "NULL, parent INT NOT NULL, existence INT NOT NULL, randnum REAL NOT NULL, gen_alive INT NOT "
+                "NULL, gen_added REAL NOT NULL)"
+            )
+            self.cursor.executemany(
+                "INSERT INTO SPECIES_LIST (ID,unique_spec,xval,yval,xwrap,ywrap,tip,speciated,parent,existence, "
+                "randnum,gen_alive,gen_added) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                out_tips,
+            )
+            self.database.commit()
+        except Exception as e:
+            try:
+                self._restore_backup_species_list()
+            except Exception as e1:
+                self.logger.info("{}.".format(e1))
+            raise e
+
+
 
     def sample_fragment_richness(self, fragment, number_of_individuals, community_reference=1, n=1):
         """
@@ -2671,7 +2772,7 @@ class CoalescenceTree(object):
             raise IOError("SPECIES_DISTANCE_SIMILARITY table already exists in the output database.")
         if not check_sql_table_exist(self.database, "SPECIES_LOCATIONS"):  # pragma: no cover
             raise IOError(
-                "SPECIES_LOCATIONS table does not exist in output database - calculate species locations" "first."
+                "SPECIES_LOCATIONS table does not exist in output database - calculate species locations first."
             )
         max_val = [
             x for x in self.cursor.execute("SELECT min(x), max(x)," " min(y), max(y) FROM SPECIES_LOCATIONS").fetchone()
@@ -2763,7 +2864,7 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if os.path.exists(output_csv):
-            raise IOError("File already exists at {}.".format(output_csv))
+            raise FileExistsError("File already exists at {}.".format(output_csv))
         if not check_sql_table_exist(self.database, table_name):
             raise KeyError("No table of {} exists in the database.".format(table_name))
         table_data = fetch_table_from_sql(self.database, table_name, column_names=True)

@@ -37,6 +37,10 @@ class TestFragmentConfigHandler(unittest.TestCase):
             "fragment1": {"min_x": 8, "max_x": 11, "min_y": 0, "max_y": 4, "area": 40},
             "fragment2": {"min_x": 1, "max_x": 8, "min_y": 1, "max_y": 8, "area": 10},
         }
+        cls.expected_dict2 = {
+            "fragment1": {"min_x": 1, "max_x": 4, "min_y": 1, "max_y": 3, "area": 40},
+            "fragment2": {"min_x": 7, "max_x": 10, "min_y": 5, "max_y": 11, "area": 20},
+        }
 
     @classmethod
     def tearDownClass(cls):
@@ -89,9 +93,7 @@ class TestFragmentConfigHandler(unittest.TestCase):
             self.assertDictEqual(self.expected_dict[each], f.fragment_list[each])
 
     def testWritesCsv(self):
-        """
-        Test writes the csv correctly.
-        """
+        """Test writes the csv correctly."""
         f = FragmentConfigHandler()
         f.fragment_list = self.expected_dict
         f.write_csv(self.fragment_csv)
@@ -102,6 +104,13 @@ class TestFragmentConfigHandler(unittest.TestCase):
                 output.append(row)
         self.assertListEqual(["fragment1", "8", "0", "11", "4", "40"], output[0])
         self.assertListEqual(["fragment2", "1", "1", "8", "8", "10"], output[1])
+
+    def testReadsCsv(self):
+        """Tests that the csv reads properly."""
+        f = FragmentConfigHandler()
+        f.read_csv(os.path.join("sample", "FragmentsTest.csv"))
+        self.assertEqual(self.expected_dict2, f.fragment_list)
+
 
 
 class TestFragmentCsvGeneration(unittest.TestCase):

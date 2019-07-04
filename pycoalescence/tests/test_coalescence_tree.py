@@ -458,7 +458,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
     def setUpClass(cls):
         """Sets up the Coalescence object test case."""
         dst1 = os.path.join("output", "sampledb0.db")
-        for i in range(0, 10):
+        for i in range(0, 11):
             dst = os.path.join("output", "sampledb{}.db".format(i))
             if os.path.exists(dst):
                 os.remove(dst)
@@ -848,6 +848,43 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
         self.assertFalse(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
         with self.assertRaises(IOError):
             c.revert_downsample()
+
+    @unittest.skipIf(sys.version[0] == "2", "Skipping Python 3.x tests")
+    def testDownsamplingByLocationAndRevert(self):
+        """Tests that downsampling works as intended and can be reverted."""
+        c = CoalescenceTree(os.path.join("output", "sampledb10.db"))
+        random.seed(a=10, version=3)
+        original_individuals = c.get_number_individuals()
+        original_richness = c.get_species_richness_pd()
+        c.wipe_data()
+        with self.assertRaises(ValueError):
+            c.downsample_at_locations(fragment_csv=os.path.join("sample", "FragmentsTestFail1.csv"))
+        with self.assertRaises(IOError):
+            c.downsample_at_locations(fragment_csv="not_a_file.csv")
+        c.downsample_at_locations(fragment_csv=os.path.join("sample", "FragmentsTest3.csv"))
+        c.set_speciation_parameters([0.1, 0.2])
+        c.apply()
+        new_individuals = c.get_number_individuals()
+        self.assertEqual(3, new_individuals)
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
+        c = CoalescenceTree(os.path.join("output", "sampledb10.db"))
+        c.revert_downsample()
+        c.wipe_data()
+        c.set_speciation_parameters([0.1, 0.2])
+        c.apply()
+        final_individuals = c.get_number_individuals()
+        assert_frame_equal(original_richness, c.get_species_richness_pd())
+        self.assertEqual(original_individuals, final_individuals)
+        self.assertTrue(check_sql_table_exist(c.database, "SPECIES_LIST"))
+        self.assertFalse(check_sql_table_exist(c.database, "SPECIES_LIST_ORIGINAL"))
+        c = CoalescenceTree(os.path.join("output", "sampledb10.db"))
+        c.wipe_data()
+        c.downsample_at_locations(fragment_csv=os.path.join("sample", "FragmentsTest4.csv"), ignore_errors=True)
+        c.set_speciation_parameters([0.1, 0.2])
+        c.apply()
+        new_individuals = c.get_number_individuals()
+        self.assertEqual(3, new_individuals)
 
 
 class TestCoalescenceTreeWriteCsvs(unittest.TestCase):
