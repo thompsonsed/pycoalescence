@@ -494,8 +494,8 @@ class Installer(build_ext):  # pragma: no cover
                     output_dir
                 )
             ]
-            if sys.maxsize > 2 ** 32:
-                cmake_args += ["-A", "x64"]
+            # if sys.maxsize > 2 ** 32: # Removed to allow for building on conda-forge
+            #     cmake_args += ["-A", "x64"]
             build_args += ["--", "/m"]
         else:
 
