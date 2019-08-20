@@ -3164,7 +3164,7 @@ class TestDetectRamUsage(unittest.TestCase):
         except MemoryError as me:
             cls.fail(
                 msg="Cannot run a larger scale simulation. This should require around 500MB of RAM. If your computer"
-                    "does not have these requirements, ignore this failure: {}".format(me)
+                "does not have these requirements, ignore this failure: {}".format(me)
             )
 
     def testExcessiveRamUsage(self):
@@ -3810,11 +3810,7 @@ class TestAnalyticalMetacommunityLimits(unittest.TestCase):
 
         cls.sim = Simulation(logging_level=50)
         cls.sim.set_simulation_parameters(
-            seed=10,
-            job_type=48,
-            output_directory="output",
-            min_speciation_rate=0.000001,
-            sigma=1,
+            seed=10, job_type=48, output_directory="output", min_speciation_rate=0.000001, sigma=1
         )
         cls.sim.set_map("null", 10, 10)
         cls.sim.run()
@@ -3839,9 +3835,9 @@ class TestAnalyticalMetacommunityLimits(unittest.TestCase):
 
         for speciation_rate in self.speciation_rates:
             community_reference += 1
-            expected_community_parameters.append({"community_reference": community_reference,
-                                                  "speciation_rate": speciation_rate,
-                                                  })
+            expected_community_parameters.append(
+                {"community_reference": community_reference, "speciation_rate": speciation_rate}
+            )
         expected_metacommunity_parameters = {}
         metacommunity_reference = 0
         for metacommunity_speciation_rate in self.metacommunity_speciation_rates:
@@ -3849,15 +3845,18 @@ class TestAnalyticalMetacommunityLimits(unittest.TestCase):
                 metacommunity_reference += 1
                 expected_metacommunity_parameters[metacommunity_reference] = {
                     "speciation_rate": metacommunity_speciation_rate,
-                    "option": option}
+                    "option": option,
+                }
         for each in expected_community_parameters:
             community_parameters = self.ct.get_community_parameters(each["community_reference"])
             self.assertEqual(each["speciation_rate"], community_parameters["speciation_rate"])
             metacommunity_reference = community_parameters["metacommunity_reference"]
             expected_metacommunity_parameters_local = expected_metacommunity_parameters[metacommunity_reference]
-            metacommunity_parameters = {k: v for k, v in
-                                        self.ct.get_metacommunity_parameters(metacommunity_reference).items() if
-                                        k in expected_metacommunity_parameters_local.keys()}
+            metacommunity_parameters = {
+                k: v
+                for k, v in self.ct.get_metacommunity_parameters(metacommunity_reference).items()
+                if k in expected_metacommunity_parameters_local.keys()
+            }
 
             self.assertEqual(expected_metacommunity_parameters_local, metacommunity_parameters)
 

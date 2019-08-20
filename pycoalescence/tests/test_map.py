@@ -282,8 +282,13 @@ class TestMap(unittest.TestCase):
         output_raster = "output/raster_out1b.tif"
         new_extent = [-78.363529863, -78.321863213, 0.817435788, 0.850435788]
 
-        m.rasterise(shape_file="sample/shape_sample.shp",
-                    raster_file=output_raster, x_res=0.00833333, y_res=0.001, extent=new_extent)
+        m.rasterise(
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            extent=new_extent,
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]):
@@ -661,18 +666,13 @@ class TestMap(unittest.TestCase):
         new_x, new_y = 10, 10
         new_proj_win = [-78.375, 0.8583333333333343, -78.3, 0.8]
         expected_extent = [-78.375, -78.3, 0.8, 0.8583333333333343]
-        m.translate(dest_file=dest_file1,
-                    projWin=new_proj_win)
+        m.translate(dest_file=dest_file1, projWin=new_proj_win)
         with self.assertRaises(ValueError):
-            m.translate(dest_file=None,
-                        projWin=new_proj_win)
+            m.translate(dest_file=None, projWin=new_proj_win)
         with self.assertRaises(IOError):
-            m.translate(dest_file=dest_file1,
-                        projWin=new_proj_win)
+            m.translate(dest_file=dest_file1, projWin=new_proj_win)
         m = Map()
-        m.translate(source_file=source_file,
-                    dest_file=dest_file2,
-                    width=new_x, height=new_y)
+        m.translate(source_file=source_file, dest_file=dest_file2, width=new_x, height=new_y)
         self.assertTrue(os.path.exists(dest_file1))
         m1 = Map(dest_file1)
         actual_extent = m1.get_extent()
@@ -1058,10 +1058,10 @@ class TestWKTFunctions(unittest.TestCase):
 
 
 class TestGdalErrorHandler(unittest.TestCase):
-
     def testErrorHandler(self):
         class TempLogger(object):
             """Test logger for testing outputting."""
+
             def __init__(self):
                 self.logs = []
 
@@ -1077,4 +1077,3 @@ class TestGdalErrorHandler(unittest.TestCase):
         self.assertEqual("test message 2", geh.err_msg)
         self.assertEqual(20, geh.err_level)
         self.assertEqual(2, geh.err_no)
-

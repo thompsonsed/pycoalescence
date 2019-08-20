@@ -65,6 +65,7 @@ if "GDAL_DATA" not in os.environ:  # pragma: no cover
 
 gdal.UseExceptions()
 
+
 class GdalErrorHandler(object):
     """
     Custom error handler for GDAL warnings and errors.
@@ -76,7 +77,7 @@ class GdalErrorHandler(object):
         """
         self.err_level = gdal.CE_None
         self.err_no = 0
-        self.err_msg = ''
+        self.err_msg = ""
         self.logger = logger
 
     def handler(self, err_level, err_no, err_msg):
@@ -93,7 +94,6 @@ class GdalErrorHandler(object):
         self.logger.log(err_level, err_msg)
 
 
-
 def _gdalPushErrorHandler(gdal_err_handler):
     """
     Push a new error handler for gdal to use.
@@ -102,11 +102,13 @@ def _gdalPushErrorHandler(gdal_err_handler):
     handler = gdal_err_handler.handler
     gdal.PushErrorHandler(handler)
 
+
 def _gdalPopErrorHandler():
     """
     Pop the error handler for gdal off.
     """
     gdal.PopErrorHandler()
+
 
 def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
     """
@@ -201,7 +203,6 @@ class Map(object):
             for handler in self.logger.handlers:
                 handler.close()
                 self.logger.removeHandler(handler)
-
 
     def __deepcopy__(self, memo):
         """
@@ -494,12 +495,12 @@ class Map(object):
     def check_map(self):
         """Checks that the dimensions for the map have been set and that the map file exists"""
         if not (
-                isinstance(self.x_size, NumberTypes)
-                and isinstance(self.y_size, NumberTypes)
-                and isinstance(self.x_offset, NumberTypes)
-                and isinstance(self.y_offset, NumberTypes)
-                and isinstance(self.x_res, NumberTypes)
-                and isinstance(self.y_res, NumberTypes)
+            isinstance(self.x_size, NumberTypes)
+            and isinstance(self.y_size, NumberTypes)
+            and isinstance(self.x_offset, NumberTypes)
+            and isinstance(self.y_offset, NumberTypes)
+            and isinstance(self.x_res, NumberTypes)
+            and isinstance(self.y_res, NumberTypes)
         ):
             raise ValueError(
                 "Values not set as numbers in {}: "
@@ -606,7 +607,7 @@ class Map(object):
         """
         if self.data is None:
             self.open()
-        return self.data[y_offset: (y_offset + y_size), x_offset: (x_offset + x_size)]
+        return self.data[y_offset : (y_offset + y_size), x_offset : (x_offset + x_size)]
 
     def get_subset(self, x_offset, y_offset, x_size, y_size, no_data_value=None):
         """
@@ -791,21 +792,21 @@ class Map(object):
         return True
 
     def rasterise(
-            self,
-            shape_file,
-            raster_file=None,
-            x_res=None,
-            y_res=None,
-            output_srs=None,
-            geo_transform=None,
-            field=None,
-            burn_val=None,
-            data_type=default_val,
-            attribute_filter=None,
-            x_buffer=None,
-            y_buffer=None,
-            extent=None,
-            **kwargs
+        self,
+        shape_file,
+        raster_file=None,
+        x_res=None,
+        y_res=None,
+        output_srs=None,
+        geo_transform=None,
+        field=None,
+        burn_val=None,
+        data_type=default_val,
+        attribute_filter=None,
+        x_buffer=None,
+        y_buffer=None,
+        extent=None,
+        **kwargs
     ):
         """
         Rasterises the provided shape file to produce the output raster.
@@ -955,14 +956,14 @@ class Map(object):
             raise RuntimeError("Error rasterising layer. Gdal error code: {}".format(err))
 
     def reproject_raster(
-            self,
-            dest_projection=None,
-            source_file=None,
-            dest_file=None,
-            x_scalar=1.0,
-            y_scalar=1.0,
-            resample_algorithm=gdal.GRA_NearestNeighbour,
-            warp_memory_limit=0.0,
+        self,
+        dest_projection=None,
+        source_file=None,
+        dest_file=None,
+        x_scalar=1.0,
+        y_scalar=1.0,
+        resample_algorithm=gdal.GRA_NearestNeighbour,
+        warp_memory_limit=0.0,
     ):
         """
         Re-writes the file with a new projection.
@@ -1001,9 +1002,15 @@ class Map(object):
             raise IOError("Destination file already exists at {}.".format(dest_file))
         try:
             dest = gdal.Warp(
-                "", source_ds, dstSRS=dest_projection, format="VRT",
-                xRes=dst_gt[1], yRes=dst_gt[5],
-                outputType=data_type, resampleAlg=resample_algorithm, warpMemoryLimit=warp_memory_limit
+                "",
+                source_ds,
+                dstSRS=dest_projection,
+                format="VRT",
+                xRes=dst_gt[1],
+                yRes=dst_gt[5],
+                outputType=data_type,
+                resampleAlg=resample_algorithm,
+                warpMemoryLimit=warp_memory_limit,
             )
         except AttributeError as ae:  # pragma: no cover
             dest = None

@@ -310,7 +310,9 @@ class CoalescenceTree(object):
                         "external database for the metacommunity."
                     )
                 if not os.path.exists(metacommunity_option):
-                    raise FileNotFoundError("No file exists to supply metacommunity at {}.".format(metacommunity_option))
+                    raise FileNotFoundError(
+                        "No file exists to supply metacommunity at {}.".format(metacommunity_option)
+                    )
                 if metacommunity_reference is None:
                     self.metacommunity_reference = 1
                 else:
@@ -2524,7 +2526,7 @@ class CoalescenceTree(object):
                 select_tips = [x[0:13] for x in tips if x[13] == i]
                 out_number = max(math.floor(sample_proportion * len(select_tips)), 1)
                 if out_number > len(select_tips):  # pragma: no cover
-                    if out_number == len(select_tips) + 1: # correct for rounding errors
+                    if out_number == len(select_tips) + 1:  # correct for rounding errors
                         out_number = len(select_tips)
                     else:
                         raise ValueError(
@@ -2598,8 +2600,9 @@ class CoalescenceTree(object):
                 # Check that the rows contains the correct number of elements.
                 for row in rows:
                     if len(row) != 6:
-                        raise ValueError("Row length in {} contains {} instead of 6 elements.".format(fragment_csv,
-                                                                                                      len(row)))
+                        raise ValueError(
+                            "Row length in {} contains {} instead of 6 elements.".format(fragment_csv, len(row))
+                        )
                     name, x_min, y_min, x_max, y_max, no_individuals = row
                     for x in range(int(x_min), int(x_max) + 1, 1):
                         for y in range(int(y_min), int(y_max) + 1, 1):
@@ -2650,8 +2653,6 @@ class CoalescenceTree(object):
             except Exception as e1:  # pragma: no cover
                 self.logger.info("{}.".format(e1))
             raise e
-
-
 
     def sample_fragment_richness(self, fragment, number_of_individuals, community_reference=1, n=1):
         """

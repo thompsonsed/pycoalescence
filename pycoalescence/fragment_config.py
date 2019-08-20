@@ -89,14 +89,14 @@ class FragmentConfigHandler(object):
             min_x, min_y = m.convert_lat_long(max_lat, min_long)
             max_x, max_y = m.convert_lat_long(min_lat, max_long)
             if (
-                    min_x < 0
-                    or min_y < 0
-                    or max_x < 0
-                    or max_y < 0
-                    or min_x > dim_x
-                    or min_y > dim_y
-                    or max_x > dim_x
-                    or max_y > dim_y
+                min_x < 0
+                or min_y < 0
+                or max_x < 0
+                or max_y < 0
+                or min_x > dim_x
+                or min_y > dim_y
+                or max_x > dim_x
+                or max_y > dim_y
             ):
                 src_ds = None
                 raise ValueError("Shapefile is not contained within the raster - cannot generate fragment config.")

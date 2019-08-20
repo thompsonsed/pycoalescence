@@ -119,7 +119,6 @@ class TestFragmentConfigHandler(unittest.TestCase):
             f.read_csv(os.path.join("sample", "dispersal_fine.tif"))
 
 
-
 class TestFragmentCsvGeneration(unittest.TestCase):
     """
     Tests the generation of the fragment csv using the single function.

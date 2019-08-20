@@ -1182,6 +1182,7 @@ class Simulation(Landscape):
         self.calculate_sql_database()
         try:
             from pycoalescence.__init__ import __version__
+
             self.logger.info("Simulation set-up under pycoalescence version {}".format(__version__))
         except ImportError:  # pragma: no cover
             self.logger.info("pycoalescence version not found.")
