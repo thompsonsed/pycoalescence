@@ -497,7 +497,7 @@ class Installer(build_ext):  # pragma: no cover
                 "-DCMAKE_PREFIX_PATH:PATH={}".format(os.environ.get("LIBRARY_PREFIX", "")),
                 "-DCMAKE_INSTALL_PREFIX:PATH={}".format(os.environ.get("LIBRARY_PREFIX", "")),
                 "-DCMAKE_BUILD_TYPE:STRING={}".format(cfg),
-                "-G", '"NMake Makefiles"',
+                "-G", "NMake Makefiles",
             ]
             # if sys.maxsize > 2 ** 32: # Removed to allow for building on conda-forge
             #     cmake_args += ["-A", "x64"]
