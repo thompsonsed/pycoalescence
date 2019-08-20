@@ -398,7 +398,11 @@ class Installer(build_ext):  # pragma: no cover
             os.makedirs(tmp_dir)
         try:
             subprocess.check_call(["cmake", src_dir] + cmake_args, cwd=tmp_dir, env=env)
-            subprocess.check_call(["cmake", "--build", ".", "--target", "necsim"] + build_args, cwd=tmp_dir, env=env)
+            if platform.system() == "Windows":
+                subprocess.check_call(["nmake"], cwd=tmp_dir, env=env)
+            else:
+                subprocess.check_call(["cmake", "--build", ".", "--target", "necsim"] + build_args, cwd=tmp_dir,
+                                      env=env)
         except subprocess.CalledProcessError as cpe:
             raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
         if platform.system() == "Windows":
@@ -492,6 +496,8 @@ class Installer(build_ext):  # pragma: no cover
                 "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH={}".format(output_dir),
                 "-DCMAKE_PREFIX_PATH:PATH={}".format(os.environ.get("LIBRARY_PREFIX", "")),
                 "-DCMAKE_INSTALL_PREFIX:PATH={}".format(os.environ.get("LIBRARY_PREFIX", "")),
+                "-DCMAKE_BUILD_TYPE:STRING={}".format(cfg),
+                "-G", '"NMake Makefiles"',
             ]
             # if sys.maxsize > 2 ** 32: # Removed to allow for building on conda-forge
             #     cmake_args += ["-A", "x64"]
@@ -541,7 +547,7 @@ def get_python_library(python_version):  # pragma: no cover
             masd = sysconfig.get_config_var("multiarchsubdir")
             if masd:
                 if masd.startswith(os.sep):
-                    masd = masd[len(os.sep) :]
+                    masd = masd[len(os.sep):]
                 libdir = os.path.join(libdir, masd)
 
         if libdir is None:
@@ -550,8 +556,8 @@ def get_python_library(python_version):  # pragma: no cover
         candidates = (
             os.path.join(libdir, "".join((pre, "python", ver, abi, ext)))
             for (pre, ext, ver, abi) in itertools.product(
-                candidate_lib_prefixes, candidate_extensions, candidate_versions, candidate_abiflags
-            )
+            candidate_lib_prefixes, candidate_extensions, candidate_versions, candidate_abiflags
+        )
         )
         for candidate in candidates:
             if os.path.exists(candidate):
