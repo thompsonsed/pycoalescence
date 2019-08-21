@@ -409,7 +409,7 @@ class Installer(build_ext):  # pragma: no cover
             raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
         if platform.system() == "Windows":
             shutil.copy(
-                os.path.join(tmp_dir, "Release", "necsim.pyd"), os.path.join(self.get_build_dir(), "libnecsim.pyd")
+                os.path.join(tmp_dir, "necsim.pyd"), os.path.join(self.get_build_dir(), "libnecsim.pyd")
             )
 
     def run(self):
