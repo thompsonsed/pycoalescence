@@ -400,7 +400,7 @@ class Installer(build_ext):  # pragma: no cover
             subprocess.check_call(["cmake", src_dir] + cmake_args, cwd=tmp_dir, env=env)
             if platform.system() == "Windows":
                 subprocess.check_call(["nmake"], cwd=tmp_dir, env=env)
-                subprocess.check_call(["nmake", "install"], cwd=tmp_dir, env=env)
+                # subprocess.check_call(["nmake", "install"], cwd=tmp_dir, env=env)
             else:
                 subprocess.check_call(
                     ["cmake", "--build", ".", "--target", "necsim"] + build_args, cwd=tmp_dir, env=env
