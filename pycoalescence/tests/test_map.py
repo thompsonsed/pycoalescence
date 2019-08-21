@@ -83,15 +83,19 @@ class TestMap(unittest.TestCase):
     """
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         """
         Sets up the Map object
         """
-        self.fine_map = Map()
-        self.fine_map.file_name = "sample/SA_sample_fine.tif"
-        self.coarse_map = Map()
-        self.coarse_map.file_name = "sample/SA_sample_coarse.tif"
-        self.fine_offset_map = Map("sample/SA_sample_fine_offset.tif")
+        cls.fine_map = Map()
+        cls.fine_map.file_name = "sample/SA_sample_fine.tif"
+        cls.coarse_map = Map()
+        cls.coarse_map.file_name = "sample/SA_sample_coarse.tif"
+        cls.fine_offset_map = Map("sample/SA_sample_fine_offset.tif")
+        cls.expected_WGS_84 = [
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+        ]
 
     def testDetectGeoTransform(self):
         """Tests the fine and coarse map geo transforms."""
@@ -245,12 +249,7 @@ class TestMap(unittest.TestCase):
     def testGetSpatialReference(self):
         m = Map("sample/SA_sample_fine.tif")
         proj = m.get_projection()
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
-            'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],'
-            'AUTHORITY["EPSG","4326"]]',
-            proj,
-        )
+        self.assertIn(proj, self.expected_WGS_84)
 
     def testRasteriseShapefile(self):
         """
@@ -263,12 +262,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(361, np.sum(m.data))
         self.assertEqual(1, m.data[20, 4])
@@ -293,10 +287,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(73, np.sum(m.data))
         self.assertEqual(0, m.data[2, 2])
@@ -320,12 +311,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(4460, np.sum(m.data))
         self.assertEqual(10, m.data[21, 5])
@@ -350,12 +336,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(67705, np.sum(m.data))
         self.assertEqual(245, m.data[20, 4])
@@ -375,12 +356,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(36100, np.sum(m.data))
         self.assertEqual(100, m.data[20, 4])
@@ -404,12 +380,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([10, 65, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(274, np.sum(m.data))
         self.assertEqual(1, m.data[1, 4])
@@ -432,12 +403,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([15, 75, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         self.assertEqual(361, np.sum(m.data))
         self.assertEqual(1, m.data[20, 4])
@@ -457,12 +423,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([15, 75, 0, 0, 0.00833333, -0.001]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         output_ds = None
         self.assertEqual(361, np.sum(m.data))
@@ -482,12 +443,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([12, 10, 0, 0, 0.00833333, -0.00833333]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         output_ds = None
         self.assertEqual(53, np.sum(m.data))
@@ -507,12 +463,7 @@ class TestMap(unittest.TestCase):
         dims = m.get_dimensions()
         for i, each in enumerate([13, 13, 0, 0, 0.00833333, -0.00833333]):
             self.assertAlmostEqual(each, dims[i], places=5)
-        self.assertEqual(
-            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,'
-            'AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
-            m.get_projection(),
-        )
+        self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
         output_ds = None
         self.assertEqual(53, np.sum(m.data))
@@ -704,7 +655,9 @@ class TestMapReprojection(unittest.TestCase):
         cls.m0 = Map(cls.map_0)
         cls.m = Map(cls.map_1)
         cls.destination_projection = osr.SpatialReference()
-        cls.destination_projection.ImportFromEPSG(3857)
+        res = cls.destination_projection.ImportFromEPSG(3857)
+        if res != 0:
+            raise RuntimeError("Could not import from EPSG in osr.SpatialReference: {}.".format(res))
         cls.proj_wkt = cls.destination_projection.ExportToWkt()
         cls.m.reproject_raster(dest_file=cls.map_2, dest_projection=cls.destination_projection)
         cls.m.reproject_raster(dest_file=cls.map_3, dest_projection=cls.destination_projection, x_scalar=2, y_scalar=10)

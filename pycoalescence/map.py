@@ -21,18 +21,7 @@ try:
 except AttributeError:
     # No support for complex numbers compilation
     NumberTypes = (int, float)
-try:
-    from osgeo import gdal, ogr, osr
 
-    default_val = gdal.GDT_Float32
-except ImportError as ie:  # pragma: no cover
-    default_val = 6
-    try:
-        import gdal
-        from gdal import ogr, osr
-    except ImportError:
-        gdal = None
-        raise ie
 from .system_operations import check_file_exists, create_logger, check_parent, isclose
 
 from pycoalescence.future_except import FileNotFoundError
@@ -62,7 +51,18 @@ if "GDAL_DATA" not in os.environ:  # pragma: no cover
             "Check gdal install is completed successfully.".format(gdal_dir)
         )
     os.environ["GDAL_DATA"] = gdal_dir
+try:
+    from osgeo import gdal, ogr, osr
 
+    default_val = gdal.GDT_Float32
+except ImportError as ie:  # pragma: no cover
+    default_val = 6
+    try:
+        import gdal
+        from gdal import ogr, osr
+    except ImportError:
+        gdal = None
+        raise ie
 gdal.UseExceptions()
 
 
@@ -1004,7 +1004,7 @@ class Map(object):
             dest = gdal.Warp(
                 "",
                 source_ds,
-                dstSRS=dest_projection,
+                dstSRS=dest_projection.ExportToWkt(),
                 format="VRT",
                 xRes=dst_gt[1],
                 yRes=dst_gt[5],

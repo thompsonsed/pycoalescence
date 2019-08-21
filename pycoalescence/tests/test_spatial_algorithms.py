@@ -3,6 +3,14 @@ import unittest
 
 from pycoalescence.spatial_algorithms import *
 
+try:
+    import osgeo
+
+    gdal_version = osgeo.__version__
+except ImportError as ie:
+    gdal_version = "0.0.0"
+    logging.warn("Could not import osgeo: {}".format(ie))
+
 
 class TestSpatialAlgorthims(unittest.TestCase):
     """Tests all the spatial algorithms"""
@@ -56,13 +64,22 @@ class TestSpatialAlgorthims(unittest.TestCase):
             'UNIT["Meter",1],'
             'AUTHORITY["EPSG","32650"]]'
         )
-        output_srs = osr.SpatialReference(
-            wkt='GEOGCS["WGS 84",DATUM["WGS_1984",'
-            'SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
-            'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
-            'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]'
-        )
-        x, y = convert_coordinates(600544.9967818621, 644607.5784286809, input_srs, output_srs)
+        if int(gdal_version[0]) < 3:
+
+            output_srs = osr.SpatialReference(
+                wkt='GEOGCS["WGS 84",DATUM["WGS_1984",'
+                'SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
+                'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],'
+                'UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]'
+            )
+            x, y = convert_coordinates(600544.9967818621, 644607.5784286809, input_srs, output_srs)
+        else:
+            # TODO check if this is a bug with gdal 3.0 or gdal 2.0
+            output_srs = osr.SpatialReference(
+                'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
+                'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]'
+            )
+            y, x = convert_coordinates(600544.9967818621, 644607.5784286809, input_srs, output_srs)
         self.assertAlmostEqual(117.9082031776, x)
         self.assertAlmostEqual(5.8310327261971, y)
 
