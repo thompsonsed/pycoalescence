@@ -3,7 +3,7 @@ pycoalescence overview
 
 *A package for coalescence-based spatially explicit neutral ecology simulations*
 
-|Documentation|_ |Binder|_ |CondaV|_ |PyPiV|_
+|Documentation|_ |Binder|_ |CondaV|_ |PyPiV|_ |License|_
 
 
 .. |Documentation| image:: https://img.shields.io/readthedocs/pycoalescence/latest.svg?label=documentation
@@ -17,6 +17,9 @@ pycoalescence overview
 
 .. |PyPiV| image:: https://img.shields.io/pypi/v/pycoalescence.svg
 .. _PyPiV: https://badge.fury.io/py/pycoalescence
+
+.. |License| image:: https://img.shields.io/pypi/l/pycoalescence   :alt: PyPI - License
+.. _License: https://opensource.org/licenses/MIT
 
 |CondaWin|_ |PyPiOSX|_ |PyPiLinux|_
 
