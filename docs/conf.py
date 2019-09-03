@@ -42,6 +42,7 @@ if read_the_docs_build:
 	sys.modules["scipy"] = Mock()
 	sys.modules["scipy.spatial"] = Mock()
 	sys.modules["scipy.spatial.Voronoi"] = Mock()
+	sys.modules["matplotlib.pyplot"] = Mock()
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.append(os.path.abspath('../'))
