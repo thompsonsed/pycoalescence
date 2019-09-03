@@ -23,7 +23,7 @@ pycoalescence overview
 
 |CondaWin|_ |PyPiOSX|_ |PyPiLinux|_
 
-.. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock/master.svg?label=Windows
+.. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock/master.svg?label=Windows&logo=appveyor
 .. _CondaWin: https://ci.appveyor.com/project/conda-forge/pycoalescence-feedstock/branch/master
 
 .. |PyPiOSX| image:: https://img.shields.io/travis/pycoalescence/pycoalescence-ci/master.svg?label=macOS&logo=travis

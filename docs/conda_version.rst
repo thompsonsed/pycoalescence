@@ -3,7 +3,7 @@
 .. |CondaOSX| image:: https://img.shields.io/travis/conda-forge/pycoalescence-feedstock/master.svg?label=macOS
 .. _CondaOSX: https://travis-ci.org/conda-forge/pycoalescence-feedstock
 
-.. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock/master.svg?label=Windows
+.. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock?label=Windows&logo=appveyor
 .. _CondaWin: https://ci.appveyor.com/project/conda-forge/pycoalescence-feedstock/branch/master
 
 .. |CondaLinux| image:: https://img.shields.io/circleci/project/github/conda-forge/pycoalescence-feedstock.svg?label=Linux&style=flat
