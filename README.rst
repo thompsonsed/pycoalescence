@@ -18,7 +18,7 @@ pycoalescence overview
 .. |PyPiV| image:: https://img.shields.io/pypi/v/pycoalescence.svg
 .. _PyPiV: https://badge.fury.io/py/pycoalescence
 
-.. |License| image:: https://img.shields.io/pypi/l/pycoalescence   :alt: PyPI - License
+.. |License| image:: https://img.shields.io/pypi/l/pycoalescence
 .. _License: https://opensource.org/licenses/MIT
 
 |CondaWin|_ |PyPiOSX|_ |PyPiLinux|_
