@@ -7,7 +7,7 @@
 .. _CondaWin: https://ci.appveyor.com/project/conda-forge/pycoalescence-feedstock/branch/master
 
 .. |CondaLinux| image:: https://img.shields.io/circleci/project/github/conda-forge/pycoalescence-feedstock.svg?label=Linux&style=flat
-.. _Conda_Linux: https://circleci.com/gh/conda-forge/pycoalescence-feedstock/
+.. _CondaLinux: https://circleci.com/gh/conda-forge/pycoalescence-feedstock/
 
 
 |CondaVersion|_ |CondaLastUpdate|_ |CondaPlatforms|_ |CondaLicense|_ |CondaDownloads|_
