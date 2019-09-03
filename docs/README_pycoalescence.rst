@@ -66,7 +66,7 @@ Installing via conda
 
 `Conda <https://conda.io/docs/>`_ is a package manager that handles sourcing of all dependencies in a relatively
 straight-forward, cross-platform manner. **pycoalescence** is provided on conda-forge, so please be aware of the
-`conda forge gotchas <https://conda-forge.org/docs/conda-forge_gotchas.html>`_, especially regarding mixing the
+`conda forge gotchas <https://conda-forge.readthedocs.io/en/latest/conda-forge_gotchas.html>`_, especially regarding mixing the
 ``conda-forge`` and ``default`` channels. Installation of the package and all dependencies including boost, gdal, cmake
 and the relevant C++ compiler, simply requires ``conda install -c conda-forge pycoalescence``, although we recommend
 installing directly to a clean virtual environment using ``conda install --name MyEnv1 -c conda-forge pycoalescence``.
