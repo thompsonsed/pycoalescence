@@ -271,7 +271,7 @@ The process of setting up a :class:`Simulation <pycoalescence.simulation.Simulat
     #. Apply speciation rates and output database
 
         - Generate a coalescence tree for each speciation rate using
-          :func:`apply_speciation_rates() <pycoalescence.simulation.Simulation.apply_speciation_rates`
+          :func:`apply_speciation_rates() <pycoalescence.simulation.Simulation.apply_speciation_rates>`
         - This function also writes the output to the simulation file.
 
 .. important:: The last three steps can be combined using :func:`run() <pycoalescence.simulation.Simulation.run>`,
