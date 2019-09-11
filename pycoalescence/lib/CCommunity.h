@@ -21,6 +21,8 @@
 #include "necsim.h"
 
 using namespace std;
+using namespace necsim;
+
 
 /**
  * @brief Template for CCommunity and CMetacommunity objects for exporting to Python

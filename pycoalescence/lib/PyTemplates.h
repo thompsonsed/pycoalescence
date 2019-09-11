@@ -14,6 +14,7 @@
 #include <structmember.h>
 #include <memory>
 #include "PyImports.h"
+using namespace necsim;
 
 template<class T>
 class PyTemplate
@@ -25,10 +26,7 @@ public:
 	std::unique_ptr<T> base_object = nullptr;
 
 	virtual ~PyTemplate();
-//	virtual void init()
-//	{
-//
-//	}
+
 };
 
 template<class T>

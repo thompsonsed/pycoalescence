@@ -26,7 +26,6 @@
 
 
 using namespace std;
-
 #if PY_MAJOR_VERSION < 3
 static PyMethodDef NecsimMethods[] =
 {

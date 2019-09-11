@@ -11,6 +11,7 @@
 #include "necsim/Map.h"
 #include "LandscapeMetricsCalculator.h"
 
+
 double LandscapeMetricsCalculator::calculateMNN()
 {
     vector<double> distances;
@@ -177,8 +178,8 @@ unsigned long LandscapeMetricsCalculator::calculateNoAdjacencies()
                     Cell this_cell;
                     this_cell.x = x + home_cell.x;
                     this_cell.y = y + home_cell.y;
-                    if(this_cell.x >= 0 && this_cell.x < static_cast<long>(getCols()) &&
-                       this_cell.y >= 0 && this_cell.y < static_cast<long>(getRows()))
+                    if(this_cell.x >= 0 && this_cell.x < static_cast<long>(getCols()) && this_cell.y >= 0
+                       && this_cell.y < static_cast<long>(getRows()))
                     {
                         if(get(this_cell.y, this_cell.x) >= 1.0)
                         {
@@ -202,8 +203,8 @@ double LandscapeMetricsCalculator::calculateMinPerimeter()
     {
         return 4 * largestIntegerSquare;
     }
-    else if(pow(largestIntegerSquare, 2.0) < all_cells.size() &&
-            all_cells.size() <= largestIntegerSquare * (1 + largestIntegerSquare))
+    else if(pow(largestIntegerSquare, 2.0) < all_cells.size()
+            && all_cells.size() <= largestIntegerSquare * (1 + largestIntegerSquare))
     {
         return (4 * largestIntegerSquare) + 2;
     }

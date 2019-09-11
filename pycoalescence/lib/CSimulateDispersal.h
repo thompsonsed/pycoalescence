@@ -24,6 +24,7 @@
 #include "CSimulation.h"
 
 using namespace std;
+using namespace necsim;
 
 class PySimulateDispersal : public PyTemplate<SimulateDispersal>
 {
@@ -78,11 +79,11 @@ public:
  * @param args arguments to parse
  * @return pointer to the Python object
  */
-static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *args)
+static PyObject* set_all_map_parameters(PySimulateDispersal* self, PyObject* args)
 {
-    char *landscape_type;
-    char *fine_map_file;
-    char *coarse_map_file;
+    char* landscape_type;
+    char* fine_map_file;
+    char* coarse_map_file;
     vector<string> path_fine;
     vector<unsigned long> number_fine;
     vector<double> rate_fine;
@@ -91,14 +92,14 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
     vector<unsigned long> number_coarse;
     vector<double> rate_coarse;
     vector<double> time_coarse;
-    PyObject * p_path_fine;
-    PyObject * p_number_fine;
-    PyObject * p_rate_fine;
-    PyObject * p_time_fine;
-    PyObject * p_path_coarse;
-    PyObject * p_number_coarse;
-    PyObject * p_rate_coarse;
-    PyObject * p_time_coarse;
+    PyObject* p_path_fine;
+    PyObject* p_number_fine;
+    PyObject* p_rate_fine;
+    PyObject* p_time_fine;
+    PyObject* p_path_coarse;
+    PyObject* p_number_coarse;
+    PyObject* p_rate_coarse;
+    PyObject* p_time_coarse;
     if(!PyArg_ParseTuple(args, "isiiiiiisiiiiisO!O!O!O!O!O!O!O!", &self->dispersalParameters->deme, &fine_map_file,
                          &self->dispersalParameters->fine_map_x_size, &self->dispersalParameters->fine_map_y_size,
                          &self->dispersalParameters->fine_map_x_offset, &self->dispersalParameters->fine_map_y_offset,
@@ -106,15 +107,15 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
                          &coarse_map_file, &self->dispersalParameters->coarse_map_x_size,
                          &self->dispersalParameters->coarse_map_y_size, &self->dispersalParameters->coarse_map_x_offset,
                          &self->dispersalParameters->coarse_map_y_offset, &self->dispersalParameters->coarse_map_scale,
-                         &landscape_type, &PyList_Type, &p_path_fine, &PyList_Type, &p_number_fine,
-                         &PyList_Type, &p_rate_fine, &PyList_Type, &p_time_fine, &PyList_Type, &p_path_coarse,
-                         &PyList_Type, &p_number_coarse, &PyList_Type, &p_rate_coarse, &PyList_Type, &p_time_coarse))
+                         &landscape_type, &PyList_Type, &p_path_fine, &PyList_Type, &p_number_fine, &PyList_Type,
+                         &p_rate_fine, &PyList_Type, &p_time_fine, &PyList_Type, &p_path_coarse, &PyList_Type,
+                         &p_number_coarse, &PyList_Type, &p_rate_coarse, &PyList_Type, &p_time_coarse))
     {
         return nullptr;
     }
     if(self->has_imported_maps)
     {
-        PyErr_SetString(necsimError, (char *) "Maps have already been imported");
+        PyErr_SetString(necsimError, (char*) "Maps have already been imported");
         return nullptr;
     }
     try
@@ -130,22 +131,22 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
         self->dispersalParameters->landscape_type = landscape_type;
         // Check for errors in each parsing of vector
         vector<bool> passed_errors;
-        passed_errors.emplace_back(importPyListToVectorString(p_path_fine,
-                                                              path_fine, "Fine map paths must be strings."));
-        passed_errors.emplace_back(importPyListToVectorULong(p_number_fine,
-                                                             number_fine, "Fine map numbers must be integers."));
-        passed_errors.emplace_back(importPyListToVectorDouble(p_rate_fine,
-                                                              rate_fine, "Fine map rates must be floats."));
-        passed_errors.emplace_back(importPyListToVectorDouble(p_time_fine,
-                                                              time_fine, "Fine map times must be floats."));
-        passed_errors.emplace_back(importPyListToVectorString(p_path_coarse,
-                                                              path_coarse, "Coarse map paths must be strings."));
-        passed_errors.emplace_back(importPyListToVectorULong(p_number_coarse,
-                                                             number_coarse, "Coarse map numbers must be integers."));
-        passed_errors.emplace_back(importPyListToVectorDouble(p_rate_coarse,
-                                                              rate_coarse, "Coarse map rates must be floats."));
-        passed_errors.emplace_back(importPyListToVectorDouble(p_time_coarse,
-                                                              time_coarse, "Coarse map times must be floats."));
+        passed_errors.emplace_back(
+                importPyListToVectorString(p_path_fine, path_fine, "Fine map paths must be strings."));
+        passed_errors.emplace_back(
+                importPyListToVectorULong(p_number_fine, number_fine, "Fine map numbers must be integers."));
+        passed_errors.emplace_back(
+                importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats."));
+        passed_errors.emplace_back(
+                importPyListToVectorDouble(p_time_fine, time_fine, "Fine map times must be floats."));
+        passed_errors.emplace_back(
+                importPyListToVectorString(p_path_coarse, path_coarse, "Coarse map paths must be strings."));
+        passed_errors.emplace_back(
+                importPyListToVectorULong(p_number_coarse, number_coarse, "Coarse map numbers must be integers."));
+        passed_errors.emplace_back(
+                importPyListToVectorDouble(p_rate_coarse, rate_coarse, "Coarse map rates must be floats."));
+        passed_errors.emplace_back(
+                importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats."));
         for(const auto &item: passed_errors)
         {
             if(!item)
@@ -176,11 +177,11 @@ static PyObject *set_all_map_parameters(PySimulateDispersal *self, PyObject *arg
  * @param args arguments to parse, should contain all key map parameters
  * @return pointer to the Python object
  */
-PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
+PyObject* set_maps(PySimulateDispersal* self, PyObject* args)
 {
-    char *landscape_type;
-    char *fine_map_file;
-    char *coarse_map_file;
+    char* landscape_type;
+    char* fine_map_file;
+    char* coarse_map_file;
     // parse arguments
 #ifdef DEBUG
     if(self == nullptr)
@@ -202,7 +203,7 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
     }
     if(self->has_imported_maps)
     {
-        PyErr_SetString(necsimError, (char *) "Maps have already been imported");
+        PyErr_SetString(necsimError, (char*) "Maps have already been imported");
         return nullptr;
     }
     try
@@ -236,7 +237,7 @@ PyObject *set_maps(PySimulateDispersal *self, PyObject *args)
  * @param args arguments to parse, should be lists of the fine and coarse map parameters
  * @return pointer to the Python object
  */
-static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObject *args)
+static PyObject* set_historical_map_parameters(PySimulateDispersal* self, PyObject* args)
 {
     vector<string> path_fine;
     vector<unsigned long> number_fine;
@@ -246,14 +247,14 @@ static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObje
     vector<unsigned long> number_coarse;
     vector<double> rate_coarse;
     vector<double> time_coarse;
-    PyObject * p_path_fine;
-    PyObject * p_number_fine;
-    PyObject * p_rate_fine;
-    PyObject * p_time_fine;
-    PyObject * p_path_coarse;
-    PyObject * p_number_coarse;
-    PyObject * p_rate_coarse;
-    PyObject * p_time_coarse;
+    PyObject* p_path_fine;
+    PyObject* p_number_fine;
+    PyObject* p_rate_fine;
+    PyObject* p_time_fine;
+    PyObject* p_path_coarse;
+    PyObject* p_number_coarse;
+    PyObject* p_rate_coarse;
+    PyObject* p_time_coarse;
     if(!PyArg_ParseTuple(args, "O!O!O!O!O!O!O!O!", &PyList_Type, &p_path_fine, &PyList_Type, &p_number_fine,
                          &PyList_Type, &p_rate_fine, &PyList_Type, &p_time_fine, &PyList_Type, &p_path_coarse,
                          &PyList_Type, &p_number_coarse, &PyList_Type, &p_rate_coarse, &PyList_Type, &p_time_coarse))
@@ -273,9 +274,9 @@ static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObje
         importPyListToVectorDouble(p_time_coarse, time_coarse, "Coarse map times must be floats.");
         self->dispersalParameters->setHistoricalMapParameters(path_fine, number_fine, rate_fine, time_fine, path_coarse,
                                                               number_coarse, rate_coarse, time_coarse);
-        if(self->has_imported_maps && !path_fine.empty() && !number_fine.empty() && !rate_fine.empty() &&
-           !time_fine.empty() && !path_coarse.empty() && !number_coarse.empty() && !rate_coarse.empty() &&
-           !time_coarse.empty())
+        if(self->has_imported_maps && !path_fine.empty() && !number_fine.empty() && !rate_fine.empty()
+           && !time_fine.empty() && !path_coarse.empty() && !number_coarse.empty() && !rate_coarse.empty()
+           && !time_coarse.empty())
         {
             self->needs_update = true;
             self->setDispersalParameters();
@@ -297,10 +298,10 @@ static PyObject *set_historical_map_parameters(PySimulateDispersal *self, PyObje
  * @param args arguments to parse
  * @return pointer to the Python object
  */
-static PyObject *set_output_database(PySimulateDispersal *self, PyObject *args)
+static PyObject* set_output_database(PySimulateDispersal* self, PyObject* args)
 {
 
-    char *output_file;
+    char* output_file;
     // parse arguments
     if(!PyArg_ParseTuple(args, "s", &output_file))
     {
@@ -333,11 +334,11 @@ static PyObject *set_output_database(PySimulateDispersal *self, PyObject *args)
  * @param args arguments to parse
  * @return pointer to the Python object
  */
-static PyObject *set_dispersal_parameters(PySimulateDispersal *self, PyObject *args)
+static PyObject* set_dispersal_parameters(PySimulateDispersal* self, PyObject* args)
 {
 
-    char *dispersal_method;
-    char *dispersal_file;
+    char* dispersal_method;
+    char* dispersal_file;
     double sigma, tau, m_prob, cutoff, dispersal_rel_cost;
     int restrict_self;
     // parse arguments
@@ -351,8 +352,7 @@ static PyObject *set_dispersal_parameters(PySimulateDispersal *self, PyObject *a
         getGlobalLogger(self->logger, self->log_function);
         self->dispersalParameters->setDispersalParameters(dispersal_method, sigma, tau, m_prob, cutoff,
                                                           dispersal_rel_cost, static_cast<bool>(restrict_self),
-                                                          "closed",
-                                                          dispersal_file, "none");
+                                                          "closed", dispersal_file, "none");
         self->needs_update = true;
     }
     catch(exception &e)
@@ -372,16 +372,15 @@ static PyObject *set_dispersal_parameters(PySimulateDispersal *self, PyObject *a
  * @param args arguments to parse
  * @return pointer to the Python object
  */
-static PyObject *runMDT(PySimulateDispersal *self, PyObject *args)
+static PyObject* runMDT(PySimulateDispersal* self, PyObject* args)
 {
     try
     {
         int num_repeats, seed, is_sequential;
-        PyObject * p_num_steps;
+        PyObject* p_num_steps;
         vector<unsigned long> num_steps;
         // parse arguments
-        if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps,
-                             &seed, &is_sequential))
+        if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps, &seed, &is_sequential))
         {
             return nullptr;
         }
@@ -419,7 +418,7 @@ static PyObject *runMDT(PySimulateDispersal *self, PyObject *args)
  * @param args arguments to parse
  * @return pointer to the Python object
  */
-static PyObject *runMeanDispersal(PySimulateDispersal *self, PyObject *args)
+static PyObject* runMeanDispersal(PySimulateDispersal* self, PyObject* args)
 {
     try
     {
@@ -452,15 +451,13 @@ static PyObject *runMeanDispersal(PySimulateDispersal *self, PyObject *args)
 
 }
 
-static PyObject *
-PySimulateDispersal_new(PyTypeObject * type, PyObject * args, PyObject * kwds)
+static PyObject* PySimulateDispersal_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
 {
-    auto self = (PySimulateDispersal *) PyTemplate_new<SimulateDispersal>(type, args, kwds);
-    return (PyObject *) self;
+    auto self = (PySimulateDispersal*) PyTemplate_new<SimulateDispersal>(type, args, kwds);
+    return (PyObject*) self;
 }
 
-static int
-PySimulateDispersal_init(PySimulateDispersal *self, PyObject *args, PyObject *kwds)
+static int PySimulateDispersal_init(PySimulateDispersal* self, PyObject* args, PyObject* kwds)
 {
     auto out = PyTemplate_init<SimulateDispersal>(self, args, kwds);
     self->dispersalParameters = make_shared<SimParameters>();
@@ -471,7 +468,7 @@ PySimulateDispersal_init(PySimulateDispersal *self, PyObject *args, PyObject *kw
     return out;
 }
 
-static void PySimulateDispersal_dealloc(PySimulateDispersal *self)
+static void PySimulateDispersal_dealloc(PySimulateDispersal* self)
 {
     if(self->dispersalParameters != nullptr)
     {
@@ -486,36 +483,24 @@ static void PySimulateDispersal_dealloc(PySimulateDispersal *self)
     PyTemplate_dealloc<SimulateDispersal>(self);
 }
 
-static PyMethodDef SimulateDispersalMethods[] =
-        {
-                {"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS,
-                                                              "Sets the dispersal current_metacommunity_parameters for this simulation."},
-                {"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS,
-                                                              "Sets the output database for the simulation."},
-                {"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS,
-                                                              "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
-                {"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS,
-                                                              "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
-                {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS,
-                                                              "Imports the map files for the simulation. Should only be run once."},
-                {"import_all_maps",               (PyCFunction) set_all_map_parameters,        METH_VARARGS,
-                                                              "Imports all the map files with a single import."},
-                {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS,
-                                                              "Sets the historical map current_metacommunity_parameters."},
-                {nullptr,                         nullptr, 0, nullptr}
-        };
+static PyMethodDef SimulateDispersalMethods[] = {{"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS, "Sets the dispersal current_metacommunity_parameters for this simulation."},
+                                                 {"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS, "Sets the output database for the simulation."},
+                                                 {"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS, "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
+                                                 {"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS, "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
+                                                 {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS, "Imports the map files for the simulation. Should only be run once."},
+                                                 {"import_all_maps",               (PyCFunction) set_all_map_parameters,        METH_VARARGS, "Imports all the map files with a single import."},
+                                                 {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS, "Sets the historical map current_metacommunity_parameters."},
+                                                 {nullptr,                         nullptr, 0,                                                nullptr}};
 
 static PyTypeObject genSimulateDispersalType()
 {
-    PyTypeObject retSimulateDispersalType = {
-            PyVarObject_HEAD_INIT(nullptr, 0)
-    };
-    retSimulateDispersalType.tp_name = (char *) "libnecsim.CDispersalSimulation";
+    PyTypeObject retSimulateDispersalType = {PyVarObject_HEAD_INIT(nullptr, 0)};
+    retSimulateDispersalType.tp_name = (char*) "libnecsim.CDispersalSimulation";
     retSimulateDispersalType.tp_basicsize = sizeof(PySimulateDispersal);
     retSimulateDispersalType.tp_itemsize = 0;
     retSimulateDispersalType.tp_dealloc = (destructor) PySimulateDispersal_dealloc;
     retSimulateDispersalType.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
-    retSimulateDispersalType.tp_doc = (char *) "Simulate a dispersal kernel on a landscape.";
+    retSimulateDispersalType.tp_doc = (char*) "Simulate a dispersal kernel on a landscape.";
     retSimulateDispersalType.tp_traverse = (traverseproc) PyTemplate_traverse<SimulateDispersal>;
     retSimulateDispersalType.tp_methods = SimulateDispersalMethods;
     //		.tp_members = PyTemplate_members<T>,

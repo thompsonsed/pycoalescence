@@ -15,6 +15,8 @@
 #ifndef NECSIM_IMPORT
 #define NECSIM_IMPORT
 using namespace std;
+using namespace necsim;
+
 struct module_state
 {
 	PyObject *error;

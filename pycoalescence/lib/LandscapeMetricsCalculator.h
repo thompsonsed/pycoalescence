@@ -17,7 +17,7 @@
 #define MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
 
 using namespace std;
-
+using namespace necsim;
 /**
  * @brief Calculates a variety of landscape metrics from an imported tif file.
  */

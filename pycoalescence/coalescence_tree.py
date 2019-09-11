@@ -1018,7 +1018,8 @@ class CoalescenceTree(object):
 
     def get_number_individuals(self, fragment=None, community_reference=None):
         """
-        Gets the number of individuals that exist, either in the provided fragment, or on the whole landscape.
+        Gets the number of individuals that exist, either in the provided fragment, or on the whole landscape in one
+        time slice.
         Counts individuals from FRAGMENT_ABUNDANCES or SPECIES_ABUNDANCES, respectively.
 
         If a community reference is provided, only individuals for that time slice will be counted, otherwise a mean is
@@ -1057,6 +1058,16 @@ class CoalescenceTree(object):
                     "SELECT SUM(no_individuals) FROM SPECIES_ABUNDANCES " "WHERE community_reference==?",
                     (community_reference,),
                 ).fetchone()[0]
+
+    # TODO write test
+    def get_total_number_individuals(self):
+        """
+        Gets the total number of individuals that exist in the simulation.
+        :return: the total number of individuals simulated across time slices
+        """
+        self._check_database()
+        return self.cursor.execute("SELECT SUM(tip) FROM SPECIES_LIST").fetchone()[0]
+
 
     def check_biodiversity_table_exists(self):
         """

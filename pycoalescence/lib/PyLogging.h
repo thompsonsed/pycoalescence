@@ -13,6 +13,7 @@
 #include <string>
 #include "necsim/LogFile.h"
 #include "PyLogger.h"
+using namespace necsim;
 
 /**
  * @brief Generates the global logger object and adds the logger and log functions to the Python logger.

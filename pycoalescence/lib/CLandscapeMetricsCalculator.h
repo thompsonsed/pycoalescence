@@ -20,6 +20,8 @@
 #include "cpl_custom_handler.h"
 #include "PyTemplates.h"
 
+using namespace necsim;
+
 class PyLMC : public PyTemplate<LandscapeMetricsCalculator>
 {
 public:
@@ -33,9 +35,9 @@ public:
  * @param args arguments to parse, should contain all key map parameters
  * @return pointer to the Python object
  */
-PyObject *set_map(PyLMC *self, PyObject *args)
+PyObject* set_map(PyLMC* self, PyObject* args)
 {
-    char *map_file;
+    char* map_file;
     // parse arguments
     if(!PyArg_ParseTuple(args, "s", &map_file))
     {
@@ -67,7 +69,7 @@ PyObject *set_map(PyLMC *self, PyObject *args)
  * @return PyFloatType object containing the mean distance to the nearest neighbour
  */
 
-static PyObject *calculateCLUMPY(PyLMC *self)
+static PyObject* calculateCLUMPY(PyLMC* self)
 {
     // parse arguments
     try
@@ -94,7 +96,7 @@ static PyObject *calculateCLUMPY(PyLMC *self)
  * @param self the Python self pointer
  * @return PyFloatType object containing the mean distance to the nearest neighbour
  */
-static PyObject *calculateMNN(PyLMC *self)
+static PyObject* calculateMNN(PyLMC* self)
 {
     // parse arguments
     try
@@ -115,15 +117,14 @@ static PyObject *calculateMNN(PyLMC *self)
     }
 }
 
-static int
-PyLMC_init(PyLMC *self, PyObject *args, PyObject *kwds)
+static int PyLMC_init(PyLMC* self, PyObject* args, PyObject* kwds)
 {
     self->landscapeMetricsCalculator = make_unique<LandscapeMetricsCalculator>();
     self->has_imported_map = false;
     return PyTemplate_init<LandscapeMetricsCalculator>(self, args, kwds);
 }
 
-static void PyLMC_dealloc(PyLMC *self)
+static void PyLMC_dealloc(PyLMC* self)
 {
     if(self->landscapeMetricsCalculator != nullptr)
     {
@@ -133,24 +134,16 @@ static void PyLMC_dealloc(PyLMC *self)
     PyTemplate_dealloc<LandscapeMetricsCalculator>(self);
 }
 
-static PyMethodDef PyLMCMethods[] =
-        {
-                {"import_map",       (PyCFunction) set_map,         METH_VARARGS,
-                                                 "Imports the map file to calculate landscape metrics on. Should only be run once."},
-                {"calculate_MNN",    (PyCFunction) calculateMNN,    METH_NOARGS,
-                                                 "Calculates the mean nearest-neighbour for the landscape"},
-                {"calculate_CLUMPY", (PyCFunction) calculateCLUMPY, METH_NOARGS,
-                                                 "Calculates the CLUMPY metric for the landscape"},
-                {nullptr,            nullptr, 0, nullptr}
-        };
+static PyMethodDef PyLMCMethods[] = {{"import_map",       (PyCFunction) set_map,         METH_VARARGS, "Imports the map file to calculate landscape metrics on. Should only be run once."},
+                                     {"calculate_MNN",    (PyCFunction) calculateMNN,    METH_NOARGS,  "Calculates the mean nearest-neighbour for the landscape"},
+                                     {"calculate_CLUMPY", (PyCFunction) calculateCLUMPY, METH_NOARGS,  "Calculates the CLUMPY metric for the landscape"},
+                                     {nullptr,            nullptr, 0,                                  nullptr}};
 
 PyTypeObject genLMCType()
 {
-    PyTypeObject ret_Simulation_Type = {
-            PyVarObject_HEAD_INIT(nullptr, 0)
-    };
-    ret_Simulation_Type.tp_name = (char *) "libnecsim.CLandscapeMetricsCalculator";
-    ret_Simulation_Type.tp_doc = (char *) "Calculate landscape metrics from a map file.";
+    PyTypeObject ret_Simulation_Type = {PyVarObject_HEAD_INIT(nullptr, 0)};
+    ret_Simulation_Type.tp_name = (char*) "libnecsim.CLandscapeMetricsCalculator";
+    ret_Simulation_Type.tp_doc = (char*) "Calculate landscape metrics from a map file.";
     ret_Simulation_Type.tp_basicsize = sizeof(PyLMC);
     ret_Simulation_Type.tp_itemsize = 0;
     ret_Simulation_Type.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
@@ -158,7 +151,7 @@ PyTypeObject genLMCType()
     ret_Simulation_Type.tp_init = (initproc) PyLMC_init;
     ret_Simulation_Type.tp_dealloc = (destructor) PyLMC_dealloc;
     ret_Simulation_Type.tp_traverse = (traverseproc) PyTemplate_traverse<LandscapeMetricsCalculator>;
-//		.tp_members = PyTemplate_members<T>,
+    //		.tp_members = PyTemplate_members<T>,
     ret_Simulation_Type.tp_methods = PyLMCMethods;
     ret_Simulation_Type.tp_getset = PyTemplate_gen_getsetters<LandscapeMetricsCalculator>();
     return ret_Simulation_Type;

@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include "necsim/Logger.h"
+using namespace necsim;
 
 class PyLogger : public Logger
 {

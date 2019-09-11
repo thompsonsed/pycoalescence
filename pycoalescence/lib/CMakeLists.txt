@@ -104,7 +104,11 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/AnalyticalSpeciesAbundancesHandler.h
         ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.cpp
         ${SOURCE_DIR_NECSIM}/SpeciesAbundancesHandler.h
-        ${SOURCE_DIR_NECSIM}/Xoroshiro256plus.h necsim/GillespieCalculator.cpp necsim/GillespieCalculator.h necsim/MapLocation.cpp necsim/MapLocation.h)
+        ${SOURCE_DIR_NECSIM}/Xoroshiro256plus.h
+        ${SOURCE_DIR_NECSIM}/GillespieCalculator.cpp
+        ${SOURCE_DIR_NECSIM}/GillespieCalculator.h
+        ${SOURCE_DIR_NECSIM}/MapLocation.cpp
+        ${SOURCE_DIR_NECSIM}/MapLocation.h)
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
     set(CMAKE_FIND_FRAMEWORK "LAST")
