@@ -51,7 +51,7 @@ class TestFileCreation(unittest.TestCase):
         """
         Sets up the Coalescence object test case.
         """
-        self.coal = Simulation(logging_level=logging.INFO) # TODO change to CRITICAL
+        self.coal = Simulation(logging_level=logging.CRITICAL)
         self.coal.set_simulation_parameters(
             10,
             38,
@@ -897,7 +897,7 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.base_sim = Simulation()
-        cls.hist_sim = Simulation(logging_level=20)
+        cls.hist_sim = Simulation()
         cls.base_sim.set_simulation_parameters(
             seed=4, job_type=17, output_directory="output", min_speciation_rate=0.1, sigma=2, sample_size=0.1
         )
@@ -911,7 +911,7 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
             fine_file="sample/example_historical_fine.tif", coarse_file="none", time=10, rate=0.2
         )
         cls.hist_sim.run()
-        cls.hist_sim2 = Simulation(logging_level=20) # TODO remove
+        cls.hist_sim2 = Simulation()
         cls.hist_sim2.set_simulation_parameters(
             seed=4, job_type=19, output_directory="output", min_speciation_rate=0.1, sigma=2, sample_size=0.1
         )
@@ -930,7 +930,7 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
         self.assertNotEqual(self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness())
         self.assertEqual(2673, self.base_sim.get_species_richness())
         self.assertEqual(2515, self.hist_sim2.get_species_richness())
-        self.assertEqual(2403, self.hist_sim.get_species_richness())
+        self.assertEqual(2450, self.hist_sim.get_species_richness())
 
 
 @skipLongTest
