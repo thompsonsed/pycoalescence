@@ -16,35 +16,36 @@
 
 #include "PyLogger.h"
 #include "PyLogging.h"
-
-PyLogger *pyLogger = nullptr;
-
-PyLogger *getGlobalLogger(PyObject *logger, PyObject *log_function)
+namespace necsim
 {
-	if(pyLogger != nullptr)
-	{
-		removeGlobalLogger();
-	}
-	pyLogger = new PyLogger();
-	if(logger == nullptr || log_function == nullptr)
-	{
-		string errmsg = "logger or log_function is nullptr when attempting to getGlobalLogger(). "
-				  "Please report this bug.";
-		PyErr_SetString(PyExc_SystemError, errmsg.c_str());
-		return nullptr;
-	}
-	pyLogger->setLogger(logger);
-	pyLogger->setLogFunction(log_function);
-	return pyLogger;
-}
+    PyLogger* pyLogger = nullptr;
 
-void removeGlobalLogger()
-{
-	if(pyLogger != nullptr)
-	{
-		delete pyLogger;
-	}
-	pyLogger = nullptr;
-}
+    PyLogger* getGlobalLogger(PyObject* logger, PyObject* log_function)
+    {
+        if(pyLogger != nullptr)
+        {
+            removeGlobalLogger();
+        }
+        pyLogger = new PyLogger();
+        if(logger == nullptr || log_function == nullptr)
+        {
+            string errmsg = "logger or log_function is nullptr when attempting to getGlobalLogger(). "
+                            "Please report this bug.";
+            PyErr_SetString(PyExc_SystemError, errmsg.c_str());
+            return nullptr;
+        }
+        pyLogger->setLogger(logger);
+        pyLogger->setLogFunction(log_function);
+        return pyLogger;
+    }
 
+    void removeGlobalLogger()
+    {
+        if(pyLogger != nullptr)
+        {
+            delete pyLogger;
+        }
+        pyLogger = nullptr;
+    }
+}
 #endif

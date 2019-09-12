@@ -13,20 +13,21 @@
 #include <string>
 #include "necsim/LogFile.h"
 #include "PyLogger.h"
-using namespace necsim;
+namespace necsim
+{
+    /**
+     * @brief Generates the global logger object and adds the logger and log functions to the Python logger.
+     *
+     * Each call to getGlobalLogger should be matched by a call to removeGlobalLogger
+     * @param logger the Python logger object to use
+     * @param log_function the Python logging function to use
+     * @return the global logger object as a pointer.
+     */
+    PyLogger* getGlobalLogger(PyObject* logger, PyObject* log_function);
 
-/**
- * @brief Generates the global logger object and adds the logger and log functions to the Python logger.
- *
- * Each call to getGlobalLogger should be matched by a call to removeGlobalLogger
- * @param logger the Python logger object to use
- * @param log_function the Python logging function to use
- * @return the global logger object as a pointer.
- */
-PyLogger * getGlobalLogger(PyObject * logger, PyObject * log_function);
-
-/**
- * @brief Safely deletes the global logger object.
- */
-void removeGlobalLogger();
+    /**
+     * @brief Safely deletes the global logger object.
+     */
+    void removeGlobalLogger();
+}
 #endif // PYLOGGING_H
