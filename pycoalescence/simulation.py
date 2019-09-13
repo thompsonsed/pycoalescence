@@ -139,6 +139,9 @@ class Simulation(Landscape):
         self.fine_map_average = None
         self.is_spatial = True
         self.uses_spatial_sampling = False
+        self.uses_gillespie = False
+        self.gillespie_threshold = None
+
 
     def __del__(self):
         """Safely destroys the logger and the C++ objects."""
@@ -507,15 +510,15 @@ class Simulation(Landscape):
             return t.is_protracted()
 
     def set_map_files(
-        self,
-        sample_file,
-        fine_file=None,
-        coarse_file=None,
-        historical_fine_file=None,
-        historical_coarse_file=None,
-        dispersal_map=None,
-        death_map=None,
-        reproduction_map=None,
+            self,
+            sample_file,
+            fine_file=None,
+            coarse_file=None,
+            historical_fine_file=None,
+            historical_coarse_file=None,
+            dispersal_map=None,
+            death_map=None,
+            reproduction_map=None,
     ):
         """
         Sets the map files (or to null, if none specified). It then calls detect_map_dimensions() to correctly read in
@@ -583,8 +586,8 @@ class Simulation(Landscape):
                 )
             self.dispersal_map.set_dimensions()
             if (
-                self.dispersal_map.x_size != self.fine_map.x_size * self.fine_map.y_size
-                or self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size
+                    self.dispersal_map.x_size != self.fine_map.x_size * self.fine_map.y_size
+                    or self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size
             ):
                 raise ValueError(
                     "Dimensions of dispersal map do not match dimensions of fine map. This is currently" " unsupported."
@@ -650,6 +653,38 @@ class Simulation(Landscape):
             self.reproduction_map.file_name = reproduction_map
         self.check_reproduction_map()
 
+    def add_gillespie(self, generations=0.0):
+        """
+        Uses the Gillespie algorithm from the given number of generations into the simulation.
+        :param generations: the number of generations at which to use gillespie.
+
+        :rtype: None
+        :return: None
+        """
+        if generations < 0:
+            raise ValueError("Number of generations cannot be < 0.")
+        if not self.check_can_use_gillespie():
+            self.uses_gillespie = False
+            raise ValueError(
+                "Cannot use Gillespie with this simulation. Gillespie algorithm can only be used for spatial "
+                "simulations involving a dispersal map and point-speciation.")
+        self.uses_gillespie = True
+        self.gillespie_threshold = float(generations)
+
+    def check_can_use_gillespie(self):
+        """
+        Checks if the simulation can use the Gillespie algorithm.
+
+        :return: true if the simulation can use Gillespie
+        :rtype: bool
+        """
+        if not (self.is_setup_map and self.is_setup_param):
+            raise RuntimeError("Cannot check if Gillespie is possible before simulation is setup.")
+        if self.dispersal_map.file_name in ["none", None] or not self.is_spatial or \
+                self.coarse_map.file_name not in ["none", None] or self.protracted:
+            return False
+        return True
+
     def check_dimensions_match_fine(self, map_to_check, name=""):
         """
         Checks that the dimensions of the provided map matches the fine map.
@@ -676,29 +711,29 @@ class Simulation(Landscape):
                     )
 
     def set_simulation_parameters(
-        self,
-        seed,
-        job_type,
-        output_directory,
-        min_speciation_rate,
-        sigma=1.0,
-        tau=1.0,
-        deme=1.0,
-        sample_size=1.0,
-        max_time=3600,
-        dispersal_method=None,
-        m_prob=0.0,
-        cutoff=0,
-        dispersal_relative_cost=1,
-        min_num_species=1,
-        restrict_self=False,
-        landscape_type=False,
-        protracted=False,
-        min_speciation_gen=None,
-        max_speciation_gen=None,
-        spatial=True,
-        uses_spatial_sampling=False,
-        times=None,
+            self,
+            seed,
+            job_type,
+            output_directory,
+            min_speciation_rate,
+            sigma=1.0,
+            tau=1.0,
+            deme=1.0,
+            sample_size=1.0,
+            max_time=3600,
+            dispersal_method=None,
+            m_prob=0.0,
+            cutoff=0,
+            dispersal_relative_cost=1,
+            min_num_species=1,
+            restrict_self=False,
+            landscape_type=False,
+            protracted=False,
+            min_speciation_gen=None,
+            max_speciation_gen=None,
+            spatial=True,
+            uses_spatial_sampling=False,
+            times=None,
     ):
         """
         Set all the simulation parameters apart from the map objects.
@@ -818,10 +853,12 @@ class Simulation(Landscape):
             raise RuntimeError("Output directory not set.")
         if self.full_config_file is not None:
             check_parent(self.full_config_file)
+        if self.uses_gillespie and not self.check_can_use_gillespie():
+            raise RuntimeError("Cannot use Gillespie algorithm with current map setup.")
         try:
             if self.output_database is None:
                 self.calculate_sql_database()
-            self.run_checks(expected=expected)
+            self.check_file_parameters(expected=expected)
         except (FileExistsError, FileNotFoundError) as err:  # pragma: no cover
             if not ignore_errors:
                 raise err
@@ -829,7 +866,7 @@ class Simulation(Landscape):
                 self.logger.info(str(err))
 
     def resume_coalescence(
-        self, pause_directory, seed, job_type, max_time, out_directory=None, protracted=None, spatial=None
+            self, pause_directory, seed, job_type, max_time, out_directory=None, protracted=None, spatial=None
     ):
         """
         Resumes the simulation from the specified directory, looking for the simulation with the specified seed and task
@@ -970,12 +1007,12 @@ class Simulation(Landscape):
         """
         self.import_fine_map_array()
         if (
-            self.sample_map.file_name not in ["none", "null", None]
-            and self.sample_map.file_name != self.fine_map.file_name
+                self.sample_map.file_name not in ["none", "null", None]
+                and self.sample_map.file_name != self.fine_map.file_name
         ):
             self.import_sample_map_array()
             # Less accurate, but faster way.
-            arr_subset = self.sample_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim]
+            arr_subset = self.sample_map_array[y_off: y_off + y_dim, x_off: x_off + x_dim]
             return int(np.sum(np.floor(arr_subset * self.get_average_density() * self.sample_size)))
         return int(np.sum(np.floor(self.fine_map_array * self.deme * self.sample_size)))
 
@@ -996,8 +1033,8 @@ class Simulation(Landscape):
         """
         self.import_fine_map_array()
         if (
-            self.sample_map.file_name not in ["none", "null", None]
-            and self.sample_map.file_name != self.fine_map.file_name
+                self.sample_map.file_name not in ["none", "null", None]
+                and self.sample_map.file_name != self.fine_map.file_name
         ):
             self.import_sample_map_array()
             # Less accurate, but faster way.
@@ -1005,8 +1042,8 @@ class Simulation(Landscape):
                 np.sum(
                     np.floor(
                         np.multiply(
-                            self.fine_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim],
-                            self.sample_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim],
+                            self.fine_map_array[y_off: y_off + y_dim, x_off: x_off + x_dim],
+                            self.sample_map_array[y_off: y_off + y_dim, x_off: x_off + x_dim],
                         )
                         * self.deme
                         * self.sample_size
@@ -1017,7 +1054,7 @@ class Simulation(Landscape):
             return int(
                 np.sum(
                     np.floor(
-                        self.fine_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim] * self.deme * self.sample_size
+                        self.fine_map_array[y_off: y_off + y_dim, x_off: x_off + x_dim] * self.deme * self.sample_size
                     )
                 )
             )
@@ -1040,10 +1077,10 @@ class Simulation(Landscape):
         :rtype: bool
         """
         return (
-            self.grid.x_size == self.sample_map.x_size
-            and self.grid.y_size == self.sample_map.x_size
-            and self.grid.x_offset == 0
-            and self.grid.y_offset == 0
+                self.grid.x_size == self.sample_map.x_size
+                and self.grid.y_size == self.sample_map.x_size
+                and self.grid.x_offset == 0
+                and self.grid.y_offset == 0
         )
 
     def optimise_ram(self, ram_limit):
@@ -1193,6 +1230,8 @@ class Simulation(Landscape):
             self.config.write(self.config_string)
             self.c_simulation.import_from_config_string(self.config_string.getvalue())
         self.c_simulation.setup()
+        if self.uses_gillespie and self.check_can_use_gillespie():
+            self.c_simulation.add_gillespie(self.gillespie_threshold)
         self.is_setup_complete = True
 
     def setup_necsim(self):
@@ -1263,18 +1302,18 @@ class Simulation(Landscape):
         if self.is_spatial:
             Landscape.check_maps(self)
             if (
-                self.grid.file_name == "set"
-                and self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size
-                or self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size
+                    self.grid.file_name == "set"
+                    and self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size
+                    or self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size
             ):
                 raise ValueError("Grid is not within the sample map - please check offsets of sample map.")
             self.check_dispersal_map()
             self.check_reproduction_map()
             self.check_death_map()
 
-    def run_checks(self, expected=False):
+    def check_file_parameters(self, expected=False):
         """
-        Check that the simulation is correctly set up and that all the required files exist.
+        Check that all the required files exist for the simulation and the output doesn't already exist.
 
         :param expected: set to true if we expect the output file to already exist
 

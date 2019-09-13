@@ -6,10 +6,9 @@ import logging
 import os
 import sys
 import unittest
+from configparser import ConfigParser
 
 import numpy as np
-
-from configparser import ConfigParser
 
 try:
     from unittest.mock import patch
@@ -1130,7 +1129,7 @@ class TestSimulationParameters(unittest.TestCase):
         """Tests errors are raised when checks are not complete."""
         sim = Simulation()
         with self.assertRaises(RuntimeError):
-            sim.run_checks()
+            sim.check_file_parameters()
 
     def testRunCoalescenceCreatesOutput(self):
         """Tests that running coalescence creates output before running."""
@@ -1234,3 +1233,44 @@ class TestRamOptimistation(unittest.TestCase):
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
             coarse_file=os.path.join("sample", "SA_sample_coarse.tif"),
         )
+
+
+class TestSimulationUsingGillespie(unittest.TestCase):
+    """Tests simulations using the gillespie algorithm."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.baseline_simulation = Simulation()
+        cls.baseline_simulation.set_simulation_parameters(seed=10, job_type=2, output_directory="output",
+                                                          min_speciation_rate=0.000001,
+                                                          deme=1000, sample_size=0.00001)
+        cls.baseline_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample",
+                                                                                         "SA_sample_coarse.tif"),
+                                              coarse_file="none")
+        cls.baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
+        cls.baseline_simulation.run()
+        cls.gillespie_simulation = Simulation(logging_level=20) # TODO change logging
+        cls.gillespie_simulation.set_simulation_parameters(seed=10, job_type=3, output_directory="output",
+                                                          min_speciation_rate=0.000001,
+                                                          deme=1000, sample_size=0.00001)
+        cls.gillespie_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                                              coarse_file="none")
+        cls.gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
+        cls.gillespie_simulation.add_gillespie(10)
+        cls.gillespie_simulation.run()
+        cls.gillespie_simulation2= Simulation()
+        cls.gillespie_simulation2.set_simulation_parameters(seed=10, job_type=4, output_directory="output",
+                                                          min_speciation_rate=0.000001,
+                                                          deme=1000, sample_size=0.00001)
+        cls.gillespie_simulation2.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                                              coarse_file="none")
+        cls.gillespie_simulation2.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
+
+        cls.gillespie_simulation2.add_gillespie(0)
+        cls.gillespie_simulation2.run()
+
+    def testSpeciesRichnessValuesSimilar(self):
+        """Checks that the species richness values are similar between implementations of Gillespie."""
+        self.assertEqual(10, self.baseline_simulation.get_species_richness())
+        self.assertEqual(10, self.gillespie_simulation.get_species_richness())
+        self.assertEqual(10, self.gillespie_simulation2.get_species_richness())

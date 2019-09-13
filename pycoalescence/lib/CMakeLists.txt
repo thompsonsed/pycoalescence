@@ -108,7 +108,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/GillespieCalculator.cpp
         ${SOURCE_DIR_NECSIM}/GillespieCalculator.h
         ${SOURCE_DIR_NECSIM}/MapLocation.cpp
-        ${SOURCE_DIR_NECSIM}/MapLocation.h)
+        ${SOURCE_DIR_NECSIM}/MapLocation.h
+        ${SOURCE_DIR_NECSIM}/heap.hpp)
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
     set(CMAKE_FIND_FRAMEWORK "LAST")
