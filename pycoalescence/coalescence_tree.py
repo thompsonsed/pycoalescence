@@ -2626,7 +2626,7 @@ class CoalescenceTree(object):
             for k, out_number in location_dict.items():
                 select_tips = [x[0:13] for x in tips if x[13] == k]
                 if len(select_tips) == 0:  # pragma: no cover
-                    self.logger.info("Skipping sampling location {} as there are no recorded individuals.".format(k))
+                    self.logger.info("Skipping sampling location {} as there are no recorded individuals.\n".format(k))
                 if out_number > len(select_tips):  # pragma: no cover
                     if not ignore_errors:
                         raise ValueError(
