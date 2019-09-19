@@ -1240,22 +1240,22 @@ class TestSimulationUsingGillespie(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.baseline_simulation = Simulation()
-        cls.baseline_simulation.set_simulation_parameters(seed=10, job_type=2, output_directory="output",
-                                                          min_speciation_rate=0.000001,
-                                                          deme=1000, sample_size=0.00001)
-        cls.baseline_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample",
-                                                                                         "SA_sample_coarse.tif"),
-                                              coarse_file="none")
-        cls.baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
-        cls.baseline_simulation.run()
+        # cls.baseline_simulation = Simulation(logging_level=20) # TODO remove
+        # cls.baseline_simulation.set_simulation_parameters(seed=10, job_type=2, output_directory="output",
+        #                                                   min_speciation_rate=0.000001,
+        #                                                   deme=1000, sample_size=0.00001)
+        # cls.baseline_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample",
+        #                                                                                  "SA_sample_coarse.tif"),
+        #                                       coarse_file="none")
+        # cls.baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
+        # cls.baseline_simulation.run()
         cls.gillespie_simulation = Simulation(logging_level=20) # TODO change logging
         cls.gillespie_simulation.set_simulation_parameters(seed=10, job_type=3, output_directory="output",
                                                           min_speciation_rate=0.000001,
                                                           deme=1000, sample_size=0.00001)
         cls.gillespie_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
                                               coarse_file="none")
-        cls.gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
+        cls.gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine3.tif"))
         cls.gillespie_simulation.add_gillespie(10)
         cls.gillespie_simulation.run()
         cls.gillespie_simulation2= Simulation()
@@ -1264,7 +1264,7 @@ class TestSimulationUsingGillespie(unittest.TestCase):
                                                           deme=1000, sample_size=0.00001)
         cls.gillespie_simulation2.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
                                               coarse_file="none")
-        cls.gillespie_simulation2.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
+        cls.gillespie_simulation2.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine3.tif"))
 
         cls.gillespie_simulation2.add_gillespie(0)
         cls.gillespie_simulation2.run()
