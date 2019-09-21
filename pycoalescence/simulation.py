@@ -719,7 +719,8 @@ class Simulation(Landscape):
         :param int min_num_species: the minimum number of species known to exist (defaults to 1
         :param bool restrict_self: if true, restricts dispersal from own cell
         :param bool/str landscape_type: if false or "closed", restricts dispersal to the provided maps, otherwise
-                                        can be "infinite", or a tiled landscape using "tiled_coarse" or "tiled_fine".
+                                        can be "infinite", or a tiled landscape using "tiled_coarse" or "tiled_fine",
+                                        or a clamped landscape using "clamped_coarse" or "clamped_fine".
         :param bool protracted: if true, uses protracted speciation application
         :param float min_speciation_gen: the minimum amount of time a lineage must exist before speciation occurs.
         :param float max_speciation_gen: the maximum amount of time a lineage can exist before speciating.
@@ -757,7 +758,7 @@ class Simulation(Landscape):
                 self.landscape_type = "closed"
             elif landscape_type in {True, "infinite"}:
                 self.landscape_type = "infinite"
-            elif landscape_type in {"tiled_coarse", "tiled_fine"}:
+            elif landscape_type in {"tiled_coarse", "tiled_fine", "clamped_coarse", "clamped_fine"}:
                 self.landscape_type = landscape_type
             else:
                 raise ValueError("Supplied landscape type is not recognised: {}".format(landscape_type))

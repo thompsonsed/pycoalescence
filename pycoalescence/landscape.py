@@ -304,9 +304,9 @@ class Landscape:
             map_file.check_map()
         for map_file in [self.historical_fine_map_file, self.historical_fine_map_file]:
             check_file_exists(map_file)
-        if self.landscape_type == "tiled_fine":
+        if self.landscape_type == "tiled_fine" or self.landscape_type == "clamped_fine":
             if self.coarse_map.file_name not in {None, "none"}:
                 raise ValueError("Cannot use a coarse map with a tiled fine landscape.")
-        if self.landscape_type == "tiled_coarse":
+        if self.landscape_type == "tiled_coarse" or self.landscape_type == "clamped_coarse":
             if self.coarse_map.file_name in {None, "none"}:
                 raise ValueError("Cannot use a tiled_coarse landscape without a coarse map.")
