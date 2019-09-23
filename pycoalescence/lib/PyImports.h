@@ -17,6 +17,7 @@
 
 #include "necsim/Cell.h"
 using namespace std;
+using namespace necsim;
 
 
 /**

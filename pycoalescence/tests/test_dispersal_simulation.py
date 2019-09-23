@@ -447,7 +447,7 @@ class TestDispersalSimulation(unittest.TestCase):
         m.set_simulation_parameters(
             number_repeats=100, output_database="output/realdispersal7.db", seed=1, sigma=1, landscape_type="tiled_fine"
         )
-        m.run_mean_distance_travelled(number_steps=[10, 20, 30], number_repeats=100, seed=1, sequential=True)
+        m.run_mean_distance_travelled(number_steps=[10, 20, 30], number_repeats=100, seed=1)
         m.update_parameters(number_steps=[40, 50, 60])
         m.run_mean_distance_travelled()
         for k, v in [(1, 10), (2, 20), (3, 30), (4, 40), (5, 50), (6, 60)]:

@@ -92,7 +92,9 @@ class DispersalSimulation(Landscape):
     def _create_c_dispersal_simulation(self):
         """Creates the CDispersalSimulation object, if it has not already been created."""
         if self.c_dispersal_simulation is None:
-            self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
+            self.c_dispersal_simulation = libnecsim.CDispersalSimulation(
+                self.logger, write_to_log
+            )
 
     def _open_database_connection(self, database=None):
         """
@@ -105,9 +107,13 @@ class DispersalSimulation(Landscape):
                 return
             self.dispersal_database = database
         if self.dispersal_database is None:  # pragma: no cover
-            raise ValueError("Dispersal database is not set, run test_average_dispersal() first or set dispersal_db.")
+            raise ValueError(
+                "Dispersal database is not set, run test_average_dispersal() first or set dispersal_db."
+            )
         if not os.path.exists(self.dispersal_database):
-            raise IOError("Dispersal database does not exist: {}".format(self.dispersal_database))
+            raise IOError(
+                "Dispersal database does not exist: {}".format(self.dispersal_database)
+            )
         # Open the SQLite connection
         try:
             self._db_conn = sqlite3.connect(self.dispersal_database)
@@ -137,7 +143,10 @@ class DispersalSimulation(Landscape):
         self._open_database_connection(database)
         existence = (
             self._db_conn.cursor()
-            .execute("SELECT name FROM sqlite_master WHERE type='table' AND" " name='{}';".format(table_name))
+            .execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND"
+                " name='{}';".format(table_name)
+            )
             .fetchone()
             is not None
         )
@@ -146,6 +155,8 @@ class DispersalSimulation(Landscape):
     def _check_output_database(self):
         """Sets the setup to false if the output database has not been generated already."""
         self._create_c_dispersal_simulation()
+        if self.dispersal_database is None:
+            raise ValueError("Dispersal database is None.")
         if not os.path.exists(self.dispersal_database):
             self.setup_complete = False
             self.c_dispersal_simulation.set_output_database(self.dispersal_database)
@@ -336,11 +347,20 @@ class DispersalSimulation(Landscape):
             self.number_steps = [int(x) for x in number_steps]
         else:
             self.number_steps = [int(number_steps)]
-        if not os.path.exists(os.path.dirname(self.dispersal_database)):  # pragma: no cover
+        if not os.path.exists(
+            os.path.dirname(self.dispersal_database)
+        ):  # pragma: no cover
             os.makedirs(os.path.dirname(self.dispersal_database))
         self.c_dispersal_simulation.set_output_database(self.dispersal_database)
         self.set_dispersal_parameters(
-            dispersal_method, dispersal_file, sigma, tau, m_prob, cutoff, dispersal_relative_cost, restrict_self
+            dispersal_method,
+            dispersal_file,
+            sigma,
+            tau,
+            m_prob,
+            cutoff,
+            dispersal_relative_cost,
+            restrict_self,
         )
 
     def complete_setup(self):
@@ -410,7 +430,14 @@ class DispersalSimulation(Landscape):
                 )
             self.setup_complete = True
 
-    def check_base_parameters(self, number_repeats=None, seed=None, sequential=None, number_workers=None, dispersal=False):
+    def check_base_parameters(
+        self,
+        number_repeats=None,
+        seed=None,
+        sequential=None,
+        number_workers=None,
+        dispersal=False,
+    ):
         """
         Checks that the parameters have been set properly.
 
@@ -438,9 +465,12 @@ class DispersalSimulation(Landscape):
             self.sequential = sequential
         if number_workers is not None:
             self.number_workers = number_workers
+
         self._check_output_database()
 
-    def run_mean_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, number_workers=None):
+    def run_mean_distance_travelled(
+        self, number_repeats=None, number_steps=None, seed=None, number_workers=None
+    ):
         """
         Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled
         after number_steps have been moved.
@@ -462,7 +492,9 @@ class DispersalSimulation(Landscape):
         check_parent(self.dispersal_database)
         if number_steps is None and self.number_steps in [None, [None], []]:
             raise ValueError("number_steps has not been set.")
-        self.check_base_parameters(number_repeats=number_repeats, seed=seed, number_workers=number_workers)
+        self.check_base_parameters(
+            number_repeats=number_repeats, seed=seed, number_workers=number_workers
+        )
         if number_steps is not None:
             self.number_steps = number_steps
         if not self.setup_complete:
@@ -471,7 +503,9 @@ class DispersalSimulation(Landscape):
             self.number_repeats, self.number_steps, self.seed, self.number_workers
         )
 
-    def run_all_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, number_workers=None):
+    def run_all_distance_travelled(
+        self, number_repeats=None, number_steps=None, seed=None, number_workers=None
+    ):
         """
         Tests the dispersal kernel on all cells on the provided map, producing a database containing the average distance
         travelled after number_steps have been moved.
@@ -488,7 +522,9 @@ class DispersalSimulation(Landscape):
         check_parent(self.dispersal_database)
         if number_steps is None and self.number_steps in [None, [None], []]:
             raise ValueError("number_steps has not been set.")
-        self.check_base_parameters(number_repeats=number_repeats, seed=seed, number_workers=number_workers)
+        self.check_base_parameters(
+            number_repeats=number_repeats, seed=seed, number_workers=number_workers
+        )
         if number_steps is not None:
             self.number_steps = number_steps
         if not self.setup_complete:
@@ -497,7 +533,15 @@ class DispersalSimulation(Landscape):
             self.number_repeats, self.number_steps, self.seed, self.number_workers
         )
 
-    def run_sample_distance_travelled(self, samples_X, samples_Y, number_repeats=None, number_steps=None, seed=None, number_workers=None):
+    def run_sample_distance_travelled(
+        self,
+        samples_X,
+        samples_Y,
+        number_repeats=None,
+        number_steps=None,
+        seed=None,
+        number_workers=None,
+    ):
         """
         Tests the dispersal kernel on the sampled cells on the provided map, producing a database containing the average distance
         travelled after number_steps have been moved.
@@ -516,13 +560,20 @@ class DispersalSimulation(Landscape):
         check_parent(self.dispersal_database)
         if number_steps is None and self.number_steps in [None, [None], []]:
             raise ValueError("number_steps has not been set.")
-        self.check_base_parameters(number_repeats=number_repeats, seed=seed, number_workers=number_workers)
+        self.check_base_parameters(
+            number_repeats=number_repeats, seed=seed, number_workers=number_workers
+        )
         if number_steps is not None:
             self.number_steps = number_steps
         if not self.setup_complete:
             self.complete_setup()
         self.c_dispersal_simulation.run_sample_distance_travelled(
-            samples_X, samples_Y, self.number_repeats, self.number_steps, self.seed, self.number_workers
+            samples_X,
+            samples_Y,
+            self.number_repeats,
+            self.number_steps,
+            self.seed,
+            self.number_workers,
         )
 
     def run_mean_dispersal(self, number_repeats=None, seed=None, sequential=None):
@@ -539,10 +590,17 @@ class DispersalSimulation(Landscape):
         self._close_database_connection()
         # Delete the file if it exists, and recursively create the folder if it doesn't
         check_parent(self.dispersal_database)
-        self.check_base_parameters(number_repeats=number_repeats, seed=seed, sequential=sequential, dispersal=True)
+        self.check_base_parameters(
+            number_repeats=number_repeats,
+            seed=seed,
+            sequential=sequential,
+            dispersal=True,
+        )
         if not self.setup_complete:
             self.complete_setup()
-        self.c_dispersal_simulation.run_mean_dispersal_distance(self.number_repeats, self.seed, self.sequential)
+        self.c_dispersal_simulation.run_mean_dispersal_distance(
+            self.number_repeats, self.seed, self.sequential
+        )
 
     def get_all_dispersal(self, database=None, parameter_reference=1):
         """
@@ -555,18 +613,27 @@ class DispersalSimulation(Landscape):
         :param int parameter_reference: the parameter reference to use (default 1)
         :return: the dispersal values from the database
         """
-        if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
-            raise IOError("Database {} does not have a DISPERSAL_DISTANCES table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISPERSAL_DISTANCES"
+        ):
+            raise IOError(
+                "Database {} does not have a DISPERSAL_DISTANCES table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = cursor.execute(
-                "SELECT distance FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?", (parameter_reference,)
+                "SELECT distance FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
+                (parameter_reference,),
             ).fetchall()
             if not sql_fetch:
                 raise ValueError(
                     "Could not get dispersal distances for "
-                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                    "parameter reference of {} from {}.".format(
+                        parameter_reference, self.dispersal_database
+                    )
                 )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get all dispersals from database: {}.".format(e))
@@ -583,18 +650,27 @@ class DispersalSimulation(Landscape):
         :param int parameter_reference: the parameter reference to use (default 1)).
         :return: mean dispersal from the database
         """
-        if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
-            raise IOError("Database {} does not have a DISPERSAL_DISTANCES table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISPERSAL_DISTANCES"
+        ):
+            raise IOError(
+                "Database {} does not have a DISPERSAL_DISTANCES table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = cursor.execute(
-                "SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?", (parameter_reference,)
+                "SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?",
+                (parameter_reference,),
             ).fetchall()[0][0]
             if sql_fetch is None:
                 raise ValueError(
                     "Could not get mean dispersal for "
-                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                    "parameter reference of {} from {}.".format(
+                        parameter_reference, self.dispersal_database
+                    )
                 )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get mean dispersal from database: {}.".format(e))
@@ -602,7 +678,8 @@ class DispersalSimulation(Landscape):
 
     def get_all_distances(self, database=None, parameter_reference=1):
         """
-        Gets all total distances travelled from the database if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already been run.
+        Gets all total distances travelled from the database if run_mean_distance_travelled or
+        run_all_distance_travelled or run_sample_distance_travelled has already been run.
 
         :raises: ValueError if dispersal_database is None and so run_mean_dispersal() has not been run
         :raises: IOError if the output database does not exist
@@ -611,26 +688,38 @@ class DispersalSimulation(Landscape):
         :param int parameter_reference: the parameter reference to use (default 1)
         :return: the dispersal values from the database
         """
-        if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
-            raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISTANCES_TRAVELLED"
+        ):
+            raise IOError(
+                "Database {} does not have a DISTANCES_TRAVELLED table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = cursor.execute(
-                "SELECT distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
+                "SELECT distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
+                (parameter_reference,),
             ).fetchall()
             if not sql_fetch:
                 raise ValueError(
                     "Could not get distances travelled for "
-                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                    "parameter reference of {} from {}.".format(
+                        parameter_reference, self.dispersal_database
+                    )
                 )
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get all distances travelled from database: {}.".format(e))
+            raise IOError(
+                "Could not get all distances travelled from database: {}.".format(e)
+            )
         return [x[0] for x in sql_fetch]
 
     def get_distances_map(self, shape, database=None, parameter_reference=1):
         """
-        Gets all total distances travelled from the database if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already been run
+        Gets all total distances travelled from the database if run_mean_distance_travelled or
+        run_all_distance_travelled or run_sample_distance_travelled has already been run
         and puts them inside a numpy matrix
 
         :raises: ValueError if dispersal_database is None and so run_mean_dispersal() has not been run
@@ -642,21 +731,32 @@ class DispersalSimulation(Landscape):
         :param int parameter_reference: the parameter reference to use (default 1)
         :return: the dispersal values from the database
         """
-        if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
-            raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISTANCES_TRAVELLED"
+        ):
+            raise IOError(
+                "Database {} does not have a DISTANCES_TRAVELLED table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = cursor.execute(
-                "SELECT x, y, distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
+                "SELECT x, y, distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
+                (parameter_reference,),
             ).fetchall()
             if not sql_fetch:
                 raise ValueError(
                     "Could not get distances travelled for "
-                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                    "parameter reference of {} from {}.".format(
+                        parameter_reference, self.dispersal_database
+                    )
                 )
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get all distances travelled from database: {}.".format(e))
+            raise IOError(
+                "Could not get all distances travelled from database: {}.".format(e)
+            )
 
         dmap = zeros(shape=shape)
 
@@ -667,7 +767,8 @@ class DispersalSimulation(Landscape):
 
     def get_mean_distance_travelled(self, database=None, parameter_reference=1):
         """
-        Gets the mean dispersal for the map if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already been run.
+        Gets the mean dispersal for the map if run_mean_distance_travelled or run_all_distance_travelled or
+        run_sample_distance_travelled has already been run.
 
         :raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
         :raises: IOError if the output database does not exist
@@ -676,18 +777,27 @@ class DispersalSimulation(Landscape):
         :param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
         :return: mean of dispersal from the database
         """
-        if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
-            raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISTANCES_TRAVELLED"
+        ):
+            raise IOError(
+                "Database {} does not have a DISTANCES_TRAVELLED table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = cursor.execute(
-                "SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
+                "SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?",
+                (parameter_reference,),
             ).fetchall()[0][0]
             if sql_fetch is None:
                 raise ValueError(
                     "Could not get mean distance travelled for "
-                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                    "parameter reference of {} from {}.".format(
+                        parameter_reference, self.dispersal_database
+                    )
                 )
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get average distance from database: {}.".format(e))
@@ -704,19 +814,29 @@ class DispersalSimulation(Landscape):
         :param int parameter_reference: the parameter reference to use (or 1 for default parameter reference).
         :return: standard deviation of dispersal from the database
         """
-        if not self._check_table_exists(database=database, table_name="DISPERSAL_DISTANCES"):
-            raise IOError("Database {} does not have a DISPERSAL_DISTANCES table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISPERSAL_DISTANCES"
+        ):
+            raise IOError(
+                "Database {} does not have a DISPERSAL_DISTANCES table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = [
                 x[0]
                 for x in cursor.execute(
-                    "SELECT distance FROM DISPERSAL_DISTANCES " "WHERE parameter_reference = ?", (parameter_reference,)
+                    "SELECT distance FROM DISPERSAL_DISTANCES "
+                    "WHERE parameter_reference = ?",
+                    (parameter_reference,),
                 ).fetchall()
             ]
             if len(sql_fetch) == 0:  # pragma: no cover
-                raise ValueError("No distances in DISPERSAL_DISTANCES, cannot find standard deviation.")
+                raise ValueError(
+                    "No distances in DISPERSAL_DISTANCES, cannot find standard deviation."
+                )
             stdev_distance = std(sql_fetch)
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get average distance from database: {}".format(e))
@@ -724,7 +844,8 @@ class DispersalSimulation(Landscape):
 
     def get_stdev_distance_travelled(self, database=None, parameter_reference=1):
         """
-        Gets the standard deviation of the distance travelled for the map if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already
+        Gets the standard deviation of the distance travelled for the map if run_mean_distance_travelled or
+        run_all_distance_travelled or run_sample_distance_travelled has already
         been run.
 
         :raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
@@ -736,19 +857,29 @@ class DispersalSimulation(Landscape):
         :return: standard deviation of dispersal from the database
         :rtype: float
         """
-        if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
-            raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
+        if not self._check_table_exists(
+            database=database, table_name="DISTANCES_TRAVELLED"
+        ):
+            raise IOError(
+                "Database {} does not have a DISTANCES_TRAVELLED table".format(
+                    self.dispersal_database
+                )
+            )
         try:
             self._open_database_connection(database=database)
             cursor = self._db_conn.cursor()
             sql_fetch = [
                 x[0]
                 for x in cursor.execute(
-                    "SELECT distance FROM DISTANCES_TRAVELLED" " WHERE parameter_reference = ?", (parameter_reference,)
+                    "SELECT distance FROM DISTANCES_TRAVELLED"
+                    " WHERE parameter_reference = ?",
+                    (parameter_reference,),
                 ).fetchall()
             ]
             if len(sql_fetch) == 0:  # pragma: no cover
-                raise ValueError("No distances in DISTANCES_TRAVELLED, cannot find standard deviation.")
+                raise ValueError(
+                    "No distances in DISTANCES_TRAVELLED, cannot find standard deviation."
+                )
             stdev_distance = std(sql_fetch)
         except sqlite3.Error as e:  # pragma: no cover
             raise IOError("Could not get average distance from database: {}.".format(e))
@@ -772,7 +903,11 @@ class DispersalSimulation(Landscape):
                 " number_steps, number_repeats FROM PARAMETERS"
             )
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
+            raise IOError(
+                "Could not get dispersal simulation parameters from database: {}".format(
+                    e
+                )
+            )
         column_names = [member[0] for member in cursor.description]
         main_dict = {}
         for row in cursor.fetchall():
@@ -790,7 +925,11 @@ class DispersalSimulation(Landscape):
             try:
                 return main_dict[reference]
             except KeyError:
-                raise KeyError("No reference exists in the database with a value of {}".format(reference))
+                raise KeyError(
+                    "No reference exists in the database with a value of {}".format(
+                        reference
+                    )
+                )
 
     def get_database_references(self):
         """
@@ -805,5 +944,9 @@ class DispersalSimulation(Landscape):
             cursor = self._db_conn.cursor()
             cursor.execute("SELECT DISTINCT(ref) FROM PARAMETERS")
         except sqlite3.Error as e:  # pragma: no cover
-            raise IOError("Could not get dispersal simulation parameters from database: {}".format(e))
+            raise IOError(
+                "Could not get dispersal simulation parameters from database: {}".format(
+                    e
+                )
+            )
         return [x[0] for x in cursor.fetchall()]
