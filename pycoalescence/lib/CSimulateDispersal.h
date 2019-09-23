@@ -376,11 +376,12 @@ static PyObject* runMDT(PySimulateDispersal* self, PyObject* args)
 {
     try
     {
-        int num_repeats, seed, is_sequential;
-        PyObject* p_num_steps;
+        int num_repeats, seed, num_workers;
+        PyObject * p_num_steps;
         vector<unsigned long> num_steps;
         // parse arguments
-        if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps, &seed, &is_sequential))
+        if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps,
+                             &seed, &num_workers))
         {
             return nullptr;
         }
@@ -390,16 +391,117 @@ static PyObject* runMDT(PySimulateDispersal* self, PyObject* args)
             return nullptr;
         }
         self->setDispersalParameters();
-        self->base_object->setSequential(static_cast<bool>(is_sequential));
         self->base_object->setSeed(static_cast<unsigned long>(seed));
         self->base_object->setNumberRepeats(static_cast<unsigned long>(num_repeats));
         self->base_object->setNumberSteps(num_steps);
+        self->base_object->setNumberWorkers(num_workers);
         if(!self->has_imported_maps)
         {
             self->base_object->importMaps();
         }
         self->checkCompleted();
         self->base_object->runMeanDistanceTravelled();
+        self->base_object->writeDatabase("DISTANCES_TRAVELLED");
+    }
+    catch(exception &e)
+    {
+        removeGlobalLogger();
+        PyErr_SetString(necsimError, e.what());
+        return nullptr;
+    }
+    Py_RETURN_NONE;
+
+}
+
+/**
+ * @brief Runs the mean distance travelled simulation on all cells
+ * @param self the Python self object
+ * @param args arguments to parse
+ * @return pointer to the Python object
+ */
+static PyObject *runADT(PySimulateDispersal *self, PyObject *args)
+{
+    try
+    {
+        int num_repeats, seed, num_workers;
+        PyObject * p_num_steps;
+        vector<unsigned long> num_steps;
+        // parse arguments
+        if(!PyArg_ParseTuple(args, "iO!ii", &num_repeats, &PyList_Type, &p_num_steps,
+                             &seed, &num_workers))
+        {
+            return nullptr;
+        }
+        getGlobalLogger(self->logger, self->log_function);
+        if(!importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers."))
+        {
+            return nullptr;
+        }
+        self->setDispersalParameters();
+        self->base_object->setSeed(static_cast<unsigned long>(seed));
+        self->base_object->setNumberRepeats(static_cast<unsigned long>(num_repeats));
+        self->base_object->setNumberSteps(num_steps);
+        self->base_object->setNumberWorkers(num_workers);
+        if(!self->has_imported_maps)
+        {
+            self->base_object->importMaps();
+        }
+        self->checkCompleted();
+        self->base_object->runAllDistanceTravelled();
+        self->base_object->writeDatabase("DISTANCES_TRAVELLED");
+    }
+    catch(exception &e)
+    {
+        removeGlobalLogger();
+        PyErr_SetString(necsimError, e.what());
+        return nullptr;
+    }
+    Py_RETURN_NONE;
+
+}
+
+/**
+ * @brief Runs the mean distance travelled simulation on sampled cells
+ * @param self the Python self object
+ * @param args arguments to parse
+ * @return pointer to the Python object
+ */
+static PyObject *runSRW(PySimulateDispersal *self, PyObject *args)
+{
+    try
+    {
+        int num_repeats, seed, num_workers;
+        PyObject * p_num_x_samples;
+        PyObject * p_num_y_samples;
+        vector<Cell> samples;
+        PyObject * p_num_steps;
+        vector<unsigned long> num_steps;
+        // parse arguments
+        if(!PyArg_ParseTuple(args, "O!O!iO!ii", &PyList_Type, &p_num_x_samples, &PyList_Type, &p_num_y_samples, &num_repeats, &PyList_Type, &p_num_steps,
+                             &seed, &num_workers))
+        {
+            return nullptr;
+        }
+        getGlobalLogger(self->logger, self->log_function);
+        if(!importPyListsToVectorCell(p_num_x_samples, p_num_y_samples, samples, "Samples must be two lists of equal length of integers."))
+        {
+            return nullptr;
+        }
+        if(!importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers."))
+        {
+            return nullptr;
+        }
+        self->setDispersalParameters();
+        self->base_object->setSeed(static_cast<unsigned long>(seed));
+        self->base_object->setNumberRepeats(static_cast<unsigned long>(num_repeats));
+        self->base_object->setNumberSteps(num_steps);
+        self->base_object->setNumberWorkers(num_workers);
+        if(!self->has_imported_maps)
+        {
+            self->base_object->importMaps();
+        }
+        self->checkCompleted();
+        self->base_object->runSampleDistanceTravelled(samples);
         self->base_object->writeDatabase("DISTANCES_TRAVELLED");
     }
     catch(exception &e)
@@ -483,14 +585,28 @@ static void PySimulateDispersal_dealloc(PySimulateDispersal* self)
     PyTemplate_dealloc<SimulateDispersal>(self);
 }
 
-static PyMethodDef SimulateDispersalMethods[] = {{"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS, "Sets the dispersal current_metacommunity_parameters for this simulation."},
-                                                 {"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS, "Sets the output database for the simulation."},
-                                                 {"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS, "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
-                                                 {"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS, "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
-                                                 {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS, "Imports the map files for the simulation. Should only be run once."},
-                                                 {"import_all_maps",               (PyCFunction) set_all_map_parameters,        METH_VARARGS, "Imports all the map files with a single import."},
-                                                 {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS, "Sets the historical map current_metacommunity_parameters."},
-                                                 {nullptr,                         nullptr, 0,                                                nullptr}};
+static PyMethodDef SimulateDispersalMethods[] =
+        {
+                {"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS,
+                                                              "Sets the dispersal current_metacommunity_parameters for this simulation."},
+                {"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS,
+                                                              "Sets the output database for the simulation."},
+                {"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS,
+                                                              "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
+                {"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS,
+                                                              "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
+                {"run_all_distance_travelled",    (PyCFunction) runADT,                        METH_VARARGS,
+                                                              "Runs the dispersal simulation for the set current_metacommunity_parameters on all habitable cells, calculating the mean distance travelled."},
+                {"run_sample_distance_travelled", (PyCFunction) runSRW,                        METH_VARARGS,
+                                                              "Runs the dispersal simulation for the set current_metacommunity_parameters on the given sample habitable cells, calculating the mean distance travelled."},
+                {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS,
+                                                              "Imports the map files for the simulation. Should only be run once."},
+                {"import_all_maps",               (PyCFunction) set_all_map_parameters,        METH_VARARGS,
+                                                              "Imports all the map files with a single import."},
+                {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS,
+                                                              "Sets the historical map current_metacommunity_parameters."},
+                {nullptr,                         nullptr, 0, nullptr}
+        };
 
 static PyTypeObject genSimulateDispersalType()
 {

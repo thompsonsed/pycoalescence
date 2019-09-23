@@ -16,6 +16,7 @@ import os
 import sys
 
 from numpy import std
+from numpy import zeros
 
 # Python 2
 try:
@@ -63,6 +64,7 @@ class DispersalSimulation(Landscape):
         self.number_repeats = None
         self.number_steps = None
         self.seed = None
+        self.number_workers = 1
         self.dispersal_method = None
         self.landscape_type = None
         self.sigma = None
@@ -234,6 +236,7 @@ class DispersalSimulation(Landscape):
         number_repeats=None,
         number_steps=None,
         seed=None,
+        number_workers=None,
         dispersal_method=None,
         dispersal_file=None,
         sigma=None,
@@ -249,6 +252,7 @@ class DispersalSimulation(Landscape):
         :param int number_repeats: the number of repeats to perform the dispersal simulation for
         :param list/int number_steps: the number of steps to iterate for in calculating the mean distance travelled
         :param int seed: the random number seed
+        :param int number_workers: the number of threads (>= 1) launched to run the distance simulation in parallel
         :param str dispersal_method: the method of dispersal
         :param str dispersal_file: the dispersal file (alternative to dispersal_method)
         :param float sigma: the sigma dispersal value
@@ -285,6 +289,7 @@ class DispersalSimulation(Landscape):
         number_repeats=None,
         output_database="output.db",
         seed=1,
+        number_workers=1,
         dispersal_method="normal",
         landscape_type="closed",
         sigma=1,
@@ -303,8 +308,9 @@ class DispersalSimulation(Landscape):
         :param int number_repeats: the number of times to iterate on the map
         :param str output_database: the path to the output database
         :param int seed: the random seed
+        :param int number_workers: the number of threads (>= 1) launched to run the distance simulation in parallel
         :param str dispersal_method: the dispersal method to use ("normal", "fat-tailed" or "norm-uniform")
-        :param str landscape_type: the landscape type to use ("infinite", "tiled" or "closed")
+        :param str landscape_type: the landscape type to use ("infinite", "tiled_coarse", "tiled_fine", "clamped_coarse", "clamped_fine" or "closed")
         :param float sigma: the sigma value to use for normal and norm-uniform dispersal
         :param float tau: the tau value to use for fat-tailed dispersal
         :param float m_prob: the m_prob to use for norm-uniform dispersal
@@ -322,6 +328,7 @@ class DispersalSimulation(Landscape):
             self.dispersal_database = output_database
         self.dispersal_database = os.path.abspath(self.dispersal_database)
         self.seed = seed
+        self.number_workers = number_workers
         self.landscape_type = landscape_type
         self.sequential = sequential
         self.restrict_self = restrict_self
@@ -403,31 +410,37 @@ class DispersalSimulation(Landscape):
                 )
             self.setup_complete = True
 
-    def check_base_parameters(self, number_repeats=None, seed=None, sequential=None):
+    def check_base_parameters(self, number_repeats=None, seed=None, sequential=None, number_workers=None, dispersal=False):
         """
         Checks that the parameters have been set properly.
 
         :param int number_repeats: the number of times to iterate on the map
         :param int seed: the random seed
-        :param bool sequential: if true, runs repeats sequentially
+        :param bool sequential: if true, runs repeats in the dispersal simulation sequentially
+        :param int number_workers: the number of threads (>= 1) launched to run the distance simulation in parallel
+        :prarm bool dispersal: True iff a dispersal instead of a distance simulation is to be run
 
         :rtype: None
         """
         if number_repeats is None and self.number_repeats is None:
             raise ValueError("number_repeats has not been set.")
         if seed is None and self.seed is None:
-            raise ValueError("Seed has not been set.")
-        if sequential is None and self.sequential is None:
+            raise ValueError("seed has not been set.")
+        if sequential is None and self.sequential is None and dispersal:
             raise ValueError("sequential flag has not been set.")
+        if number_workers is None and self.number_workers is None and not dispersal:
+            raise ValueError("number_workers has not been set.")
         if number_repeats is not None:
             self.number_repeats = number_repeats
         if seed is not None:
             self.seed = seed
         if sequential is not None:
             self.sequential = sequential
+        if number_workers is not None:
+            self.number_workers = number_workers
         self._check_output_database()
 
-    def run_mean_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, sequential=None):
+    def run_mean_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, number_workers=None):
         """
         Tests the dispersal kernel on the provided map, producing a database containing the average distance travelled
         after number_steps have been moved.
@@ -440,7 +453,7 @@ class DispersalSimulation(Landscape):
         :param int number_repeats: the number of times to iterate on the map
         :param int/list number_steps: the number of steps to take each time before recording the distance travelled
         :param int seed: the random seed
-        :param bool sequential: if true, runs repeats sequentially
+        :param int number_workers: the number of threads (>= 1) launched to run the distance simulation in parallel
 
         :rtype: None
         """
@@ -449,13 +462,67 @@ class DispersalSimulation(Landscape):
         check_parent(self.dispersal_database)
         if number_steps is None and self.number_steps in [None, [None], []]:
             raise ValueError("number_steps has not been set.")
-        self.check_base_parameters(number_repeats=number_repeats, seed=seed, sequential=sequential)
+        self.check_base_parameters(number_repeats=number_repeats, seed=seed, number_workers=number_workers)
         if number_steps is not None:
             self.number_steps = number_steps
         if not self.setup_complete:
             self.complete_setup()
         self.c_dispersal_simulation.run_mean_distance_travelled(
-            self.number_repeats, self.number_steps, self.seed, self.sequential
+            self.number_repeats, self.number_steps, self.seed, self.number_workers
+        )
+
+    def run_all_distance_travelled(self, number_repeats=None, number_steps=None, seed=None, number_workers=None):
+        """
+        Tests the dispersal kernel on all cells on the provided map, producing a database containing the average distance
+        travelled after number_steps have been moved.
+
+        :param int number_repeats: the number of times to average over for each cell
+        :param int/list number_steps: the number of steps to take each time before recording the distance travelled
+        :param int seed: the random seed
+        :param int number_workers: the number of threads (>= 1) launched to run the distance simulation in parallel
+
+        :rtype: None
+        """
+        self._close_database_connection()
+        # Delete the file if it exists, and recursively create the folder if it doesn't
+        check_parent(self.dispersal_database)
+        if number_steps is None and self.number_steps in [None, [None], []]:
+            raise ValueError("number_steps has not been set.")
+        self.check_base_parameters(number_repeats=number_repeats, seed=seed, number_workers=number_workers)
+        if number_steps is not None:
+            self.number_steps = number_steps
+        if not self.setup_complete:
+            self.complete_setup()
+        self.c_dispersal_simulation.run_all_distance_travelled(
+            self.number_repeats, self.number_steps, self.seed, self.number_workers
+        )
+
+    def run_sample_distance_travelled(self, samples_X, samples_Y, number_repeats=None, number_steps=None, seed=None, number_workers=None):
+        """
+        Tests the dispersal kernel on the sampled cells on the provided map, producing a database containing the average distance
+        travelled after number_steps have been moved.
+
+        :param list samples_X: list of the integer x coordinates of the sampled cells
+        :param list samples_Y: list of the integer y coordinates of the sampled cells
+        :param int number_repeats: the number of times to average over for each cell
+        :param int/list number_steps: the number of steps to take each time before recording the distance travelled
+        :param int seed: the random seed
+        :param int number_workers: the number of threads (>= 1) launched to run the distance simulation in parallel
+
+        :rtype: None
+        """
+        self._close_database_connection()
+        # Delete the file if it exists, and recursively create the folder if it doesn't
+        check_parent(self.dispersal_database)
+        if number_steps is None and self.number_steps in [None, [None], []]:
+            raise ValueError("number_steps has not been set.")
+        self.check_base_parameters(number_repeats=number_repeats, seed=seed, number_workers=number_workers)
+        if number_steps is not None:
+            self.number_steps = number_steps
+        if not self.setup_complete:
+            self.complete_setup()
+        self.c_dispersal_simulation.run_sample_distance_travelled(
+            samples_X, samples_Y, self.number_repeats, self.number_steps, self.seed, self.number_workers
         )
 
     def run_mean_dispersal(self, number_repeats=None, seed=None, sequential=None):
@@ -472,7 +539,7 @@ class DispersalSimulation(Landscape):
         self._close_database_connection()
         # Delete the file if it exists, and recursively create the folder if it doesn't
         check_parent(self.dispersal_database)
-        self.check_base_parameters(number_repeats=number_repeats, seed=seed, sequential=sequential)
+        self.check_base_parameters(number_repeats=number_repeats, seed=seed, sequential=sequential, dispersal=True)
         if not self.setup_complete:
             self.complete_setup()
         self.c_dispersal_simulation.run_mean_dispersal_distance(self.number_repeats, self.seed, self.sequential)
@@ -524,7 +591,7 @@ class DispersalSimulation(Landscape):
             sql_fetch = cursor.execute(
                 "SELECT AVG(distance) FROM DISPERSAL_DISTANCES WHERE parameter_reference = ?", (parameter_reference,)
             ).fetchall()[0][0]
-            if not sql_fetch:
+            if sql_fetch is None:
                 raise ValueError(
                     "Could not get mean dispersal for "
                     "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
@@ -535,7 +602,7 @@ class DispersalSimulation(Landscape):
 
     def get_all_distances(self, database=None, parameter_reference=1):
         """
-        Gets all total distances travelled from the database if run_distance_travelled has already been run.
+        Gets all total distances travelled from the database if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already been run.
 
         :raises: ValueError if dispersal_database is None and so run_mean_dispersal() has not been run
         :raises: IOError if the output database does not exist
@@ -561,9 +628,46 @@ class DispersalSimulation(Landscape):
             raise IOError("Could not get all distances travelled from database: {}.".format(e))
         return [x[0] for x in sql_fetch]
 
+    def get_distances_map(self, shape, database=None, parameter_reference=1):
+        """
+        Gets all total distances travelled from the database if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already been run
+        and puts them inside a numpy matrix
+
+        :raises: ValueError if dispersal_database is None and so run_mean_dispersal() has not been run
+        :raises: IOError if the output database does not exist
+        :raises: IndexError if the output database contains coordinates outside a matrix with shape=shape
+
+        :param (int, int) shape: shape of the numpy matrix to return which will contain the distances
+        :param str database: the database to open
+        :param int parameter_reference: the parameter reference to use (default 1)
+        :return: the dispersal values from the database
+        """
+        if not self._check_table_exists(database=database, table_name="DISTANCES_TRAVELLED"):
+            raise IOError("Database {} does not have a DISTANCES_TRAVELLED table".format(self.dispersal_database))
+        try:
+            self._open_database_connection(database=database)
+            cursor = self._db_conn.cursor()
+            sql_fetch = cursor.execute(
+                "SELECT x, y, distance FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
+            ).fetchall()
+            if not sql_fetch:
+                raise ValueError(
+                    "Could not get distances travelled for "
+                    "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
+                )
+        except sqlite3.Error as e:  # pragma: no cover
+            raise IOError("Could not get all distances travelled from database: {}.".format(e))
+
+        dmap = zeros(shape=shape)
+
+        for x, y, dist in sql_fetch:
+            dmap[y, x] = dist
+
+        return dmap
+
     def get_mean_distance_travelled(self, database=None, parameter_reference=1):
         """
-        Gets the mean dispersal for the map if run_mean_dispersal has already been run.
+        Gets the mean dispersal for the map if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already been run.
 
         :raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run
         :raises: IOError if the output database does not exist
@@ -580,7 +684,7 @@ class DispersalSimulation(Landscape):
             sql_fetch = cursor.execute(
                 "SELECT AVG(distance) FROM DISTANCES_TRAVELLED WHERE parameter_reference = ?", (parameter_reference,)
             ).fetchall()[0][0]
-            if not sql_fetch:
+            if sql_fetch is None:
                 raise ValueError(
                     "Could not get mean distance travelled for "
                     "parameter reference of {} from {}.".format(parameter_reference, self.dispersal_database)
@@ -620,7 +724,7 @@ class DispersalSimulation(Landscape):
 
     def get_stdev_distance_travelled(self, database=None, parameter_reference=1):
         """
-        Gets the standard deviation of the  distance travelled for the map if run_mean_distance_travelled has already
+        Gets the standard deviation of the distance travelled for the map if run_mean_distance_travelled or run_all_distance_travelled or run_sample_distance_travelled has already
         been run.
 
         :raises: ValueError if dispersal_database is None and so test_average_dispersal() has not been run

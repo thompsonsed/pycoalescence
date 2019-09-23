@@ -84,3 +84,52 @@ bool importPyListToVectorDouble(PyObject *list_input, vector<double> &output, co
 	}
 	return true;
 }
+
+
+bool importPyListsToVectorCell(PyObject *x_list_input, PyObject *y_list_input, vector<Cell> &output, const string &err_msg)
+{
+    if(x_list_input == nullptr && y_list_input == nullptr)
+	{
+		return true;
+	}
+    else if (x_list_input == nullptr || y_list_input == nullptr)
+    {
+        PyErr_SetString(PyExc_TypeError, err_msg.c_str());
+		return false;
+    }
+	Py_ssize_t n = PyList_Size(x_list_input);
+    if (n != PyList_Size(y_list_input))
+    {
+        PyErr_SetString(PyExc_TypeError, err_msg.c_str());
+		return false;
+    }
+	PyObject * x_item;
+    PyObject * y_item;
+	for(int i=0; i<n; i++)
+	{
+		x_item = PyList_GetItem(x_list_input, i);
+        y_item = PyList_GetItem(y_list_input, i);
+        if(!PyLong_Check(x_item)
+#if PY_MAJOR_VERSION < 3
+		   && !PyInt_Check(x_item)
+#endif // PY_MAJOR_VERSION < 3
+				)
+		{
+			PyErr_SetString(PyExc_TypeError, err_msg.c_str());
+			return false;
+		}
+        if(!PyLong_Check(y_item)
+#if PY_MAJOR_VERSION < 3
+		   && !PyInt_Check(y_item)
+#endif // PY_MAJOR_VERSION < 3
+				)
+		{
+			PyErr_SetString(PyExc_TypeError, err_msg.c_str());
+			return false;
+		}
+        long x = PyLong_AsLong(x_item);
+        long y = PyLong_AsLong(y_item);
+		output.push_back((Cell){.x = x, .y = y});
+	}
+	return true;
+}

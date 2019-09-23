@@ -14,6 +14,8 @@
 #include <utility>
 #include <vector>
 #include <string>
+
+#include "necsim/Cell.h"
 using namespace std;
 
 
@@ -47,4 +49,6 @@ bool importPyListToVectorULong(PyObject *list_input, vector<unsigned long> &outp
  * @return true if no error is thrown, false otherwise
  */
 bool importPyListToVectorDouble(PyObject *list_input, vector<double> &output, const string &err_msg);
+
+bool importPyListsToVectorCell(PyObject *x_list_input, PyObject *y_list_input, vector<Cell> &output, const string &err_msg);
 #endif //SPECIATIONCOUNTER_PYIMPORTS_H
