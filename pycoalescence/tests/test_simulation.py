@@ -65,7 +65,24 @@ class TestFileCreation(unittest.TestCase):
             min_num_species=1,
             dispersal_method="normal",
         )
-        self.coal.set_map_parameters("null", 10, 10, "null", 10, 10, 0, 0, "null", 20, 20, 0, 0, 1, "null", "null")
+        self.coal.set_map_parameters(
+            "null",
+            10,
+            10,
+            "null",
+            10,
+            10,
+            0,
+            0,
+            "null",
+            20,
+            20,
+            0,
+            0,
+            1,
+            "null",
+            "null",
+        )
         self.coal.set_speciation_rates([0.1, 0.2])
         self.coal.run()
 
@@ -76,7 +93,10 @@ class TestFileCreation(unittest.TestCase):
         self.assertTrue(os.path.isfile(self.coal.output_database))
         self.assertEqual(
             os.path.join(self.coal.output_database),
-            os.path.join(self.coal.output_directory, "data_{}_{}.db".format(self.coal.job_type, self.coal.seed)),
+            os.path.join(
+                self.coal.output_directory,
+                "data_{}_{}.db".format(self.coal.job_type, self.coal.seed),
+            ),
         )
 
 
@@ -118,7 +138,12 @@ class TestSetSeed(unittest.TestCase):
         with self.assertRaises(ValueError):
             s.set_seed(2147483647)
         with self.assertRaises(ValueError):
-            s.set_simulation_parameters(seed=2147483647, job_type=1, output_directory="output", min_speciation_rate=0.1)
+            s.set_simulation_parameters(
+                seed=2147483647,
+                job_type=1,
+                output_directory="output",
+                min_speciation_rate=0.1,
+            )
 
     def testBasicSeedSetting(self):
         """Tests that the basic seed setting works as intended."""
@@ -127,7 +152,11 @@ class TestSetSeed(unittest.TestCase):
         self.assertEqual(1, s.seed)
         s = Simulation()
         s.set_simulation_parameters(
-            seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1, spatial=False
+            seed=1,
+            job_type=1,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            spatial=False,
         )
         self.assertEqual(1, s.seed)
 
@@ -138,7 +167,11 @@ class TestSetSeed(unittest.TestCase):
         self.assertEqual(1073741823, s.seed)
         s = Simulation(logging_level=60)
         s.set_simulation_parameters(
-            seed=0, job_type=1, output_directory="output", min_speciation_rate=0.1, spatial=False
+            seed=0,
+            job_type=1,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            spatial=False,
         )
         self.assertEqual(1073741823, s.seed)
         s = Simulation(logging_level=60)
@@ -194,7 +227,8 @@ class TestOffsetMismatch(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             self.coal1.set_map_files(
-                sample_file="sample/SA_samplemaskINT.tif", fine_file="sample/SA_sample_fine_offset.tif"
+                sample_file="sample/SA_samplemaskINT.tif",
+                fine_file="sample/SA_sample_fine_offset.tif",
             )
 
     def testRaisesErrorFineSampleOffset2(self):
@@ -213,8 +247,18 @@ class TestOffsetMismatch(unittest.TestCase):
         Checks that setting incorrect limits for the sample grid outside of the fine map causes an error to be thrown.
         """
         sim = Simulation()
-        sim.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.001, sigma=2)
-        sim.set_map_files(sample_file="null", fine_file="sample/SA_sample_fine_offset.tif", coarse_file="none")
+        sim.set_simulation_parameters(
+            seed=1,
+            job_type=1,
+            output_directory="output",
+            min_speciation_rate=0.001,
+            sigma=2,
+        )
+        sim.set_map_files(
+            sample_file="null",
+            fine_file="sample/SA_sample_fine_offset.tif",
+            coarse_file="none",
+        )
         sim.sample_map.x_offset = 10000
         sim.sample_map.y_offset = 10000
         sim.grid.x_size = 1000
@@ -249,7 +293,11 @@ class TestSimulationRaisesErrors(unittest.TestCase):
             min_num_species=1,
             dispersal_method="fat-tail",
         )
-        c.set_map_files("null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+        c.set_map_files(
+            "null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
+        )
         # Now change map name to something that doesn't exist
 
         c.fine_map.file_name = "not_here.tif"
@@ -278,7 +326,11 @@ class TestSimulationRaisesErrors(unittest.TestCase):
             dispersal_method="fat-tail",
             protracted=True,
         )
-        c.set_map_files("null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+        c.set_map_files(
+            "null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
+        )
         # Now change map name to something that doesn't exist
 
         c.fine_map.file_name = "not_here.tif"
@@ -315,7 +367,9 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             dispersal_method="fat-tail",
         )
         self.coal.set_map_files(
-            "null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif"
+            "null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
         )
         self.coal.add_sample_time(0.0)
         self.coal.add_sample_time(1.0)
@@ -355,27 +409,49 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             lines = [x.strip() for x in lines]
             self.assertEqual(lines[21], "[sample_grid]")
             self.assertEqual(
-                lines[22].replace(" ", ""), "path=null", msg="Config file doesn't produce expected output."
+                lines[22].replace(" ", ""),
+                "path=null",
+                msg="Config file doesn't produce expected output.",
             )
             self.assertEqual(
-                lines[27].replace(" ", ""), "[fine_map]", msg="Config file doesn't produce expected output."
+                lines[27].replace(" ", ""),
+                "[fine_map]",
+                msg="Config file doesn't produce expected output.",
             )
             self.assertEqual(
                 lines[28].replace(" ", ""),
                 "path=sample/SA_sample_fine.tif",
                 msg="Config file doesn't produce expected output.",
             )
-            self.assertEqual(lines[29].replace(" ", ""), "x=13", msg="Config file doesn't produce expected output.")
-            self.assertEqual(lines[30].replace(" ", ""), "y=13", msg="Config file doesn't produce expected output.")
-            self.assertEqual(lines[31].replace(" ", ""), "x_off=0", msg="Config file doesn't produce expected output.")
-            self.assertEqual(lines[32].replace(" ", ""), "y_off=0", msg="Config file doesn't produce expected output.")
+            self.assertEqual(
+                lines[29].replace(" ", ""),
+                "x=13",
+                msg="Config file doesn't produce expected output.",
+            )
+            self.assertEqual(
+                lines[30].replace(" ", ""),
+                "y=13",
+                msg="Config file doesn't produce expected output.",
+            )
+            self.assertEqual(
+                lines[31].replace(" ", ""),
+                "x_off=0",
+                msg="Config file doesn't produce expected output.",
+            )
+            self.assertEqual(
+                lines[32].replace(" ", ""),
+                "y_off=0",
+                msg="Config file doesn't produce expected output.",
+            )
 
     def testConfigOverwrite(self):
         """Tests that the config file overwrites the output."""
         config_output = os.path.join("output", "conf_test_create.txt")
         config_output2 = os.path.join("output", "notexist", "conf_test_create2.txt")
         sim = Simulation(logging_level=logging.CRITICAL)
-        sim.set_simulation_parameters(1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, spatial=False)
+        sim.set_simulation_parameters(
+            1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, spatial=False
+        )
         self.assertFalse(os.path.exists(os.path.dirname(config_output2)))
         sim.write_config(config_output2)
         self.assertTrue(os.path.exists(os.path.dirname(config_output2)))
@@ -397,7 +473,11 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             dispersal_method="fat-tail",
             restrict_self=True,
         )
-        sim.set_map_files("null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+        sim.set_map_files(
+            "null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
+        )
         sim.sample_map.file_name = None
         sim.coarse_map.file_name = None
         sim.add_sample_time(0.0)
@@ -420,9 +500,21 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         with open("output/conf1.txt", "r") as f:
             lines = f.readlines()
             lines = [x.strip().replace(" ", "") for x in lines]
-            self.assertEqual(lines[17], "[times]", msg="Time config file doesn't produce expected output.")
-            self.assertEqual(lines[18], "time0=0.0", msg="Time config file doesn't produce expected output.")
-            self.assertEqual(lines[19], "time1=1.0", msg="Time config file doesn't produce expected output.")
+            self.assertEqual(
+                lines[17],
+                "[times]",
+                msg="Time config file doesn't produce expected output.",
+            )
+            self.assertEqual(
+                lines[18],
+                "time0=0.0",
+                msg="Time config file doesn't produce expected output.",
+            )
+            self.assertEqual(
+                lines[19],
+                "time1=1.0",
+                msg="Time config file doesn't produce expected output.",
+            )
 
     def testConfigWrite(self):
         """Tests that the config parser correctly writes all simulation parameters to memory."""
@@ -441,7 +533,11 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             min_num_species=1,
             dispersal_method="fat-tail",
         )
-        coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+        coal.set_map_files(
+            "null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
+        )
         coal.add_sample_time(0.0)
         coal.add_sample_time(1.0)
         coal.set_speciation_rates([0.1, 0.2])
@@ -475,7 +571,11 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         )
         with self.assertRaises(RuntimeError):
             coal.create_map_config()
-        coal.set_map_files("null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif")
+        coal.set_map_files(
+            "null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
+        )
         coal.add_historical_map(
             fine_file="sample/SA_sample_fine_historical1.tif",
             coarse_file="sample/SA_sample_coarse_historical1.tif",
@@ -508,12 +608,28 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         self.assertEqual(1, coal.min_num_species)
         self.assertEqual("fat-tail", coal.dispersal_method)
         self.assertEqual("null", coal.sample_map.file_name)
-        self.assertEqual("pycoalescence/tests/sample/SA_sample_fine.tif", coal.fine_map.file_name)
-        self.assertEqual("pycoalescence/tests/sample/SA_sample_coarse.tif", coal.coarse_map.file_name)
-        self.assertEqual("pycoalescence/tests/sample/SA_sample_fine_pristine1.tif", coal.historical_fine_list[0])
-        self.assertEqual("pycoalescence/tests/sample/SA_sample_fine_pristine2.tif", coal.historical_fine_list[1])
-        self.assertEqual("pycoalescence/tests/sample/SA_sample_coarse_pristine1.tif", coal.historical_coarse_list[0])
-        self.assertEqual("pycoalescence/tests/sample/SA_sample_coarse_pristine2.tif", coal.historical_coarse_list[1])
+        self.assertEqual(
+            "pycoalescence/tests/sample/SA_sample_fine.tif", coal.fine_map.file_name
+        )
+        self.assertEqual(
+            "pycoalescence/tests/sample/SA_sample_coarse.tif", coal.coarse_map.file_name
+        )
+        self.assertEqual(
+            "pycoalescence/tests/sample/SA_sample_fine_pristine1.tif",
+            coal.historical_fine_list[0],
+        )
+        self.assertEqual(
+            "pycoalescence/tests/sample/SA_sample_fine_pristine2.tif",
+            coal.historical_fine_list[1],
+        )
+        self.assertEqual(
+            "pycoalescence/tests/sample/SA_sample_coarse_pristine1.tif",
+            coal.historical_coarse_list[0],
+        )
+        self.assertEqual(
+            "pycoalescence/tests/sample/SA_sample_coarse_pristine2.tif",
+            coal.historical_coarse_list[1],
+        )
         self.assertEqual([10, 10], coal.times_list)
         self.assertEqual([0.5, 0.5], coal.rates_list)
         self.assertEqual([0.0, 1.0], coal.times)
@@ -533,7 +649,11 @@ class TestSimulationSetMaps(unittest.TestCase):
         cls.c = Simulation()
         cls.c.set_map("null", 10, 10)
         cls.c.set_simulation_parameters(
-            seed=1, job_type=12, output_directory="output", min_speciation_rate=0.01, sigma=2
+            seed=1,
+            job_type=12,
+            output_directory="output",
+            min_speciation_rate=0.01,
+            sigma=2,
         )
         cls.c.run()
 
@@ -594,7 +714,9 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
             expected_log = content_file.read().replace("\r", "\n").split("\n")[:-6]
             expected_log[0] = expected_log[0].format(pycoalescence_version)
         s = Simulation(logging_level=logging.INFO, stream=log_stream)
-        s.set_simulation_parameters(seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1)
+        s.set_simulation_parameters(
+            seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1
+        )
         s.set_map("null", 10, 10)
         s.run()
         log = log_stream.getvalue().replace("\r", "\n").split("\n")[:-6]
@@ -606,7 +728,9 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.WARNING, stream=log_stream)
-        s.set_simulation_parameters(seed=3, job_type=12, output_directory="output", min_speciation_rate=0.1)
+        s.set_simulation_parameters(
+            seed=3, job_type=12, output_directory="output", min_speciation_rate=0.1
+        )
         s.set_map("null", 10, 10)
         s.finalise_setup()
         s.run_coalescence()
@@ -618,7 +742,9 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-        s.set_simulation_parameters(seed=4, job_type=12, output_directory="output", min_speciation_rate=0.1)
+        s.set_simulation_parameters(
+            seed=4, job_type=12, output_directory="output", min_speciation_rate=0.1
+        )
         s.set_map("null", 10, 10)
         s.finalise_setup()
         s.run_coalescence()
@@ -637,7 +763,9 @@ class TestInitialCountSuccess(unittest.TestCase):
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-        s.set_simulation_parameters(seed=5, job_type=12, output_directory="output", min_speciation_rate=0.1)
+        s.set_simulation_parameters(
+            seed=5, job_type=12, output_directory="output", min_speciation_rate=0.1
+        )
         s.set_map_files(sample_file="null", fine_file="sample/large_fine.tif")
         s.sample_map.x_size = 10
         s.sample_map.y_size = 10
@@ -661,7 +789,9 @@ class TestSimulationDimensionsAndOffsets(unittest.TestCase):
         )
         cls.coal2 = Simulation()
         cls.coal2.set_map_files(
-            sample_file="null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif"
+            sample_file="null",
+            fine_file="sample/SA_sample_fine.tif",
+            coarse_file="sample/SA_sample_coarse.tif",
         )
 
     def testFineMapDimensions(self):
@@ -717,7 +847,9 @@ class TestSimulationDimensionsAndOffsets(unittest.TestCase):
         sim.fine_map = Map(file=os.path.join("sample", "SA_sample_fine.tif"))
         sim.fine_map.set_dimensions()
         with self.assertRaises(ValueError):
-            sim.check_dimensions_match_fine(map_to_check=Map(file=os.path.join("sample", "SA_sample_coarse.tif")))
+            sim.check_dimensions_match_fine(
+                map_to_check=Map(file=os.path.join("sample", "SA_sample_coarse.tif"))
+            )
 
 
 class TestSimulationExtremeSpeciation(unittest.TestCase):
@@ -818,19 +950,31 @@ class TestSimulationMapDensityReading(unittest.TestCase):
             dispersal_relative_cost=1,
             min_num_species=1,
         )
-        cls.c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
+        cls.c.set_map_files(
+            sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif"
+        )
 
     def testActualDensity(self):
         """
         Tests the actual density
         """
-        self.assertEqual(self.c.grid_density_actual(0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size), 531)
+        self.assertEqual(
+            self.c.grid_density_actual(
+                0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size
+            ),
+            531,
+        )
 
     def testEstimateDensity(self):
         """
         Tests the estimate density for the sample grid
         """
-        self.assertEqual(self.c.grid_density_estimate(0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size), 375)
+        self.assertEqual(
+            self.c.grid_density_estimate(
+                0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size
+            ),
+            375,
+        )
 
     def testFineAverageMap(self):
         """
@@ -898,35 +1042,62 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
         cls.base_sim = Simulation()
         cls.hist_sim = Simulation()
         cls.base_sim.set_simulation_parameters(
-            seed=4, job_type=17, output_directory="output", min_speciation_rate=0.1, sigma=2, sample_size=0.1
+            seed=4,
+            job_type=17,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            sigma=2,
+            sample_size=0.1,
         )
         cls.base_sim.set_map("sample/SA_sample_fine.tif")
         cls.base_sim.run()
         cls.hist_sim.set_simulation_parameters(
-            seed=4, job_type=18, output_directory="output", min_speciation_rate=0.1, sigma=2, sample_size=0.1
+            seed=4,
+            job_type=18,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            sigma=2,
+            sample_size=0.1,
         )
         cls.hist_sim.set_map("sample/SA_sample_fine.tif")
         cls.hist_sim.add_historical_map(
-            fine_file="sample/example_historical_fine.tif", coarse_file="none", time=10, rate=0.2
+            fine_file="sample/example_historical_fine.tif",
+            coarse_file="none",
+            time=10,
+            rate=0.2,
         )
         cls.hist_sim.run()
         cls.hist_sim2 = Simulation()
         cls.hist_sim2.set_simulation_parameters(
-            seed=4, job_type=19, output_directory="output", min_speciation_rate=0.1, sigma=2, sample_size=0.1
+            seed=4,
+            job_type=19,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            sigma=2,
+            sample_size=0.1,
         )
         cls.hist_sim2.set_map("sample/SA_sample_fine.tif")
         cls.hist_sim2.add_historical_map(
-            fine_file="sample/example_historical_fine.tif", coarse_file="none", time=10, rate=0.2
+            fine_file="sample/example_historical_fine.tif",
+            coarse_file="none",
+            time=10,
+            rate=0.2,
         )
-        cls.hist_sim2.add_historical_map(fine_file="sample/SA_sample_fine.tif", coarse_file="none", time=20, rate=0.2)
+        cls.hist_sim2.add_historical_map(
+            fine_file="sample/SA_sample_fine.tif", coarse_file="none", time=20, rate=0.2
+        )
         cls.hist_sim2.run()
 
     def testSpeciesRichnessDiffer(self):
         """
         Tests that the species richness differs between the two simulations
         """
-        self.assertNotEqual(self.base_sim.get_species_richness(), self.hist_sim.get_species_richness())
-        self.assertNotEqual(self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness())
+        self.assertNotEqual(
+            self.base_sim.get_species_richness(), self.hist_sim.get_species_richness()
+        )
+        self.assertNotEqual(
+            self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness()
+        )
         self.assertEqual(2673, self.base_sim.get_species_richness())
         self.assertEqual(2515, self.hist_sim2.get_species_richness())
         self.assertEqual(2450, self.hist_sim.get_species_richness())
@@ -951,7 +1122,9 @@ class TestExpansionOverTime(unittest.TestCase):
             landscape_type="infinite",
         )
         cls.sim.set_map_files("null", "sample/null.tif", "sample/null_large.tif")
-        cls.sim.add_historical_map("sample/null.tif", "sample/null_large.tif", time=500, rate=0.5)
+        cls.sim.add_historical_map(
+            "sample/null.tif", "sample/null_large.tif", time=500, rate=0.5
+        )
         cls.sim.add_sample_time([0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])
         cls.sim.run()
 
@@ -972,17 +1145,29 @@ class TestSimulationParameters(unittest.TestCase):
         """Tests times are correctly added."""
         sim = Simulation()
         sim.set_simulation_parameters(
-            seed=10000, job_type=1000000, output_directory="output", min_speciation_rate=0.1, times=0.1
+            seed=10000,
+            job_type=1000000,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            times=0.1,
         )
         self.assertEqual([0.0, 0.1], sim.times)
         sim = Simulation()
         sim.set_simulation_parameters(
-            seed=10000, job_type=1000000, output_directory="output", min_speciation_rate=0.1, times=[10, 100]
+            seed=10000,
+            job_type=1000000,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            times=[10, 100],
         )
         self.assertEqual([0.0, 10.0, 100.0], sim.times)
         sim = Simulation()
         sim.set_simulation_parameters(
-            seed=10000, job_type=1000000, output_directory="output", min_speciation_rate=0.1, times=[100.0]
+            seed=10000,
+            job_type=1000000,
+            output_directory="output",
+            min_speciation_rate=0.1,
+            times=[100.0],
         )
         self.assertEqual([0.0, 100.0], sim.times)
 
@@ -1083,11 +1268,25 @@ class TestSimulationParameters(unittest.TestCase):
         sim = Simulation()
         with self.assertRaises(ValueError):
             sim.set_simulation_parameters(
-                seed=10000, job_type=1000000, output_directory="output", min_speciation_rate=0.1, landscape_type="bleh"
+                seed=10000,
+                job_type=1000000,
+                output_directory="output",
+                min_speciation_rate=0.1,
+                landscape_type="bleh",
             )
         sim = Simulation(logging_level=40)
-        sim.set_simulation_parameters(seed=10000, job_type=1000000, output_directory="output", min_speciation_rate=0.1)
-        sim.set_simulation_parameters(seed=10000, job_type=1000000, output_directory="output", min_speciation_rate=0.1)
+        sim.set_simulation_parameters(
+            seed=10000,
+            job_type=1000000,
+            output_directory="output",
+            min_speciation_rate=0.1,
+        )
+        sim.set_simulation_parameters(
+            seed=10000,
+            job_type=1000000,
+            output_directory="output",
+            min_speciation_rate=0.1,
+        )
 
     def testParametersNotSetError(self):
         """Tests that an error is raised when the parameters aren't set."""
@@ -1152,7 +1351,9 @@ class TestRamEstimation(unittest.TestCase):
     def testPersistentRamEstimation(self):
         """Tests the calculations for persistent RAM usage."""
         sim = Simulation()
-        sim.set_simulation_parameters(1, 1000, output_directory="output", min_speciation_rate=0.1)
+        sim.set_simulation_parameters(
+            1, 1000, output_directory="output", min_speciation_rate=0.1
+        )
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1166,14 +1367,22 @@ class TestRamEstimation(unittest.TestCase):
         )
         self.assertEqual(9689724, sim.persistent_ram_usage())
         sim = Simulation()
-        sim.set_simulation_parameters(1, 1000, output_directory="output", min_speciation_rate=0.1)
+        sim.set_simulation_parameters(
+            1, 1000, output_directory="output", min_speciation_rate=0.1
+        )
         sim.set_map_files(
             sample_file=os.path.join("sample", "SA_sample_coarse.tif"),
             fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
         )
-        sim.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
-        sim.add_death_map(death_map=os.path.join("sample", "SA_sample_coarse_pristine.tif"))
-        sim.add_reproduction_map(reproduction_map=os.path.join("sample", "SA_sample_coarse_pristine.tif"))
+        sim.add_dispersal_map(
+            dispersal_map=os.path.join("sample", "dispersal_fine.tif")
+        )
+        sim.add_death_map(
+            death_map=os.path.join("sample", "SA_sample_coarse_pristine.tif")
+        )
+        sim.add_reproduction_map(
+            reproduction_map=os.path.join("sample", "SA_sample_coarse_pristine.tif")
+        )
         self.assertEqual(30135, sim.persistent_ram_usage())
 
 
@@ -1183,7 +1392,9 @@ class TestRamOptimistation(unittest.TestCase):
     def testBasicOptimisation(self):
         """Test that a basic optimisation process works."""
         sim = Simulation()
-        sim.set_simulation_parameters(seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1)
+        sim.set_simulation_parameters(
+            seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1
+        )
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1212,7 +1423,9 @@ class TestRamOptimistation(unittest.TestCase):
     def testOptimisationRaisesError(self):
         """Tests that errors are raised correctly."""
         sim = Simulation()
-        sim.set_simulation_parameters(seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1)
+        sim.set_simulation_parameters(
+            seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1
+        )
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1227,7 +1440,9 @@ class TestRamOptimistation(unittest.TestCase):
         with self.assertRaises(MemoryError):
             sim.optimise_ram(0.0000001)
         sim = Simulation()
-        sim.set_simulation_parameters(seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1)
+        sim.set_simulation_parameters(
+            seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1
+        )
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1235,7 +1450,149 @@ class TestRamOptimistation(unittest.TestCase):
         )
 
 
-class TestSimulationUsingGillespie(unittest.TestCase):
+class TestSimulationUsingGillespieEquality(unittest.TestCase):
+    """Tests simulations using the gillespie algorithm match equivalent simulations not using the Gillespie algorithm."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.baseline_simulation = Simulation(logging_level=50)
+        cls.baseline_simulation.set_simulation_parameters(seed=10, job_type=2, output_directory="output",
+                                                          min_speciation_rate=0.001,
+                                                          deme=1, sample_size=0.01)
+        cls.baseline_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample",
+                                                                                         "SA_sample_coarse.tif"),
+                                              coarse_file="none")
+        cls.baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
+        cls.baseline_simulation.run()
+        cls.gillespie_simulation = Simulation()
+        cls.gillespie_simulation.set_simulation_parameters(
+            seed=10,
+            job_type=3,
+            output_directory="output",
+            min_speciation_rate=0.001,
+            deme=1, sample_size=0.01
+        )
+        cls.gillespie_simulation.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+            coarse_file="none",
+        )
+        cls.gillespie_simulation.add_dispersal_map(
+            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
+        )
+        cls.gillespie_simulation.add_gillespie(1000)
+        cls.gillespie_simulation.run()
+        cls.gillespie_simulation2 = Simulation()
+        cls.gillespie_simulation2.set_simulation_parameters(
+            seed=10,
+            job_type=4,
+            output_directory="output",
+            min_speciation_rate=0.001,
+            deme=1, sample_size=0.01
+        )
+        cls.gillespie_simulation2.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+            coarse_file="none",
+        )
+        cls.gillespie_simulation2.add_dispersal_map(
+            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
+        )
+
+        cls.gillespie_simulation2.add_gillespie(0)
+        cls.gillespie_simulation2.run()
+
+    @staticmethod
+    def setupGillespie(**kwargs):
+        """Sets up a simple Gillespie simulation."""
+        s = Simulation()
+        s.set_simulation_parameters(
+            seed=12,
+            job_type=3,
+            output_directory="output",
+            min_speciation_rate=0.001,
+            deme=1, sample_size=0.01,
+            **kwargs
+        )
+        return s
+
+    def testChecksForGillespieCompability(self):
+        """Checks that simulations which can't use Gillespie throw the correct errors."""
+        coarse_maps = ["null", os.path.join("sample", "SA_sample_coarse.tif")]
+        for coarse_map in coarse_maps:
+            s = self.setupGillespie()
+            with self.assertRaises(RuntimeError):
+                s.add_gillespie(10)
+            s.set_map_files(
+                sample_file="null", fine_file=os.path.join("sample", "SA_sample_fine.tif"), coarse_file=coarse_map
+            )
+            s.add_dispersal_map("null")
+            with self.assertRaises(ValueError):
+                s.add_gillespie(10)
+        s = self.setupGillespie()
+        s.set_map("null", 10, 10)
+        s.add_dispersal_map("null")
+        with self.assertRaises(ValueError):
+            s.add_gillespie(-10)
+
+
+
+    def testCheckCanUseGillespie(self):
+        """Checks that the Gillespie checks are accurate."""
+        s = Simulation()
+        with self.assertRaises(RuntimeError):
+            s.check_can_use_gillespie()
+        s = self.setupGillespie()
+        with self.assertRaises(RuntimeError):
+            s.check_can_use_gillespie()
+        s.set_map("null", 10, 10)
+        self.assertFalse(s.check_can_use_gillespie())
+        s.add_dispersal_map("null")
+        self.assertTrue(s.check_can_use_gillespie())
+        s = Simulation()
+        s.set_simulation_parameters(
+            seed=10,
+            job_type=3,
+            output_directory="output",
+            min_speciation_rate=0.000001,
+            deme=1000,
+            sample_size=0.00001,
+            spatial=False,
+        )
+        self.assertFalse(s.check_can_use_gillespie())
+        s = Simulation()
+        s.set_simulation_parameters(
+            seed=10,
+            job_type=3,
+            output_directory="output",
+            min_speciation_rate=0.000001,
+            deme=1000,
+            sample_size=0.00001,
+            protracted=True,
+            min_speciation_gen=10.0,
+            max_speciation_gen=100.0,
+        )
+        s.set_map("null", 10, 10)
+        s.add_dispersal_map("null")
+        self.assertFalse(s.check_can_use_gillespie())
+        s = self.setupGillespie()
+        s.set_map_files(
+            "null",
+            fine_file=os.path.join("sample", "SA_sample_fine.tif"),
+            coarse_file=os.path.join("sample", "SA_sample_coarse.tif"),
+        )
+        s.add_dispersal_map("null")
+        self.assertFalse(s.check_can_use_gillespie())
+
+    def testSpeciesRichnessValuesSimilar(self):
+        """Checks that the species richness values are similar between implementations of Gillespie."""
+        self.assertEqual(587, self.baseline_simulation.get_species_richness())
+        # TODO check these values - they seem wrong
+        self.assertEqual(232, self.gillespie_simulation.get_species_richness())
+        self.assertEqual(232, self.gillespie_simulation2.get_species_richness())
+
+@skipLongTest
+class TestSimulationUsingGillespieLarge(unittest.TestCase):
     """Tests simulations using the gillespie algorithm."""
 
     @classmethod
@@ -1249,22 +1606,42 @@ class TestSimulationUsingGillespie(unittest.TestCase):
         #                                       coarse_file="none")
         # cls.baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
         # cls.baseline_simulation.run()
-        cls.gillespie_simulation = Simulation(logging_level=20) # TODO change logging
-        cls.gillespie_simulation.set_simulation_parameters(seed=10, job_type=3, output_directory="output",
-                                                          min_speciation_rate=0.000001,
-                                                          deme=1000, sample_size=0.00001)
-        cls.gillespie_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
-                                              coarse_file="none")
-        cls.gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine3.tif"))
+        cls.gillespie_simulation = Simulation(logging_level=50)  # TODO change logging
+        cls.gillespie_simulation.set_simulation_parameters(
+            seed=10,
+            job_type=3,
+            output_directory="output",
+            min_speciation_rate=0.000001,
+            deme=1000,
+            sample_size=0.00001,
+        )
+        cls.gillespie_simulation.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+            coarse_file="none",
+        )
+        cls.gillespie_simulation.add_dispersal_map(
+            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
+        )
         cls.gillespie_simulation.add_gillespie(10)
         cls.gillespie_simulation.run()
-        cls.gillespie_simulation2= Simulation()
-        cls.gillespie_simulation2.set_simulation_parameters(seed=10, job_type=4, output_directory="output",
-                                                          min_speciation_rate=0.000001,
-                                                          deme=1000, sample_size=0.00001)
-        cls.gillespie_simulation2.set_map_files(sample_file="null", fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
-                                              coarse_file="none")
-        cls.gillespie_simulation2.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine3.tif"))
+        cls.gillespie_simulation2 = Simulation()
+        cls.gillespie_simulation2.set_simulation_parameters(
+            seed=10,
+            job_type=4,
+            output_directory="output",
+            min_speciation_rate=0.000001,
+            deme=1000,
+            sample_size=0.00001,
+        )
+        cls.gillespie_simulation2.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+            coarse_file="none",
+        )
+        cls.gillespie_simulation2.add_dispersal_map(
+            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
+        )
 
         cls.gillespie_simulation2.add_gillespie(0)
         cls.gillespie_simulation2.run()
