@@ -1456,21 +1456,31 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.baseline_simulation = Simulation(logging_level=50)
-        cls.baseline_simulation.set_simulation_parameters(seed=10, job_type=2, output_directory="output",
-                                                          min_speciation_rate=0.001,
-                                                          deme=1, sample_size=0.01)
-        cls.baseline_simulation.set_map_files(sample_file="null", fine_file=os.path.join("sample",
-                                                                                         "SA_sample_coarse.tif"),
-                                              coarse_file="none")
-        cls.baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
+        cls.baseline_simulation.set_simulation_parameters(
+            seed=10,
+            job_type=2,
+            output_directory="output",
+            min_speciation_rate=0.001,
+            deme=1,
+            sample_size=0.01,
+        )
+        cls.baseline_simulation.set_map_files(
+            sample_file="null",
+            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+            coarse_file="none",
+        )
+        cls.baseline_simulation.add_dispersal_map(
+            dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
+        )
         cls.baseline_simulation.run()
-        cls.gillespie_simulation = Simulation()
+        cls.gillespie_simulation = Simulation(logging_level=1000)
         cls.gillespie_simulation.set_simulation_parameters(
             seed=10,
             job_type=3,
             output_directory="output",
             min_speciation_rate=0.001,
-            deme=1, sample_size=0.01
+            deme=1,
+            sample_size=0.01,
         )
         cls.gillespie_simulation.set_map_files(
             sample_file="null",
@@ -1478,9 +1488,9 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             coarse_file="none",
         )
         cls.gillespie_simulation.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
+            dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
         )
-        cls.gillespie_simulation.add_gillespie(1000)
+        cls.gillespie_simulation.add_gillespie(100)
         cls.gillespie_simulation.run()
         cls.gillespie_simulation2 = Simulation()
         cls.gillespie_simulation2.set_simulation_parameters(
@@ -1488,7 +1498,8 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             job_type=4,
             output_directory="output",
             min_speciation_rate=0.001,
-            deme=1, sample_size=0.01
+            deme=1,
+            sample_size=0.01,
         )
         cls.gillespie_simulation2.set_map_files(
             sample_file="null",
@@ -1496,10 +1507,10 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             coarse_file="none",
         )
         cls.gillespie_simulation2.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
+            dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
         )
 
-        cls.gillespie_simulation2.add_gillespie(0)
+        cls.gillespie_simulation2.add_gillespie(10)
         cls.gillespie_simulation2.run()
 
     @staticmethod
@@ -1511,7 +1522,8 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             job_type=3,
             output_directory="output",
             min_speciation_rate=0.001,
-            deme=1, sample_size=0.01,
+            deme=1,
+            sample_size=0.01,
             **kwargs
         )
         return s
@@ -1524,7 +1536,9 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 s.add_gillespie(10)
             s.set_map_files(
-                sample_file="null", fine_file=os.path.join("sample", "SA_sample_fine.tif"), coarse_file=coarse_map
+                sample_file="null",
+                fine_file=os.path.join("sample", "SA_sample_fine.tif"),
+                coarse_file=coarse_map,
             )
             s.add_dispersal_map("null")
             with self.assertRaises(ValueError):
@@ -1534,8 +1548,6 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
         s.add_dispersal_map("null")
         with self.assertRaises(ValueError):
             s.add_gillespie(-10)
-
-
 
     def testCheckCanUseGillespie(self):
         """Checks that the Gillespie checks are accurate."""
@@ -1586,10 +1598,18 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
 
     def testSpeciesRichnessValuesSimilar(self):
         """Checks that the species richness values are similar between implementations of Gillespie."""
+        print(
+            "{}, {} and {}".format(
+                self.baseline_simulation.get_species_richness(),
+                self.gillespie_simulation.get_species_richness(),
+                self.gillespie_simulation2.get_species_richness(),
+            )
+        )
         self.assertEqual(587, self.baseline_simulation.get_species_richness())
         # TODO check these values - they seem wrong
         self.assertEqual(232, self.gillespie_simulation.get_species_richness())
         self.assertEqual(232, self.gillespie_simulation2.get_species_richness())
+
 
 @skipLongTest
 class TestSimulationUsingGillespieLarge(unittest.TestCase):
