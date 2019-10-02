@@ -1451,67 +1451,59 @@ class TestRamOptimistation(unittest.TestCase):
 
 
 class TestSimulationUsingGillespieEquality(unittest.TestCase):
-    """Tests simulations using the gillespie algorithm match equivalent simulations not using the Gillespie algorithm."""
+    """
+    Tests simulations using the gillespie algorithm match equivalent simulations not using the Gillespie algorithm.
+    """
 
     @classmethod
     def setUpClass(cls):
-        cls.baseline_simulation = Simulation(logging_level=50)
-        cls.baseline_simulation.set_simulation_parameters(
-            seed=10,
-            job_type=2,
-            output_directory="output",
-            min_speciation_rate=0.001,
-            deme=1,
-            sample_size=0.01,
-        )
-        cls.baseline_simulation.set_map_files(
-            sample_file="null",
-            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
-            coarse_file="none",
-        )
-        cls.baseline_simulation.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-        )
-        cls.baseline_simulation.run()
-        cls.gillespie_simulation = Simulation(logging_level=1000)
-        cls.gillespie_simulation.set_simulation_parameters(
-            seed=10,
-            job_type=3,
-            output_directory="output",
-            min_speciation_rate=0.001,
-            deme=1,
-            sample_size=0.01,
-        )
-        cls.gillespie_simulation.set_map_files(
-            sample_file="null",
-            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
-            coarse_file="none",
-        )
-        cls.gillespie_simulation.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-        )
-        cls.gillespie_simulation.add_gillespie(100)
-        cls.gillespie_simulation.run()
-        cls.gillespie_simulation2 = Simulation()
-        cls.gillespie_simulation2.set_simulation_parameters(
-            seed=10,
-            job_type=4,
-            output_directory="output",
-            min_speciation_rate=0.001,
-            deme=1,
-            sample_size=0.01,
-        )
-        cls.gillespie_simulation2.set_map_files(
-            sample_file="null",
-            fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
-            coarse_file="none",
-        )
-        cls.gillespie_simulation2.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-        )
-
-        cls.gillespie_simulation2.add_gillespie(10)
-        cls.gillespie_simulation2.run()
+        cls.baseline_richness_values = []
+        speciation_rates = [0.001, 0.01, 0.1, 0.9]
+        for seed in range(10, 20):
+            baseline_simulation = Simulation(logging_level=50)
+            baseline_simulation.set_simulation_parameters(
+                seed=seed,
+                job_type=2,
+                output_directory="output",
+                min_speciation_rate=0.001,
+                deme=1,
+                sample_size=0.01,
+            )
+            baseline_simulation.set_map_files(
+                sample_file="null",
+                fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                coarse_file="none",
+            )
+            baseline_simulation.add_dispersal_map(
+                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
+            )
+            baseline_simulation.set_speciation_rates(speciation_rates=speciation_rates)
+            baseline_simulation.run()
+            for ref in range(1, len(speciation_rates) + 1):
+                cls.baseline_richness_values.append((ref, baseline_simulation.get_species_richness(ref)))
+        cls.gillespie_richness_values = []
+        for seed, gillespie_generation in zip(range(10, 20), range(10, 2020, 200)):
+            gillespie_simulation = Simulation(logging_level=20)
+            gillespie_simulation.set_simulation_parameters(
+                seed=seed,
+                job_type=3,
+                output_directory="output",
+                min_speciation_rate=0.01,
+                deme=1,
+                sample_size=0.01,
+            )
+            gillespie_simulation.set_map_files(
+                sample_file="null",
+                fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                coarse_file="none",
+            )
+            gillespie_simulation.add_dispersal_map(
+                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
+            )
+            gillespie_simulation.add_gillespie(gillespie_generation)
+            gillespie_simulation.run()
+            for ref in range(1, len(speciation_rates)+1):
+                cls.gillespie_richness_values.append((ref, gillespie_simulation.get_species_richness(ref)))
 
     @staticmethod
     def setupGillespie(**kwargs):
@@ -1598,18 +1590,17 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
 
     def testSpeciesRichnessValuesSimilar(self):
         """Checks that the species richness values are similar between implementations of Gillespie."""
-        print(
-            "{}, {} and {}".format(
-                self.baseline_simulation.get_species_richness(),
-                self.gillespie_simulation.get_species_richness(),
-                self.gillespie_simulation2.get_species_richness(),
-            )
-        )
-        self.assertEqual(587, self.baseline_simulation.get_species_richness())
-        # TODO check these values - they seem wrong
-        self.assertEqual(232, self.gillespie_simulation.get_species_richness())
-        self.assertEqual(232, self.gillespie_simulation2.get_species_richness())
+        baseline_mean_values = {}
+        for i in set(x for x, _ in self.baseline_richness_values):
+            vals = [richness for ref, richness in self.baseline_richness_values if ref == i]
+            baseline_mean_values[i] = sum(vals)/len(vals)
 
+        gillespie_mean_values = {}
+        for i in set(x for x, _ in self.gillespie_richness_values):
+            vals = [richness for ref, richness in self.gillespie_richness_values if ref == i]
+            gillespie_mean_values[i] = sum(vals) / len(vals)
+        for i in baseline_mean_values.keys():
+            self.assertAlmostEqual(baseline_mean_values[i], gillespie_mean_values[i], places=1)
 
 @skipLongTest
 class TestSimulationUsingGillespieLarge(unittest.TestCase):
