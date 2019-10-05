@@ -1624,7 +1624,7 @@ class TestSimulationUsingGillespieLarge(unittest.TestCase):
         # cls.baseline_simulation.run()
         cls.gillespie_simulation = Simulation(logging_level=50)  # TODO change logging
         cls.gillespie_simulation.set_simulation_parameters(
-            seed=10,
+            seed=21,
             job_type=3,
             output_directory="output",
             min_speciation_rate=0.000001,
