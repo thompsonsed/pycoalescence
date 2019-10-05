@@ -1483,15 +1483,16 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
                 cls.baseline_richness_values.append((ref, baseline_simulation.get_species_richness(ref)))
         cls.gillespie_richness_values = []
         for seed, gillespie_generation in zip(range(10, 20), range(10, 2020, 200)):
-            gillespie_simulation = Simulation(logging_level=20)
+            gillespie_simulation = Simulation(logging_level=50)
             gillespie_simulation.set_simulation_parameters(
                 seed=seed,
                 job_type=3,
                 output_directory="output",
-                min_speciation_rate=0.01,
+                min_speciation_rate=0.001,
                 deme=1,
                 sample_size=0.01,
             )
+            gillespie_simulation.set_speciation_rates(speciation_rates=speciation_rates)
             gillespie_simulation.set_map_files(
                 sample_file="null",
                 fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
@@ -1600,7 +1601,7 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             vals = [richness for ref, richness in self.gillespie_richness_values if ref == i]
             gillespie_mean_values[i] = sum(vals) / len(vals)
         for i in baseline_mean_values.keys():
-            self.assertAlmostEqual(baseline_mean_values[i], gillespie_mean_values[i], places=1)
+            self.assertAlmostEqual(baseline_mean_values[i], gillespie_mean_values[i], delta=10)
 
 @skipLongTest
 class TestSimulationUsingGillespieLarge(unittest.TestCase):
