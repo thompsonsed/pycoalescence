@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
   <compounddef id="class_landscape_metrics_calculator" kind="class" language="C++" prot="public">
     <compoundname>LandscapeMetricsCalculator</compoundname>
-    <basecompoundref refid="class_map" prot="public" virt="non-virtual">Map&lt; double &gt;</basecompoundref>
+    <basecompoundref refid="classnecsim_1_1_map" prot="public" virt="non-virtual">necsim::Map&lt; double &gt;</basecompoundref>
     <includes refid="_landscape_metrics_calculator_8h" local="no">LandscapeMetricsCalculator.h</includes>
       <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="class_landscape_metrics_calculator_1af663b7cd7f64e71a6c7a6fed6c7bd695" prot="private" static="no" mutable="no">
-        <type>vector&lt; <ref refid="struct_cell" kindref="compound">Cell</ref> &gt;</type>
+        <type>vector&lt; <ref refid="structnecsim_1_1_cell" kindref="compound">Cell</ref> &gt;</type>
         <definition>vector&lt;Cell&gt; LandscapeMetricsCalculator::all_cells</definition>
         <argsstring></argsstring>
         <name>all_cells</name>
@@ -52,13 +52,16 @@
         <argsstring>()</argsstring>
         <name>calculateMNN</name>
         <briefdescription>
-<para>Calculates the mean distance between nearest neighbours on a <ref refid="class_map" kindref="compound">Map</ref>. </para>        </briefdescription>
+<para>Calculates the mean distance between nearest neighbours on a Map. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>the mean distance between every cell and its nearest neighbour </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>the mean distance between every cell and its nearest neighbour </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="37" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="14" bodyend="32"/>
+        <location file="LandscapeMetricsCalculator.h" line="37" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="15" bodyend="33"/>
       </memberdef>
       <memberdef kind="function" id="class_landscape_metrics_calculator_1a16bde8469f437abc21602eedb979e5e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -66,7 +69,7 @@
         <argsstring>(Cell &amp;home_cell, const long &amp;x, const long &amp;y, double &amp;min_distance)</argsstring>
         <name>checkMinDistance</name>
         <param>
-          <type><ref refid="struct_cell" kindref="compound">Cell</ref> &amp;</type>
+          <type><ref refid="structnecsim_1_1_cell" kindref="compound">Cell</ref> &amp;</type>
           <declname>home_cell</declname>
         </param>
         <param>
@@ -82,41 +85,47 @@
           <declname>min_distance</declname>
         </param>
         <briefdescription>
-<para>Checks if the minimum distance between cells is a new minimum. </para>        </briefdescription>
+<para>Checks if the minimum distance between cells is a new minimum. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>home_cell</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the cell to check the distance from </para></parameterdescription>
+<para>the cell to check the distance from </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the x coordinate of the new location </para></parameterdescription>
+<para>the x coordinate of the new location </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>y</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the y coordinate of the new location </para></parameterdescription>
+<para>the y coordinate of the new location </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>min_distance</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the previous minimum distance </para></parameterdescription>
+<para>the previous minimum distance </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="46" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="34" bodyend="47"/>
+        <location file="LandscapeMetricsCalculator.h" line="46" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="35" bodyend="48"/>
       </memberdef>
       <memberdef kind="function" id="class_landscape_metrics_calculator_1a9dd4cde4aad066b3b204553718a63a98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -132,28 +141,33 @@
           <declname>col</declname>
         </param>
         <briefdescription>
-<para>Determines the distance to the nearest neighbour of a cell. </para>        </briefdescription>
+<para>Determines the distance to the nearest neighbour of a cell. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>row</parametername>
 </parameternamelist>
 <parameterdescription>
-<para></para></parameterdescription>
+<para></para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>col</parametername>
 </parameternamelist>
 <parameterdescription>
-<para></para></parameterdescription>
+<para></para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para></para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="54" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="49" bodyend="122"/>
+        <location file="LandscapeMetricsCalculator.h" line="54" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="50" bodyend="123"/>
       </memberdef>
       <memberdef kind="function" id="class_landscape_metrics_calculator_1a084eea2435b7d15049873ae4613b0307" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -161,12 +175,13 @@
         <argsstring>()</argsstring>
         <name>createCellList</name>
         <briefdescription>
-<para>Creates a list containing all habitat cells in the landscape. List is stored in all_cells. </para>        </briefdescription>
+<para>Creates a list containing all habitat cells in the landscape. List is stored in all_cells. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="60" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="124" bodyend="142"/>
+        <location file="LandscapeMetricsCalculator.h" line="60" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="125" bodyend="143"/>
       </memberdef>
       <memberdef kind="function" id="class_landscape_metrics_calculator_1aff48704d3a9e02da4914ac2b08c5f79b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -174,13 +189,16 @@
         <argsstring>()</argsstring>
         <name>calculateClumpiness</name>
         <briefdescription>
-<para>Calculates the clumpiness metric, which measures the degree to which the focal habitat is aggregated or clumped given its total area. </para>        </briefdescription>
+<para>Calculates the clumpiness metric, which measures the degree to which the focal habitat is aggregated or clumped given its total area. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>the clumpiness metric </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>the clumpiness metric </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="67" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="144" bodyend="164"/>
+        <location file="LandscapeMetricsCalculator.h" line="67" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="145" bodyend="165"/>
       </memberdef>
       <memberdef kind="function" id="class_landscape_metrics_calculator_1ae477e368c4f13042cf2f9a47e62d60ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -188,13 +206,16 @@
         <argsstring>()</argsstring>
         <name>calculateNoAdjacencies</name>
         <briefdescription>
-<para>Calculates the number of adjacencies in the landscape. </para>        </briefdescription>
+<para>Calculates the number of adjacencies in the landscape. </para>
+        </briefdescription>
         <detaileddescription>
-<para>Adjacencies are habitat cells that are directly next to each other. Note that this uses the &quot;double=count&quot; method. <simplesect kind="return"><para>the number of adjacent cells in the landscape. </para></simplesect>
-</para>        </detaileddescription>
+<para>Adjacencies are habitat cells that are directly next to each other. Note that this uses the &quot;double=count&quot; method. <simplesect kind="return"><para>the number of adjacent cells in the landscape. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="76" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="166" bodyend="193"/>
+        <location file="LandscapeMetricsCalculator.h" line="76" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="167" bodyend="194"/>
       </memberdef>
       <memberdef kind="function" id="class_landscape_metrics_calculator_1a1ba606d6fb687aceaf4a8e31e8f17273" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -202,17 +223,46 @@
         <argsstring>()</argsstring>
         <name>calculateMinPerimeter</name>
         <briefdescription>
-<para>Calculates the minimum bounding perimeter for square cells on a landscape. </para>        </briefdescription>
+<para>Calculates the minimum bounding perimeter for square cells on a landscape. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>the minimum bounding perimeter for cells on a landscape </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>the minimum bounding perimeter for cells on a landscape </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="LandscapeMetricsCalculator.h" line="82" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="195" bodyend="214"/>
+        <location file="LandscapeMetricsCalculator.h" line="82" column="1" bodyfile="LandscapeMetricsCalculator.cpp" bodystart="196" bodyend="215"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1aa2764c9ae1c54c1821fa4f63b88fe0f3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a657584426c9d2d189e2622d028c4c8a0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::open</definition>
+        <definition>void necsim::Map&lt; double  &gt;::setCPLErrorHandler</definition>
+        <argsstring>()</argsstring>
+        <name>setCPLErrorHandler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="87" column="1" bodyfile="necsim/Map.h" bodystart="87" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a3bab2a1f71ba318f4c2a0340425f01aa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; double  &gt;::removeCPLErrorHandler</definition>
+        <argsstring>()</argsstring>
+        <name>removeCPLErrorHandler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="96" column="1" bodyfile="necsim/Map.h" bodystart="96" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1acd05d519d992aaca1d44ef16d833ec23" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; double  &gt;::open</definition>
         <argsstring>(const string &amp;filename_in)</argsstring>
         <name>open</name>
         <param>
@@ -220,147 +270,183 @@
           <declname>filename_in</declname>
         </param>
         <briefdescription>
-<para>Opens the provided filename to the poDataset object. </para>        </briefdescription>
+<para>Opens the provided filename to the poDataset object. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>filename</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>file to open in read-only mode. </para></parameterdescription>
+<para>file to open in read-only mode. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="80" column="1" bodyfile="necsim/Map.h" bodystart="80" bodyend="96"/>
+        <location file="necsim/Map.h" line="109" column="1" bodyfile="necsim/Map.h" bodystart="109" bodyend="128"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a2389e09950706ef49640976837186c79" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a577dff0b15b2e695720e00a244b2167f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::open</definition>
+        <definition>void necsim::Map&lt; double  &gt;::open</definition>
         <argsstring>()</argsstring>
         <name>open</name>
         <briefdescription>
-<para>Overloaded open for using the preset file name. </para>        </briefdescription>
+<para>Overloaded open for using the preset file name. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="101" column="1" bodyfile="necsim/Map.h" bodystart="101" bodyend="104"/>
+        <location file="necsim/Map.h" line="133" column="1" bodyfile="necsim/Map.h" bodystart="133" bodyend="136"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a19f6874b008fcbfac213341d05c2f443" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ac01f4588b58dcd1af3b96e8602612beb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool Map&lt; double  &gt;::isOpen</definition>
+        <definition>bool necsim::Map&lt; double  &gt;::isOpen</definition>
         <argsstring>()</argsstring>
         <name>isOpen</name>
         <briefdescription>
-<para>Checks if the connection to the map file has already been opened. </para>        </briefdescription>
+<para>Checks if the connection to the map file has already been opened. </para>
+        </briefdescription>
         <detaileddescription>
-<para>All this does is check if poDataset is a null pointer. <simplesect kind="return"><para>true if poDataset is a null pointer. </para></simplesect>
-</para>        </detaileddescription>
+<para>All this does is check if poDataset is a null pointer. <simplesect kind="return"><para>true if poDataset is a null pointer. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="112" column="1" bodyfile="necsim/Map.h" bodystart="112" bodyend="115"/>
+        <location file="necsim/Map.h" line="144" column="1" bodyfile="necsim/Map.h" bodystart="144" bodyend="147"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1ad73fafd17ff95872e9b63945584ae81f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ace0b02a482ebb173367635ac3c32f9d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::close</definition>
+        <definition>void necsim::Map&lt; double  &gt;::close</definition>
         <argsstring>()</argsstring>
         <name>close</name>
         <briefdescription>
-<para>Destroys the connection to the dataset. </para>        </briefdescription>
+<para>Destroys the connection to the dataset. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="120" column="1" bodyfile="necsim/Map.h" bodystart="120" bodyend="132"/>
+        <location file="necsim/Map.h" line="152" column="1" bodyfile="necsim/Map.h" bodystart="152" bodyend="165"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1ade2338d7a8d598c343208b633f8a3a93" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a3d4c59978ea148dd1d89c21fbe50494e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::getRasterBand</definition>
+        <definition>void necsim::Map&lt; double  &gt;::getRasterBand</definition>
         <argsstring>()</argsstring>
         <name>getRasterBand</name>
         <briefdescription>
-<para>Sets the raster band to the first raster. </para>        </briefdescription>
+<para>Sets the raster band to the first raster. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="137" column="1" bodyfile="necsim/Map.h" bodystart="137" bodyend="152"/>
+        <location file="necsim/Map.h" line="170" column="1" bodyfile="necsim/Map.h" bodystart="170" bodyend="187"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a4e441dcda33d78bef193b1ad1265b5e8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a5bc5eab8105d01c074d4e1c1fbd4e555" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::getBlockSizes</definition>
+        <definition>void necsim::Map&lt; double  &gt;::getBlockSizes</definition>
         <argsstring>()</argsstring>
         <name>getBlockSizes</name>
         <briefdescription>
-<para>Obtains the x and y dimensions from the tif file for reading in blocks. </para>        </briefdescription>
+<para>Obtains the x and y dimensions from the tif file for reading in blocks. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="157" column="1" bodyfile="necsim/Map.h" bodystart="157" bodyend="161"/>
+        <location file="necsim/Map.h" line="192" column="1" bodyfile="necsim/Map.h" bodystart="192" bodyend="198"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a180284cfba3442eb3d62fc41d0d8f546" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ae8d236fa822879739938831c83f97f4c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::getMetaData</definition>
+        <definition>void necsim::Map&lt; double  &gt;::getMetaData</definition>
         <argsstring>()</argsstring>
         <name>getMetaData</name>
         <briefdescription>
-<para>Sets the no data, data type and data type name values from the tif file. </para>        </briefdescription>
+<para>Sets the no data, data type and data type name values from the tif file. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="166" column="1" bodyfile="necsim/Map.h" bodystart="166" bodyend="224"/>
+        <location file="necsim/Map.h" line="203" column="1" bodyfile="necsim/Map.h" bodystart="203" bodyend="264"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1afd32790ea28d0c5aa99b582b2d474933" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a5daf1f32ac53353cbe61ddbe8f7d2248" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::getUpperLeftX</definition>
-        <argsstring>()</argsstring>
+        <definition>double necsim::Map&lt; double  &gt;::getUpperLeftX</definition>
+        <argsstring>() const</argsstring>
         <name>getUpperLeftX</name>
         <briefdescription>
-<para>Gets the upper left x (longitude) coordinate. </para>        </briefdescription>
+<para>Gets the upper left x (longitude) coordinate. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>upper left x of the map </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>upper left x of the map </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="251" column="1" bodyfile="necsim/Map.h" bodystart="251" bodyend="254"/>
+        <location file="necsim/Map.h" line="295" column="1" bodyfile="necsim/Map.h" bodystart="295" bodyend="298"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a2d7b63836d06b2710192e7c8afd38641" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ac626ab1ce04f6f47a6f5b87df6fad3ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::getUpperLeftY</definition>
-        <argsstring>()</argsstring>
+        <definition>double necsim::Map&lt; double  &gt;::getUpperLeftY</definition>
+        <argsstring>() const</argsstring>
         <name>getUpperLeftY</name>
         <briefdescription>
-<para>Gets the upper left y (latitude) coordinate. </para>        </briefdescription>
+<para>Gets the upper left y (latitude) coordinate. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>upper left y of the map </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>upper left y of the map </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="260" column="1" bodyfile="necsim/Map.h" bodystart="260" bodyend="263"/>
+        <location file="necsim/Map.h" line="304" column="1" bodyfile="necsim/Map.h" bodystart="304" bodyend="307"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1ad1a25204dce37addc3453e091552b014" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a240c6967fe89be4fd806b64bf76dc136" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>string necsim::Map&lt; double  &gt;::getFileName</definition>
+        <argsstring>() const</argsstring>
+        <name>getFileName</name>
+        <briefdescription>
+<para>Gets the name of the file that has been imported from. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the file name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="313" column="1" bodyfile="necsim/Map.h" bodystart="313" bodyend="316"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a6e753018fee20348447f55cd5ed0f5dd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::import</definition>
+        <definition>void necsim::Map&lt; double  &gt;::import</definition>
         <argsstring>(const string &amp;filename) override</argsstring>
         <name>import</name>
-        <reimplements refid="class_matrix_1a2476517be70c810ad586d0f0cf4ec121">import</reimplements>
+        <reimplements refid="classnecsim_1_1_matrix_1a378f1358bec37992ba4997f96dcf781f">import</reimplements>
         <param>
           <type>const string &amp;</type>
           <declname>filename</declname>
         </param>
         <briefdescription>
-<para>Imports the matrix from a csv file. </para>        </briefdescription>
+<para>Imports the matrix from a csv file. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="exception"><parameteritem>
 <parameternamelist>
 <parametername>runtime_error</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if type detection for the filename fails. </para></parameterdescription>
+<para>if type detection for the filename fails. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
 <parameterlist kind="param"><parameteritem>
@@ -368,17 +454,19 @@
 <parametername>filename</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the file to import. </para></parameterdescription>
+<para>the file to import. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="271" column="1" bodyfile="necsim/Map.h" bodystart="271" bodyend="277"/>
+        <location file="necsim/Map.h" line="324" column="1" bodyfile="necsim/Map.h" bodystart="324" bodyend="330"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a2306683b0b3b4ddb7d776d1ff60d4491" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ad3ee93f3c420a537587de4b64e3d7cf5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool Map&lt; double  &gt;::importTif</definition>
+        <definition>bool necsim::Map&lt; double  &gt;::importTif</definition>
         <argsstring>(const string &amp;filename)</argsstring>
         <name>importTif</name>
         <param>
@@ -386,55 +474,63 @@
           <declname>filename</declname>
         </param>
         <briefdescription>
-<para>Imports the matrix from a tif file using the gdal library functions. </para>        </briefdescription>
+<para>Imports the matrix from a tif file using the gdal library functions. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="note"><para>Opens a connection to the file object, which should be closed. </para></simplesect>
+<para><simplesect kind="note"><para>Opens a connection to the file object, which should be closed. </para>
+</simplesect>
 <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>filename</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the path to the file to import. </para></parameterdescription>
+<para>the path to the file to import. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="284" column="1" bodyfile="necsim/Map.h" bodystart="284" bodyend="336"/>
+        <location file="necsim/Map.h" line="337" column="1" bodyfile="necsim/Map.h" bodystart="337" bodyend="390"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1ade20cc1876ba2774f0f8274d432d89c3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ace424acca570f238fa886f20e704240f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool Map&lt; double  &gt;::openOffsetMap</definition>
+        <definition>bool necsim::Map&lt; double  &gt;::openOffsetMap</definition>
         <argsstring>(Map &amp;offset_map)</argsstring>
         <name>openOffsetMap</name>
         <param>
-          <type><ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <type>Map &amp;</type>
           <declname>offset_map</declname>
         </param>
         <briefdescription>
-<para>Opens the offset map and fetches the metadata. </para>        </briefdescription>
+<para>Opens the offset map and fetches the metadata. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>offset_map</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the offset map to open (should be the larger map). </para></parameterdescription>
+<para>the offset map to open (should be the larger map). </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>true if the offset map is opened within this function </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>true if the offset map is opened within this function </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="343" column="1" bodyfile="necsim/Map.h" bodystart="343" bodyend="354"/>
+        <location file="necsim/Map.h" line="397" column="1" bodyfile="necsim/Map.h" bodystart="397" bodyend="408"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a39d76e341e0f817d65ddf0100cfe5f26" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a12125d369ac5d078c4b5f1ec03b6b5cc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::closeOffsetMap</definition>
+        <definition>void necsim::Map&lt; double  &gt;::closeOffsetMap</definition>
         <argsstring>(Map &amp;offset_map, const bool &amp;opened_here)</argsstring>
         <name>closeOffsetMap</name>
         <param>
-          <type><ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <type>Map &amp;</type>
           <declname>offset_map</declname>
         </param>
         <param>
@@ -447,15 +543,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="356" column="1" bodyfile="necsim/Map.h" bodystart="356" bodyend="362"/>
+        <location file="necsim/Map.h" line="410" column="1" bodyfile="necsim/Map.h" bodystart="410" bodyend="416"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a200701b23560dd38238801522b234e78" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1aa6bd393682e149623f6dc02d33da5ba8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::calculateOffset</definition>
+        <definition>void necsim::Map&lt; double  &gt;::calculateOffset</definition>
         <argsstring>(Map &amp;offset_map, long &amp;offset_x, long &amp;offset_y)</argsstring>
         <name>calculateOffset</name>
         <param>
-          <type><ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <type>Map &amp;</type>
           <declname>offset_map</declname>
         </param>
         <param>
@@ -467,107 +563,245 @@
           <declname>offset_y</declname>
         </param>
         <briefdescription>
-<para>Calculates the offset between the two maps. </para>        </briefdescription>
+<para>Calculates the offset between the two maps. </para>
+        </briefdescription>
         <detaileddescription>
-<para>The offset_map should be larger and contain this map, otherwise returned values will be negative</para><para><simplesect kind="note"><para>Opens a connection to the tif file (if it has not already been opened), which is then closed. If the connection is already open, then it will not be closed and it is assumed logic elsewhere achieves this.</para></simplesect>
-<simplesect kind="note"><para>Offsets are returned as rounded integers at the resolution of the smaller map.</para></simplesect>
+<para>The offset_map should be larger and contain this map, otherwise returned values will be negative</para>
+<para><simplesect kind="note"><para>Opens a connection to the tif file (if it has not already been opened), which is then closed. If the connection is already open, then it will not be closed and it is assumed logic elsewhere achieves this.</para>
+</simplesect>
+<simplesect kind="note"><para>Offsets are returned as rounded integers at the resolution of the smaller map.</para>
+</simplesect>
 <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>offset_map</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the offset map to read from </para></parameterdescription>
+<para>the offset map to read from </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>offset_x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the x offset variable to fill </para></parameterdescription>
+<para>the x offset variable to fill </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>offset_y</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the y offset variable to fill </para></parameterdescription>
+<para>the y offset variable to fill </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="378" column="1" bodyfile="necsim/Map.h" bodystart="378" bodyend="384"/>
+        <location file="necsim/Map.h" line="432" column="1" bodyfile="necsim/Map.h" bodystart="432" bodyend="438"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a9862291ea99fe1718d758213b3687bd8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ac3650dac57ae6f7bc6cd8cf8df2e3946" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned long</type>
-        <definition>unsigned long Map&lt; double  &gt;::roundedScale</definition>
+        <definition>unsigned long necsim::Map&lt; double  &gt;::roundedScale</definition>
         <argsstring>(Map &amp;offset_map)</argsstring>
         <name>roundedScale</name>
         <param>
-          <type><ref refid="class_map" kindref="compound">Map</ref> &amp;</type>
+          <type>Map &amp;</type>
           <declname>offset_map</declname>
         </param>
         <briefdescription>
-<para>Calculates the relative scale of this map compared to the offset map. </para>        </briefdescription>
+<para>Calculates the relative scale of this map compared to the offset map. </para>
+        </briefdescription>
         <detaileddescription>
-<para>The offset map should be larger and contain this map.</para><para><simplesect kind="note"><para>Only the x resolution is checked, it is assumed the x and y resolutions of both maps is the same (i.e. each cell on the map is a square.</para></simplesect>
+<para>The offset map should be larger and contain this map.</para>
+<para><simplesect kind="note"><para>Only the x resolution is checked, it is assumed the x and y resolutions of both maps is the same (i.e. each cell on the map is a square.</para>
+</simplesect>
 <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>offset_map</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the offset map object to read from </para></parameterdescription>
+<para>the offset map object to read from </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the relative scale of the offset map </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>the relative scale of the offset map </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="397" column="1" bodyfile="necsim/Map.h" bodystart="397" bodyend="402"/>
+        <location file="necsim/Map.h" line="451" column="1" bodyfile="necsim/Map.h" bodystart="451" bodyend="456"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a0c17360ca7fa935d59f2169fd0007630" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a7b13faca1bb9ca70594dc4906318d0d8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double &gt;::internalImport</definition>
+        <definition>void necsim::Map&lt; double  &gt;::internalImport</definition>
         <argsstring>()</argsstring>
         <name>internalImport</name>
         <briefdescription>
-<para>Default importer when we rely on the default gdal method of converting between values. Note that importing doubles to ints results in the values being rounded down. </para>        </briefdescription>
+<para>Default importer when we rely on the default gdal method of converting between values. Note that importing doubles to ints results in the values being rounded down. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>true if a tif file exists and can be imported, false otherwise. </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>true if a tif file exists and can be imported, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="409" column="1" bodyfile="necsim/Map.h" bodystart="409" bodyend="414"/>
+        <location file="necsim/Map.h" line="463" column="1" bodyfile="necsim/Map.h" bodystart="463" bodyend="468"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a414e6bc9305ab830836cf817cb4a0d60" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a5bc956d78380553bbc3a8264677d5da6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::defaultImport</definition>
+        <definition>void necsim::Map&lt; bool &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+<para>Overloaded imported for handling conversion of types to boolean. This function should only be once elsewhere, so inlining is fine, allowing this file to remain header only. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="699" column="1" bodyfile="necsim/Map.h" bodystart="699" bodyend="712"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1ac7031ab3bbd14582244445da4b238c2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; int8_t &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+<para>Overloaded functions for importing from tifs and matching between gdal and C types. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="717" column="1" bodyfile="necsim/Map.h" bodystart="717" bodyend="720"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a4c3d000965f21ff0b4a2221a530a3da0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; uint8_t &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="722" column="1" bodyfile="necsim/Map.h" bodystart="722" bodyend="726"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1ab4b2271928108ff8606d8e8e1bd9d353" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; int16_t &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="728" column="1" bodyfile="necsim/Map.h" bodystart="728" bodyend="732"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a411f462c066e75a612602d605b478b23" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; uint16_t &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="734" column="1" bodyfile="necsim/Map.h" bodystart="734" bodyend="738"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1ac8fe573f1e2cc2da75e805d092ad870b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; int32_t &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="740" column="1" bodyfile="necsim/Map.h" bodystart="740" bodyend="744"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a3a542bda02b022f540e46df1302b057e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; uint32_t &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="746" column="1" bodyfile="necsim/Map.h" bodystart="746" bodyend="750"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1abab55fac5cc1d15a4a819c6229e6842e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; float &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="752" column="1" bodyfile="necsim/Map.h" bodystart="752" bodyend="756"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a2329fcc40c792d91c65553aaf0cac3ca" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; double &gt;::internalImport</definition>
+        <argsstring>()</argsstring>
+        <name>internalImport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="758" column="1" bodyfile="necsim/Map.h" bodystart="758" bodyend="762"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_map_1a9c1e777a6e57234b5eccc7d4b2c65691" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Map&lt; double  &gt;::defaultImport</definition>
         <argsstring>()</argsstring>
         <name>defaultImport</name>
         <briefdescription>
-<para>Default import routine for any type. Provided as a separate function so implementation can be called from any template class type. </para>        </briefdescription>
+<para>Default import routine for any type. Provided as a separate function so implementation can be called from any template class type. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="420" column="1" bodyfile="necsim/Map.h" bodystart="420" bodyend="438"/>
+        <location file="necsim/Map.h" line="474" column="1" bodyfile="necsim/Map.h" bodystart="474" bodyend="494"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1aaefe833ab35a68ce54e7eec996c48971" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a90cb4a231a8358ba9ea75563d579ca9d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::importFromDoubleAndMakeBool</definition>
+        <definition>void necsim::Map&lt; double  &gt;::importFromDoubleAndMakeBool</definition>
         <argsstring>()</argsstring>
         <name>importFromDoubleAndMakeBool</name>
         <briefdescription>
-<para>Imports from the supplied filename into the GeoTiff object, converting doubles to booleans. The threshold for conversion is x&gt;0.5 -&gt; true, false otherwise. </para>        </briefdescription>
+<para>Imports from the supplied filename into the GeoTiff object, converting doubles to booleans. The threshold for conversion is x&gt;0.5 -&gt; true, false otherwise. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="444" column="1" bodyfile="necsim/Map.h" bodystart="444" bodyend="472"/>
+        <location file="necsim/Map.h" line="500" column="1" bodyfile="necsim/Map.h" bodystart="500" bodyend="530"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1ae88574927ad3a38fc0a9bc253a9e4a7a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a77f15b22824fe1921e8823b36bf942c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::importUsingBuffer</definition>
+        <definition>void necsim::Map&lt; double  &gt;::importUsingBuffer</definition>
         <argsstring>(GDALDataType dt_buff)</argsstring>
         <name>importUsingBuffer</name>
         <param>
@@ -575,14 +809,16 @@
           <declname>dt_buff</declname>
         </param>
         <briefdescription>
-<para>Imports from the supplied filename into the GeoTiff object, converting doubles to booleans. The threshold for conversion is x&gt;0.5 -&gt; true, false otherwise. </para>        </briefdescription>
+<para>Imports from the supplied filename into the GeoTiff object, converting doubles to booleans. The threshold for conversion is x&gt;0.5 -&gt; true, false otherwise. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>dt_buff</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the buffer type for the data </para></parameterdescription>
+<para>the buffer type for the data </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
 <parameterlist kind="templateparam"><parameteritem>
@@ -590,17 +826,19 @@
 <parametername>T2</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the template type for data reading. </para></parameterdescription>
+<para>the template type for data reading. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="482" column="1" bodyfile="necsim/Map.h" bodystart="482" bodyend="547"/>
+        <location file="necsim/Map.h" line="539" column="1" bodyfile="necsim/Map.h" bodystart="539" bodyend="607"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a03e0486e704090765d253b18a9dde0f5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1ae3f05d6e22e17ceabbb4bcf571d2dc8f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::printNumberComplete</definition>
+        <definition>void necsim::Map&lt; double  &gt;::printNumberComplete</definition>
         <argsstring>(const uint32_t &amp;j, unsigned int &amp;number_printed)</argsstring>
         <name>printNumberComplete</name>
         <param>
@@ -612,44 +850,49 @@
           <declname>number_printed</declname>
         </param>
         <briefdescription>
-<para>Print the percentage complete during import. </para>        </briefdescription>
+<para>Print the percentage complete during import. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>j</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the reference for the counter </para></parameterdescription>
+<para>the reference for the counter </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>number_printed</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the number of previously printed lines </para></parameterdescription>
+<para>the number of previously printed lines </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="554" column="1" bodyfile="necsim/Map.h" bodystart="554" bodyend="570"/>
+        <location file="necsim/Map.h" line="614" column="1" bodyfile="necsim/Map.h" bodystart="614" bodyend="630"/>
       </memberdef>
-      <memberdef kind="function" id="class_map_1a6387185da6dc3063cd2311ffab0a5fba" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_map_1a367ba176a8b493eda886097358487ef2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Map&lt; double  &gt;::checkTifImportFailure</definition>
+        <definition>void necsim::Map&lt; double  &gt;::checkTifImportFailure</definition>
         <argsstring>()</argsstring>
         <name>checkTifImportFailure</name>
         <briefdescription>
-<para>Checks the error code of the CPLErr object and formats the error. </para>        </briefdescription>
+<para>Checks the error code of the CPLErr object and formats the error. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="575" column="1" bodyfile="necsim/Map.h" bodystart="575" bodyend="585"/>
+        <location file="necsim/Map.h" line="635" column="1" bodyfile="necsim/Map.h" bodystart="635" bodyend="645"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1aa393296d4132d7aafc4e236ddfe59f06" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1ac8d16e95e533a6844633c59bc165c65d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Matrix&lt; double  &gt;::setSize</definition>
+        <definition>void necsim::Matrix&lt; double  &gt;::setSize</definition>
         <argsstring>(unsigned long rows, unsigned long cols)</argsstring>
         <name>setSize</name>
         <param>
@@ -661,286 +904,807 @@
           <declname>cols</declname>
         </param>
         <briefdescription>
-<para>Sets the matrix size. Similar concept to that for Rows. </para>        </briefdescription>
+<para>Sets the matrix size. Similar concept to that for Rows. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>rows</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the number of rows. </para></parameterdescription>
+<para>the number of rows. </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>cols</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the number of columns. </para></parameterdescription>
+<para>the number of columns. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="273" column="1" bodyfile="necsim/Matrix.h" bodystart="273" bodyend="293"/>
+        <location file="necsim/Matrix.h" line="96" column="1" bodyfile="necsim/Matrix.h" bodystart="96" bodyend="105"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a9b4ce445c65dcea66c66dda875cc39d8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a12d31769465e7c2a3b4798d078e00a47" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned long</type>
-        <definition>unsigned long Matrix&lt; double  &gt;::getCols</definition>
+        <definition>unsigned long necsim::Matrix&lt; double  &gt;::getCols</definition>
         <argsstring>() const</argsstring>
         <name>getCols</name>
         <briefdescription>
-<para>Getter for the number of columns. </para>        </briefdescription>
+<para>Getter for the number of columns. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>the number of columns. </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>the number of columns. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="299" column="1" bodyfile="necsim/Matrix.h" bodystart="299" bodyend="302"/>
+        <location file="necsim/Matrix.h" line="111" column="1" bodyfile="necsim/Matrix.h" bodystart="111" bodyend="114"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a442879db6473eeab202928dc47992206" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1afc78538f61f0e68558e345e1425cc1e0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned long</type>
-        <definition>unsigned long Matrix&lt; double  &gt;::getRows</definition>
+        <definition>unsigned long necsim::Matrix&lt; double  &gt;::getRows</definition>
         <argsstring>() const</argsstring>
         <name>getRows</name>
         <briefdescription>
-<para>Getter for the number of rows. </para>        </briefdescription>
+<para>Getter for the number of rows. </para>
+        </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>the number of rows. </para></simplesect>
-</para>        </detaileddescription>
+<para><simplesect kind="return"><para>the number of rows. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="308" column="1" bodyfile="necsim/Matrix.h" bodystart="308" bodyend="311"/>
+        <location file="necsim/Matrix.h" line="120" column="1" bodyfile="necsim/Matrix.h" bodystart="120" bodyend="123"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1ae7e14b4bd8bb570260a4e578e4a601b7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_row" kindref="compound">Row</ref>&lt; double &gt; &amp;</type>
-        <definition>Row&lt;double &gt;&amp; Matrix&lt; double  &gt;::operator[]</definition>
-        <argsstring>(unsigned long index)</argsstring>
-        <name>operator[]</name>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a68936bdfa42e877c791fa74775f38d92" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Matrix&lt; double  &gt;::fill</definition>
+        <argsstring>(double val)</argsstring>
+        <name>fill</name>
         <param>
-          <type>unsigned long</type>
-          <declname>index</declname>
+          <type>double</type>
+          <declname>val</declname>
         </param>
         <briefdescription>
-<para>Overoads the [] operator for <ref refid="class_matrix" kindref="compound">Matrix</ref>. Allows referencing of a value i,j using <ref refid="class_matrix" kindref="compound">Matrix</ref>[i][j]. Includes error checking for if the indices are out of range of the matrix. Note that this functionality has been altered since the original file generation. </para>        </briefdescription>
+<para>Fills the matrix with the given value. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername>index</parametername>
+<parametername>val</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the row number to get the value from. </para></parameterdescription>
+<para>the value to fill </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the matrix row object. </para></simplesect>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="321" column="1" bodyfile="necsim/Matrix.h" bodystart="321" bodyend="334"/>
+        <location file="necsim/Matrix.h" line="129" column="1" bodyfile="necsim/Matrix.h" bodystart="129" bodyend="132"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1abdbd1bbdae2f6926cdc2b58faa304826" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_matrix" kindref="compound">Matrix</ref></type>
-        <definition>Matrix Matrix&lt; double  &gt;::operator+</definition>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1af96d6d558cf9b854c8275b716ab3835c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned long</type>
+        <definition>unsigned long necsim::Matrix&lt; double  &gt;::index</definition>
+        <argsstring>(const unsigned long &amp;row, const unsigned long &amp;col) const</argsstring>
+        <name>index</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+<para>Gets the index of a particular row and column in the matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row number to index </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the column number to index </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the index of row and column within the matrix </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="140" column="1" bodyfile="necsim/Matrix.h" bodystart="140" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1af67a3a10dbdcc8d4656ce90104efa8ba" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; necsim::Matrix&lt; double  &gt;::get</definition>
+        <argsstring>(const unsigned long &amp;row, const unsigned long &amp;col)</argsstring>
+        <name>get</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+<para>Gets the value at a particular index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row number to get the value at </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the column number to get the value at </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the value at the specified row and column </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="164" column="1" bodyfile="necsim/Matrix.h" bodystart="164" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a5711966132f3c44abb02623fc2236158" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const double &amp;</type>
+        <definition>const double &amp; necsim::Matrix&lt; double  &gt;::get</definition>
+        <argsstring>(const unsigned long &amp;row, const unsigned long &amp;col) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+<para>Gets the value at a particular index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row number to get the value at </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the column number to get the value at </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the value at the specified row and column </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="184" column="1" bodyfile="necsim/Matrix.h" bodystart="184" bodyend="196"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a710473cfc0712ec15b55f651c887070c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double  necsim::Matrix&lt; double  &gt;::getCopy</definition>
+        <argsstring>(const unsigned long &amp;row, const unsigned long &amp;col) const</argsstring>
+        <name>getCopy</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+<para>Gets the value at a particular index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row number to get the value at </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the column number to get the value at </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the value at the specified row and column </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="204" column="1" bodyfile="necsim/Matrix.h" bodystart="204" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a5fee481a8ba9e92592afbc2ff5771966" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>vector&lt; double &gt;::iterator</type>
+        <definition>vector&lt;double &gt;::iterator necsim::Matrix&lt; double  &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <briefdescription>
+<para>Returns iterators for range-based for loops. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>iterator to the start of the vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="222" column="1" bodyfile="necsim/Matrix.h" bodystart="222" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a729d0525a7a8b3031414d67e4319711a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>vector&lt; double &gt;::const_iterator</type>
+        <definition>vector&lt;double &gt;::const_iterator necsim::Matrix&lt; double  &gt;::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <briefdescription>
+<para>Returns iterators for range-based for loops. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>iterator to the start of the vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="240" column="1" bodyfile="necsim/Matrix.h" bodystart="240" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1aa6d1861375360cae3241f647972383f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>vector&lt; double &gt;::iterator</type>
+        <definition>vector&lt;double &gt;::iterator necsim::Matrix&lt; double  &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <briefdescription>
+<para>Returns end iterators for range-based for loops. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>iterator to the end of the vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="231" column="1" bodyfile="necsim/Matrix.h" bodystart="231" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a59ae7bb1f814a55b94ef17bd476238c8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>vector&lt; double &gt;::const_iterator</type>
+        <definition>vector&lt;double &gt;::const_iterator necsim::Matrix&lt; double  &gt;::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <briefdescription>
+<para>Returns end iterators for range-based for loops. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>iterator to the end of the vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="249" column="1" bodyfile="necsim/Matrix.h" bodystart="249" bodyend="252"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a1f55142f41ccd82bdf85a4210ed73952" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double necsim::Matrix&lt; double  &gt;::getMean</definition>
+        <argsstring>() const</argsstring>
+        <name>getMean</name>
+        <briefdescription>
+<para>Gets the arithmetic mean of the Matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the mean value in the matrix </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="259" column="1" bodyfile="necsim/Matrix.h" bodystart="259" bodyend="268"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a5028e8ac425a736e529c1b90c7b99796" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double  necsim::Matrix&lt; double  &gt;::sum</definition>
+        <argsstring>() const</argsstring>
+        <name>sum</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="270" column="1" bodyfile="necsim/Matrix.h" bodystart="270" bodyend="285"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1acba7b8292dfa4af20766a140318282aa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref></type>
+        <definition>Matrix necsim::Matrix&lt; double  &gt;::operator+</definition>
         <argsstring>(const Matrix &amp;m) const</argsstring>
         <name>operator+</name>
         <param>
-          <type>const <ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
+          <type>const <ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
           <declname>m</declname>
         </param>
         <briefdescription>
-<para>Overloading the + operator. </para>        </briefdescription>
+<para>Overloading the + operator. </para>
+        </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>m</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the matrix to add to this matrix. </para></parameterdescription>
+<para>the matrix to add to this matrix. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the matrix object which is the sum of the two matrices. </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>the matrix object which is the sum of the two matrices. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="355" column="1" bodyfile="necsim/Matrix.h" bodystart="355" bodyend="385"/>
+        <location file="necsim/Matrix.h" line="306" column="1" bodyfile="necsim/Matrix.h" bodystart="306" bodyend="320"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a73b8da7142ea2593ba7d097651a3ce5c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_matrix" kindref="compound">Matrix</ref></type>
-        <definition>Matrix Matrix&lt; double  &gt;::operator-</definition>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a59b2969f521f241a5d0fdc7acfc1c311" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref></type>
+        <definition>Matrix necsim::Matrix&lt; double  &gt;::operator-</definition>
         <argsstring>(const Matrix &amp;m) const</argsstring>
         <name>operator-</name>
         <param>
-          <type>const <ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
+          <type>const <ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
           <declname>m</declname>
         </param>
         <briefdescription>
-<para>Overloading the - operator. </para>        </briefdescription>
+<para>Overloading the - operator. </para>
+        </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>m</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the matrix to subtract from this matrix. </para></parameterdescription>
+<para>the matrix to subtract from this matrix. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the matrix object which is the subtraction of the two matrices. </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>the matrix object which is the subtraction of the two matrices. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="392" column="1" bodyfile="necsim/Matrix.h" bodystart="392" bodyend="420"/>
+        <location file="necsim/Matrix.h" line="329" column="1" bodyfile="necsim/Matrix.h" bodystart="329" bodyend="342"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a480a72298ae1fc8443b0edfaa66d7c46" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
-        <definition>Matrix&amp; Matrix&lt; double  &gt;::operator+=</definition>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1aef31e4e44f771d9b6c102b124443a183" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+        <definition>Matrix&amp; necsim::Matrix&lt; double  &gt;::operator+=</definition>
         <argsstring>(const Matrix &amp;m)</argsstring>
         <name>operator+=</name>
         <param>
-          <type>const <ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
+          <type>const <ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
           <declname>m</declname>
         </param>
         <briefdescription>
-<para>Overloading the += operator so that the new object is written to the current object. </para>        </briefdescription>
+<para>Overloading the += operator so that the new object is written to the current object. </para>
+        </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>m</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the <ref refid="class_matrix" kindref="compound">Matrix</ref> object to add to this matrix. </para></parameterdescription>
+<para>the Matrix object to add to this matrix. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="426" column="1" bodyfile="necsim/Matrix.h" bodystart="426" bodyend="453"/>
+        <location file="necsim/Matrix.h" line="350" column="1" bodyfile="necsim/Matrix.h" bodystart="350" bodyend="362"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a0e459fd035b2435ea016dc93c55ccac0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
-        <definition>Matrix&amp; Matrix&lt; double  &gt;::operator-=</definition>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1accb2b34850a64c4f10c52b24b09f364c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+        <definition>Matrix&amp; necsim::Matrix&lt; double  &gt;::operator-=</definition>
         <argsstring>(const Matrix &amp;m)</argsstring>
         <name>operator-=</name>
         <param>
-          <type>const <ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
+          <type>const <ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
           <declname>m</declname>
         </param>
         <briefdescription>
-<para>Overloading the -= operator so that the new object is written to the current object. </para>        </briefdescription>
+<para>Overloading the -= operator so that the new object is written to the current object. </para>
+        </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>m</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the <ref refid="class_matrix" kindref="compound">Matrix</ref> object to subtract from this matrix. </para></parameterdescription>
+<para>the Matrix object to subtract from this matrix. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="459" column="1" bodyfile="necsim/Matrix.h" bodystart="459" bodyend="486"/>
+        <location file="necsim/Matrix.h" line="370" column="1" bodyfile="necsim/Matrix.h" bodystart="370" bodyend="382"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a7285ecf2cfdfdcf3a3e19b4cde235528" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_matrix" kindref="compound">Matrix</ref></type>
-        <definition>Matrix Matrix&lt; double  &gt;::operator*</definition>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1acf9a9141dc74553c0a3a43a0b66f008d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref></type>
+        <definition>Matrix necsim::Matrix&lt; double  &gt;::operator *</definition>
         <argsstring>(const double s) const</argsstring>
-        <name>operator*</name>
+        <name>operator *</name>
         <param>
           <type>const double</type>
           <declname>s</declname>
         </param>
         <briefdescription>
-<para>Overloading the * operator for scaling. </para>        </briefdescription>
+<para>Overloading the * operator for scaling. </para>
+        </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>s</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the constant to scale the matrix by. </para></parameterdescription>
+<para>the constant to scale the matrix by. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the scaled matrix. </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>the scaled matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="493" column="1" bodyfile="necsim/Matrix.h" bodystart="493" bodyend="504"/>
+        <location file="necsim/Matrix.h" line="391" column="1" bodyfile="necsim/Matrix.h" bodystart="391" bodyend="402"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a965f8987b92cfdbf8f17d3cf1bf0fa9b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_matrix" kindref="compound">Matrix</ref></type>
-        <definition>Matrix Matrix&lt; double  &gt;::operator*</definition>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a9fcf04fdd8569f115aa0ccc221b5a449" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref></type>
+        <definition>Matrix necsim::Matrix&lt; double  &gt;::operator *</definition>
         <argsstring>(Matrix &amp;m) const</argsstring>
-        <name>operator*</name>
+        <name>operator *</name>
         <param>
-          <type><ref refid="class_matrix" kindref="compound">Matrix</ref> &amp;</type>
+          <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
           <declname>m</declname>
         </param>
         <briefdescription>
-<para>Overloading the * operator for matrix multiplication. Multiplies each value in the matrix with its corresponding value in the other matrix. </para>        </briefdescription>
+<para>Overloading the * operator for matrix multiplication. </para>
+        </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. Multiplies each value in the matrix with its corresponding value in the other matrix. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>m</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the matrix to multiply with </para></parameterdescription>
+<para>the matrix to multiply with </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the product of each ith,jth value of the matrix. </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>the product of each ith,jth value of the matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="512" column="1" bodyfile="necsim/Matrix.h" bodystart="512" bodyend="536"/>
+        <location file="necsim/Matrix.h" line="412" column="1" bodyfile="necsim/Matrix.h" bodystart="412" bodyend="426"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1ae511e2f5874e7602fc968541efeefca1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a68762b157397bc31bb013dc8987940d8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+        <definition>Matrix&amp; necsim::Matrix&lt; double  &gt;::operator *=</definition>
+        <argsstring>(const double s)</argsstring>
+        <name>operator *=</name>
+        <param>
+          <type>const double</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the *= operator so that the new object is written to the current object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Matrix object to add to this matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="434" column="1" bodyfile="necsim/Matrix.h" bodystart="434" bodyend="444"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1ab1aaddf1f14fc29383c873087bc63c7e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+        <definition>Matrix&amp; necsim::Matrix&lt; double  &gt;::operator *=</definition>
+        <argsstring>(const Matrix &amp;m)</argsstring>
+        <name>operator *=</name>
+        <param>
+          <type>const <ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the *= operator so that the new object is written to the current object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Matrix object to add to this matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="452" column="1" bodyfile="necsim/Matrix.h" bodystart="452" bodyend="464"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a1edc0dac773f9e04e7e495b5dc814899" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref></type>
+        <definition>Matrix necsim::Matrix&lt; double  &gt;::operator/</definition>
+        <argsstring>(const double s) const</argsstring>
+        <name>operator/</name>
+        <param>
+          <type>const double</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the / operator for scaling. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the constant to scale the matrix by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the scaled matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="473" column="1" bodyfile="necsim/Matrix.h" bodystart="473" bodyend="484"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a186c9f767c0f07f356f24a62dad928c7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+        <definition>Matrix&amp; necsim::Matrix&lt; double  &gt;::operator/=</definition>
+        <argsstring>(const double s)</argsstring>
+        <name>operator/=</name>
+        <param>
+          <type>const double</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the /= operator so that the new object is written to the current object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Matrix object to add to this matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="492" column="1" bodyfile="necsim/Matrix.h" bodystart="492" bodyend="502"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1af704a00731d540637b73f4fee528155a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+        <definition>Matrix&amp; necsim::Matrix&lt; double  &gt;::operator/=</definition>
+        <argsstring>(const Matrix &amp;m)</argsstring>
+        <name>operator/=</name>
+        <param>
+          <type>const <ref refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" kindref="member">Matrix</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the /= operator so that the new object is written to the current object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>If matrices are of different sizes, the operation is performed on the 0 to minimum values of each dimension. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Matrix object to add to this matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="510" column="1" bodyfile="necsim/Matrix.h" bodystart="510" bodyend="522"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1aa7b71c96c4c33ea80ddc175a2d575418" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Matrix&lt; double  &gt;::setValue</definition>
-        <argsstring>(const unsigned long &amp;x, const unsigned long &amp;y, const char *value)</argsstring>
+        <definition>void necsim::Matrix&lt; double  &gt;::setValue</definition>
+        <argsstring>(const unsigned long &amp;row, const unsigned long &amp;col, const char *value)</argsstring>
         <name>setValue</name>
         <param>
           <type>const unsigned long &amp;</type>
-          <declname>x</declname>
+          <declname>row</declname>
         </param>
         <param>
           <type>const unsigned long &amp;</type>
-          <declname>y</declname>
+          <declname>col</declname>
         </param>
         <param>
           <type>const char *</type>
           <declname>value</declname>
         </param>
         <briefdescription>
-<para>Sets the value at the specified indices, including handling type conversion from char to the template class. </para>        </briefdescription>
+<para>Sets the value at the specified indices, including handling type conversion from char to the template class. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername>x</parametername>
+<parametername>row</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the x index. </para></parameterdescription>
+<para>the row index. </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
-<parametername>y</parametername>
+<parametername>col</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the y index. </para></parameterdescription>
+<para>the column index. </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>value</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the value to set </para></parameterdescription>
+<para>the value to set </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="608" column="1" bodyfile="necsim/Matrix.h" bodystart="608" bodyend="611"/>
+        <location file="necsim/Matrix.h" line="595" column="1" bodyfile="necsim/Matrix.h" bodystart="595" bodyend="598"/>
       </memberdef>
-      <memberdef kind="function" id="class_matrix_1a0a5d9135e9807b81ddc3cf05e777a902" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1acfd741c2de6c37ea69b04159e09b9662" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::Matrix&lt; double  &gt;::setValue</definition>
+        <argsstring>(const unsigned long &amp;row, const unsigned long &amp;col, const double &amp;value)</argsstring>
+        <name>setValue</name>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>const unsigned long &amp;</type>
+          <declname>col</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sets the value at the specified indices, including handling type conversion from char to the template class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the row index. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>col</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the column index. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Matrix.h" line="607" column="1" bodyfile="necsim/Matrix.h" bodystart="607" bodyend="610"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_matrix_1a1d4a5a6210d42338b41daad5112bd3df" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
-        <definition>bool Matrix&lt; double  &gt;::importCsv</definition>
+        <definition>bool necsim::Matrix&lt; double  &gt;::importCsv</definition>
         <argsstring>(const string &amp;filename)</argsstring>
         <name>importCsv</name>
         <param>
@@ -948,35 +1712,41 @@
           <declname>filename</declname>
         </param>
         <briefdescription>
-<para>Imports the matrix from a csv file using the fast-csv-parser method. </para>        </briefdescription>
+<para>Imports the matrix from a csv file using the fast-csv-parser method. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>filename</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the path to the file to import. Imports the matrix from a csv file using the standard, slower method. </para></parameterdescription>
+<para>the path to the file to import.Imports the matrix from a csv file using the standard, slower method. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<xrefsect id="deprecated_1_deprecated000002"><xreftitle>Deprecated</xreftitle><xrefdescription><para>this function should not be used any more as it is much slower. </para></xrefdescription></xrefsect><parameterlist kind="param"><parameteritem>
+<xrefsect id="deprecated_1_deprecated000002"><xreftitle>Deprecated</xreftitle><xrefdescription><para>this function should not be used any more as it is much slower. </para>
+</xrefdescription></xrefsect><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>filename</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the path to the file to import. </para></parameterdescription>
+<para>the path to the file to import. </para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>true if the csv can be imported. </para></simplesect>
-</para>        </detaileddescription>
+<simplesect kind="return"><para>true if the csv can be imported. </para>
+</simplesect>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="712" column="1" bodyfile="necsim/Matrix.h" bodystart="712" bodyend="754"/>
+        <location file="necsim/Matrix.h" line="711" column="1" bodyfile="necsim/Matrix.h" bodystart="711" bodyend="753"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-attrib">
-      <memberdef kind="variable" id="class_map_1a8fa67c9571db64bfa942ede60a405da4" prot="protected" static="no" mutable="no">
-        <type>GDALDataset *</type>
-        <definition>GDALDataset* Map&lt; double  &gt;::po_dataset</definition>
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a293d6f98bedeadd3e00fa62abfbe32c4" prot="protected" static="no" mutable="no">
+        <type>shared_ptr&lt; GDALDataset * &gt;</type>
+        <definition>shared_ptr&lt;GDALDataset*&gt; necsim::Map&lt; double  &gt;::po_dataset</definition>
         <argsstring></argsstring>
         <name>po_dataset</name>
         <briefdescription>
@@ -985,11 +1755,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="39" column="1" bodyfile="necsim/Map.h" bodystart="39" bodyend="-1"/>
+        <location file="necsim/Map.h" line="42" column="1" bodyfile="necsim/Map.h" bodystart="42" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a7a6134c8835e44f937df4269e6f49709" prot="protected" static="no" mutable="no">
-        <type>GDALRasterBand *</type>
-        <definition>GDALRasterBand* Map&lt; double  &gt;::po_band</definition>
+      <memberdef kind="variable" id="classnecsim_1_1_map_1abd04c732201595f898f9fd59b0fdd948" prot="protected" static="no" mutable="no">
+        <type>shared_ptr&lt; GDALRasterBand * &gt;</type>
+        <definition>shared_ptr&lt;GDALRasterBand*&gt; necsim::Map&lt; double  &gt;::po_band</definition>
         <argsstring></argsstring>
         <name>po_band</name>
         <briefdescription>
@@ -998,11 +1768,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="40" column="1" bodyfile="necsim/Map.h" bodystart="40" bodyend="-1"/>
+        <location file="necsim/Map.h" line="43" column="1" bodyfile="necsim/Map.h" bodystart="43" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1ace1fcda890de19bd60858b4ecef596a7" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a7c81c2e78c974cb16d2393e03edc02de" prot="protected" static="no" mutable="no">
         <type>unsigned long</type>
-        <definition>unsigned long Map&lt; double  &gt;::block_x_size</definition>
+        <definition>unsigned long necsim::Map&lt; double  &gt;::block_x_size</definition>
         <argsstring></argsstring>
         <name>block_x_size</name>
         <briefdescription>
@@ -1011,11 +1781,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="41" column="1" bodyfile="necsim/Map.h" bodystart="41" bodyend="-1"/>
+        <location file="necsim/Map.h" line="44" column="1" bodyfile="necsim/Map.h" bodystart="44" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a14c78d058dc5d4305b044680d4d8a329" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a60fbda0dbd54c682b2fcbb5dfd77b3e9" prot="protected" static="no" mutable="no">
         <type>unsigned long</type>
-        <definition>unsigned long Map&lt; double  &gt;::block_y_size</definition>
+        <definition>unsigned long necsim::Map&lt; double  &gt;::block_y_size</definition>
         <argsstring></argsstring>
         <name>block_y_size</name>
         <briefdescription>
@@ -1024,11 +1794,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="41" column="1" bodyfile="necsim/Map.h" bodystart="41" bodyend="-1"/>
+        <location file="necsim/Map.h" line="44" column="1" bodyfile="necsim/Map.h" bodystart="44" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a3d86c1408c3ae26bb5bec201e05786fb" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a0934d85df9105cfec7aa0b1fa133efa0" prot="protected" static="no" mutable="no">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::no_data_value</definition>
+        <definition>double necsim::Map&lt; double  &gt;::no_data_value</definition>
         <argsstring></argsstring>
         <name>no_data_value</name>
         <briefdescription>
@@ -1037,11 +1807,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="42" column="1" bodyfile="necsim/Map.h" bodystart="42" bodyend="-1"/>
+        <location file="necsim/Map.h" line="45" column="1" bodyfile="necsim/Map.h" bodystart="45" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a5a355405b8c42d660bc726b6bbfcf636" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a80bebe1907879e3836815c0aa9eda366" prot="protected" static="no" mutable="no">
         <type>string</type>
-        <definition>string Map&lt; double  &gt;::file_name</definition>
+        <definition>string necsim::Map&lt; double  &gt;::file_name</definition>
         <argsstring></argsstring>
         <name>file_name</name>
         <briefdescription>
@@ -1050,11 +1820,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="43" column="1" bodyfile="necsim/Map.h" bodystart="43" bodyend="-1"/>
+        <location file="necsim/Map.h" line="46" column="1" bodyfile="necsim/Map.h" bodystart="46" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a08856fb3ac67963db0bb1dbb6cdc5f0e" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a5741de4f6a99d672825eda0e1569a8c8" prot="protected" static="no" mutable="no">
         <type>GDALDataType</type>
-        <definition>GDALDataType Map&lt; double  &gt;::gdal_data_type</definition>
+        <definition>GDALDataType necsim::Map&lt; double  &gt;::gdal_data_type</definition>
         <argsstring></argsstring>
         <name>gdal_data_type</name>
         <briefdescription>
@@ -1063,11 +1833,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="44" column="1" bodyfile="necsim/Map.h" bodystart="44" bodyend="-1"/>
+        <location file="necsim/Map.h" line="47" column="1" bodyfile="necsim/Map.h" bodystart="47" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a6ba075bc9deb93e306f74179c57fec59" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a4c352dbab8cb0620ebe50b4499b45729" prot="protected" static="no" mutable="no">
         <type>CPLErr</type>
-        <definition>CPLErr Map&lt; double  &gt;::cpl_error</definition>
+        <definition>CPLErr necsim::Map&lt; double  &gt;::cpl_error</definition>
         <argsstring></argsstring>
         <name>cpl_error</name>
         <briefdescription>
@@ -1076,11 +1846,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="46" column="1" bodyfile="necsim/Map.h" bodystart="46" bodyend="-1"/>
+        <location file="necsim/Map.h" line="49" column="1" bodyfile="necsim/Map.h" bodystart="49" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1ae3b72e22a19277aa531ae90f47c461b2" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a8db85d38a03785273893b0f224ec4dc2" prot="protected" static="no" mutable="no">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::upper_left_x</definition>
+        <definition>double necsim::Map&lt; double  &gt;::upper_left_x</definition>
         <argsstring></argsstring>
         <name>upper_left_x</name>
         <briefdescription>
@@ -1089,11 +1859,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="47" column="1" bodyfile="necsim/Map.h" bodystart="47" bodyend="-1"/>
+        <location file="necsim/Map.h" line="50" column="1" bodyfile="necsim/Map.h" bodystart="50" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1a37d531f2f186f90d3f4563e91f2623cb" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a56a84b8f5c5c9bf51bb95757b1c5667b" prot="protected" static="no" mutable="no">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::upper_left_y</definition>
+        <definition>double necsim::Map&lt; double  &gt;::upper_left_y</definition>
         <argsstring></argsstring>
         <name>upper_left_y</name>
         <briefdescription>
@@ -1102,11 +1872,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="47" column="1" bodyfile="necsim/Map.h" bodystart="47" bodyend="-1"/>
+        <location file="necsim/Map.h" line="50" column="1" bodyfile="necsim/Map.h" bodystart="50" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1ad385ffe20fb2ae2dc5fa1c6edf72649f" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1acb2b02e166a757d8483ab9a0ad6f37e4" prot="protected" static="no" mutable="no">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::x_res</definition>
+        <definition>double necsim::Map&lt; double  &gt;::x_res</definition>
         <argsstring></argsstring>
         <name>x_res</name>
         <briefdescription>
@@ -1115,11 +1885,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="47" column="1" bodyfile="necsim/Map.h" bodystart="47" bodyend="-1"/>
+        <location file="necsim/Map.h" line="50" column="1" bodyfile="necsim/Map.h" bodystart="50" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_map_1aea5d0fe583fdc11aa94fb5eae6766644" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a9103e2e576418741623e232d8b054adb" prot="protected" static="no" mutable="no">
         <type>double</type>
-        <definition>double Map&lt; double  &gt;::y_res</definition>
+        <definition>double necsim::Map&lt; double  &gt;::y_res</definition>
         <argsstring></argsstring>
         <name>y_res</name>
         <briefdescription>
@@ -1128,11 +1898,24 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Map.h" line="47" column="1" bodyfile="necsim/Map.h" bodystart="47" bodyend="-1"/>
+        <location file="necsim/Map.h" line="50" column="1" bodyfile="necsim/Map.h" bodystart="50" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_matrix_1a35f2cdc4de7477a491b86a13c80d12ff" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_map_1a320d3c94734b3e4fee7008d34cf2b0d6" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool necsim::Map&lt; double  &gt;::cpl_error_set</definition>
+        <argsstring></argsstring>
+        <name>cpl_error_set</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/Map.h" line="54" column="1" bodyfile="necsim/Map.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_matrix_1ad22e95f402d410d965c4d4c9aa61b5f6" prot="protected" static="no" mutable="no">
         <type>unsigned long</type>
-        <definition>unsigned long Matrix&lt; double  &gt;::num_cols</definition>
+        <definition>unsigned long necsim::Matrix&lt; double  &gt;::num_cols</definition>
         <argsstring></argsstring>
         <name>num_cols</name>
         <briefdescription>
@@ -1141,11 +1924,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="230" column="1" bodyfile="necsim/Matrix.h" bodystart="230" bodyend="-1"/>
+        <location file="necsim/Matrix.h" line="58" column="1" bodyfile="necsim/Matrix.h" bodystart="58" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_matrix_1a58b3f04e4cab488f0286f89f89fbb26c" prot="protected" static="no" mutable="no">
+      <memberdef kind="variable" id="classnecsim_1_1_matrix_1afa8091e7e9ad63dd1aec96955b369fda" prot="protected" static="no" mutable="no">
         <type>unsigned long</type>
-        <definition>unsigned long Matrix&lt; double  &gt;::num_rows</definition>
+        <definition>unsigned long necsim::Matrix&lt; double  &gt;::num_rows</definition>
         <argsstring></argsstring>
         <name>num_rows</name>
         <briefdescription>
@@ -1154,11 +1937,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="231" column="1" bodyfile="necsim/Matrix.h" bodystart="231" bodyend="-1"/>
+        <location file="necsim/Matrix.h" line="59" column="1" bodyfile="necsim/Matrix.h" bodystart="59" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_matrix_1a7a143ae112112155c9622ba17dc434c7" prot="protected" static="no" mutable="no">
-        <type><ref refid="class_row" kindref="compound">Row</ref>&lt; double &gt; *</type>
-        <definition>Row&lt;double &gt;* Matrix&lt; double  &gt;::matrix</definition>
+      <memberdef kind="variable" id="classnecsim_1_1_matrix_1a3448e6eb1becb8b4ae913096b6b5a14d" prot="protected" static="no" mutable="no">
+        <type>vector&lt; double &gt;</type>
+        <definition>vector&lt;double &gt; necsim::Matrix&lt; double  &gt;::matrix</definition>
         <argsstring></argsstring>
         <name>matrix</name>
         <briefdescription>
@@ -1167,134 +1950,157 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="necsim/Matrix.h" line="233" column="1" bodyfile="necsim/Matrix.h" bodystart="233" bodyend="-1"/>
+        <location file="necsim/Matrix.h" line="61" column="1" bodyfile="necsim/Matrix.h" bodystart="61" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>Calculates a variety of landscape metrics from an imported tif file. </para>    </briefdescription>
+<para>Calculates a variety of landscape metrics from an imported tif file. </para>
+    </briefdescription>
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="499">
+      <node id="150">
         <label>LandscapeMetricsCalculator</label>
         <link refid="class_landscape_metrics_calculator"/>
-        <childnode refid="500" relation="public-inheritance">
+        <childnode refid="151" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="500">
-        <label>Map&lt; double &gt;</label>
-        <link refid="class_map"/>
-        <childnode refid="501" relation="public-inheritance">
-        </childnode>
+      <node id="152">
+        <label>necsim::Matrix&lt; double &gt;</label>
+        <link refid="classnecsim_1_1_matrix"/>
       </node>
-      <node id="501">
-        <label>Matrix&lt; double &gt;</label>
-        <link refid="class_matrix"/>
+      <node id="151">
+        <label>necsim::Map&lt; double &gt;</label>
+        <link refid="classnecsim_1_1_map"/>
+        <childnode refid="152" relation="public-inheritance">
+        </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="505">
-        <label>Row&lt; double &gt;</label>
-        <link refid="class_row"/>
-      </node>
-      <node id="507">
+      <node id="157">
         <label>std::basic_string&lt; char &gt;</label>
       </node>
-      <node id="502">
+      <node id="153">
         <label>LandscapeMetricsCalculator</label>
         <link refid="class_landscape_metrics_calculator"/>
-        <childnode refid="503" relation="public-inheritance">
+        <childnode refid="154" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="503">
-        <label>Map&lt; double &gt;</label>
-        <link refid="class_map"/>
-        <childnode refid="504" relation="public-inheritance">
+      <node id="155">
+        <label>necsim::Matrix&lt; double &gt;</label>
+        <link refid="classnecsim_1_1_matrix"/>
+      </node>
+      <node id="154">
+        <label>necsim::Map&lt; double &gt;</label>
+        <link refid="classnecsim_1_1_map"/>
+        <childnode refid="155" relation="public-inheritance">
         </childnode>
-        <childnode refid="506" relation="usage">
+        <childnode refid="156" relation="usage">
           <edgelabel>file_name</edgelabel>
         </childnode>
       </node>
-      <node id="504">
-        <label>Matrix&lt; double &gt;</label>
-        <link refid="class_matrix"/>
-        <childnode refid="505" relation="usage">
-          <edgelabel>matrix</edgelabel>
-        </childnode>
-      </node>
-      <node id="506">
+      <node id="156">
         <label>std::string</label>
-        <childnode refid="507" relation="public-inheritance">
+        <childnode refid="157" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
     <location file="LandscapeMetricsCalculator.h" line="25" column="1" bodyfile="LandscapeMetricsCalculator.h" bodystart="24" bodyend="84"/>
     <listofallmembers>
       <member refid="class_landscape_metrics_calculator_1af663b7cd7f64e71a6c7a6fed6c7bd695" prot="private" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>all_cells</name></member>
-      <member refid="class_map_1ace1fcda890de19bd60858b4ecef596a7" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>block_x_size</name></member>
-      <member refid="class_map_1a14c78d058dc5d4305b044680d4d8a329" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>block_y_size</name></member>
+      <member refid="classnecsim_1_1_matrix_1a5fee481a8ba9e92592afbc2ff5771966" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>begin</name></member>
+      <member refid="classnecsim_1_1_matrix_1a729d0525a7a8b3031414d67e4319711a" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>begin</name></member>
+      <member refid="classnecsim_1_1_map_1a7c81c2e78c974cb16d2393e03edc02de" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>block_x_size</name></member>
+      <member refid="classnecsim_1_1_map_1a60fbda0dbd54c682b2fcbb5dfd77b3e9" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>block_y_size</name></member>
       <member refid="class_landscape_metrics_calculator_1aff48704d3a9e02da4914ac2b08c5f79b" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateClumpiness</name></member>
       <member refid="class_landscape_metrics_calculator_1a1ba606d6fb687aceaf4a8e31e8f17273" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateMinPerimeter</name></member>
       <member refid="class_landscape_metrics_calculator_1a34f344e3282eead2091fe8ccb32e6d48" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateMNN</name></member>
       <member refid="class_landscape_metrics_calculator_1ae477e368c4f13042cf2f9a47e62d60ae" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateNoAdjacencies</name></member>
-      <member refid="class_map_1a200701b23560dd38238801522b234e78" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateOffset</name></member>
+      <member refid="classnecsim_1_1_map_1aa6bd393682e149623f6dc02d33da5ba8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>calculateOffset</name></member>
       <member refid="class_landscape_metrics_calculator_1a16bde8469f437abc21602eedb979e5e3" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>checkMinDistance</name></member>
-      <member refid="class_map_1a6387185da6dc3063cd2311ffab0a5fba" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>checkTifImportFailure</name></member>
-      <member refid="class_map_1ad73fafd17ff95872e9b63945584ae81f" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>close</name></member>
-      <member refid="class_map_1a39d76e341e0f817d65ddf0100cfe5f26" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>closeOffsetMap</name></member>
-      <member refid="class_map_1a6ba075bc9deb93e306f74179c57fec59" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>cpl_error</name></member>
+      <member refid="classnecsim_1_1_map_1a367ba176a8b493eda886097358487ef2" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>checkTifImportFailure</name></member>
+      <member refid="classnecsim_1_1_map_1ace0b02a482ebb173367635ac3c32f9d3" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>close</name></member>
+      <member refid="classnecsim_1_1_map_1a12125d369ac5d078c4b5f1ec03b6b5cc" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>closeOffsetMap</name></member>
+      <member refid="classnecsim_1_1_map_1a4c352dbab8cb0620ebe50b4499b45729" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>cpl_error</name></member>
+      <member refid="classnecsim_1_1_map_1a320d3c94734b3e4fee7008d34cf2b0d6" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>cpl_error_set</name></member>
       <member refid="class_landscape_metrics_calculator_1a084eea2435b7d15049873ae4613b0307" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>createCellList</name></member>
-      <member refid="class_map_1a414e6bc9305ab830836cf817cb4a0d60" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>defaultImport</name></member>
-      <member refid="class_map_1a5a355405b8c42d660bc726b6bbfcf636" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>file_name</name></member>
+      <member refid="classnecsim_1_1_map_1a9c1e777a6e57234b5eccc7d4b2c65691" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>defaultImport</name></member>
+      <member refid="classnecsim_1_1_matrix_1aa6d1861375360cae3241f647972383f1" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>end</name></member>
+      <member refid="classnecsim_1_1_matrix_1a59ae7bb1f814a55b94ef17bd476238c8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>end</name></member>
+      <member refid="classnecsim_1_1_map_1a80bebe1907879e3836815c0aa9eda366" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>file_name</name></member>
+      <member refid="classnecsim_1_1_matrix_1a68936bdfa42e877c791fa74775f38d92" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>fill</name></member>
       <member refid="class_landscape_metrics_calculator_1a9dd4cde4aad066b3b204553718a63a98" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>findNearestNeighbourDistance</name></member>
-      <member refid="class_map_1a08856fb3ac67963db0bb1dbb6cdc5f0e" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>gdal_data_type</name></member>
-      <member refid="class_map_1a4e441dcda33d78bef193b1ad1265b5e8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getBlockSizes</name></member>
-      <member refid="class_matrix_1a9b4ce445c65dcea66c66dda875cc39d8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getCols</name></member>
-      <member refid="class_map_1a180284cfba3442eb3d62fc41d0d8f546" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getMetaData</name></member>
-      <member refid="class_map_1ade2338d7a8d598c343208b633f8a3a93" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getRasterBand</name></member>
-      <member refid="class_matrix_1a442879db6473eeab202928dc47992206" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getRows</name></member>
-      <member refid="class_map_1afd32790ea28d0c5aa99b582b2d474933" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getUpperLeftX</name></member>
-      <member refid="class_map_1a2d7b63836d06b2710192e7c8afd38641" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getUpperLeftY</name></member>
-      <member refid="class_map_1ad1a25204dce37addc3453e091552b014" prot="public" virt="virtual"><scope>LandscapeMetricsCalculator</scope><name>import</name></member>
-      <member refid="class_matrix_1a0a5d9135e9807b81ddc3cf05e777a902" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importCsv</name></member>
-      <member refid="class_map_1aaefe833ab35a68ce54e7eec996c48971" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importFromDoubleAndMakeBool</name></member>
-      <member refid="class_map_1a2306683b0b3b4ddb7d776d1ff60d4491" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importTif</name></member>
-      <member refid="class_map_1ae88574927ad3a38fc0a9bc253a9e4a7a" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importUsingBuffer</name></member>
-      <member refid="class_map_1a0c17360ca7fa935d59f2169fd0007630" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
-      <member refid="class_map_1a19f6874b008fcbfac213341d05c2f443" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>isOpen</name></member>
+      <member refid="classnecsim_1_1_map_1a5741de4f6a99d672825eda0e1569a8c8" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>gdal_data_type</name></member>
+      <member refid="classnecsim_1_1_matrix_1af67a3a10dbdcc8d4656ce90104efa8ba" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>get</name></member>
+      <member refid="classnecsim_1_1_matrix_1a5711966132f3c44abb02623fc2236158" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>get</name></member>
+      <member refid="classnecsim_1_1_map_1a5bc5eab8105d01c074d4e1c1fbd4e555" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getBlockSizes</name></member>
+      <member refid="classnecsim_1_1_matrix_1a12d31769465e7c2a3b4798d078e00a47" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getCols</name></member>
+      <member refid="classnecsim_1_1_matrix_1a710473cfc0712ec15b55f651c887070c" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getCopy</name></member>
+      <member refid="classnecsim_1_1_map_1a240c6967fe89be4fd806b64bf76dc136" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getFileName</name></member>
+      <member refid="classnecsim_1_1_matrix_1a1f55142f41ccd82bdf85a4210ed73952" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getMean</name></member>
+      <member refid="classnecsim_1_1_map_1ae8d236fa822879739938831c83f97f4c" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getMetaData</name></member>
+      <member refid="classnecsim_1_1_map_1a3d4c59978ea148dd1d89c21fbe50494e" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getRasterBand</name></member>
+      <member refid="classnecsim_1_1_matrix_1afc78538f61f0e68558e345e1425cc1e0" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getRows</name></member>
+      <member refid="classnecsim_1_1_map_1a5daf1f32ac53353cbe61ddbe8f7d2248" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getUpperLeftX</name></member>
+      <member refid="classnecsim_1_1_map_1ac626ab1ce04f6f47a6f5b87df6fad3ae" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>getUpperLeftY</name></member>
+      <member refid="classnecsim_1_1_map_1a6e753018fee20348447f55cd5ed0f5dd" prot="public" virt="virtual"><scope>LandscapeMetricsCalculator</scope><name>import</name></member>
+      <member refid="classnecsim_1_1_matrix_1a1d4a5a6210d42338b41daad5112bd3df" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importCsv</name></member>
+      <member refid="classnecsim_1_1_map_1a90cb4a231a8358ba9ea75563d579ca9d" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importFromDoubleAndMakeBool</name></member>
+      <member refid="classnecsim_1_1_map_1ad3ee93f3c420a537587de4b64e3d7cf5" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importTif</name></member>
+      <member refid="classnecsim_1_1_map_1a77f15b22824fe1921e8823b36bf942c5" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>importUsingBuffer</name></member>
+      <member refid="classnecsim_1_1_matrix_1af96d6d558cf9b854c8275b716ab3835c" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>index</name></member>
+      <member refid="classnecsim_1_1_map_1a7b13faca1bb9ca70594dc4906318d0d8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1a5bc956d78380553bbc3a8264677d5da6" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1ac7031ab3bbd14582244445da4b238c2e" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1a4c3d000965f21ff0b4a2221a530a3da0" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1ab4b2271928108ff8606d8e8e1bd9d353" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1a411f462c066e75a612602d605b478b23" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1ac8fe573f1e2cc2da75e805d092ad870b" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1a3a542bda02b022f540e46df1302b057e" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1abab55fac5cc1d15a4a819c6229e6842e" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1a2329fcc40c792d91c65553aaf0cac3ca" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>internalImport</name></member>
+      <member refid="classnecsim_1_1_map_1ac01f4588b58dcd1af3b96e8602612beb" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>isOpen</name></member>
       <member refid="class_landscape_metrics_calculator_1a8b6c65f14753803f023c078cd615a25d" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>LandscapeMetricsCalculator</name></member>
-      <member refid="class_map_1afedbaa14db4c0a1f578e62d658c50e7a" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>Map</name></member>
-      <member refid="class_matrix_1a7a143ae112112155c9622ba17dc434c7" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>matrix</name></member>
-      <member refid="class_matrix_1a53f60218c002f2bb454695a1fc35c5d3" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>Matrix</name></member>
-      <member refid="class_matrix_1a3796b4f32dc8e11f908a90fd3dd39c45" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>Matrix</name></member>
-      <member refid="class_map_1a3d86c1408c3ae26bb5bec201e05786fb" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>no_data_value</name></member>
-      <member refid="class_matrix_1a35f2cdc4de7477a491b86a13c80d12ff" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>num_cols</name></member>
-      <member refid="class_matrix_1a58b3f04e4cab488f0286f89f89fbb26c" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>num_rows</name></member>
-      <member refid="class_map_1aa2764c9ae1c54c1821fa4f63b88fe0f3" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>open</name></member>
-      <member refid="class_map_1a2389e09950706ef49640976837186c79" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>open</name></member>
-      <member refid="class_map_1ade20cc1876ba2774f0f8274d432d89c3" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>openOffsetMap</name></member>
-      <member refid="class_matrix_1a7285ecf2cfdfdcf3a3e19b4cde235528" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator*</name></member>
-      <member refid="class_matrix_1a965f8987b92cfdbf8f17d3cf1bf0fa9b" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator*</name></member>
-      <member refid="class_matrix_1abdbd1bbdae2f6926cdc2b58faa304826" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator+</name></member>
-      <member refid="class_matrix_1a480a72298ae1fc8443b0edfaa66d7c46" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator+=</name></member>
-      <member refid="class_matrix_1a73b8da7142ea2593ba7d097651a3ce5c" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator-</name></member>
-      <member refid="class_matrix_1a0e459fd035b2435ea016dc93c55ccac0" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator-=</name></member>
-      <member refid="class_map_1a00f73ad13cb67e3c4836fae9614d6b40" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator=</name></member>
-      <member refid="class_matrix_1a94508f84ba0d62e81aa8d508aa43f1ec" prot="public" virt="non-virtual" ambiguityscope="Matrix&lt; double &gt;::"><scope>LandscapeMetricsCalculator</scope><name>operator=</name></member>
-      <member refid="class_matrix_1ae7e14b4bd8bb570260a4e578e4a601b7" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator[]</name></member>
-      <member refid="class_map_1a7a6134c8835e44f937df4269e6f49709" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>po_band</name></member>
-      <member refid="class_map_1a8fa67c9571db64bfa942ede60a405da4" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>po_dataset</name></member>
-      <member refid="class_map_1a03e0486e704090765d253b18a9dde0f5" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>printNumberComplete</name></member>
-      <member refid="class_map_1a9862291ea99fe1718d758213b3687bd8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>roundedScale</name></member>
-      <member refid="class_matrix_1aa393296d4132d7aafc4e236ddfe59f06" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>setSize</name></member>
-      <member refid="class_matrix_1ae511e2f5874e7602fc968541efeefca1" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>setValue</name></member>
-      <member refid="class_map_1ae3b72e22a19277aa531ae90f47c461b2" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>upper_left_x</name></member>
-      <member refid="class_map_1a37d531f2f186f90d3f4563e91f2623cb" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>upper_left_y</name></member>
-      <member refid="class_map_1ad385ffe20fb2ae2dc5fa1c6edf72649f" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>x_res</name></member>
-      <member refid="class_map_1aea5d0fe583fdc11aa94fb5eae6766644" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>y_res</name></member>
+      <member refid="classnecsim_1_1_map_1ab163122277162f2e324a8dc1d6c05bfc" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>Map</name></member>
+      <member refid="classnecsim_1_1_matrix_1a3448e6eb1becb8b4ae913096b6b5a14d" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>matrix</name></member>
+      <member refid="classnecsim_1_1_matrix_1a213bef5520b5ebbe90e91e3ce2541ba7" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>Matrix</name></member>
+      <member refid="classnecsim_1_1_matrix_1ae16eecda8e88ca6aaa6e9873ffc25c6f" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>Matrix</name></member>
+      <member refid="classnecsim_1_1_map_1a0934d85df9105cfec7aa0b1fa133efa0" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>no_data_value</name></member>
+      <member refid="classnecsim_1_1_matrix_1ad22e95f402d410d965c4d4c9aa61b5f6" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>num_cols</name></member>
+      <member refid="classnecsim_1_1_matrix_1afa8091e7e9ad63dd1aec96955b369fda" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>num_rows</name></member>
+      <member refid="classnecsim_1_1_map_1acd05d519d992aaca1d44ef16d833ec23" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>open</name></member>
+      <member refid="classnecsim_1_1_map_1a577dff0b15b2e695720e00a244b2167f" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>open</name></member>
+      <member refid="classnecsim_1_1_map_1ace424acca570f238fa886f20e704240f" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>openOffsetMap</name></member>
+      <member refid="classnecsim_1_1_matrix_1acf9a9141dc74553c0a3a43a0b66f008d" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator *</name></member>
+      <member refid="classnecsim_1_1_matrix_1a9fcf04fdd8569f115aa0ccc221b5a449" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator *</name></member>
+      <member refid="classnecsim_1_1_matrix_1a68762b157397bc31bb013dc8987940d8" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator *=</name></member>
+      <member refid="classnecsim_1_1_matrix_1ab1aaddf1f14fc29383c873087bc63c7e" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator *=</name></member>
+      <member refid="classnecsim_1_1_matrix_1acba7b8292dfa4af20766a140318282aa" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator+</name></member>
+      <member refid="classnecsim_1_1_matrix_1aef31e4e44f771d9b6c102b124443a183" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator+=</name></member>
+      <member refid="classnecsim_1_1_matrix_1a59b2969f521f241a5d0fdc7acfc1c311" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator-</name></member>
+      <member refid="classnecsim_1_1_matrix_1accb2b34850a64c4f10c52b24b09f364c" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator-=</name></member>
+      <member refid="classnecsim_1_1_matrix_1a1edc0dac773f9e04e7e495b5dc814899" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator/</name></member>
+      <member refid="classnecsim_1_1_matrix_1a186c9f767c0f07f356f24a62dad928c7" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator/=</name></member>
+      <member refid="classnecsim_1_1_matrix_1af704a00731d540637b73f4fee528155a" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator/=</name></member>
+      <member refid="classnecsim_1_1_map_1a82f4a8b79ef64a57a50370a24194faf7" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>operator=</name></member>
+      <member refid="classnecsim_1_1_matrix_1a9973f911878111de8a659c80ce86ccab" prot="public" virt="non-virtual" ambiguityscope="Matrix&lt; double &gt;::"><scope>LandscapeMetricsCalculator</scope><name>operator=</name></member>
+      <member refid="classnecsim_1_1_map_1abd04c732201595f898f9fd59b0fdd948" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>po_band</name></member>
+      <member refid="classnecsim_1_1_map_1a293d6f98bedeadd3e00fa62abfbe32c4" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>po_dataset</name></member>
+      <member refid="classnecsim_1_1_map_1ae3f05d6e22e17ceabbb4bcf571d2dc8f" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>printNumberComplete</name></member>
+      <member refid="classnecsim_1_1_map_1a3bab2a1f71ba318f4c2a0340425f01aa" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>removeCPLErrorHandler</name></member>
+      <member refid="classnecsim_1_1_map_1ac3650dac57ae6f7bc6cd8cf8df2e3946" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>roundedScale</name></member>
+      <member refid="classnecsim_1_1_map_1a657584426c9d2d189e2622d028c4c8a0" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>setCPLErrorHandler</name></member>
+      <member refid="classnecsim_1_1_matrix_1ac8d16e95e533a6844633c59bc165c65d" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>setSize</name></member>
+      <member refid="classnecsim_1_1_matrix_1aa7b71c96c4c33ea80ddc175a2d575418" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>setValue</name></member>
+      <member refid="classnecsim_1_1_matrix_1acfd741c2de6c37ea69b04159e09b9662" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>setValue</name></member>
+      <member refid="classnecsim_1_1_matrix_1a5028e8ac425a736e529c1b90c7b99796" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>sum</name></member>
+      <member refid="classnecsim_1_1_map_1a8db85d38a03785273893b0f224ec4dc2" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>upper_left_x</name></member>
+      <member refid="classnecsim_1_1_map_1a56a84b8f5c5c9bf51bb95757b1c5667b" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>upper_left_y</name></member>
+      <member refid="classnecsim_1_1_map_1acb2b02e166a757d8483ab9a0ad6f37e4" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>x_res</name></member>
+      <member refid="classnecsim_1_1_map_1a9103e2e576418741623e232d8b054adb" prot="protected" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>y_res</name></member>
       <member refid="class_landscape_metrics_calculator_1a49ca32335b116b9c5291039334551410" prot="public" virt="virtual"><scope>LandscapeMetricsCalculator</scope><name>~LandscapeMetricsCalculator</name></member>
-      <member refid="class_map_1a3d863f18372123544a620777fcfceb53" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>~Map</name></member>
-      <member refid="class_matrix_1ab8cec5fdc5a9d228e19d1d1e5ccac8cf" prot="public" virt="virtual"><scope>LandscapeMetricsCalculator</scope><name>~Matrix</name></member>
+      <member refid="classnecsim_1_1_map_1a48a93f15362321bf3b594cb9906aba07" prot="public" virt="non-virtual"><scope>LandscapeMetricsCalculator</scope><name>~Map</name></member>
+      <member refid="classnecsim_1_1_matrix_1a1c00c456ea7c37e06d950b30b5d0262f" prot="public" virt="virtual"><scope>LandscapeMetricsCalculator</scope><name>~Matrix</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

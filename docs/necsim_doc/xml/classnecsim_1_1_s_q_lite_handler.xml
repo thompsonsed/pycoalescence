@@ -1,0 +1,491 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+  <compounddef id="classnecsim_1_1_s_q_lite_handler" kind="class" language="C++" prot="public">
+    <compoundname>necsim::SQLiteHandler</compoundname>
+    <includes refid="_s_q_lite_handler_8h" local="no">SQLiteHandler.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnecsim_1_1_s_q_lite_handler_1aaa3f49f80eb638bddd05821c02d686a2" prot="protected" static="no" mutable="no">
+        <type>sqlite3 *</type>
+        <definition>sqlite3* necsim::SQLiteHandler::database</definition>
+        <argsstring></argsstring>
+        <name>database</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="65" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_s_q_lite_handler_1a7d41348c41f4357ed54e6fcbc7f4c981" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string necsim::SQLiteHandler::file_name</definition>
+        <argsstring></argsstring>
+        <name>file_name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="66" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_s_q_lite_handler_1a3afd535546b92d4f2c387b42a9b306fd" prot="protected" static="no" mutable="no">
+        <type>shared_ptr&lt; <ref refid="structnecsim_1_1_s_q_l_statement" kindref="compound">SQLStatement</ref> &gt;</type>
+        <definition>shared_ptr&lt;SQLStatement&gt; necsim::SQLiteHandler::stmt</definition>
+        <argsstring></argsstring>
+        <name>stmt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="67" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a0120dba7b4da32572e5ef387f8543cfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>necsim::SQLiteHandler::SQLiteHandler</definition>
+        <argsstring>()</argsstring>
+        <name>SQLiteHandler</name>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="72" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a5396eca5585c25fd0c4635cfddb58760" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>necsim::SQLiteHandler::~SQLiteHandler</definition>
+        <argsstring>()</argsstring>
+        <name>~SQLiteHandler</name>
+        <briefdescription>
+<para>Default destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="77" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="48" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a1c18a12ee80babc532e88e66651a7b12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::open</definition>
+        <argsstring>(const std::string &amp;file_name)</argsstring>
+        <name>open</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+<para>Opens a database connection to the specified file name. If the file name is &quot;:memory:&quot;, instead opens a connection to an in-memory database object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the name of the file to open (or &quot;:memory:&quot; for in-memory databases) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="84" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="53" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a31bf67030c0c0d709164c72085f78fe6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::close</definition>
+        <argsstring>()</argsstring>
+        <name>close</name>
+        <briefdescription>
+<para>Closes the sqlite3 connection to the database. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="89" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="59" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a94f9e83a7afb287782ec376238c191e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string necsim::SQLiteHandler::getErrorMsg</definition>
+        <argsstring>(int rc)</argsstring>
+        <name>getErrorMsg</name>
+        <param>
+          <type>int</type>
+          <declname>rc</declname>
+        </param>
+        <briefdescription>
+<para>Gets the error message from the sqlite3 database operations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the result code of the previous operation, to print out </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>string containing the result code and the error message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="96" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="65" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a52dc619bd9bc6d9de7000c279c94603c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string necsim::SQLiteHandler::getErrorMsg</definition>
+        <argsstring>()</argsstring>
+        <name>getErrorMsg</name>
+        <briefdescription>
+<para>Gets the error message from the database. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the error message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="102" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="72" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a68a9bee315bab36177d540c23eb56a93" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::backupFrom</definition>
+        <argsstring>(SQLiteHandler &amp;sqlite_handler)</argsstring>
+        <name>backupFrom</name>
+        <param>
+          <type><ref refid="classnecsim_1_1_s_q_lite_handler" kindref="compound">SQLiteHandler</ref> &amp;</type>
+          <declname>sqlite_handler</declname>
+        </param>
+        <briefdescription>
+<para>Copies the data from the provided SQLiteHander object to this database. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sqlite_handler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the database containing data to copy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="108" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="77" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a26ae58b39282d726fec42d077bdba790" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>shared_ptr&lt; <ref refid="structnecsim_1_1_s_q_l_statement" kindref="compound">SQLStatement</ref> &gt;</type>
+        <definition>shared_ptr&lt; SQLStatement &gt; necsim::SQLiteHandler::prepare</definition>
+        <argsstring>(const std::string &amp;command)</argsstring>
+        <name>prepare</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>command</declname>
+        </param>
+        <briefdescription>
+<para>Prepares the given commmand within the statement object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>command</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the command to execute </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stmt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the statement to prepare within </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>pointer to the prepared statement </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="116" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="106" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a4495b26ec739bbdfd6f06c4824b9786a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::createStatement</definition>
+        <argsstring>()</argsstring>
+        <name>createStatement</name>
+        <briefdescription>
+<para>Creates a new statement for the database handler. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="121" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="121" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1ada14be6797051f14b9156b08bd7fcd85" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::useStatement</definition>
+        <argsstring>(shared_ptr&lt; SQLStatement &gt; stmt)</argsstring>
+        <name>useStatement</name>
+        <param>
+          <type>shared_ptr&lt; <ref refid="structnecsim_1_1_s_q_l_statement" kindref="compound">SQLStatement</ref> &gt;</type>
+          <declname>stmt</declname>
+        </param>
+        <briefdescription>
+<para>Use the supplied statement object for the database. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stmt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="127" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="126" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a50e6dce8f1ebdaa037efbee1845e2d8b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::step</definition>
+        <argsstring>()</argsstring>
+        <name>step</name>
+        <briefdescription>
+<para>Steps the prepared statement forwards and reports any errors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>stmt should have been opened from the same <ref refid="classnecsim_1_1_s_q_lite_handler" kindref="compound">SQLiteHandler</ref> object using <ref refid="classnecsim_1_1_s_q_lite_handler_1a26ae58b39282d726fec42d077bdba790" kindref="member">prepare()</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stmt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the statement to step forwards </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="134" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="131" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a7d737c853ed7f94a86c743b223a9297d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::finalise</definition>
+        <argsstring>()</argsstring>
+        <name>finalise</name>
+        <briefdescription>
+<para>Finalises the sqlite statement and reports any errors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>stmt should have been opened from the same <ref refid="classnecsim_1_1_s_q_lite_handler" kindref="compound">SQLiteHandler</ref> object using <ref refid="classnecsim_1_1_s_q_lite_handler_1a26ae58b39282d726fec42d077bdba790" kindref="member">prepare()</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stmt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the statement to finalise </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="141" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="143" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a4d6a67d17d2939f813943168594034a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::execute</definition>
+        <argsstring>(const string &amp;command)</argsstring>
+        <name>execute</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>command</declname>
+        </param>
+        <briefdescription>
+<para>Executes a command from the database and reports any errors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>command</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the command to execute within the database </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="147" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="154" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1ab78c0e14fbc91648db7c685b1df176b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::beginTransaction</definition>
+        <argsstring>()</argsstring>
+        <name>beginTransaction</name>
+        <briefdescription>
+<para>Starts a transaction from this database object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="152" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="166" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1acb6da74f91db098bfb5fd0387922b2b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::SQLiteHandler::endTransaction</definition>
+        <argsstring>()</argsstring>
+        <name>endTransaction</name>
+        <briefdescription>
+<para>Ends the transaction from this database object. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="157" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="171" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1a966fb5e0591bed65083d1ba59c78750a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool necsim::SQLiteHandler::isOpen</definition>
+        <argsstring>()</argsstring>
+        <name>isOpen</name>
+        <briefdescription>
+<para>Checks if the database is open. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true, if the database is not a nullptr. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="163" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="176" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_s_q_lite_handler_1ae86858b7a26014925477424394581ba8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool necsim::SQLiteHandler::hasTable</definition>
+        <argsstring>(const std::string &amp;table_name)</argsstring>
+        <name>hasTable</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>table_name</declname>
+        </param>
+        <briefdescription>
+<para>Checks if the database has the specified table. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>table_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the table name to check for existence </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the table exists </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/SQLiteHandler.h" line="170" column="1" bodyfile="necsim/SQLiteHandler.cpp" bodystart="181" bodyend="189"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Handler for the SQLite connection, including proper opening and closing of the database object. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="589">
+        <label>necsim::SQLStatement</label>
+        <link refid="structnecsim_1_1_s_q_l_statement"/>
+        <childnode refid="586" relation="usage">
+          <edgelabel>last_command</edgelabel>
+        </childnode>
+      </node>
+      <node id="587">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="588">
+        <label>std::shared_ptr&lt; necsim::SQLStatement &gt;</label>
+        <childnode refid="589" relation="usage">
+          <edgelabel>ptr</edgelabel>
+        </childnode>
+      </node>
+      <node id="585">
+        <label>necsim::SQLiteHandler</label>
+        <link refid="classnecsim_1_1_s_q_lite_handler"/>
+        <childnode refid="586" relation="usage">
+          <edgelabel>file_name</edgelabel>
+        </childnode>
+        <childnode refid="588" relation="usage">
+          <edgelabel>stmt</edgelabel>
+        </childnode>
+      </node>
+      <node id="586">
+        <label>std::string</label>
+        <childnode refid="587" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="necsim/SQLiteHandler.h" line="63" column="1" bodyfile="necsim/SQLiteHandler.h" bodystart="62" bodyend="171"/>
+    <listofallmembers>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a68a9bee315bab36177d540c23eb56a93" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>backupFrom</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1ab78c0e14fbc91648db7c685b1df176b8" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>beginTransaction</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a31bf67030c0c0d709164c72085f78fe6" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>close</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a4495b26ec739bbdfd6f06c4824b9786a" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>createStatement</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1aaa3f49f80eb638bddd05821c02d686a2" prot="protected" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>database</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1acb6da74f91db098bfb5fd0387922b2b2" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>endTransaction</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a4d6a67d17d2939f813943168594034a4" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>execute</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a7d41348c41f4357ed54e6fcbc7f4c981" prot="protected" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>file_name</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a7d737c853ed7f94a86c743b223a9297d" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>finalise</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a94f9e83a7afb287782ec376238c191e8" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>getErrorMsg</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a52dc619bd9bc6d9de7000c279c94603c" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>getErrorMsg</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1ae86858b7a26014925477424394581ba8" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>hasTable</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a966fb5e0591bed65083d1ba59c78750a" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>isOpen</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a1c18a12ee80babc532e88e66651a7b12" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>open</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a26ae58b39282d726fec42d077bdba790" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>prepare</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a0120dba7b4da32572e5ef387f8543cfa" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>SQLiteHandler</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a50e6dce8f1ebdaa037efbee1845e2d8b" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>step</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a3afd535546b92d4f2c387b42a9b306fd" prot="protected" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>stmt</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1ada14be6797051f14b9156b08bd7fcd85" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>useStatement</name></member>
+      <member refid="classnecsim_1_1_s_q_lite_handler_1a5396eca5585c25fd0c4635cfddb58760" prot="public" virt="non-virtual"><scope>necsim::SQLiteHandler</scope><name>~SQLiteHandler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

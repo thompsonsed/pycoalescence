@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
   <compounddef id="_logging_8h" kind="file" language="C++">
     <compoundname>Logging.h</compoundname>
     <includes local="no">string</includes>
@@ -7,7 +7,7 @@
     <includedby refid="_map_8h" local="yes">necsim/Map.h</includedby>
     <includedby refid="_matrix_8h" local="yes">necsim/Matrix.h</includedby>
     <includedby refid="custom__exceptions_8h" local="yes">necsim/custom_exceptions.h</includedby>
-    <includedby refid="_n_rrand_8h" local="yes">necsim/NRrand.h</includedby>
+    <includedby refid="_r_n_g_controller_8h" local="yes">necsim/RNGController.h</includedby>
     <includedby refid="_tree_node_8h" local="yes">necsim/TreeNode.h</includedby>
     <includedby refid="_sim_parameters_8h" local="yes">necsim/SimParameters.h</includedby>
     <includedby refid="_config_parser_8cpp" local="yes">necsim/ConfigParser.cpp</includedby>
@@ -15,7 +15,6 @@
     <includedby refid="_data_mask_8cpp" local="yes">necsim/DataMask.cpp</includedby>
     <includedby refid="_data_point_8cpp" local="yes">necsim/DataPoint.cpp</includedby>
     <includedby refid="_data_point_8h" local="yes">necsim/DataPoint.h</includedby>
-    <includedby refid="_dispersal_coordinator_8cpp" local="yes">necsim/DispersalCoordinator.cpp</includedby>
     <includedby refid="file__system_8cpp" local="yes">necsim/file_system.cpp</includedby>
     <includedby refid="_logger_8cpp" local="yes">necsim/Logger.cpp</includedby>
     <includedby refid="_logging_8cpp" local="yes">necsim/Logging.cpp</includedby>
@@ -26,462 +25,358 @@
     <includedby refid="_tree_8cpp" local="yes">necsim/Tree.cpp</includedby>
     <includedby refid="_tree_node_8cpp" local="yes">necsim/TreeNode.cpp</includedby>
     <incdepgraph>
-      <node id="848">
-        <label>necsim/Logging.h</label>
-        <link refid="Logging.h"/>
-        <childnode refid="849" relation="include">
-        </childnode>
-        <childnode refid="850" relation="include">
-        </childnode>
-      </node>
-      <node id="853">
+      <node id="969">
         <label>stdexcept</label>
       </node>
-      <node id="849">
+      <node id="965">
         <label>string</label>
       </node>
-      <node id="859">
+      <node id="975">
         <label>map</label>
       </node>
-      <node id="857">
+      <node id="973">
         <label>fstream</label>
       </node>
-      <node id="852">
+      <node id="968">
         <label>cstdio</label>
       </node>
-      <node id="858">
+      <node id="974">
         <label>ctime</label>
       </node>
-      <node id="854">
-        <label>sstream</label>
-      </node>
-      <node id="860">
-        <label>cpl_custom_handler.h</label>
-        <link refid="cpl__custom__handler_8h_source"/>
-        <childnode refid="861" relation="include">
+      <node id="964">
+        <label>necsim/Logging.h</label>
+        <link refid="_logging_8h"/>
+        <childnode refid="965" relation="include">
+        </childnode>
+        <childnode refid="966" relation="include">
         </childnode>
       </node>
-      <node id="851">
-        <label>iostream</label>
-      </node>
-      <node id="850">
-        <label>Logger.h</label>
-        <link refid="_logger_8h_source"/>
-        <childnode refid="849" relation="include">
-        </childnode>
-        <childnode refid="851" relation="include">
-        </childnode>
-        <childnode refid="852" relation="include">
-        </childnode>
-        <childnode refid="853" relation="include">
-        </childnode>
-        <childnode refid="854" relation="include">
-        </childnode>
-        <childnode refid="855" relation="include">
-        </childnode>
-        <childnode refid="860" relation="include">
-        </childnode>
-      </node>
-      <node id="855">
+      <node id="971">
         <label>LogFile.h</label>
         <link refid="_log_file_8h_source"/>
-        <childnode refid="856" relation="include">
+        <childnode refid="972" relation="include">
         </childnode>
-        <childnode refid="857" relation="include">
+        <childnode refid="973" relation="include">
         </childnode>
-        <childnode refid="858" relation="include">
+        <childnode refid="974" relation="include">
         </childnode>
-        <childnode refid="859" relation="include">
+        <childnode refid="975" relation="include">
         </childnode>
       </node>
-      <node id="861">
+      <node id="970">
+        <label>sstream</label>
+      </node>
+      <node id="967">
+        <label>iostream</label>
+      </node>
+      <node id="977">
         <label>cpl_error.h</label>
       </node>
-      <node id="856">
+      <node id="966">
+        <label>Logger.h</label>
+        <link refid="_logger_8h_source"/>
+        <childnode refid="965" relation="include">
+        </childnode>
+        <childnode refid="967" relation="include">
+        </childnode>
+        <childnode refid="968" relation="include">
+        </childnode>
+        <childnode refid="969" relation="include">
+        </childnode>
+        <childnode refid="970" relation="include">
+        </childnode>
+        <childnode refid="971" relation="include">
+        </childnode>
+        <childnode refid="976" relation="include">
+        </childnode>
+      </node>
+      <node id="976">
+        <label>cpl_custom_handler.h</label>
+        <link refid="cpl__custom__handler_8h_source"/>
+        <childnode refid="977" relation="include">
+        </childnode>
+      </node>
+      <node id="972">
         <label>cstring</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="862">
-        <label>necsim/Logging.h</label>
-        <link refid="Logging.h"/>
-        <childnode refid="863" relation="include">
-        </childnode>
-        <childnode refid="876" relation="include">
-        </childnode>
-        <childnode refid="878" relation="include">
-        </childnode>
-        <childnode refid="884" relation="include">
-        </childnode>
-        <childnode refid="887" relation="include">
-        </childnode>
-        <childnode refid="879" relation="include">
-        </childnode>
-        <childnode refid="888" relation="include">
-        </childnode>
-        <childnode refid="866" relation="include">
-        </childnode>
-        <childnode refid="882" relation="include">
-        </childnode>
-      </node>
-      <node id="865">
-        <label>necsim/DispersalCoordinator.h</label>
-        <link refid="_dispersal_coordinator_8h_source"/>
-        <childnode refid="866" relation="include">
-        </childnode>
-        <childnode refid="869" relation="include">
-        </childnode>
-      </node>
-      <node id="870">
-        <label>necsim/DataMask.h</label>
-        <link refid="_data_mask_8h_source"/>
-        <childnode refid="871" relation="include">
-        </childnode>
-        <childnode refid="875" relation="include">
-        </childnode>
-        <childnode refid="869" relation="include">
-        </childnode>
-      </node>
-      <node id="886">
-        <label>necsim/AnalyticalSpeciesAbundancesHandler.h</label>
-        <link refid="_analytical_species_abundances_handler_8h_source"/>
-      </node>
-      <node id="863">
-        <label>necsim/Map.h</label>
-        <link refid="_map_8h_source"/>
-        <childnode refid="864" relation="include">
-        </childnode>
-        <childnode refid="870" relation="include">
-        </childnode>
-        <childnode refid="875" relation="include">
-        </childnode>
-        <childnode refid="865" relation="include">
-        </childnode>
-      </node>
-      <node id="882">
-        <label>necsim/SimulationTemplates.h</label>
-        <link refid="_simulation_templates_8h_source"/>
-      </node>
-      <node id="872">
-        <label>necsim/Tree.h</label>
-        <link refid="_tree_8h_source"/>
-        <childnode refid="866" relation="include">
-        </childnode>
-        <childnode refid="873" relation="include">
-        </childnode>
-      </node>
-      <node id="881">
-        <label>necsim/SQLiteHandler.h</label>
-        <link refid="_s_q_lite_handler_8h_source"/>
-        <childnode refid="871" relation="include">
-        </childnode>
-        <childnode refid="872" relation="include">
-        </childnode>
-        <childnode refid="869" relation="include">
-        </childnode>
-      </node>
-      <node id="867">
-        <label>necsim/ProtractedSpatialTree.h</label>
-        <link refid="_protracted_spatial_tree_8h_source"/>
-      </node>
-      <node id="871">
-        <label>necsim/Community.h</label>
-        <link refid="_community_8h_source"/>
-        <childnode refid="872" relation="include">
-        </childnode>
-        <childnode refid="866" relation="include">
-        </childnode>
-        <childnode refid="873" relation="include">
-        </childnode>
-        <childnode refid="874" relation="include">
-        </childnode>
-      </node>
-      <node id="887">
-        <label>necsim/TreeNode.h</label>
-        <link refid="_tree_node_8h_source"/>
-        <childnode refid="871" relation="include">
-        </childnode>
-        <childnode refid="872" relation="include">
-        </childnode>
-        <childnode refid="866" relation="include">
-        </childnode>
-        <childnode refid="874" relation="include">
-        </childnode>
-      </node>
-      <node id="869">
-        <label>necsim/SimulateDispersal.h</label>
-        <link refid="_simulate_dispersal_8h_source"/>
-      </node>
-      <node id="877">
-        <label>necsim/SpeciesList.h</label>
-        <link refid="_species_list_8h_source"/>
-        <childnode refid="866" relation="include">
-        </childnode>
-      </node>
-      <node id="866">
+      <node id="982">
         <label>necsim/SpatialTree.h</label>
         <link refid="_spatial_tree_8h_source"/>
-        <childnode refid="867" relation="include">
+        <childnode refid="983" relation="include">
         </childnode>
-        <childnode refid="868" relation="include">
+        <childnode refid="984" relation="include">
         </childnode>
       </node>
-      <node id="879">
+      <node id="995">
         <label>necsim/SimParameters.h</label>
         <link refid="_sim_parameters_8h_source"/>
-        <childnode refid="870" relation="include">
+        <childnode refid="986" relation="include">
         </childnode>
-        <childnode refid="875" relation="include">
+        <childnode refid="991" relation="include">
         </childnode>
-        <childnode refid="872" relation="include">
+        <childnode refid="988" relation="include">
         </childnode>
-        <childnode refid="866" relation="include">
+        <childnode refid="982" relation="include">
         </childnode>
       </node>
-      <node id="868">
+      <node id="1004">
+        <label>necsim/TreeNode.h</label>
+        <link refid="_tree_node_8h_source"/>
+        <childnode refid="987" relation="include">
+        </childnode>
+        <childnode refid="988" relation="include">
+        </childnode>
+        <childnode refid="982" relation="include">
+        </childnode>
+        <childnode refid="990" relation="include">
+        </childnode>
+      </node>
+      <node id="1001">
+        <label>necsim/SpeciesAbundancesHandler.h</label>
+        <link refid="_species_abundances_handler_8h_source"/>
+        <childnode refid="1002" relation="include">
+        </childnode>
+        <childnode refid="989" relation="include">
+        </childnode>
+        <childnode refid="999" relation="include">
+        </childnode>
+      </node>
+      <node id="984">
         <label>necsim/ProtractedTree.h</label>
         <link refid="_protracted_tree_8h_source"/>
-        <childnode refid="867" relation="include">
+        <childnode refid="983" relation="include">
         </childnode>
       </node>
-      <node id="873">
+      <node id="989">
         <label>necsim/Metacommunity.h</label>
         <link refid="_metacommunity_8h_source"/>
       </node>
-      <node id="875">
+      <node id="997">
+        <label>necsim/SQLiteHandler.h</label>
+        <link refid="_s_q_lite_handler_8h_source"/>
+        <childnode refid="987" relation="include">
+        </childnode>
+        <childnode refid="988" relation="include">
+        </childnode>
+        <childnode refid="985" relation="include">
+        </childnode>
+      </node>
+      <node id="987">
+        <label>necsim/Community.h</label>
+        <link refid="_community_8h_source"/>
+        <childnode refid="988" relation="include">
+        </childnode>
+        <childnode refid="982" relation="include">
+        </childnode>
+        <childnode refid="989" relation="include">
+        </childnode>
+        <childnode refid="990" relation="include">
+        </childnode>
+      </node>
+      <node id="991">
         <label>necsim/Landscape.h</label>
         <link refid="_landscape_8h_source"/>
-        <childnode refid="865" relation="include">
+        <childnode refid="981" relation="include">
         </childnode>
-        <childnode refid="866" relation="include">
+        <childnode refid="982" relation="include">
         </childnode>
-        <childnode refid="869" relation="include">
-        </childnode>
-      </node>
-      <node id="880">
-        <label>necsim/SpecSimParameters.h</label>
-        <link refid="_spec_sim_parameters_8h_source"/>
-        <childnode refid="871" relation="include">
-        </childnode>
-        <childnode refid="873" relation="include">
-        </childnode>
-        <childnode refid="874" relation="include">
+        <childnode refid="985" relation="include">
         </childnode>
       </node>
-      <node id="876">
+      <node id="988">
+        <label>necsim/Tree.h</label>
+        <link refid="_tree_8h_source"/>
+        <childnode refid="982" relation="include">
+        </childnode>
+        <childnode refid="989" relation="include">
+        </childnode>
+      </node>
+      <node id="992">
         <label>necsim/Matrix.h</label>
         <link refid="_matrix_8h_source"/>
-        <childnode refid="863" relation="include">
+        <childnode refid="979" relation="include">
         </childnode>
-        <childnode refid="871" relation="include">
+        <childnode refid="987" relation="include">
         </childnode>
-        <childnode refid="872" relation="include">
+        <childnode refid="988" relation="include">
         </childnode>
-        <childnode refid="866" relation="include">
+        <childnode refid="982" relation="include">
         </childnode>
-        <childnode refid="877" relation="include">
-        </childnode>
-      </node>
-      <node id="878">
-        <label>necsim/custom_exceptions.h</label>
-        <link refid="custom__exceptions_8h_source"/>
-        <childnode refid="863" relation="include">
-        </childnode>
-        <childnode refid="879" relation="include">
-        </childnode>
-        <childnode refid="880" relation="include">
-        </childnode>
-        <childnode refid="881" relation="include">
-        </childnode>
-        <childnode refid="872" relation="include">
-        </childnode>
-        <childnode refid="882" relation="include">
-        </childnode>
-        <childnode refid="883" relation="include">
+        <childnode refid="993" relation="include">
         </childnode>
       </node>
-      <node id="864">
-        <label>necsim/ActivityMap.h</label>
-        <link refid="_activity_map_8h_source"/>
-        <childnode refid="865" relation="include">
+      <node id="986">
+        <label>necsim/DataMask.h</label>
+        <link refid="_data_mask_8h_source"/>
+        <childnode refid="987" relation="include">
         </childnode>
-        <childnode refid="866" relation="include">
+        <childnode refid="991" relation="include">
         </childnode>
-      </node>
-      <node id="883">
-        <label>necsim/SimulatedSpeciesAbundancesHandler.h</label>
-        <link refid="_simulated_species_abundances_handler_8h_source"/>
-      </node>
-      <node id="885">
-        <label>necsim/SpeciesAbundancesHandler.h</label>
-        <link refid="_species_abundances_handler_8h_source"/>
-        <childnode refid="886" relation="include">
-        </childnode>
-        <childnode refid="873" relation="include">
-        </childnode>
-        <childnode refid="883" relation="include">
+        <childnode refid="985" relation="include">
         </childnode>
       </node>
-      <node id="888">
-        <label>necsim/DataPoint.h</label>
-        <link refid="_data_point_8h_source"/>
-        <childnode refid="872" relation="include">
+      <node id="1000">
+        <label>necsim/RNGController.h</label>
+        <link refid="_r_n_g_controller_8h_source"/>
+        <childnode refid="980" relation="include">
         </childnode>
-        <childnode refid="866" relation="include">
+        <childnode refid="1001" relation="include">
         </childnode>
-      </node>
-      <node id="884">
-        <label>necsim/NRrand.h</label>
-        <link refid="_n_rrand_8h_source"/>
-        <childnode refid="864" relation="include">
+        <childnode refid="1002" relation="include">
         </childnode>
-        <childnode refid="885" relation="include">
+        <childnode refid="981" relation="include">
         </childnode>
-        <childnode refid="886" relation="include">
+        <childnode refid="1003" relation="include">
         </childnode>
-        <childnode refid="865" relation="include">
+        <childnode refid="988" relation="include">
         </childnode>
-        <childnode refid="872" relation="include">
+        <childnode refid="982" relation="include">
         </childnode>
-        <childnode refid="866" relation="include">
+        <childnode refid="993" relation="include">
         </childnode>
-        <childnode refid="877" relation="include">
+        <childnode refid="989" relation="include">
         </childnode>
-        <childnode refid="873" relation="include">
+        <childnode refid="999" relation="include">
         </childnode>
-        <childnode refid="883" relation="include">
-        </childnode>
-        <childnode refid="869" relation="include">
+        <childnode refid="985" relation="include">
         </childnode>
       </node>
-      <node id="874">
+      <node id="990">
         <label>necsim/SpeciationCommands.h</label>
         <link refid="_speciation_commands_8h_source"/>
       </node>
+      <node id="983">
+        <label>necsim/ProtractedSpatialTree.h</label>
+        <link refid="_protracted_spatial_tree_8h_source"/>
+      </node>
+      <node id="993">
+        <label>necsim/SpeciesList.h</label>
+        <link refid="_species_list_8h_source"/>
+        <childnode refid="982" relation="include">
+        </childnode>
+      </node>
+      <node id="978">
+        <label>necsim/Logging.h</label>
+        <link refid="_logging_8h"/>
+        <childnode refid="979" relation="include">
+        </childnode>
+        <childnode refid="992" relation="include">
+        </childnode>
+        <childnode refid="994" relation="include">
+        </childnode>
+        <childnode refid="1000" relation="include">
+        </childnode>
+        <childnode refid="1004" relation="include">
+        </childnode>
+        <childnode refid="995" relation="include">
+        </childnode>
+        <childnode refid="1005" relation="include">
+        </childnode>
+        <childnode refid="982" relation="include">
+        </childnode>
+        <childnode refid="998" relation="include">
+        </childnode>
+      </node>
+      <node id="1005">
+        <label>necsim/DataPoint.h</label>
+        <link refid="_data_point_8h_source"/>
+        <childnode refid="988" relation="include">
+        </childnode>
+        <childnode refid="982" relation="include">
+        </childnode>
+      </node>
+      <node id="985">
+        <label>necsim/SimulateDispersal.h</label>
+        <link refid="_simulate_dispersal_8h_source"/>
+      </node>
+      <node id="996">
+        <label>necsim/SpecSimParameters.h</label>
+        <link refid="_spec_sim_parameters_8h_source"/>
+        <childnode refid="987" relation="include">
+        </childnode>
+        <childnode refid="989" relation="include">
+        </childnode>
+        <childnode refid="990" relation="include">
+        </childnode>
+      </node>
+      <node id="994">
+        <label>necsim/custom_exceptions.h</label>
+        <link refid="custom__exceptions_8h_source"/>
+        <childnode refid="979" relation="include">
+        </childnode>
+        <childnode refid="995" relation="include">
+        </childnode>
+        <childnode refid="996" relation="include">
+        </childnode>
+        <childnode refid="997" relation="include">
+        </childnode>
+        <childnode refid="988" relation="include">
+        </childnode>
+        <childnode refid="998" relation="include">
+        </childnode>
+        <childnode refid="999" relation="include">
+        </childnode>
+      </node>
+      <node id="1002">
+        <label>necsim/AnalyticalSpeciesAbundancesHandler.h</label>
+        <link refid="_analytical_species_abundances_handler_8h_source"/>
+      </node>
+      <node id="980">
+        <label>necsim/ActivityMap.h</label>
+        <link refid="_activity_map_8h_source"/>
+        <childnode refid="981" relation="include">
+        </childnode>
+        <childnode refid="982" relation="include">
+        </childnode>
+      </node>
+      <node id="979">
+        <label>necsim/Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="980" relation="include">
+        </childnode>
+        <childnode refid="986" relation="include">
+        </childnode>
+        <childnode refid="991" relation="include">
+        </childnode>
+        <childnode refid="981" relation="include">
+        </childnode>
+      </node>
+      <node id="981">
+        <label>necsim/DispersalCoordinator.h</label>
+        <link refid="_dispersal_coordinator_8h_source"/>
+        <childnode refid="982" relation="include">
+        </childnode>
+        <childnode refid="985" relation="include">
+        </childnode>
+      </node>
+      <node id="999">
+        <label>necsim/SimulatedSpeciesAbundancesHandler.h</label>
+        <link refid="_simulated_species_abundances_handler_8h_source"/>
+      </node>
+      <node id="1003">
+        <label>necsim/GillespieCalculator.h</label>
+        <link refid="_gillespie_calculator_8h_source"/>
+        <childnode refid="982" relation="include">
+        </childnode>
+      </node>
+      <node id="998">
+        <label>necsim/SimulationTemplates.h</label>
+        <link refid="_simulation_templates_8h_source"/>
+      </node>
     </invincdepgraph>
-      <sectiondef kind="var">
-      <memberdef kind="variable" id="_logging_8h_1a0009c186c3629201f6c24eded36605f4" prot="public" static="no" mutable="no">
-        <type><ref refid="class_logger" kindref="compound">Logger</ref> *</type>
-        <definition>Logger* logger</definition>
-        <argsstring></argsstring>
-        <name>logger</name>
-        <briefdescription>
-<para>Global object for logging. </para>        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="necsim/Logging.h" line="19" column="1" bodyfile="necsim/Logger.cpp" bodystart="15" bodyend="-1"/>
-      </memberdef>
-      </sectiondef>
-      <sectiondef kind="func">
-      <memberdef kind="function" id="_logging_8h_1a4489578cda60bd87e9f634bc97ccfba1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void writeInfo</definition>
-        <argsstring>(string message)</argsstring>
-        <name>writeInfo</name>
-        <param>
-          <type>string</type>
-          <declname>message</declname>
-        </param>
-        <briefdescription>
-<para>Writes to cout, or to info in logging module if being compiled with python. </para>        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>message</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>the message to write out </para></parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="necsim/Logging.h" line="25" column="1" bodyfile="necsim/Logging.cpp" bodystart="13" bodyend="16"/>
-      </memberdef>
-      <memberdef kind="function" id="_logging_8h_1ae911b2f9a56fe4054c9e72613eb73562" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void writeWarning</definition>
-        <argsstring>(string message)</argsstring>
-        <name>writeWarning</name>
-        <param>
-          <type>string</type>
-          <declname>message</declname>
-        </param>
-        <briefdescription>
-<para>Writes to cerr, or to warning in logging module if being compiled with python. </para>        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>message</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>the message to write out </para></parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="necsim/Logging.h" line="31" column="1" bodyfile="necsim/Logging.cpp" bodystart="18" bodyend="21"/>
-      </memberdef>
-      <memberdef kind="function" id="_logging_8h_1a36370a5a1bc7559a8c29f35453158bb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void writeError</definition>
-        <argsstring>(string message)</argsstring>
-        <name>writeError</name>
-        <param>
-          <type>string</type>
-          <declname>message</declname>
-        </param>
-        <briefdescription>
-<para>Writes to cerr, or to error in logging module if being compiled with python. </para>        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>message</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>the message to write out </para></parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="necsim/Logging.h" line="37" column="1" bodyfile="necsim/Logging.cpp" bodystart="23" bodyend="26"/>
-      </memberdef>
-      <memberdef kind="function" id="_logging_8h_1ae237237ebe013cbaa842ee6b43db15ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void writeCritical</definition>
-        <argsstring>(string message)</argsstring>
-        <name>writeCritical</name>
-        <param>
-          <type>string</type>
-          <declname>message</declname>
-        </param>
-        <briefdescription>
-<para>Writes to cerr, or to critical in logging module if being compiled with python. </para>        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>message</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>the message to write out </para></parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="necsim/Logging.h" line="43" column="1" bodyfile="necsim/Logging.cpp" bodystart="28" bodyend="31"/>
-      </memberdef>
-      </sectiondef>
+    <innernamespace refid="namespacenecsim">necsim</innernamespace>
     <briefdescription>
-<para>Routines for writing strings to the global logger object. </para>    </briefdescription>
+<para>Routines for writing strings to the global logger object. </para>
+    </briefdescription>
     <detaileddescription>
-<para><simplesect kind="author"><para>Samuel Thompson</para></simplesect>
-<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
-</para>    </detaileddescription>
+<para><simplesect kind="author"><para>Samuel Thompson</para>
+</simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para>
+</simplesect>
+</para>
+    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>necsim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details</highlight></codeline>
@@ -490,26 +385,30 @@
 <codeline lineno="12"><highlight class="normal"></highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Logger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Global<sp/>declaration<sp/>of<sp/>logger</highlight></codeline>
-<codeline lineno="19"><highlight class="comment"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="class_logger" kindref="compound">Logger</ref><sp/>*logger;</highlight></codeline>
-<codeline lineno="20"><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeInfo(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeWarning(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeError(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeCritical(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"></highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">necsim</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Global<sp/>declaration<sp/>of<sp/>logger</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>Logger*<sp/>logger;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>loggerIsSetup();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeInfo(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeWarning(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeError(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeCritical(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/>stringstream<sp/>&amp;message);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>message);</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"></highlight></codeline>
-<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="62"><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//MEANDISTANCEMODULE_LOGGING_H</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeLog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;level,<sp/>stringstream<sp/>&amp;message);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//MEANDISTANCEMODULE_LOGGING_H</highlight></codeline>
     </programlisting>
     <location file="necsim/Logging.h"/>
   </compounddef>

@@ -1,0 +1,609 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
+  <compounddef id="classnecsim_1_1_config_parser" kind="class" language="C++" prot="public">
+    <compoundname>necsim::ConfigParser</compoundname>
+    <includes refid="_config_parser_8h" local="no">ConfigParser.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnecsim_1_1_config_parser_1aba34aa8d5bec1bf4cdeacffb75df0dcb" prot="private" static="no" mutable="no">
+        <type>string</type>
+        <definition>string necsim::ConfigParser::config_file</definition>
+        <argsstring></argsstring>
+        <name>config_file</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="102" column="1" bodyfile="necsim/ConfigParser.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_config_parser_1ac168d32c8b1bb925cb6415b10c95a769" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool necsim::ConfigParser::configSet</definition>
+        <argsstring></argsstring>
+        <name>configSet</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="103" column="1" bodyfile="necsim/ConfigParser.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_config_parser_1a7b9f76f34e71cd53dd63af0f1d426a6d" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool necsim::ConfigParser::isMain</definition>
+        <argsstring></argsstring>
+        <name>isMain</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="104" column="1" bodyfile="necsim/ConfigParser.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_config_parser_1ab03093696c8fe8a092ce49724ed028be" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool necsim::ConfigParser::isFullParser</definition>
+        <argsstring></argsstring>
+        <name>isFullParser</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="106" column="1" bodyfile="necsim/ConfigParser.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnecsim_1_1_config_parser_1aef6d6f97922d73d3ececc53e6714ba23" prot="private" static="no" mutable="no">
+        <type>vector&lt; <ref refid="structnecsim_1_1_section_option" kindref="compound">SectionOption</ref> &gt;</type>
+        <definition>vector&lt;SectionOption&gt; necsim::ConfigParser::configs</definition>
+        <argsstring></argsstring>
+        <name>configs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="107" column="1" bodyfile="necsim/ConfigParser.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a1fdba94f2e84d1986767cb41ea158c04" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>necsim::ConfigParser::ConfigParser</definition>
+        <argsstring>()</argsstring>
+        <name>ConfigParser</name>
+        <briefdescription>
+<para>default construtor for ConfigOption </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="112" column="1" bodyfile="necsim/ConfigParser.h" bodystart="112" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1ab085527908517d1dff6857dffa5c03fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::ConfigParser::setConfig</definition>
+        <argsstring>(const string &amp;file, bool main, bool full_parse=false)</argsstring>
+        <name>setConfig</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>file</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>main</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>full_parse</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Sets the config file the specified string. A boolean is also provided, set equal to true if this is the main command line import. This causes the deletion of the first few command line options after import. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the target config file (in .txt format). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>main</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>boolean of if this is the main command line import. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>full_parse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sets bFullParse to provided value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="128" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="85" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a9ac6a9b880f6fec4aba41403a897a9c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::ConfigParser::parseConfig</definition>
+        <argsstring>()</argsstring>
+        <name>parseConfig</name>
+        <briefdescription>
+<para>Reads a config file of a specific configuration. Each section begins with &apos;[section_name]&apos;. Each variable is defined as &apos;key=value&apos;, and must be one per line Each key&apos;s variable will be read as a string into a KeyOption structure. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="136" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="100" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1ae8b07cf5f9e09abb023f7d2e091ef719" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::ConfigParser::parseConfig</definition>
+        <argsstring>(istream &amp;istream1)</argsstring>
+        <name>parseConfig</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>istream1</declname>
+        </param>
+        <briefdescription>
+<para>Reads a config stream of a specific configuration. Each section begins with &apos;[section_name]&apos;. Each variable is defined as &apos;key=value&apos;, and must be one per line Each key&apos;s variable will be read as a string into a KeyOption structure. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="144" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="129" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a05f6605231684d60997a7a8fd28ef308" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; <ref refid="structnecsim_1_1_section_option" kindref="compound">SectionOption</ref> &gt;</type>
+        <definition>vector&lt; SectionOption &gt; necsim::ConfigParser::getSectionOptions</definition>
+        <argsstring>()</argsstring>
+        <name>getSectionOptions</name>
+        <briefdescription>
+<para>Returns the vector of key options imported from the file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>vector of key options </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="150" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="199" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1aae5f06f6ab4f42d079e5037abf85fbab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void necsim::ConfigParser::setSectionOption</definition>
+        <argsstring>(string section, string reference, string value)</argsstring>
+        <name>setSectionOption</name>
+        <param>
+          <type>string</type>
+          <declname>section</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>reference</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sets the section option with the provided section, key and value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>section</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the section name </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reference</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the reference key for the parameter </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value of the key </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="158" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="204" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1ad89ff5b43eb0c0ed993956046838b67f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structnecsim_1_1_section_option" kindref="compound">SectionOption</ref></type>
+        <definition>SectionOption necsim::ConfigParser::operator[]</definition>
+        <argsstring>(unsigned long index)</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>unsigned long</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Gets the <ref refid="structnecsim_1_1_section_option" kindref="compound">SectionOption</ref> at the provided index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the <ref refid="structnecsim_1_1_section_option" kindref="compound">SectionOption</ref> to obtain, must be less than configs.size() </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the section option at the index </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="165" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="226" bodyend="229"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a81b30d7a067b27d22e6b2766abb8f3b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned long</type>
+        <definition>unsigned long necsim::ConfigParser::getSectionOptionsSize</definition>
+        <argsstring>()</argsstring>
+        <name>getSectionOptionsSize</name>
+        <briefdescription>
+<para>Gets the size of the key options vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the size of the configuration vector. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="171" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="231" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a9ea0afd6ce4dacfde8ad35c4b69a5159" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; string &gt;</type>
+        <definition>vector&lt; string &gt; necsim::ConfigParser::getSections</definition>
+        <argsstring>()</argsstring>
+        <name>getSections</name>
+        <briefdescription>
+<para>Gets the sections contained in the SectionOptions object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of the section names. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="177" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="236" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1aad46ee2e4d6427f05bb040d9a5dce383" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool necsim::ConfigParser::hasSection</definition>
+        <argsstring>(const string &amp;sec)</argsstring>
+        <name>hasSection</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>sec</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether the config option has the specified section. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the section name to check for </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the section has been found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="184" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="246" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1abd8b58a091325537f0e865443ca29723" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; string &gt;</type>
+        <definition>vector&lt; string &gt; necsim::ConfigParser::getSectionValues</definition>
+        <argsstring>(string sec)</argsstring>
+        <name>getSectionValues</name>
+        <param>
+          <type>string</type>
+          <declname>sec</declname>
+        </param>
+        <briefdescription>
+<para>Gets all values within a section. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Throws a Config_Exception if the section is not found. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the section to find values for </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a vector of the section&apos;s values. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="193" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="258" bodyend="268"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a6ee3e59e0e104e7260b86d91f716e27e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>string</type>
+        <definition>string necsim::ConfigParser::getSectionOptions</definition>
+        <argsstring>(string section, string ref)</argsstring>
+        <name>getSectionOptions</name>
+        <param>
+          <type>string</type>
+          <declname>section</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+<para>Returns a specific value for a particular key options and reference. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>section</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the section to match </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ref</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the reference to match </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the string at the correct place in KeyOptions.val </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="201" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="270" bodyend="289"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1a13429fd4394fe33e63b9e42d4637e80a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>string</type>
+        <definition>string necsim::ConfigParser::getSectionOptions</definition>
+        <argsstring>(string section, string ref, string def)</argsstring>
+        <name>getSectionOptions</name>
+        <param>
+          <type>string</type>
+          <declname>section</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>ref</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>def</declname>
+        </param>
+        <briefdescription>
+<para>Returns a specific value for a particular key options and reference. This overloaded version of the function returns the default value def when no match is found. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>section</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the section to match </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ref</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the reference to match </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>def</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the default value to return if no match is found </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the string at the correct place in KeyOptions.val </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="212" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="291" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="classnecsim_1_1_config_parser_1ab19590a89d993ed37602a6661f73d40e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int necsim::ConfigParser::importConfig</definition>
+        <argsstring>(vector&lt; string &gt; &amp;comargs)</argsstring>
+        <name>importConfig</name>
+        <param>
+          <type>vector&lt; string &gt; &amp;</type>
+          <declname>comargs</declname>
+        </param>
+        <briefdescription>
+<para>Imports the parameters from the config file and returns an integer of the number of arguments. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>comargs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a vector of command line arguments to import to from file. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a count of the number of arguments (should also be the size of comargs). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="219" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="309" bodyend="382"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classnecsim_1_1_config_parser_1ac6980b2d01760f032826adb91963f8bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;os, const ConfigParser &amp;c)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classnecsim_1_1_config_parser" kindref="compound">ConfigParser</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the &lt;&lt; operator for outputting to the output stream. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output stream. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the ConfigOption object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>os the output stream. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="227" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="384" bodyend="393"/>
+      </memberdef>
+      <memberdef kind="friend" id="classnecsim_1_1_config_parser_1aca6a4e58e5421b501f5e3bd38f2a8f6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend istream &amp;</type>
+        <definition>istream&amp; operator&gt;&gt;</definition>
+        <argsstring>(istream &amp;is, ConfigParser &amp;c)</argsstring>
+        <name>operator&gt;&gt;</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>is</declname>
+        </param>
+        <param>
+          <type><ref refid="classnecsim_1_1_config_parser" kindref="compound">ConfigParser</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Overloading the &gt;&gt; operator for inputting from an input stream. Note that the config file must still exist for re-inport and parsing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the input stream </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the ConfigOption object </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>is the input stream </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="necsim/ConfigParser.h" line="236" column="1" bodyfile="necsim/ConfigParser.cpp" bodystart="395" bodyend="416"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Stores and parses configuration options from the command line and config files. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="necsim/ConfigParser.h" line="100" column="1" bodyfile="necsim/ConfigParser.h" bodystart="99" bodyend="237"/>
+    <listofallmembers>
+      <member refid="classnecsim_1_1_config_parser_1aba34aa8d5bec1bf4cdeacffb75df0dcb" prot="private" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>config_file</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a1fdba94f2e84d1986767cb41ea158c04" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>ConfigParser</name></member>
+      <member refid="classnecsim_1_1_config_parser_1aef6d6f97922d73d3ececc53e6714ba23" prot="private" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>configs</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ac168d32c8b1bb925cb6415b10c95a769" prot="private" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>configSet</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a05f6605231684d60997a7a8fd28ef308" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>getSectionOptions</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a6ee3e59e0e104e7260b86d91f716e27e" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>getSectionOptions</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a13429fd4394fe33e63b9e42d4637e80a" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>getSectionOptions</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a81b30d7a067b27d22e6b2766abb8f3b7" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>getSectionOptionsSize</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a9ea0afd6ce4dacfde8ad35c4b69a5159" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>getSections</name></member>
+      <member refid="classnecsim_1_1_config_parser_1abd8b58a091325537f0e865443ca29723" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>getSectionValues</name></member>
+      <member refid="classnecsim_1_1_config_parser_1aad46ee2e4d6427f05bb040d9a5dce383" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>hasSection</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ab19590a89d993ed37602a6661f73d40e" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>importConfig</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ab03093696c8fe8a092ce49724ed028be" prot="private" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>isFullParser</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a7b9f76f34e71cd53dd63af0f1d426a6d" prot="private" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>isMain</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ac6980b2d01760f032826adb91963f8bc" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>operator&lt;&lt;</name></member>
+      <member refid="classnecsim_1_1_config_parser_1aca6a4e58e5421b501f5e3bd38f2a8f6c" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>operator&gt;&gt;</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ad89ff5b43eb0c0ed993956046838b67f" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>operator[]</name></member>
+      <member refid="classnecsim_1_1_config_parser_1a9ac6a9b880f6fec4aba41403a897a9c3" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>parseConfig</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ae8b07cf5f9e09abb023f7d2e091ef719" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>parseConfig</name></member>
+      <member refid="classnecsim_1_1_config_parser_1ab085527908517d1dff6857dffa5c03fc" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>setConfig</name></member>
+      <member refid="classnecsim_1_1_config_parser_1aae5f06f6ab4f42d079e5037abf85fbab" prot="public" virt="non-virtual"><scope>necsim::ConfigParser</scope><name>setSectionOption</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

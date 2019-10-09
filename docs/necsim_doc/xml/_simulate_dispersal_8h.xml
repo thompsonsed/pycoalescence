@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.15">
   <compounddef id="_simulate_dispersal_8h" kind="file" language="C++">
     <compoundname>SimulateDispersal.h</compoundname>
     <includes local="no">string</includes>
@@ -11,424 +11,467 @@
     <includes local="no">stdexcept</includes>
     <includes local="no">sqlite3.h</includes>
     <includes local="no">set</includes>
+    <includes local="no">mutex</includes>
     <includes refid="_landscape_8h" local="yes">Landscape.h</includes>
     <includes refid="_dispersal_coordinator_8h" local="yes">DispersalCoordinator.h</includes>
-    <includes refid="_n_rrand_8h" local="yes">NRrand.h</includes>
+    <includes refid="_r_n_g_controller_8h" local="yes">RNGController.h</includes>
     <includes refid="_cell_8h" local="yes">Cell.h</includes>
     <includes refid="_data_mask_8h" local="yes">DataMask.h</includes>
     <includes refid="_s_q_lite_handler_8h" local="yes">SQLiteHandler.h</includes>
     <includedby refid="_simulate_dispersal_8cpp" local="yes">necsim/SimulateDispersal.cpp</includedby>
     <incdepgraph>
-      <node id="1559">
-        <label>iomanip</label>
-      </node>
-      <node id="1538">
-        <label>Logging.h</label>
-        <link refid="_logging_8h_source"/>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1539" relation="include">
-        </childnode>
-      </node>
-      <node id="1557">
-        <label>DispersalCoordinator.h</label>
-        <link refid="_dispersal_coordinator_8h_source"/>
-        <childnode refid="1534" relation="include">
-        </childnode>
-        <childnode refid="1522" relation="include">
-        </childnode>
-        <childnode refid="1524" relation="include">
-        </childnode>
-        <childnode refid="1525" relation="include">
-        </childnode>
-        <childnode refid="1527" relation="include">
-        </childnode>
-        <childnode refid="1526" relation="include">
-        </childnode>
-        <childnode refid="1531" relation="include">
-        </childnode>
-        <childnode refid="1558" relation="include">
-        </childnode>
-        <childnode refid="1533" relation="include">
-        </childnode>
-        <childnode refid="1561" relation="include">
-        </childnode>
-        <childnode refid="1530" relation="include">
-        </childnode>
-        <childnode refid="1563" relation="include">
-        </childnode>
-      </node>
-      <node id="1556">
-        <label>file_system.h</label>
-        <link refid="file__system_8h_source"/>
-        <childnode refid="1526" relation="include">
-        </childnode>
-        <childnode refid="1528" relation="include">
-        </childnode>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1522" relation="include">
-        </childnode>
-        <childnode refid="1524" relation="include">
-        </childnode>
-        <childnode refid="1523" relation="include">
-        </childnode>
-      </node>
-      <node id="1547">
-        <label>cstdint</label>
-      </node>
-      <node id="1550">
-        <label>DataMask.h</label>
-        <link refid="_data_mask_8h_source"/>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1531" relation="include">
-        </childnode>
-        <childnode refid="1551" relation="include">
-        </childnode>
-        <childnode refid="1533" relation="include">
-        </childnode>
-      </node>
-      <node id="1526">
-        <label>cmath</label>
-      </node>
-      <node id="1527">
-        <label>stdexcept</label>
-      </node>
-      <node id="1533">
-        <label>Map.h</label>
-        <link refid="_map_8h_source"/>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1534" relation="include">
-        </childnode>
-        <childnode refid="1535" relation="include">
-        </childnode>
-        <childnode refid="1536" relation="include">
-        </childnode>
-        <childnode refid="1537" relation="include">
-        </childnode>
-        <childnode refid="1538" relation="include">
-        </childnode>
-        <childnode refid="1545" relation="include">
-        </childnode>
-        <childnode refid="1548" relation="include">
-        </childnode>
-        <childnode refid="1543" relation="include">
-        </childnode>
-      </node>
-      <node id="1521">
-        <label>string</label>
-      </node>
-      <node id="1536">
-        <label>gdal_priv.h</label>
-      </node>
-      <node id="1552">
-        <label>ConfigParser.h</label>
-        <link refid="_config_parser_8h_source"/>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1524" relation="include">
-        </childnode>
-        <childnode refid="1535" relation="include">
-        </childnode>
-        <childnode refid="1525" relation="include">
-        </childnode>
-        <childnode refid="1527" relation="include">
-        </childnode>
-        <childnode refid="1523" relation="include">
-        </childnode>
-        <childnode refid="1534" relation="include">
-        </childnode>
-        <childnode refid="1553" relation="include">
-        </childnode>
-        <childnode refid="1526" relation="include">
-        </childnode>
-        <childnode refid="1554" relation="include">
-        </childnode>
-        <childnode refid="1555" relation="include">
-        </childnode>
-      </node>
-      <node id="1542">
-        <label>map</label>
-      </node>
-      <node id="1528">
-        <label>sqlite3.h</label>
-      </node>
-      <node id="1564">
-        <label>SQLiteHandler.h</label>
-        <link refid="_s_q_lite_handler_8h_source"/>
-        <childnode refid="1528" relation="include">
-        </childnode>
-        <childnode refid="1549" relation="include">
-        </childnode>
-        <childnode refid="1553" relation="include">
-        </childnode>
-        <childnode refid="1531" relation="include">
-        </childnode>
-        <childnode refid="1556" relation="include">
-        </childnode>
-        <childnode refid="1548" relation="include">
-        </childnode>
-      </node>
-      <node id="1525">
-        <label>fstream</label>
-      </node>
-      <node id="1520">
-        <label>necsim/SimulateDispersal.h</label>
-        <link refid="SimulateDispersal.h"/>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1522" relation="include">
-        </childnode>
-        <childnode refid="1523" relation="include">
-        </childnode>
-        <childnode refid="1524" relation="include">
-        </childnode>
-        <childnode refid="1525" relation="include">
-        </childnode>
-        <childnode refid="1526" relation="include">
-        </childnode>
-        <childnode refid="1527" relation="include">
-        </childnode>
-        <childnode refid="1528" relation="include">
-        </childnode>
-        <childnode refid="1529" relation="include">
-        </childnode>
-        <childnode refid="1530" relation="include">
-        </childnode>
-        <childnode refid="1557" relation="include">
-        </childnode>
-        <childnode refid="1558" relation="include">
-        </childnode>
-        <childnode refid="1562" relation="include">
-        </childnode>
-        <childnode refid="1550" relation="include">
-        </childnode>
-        <childnode refid="1564" relation="include">
-        </childnode>
-      </node>
-      <node id="1551">
+      <node id="1738">
         <label>SimParameters.h</label>
         <link refid="_sim_parameters_8h_source"/>
-        <childnode refid="1521" relation="include">
+        <childnode refid="1736" relation="include">
         </childnode>
-        <childnode refid="1549" relation="include">
+        <childnode refid="1707" relation="include">
         </childnode>
-        <childnode refid="1523" relation="include">
+        <childnode refid="1709" relation="include">
         </childnode>
-        <childnode refid="1552" relation="include">
+        <childnode refid="1739" relation="include">
         </childnode>
-        <childnode refid="1538" relation="include">
+        <childnode refid="1740" relation="include">
         </childnode>
-        <childnode refid="1548" relation="include">
+        <childnode refid="1725" relation="include">
         </childnode>
-        <childnode refid="1556" relation="include">
+        <childnode refid="1735" relation="include">
         </childnode>
-      </node>
-      <node id="1522">
-        <label>cstdio</label>
-      </node>
-      <node id="1541">
-        <label>ctime</label>
-      </node>
-      <node id="1561">
-        <label>Step.h</label>
-        <link refid="_step_8h_source"/>
-        <childnode refid="1562" relation="include">
+        <childnode refid="1744" relation="include">
+        </childnode>
+        <childnode refid="1745" relation="include">
         </childnode>
       </node>
-      <node id="1553">
-        <label>unistd.h</label>
+      <node id="1748">
+        <label>iomanip</label>
       </node>
-      <node id="1523">
-        <label>vector</label>
+      <node id="1739">
+        <label>queue</label>
       </node>
-      <node id="1532">
-        <label>boost/filesystem.hpp</label>
+      <node id="1734">
+        <label>cstdint</label>
       </node>
-      <node id="1549">
-        <label>utility</label>
-      </node>
-      <node id="1535">
-        <label>sstream</label>
-      </node>
-      <node id="1543">
-        <label>cpl_custom_handler.h</label>
-        <link refid="cpl__custom__handler_8h_source"/>
-        <childnode refid="1544" relation="include">
+      <node id="1756">
+        <label>SQLiteHandler.h</label>
+        <link refid="_s_q_lite_handler_8h_source"/>
+        <childnode refid="1714" relation="include">
+        </childnode>
+        <childnode refid="1736" relation="include">
+        </childnode>
+        <childnode refid="1718" relation="include">
+        </childnode>
+        <childnode refid="1741" relation="include">
+        </childnode>
+        <childnode refid="1744" relation="include">
+        </childnode>
+        <childnode refid="1735" relation="include">
         </childnode>
       </node>
-      <node id="1530">
+      <node id="1745">
+        <label>double_comparison.h</label>
+        <link refid="double__comparison_8h_source"/>
+      </node>
+      <node id="1717">
         <label>Landscape.h</label>
         <link refid="_landscape_8h_source"/>
-        <childnode refid="1521" relation="include">
+        <childnode refid="1707" relation="include">
         </childnode>
-        <childnode refid="1522" relation="include">
+        <childnode refid="1708" relation="include">
         </childnode>
-        <childnode refid="1523" relation="include">
+        <childnode refid="1709" relation="include">
         </childnode>
-        <childnode refid="1524" relation="include">
+        <childnode refid="1710" relation="include">
         </childnode>
-        <childnode refid="1525" relation="include">
+        <childnode refid="1711" relation="include">
         </childnode>
-        <childnode refid="1526" relation="include">
+        <childnode refid="1712" relation="include">
         </childnode>
-        <childnode refid="1527" relation="include">
+        <childnode refid="1713" relation="include">
         </childnode>
-        <childnode refid="1531" relation="include">
+        <childnode refid="1718" relation="include">
         </childnode>
-        <childnode refid="1532" relation="include">
+        <childnode refid="1719" relation="include">
         </childnode>
-        <childnode refid="1533" relation="include">
+        <childnode refid="1720" relation="include">
         </childnode>
-        <childnode refid="1550" relation="include">
+        <childnode refid="1737" relation="include">
         </childnode>
-        <childnode refid="1551" relation="include">
-        </childnode>
-      </node>
-      <node id="1546">
-        <label>cstdlib</label>
-      </node>
-      <node id="1554">
-        <label>cctype</label>
-      </node>
-      <node id="1524">
-        <label>iostream</label>
-      </node>
-      <node id="1560">
-        <label>climits</label>
-      </node>
-      <node id="1539">
-        <label>Logger.h</label>
-        <link refid="_logger_8h_source"/>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1524" relation="include">
-        </childnode>
-        <childnode refid="1522" relation="include">
-        </childnode>
-        <childnode refid="1527" relation="include">
-        </childnode>
-        <childnode refid="1535" relation="include">
-        </childnode>
-        <childnode refid="1540" relation="include">
-        </childnode>
-        <childnode refid="1543" relation="include">
+        <childnode refid="1738" relation="include">
         </childnode>
       </node>
-      <node id="1545">
+      <node id="1712">
+        <label>cmath</label>
+      </node>
+      <node id="1713">
+        <label>stdexcept</label>
+      </node>
+      <node id="1707">
+        <label>string</label>
+      </node>
+      <node id="1723">
+        <label>gdal_priv.h</label>
+      </node>
+      <node id="1732">
         <label>Matrix.h</label>
         <link refid="_matrix_8h_source"/>
-        <childnode refid="1522" relation="include">
+        <childnode refid="1708" relation="include">
         </childnode>
-        <childnode refid="1524" relation="include">
+        <childnode refid="1710" relation="include">
         </childnode>
-        <childnode refid="1535" relation="include">
+        <childnode refid="1722" relation="include">
         </childnode>
-        <childnode refid="1525" relation="include">
+        <childnode refid="1711" relation="include">
         </childnode>
-        <childnode refid="1546" relation="include">
+        <childnode refid="1733" relation="include">
         </childnode>
-        <childnode refid="1534" relation="include">
+        <childnode refid="1721" relation="include">
         </childnode>
-        <childnode refid="1527" relation="include">
+        <childnode refid="1713" relation="include">
         </childnode>
-        <childnode refid="1547" relation="include">
+        <childnode refid="1709" relation="include">
         </childnode>
-        <childnode refid="1538" relation="include">
+        <childnode refid="1734" relation="include">
         </childnode>
-      </node>
-      <node id="1540">
-        <label>LogFile.h</label>
-        <link refid="_log_file_8h_source"/>
-        <childnode refid="1534" relation="include">
-        </childnode>
-        <childnode refid="1525" relation="include">
-        </childnode>
-        <childnode refid="1541" relation="include">
-        </childnode>
-        <childnode refid="1542" relation="include">
+        <childnode refid="1725" relation="include">
         </childnode>
       </node>
-      <node id="1548">
-        <label>custom_exceptions.h</label>
-        <link refid="custom__exceptions_8h_source"/>
-        <childnode refid="1527" relation="include">
+      <node id="1729">
+        <label>map</label>
+      </node>
+      <node id="1737">
+        <label>DataMask.h</label>
+        <link refid="_data_mask_8h_source"/>
+        <childnode refid="1707" relation="include">
         </childnode>
-        <childnode refid="1549" relation="include">
+        <childnode refid="1718" relation="include">
         </childnode>
-        <childnode refid="1538" relation="include">
+        <childnode refid="1738" relation="include">
+        </childnode>
+        <childnode refid="1720" relation="include">
         </childnode>
       </node>
-      <node id="1563">
-        <label>ActivityMap.h</label>
-        <link refid="_activity_map_8h_source"/>
-        <childnode refid="1534" relation="include">
+      <node id="1747">
+        <label>RNGController.h</label>
+        <link refid="_r_n_g_controller_8h_source"/>
+        <childnode refid="1708" relation="include">
         </childnode>
-        <childnode refid="1521" relation="include">
+        <childnode refid="1707" relation="include">
         </childnode>
-        <childnode refid="1522" relation="include">
+        <childnode refid="1748" relation="include">
         </childnode>
-        <childnode refid="1524" relation="include">
+        <childnode refid="1712" relation="include">
         </childnode>
-        <childnode refid="1525" relation="include">
+        <childnode refid="1743" relation="include">
         </childnode>
-        <childnode refid="1531" relation="include">
+        <childnode refid="1709" relation="include">
         </childnode>
-        <childnode refid="1533" relation="include">
+        <childnode refid="1710" relation="include">
         </childnode>
-        <childnode refid="1558" relation="include">
+        <childnode refid="1711" relation="include">
+        </childnode>
+        <childnode refid="1749" relation="include">
+        </childnode>
+        <childnode refid="1725" relation="include">
+        </childnode>
+        <childnode refid="1750" relation="include">
         </childnode>
       </node>
-      <node id="1562">
+      <node id="1714">
+        <label>sqlite3.h</label>
+      </node>
+      <node id="1711">
+        <label>fstream</label>
+      </node>
+      <node id="1752">
+        <label>Step.h</label>
+        <link refid="_step_8h_source"/>
+        <childnode refid="1753" relation="include">
+        </childnode>
+        <childnode refid="1754" relation="include">
+        </childnode>
+      </node>
+      <node id="1744">
+        <label>file_system.h</label>
+        <link refid="file__system_8h_source"/>
+        <childnode refid="1712" relation="include">
+        </childnode>
+        <childnode refid="1714" relation="include">
+        </childnode>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1708" relation="include">
+        </childnode>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1709" relation="include">
+        </childnode>
+      </node>
+      <node id="1750">
+        <label>Xoroshiro256plus.h</label>
+        <link refid="_xoroshiro256plus_8h_source"/>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1734" relation="include">
+        </childnode>
+        <childnode refid="1751" relation="include">
+        </childnode>
+      </node>
+      <node id="1754">
+        <label>MapLocation.h</label>
+        <link refid="_map_location_8h_source"/>
+        <childnode refid="1710" relation="include">
+        </childnode>
+      </node>
+      <node id="1708">
+        <label>cstdio</label>
+      </node>
+      <node id="1728">
+        <label>ctime</label>
+      </node>
+      <node id="1753">
         <label>Cell.h</label>
         <link refid="_cell_8h_source"/>
       </node>
-      <node id="1544">
+      <node id="1725">
+        <label>Logging.h</label>
+        <link refid="_logging_8h_source"/>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1726" relation="include">
+        </childnode>
+      </node>
+      <node id="1740">
+        <label>ConfigParser.h</label>
+        <link refid="_config_parser_8h_source"/>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1722" relation="include">
+        </childnode>
+        <childnode refid="1711" relation="include">
+        </childnode>
+        <childnode refid="1713" relation="include">
+        </childnode>
+        <childnode refid="1709" relation="include">
+        </childnode>
+        <childnode refid="1721" relation="include">
+        </childnode>
+        <childnode refid="1741" relation="include">
+        </childnode>
+        <childnode refid="1712" relation="include">
+        </childnode>
+        <childnode refid="1742" relation="include">
+        </childnode>
+        <childnode refid="1743" relation="include">
+        </childnode>
+      </node>
+      <node id="1741">
+        <label>unistd.h</label>
+      </node>
+      <node id="1709">
+        <label>vector</label>
+      </node>
+      <node id="1706">
+        <label>necsim/SimulateDispersal.h</label>
+        <link refid="_simulate_dispersal_8h"/>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1708" relation="include">
+        </childnode>
+        <childnode refid="1709" relation="include">
+        </childnode>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1711" relation="include">
+        </childnode>
+        <childnode refid="1712" relation="include">
+        </childnode>
+        <childnode refid="1713" relation="include">
+        </childnode>
+        <childnode refid="1714" relation="include">
+        </childnode>
+        <childnode refid="1715" relation="include">
+        </childnode>
+        <childnode refid="1716" relation="include">
+        </childnode>
+        <childnode refid="1717" relation="include">
+        </childnode>
+        <childnode refid="1746" relation="include">
+        </childnode>
+        <childnode refid="1747" relation="include">
+        </childnode>
+        <childnode refid="1753" relation="include">
+        </childnode>
+        <childnode refid="1737" relation="include">
+        </childnode>
+        <childnode refid="1756" relation="include">
+        </childnode>
+      </node>
+      <node id="1719">
+        <label>boost/filesystem.hpp</label>
+      </node>
+      <node id="1727">
+        <label>LogFile.h</label>
+        <link refid="_log_file_8h_source"/>
+        <childnode refid="1721" relation="include">
+        </childnode>
+        <childnode refid="1711" relation="include">
+        </childnode>
+        <childnode refid="1728" relation="include">
+        </childnode>
+        <childnode refid="1729" relation="include">
+        </childnode>
+      </node>
+      <node id="1736">
+        <label>utility</label>
+      </node>
+      <node id="1751">
+        <label>array</label>
+      </node>
+      <node id="1722">
+        <label>sstream</label>
+      </node>
+      <node id="1735">
+        <label>custom_exceptions.h</label>
+        <link refid="custom__exceptions_8h_source"/>
+        <childnode refid="1713" relation="include">
+        </childnode>
+        <childnode refid="1736" relation="include">
+        </childnode>
+        <childnode refid="1725" relation="include">
+        </childnode>
+      </node>
+      <node id="1733">
+        <label>cstdlib</label>
+      </node>
+      <node id="1742">
+        <label>cctype</label>
+      </node>
+      <node id="1710">
+        <label>iostream</label>
+      </node>
+      <node id="1755">
+        <label>ActivityMap.h</label>
+        <link refid="_activity_map_8h_source"/>
+        <childnode refid="1721" relation="include">
+        </childnode>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1708" relation="include">
+        </childnode>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1711" relation="include">
+        </childnode>
+        <childnode refid="1718" relation="include">
+        </childnode>
+        <childnode refid="1720" relation="include">
+        </childnode>
+        <childnode refid="1747" relation="include">
+        </childnode>
+      </node>
+      <node id="1749">
+        <label>climits</label>
+      </node>
+      <node id="1720">
+        <label>Map.h</label>
+        <link refid="_map_8h_source"/>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1721" relation="include">
+        </childnode>
+        <childnode refid="1722" relation="include">
+        </childnode>
+        <childnode refid="1723" relation="include">
+        </childnode>
+        <childnode refid="1724" relation="include">
+        </childnode>
+        <childnode refid="1725" relation="include">
+        </childnode>
+        <childnode refid="1732" relation="include">
+        </childnode>
+        <childnode refid="1735" relation="include">
+        </childnode>
+        <childnode refid="1730" relation="include">
+        </childnode>
+      </node>
+      <node id="1716">
+        <label>mutex</label>
+      </node>
+      <node id="1731">
         <label>cpl_error.h</label>
       </node>
-      <node id="1529">
+      <node id="1726">
+        <label>Logger.h</label>
+        <link refid="_logger_8h_source"/>
+        <childnode refid="1707" relation="include">
+        </childnode>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1708" relation="include">
+        </childnode>
+        <childnode refid="1713" relation="include">
+        </childnode>
+        <childnode refid="1722" relation="include">
+        </childnode>
+        <childnode refid="1727" relation="include">
+        </childnode>
+        <childnode refid="1730" relation="include">
+        </childnode>
+      </node>
+      <node id="1746">
+        <label>DispersalCoordinator.h</label>
+        <link refid="_dispersal_coordinator_8h_source"/>
+        <childnode refid="1721" relation="include">
+        </childnode>
+        <childnode refid="1708" relation="include">
+        </childnode>
+        <childnode refid="1710" relation="include">
+        </childnode>
+        <childnode refid="1711" relation="include">
+        </childnode>
+        <childnode refid="1713" relation="include">
+        </childnode>
+        <childnode refid="1712" relation="include">
+        </childnode>
+        <childnode refid="1718" relation="include">
+        </childnode>
+        <childnode refid="1747" relation="include">
+        </childnode>
+        <childnode refid="1720" relation="include">
+        </childnode>
+        <childnode refid="1752" relation="include">
+        </childnode>
+        <childnode refid="1717" relation="include">
+        </childnode>
+        <childnode refid="1755" relation="include">
+        </childnode>
+      </node>
+      <node id="1715">
         <label>set</label>
       </node>
-      <node id="1558">
-        <label>NRrand.h</label>
-        <link refid="_n_rrand_8h_source"/>
-        <childnode refid="1522" relation="include">
-        </childnode>
-        <childnode refid="1521" relation="include">
-        </childnode>
-        <childnode refid="1559" relation="include">
-        </childnode>
-        <childnode refid="1526" relation="include">
-        </childnode>
-        <childnode refid="1555" relation="include">
-        </childnode>
-        <childnode refid="1523" relation="include">
-        </childnode>
-        <childnode refid="1524" relation="include">
-        </childnode>
-        <childnode refid="1525" relation="include">
-        </childnode>
-        <childnode refid="1560" relation="include">
-        </childnode>
-        <childnode refid="1538" relation="include">
+      <node id="1730">
+        <label>cpl_custom_handler.h</label>
+        <link refid="cpl__custom__handler_8h_source"/>
+        <childnode refid="1731" relation="include">
         </childnode>
       </node>
-      <node id="1555">
+      <node id="1743">
         <label>algorithm</label>
       </node>
-      <node id="1537">
+      <node id="1724">
         <label>cpl_conv.h</label>
       </node>
-      <node id="1534">
+      <node id="1721">
         <label>cstring</label>
       </node>
-      <node id="1531">
+      <node id="1718">
         <label>memory</label>
       </node>
     </incdepgraph>
-    <innerclass refid="class_simulate_dispersal" prot="public">SimulateDispersal</innerclass>
+    <innerclass refid="classnecsim_1_1_simulate_dispersal" prot="public">necsim::SimulateDispersal</innerclass>
+    <innernamespace refid="namespacenecsim">necsim</innernamespace>
       <sectiondef kind="define">
       <memberdef kind="define" id="_simulate_dispersal_8h_1a9302692bd9a9cf56478cbae301f04d53" prot="public" static="no">
         <name>PYTHON_COMPILE</name>
@@ -442,11 +485,15 @@
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>Contains the ability to simulate a given dispersal kernel on a specified density map, outputting the effect dispersal distance distribution to an SQL file after n number of dispersal events (specified by the user). </para>    </briefdescription>
+<para>Contains the ability to simulate a given dispersal kernel on a specified density map, outputting the effect dispersal distance distribution to an SQL file after n number of dispersal events (specified by the user). </para>
+    </briefdescription>
     <detaileddescription>
-<para><simplesect kind="author"><para>Samuel Thompson</para></simplesect>
-<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para></simplesect>
-</para>    </detaileddescription>
+<para><simplesect kind="author"><para>Samuel Thompson</para>
+</simplesect>
+<simplesect kind="copyright"><para><ulink url="https://opensource.org/licenses/MIT">MIT Licence.</ulink> </para>
+</simplesect>
+</para>
+    </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>necsim<sp/>project<sp/>which<sp/>is<sp/>released<sp/>under<sp/>MIT<sp/>license.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>file<sp/>**LICENSE.txt**<sp/>or<sp/>visit<sp/>https://opensource.org/licenses/MIT)<sp/>for<sp/>full<sp/>license<sp/>details.</highlight><highlight class="normal"></highlight></codeline>
@@ -466,112 +513,146 @@
 <codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sqlite3.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;set&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Landscape.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;DispersalCoordinator.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;NRrand.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Cell.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;DataMask.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;SQLiteHandler.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="39" refid="class_simulate_dispersal" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_simulate_dispersal" kindref="compound">SimulateDispersal</ref></highlight></codeline>
-<codeline lineno="40"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>density<sp/>map<sp/>object</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>shared_ptr&lt;Landscape&gt;<sp/>density_landscape;</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>samplemask<sp/>object</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_data_mask" kindref="compound">DataMask</ref><sp/>data_mask;</highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Dispersal<sp/>coordinator</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_dispersal_coordinator" kindref="compound">DispersalCoordinator</ref><sp/>dispersal_coordinator{};</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Stores<sp/>all<sp/>key<sp/>simulation<sp/>current_metacommunity_parameters<sp/>for<sp/>the<sp/>Landscape<sp/>object</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>shared_ptr&lt;SimParameters&gt;<sp/>simParameters;</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>random<sp/>number<sp/>generator<sp/>object</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>shared_ptr&lt;NRrand&gt;<sp/>random;</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>random<sp/>number<sp/>seed</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>seed;</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>sqlite3<sp/>database<sp/>object<sp/>for<sp/>storing<sp/>outputs</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_s_q_lite_handler" kindref="compound">SQLiteHandler</ref><sp/>database;</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Vector<sp/>for<sp/>storing<sp/>pairs<sp/>of<sp/>dispersal<sp/>distances<sp/>to<sp/>parameter<sp/>references</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>vector&lt;pair&lt;unsigned<sp/>long,<sp/>double&gt;&gt;<sp/>distances;</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Maps<sp/>distances<sp/>to<sp/>parameter<sp/>references</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>map&lt;unsigned<sp/>long,<sp/>unsigned<sp/>long&gt;<sp/>parameter_references;</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Vector<sp/>for<sp/>storing<sp/>the<sp/>cells<sp/>(for<sp/>randomly<sp/>choosing<sp/>from)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>vector&lt;Cell&gt;<sp/>cells;</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>number<sp/>of<sp/>repeats<sp/>to<sp/>run<sp/>the<sp/>dispersal<sp/>loop<sp/>for</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>num_repeats;</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>number<sp/>of<sp/>num_steps<sp/>within<sp/>each<sp/>dispersal<sp/>loop<sp/>for<sp/>the<sp/>average<sp/>distance<sp/>travelled,<sp/>which<sp/>should<sp/>be</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>set&lt;unsigned<sp/>long&gt;<sp/>num_steps;</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generation<sp/>counter</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>generation;</highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>true,<sp/>sequentially<sp/>selects<sp/>dispersal<sp/>probabilities,<sp/>default<sp/>is<sp/>true</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_sequential;</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Reference<sp/>number<sp/>for<sp/>this<sp/>set<sp/>of<sp/>current_metacommunity_parameters<sp/>in<sp/>the<sp/>database<sp/>output</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>max_parameter_reference;</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_simulate_dispersal" kindref="compound">SimulateDispersal</ref>()<sp/>:<sp/>density_landscape(make_shared&lt;Landscape&gt;()),<sp/>data_mask(),<sp/>dispersal_coordinator(),</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>simParameters(make_shared&lt;SimParameters&gt;()),<sp/>random(make_shared&lt;NRrand&gt;()),<sp/>database(),</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>distances(),<sp/>parameter_references(),<sp/>cells(),<sp/>num_steps()</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>num_repeats<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_sequential<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>max_parameter_reference<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>generation<sp/>=<sp/>0.0;</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_simulate_dispersal" kindref="compound">SimulateDispersal</ref>()</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>database.<ref refid="class_s_q_lite_handler_1abaaf6bef77ae3eef99e9848a6d53cf5c" kindref="member">close</ref>();</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a3da09319132db8c7ad035290be6590ef" kindref="member">setSequential</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>bSequential);</highlight></codeline>
-<codeline lineno="95"><highlight class="normal"></highlight></codeline>
-<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a521c2254ee4e95542e939e8595fa5e4c" kindref="member">setSimulationParameters</ref>(shared_ptr&lt;SimParameters&gt;<sp/>sim_parameters,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>print<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"></highlight></codeline>
-<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a275eef6872de493273fc047467935d7b" kindref="member">importMaps</ref>();</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"></highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a7aeeb01c40f5de7f88bce2b484bf83a0" kindref="member">setSizes</ref>();</highlight></codeline>
-<codeline lineno="112"><highlight class="normal"></highlight></codeline>
-<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a4acdae18451d1e9f67c005390b89664f" kindref="member">setDispersalParameters</ref>();</highlight></codeline>
-<codeline lineno="117"><highlight class="normal"></highlight></codeline>
-<codeline lineno="122" refid="class_simulate_dispersal_1a46f2cd557ac9b21c107eac75e7c916af" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a46f2cd557ac9b21c107eac75e7c916af" kindref="member">setSeed</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>s)</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed<sp/>=<sp/>s;</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>random-&gt;wipeSeed();</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>random-&gt;setSeed(s);</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="128"><highlight class="normal"></highlight></codeline>
-<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1acae5067045d5989df6d7dce80bcfe276" kindref="member">setOutputDatabase</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>out_database);</highlight></codeline>
-<codeline lineno="134"><highlight class="normal"></highlight></codeline>
-<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a29c7cf41d8b5610109d61f302fb32e73" kindref="member">setNumberRepeats</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
-<codeline lineno="140"><highlight class="normal"></highlight></codeline>
-<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a3cfb1aff1981021b6047c9625919ce3d" kindref="member">setNumberSteps</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector&lt;unsigned<sp/>long&gt;<sp/>&amp;s);</highlight></codeline>
-<codeline lineno="147"><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a348d4405655b91f6ce2b83752ce6f7af" kindref="member">getMaxNumberSteps</ref>();</highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight></codeline>
-<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a85d8ee68e5f4962429571c835aa028b4" kindref="member">storeCellList</ref>();</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"></highlight></codeline>
-<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_cell" kindref="compound">Cell</ref><sp/>&amp;<ref refid="class_simulate_dispersal_1a7d0a2b28dd8d45f1b8a74dbcd82290e7" kindref="member">getRandomCell</ref>();</highlight></codeline>
-<codeline lineno="164"><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a5069adc35fba116716bebd288dd9e65f" kindref="member">getEndPoint</ref>(<ref refid="struct_cell" kindref="compound">Cell</ref><sp/>&amp;this_cell);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;mutex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Landscape.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;DispersalCoordinator.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;RNGController.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Cell.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;DataMask.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;SQLiteHandler.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">necsim</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="42" refid="classnecsim_1_1_simulate_dispersal" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classnecsim_1_1_simulate_dispersal" kindref="compound">SimulateDispersal</ref></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>density<sp/>map<sp/>object</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shared_ptr&lt;Landscape&gt;<sp/>density_landscape;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>samplemask<sp/>object</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classnecsim_1_1_data_mask" kindref="compound">DataMask</ref><sp/>data_mask;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Dispersal<sp/>coordinator</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classnecsim_1_1_dispersal_coordinator" kindref="compound">DispersalCoordinator</ref><sp/>dispersal_coordinator{};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Stores<sp/>all<sp/>key<sp/>simulation<sp/>current_metacommunity_parameters<sp/>for<sp/>the<sp/>Landscape<sp/>object</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shared_ptr&lt;SimParameters&gt;<sp/>simParameters;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>random<sp/>number<sp/>generator<sp/>object</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shared_ptr&lt;RNGController&gt;<sp/>random;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>random<sp/>number<sp/>seed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>seed;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>sqlite3<sp/>database<sp/>object<sp/>for<sp/>storing<sp/>outputs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classnecsim_1_1_s_q_lite_handler" kindref="compound">SQLiteHandler</ref><sp/>database;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Vector<sp/>for<sp/>storing<sp/>pairs<sp/>of<sp/>dispersal<sp/>distances<sp/>to<sp/>parameter<sp/>references</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector&lt;tuple&lt;unsigned<sp/>long,<sp/>Cell,<sp/>double&gt;&gt;<sp/>distances;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Maps<sp/>distances<sp/>to<sp/>parameter<sp/>references</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map&lt;unsigned<sp/>long,<sp/>unsigned<sp/>long&gt;<sp/>parameter_references;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Vector<sp/>for<sp/>storing<sp/>the<sp/>cells<sp/>(for<sp/>randomly<sp/>choosing<sp/>from)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector&lt;Cell&gt;<sp/>cells;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>number<sp/>of<sp/>repeats<sp/>to<sp/>run<sp/>the<sp/>dispersal<sp/>loop<sp/>for</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>num_repeats;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>number<sp/>of<sp/>num_steps<sp/>within<sp/>each<sp/>dispersal<sp/>loop<sp/>for<sp/>the<sp/>average<sp/>distance<sp/>travelled,<sp/>which<sp/>should<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set&lt;unsigned<sp/>long&gt;<sp/>num_steps;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>number<sp/>of<sp/>threads<sp/>launched<sp/>to<sp/>parallelise<sp/>the<sp/>distance<sp/>simulation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>num_workers;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generation<sp/>counter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>generation;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>true,<sp/>sequentially<sp/>selects<sp/>dispersal<sp/>probabilities,<sp/>default<sp/>is<sp/>true</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_sequential;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Reference<sp/>number<sp/>for<sp/>this<sp/>set<sp/>of<sp/>current_metacommunity_parameters<sp/>in<sp/>the<sp/>database<sp/>output</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>max_parameter_reference;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classnecsim_1_1_simulate_dispersal" kindref="compound">SimulateDispersal</ref>()<sp/>:<sp/>density_landscape(make_shared&lt;Landscape&gt;()),<sp/>data_mask(),<sp/>dispersal_coordinator(),</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>simParameters(make_shared&lt;SimParameters&gt;()),<sp/>random(make_shared&lt;RNGController&gt;()),</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>database(),<sp/>distances(),<sp/>parameter_references(),<sp/>cells(),<sp/>num_steps()</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>num_repeats<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_sequential<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>max_parameter_reference<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>generation<sp/>=<sp/>0.0;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>~<ref refid="classnecsim_1_1_simulate_dispersal" kindref="compound"></ref></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><ref refid="classnecsim_1_1_simulate_dispersal" kindref="compound"></ref></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><ref refid="classnecsim_1_1_simulate_dispersal" kindref="compound">        SimulateDispersal</ref>()</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>database.<ref refid="classnecsim_1_1_s_q_lite_handler_1a31bf67030c0c0d709164c72085f78fe6" kindref="member">close</ref>();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a3c791ef6f54987ad625259bae12d8e8b" kindref="member">setSequential</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>bSequential);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1aec85b1e5a41570cc42cdabce395e5ee9" kindref="member">setSimulationParameters</ref>(shared_ptr&lt;SimParameters&gt;<sp/>sim_parameters,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>print<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ac13c27c63ee23eb429259020b81fd082" kindref="member">importMaps</ref>();</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a43b2b64cd6de05e2941c7bf4bfdffc6a" kindref="member">setSizes</ref>();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ad7e51d96e0ad6965eef063ad73bfceae" kindref="member">setDispersalParameters</ref>();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="classnecsim_1_1_simulate_dispersal_1ab49faed21f3793754df4778d6c585080" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ab49faed21f3793754df4778d6c585080" kindref="member">setSeed</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>s)</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed<sp/>=<sp/>s;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>random-&gt;<ref refid="classrandom__numbers_1_1_r_n_g_controller_1a9833e6a81b7d4f8551897dee4050dcd7" kindref="member">wipeSeed</ref>();</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>random-&gt;<ref refid="classrandom__numbers_1_1_r_n_g_controller_1a87dfdf88ef5b6e7f485055dcc328dc42" kindref="member">setSeed</ref>(s);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ae1dd93e6305c22a326f61beb1582b967" kindref="member">setOutputDatabase</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>out_database);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ac6b2626a2a7d5f0867a49c801242d46e" kindref="member">setNumberRepeats</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a81ef2eebb79792da11132dc0952236de" kindref="member">setNumberSteps</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector&lt;unsigned<sp/>long&gt;<sp/>&amp;s);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1af26f5005f82c29f702b70daf2166842a" kindref="member">setNumberWorkers</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a77cf4b8f8d9f3875c4a6a22bc21a1a0c" kindref="member">getMaxNumberSteps</ref>();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1af94b5348a104540276001f46c04fd31e" kindref="member">storeCellList</ref>();</highlight></codeline>
 <codeline lineno="173"><highlight class="normal"></highlight></codeline>
-<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a4a759f6bb3b8288345eaf7c0d66ad29e" kindref="member">runMeanDispersalDistance</ref>();</highlight></codeline>
-<codeline lineno="178"><highlight class="normal"></highlight></codeline>
-<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a406514e917874907cfb7a8d6c7889098" kindref="member">runMeanDistanceTravelled</ref>();</highlight></codeline>
-<codeline lineno="183"><highlight class="normal"></highlight></codeline>
-<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1ab8c48b2398f715d4de2b35a91daaae58" kindref="member">writeRepeatInfo</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>i);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structnecsim_1_1_cell" kindref="compound">Cell</ref><sp/>&amp;<ref refid="classnecsim_1_1_simulate_dispersal_1ab70c9e737388ec84036c8766fa0d83eb" kindref="member">getRandomCell</ref>();</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a8cda58b29365cd8cfa168ac4f3d81a5a" kindref="member">getEndPoint</ref>(<ref refid="structnecsim_1_1_cell" kindref="compound">Cell</ref><sp/>&amp;this_cell);</highlight></codeline>
 <codeline lineno="188"><highlight class="normal"></highlight></codeline>
-<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1af7d0a726cb3724c159ca46f4586a8bd3" kindref="member">writeDatabase</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>table_name);</highlight></codeline>
-<codeline lineno="194"><highlight class="normal"></highlight></codeline>
-<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1ae0afed6eeb06f5bae4ee13a24850c8c5" kindref="member">writeParameters</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>table_name);</highlight></codeline>
-<codeline lineno="200"><highlight class="normal"></highlight></codeline>
-<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1ae7e23b11a811ec48f2e08d9fa8ad151a" kindref="member">clearParameters</ref>();</highlight></codeline>
-<codeline lineno="206"><highlight class="normal"></highlight></codeline>
-<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1a0dee5d1529bd7ee6f382f7cd1b5393e5" kindref="member">checkMaxParameterReference</ref>();</highlight></codeline>
-<codeline lineno="213"><highlight class="normal"></highlight></codeline>
-<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="class_simulate_dispersal_1abafd3fc30df157d12e462c4b1907d8fa" kindref="member">checkMaxIdNumber</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>table_name);</highlight></codeline>
-<codeline lineno="222"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="223"><highlight class="normal"></highlight></codeline>
-<codeline lineno="224"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a8cda58b29365cd8cfa168ac4f3d81a5a" kindref="member">getEndPoint</ref>(<ref refid="structnecsim_1_1_cell" kindref="compound">Cell</ref><sp/>&amp;this_cell,<sp/><ref refid="classnecsim_1_1_dispersal_coordinator" kindref="compound">DispersalCoordinator</ref><sp/>&amp;dispersal_coordinator);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>chooseRandomCells=false&gt;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a54b27787cad8558e6b3459b699091735" kindref="member">runDistanceLoop</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>bidx,</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>eidx,</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>num_repeats,</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::mutex<sp/>&amp;mutex,</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;finished,</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classnecsim_1_1_dispersal_coordinator" kindref="compound">DispersalCoordinator</ref><sp/>&amp;dispersal_coordinator,</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;generation);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>chooseRandomCells=false&gt;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ada21297f472bd006bfd603b5e096935a" kindref="member">runDistanceWorker</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>seed,</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>bidx,</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>eidx,</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>num_repeats,</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::mutex<sp/>&amp;mutex,</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>&amp;finished);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ad4ed1ea84cc0dca48929c4667ec71647" kindref="member">runMeanDispersalDistance</ref>();</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1af5b6eec8ae467e282eb362051600f5ac" kindref="member">runMeanDistanceTravelled</ref>();</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a7be136419c126bfc0252e533f198b947" kindref="member">runAllDistanceTravelled</ref>();</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a907dea24188b0ab7828a6a2b867ee2a5" kindref="member">runSampleDistanceTravelled</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector&lt;Cell&gt;<sp/>&amp;samples);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ac6717c6dd3373e10ac8a361c8bac0a42" kindref="member">writeRepeatInfo</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>i);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a22ae70175728ae13a7064d5c240a4883" kindref="member">writeDatabase</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>table_name);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a3594c4fd981a7a890d79712e93bc61dd" kindref="member">writeParameters</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>table_name);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1acb8e9da81a0e635d96c63551462cdb0d" kindref="member">clearParameters</ref>();</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1a6a56323b2289da0c92f2d36c79ae0a4f" kindref="member">checkMaxParameterReference</ref>();</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="classnecsim_1_1_simulate_dispersal_1ac25238fdedec366503a2b59cfe222cd3" kindref="member">checkMaxIdNumber</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>table_name);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="302"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
     </programlisting>
     <location file="necsim/SimulateDispersal.h"/>
   </compounddef>
