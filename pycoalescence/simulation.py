@@ -738,6 +738,9 @@ class Simulation(Landscape):
         :rtype: None
         :return: None
         """
+        FutureWarning(
+            "The gillespie algorithm is not implemented beyond the base functionality and is awaiting a future update."
+        )
         if generations < 0:
             raise ValueError("Number of generations cannot be < 0.")
         if not self.check_can_use_gillespie():
@@ -884,7 +887,12 @@ class Simulation(Landscape):
                 self.landscape_type = "closed"
             elif landscape_type in {True, "infinite"}:
                 self.landscape_type = "infinite"
-            elif landscape_type in {"tiled_coarse", "tiled_fine", "clamped_coarse", "clamped_fine"}:
+            elif landscape_type in {
+                "tiled_coarse",
+                "tiled_fine",
+                "clamped_coarse",
+                "clamped_fine",
+            }:
                 self.landscape_type = landscape_type
             else:
                 raise ValueError(
