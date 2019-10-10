@@ -129,7 +129,7 @@ bool importPyListsToVectorCell(PyObject *x_list_input, PyObject *y_list_input, v
 		}
         long x = PyLong_AsLong(x_item);
         long y = PyLong_AsLong(y_item);
-		output.push_back((Cell){.x = x, .y = y});
+		output.emplace_back(Cell(x, y));
 	}
 	return true;
 }
