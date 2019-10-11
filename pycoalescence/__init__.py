@@ -3,7 +3,7 @@ pycoalescence provides the facilities for running spatially explicit neutral coa
 and performing basic analysis of the simulation outputs. The program requires necsim to function properly.
 
 """
-__version__ = "1.2.7.post3"
+__version__ = "1.2.7.post4"
 
 import logging
 
