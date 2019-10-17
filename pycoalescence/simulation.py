@@ -1022,7 +1022,7 @@ class Simulation(Landscape):
             )
         self.setup_necsim()
         self.c_simulation.setup_resume(
-            pause_directory, out_directory, seed, job_type, max_time
+            pause_directory, out_directory, int(seed), int(job_type), int(max_time)
         )
         self.is_setup_complete = True
         self._run_and_output()
