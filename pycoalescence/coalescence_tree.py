@@ -930,6 +930,29 @@ class CoalescenceTree(object):
         self._set_c_community()
         self.c_community.speciate_remaining_lineages(self.file)
 
+    # TODO write tests
+    def apply_non_spatial_remaining(self, database):
+        """
+        Applies the non-spatial neutral model to the remaining lineages. This approximation is reasonable on a closed
+        landscape once the lineages themselves are close to randomly distributed.
+
+        :param database: the database file to open
+
+        :return: None
+        :rtype: None
+        """
+
+        try:
+            self.set_database(database)
+        except Exception as e:
+            if self.is_complete or not isinstance(e, IOError) or isinstance(e, FileNotFoundError):
+                raise e
+        else:
+            raise IOError("Database at {} is not a paused database.".format(self.file))
+        self.database.close()
+        self._set_c_community()
+        self.c_community.apply_non_spatial_remaining(self.file)
+
     def get_species_richness(self, reference=1):
         """
         Get the system richness for the parameters associated with the supplied community reference.
