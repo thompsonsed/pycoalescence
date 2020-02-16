@@ -10,7 +10,7 @@ endif ()
 option(minimal_ram "minimal_ram" OFF)
 option(USING_INTEL "Use intel compilers for compiling necsim." OFF) # Disabled by default
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(SOURCE_DIR_NECSIM "${PROJECT_SOURCE_DIR}/necsim")
@@ -109,7 +109,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/GillespieCalculator.h
         ${SOURCE_DIR_NECSIM}/MapLocation.cpp
         ${SOURCE_DIR_NECSIM}/MapLocation.h
-        ${SOURCE_DIR_NECSIM}/eastl/heap.h)
+        ${SOURCE_DIR_NECSIM}/eastl/heap.h necsim/cpp17_includes.h)
+# Require C++ 17 support for boost replacement
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
     set(CMAKE_FIND_FRAMEWORK "LAST")
