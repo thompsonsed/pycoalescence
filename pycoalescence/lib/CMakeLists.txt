@@ -241,6 +241,7 @@ if (CPP_17_UNSUPPORTED)
         message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIR}")
     else()
         message(STATUS "No C++17 or Boost found: using ghc filesystem library")
+        include_directories(${SOURCE_DIR_NECSIM}/ghc)
     endif()
 
 endif()
