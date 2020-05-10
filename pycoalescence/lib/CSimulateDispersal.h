@@ -352,7 +352,7 @@ static PyObject* set_dispersal_parameters(PySimulateDispersal* self, PyObject* a
         getGlobalLogger(self->logger, self->log_function);
         self->dispersalParameters->setDispersalParameters(dispersal_method, sigma, tau, m_prob, cutoff,
                                                           dispersal_rel_cost, static_cast<bool>(restrict_self),
-                                                          "closed", dispersal_file, "none");
+                                                          "closed", dispersal_file);
         self->needs_update = true;
     }
     catch(exception &e)

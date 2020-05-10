@@ -514,7 +514,7 @@ class Simulation(Landscape):
         """
         self.set_simulation_parameters(
             seed=seed,
-            job_type=task,
+            task=task,
             output_directory=output,
             min_speciation_rate=speciation_rate,
             sigma=sigma,
@@ -805,7 +805,7 @@ class Simulation(Landscape):
     def set_simulation_parameters(
         self,
         seed,
-        job_type,
+        task,
         output_directory,
         min_speciation_rate,
         sigma=1.0,
@@ -831,7 +831,7 @@ class Simulation(Landscape):
         Set all the simulation parameters apart from the map objects.
 
         :param int seed: the unique job number for this simulation set
-        :param int job_type: the job type (used for easy file identification after simulations are complete)
+        :param int task: the task reference number (used for easy file identification after simulations are complete)
         :param str output_directory: the output directory to store the SQL database
         :param float min_speciation_rate: the minimum speciation rate to simulate
         :param float sigma: the dispersal sigma value
@@ -860,7 +860,7 @@ class Simulation(Landscape):
         if not self.is_setup_param:
             self.set_seed(seed)
             self.output_directory = output_directory
-            self.job_type = job_type
+            self.job_type = task
             self.min_speciation_rate = min_speciation_rate
             self.sigma = sigma
             self.tau = tau

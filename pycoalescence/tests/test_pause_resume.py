@@ -46,7 +46,7 @@ class TestSimulationPause(unittest.TestCase):
         self.tree2 = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=10,
-            job_type=6,
+            task=6,
             output_directory="output",
             min_speciation_rate=0.05,
             sigma=2,
@@ -66,7 +66,7 @@ class TestSimulationPause(unittest.TestCase):
         self.coal.run()
         self.coal2.set_simulation_parameters(
             seed=10,
-            job_type=7,
+            task=7,
             output_directory="output",
             min_speciation_rate=0.05,
             sigma=2,
@@ -241,7 +241,7 @@ class TestSimulationPause2(unittest.TestCase):
         self.tree2 = CoalescenceTree(logging_level=logging.ERROR)
         self.coal.set_simulation_parameters(
             seed=10,
-            job_type=26,
+            task=26,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -259,7 +259,7 @@ class TestSimulationPause2(unittest.TestCase):
         self.coal3 = Simulation(logging_level=logging.ERROR)
         self.coal3.set_simulation_parameters(
             seed=10,
-            job_type=26,
+            task=26,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -295,7 +295,7 @@ class TestSimulationPause2(unittest.TestCase):
         self.coal3.apply_speciation_rates()
         self.coal2.set_simulation_parameters(
             seed=10,
-            job_type=27,
+            task=27,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -387,7 +387,7 @@ class TestSimulationPause2(unittest.TestCase):
         coaltmp = Simulation()
         coaltmp.set_simulation_parameters(
             seed=10,
-            job_type=26,
+            task=26,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -446,7 +446,7 @@ class TestSimulationPause3(unittest.TestCase):
         self.tree2 = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=10,
-            job_type=16,
+            task=16,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -468,7 +468,7 @@ class TestSimulationPause3(unittest.TestCase):
         self.coal.run()
         self.coal2.set_simulation_parameters(
             seed=10,
-            job_type=17,
+            task=17,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -661,7 +661,7 @@ class TestSimulationPause4(unittest.TestCase):
         self.tree2 = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=11,
-            job_type=16,
+            task=16,
             output_directory="output spaced",
             min_speciation_rate=0.5,
             sigma=2,
@@ -683,7 +683,7 @@ class TestSimulationPause4(unittest.TestCase):
         self.coal.run()
         self.coal2.set_simulation_parameters(
             seed=11,
-            job_type=17,
+            task=17,
             output_directory="output spaced",
             min_speciation_rate=0.5,
             sigma=2,
@@ -868,7 +868,7 @@ class TestPauseSpeciateRemaining(unittest.TestCase):
         cls.sim = Simulation(logging_level=50)
         cls.sim.set_simulation_parameters(
             seed=14,
-            job_type=17,
+            task=17,
             output_directory="output",
             min_speciation_rate=0.00000000001,
             sigma=2,

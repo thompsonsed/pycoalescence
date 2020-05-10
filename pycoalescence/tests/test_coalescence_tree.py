@@ -1582,7 +1582,7 @@ class TestMetacommunityApplicationSpeciesAbundances(unittest.TestCase):
         """Run a non-spatial sim and apply a metacommunity."""
         cls.sim = Simulation()
         cls.sim.set_simulation_parameters(
-            seed=11, job_type=110, output_directory="output", min_speciation_rate=0.1, spatial=False, deme=20541
+            seed=11, task=110, output_directory="output", min_speciation_rate=0.1, spatial=False, deme=20541
         )
         cls.sim.run()
         cls.ct = CoalescenceTree(cls.sim)
