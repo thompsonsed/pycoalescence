@@ -10,7 +10,12 @@ endif ()
 option(minimal_ram "minimal_ram" OFF)
 option(USING_INTEL "Use intel compilers for compiling necsim." OFF) # Disabled by default
 
-set(CMAKE_CXX_STANDARD 17)
+if(${CMAKE_VERSION} VERSION_LESS "3.8.0")
+    set(CMAKE_CXX_STANDARD 14)
+else()
+    set(CMAKE_CXX_STANDARD 17)
+endif()
+
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(SOURCE_DIR_NECSIM "${PROJECT_SOURCE_DIR}/necsim")
