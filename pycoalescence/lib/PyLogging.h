@@ -9,10 +9,12 @@
  */
 #ifndef PYLOGGING_H
 #define PYLOGGING_H
+
 #include "Python.h"
 #include <string>
 #include "necsim/LogFile.h"
 #include "PyLogger.h"
+
 namespace necsim
 {
     /**

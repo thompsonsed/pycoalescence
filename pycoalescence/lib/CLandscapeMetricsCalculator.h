@@ -137,7 +137,7 @@ static void PyLMC_dealloc(PyLMC* self)
 static PyMethodDef PyLMCMethods[] = {{"import_map",       reinterpret_cast<PyCFunction>( set_map),         METH_VARARGS, "Imports the map file to calculate landscape metrics on. Should only be run once."},
                                      {"calculate_MNN",    reinterpret_cast<PyCFunction>( calculateMNN),    METH_NOARGS,  "Calculates the mean nearest-neighbour for the landscape"},
                                      {"calculate_CLUMPY", reinterpret_cast<PyCFunction>( calculateCLUMPY), METH_NOARGS,  "Calculates the CLUMPY metric for the landscape"},
-                                     {nullptr,            nullptr, 0,                                  nullptr}};
+                                     {nullptr,            nullptr, 0,                                                    nullptr}};
 
 PyTypeObject genLMCType()
 {

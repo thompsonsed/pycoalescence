@@ -16,9 +16,9 @@
 #include <string>
 
 #include "necsim/Cell.h"
+
 using namespace std;
 using namespace necsim;
-
 
 /**
  * @brief Imports the provided input list to the output vector.
@@ -28,7 +28,7 @@ using namespace necsim;
  * @param err_msg error message to through if an element is not of float type
  * @return true if no error is thrown, false otherwise
  */
-bool importPyListToVectorString(PyObject *list_input, vector<string> &output, const string &err_msg);
+bool importPyListToVectorString(PyObject* list_input, vector<string> &output, const string &err_msg);
 
 /**
  * @brief Imports the provided input list to the output vector.
@@ -38,8 +38,7 @@ bool importPyListToVectorString(PyObject *list_input, vector<string> &output, co
  * @param err_msg error message to through if an element is not of float type
  * @return true if no error is thrown, false otherwise
  */
-bool importPyListToVectorULong(PyObject *list_input, vector<unsigned long> &output, const string &err_msg);
-
+bool importPyListToVectorULong(PyObject* list_input, vector<unsigned long> &output, const string &err_msg);
 
 /**
  * @brief Imports the provided input list to the output vector.
@@ -49,7 +48,11 @@ bool importPyListToVectorULong(PyObject *list_input, vector<unsigned long> &outp
  * @param err_msg error message to through if an element is not of float type
  * @return true if no error is thrown, false otherwise
  */
-bool importPyListToVectorDouble(PyObject *list_input, vector<double> &output, const string &err_msg);
+bool importPyListToVectorDouble(PyObject* list_input, vector<double> &output, const string &err_msg);
 
-bool importPyListsToVectorCell(PyObject *x_list_input, PyObject *y_list_input, vector<Cell> &output, const string &err_msg);
+bool importPyListsToVectorCell(PyObject* x_list_input,
+                               PyObject* y_list_input,
+                               vector<Cell> &output,
+                               const string &err_msg);
+
 #endif //SPECIATIONCOUNTER_PYIMPORTS_H

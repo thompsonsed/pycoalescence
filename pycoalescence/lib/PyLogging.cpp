@@ -16,6 +16,7 @@
 
 #include "PyLogger.h"
 #include "PyLogging.h"
+
 namespace necsim
 {
     PyLogger* pyLogger = nullptr;

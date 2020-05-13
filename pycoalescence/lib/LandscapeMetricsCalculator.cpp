@@ -11,7 +11,6 @@
 #include "necsim/Map.h"
 #include "LandscapeMetricsCalculator.h"
 
-
 double LandscapeMetricsCalculator::calculateMNN()
 {
     vector<double> distances;

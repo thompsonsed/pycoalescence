@@ -11,7 +11,6 @@
 #include <vector>
 #include <string>
 
-
 #ifndef NECSIM_IMPORT
 #define NECSIM_IMPORT
 using namespace std;
@@ -19,7 +18,7 @@ using namespace necsim;
 
 struct module_state
 {
-	PyObject *error;
+    PyObject* error;
 };
 
 #if PY_MAJOR_VERSION >= 3
@@ -32,15 +31,14 @@ static struct module_state _state;
 /**
  * @brief A Python error container for all run-time errors.
  */
-static PyObject *necsimError;
+static PyObject* necsimError;
 
 
 // Conditional compilation for Python >= 3.0 (changed how Python integration worked)
 #if PY_MAJOR_VERSION >= 3
 #define INITERROR return NULL
 
-PyMODINIT_FUNC
-PyInit_libnecsim(void)
+PyMODINIT_FUNC PyInit_libnecsim(void)
 #else
 #define INITERROR return
 

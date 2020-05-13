@@ -12,10 +12,12 @@
 #ifndef PYTHON_COMPILE
 #define PYTHON_COMPILE
 #endif
+
 #include <Python.h>
 #include <string>
 #include <sstream>
 #include "necsim/Logger.h"
+
 namespace necsim
 {
 
