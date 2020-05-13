@@ -29,7 +29,7 @@ except ImportError as ie:
     # Conditional import for Python 2 being stupid
     from system_operations import set_logging_method
     import setup_tests
-if sys.version_info[0] is not 3:
+if sys.version_info[0] != 3:
 
     class FileExistsError(IOError):
         pass

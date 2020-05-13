@@ -194,7 +194,7 @@ class CoalescenceTree(object):
                 record_fragments = "null"
             else:
                 record_fragments = "F"
-        if record_fragments is "T":
+        if record_fragments == "T":
             record_fragments = "null"
         if record_fragments not in ["F", "null"]:
             if not os.path.exists(record_fragments):
@@ -211,9 +211,9 @@ class CoalescenceTree(object):
 
         :rtype: None
         """
-        if record_spatial is "T":
+        if record_spatial == "T":
             record_spatial = True
-        elif record_spatial is "F":
+        elif record_spatial == "F":
             record_spatial = False
         elif not isinstance(record_spatial, bool):
             raise TypeError("record_spatial must be a boolean.")
@@ -612,7 +612,7 @@ class CoalescenceTree(object):
             raise ValueError("No simulation parameters exist for guild {}".format(guild))
         column_names = [member[0] for member in self.cursor.description]
         values = [x for x in out]
-        if sys.version_info[0] is not 3:  # pragma: no cover
+        if sys.version_info[0] != 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
                     values[i] = each.encode("ascii")
@@ -1629,7 +1629,7 @@ class CoalescenceTree(object):
         if reference is None:
             if fragment is not None:
                 raise SyntaxError("Must supply a reference when supplying a fragment.")
-            if len(self.fragments) is 0:
+            if len(self.fragments) == 0:
                 self.calculate_fragment_richness()
             return self.fragments
         elif fragment is None:
@@ -2079,7 +2079,7 @@ class CoalescenceTree(object):
             "community_reference == ?",
             (reference,),
         ).fetchall()
-        if len(ret) is 0:  # pragma: no cover
+        if len(ret) == 0:  # pragma: no cover
             raise RuntimeError("Biodiversity table does not contain goodness-of-fit values.")
         else:
             return ret[0][0]
@@ -2224,7 +2224,7 @@ class CoalescenceTree(object):
                 raise e
             column_names = [member[0] for member in self.cursor.description]
             values = [x for x in self.cursor.fetchone()]
-            if sys.version_info[0] is not 3:  # pragma: no cover
+            if sys.version_info[0] != 3:  # pragma: no cover
                 for i, each in enumerate(values):
                     if isinstance(each, unicode):
                         values[i] = each.encode("ascii")
@@ -2286,7 +2286,7 @@ class CoalescenceTree(object):
             raise KeyError("No community parameters found for reference of {}".format(reference))
         values = [x for x in fetch]
         column_names = [member[0] for member in self.cursor.description]
-        if sys.version_info[0] is not 3:  # pragma: no cover
+        if sys.version_info[0] != 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
                     values[i] = each.encode("ascii")
@@ -2434,7 +2434,7 @@ class CoalescenceTree(object):
         if len(values) == 0:  # pragma: no cover
             raise KeyError("No metacommunity parameters found for reference of {}".format(reference))
         column_names = [member[0] for member in self.cursor.description]
-        if sys.version_info[0] is not 3:  # pragma: no cover
+        if sys.version_info[0] != 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
                     values[i] = each.encode("ascii")
