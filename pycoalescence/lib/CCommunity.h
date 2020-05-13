@@ -342,20 +342,20 @@ PyMethodDef* genCommunityMethods()
 {
     static PyMethodDef CommunityMethods[] =
             {
-                    {"setup",                        (PyCFunction) setupApplySpeciation<T>,         METH_VARARGS,
+                    {"setup",                        reinterpret_cast<PyCFunction>(setupApplySpeciation<T>),         METH_VARARGS,
                                                                                                                   "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
-                    {"add_time",                     (PyCFunction) addTime<T>,                      METH_VARARGS,
+                    {"add_time",                     reinterpret_cast<PyCFunction>( addTime<T>),                      METH_VARARGS,
                                                                                                                   "Adds a time to apply to the simulation."},
-                    {"wipe_protracted_parameters",   (PyCFunction) wipeProtractedParameters<T>,     METH_NOARGS,
+                    {"wipe_protracted_parameters",   reinterpret_cast<PyCFunction>( wipeProtractedParameters<T>),     METH_NOARGS,
                                                                                                                   "Wipes the protracted current_metacommunity_parameters."},
-                    {"add_protracted_parameters",    (PyCFunction) addProtractedParameters<T>,      METH_VARARGS,
+                    {"add_protracted_parameters",    reinterpret_cast<PyCFunction>( addProtractedParameters<T>),      METH_VARARGS,
                                                                                                                   "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
-                    {"add_metacommunity_parameters", (PyCFunction) pyAddMetacommunityParameters<T>, METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
-                    {"apply",                        (PyCFunction) apply<T>,                        METH_NOARGS,
+                    {"add_metacommunity_parameters", reinterpret_cast<PyCFunction>( pyAddMetacommunityParameters<T>), METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
+                    {"apply",                        reinterpret_cast<PyCFunction>( apply<T>),                        METH_NOARGS,
                                                                                                                   "Applies the new speciation rate(s) to the coalescence tree."},
-                    {"output",                       (PyCFunction) output<T>,                       METH_NOARGS,  "Outputs the database to file."},
-                    {"reset",                        (PyCFunction) reset<T>,                        METH_NOARGS,  "Resets the internal object."},
-                    {"speciate_remaining_lineages",  (PyCFunction) pySpeciateRemainingLineages<T>,  METH_VARARGS,
+                    {"output",                       reinterpret_cast<PyCFunction>( output<T>),                       METH_NOARGS,  "Outputs the database to file."},
+                    {"reset",                        reinterpret_cast<PyCFunction>( reset<T>),                        METH_NOARGS,  "Resets the internal object."},
+                    {"speciate_remaining_lineages",  reinterpret_cast<PyCFunction>( pySpeciateRemainingLineages<T>),  METH_VARARGS,
                                                                                                                   "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
 
                     {nullptr,                        nullptr, 0,                                                  nullptr}

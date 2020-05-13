@@ -257,13 +257,13 @@ static PyObject *setupResume(PyTemplate<T> *self, PyObject *args)
 template<class T>
 static PyMethodDef *genPySimulationMethods()
 {
-    static PyMethodDef PySimulationMethods[] = {{"import_from_config",        (PyCFunction) importConfig<T>,           METH_VARARGS, "Import the simulation variables from a config file"},
-                                                {"import_from_config_string", (PyCFunction) importConfigFromString<T>, METH_VARARGS, "Import the simulation variables from a config file"},
-                                                {"add_gillespie",             (PyCFunction) addGillespie<T>,           METH_VARARGS, "Use the Gillespie algorithm in the simulation at the specified time"},
-                                                {"run",                       (PyCFunction) run<T>,                    METH_VARARGS, "Run the simulation"},
-                                                {"setup",                     (PyCFunction) setup<T>,                  METH_VARARGS, "Set up the simulation, importing the maps and assigning the variables"},
-                                                {"apply_speciation_rates",    (PyCFunction) applySpeciationRates<T>,   METH_VARARGS, "Applies the speciation rates to the completed simulation. Can optionally provide a list of additional speciation rates to apply"},
-                                                {"setup_resume",              (PyCFunction) setupResume<T>,            METH_VARARGS, "Sets up for resuming from a paused simulation"},
+    static PyMethodDef PySimulationMethods[] = {{"import_from_config",        reinterpret_cast<PyCFunction>( importConfig<T>),           METH_VARARGS, "Import the simulation variables from a config file"},
+                                                {"import_from_config_string", reinterpret_cast<PyCFunction>( importConfigFromString<T>), METH_VARARGS, "Import the simulation variables from a config file"},
+                                                {"add_gillespie",             reinterpret_cast<PyCFunction>( addGillespie<T>),           METH_VARARGS, "Use the Gillespie algorithm in the simulation at the specified time"},
+                                                {"run",                       reinterpret_cast<PyCFunction>( run<T>),                    METH_VARARGS, "Run the simulation"},
+                                                {"setup",                     reinterpret_cast<PyCFunction>( setup<T>),                  METH_VARARGS, "Set up the simulation, importing the maps and assigning the variables"},
+                                                {"apply_speciation_rates",    reinterpret_cast<PyCFunction>( applySpeciationRates<T>),   METH_VARARGS, "Applies the speciation rates to the completed simulation. Can optionally provide a list of additional speciation rates to apply"},
+                                                {"setup_resume",              reinterpret_cast<PyCFunction>( setupResume<T>),            METH_VARARGS, "Sets up for resuming from a paused simulation"},
                                                 {nullptr}  /* Sentinel */
     };
     return PySimulationMethods;

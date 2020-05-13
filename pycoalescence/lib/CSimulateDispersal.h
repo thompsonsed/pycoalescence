@@ -587,23 +587,23 @@ static void PySimulateDispersal_dealloc(PySimulateDispersal* self)
 
 static PyMethodDef SimulateDispersalMethods[] =
         {
-                {"set_dispersal_parameters",      (PyCFunction) set_dispersal_parameters,      METH_VARARGS,
+                {"set_dispersal_parameters",      reinterpret_cast<PyCFunction>( set_dispersal_parameters),      METH_VARARGS,
                                                               "Sets the dispersal current_metacommunity_parameters for this simulation."},
-                {"set_output_database",           (PyCFunction) set_output_database,           METH_VARARGS,
+                {"set_output_database",           reinterpret_cast<PyCFunction>( set_output_database),           METH_VARARGS,
                                                               "Sets the output database for the simulation."},
-                {"run_mean_dispersal_distance",   (PyCFunction) runMeanDispersal,              METH_VARARGS,
+                {"run_mean_dispersal_distance",   reinterpret_cast<PyCFunction>( runMeanDispersal),              METH_VARARGS,
                                                               "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance per step."},
-                {"run_mean_distance_travelled",   (PyCFunction) runMDT,                        METH_VARARGS,
+                {"run_mean_distance_travelled",   reinterpret_cast<PyCFunction>( runMDT),                        METH_VARARGS,
                                                               "Runs the dispersal simulation for the set current_metacommunity_parameters, calculating the mean distance travelled."},
-                {"run_all_distance_travelled",    (PyCFunction) runADT,                        METH_VARARGS,
+                {"run_all_distance_travelled",    reinterpret_cast<PyCFunction>( runADT),                        METH_VARARGS,
                                                               "Runs the dispersal simulation for the set current_metacommunity_parameters on all habitable cells, calculating the mean distance travelled."},
-                {"run_sample_distance_travelled", (PyCFunction) runSRW,                        METH_VARARGS,
+                {"run_sample_distance_travelled", reinterpret_cast<PyCFunction>( runSRW),                        METH_VARARGS,
                                                               "Runs the dispersal simulation for the set current_metacommunity_parameters on the given sample habitable cells, calculating the mean distance travelled."},
-                {"import_maps",                   (PyCFunction) set_maps,                      METH_VARARGS,
+                {"import_maps",                   reinterpret_cast<PyCFunction>( set_maps),                      METH_VARARGS,
                                                               "Imports the map files for the simulation. Should only be run once."},
-                {"import_all_maps",               (PyCFunction) set_all_map_parameters,        METH_VARARGS,
+                {"import_all_maps",               reinterpret_cast<PyCFunction>( set_all_map_parameters),        METH_VARARGS,
                                                               "Imports all the map files with a single import."},
-                {"set_historical_map_parameters", (PyCFunction) set_historical_map_parameters, METH_VARARGS,
+                {"set_historical_map_parameters", reinterpret_cast<PyCFunction>( set_historical_map_parameters), METH_VARARGS,
                                                               "Sets the historical map current_metacommunity_parameters."},
                 {nullptr,                         nullptr, 0, nullptr}
         };
