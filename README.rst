@@ -44,6 +44,9 @@ excellent performance, whilst the Python interface provides a simple solution fo
 
 For full documentation please see `here <https://pycoalescence.readthedocs.io/en/release/>`__.
 
+For R users, there is a sister package with (mostly) equivalent functionality, which can be found `here <https://github.com/thompsonsed/rcoalescence.git>`__.
+
+
 Installation
 ~~~~~~~~~~~~
 Usage of conda is recommended to aid handling installation of dependencies.
