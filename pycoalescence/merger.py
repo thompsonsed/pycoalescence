@@ -127,7 +127,7 @@ class Merger(CoalescenceTree):
             raise IOError("Cannot create a SIMULATION_PARAMETERS table as the database has not been created.")
         self.cursor = self.database.cursor()
         create_sql = (
-            "CREATE TABLE SIMULATION_PARAMETERS (seed INT not null, job_type INT NOT NULL, "
+            "CREATE TABLE SIMULATION_PARAMETERS (seed INT not null, task INT NOT NULL, "
             "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT "
             "NULL, deme INT NOT NULL, sample_size DOUBLE NOT NULL, max_time INT NOT NULL, "
             "dispersal_relative_cost DOUBLE NOT NULL, min_num_species INT NOT NULL, "

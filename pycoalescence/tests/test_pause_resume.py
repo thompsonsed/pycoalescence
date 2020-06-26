@@ -102,7 +102,7 @@ class TestSimulationPause(unittest.TestCase):
             tree2.set_database(self.coal)
         actual_sim_parameters = dict(
             seed=10,
-            job_type=6,
+            task=6,
             output_dir="output",
             speciation_rate=0.05,
             sigma=2.0,
@@ -157,7 +157,7 @@ class TestSimulationPause(unittest.TestCase):
         self.tree1.set_database(self.coal)
         actual_sim_parameters = dict(
             seed=10,
-            job_type=6,
+            task=6,
             output_dir="output",
             speciation_rate=0.05,
             sigma=2.0,
@@ -217,7 +217,7 @@ class TestSimulationPause(unittest.TestCase):
         dict1 = self.tree1.get_simulation_parameters()
         dict2 = self.tree2.get_simulation_parameters()
         for key in dict1.keys():
-            if key != "job_type" and key != "max_time":
+            if key != "task" and key != "max_time":
                 self.assertEqual(dict1[key], dict2[key], "{} not equal.".format(key))
         self.assertEqual(self.coal.get_species_richness(), self.coal2.get_species_richness())
         single_run_species_list = list(self.tree1.get_species_list())
@@ -332,7 +332,7 @@ class TestSimulationPause2(unittest.TestCase):
         self.tree1.set_database(self.coal3)
         actual_sim_parameters = dict(
             seed=10,
-            job_type=26,
+            task=26,
             output_dir="output",
             speciation_rate=0.5,
             sigma=2.0,
@@ -404,7 +404,7 @@ class TestSimulationPause2(unittest.TestCase):
         )
         with self.assertRaises(necsimError):
             coaltmp.resume_coalescence(
-                job_type=26, seed=10, pause_directory="output", max_time=10, out_directory="output"
+                task=26, seed=10, pause_directory="output", max_time=10, out_directory="output"
             )
 
     def testPauseSimMatchesSingleRunSim2(self):
@@ -423,7 +423,7 @@ class TestSimulationPause2(unittest.TestCase):
         dict1 = self.tree1.get_simulation_parameters()
         dict2 = self.tree2.get_simulation_parameters()
         for key in dict1.keys():
-            if key != "job_type":
+            if key != "task":
                 self.assertEqual(dict1[key], dict2[key], "{} not equal.".format(key))
         # print(pause_sim_species_list)
         # print(single_run_species_list)
@@ -511,7 +511,7 @@ class TestSimulationPause3(unittest.TestCase):
             tree2.set_database(self.coal)
         actual_sim_parameters = dict(
             seed=10,
-            job_type=16,
+            task=16,
             output_dir="output",
             speciation_rate=0.5,
             sigma=2.0,
@@ -576,7 +576,7 @@ class TestSimulationPause3(unittest.TestCase):
         self.tree1.set_database(self.coal)
         actual_sim_parameters = dict(
             seed=10,
-            job_type=16,
+            task=16,
             output_dir="output3",
             speciation_rate=0.5,
             sigma=2.0,
@@ -637,7 +637,7 @@ class TestSimulationPause3(unittest.TestCase):
         dict1 = self.tree1.get_simulation_parameters()
         dict2 = self.tree2.get_simulation_parameters()
         for key in dict1.keys():
-            if key != "job_type" and key != "max_time" and key != "output_dir":
+            if key != "task" and key != "max_time" and key != "output_dir":
                 self.assertEqual(dict1[key], dict2[key], "{} not equal.".format(key))
         single_run_species_list = list(self.tree1.get_species_list())
         pause_sim_species_list = list(self.tree2.get_species_list())
@@ -729,7 +729,7 @@ class TestSimulationPause4(unittest.TestCase):
             tree1.set_database(self.coal)
         actual_sim_parameters = dict(
             seed=11,
-            job_type=16,
+            task=16,
             output_dir="output spaced",
             speciation_rate=0.5,
             sigma=2.0,
@@ -783,12 +783,12 @@ class TestSimulationPause4(unittest.TestCase):
         if not os.path.exists("output2 spaced"):
             os.mkdir("output2 spaced")
         self.coal3.resume_coalescence(
-            pause_directory="output spaced", seed=11, job_type=16, max_time=10, out_directory="output2 spaced"
+            pause_directory="output spaced", seed=11, task=16, max_time=10, out_directory="output2 spaced"
         )
         self.tree3.set_database(self.coal3)
         actual_sim_parameters = dict(
             seed=11,
-            job_type=16,
+            task=16,
             output_dir="output2 spaced",
             speciation_rate=0.5,
             sigma=2.0,
@@ -849,7 +849,7 @@ class TestSimulationPause4(unittest.TestCase):
         dict1 = self.tree3.get_simulation_parameters()
         dict2 = self.tree2.get_simulation_parameters()
         for key in dict1.keys():
-            if key != "job_type" and key != "max_time" and key != "output_dir":
+            if key != "task" and key != "max_time" and key != "output_dir":
                 self.assertEqual(dict1[key], dict2[key], "{} not equal.".format(key))
         single_run_species_list = list(self.tree3.get_species_list())
         pause_sim_species_list = list(self.tree2.get_species_list())

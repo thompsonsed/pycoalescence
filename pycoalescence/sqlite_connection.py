@@ -77,8 +77,8 @@ def check_sql_table_exist(database, table_name):
     :return: true if the table exists
     :rtype: bool
     """
-    table_names = get_table_names(database)
-    return table_name in table_names
+    table_names = [x.lower() for x in get_table_names(database)]
+    return table_name.lower() in table_names
 
 
 def check_sql_column_exists(database, table_name, column_name):

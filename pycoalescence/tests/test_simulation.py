@@ -95,7 +95,7 @@ class TestFileCreation(unittest.TestCase):
             os.path.join(self.coal.output_database),
             os.path.join(
                 self.coal.output_directory,
-                "data_{}_{}.db".format(self.coal.job_type, self.coal.seed),
+                "data_{}_{}.db".format(self.coal.task, self.coal.seed),
             ),
         )
 
@@ -385,7 +385,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             lines = [x.strip() for x in lines]
             self.assertEqual(lines[0], "[main]")
             self.assertEqual(lines[1].replace(" ", ""), "seed=1")
-            self.assertEqual(lines[2].replace(" ", ""), "job_type=23")
+            self.assertEqual(lines[2].replace(" ", ""), "task=23")
 
     def testMapConfigWrite(self):
         """
@@ -491,7 +491,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             lines = [x.strip() for x in lines]
             self.assertEqual(lines[0], "[main]")
             self.assertEqual(lines[1].replace(" ", ""), "seed=1")
-            self.assertEqual(lines[2].replace(" ", ""), "job_type=23")
+            self.assertEqual(lines[2].replace(" ", ""), "task=23")
 
     def testTimeConfigWrite(self):
         """
@@ -597,7 +597,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         coal = Simulation(logging_level=logging.CRITICAL)
         coal.load_config(os.path.join("sample", "conf_example1.txt"))
         self.assertEqual(1, coal.seed)
-        self.assertEqual(23, coal.job_type)
+        self.assertEqual(23, coal.task)
         self.assertEqual("output", coal.output_directory)
         self.assertEqual(0.1, coal.min_speciation_rate)
         self.assertEqual(4, coal.sigma)

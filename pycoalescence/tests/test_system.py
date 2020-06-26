@@ -111,7 +111,7 @@ class TestSimulationNorm(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=2,
-            job_type=5,
+            task=5,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -222,7 +222,7 @@ class TestSimulationInfLand(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=2,
-            job_type=2,
+            task=2,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -319,7 +319,7 @@ class TestSimulationFatInf(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=1,
-            job_type=1,
+            task=1,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -418,7 +418,7 @@ class TestSimulationTif(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=3,
-            job_type=3,
+            task=3,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -530,7 +530,7 @@ class TestSimulationTiledInfinite(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=1,
-            job_type=29,
+            task=29,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -655,7 +655,7 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=1,
-            job_type=30,
+            task=30,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -895,7 +895,7 @@ class TestSimulationTifCoarse(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=4,
-            job_type=4,
+            task=4,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -998,7 +998,7 @@ class TestSimulationDemeProportions(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=5,
-            job_type=4,
+            task=4,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -1087,7 +1087,7 @@ class TestSimulationDemeOversampling(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=7,
-            job_type=4,
+            task=4,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -1601,7 +1601,7 @@ class TestSimulationComplexRun(unittest.TestCase):
         simulation_parameters = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=6,
-            job_type=6,
+            task=6,
             output_dir="output",
             speciation_rate=0.5,
             sigma=4.0,

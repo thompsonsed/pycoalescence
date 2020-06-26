@@ -134,7 +134,7 @@ class TestParameterDescriptions(unittest.TestCase):
             "fine_map_x_offset": "the number of cells the fine map is offset from the sample map in the x "
             "dimension, at the fine resolution",
             "speciation_rate": "the minimum speciation rate the simulation was run with",
-            "job_type": "the job reference number given to this simulation",
+            "task": "the job or task reference number given to this simulation",
             "coarse_map_x_offset": "the number of cells the coarse map is offset from the fine map in the x "
             "dimension, at the fine resolution",
             "landscape_type": "if false, landscapes have hard boundaries. Otherwise, can be infinite, "
@@ -1111,7 +1111,7 @@ class TestSimulationAnalysis(unittest.TestCase):
         sim_params = self.tree.get_simulation_parameters()
         expected_params = dict(
             seed=9,
-            job_type=1,
+            task=1,
             output_dir="output",
             speciation_rate=0.5,
             sigma=2.828427,
