@@ -321,7 +321,7 @@ A simple simulation
     # set logging level to "info" (from logging module)
     c = Simulation(logging_level=20)
     # set the main simulation parameters - use default values for other keyword arguments
-    c.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
+    c.set_simulation_parameters(seed=1, task=1, output_directory="output", min_speciation_rate=0.1,
                                 sigma=4, deme=10, sample_size=0.1, max_time=1)
     # optionally add a set of speciation rates to apply at the end of the simulation
     c.set_speciation_rates([0.1, 0.2, 0.3])
@@ -342,7 +342,7 @@ inputted map files.
     from pycoalescence import Simulation
     c = Simulation()
     # set the main simulation parameters
-    c.set_simulation_parameters(seed=1, job_type=1, output_directory="output", min_speciation_rate=0.1,
+    c.set_simulation_parameters(seed=1, task=1, output_directory="output", min_speciation_rate=0.1,
                                 sigma=4, tau=4, deme=1, sample_size=0.1
                                 max_time=100, dispersal_method="fat-tailed", m_prob=0.0, cutoff=0,
                                 dispersal_relative_cost=1, min_num_species=1, habitat_change_rate=0.2,
@@ -538,7 +538,7 @@ Example configuration file
 
     [main]
     seed = 1
-    job_type = 2
+    task = 2
     output_directory = output/
     min_spec_rate = 1e-05
     sigma = 0.5
