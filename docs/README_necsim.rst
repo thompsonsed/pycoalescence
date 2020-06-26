@@ -226,7 +226,7 @@ configuration is given below:
 
     [main]
     seed = 6
-    job_type = 6
+    task = 6
     output_directory = output
     min_spec_rate = 0.5
     sigma = 4
