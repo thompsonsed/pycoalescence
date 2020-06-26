@@ -2227,7 +2227,10 @@ class CoalescenceTree(object):
                     break
                 except (sqlite3.Error, sqlite3.OperationalError) as e:
                     first_error = e
-                    self.logger.warning("Could not fetch using 'task' variable, using deprecated 'job_type' instead.")
+                    self.logger.info(
+                        "Could not fetch simulation parameters using 'task' variable, "
+                        "using deprecated 'job_type' instead.\n"
+                    )
             if not found_data:
                 self.logger.error("Failure to get SIMULATION_PARAMETERS table from database. Check table exists.")
                 raise first_error
