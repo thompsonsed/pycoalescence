@@ -381,7 +381,8 @@ the required parameters for each dispersal method; any additional parameters pro
 - Fat-tailed distribution
     This requires both :math:`\sigma` and :math:`\tau`. Importantly, for our fat-tailed dispersal kernel, :math:`F(r)`,
     :math:`\lim{\tau \to \inf} = N(r)`. Within this dispersal kernel, there is an increased chance of long-distance
-    dispersal (but lower than the normal-uniform dispersal kernel).
+    dispersal (but lower than the normal-uniform dispersal kernel). The fat-tailed distribution, as a function of the 
+    radius of dispersal, is given as :math:`k_R(r) = \frac{r}{\sigma^2}(1+\frac{r^2}{\tau \sigma ^2})^{-\frac{\tau+2}{2}}`.
 
 - Normal-uniform distribution
     This requires :math:`\sigma`, :math:`m` and :math:`c` . Here, we pick with probability :math:`1-m` from a normal
