@@ -1614,8 +1614,93 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             gillespie_mean_values[i] = sum(vals) / len(vals)
         for i in baseline_mean_values.keys():
             self.assertAlmostEqual(
-                baseline_mean_values[i], gillespie_mean_values[i], delta=20
+                baseline_mean_values[i], gillespie_mean_values[i], delta=1
             )
+
+@skipLongTest
+class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.baseline_richness_values = []
+        speciation_rates = [0.001, 0.01, 0.1, 0.9]
+        for seed in range(40, 50):
+            baseline_simulation = Simulation(logging_level=50)
+            baseline_simulation.set_simulation_parameters(
+                seed=seed,
+                job_type=2,
+                output_directory="output",
+                min_speciation_rate=0.0001,
+                deme=1,
+                sample_size=0.1,
+            )
+            baseline_simulation.set_map_files(
+                sample_file="null",
+                fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                coarse_file="none",
+            )
+            baseline_simulation.add_dispersal_map(
+                dispersal_map="null"
+            )
+            # baseline_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
+            baseline_simulation.set_speciation_rates(speciation_rates=speciation_rates)
+            baseline_simulation.run()
+            for ref in range(1, len(speciation_rates) + 1):
+                cls.baseline_richness_values.append(
+                    (ref, baseline_simulation.get_species_richness(ref))
+                )
+        cls.gillespie_richness_values = []
+        for seed, gillespie_generation in zip(range(40, 50), range(10, 2020, 200)):
+            gillespie_simulation = Simulation(logging_level=50)
+            gillespie_simulation.set_simulation_parameters(
+                seed=seed,
+                job_type=3,
+                output_directory="output",
+                min_speciation_rate=0.0001,
+                deme=1,
+                sample_size=0.1,
+            )
+            gillespie_simulation.set_speciation_rates(speciation_rates=speciation_rates)
+            gillespie_simulation.set_map_files(
+                sample_file="null",
+                fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
+                coarse_file="none",
+            )
+            gillespie_simulation.add_dispersal_map(
+                dispersal_map="null"
+            )
+            # gillespie_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
+            gillespie_simulation.add_gillespie(gillespie_generation)
+            gillespie_simulation.run()
+            for ref in range(1, len(speciation_rates) + 1):
+                cls.gillespie_richness_values.append(
+                    (ref, gillespie_simulation.get_species_richness(ref))
+                )
+
+    def testSpeciesRichnessValuesSimilar(self):
+        """Checks that the species richness values are similar between implementations of Gillespie."""
+        baseline_mean_values = {}
+        baseline_all_values = {}
+        for i in set(x for x, _ in self.baseline_richness_values):
+            vals = [
+                richness for ref, richness in self.baseline_richness_values if ref == i
+            ]
+            baseline_all_values[i] = vals
+            baseline_mean_values[i] = sum(vals) / len(vals)
+
+        gillespie_mean_values = {}
+        gillespie_all_values = {}
+        for i in set(x for x, _ in self.gillespie_richness_values):
+            vals = [
+                richness for ref, richness in self.gillespie_richness_values if ref == i
+            ]
+            gillespie_all_values[i] = vals
+            gillespie_mean_values[i] = sum(vals) / len(vals)
+        for i in baseline_mean_values.keys():
+            self.assertAlmostEqual(
+                baseline_mean_values[i], gillespie_mean_values[i], delta=1
+            )
+
 
 
 @skipLongTest
