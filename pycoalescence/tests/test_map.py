@@ -66,13 +66,17 @@ class TestMapImports(unittest.TestCase):
 
     def testRaisesImportError(self):
         """Mocks a fake subprocess call to ``gdal-config --datadir`` and checks that the correct errors are raised"""
-        subprocess.check_output = create_autospec(subprocess.check_output, return_value=b"/not/a/gdal/dir\n")
+        subprocess.check_output = create_autospec(
+            subprocess.check_output, return_value=b"/not/a/gdal/dir\n"
+        )
         import pycoalescence.map
 
         with self.assertRaises(ImportError):
             reload(pycoalescence.map)
         subprocess.check_output = self.orig_call
-        subprocess.check_output = create_autospec(subprocess.check_output, return_value=None)
+        subprocess.check_output = create_autospec(
+            subprocess.check_output, return_value=None
+        )
         with self.assertRaises(ImportError):
             reload(pycoalescence.map)
 
@@ -95,6 +99,7 @@ class TestMap(unittest.TestCase):
         cls.expected_WGS_84 = [
             'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
             'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]',
+            'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
         ]
 
     def testDetectGeoTransform(self):
@@ -119,7 +124,9 @@ class TestMap(unittest.TestCase):
         self.assertEqual(0, x_offset)
         self.assertEqual(0, y_offset)
         # Now test the coarse map
-        x, y, x_offset, y_offset, xres, yres, ulx, uly = self.coarse_map.get_dimensions()
+        x, y, x_offset, y_offset, xres, yres, ulx, uly = (
+            self.coarse_map.get_dimensions()
+        )
         self.assertEqual(x, 35)
         self.assertEqual(y, 41)
         self.assertAlmostEqual(ulx, -78.466666666, 8)
@@ -150,7 +157,14 @@ class TestMap(unittest.TestCase):
         """
         tmp = Map()
         tmp.set_dimensions("sample/SA_sample_fine.tif")
-        x, y, ulx, uly, xres, yres = [tmp.x_size, tmp.y_size, tmp.x_ul, tmp.y_ul, tmp.x_res, tmp.y_res]
+        x, y, ulx, uly, xres, yres = [
+            tmp.x_size,
+            tmp.y_size,
+            tmp.x_ul,
+            tmp.y_ul,
+            tmp.x_res,
+            tmp.y_res,
+        ]
         self.assertEqual(x, 13)
         self.assertEqual(y, 13)
         self.assertAlmostEqual(ulx, -78.375, 8)
@@ -193,8 +207,12 @@ class TestMap(unittest.TestCase):
 
     def testOffset(self):
         """Tests that the offsets are correctly calculated between the fine and coarse maps."""
-        self.assertListEqual(self.coarse_map.calculate_offset(self.fine_map), [-11, -14])
-        self.assertListEqual(self.coarse_map.calculate_offset(self.fine_map.file_name), [-11, -14])
+        self.assertListEqual(
+            self.coarse_map.calculate_offset(self.fine_map), [-11, -14]
+        )
+        self.assertListEqual(
+            self.coarse_map.calculate_offset(self.fine_map.file_name), [-11, -14]
+        )
         self.assertListEqual(self.coarse_map.calculate_offset(self.coarse_map), [0, 0])
         self.assertListEqual(self.fine_map.calculate_offset(self.coarse_map), [11, 14])
 
@@ -202,7 +220,10 @@ class TestMap(unittest.TestCase):
         """Tests that the scale is correctly calculated."""
         self.assertEqual(1, self.fine_map.calculate_scale(self.fine_map))
         self.assertEqual(1, self.fine_map.calculate_scale(self.fine_map.file_name))
-        self.assertEqual(12.99959999999942, self.coarse_map.calculate_scale(os.path.join("sample", "null_coarse.tif")))
+        self.assertEqual(
+            12.99959999999942,
+            self.coarse_map.calculate_scale(os.path.join("sample", "null_coarse.tif")),
+        )
         with self.assertRaises(ValueError):
             _ = self.coarse_map.calculate_scale(10)
 
@@ -216,7 +237,12 @@ class TestMap(unittest.TestCase):
     def testExtents(self):
         """Tests that the extents are correctly calculated for the Map files."""
         self.assertListEqual(
-            [-78.3750000000000000, -78.2666666666666657, 0.7500000000000009, 0.8583333333333343],
+            [
+                -78.3750000000000000,
+                -78.2666666666666657,
+                0.7500000000000009,
+                0.8583333333333343,
+            ],
             self.fine_map.get_extent(),
         )
 
@@ -257,7 +283,12 @@ class TestMap(unittest.TestCase):
         """
         m = Map()
         output_raster = "output/raster_out1.tif"
-        m.rasterise(shape_file="sample/shape_sample.shp", raster_file=output_raster, x_res=0.00833333, y_res=0.001)
+        m.rasterise(
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([13, 71, 0, 0, 0.00833333, -0.001]):
@@ -285,7 +316,9 @@ class TestMap(unittest.TestCase):
         )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
-        for i, each in enumerate([4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]):
+        for i, each in enumerate(
+            [4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]
+        ):
             self.assertAlmostEqual(each, dims[i], places=5)
         self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
@@ -350,7 +383,11 @@ class TestMap(unittest.TestCase):
         m = Map()
         output_raster = "output/raster_out4.tif"
         m.rasterise(
-            shape_file="sample/shape_sample.shp", raster_file=output_raster, x_res=0.00833333, y_res=0.001, burn_val=100
+            shape_file="sample/shape_sample.shp",
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            burn_val=100,
         )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
@@ -417,7 +454,12 @@ class TestMap(unittest.TestCase):
         output_raster = "output/raster_out7.tif"
         output_ds = ogr.Open("sample/shape_sample.shp")
         m.rasterise(
-            shape_file=output_ds, raster_file=output_raster, x_res=0.00833333, y_res=0.001, x_buffer=2.0, y_buffer=3.0
+            shape_file=output_ds,
+            raster_file=output_raster,
+            x_res=0.00833333,
+            y_res=0.001,
+            x_buffer=2.0,
+            y_buffer=3.0,
         )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
@@ -438,7 +480,9 @@ class TestMap(unittest.TestCase):
         output_raster = "output/raster_out8.tif"
         geo_transform = (-78.375, 0.00833333, 0, 0.858333, 0, -0.00833333)
         output_ds = ogr.Open("sample/shape_sample.shp")
-        m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform)
+        m.rasterise(
+            shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([12, 10, 0, 0, 0.00833333, -0.00833333]):
@@ -458,7 +502,13 @@ class TestMap(unittest.TestCase):
         output_raster = "output/raster_out9.tif"
         geo_transform = (-78.375, 0.00833333, 0, 0.858333, 0, -0.00833333)
         output_ds = ogr.Open("sample/shape_sample.shp")
-        m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform, width=13, height=13)
+        m.rasterise(
+            shape_file=output_ds,
+            raster_file=output_raster,
+            geo_transform=geo_transform,
+            width=13,
+            height=13,
+        )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([13, 13, 0, 0, 0.00833333, -0.00833333]):
@@ -505,7 +555,9 @@ class TestMap(unittest.TestCase):
             )
         m = Map()
         with self.assertRaises(ValueError):
-            m.rasterise(shape_file="sample/shape_sample.shp", raster_file="no_exist.tif")
+            m.rasterise(
+                shape_file="sample/shape_sample.shp", raster_file="no_exist.tif"
+            )
         m = Map()
         with self.assertRaises(ValueError):
             m.rasterise(
@@ -559,13 +611,26 @@ class TestMap(unittest.TestCase):
         np.random.seed(1)
         m.data = np.random.rand(10, 10)
         output_file = "output/test_create2.tif"
-        gt = (-76.54166666666666, 0.008333333333333333, 0.0, 5.024999999999999, 0.0, -0.008333333333333333)
+        gt = (
+            -76.54166666666666,
+            0.008333333333333333,
+            0.0,
+            5.024999999999999,
+            0.0,
+            -0.008333333333333333,
+        )
         proj = (
             'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],'
             'AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG",'
             '"4326"]]'
         )
-        m.create(output_file, bands=1, datatype=gdal.GDT_Float32, geotransform=gt, projection=proj)
+        m.create(
+            output_file,
+            bands=1,
+            datatype=gdal.GDT_Float32,
+            geotransform=gt,
+            projection=proj,
+        )
         m2 = Map(output_file)
         m2.open()
         self.assertEqual((10, 10), m2.data.shape)
@@ -623,7 +688,9 @@ class TestMap(unittest.TestCase):
         with self.assertRaises(IOError):
             m.translate(dest_file=dest_file1, projWin=new_proj_win)
         m = Map()
-        m.translate(source_file=source_file, dest_file=dest_file2, width=new_x, height=new_y)
+        m.translate(
+            source_file=source_file, dest_file=dest_file2, width=new_x, height=new_y
+        )
         self.assertTrue(os.path.exists(dest_file1))
         m1 = Map(dest_file1)
         actual_extent = m1.get_extent()
@@ -634,7 +701,9 @@ class TestMap(unittest.TestCase):
         self.assertEqual([new_x, new_y], m2.get_x_y())
 
 
-@unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
+@unittest.skipUnless(
+    hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found."
+)
 @skipGdalWarp
 class TestMapReprojection(unittest.TestCase):
     """
@@ -657,10 +726,19 @@ class TestMapReprojection(unittest.TestCase):
         cls.destination_projection = osr.SpatialReference()
         res = cls.destination_projection.ImportFromEPSG(3857)
         if res != 0:
-            raise RuntimeError("Could not import from EPSG in osr.SpatialReference: {}.".format(res))
+            raise RuntimeError(
+                "Could not import from EPSG in osr.SpatialReference: {}.".format(res)
+            )
         cls.proj_wkt = cls.destination_projection.ExportToWkt()
-        cls.m.reproject_raster(dest_file=cls.map_2, dest_projection=cls.destination_projection)
-        cls.m.reproject_raster(dest_file=cls.map_3, dest_projection=cls.destination_projection, x_scalar=2, y_scalar=10)
+        cls.m.reproject_raster(
+            dest_file=cls.map_2, dest_projection=cls.destination_projection
+        )
+        cls.m.reproject_raster(
+            dest_file=cls.map_3,
+            dest_projection=cls.destination_projection,
+            x_scalar=2,
+            y_scalar=10,
+        )
         cls.m0.reproject_raster(dest_file=cls.map_5, x_scalar=0.1, y_scalar=0.1)
         cls.m_2 = Map(cls.map_2)
         cls.m_3 = Map(cls.map_3)
@@ -769,7 +847,9 @@ class TestMapReprojection(unittest.TestCase):
             self.m_5.open(band_no=i)
             self.assertGreater(np.sum(self.m_5.data), 0)
             self.m0.open(band_no=i)
-            self.assertAlmostEqual(np.sum(self.m0.data) * 100, np.sum(self.m_5.data), places=5)
+            self.assertAlmostEqual(
+                np.sum(self.m0.data) * 100, np.sum(self.m_5.data), places=5
+            )
 
 
 class MapAssignment(unittest.TestCase):
@@ -814,7 +894,8 @@ class MapAssignment(unittest.TestCase):
 
 
 @unittest.skipUnless(
-    hasattr(scipy.spatial, "Voronoi"), "Skipping reprojection test as scipy.spatial.Voronoi not found."
+    hasattr(scipy.spatial, "Voronoi"),
+    "Skipping reprojection test as scipy.spatial.Voronoi not found.",
 )
 class TestFragmentedLandscape(unittest.TestCase):
     """
@@ -830,23 +911,38 @@ class TestFragmentedLandscape(unittest.TestCase):
         if os.path.exists("landscapes"):
             shutil.rmtree("landscapes")
         cls.l1 = FragmentedLandscape(
-            size=10, number_fragments=2, total=4, output_file=os.path.join("landscapes", "l1.tif")
+            size=10,
+            number_fragments=2,
+            total=4,
+            output_file=os.path.join("landscapes", "l1.tif"),
         )
         cls.l2 = FragmentedLandscape(
-            size=100, number_fragments=57, total=150, output_file=os.path.join("landscapes", "l2.tif")
+            size=100,
+            number_fragments=57,
+            total=150,
+            output_file=os.path.join("landscapes", "l2.tif"),
         )
         cls.l3 = FragmentedLandscape(
-            size=24, number_fragments=5, total=5, output_file=os.path.join("landscapes", "l3.tif")
+            size=24,
+            number_fragments=5,
+            total=5,
+            output_file=os.path.join("landscapes", "l3.tif"),
         )
         cls.l1.generate()
         cls.l2.generate()
         cls.l3.generate()
         cls.l4 = FragmentedLandscape(
-            size=10, number_fragments=1, total=2, output_file=os.path.join("landscapes", "l4.tif")
+            size=10,
+            number_fragments=1,
+            total=2,
+            output_file=os.path.join("landscapes", "l4.tif"),
         )
         cls.l4.generate()
         cls.l5 = FragmentedLandscape(
-            size=100, number_fragments=100, total=2000, output_file=os.path.join("landscapes", "l5.tif")
+            size=100,
+            number_fragments=100,
+            total=2000,
+            output_file=os.path.join("landscapes", "l5.tif"),
         )
         cls.l5.generate()
 

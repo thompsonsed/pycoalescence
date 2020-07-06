@@ -32,10 +32,9 @@ using namespace necsim;
  * @param self the Python self object
  * @param args arguments to parse
  */
-template<class T>
-static PyObject *importConfig(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* importConfig(PyTemplate<T>* self, PyObject* args)
 {
-    char *input;
+    char* input;
     // parse arguments
     if(!PyArg_ParseTuple(args, "s", &input))
     {
@@ -64,10 +63,9 @@ static PyObject *importConfig(PyTemplate<T> *self, PyObject *args)
  * @param self the Python self object
  * @param args arguments to parse
  */
-template<class T>
-static PyObject *importConfigFromString(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* importConfigFromString(PyTemplate<T>* self, PyObject* args)
 {
-    char *input;
+    char* input;
     // parse arguments
     if(!PyArg_ParseTuple(args, "s", &input))
     {
@@ -99,8 +97,7 @@ static PyObject *importConfigFromString(PyTemplate<T> *self, PyObject *args)
  * @param self the Python self object
  * @param args arguments to parse
  */
-template<class T>
-static PyObject *setup(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* setup(PyTemplate<T>* self, PyObject* args)
 {
     // Set up the simulation, catch and return any errors.
     try
@@ -117,8 +114,7 @@ static PyObject *setup(PyTemplate<T> *self, PyObject *args)
     Py_RETURN_NONE;
 }
 
-template<class T>
-static PyObject *addGillespie(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* addGillespie(PyTemplate<T>* self, PyObject* args)
 {
     // Set up the simulation, catch and return any errors.
     double generation_threshold;
@@ -147,8 +143,7 @@ static PyObject *addGillespie(PyTemplate<T> *self, PyObject *args)
  * @param args arguments to parse
  * @return Py_RETURN_TRUE if the simulation completes, Py_RETURN_FALSE otherwise.
  */
-template<class T>
-static PyObject *run(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* run(PyTemplate<T>* self, PyObject* args)
 {
     // Run the program, catch and return any errors.
     try
@@ -174,15 +169,14 @@ static PyObject *run(PyTemplate<T> *self, PyObject *args)
  * @param self the Python self object
  * @param args arguments to parse
  */
-template<class T>
-static PyObject *applySpeciationRates(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* applySpeciationRates(PyTemplate<T>* self, PyObject* args)
 {
     // parse arguments
     // Mimic a command-line simulation call
     // Run the program, catch and return any errors.
     try
     {
-        PyObject * list_speciation_rates;
+        PyObject* list_speciation_rates;
         vector<double> spec_rates;
         if(!PyArg_ParseTuple(args, "|O!", &PyList_Type, &list_speciation_rates))
         {
@@ -215,11 +209,10 @@ static PyObject *applySpeciationRates(PyTemplate<T> *self, PyObject *args)
  * @param self the Python self object
  * @param args arguments to parse
  */
-template<class T>
-static PyObject *setupResume(PyTemplate<T> *self, PyObject *args)
+template<class T> static PyObject* setupResume(PyTemplate<T>* self, PyObject* args)
 {
-    char *pause_directory;
-    char *out_directory;
+    char* pause_directory;
+    char* out_directory;
     int seed, task, max_time;
     // parse arguments
     if(!PyArg_ParseTuple(args, "ssiii", &pause_directory, &out_directory, &seed, &task, &max_time))
@@ -254,23 +247,21 @@ static PyObject *setupResume(PyTemplate<T> *self, PyObject *args)
     Py_RETURN_NONE;
 }
 
-template<class T>
-static PyMethodDef *genPySimulationMethods()
+template<class T> static PyMethodDef* genPySimulationMethods()
 {
-    static PyMethodDef PySimulationMethods[] = {{"import_from_config",        (PyCFunction) importConfig<T>,           METH_VARARGS, "Import the simulation variables from a config file"},
-                                                {"import_from_config_string", (PyCFunction) importConfigFromString<T>, METH_VARARGS, "Import the simulation variables from a config file"},
-                                                {"add_gillespie",             (PyCFunction) addGillespie<T>,           METH_VARARGS, "Use the Gillespie algorithm in the simulation at the specified time"},
-                                                {"run",                       (PyCFunction) run<T>,                    METH_VARARGS, "Run the simulation"},
-                                                {"setup",                     (PyCFunction) setup<T>,                  METH_VARARGS, "Set up the simulation, importing the maps and assigning the variables"},
-                                                {"apply_speciation_rates",    (PyCFunction) applySpeciationRates<T>,   METH_VARARGS, "Applies the speciation rates to the completed simulation. Can optionally provide a list of additional speciation rates to apply"},
-                                                {"setup_resume",              (PyCFunction) setupResume<T>,            METH_VARARGS, "Sets up for resuming from a paused simulation"},
+    static PyMethodDef PySimulationMethods[] = {{"import_from_config",        reinterpret_cast<PyCFunction>( importConfig<T>),           METH_VARARGS, "Import the simulation variables from a config file"},
+                                                {"import_from_config_string", reinterpret_cast<PyCFunction>( importConfigFromString<T>), METH_VARARGS, "Import the simulation variables from a config file"},
+                                                {"add_gillespie",             reinterpret_cast<PyCFunction>( addGillespie<T>),           METH_VARARGS, "Use the Gillespie algorithm in the simulation at the specified time"},
+                                                {"run",                       reinterpret_cast<PyCFunction>( run<T>),                    METH_VARARGS, "Run the simulation"},
+                                                {"setup",                     reinterpret_cast<PyCFunction>( setup<T>),                  METH_VARARGS, "Set up the simulation, importing the maps and assigning the variables"},
+                                                {"apply_speciation_rates",    reinterpret_cast<PyCFunction>( applySpeciationRates<T>),   METH_VARARGS, "Applies the speciation rates to the completed simulation. Can optionally provide a list of additional speciation rates to apply"},
+                                                {"setup_resume",              reinterpret_cast<PyCFunction>( setupResume<T>),            METH_VARARGS, "Sets up for resuming from a paused simulation"},
                                                 {nullptr}  /* Sentinel */
     };
     return PySimulationMethods;
 }
 
-template<class T>
-PyTypeObject genSimulationType(char *tp_name, char *tp_doc)
+template<class T> PyTypeObject genSimulationType(char* tp_name, char* tp_doc)
 {
     auto genPyTemplateGetSetters = PyTemplate_gen_getsetters<T>();
     auto genPyTemplateNew = PyTemplate_new<T>;
@@ -295,13 +286,13 @@ PyTypeObject genSimulationType(char *tp_name, char *tp_doc)
     return ret_Simulation_Type;
 }
 
-static PyTypeObject C_SpatialSimulationType = genSimulationType<SpatialTree>((char *) "libnecsim.CSpatialSimulation",
-                                                                             (char *) "C class for spatial simulations.");
-static PyTypeObject C_NSESimulationType = genSimulationType<Tree>((char *) "libnecsim.CNSESimulation",
-                                                                  (char *) "C class for non-spatial simulations.");
-static PyTypeObject C_ProtractedSpatialSimulationType = genSimulationType<ProtractedSpatialTree>(
-        (char *) "libnecsim.CPSpatialSimulation", (char *) "C class for protracted spatial simulations.");
-static PyTypeObject C_ProtractedNSESimulationType = genSimulationType<ProtractedTree>(
-        (char *) "libnecsim.CPNSESimulation", (char *) "C class for protracted non-spatial simulations.");
+static PyTypeObject C_SpatialSimulationType = genSimulationType<SpatialTree>((char*) "libnecsim.CSpatialSimulation",
+                                                                             (char*) "C class for spatial simulations.");
+static PyTypeObject C_NSESimulationType = genSimulationType<Tree>((char*) "libnecsim.CNSESimulation",
+                                                                  (char*) "C class for non-spatial simulations.");
+static PyTypeObject C_ProtractedSpatialSimulationType = genSimulationType<ProtractedSpatialTree>((char*) "libnecsim.CPSpatialSimulation",
+                                                                                                 (char*) "C class for protracted spatial simulations.");
+static PyTypeObject C_ProtractedNSESimulationType = genSimulationType<ProtractedTree>((char*) "libnecsim.CPNSESimulation",
+                                                                                      (char*) "C class for protracted non-spatial simulations.");
 
 #endif // PY_TREE_NECSIM

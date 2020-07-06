@@ -95,7 +95,7 @@ class TestFileCreation(unittest.TestCase):
             os.path.join(self.coal.output_database),
             os.path.join(
                 self.coal.output_directory,
-                "data_{}_{}.db".format(self.coal.job_type, self.coal.seed),
+                "data_{}_{}.db".format(self.coal.task, self.coal.seed),
             ),
         )
 
@@ -140,7 +140,7 @@ class TestSetSeed(unittest.TestCase):
         with self.assertRaises(ValueError):
             s.set_simulation_parameters(
                 seed=2147483647,
-                job_type=1,
+                task=1,
                 output_directory="output",
                 min_speciation_rate=0.1,
             )
@@ -153,7 +153,7 @@ class TestSetSeed(unittest.TestCase):
         s = Simulation()
         s.set_simulation_parameters(
             seed=1,
-            job_type=1,
+            task=1,
             output_directory="output",
             min_speciation_rate=0.1,
             spatial=False,
@@ -168,7 +168,7 @@ class TestSetSeed(unittest.TestCase):
         s = Simulation(logging_level=60)
         s.set_simulation_parameters(
             seed=0,
-            job_type=1,
+            task=1,
             output_directory="output",
             min_speciation_rate=0.1,
             spatial=False,
@@ -199,7 +199,7 @@ class TestOffsetMismatch(unittest.TestCase):
         cls.coal1 = Simulation(logging_level=logging.CRITICAL)
         cls.coal1.set_simulation_parameters(
             seed=1,
-            job_type=38,
+            task=38,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -211,7 +211,7 @@ class TestOffsetMismatch(unittest.TestCase):
         cls.coal2 = Simulation()
         cls.coal2.set_simulation_parameters(
             seed=1,
-            job_type=38,
+            task=38,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -249,7 +249,7 @@ class TestOffsetMismatch(unittest.TestCase):
         sim = Simulation()
         sim.set_simulation_parameters(
             seed=1,
-            job_type=1,
+            task=1,
             output_directory="output",
             min_speciation_rate=0.001,
             sigma=2,
@@ -385,7 +385,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             lines = [x.strip() for x in lines]
             self.assertEqual(lines[0], "[main]")
             self.assertEqual(lines[1].replace(" ", ""), "seed=1")
-            self.assertEqual(lines[2].replace(" ", ""), "job_type=23")
+            self.assertEqual(lines[2].replace(" ", ""), "task=23")
 
     def testMapConfigWrite(self):
         """
@@ -491,7 +491,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             lines = [x.strip() for x in lines]
             self.assertEqual(lines[0], "[main]")
             self.assertEqual(lines[1].replace(" ", ""), "seed=1")
-            self.assertEqual(lines[2].replace(" ", ""), "job_type=23")
+            self.assertEqual(lines[2].replace(" ", ""), "task=23")
 
     def testTimeConfigWrite(self):
         """
@@ -521,7 +521,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         coal = Simulation(logging_level=logging.CRITICAL)
         coal.set_simulation_parameters(
             seed=1,
-            job_type=23,
+            task=23,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -557,7 +557,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
             coal.create_config()
         coal.set_simulation_parameters(
             seed=1,
-            job_type=23,
+            task=23,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -597,7 +597,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         coal = Simulation(logging_level=logging.CRITICAL)
         coal.load_config(os.path.join("sample", "conf_example1.txt"))
         self.assertEqual(1, coal.seed)
-        self.assertEqual(23, coal.job_type)
+        self.assertEqual(23, coal.task)
         self.assertEqual("output", coal.output_directory)
         self.assertEqual(0.1, coal.min_speciation_rate)
         self.assertEqual(4, coal.sigma)
@@ -650,7 +650,7 @@ class TestSimulationSetMaps(unittest.TestCase):
         cls.c.set_map("null", 10, 10)
         cls.c.set_simulation_parameters(
             seed=1,
-            job_type=12,
+            task=12,
             output_directory="output",
             min_speciation_rate=0.01,
             sigma=2,
@@ -715,7 +715,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
             expected_log[0] = expected_log[0].format(pycoalescence_version)
         s = Simulation(logging_level=logging.INFO, stream=log_stream)
         s.set_simulation_parameters(
-            seed=2, job_type=12, output_directory="output", min_speciation_rate=0.1
+            seed=2, task=12, output_directory="output", min_speciation_rate=0.1
         )
         s.set_map("null", 10, 10)
         s.run()
@@ -729,7 +729,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         log_stream = StringIO()
         s = Simulation(logging_level=logging.WARNING, stream=log_stream)
         s.set_simulation_parameters(
-            seed=3, job_type=12, output_directory="output", min_speciation_rate=0.1
+            seed=3, task=12, output_directory="output", min_speciation_rate=0.1
         )
         s.set_map("null", 10, 10)
         s.finalise_setup()
@@ -743,7 +743,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         log_stream = StringIO()
         s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
         s.set_simulation_parameters(
-            seed=4, job_type=12, output_directory="output", min_speciation_rate=0.1
+            seed=4, task=12, output_directory="output", min_speciation_rate=0.1
         )
         s.set_map("null", 10, 10)
         s.finalise_setup()
@@ -764,7 +764,7 @@ class TestInitialCountSuccess(unittest.TestCase):
         log_stream = StringIO()
         s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
         s.set_simulation_parameters(
-            seed=5, job_type=12, output_directory="output", min_speciation_rate=0.1
+            seed=5, task=12, output_directory="output", min_speciation_rate=0.1
         )
         s.set_map_files(sample_file="null", fine_file="sample/large_fine.tif")
         s.sample_map.x_size = 10
@@ -860,7 +860,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=1,
-            job_type=17,
+            task=17,
             output_directory="output",
             min_speciation_rate=0.0,
             sigma=2.0,
@@ -882,7 +882,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=1,
-            job_type=18,
+            task=18,
             output_directory="output",
             min_speciation_rate=1.0,
             sigma=2.0,
@@ -904,7 +904,7 @@ class TestSimulationExtremeSpeciation(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=2,
-            job_type=18,
+            task=18,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2.0,
@@ -939,7 +939,7 @@ class TestSimulationMapDensityReading(unittest.TestCase):
         cls.c = Simulation()
         cls.c.set_simulation_parameters(
             seed=1,
-            job_type=36,
+            task=36,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -989,7 +989,7 @@ class TestSimulationMapDensityReading(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=1,
-            job_type=36,
+            task=36,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -1043,7 +1043,7 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
         cls.hist_sim = Simulation()
         cls.base_sim.set_simulation_parameters(
             seed=4,
-            job_type=17,
+            task=17,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -1053,7 +1053,7 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
         cls.base_sim.run()
         cls.hist_sim.set_simulation_parameters(
             seed=4,
-            job_type=18,
+            task=18,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -1070,7 +1070,7 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
         cls.hist_sim2 = Simulation()
         cls.hist_sim2.set_simulation_parameters(
             seed=4,
-            job_type=19,
+            task=19,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -1113,7 +1113,7 @@ class TestExpansionOverTime(unittest.TestCase):
         cls.sim = Simulation(logging_level=50)
         cls.sim.set_simulation_parameters(
             seed=5,
-            job_type=17,
+            task=17,
             output_directory="output",
             min_speciation_rate=0.0001,
             sigma=1,
@@ -1146,7 +1146,7 @@ class TestSimulationParameters(unittest.TestCase):
         sim = Simulation()
         sim.set_simulation_parameters(
             seed=10000,
-            job_type=1000000,
+            task=1000000,
             output_directory="output",
             min_speciation_rate=0.1,
             times=0.1,
@@ -1155,7 +1155,7 @@ class TestSimulationParameters(unittest.TestCase):
         sim = Simulation()
         sim.set_simulation_parameters(
             seed=10000,
-            job_type=1000000,
+            task=1000000,
             output_directory="output",
             min_speciation_rate=0.1,
             times=[10, 100],
@@ -1164,7 +1164,7 @@ class TestSimulationParameters(unittest.TestCase):
         sim = Simulation()
         sim.set_simulation_parameters(
             seed=10000,
-            job_type=1000000,
+            task=1000000,
             output_directory="output",
             min_speciation_rate=0.1,
             times=[100.0],
@@ -1259,7 +1259,7 @@ class TestSimulationParameters(unittest.TestCase):
         with self.assertRaises(ValueError):
             sim.set_simulation_parameters(
                 seed=10000,
-                job_type=1000000,
+                task=1000000,
                 output_directory="output",
                 min_speciation_rate=0.1,
                 spatial=False,
@@ -1269,7 +1269,7 @@ class TestSimulationParameters(unittest.TestCase):
         with self.assertRaises(ValueError):
             sim.set_simulation_parameters(
                 seed=10000,
-                job_type=1000000,
+                task=1000000,
                 output_directory="output",
                 min_speciation_rate=0.1,
                 landscape_type="bleh",
@@ -1277,13 +1277,13 @@ class TestSimulationParameters(unittest.TestCase):
         sim = Simulation(logging_level=40)
         sim.set_simulation_parameters(
             seed=10000,
-            job_type=1000000,
+            task=1000000,
             output_directory="output",
             min_speciation_rate=0.1,
         )
         sim.set_simulation_parameters(
             seed=10000,
-            job_type=1000000,
+            task=1000000,
             output_directory="output",
             min_speciation_rate=0.1,
         )
@@ -1393,7 +1393,7 @@ class TestRamOptimistation(unittest.TestCase):
         """Test that a basic optimisation process works."""
         sim = Simulation()
         sim.set_simulation_parameters(
-            seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1
+            seed=1, task=2, output_directory="output", min_speciation_rate=0.1
         )
         sim.set_map_files(
             "null",
@@ -1424,7 +1424,7 @@ class TestRamOptimistation(unittest.TestCase):
         """Tests that errors are raised correctly."""
         sim = Simulation()
         sim.set_simulation_parameters(
-            seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1
+            seed=1, task=2, output_directory="output", min_speciation_rate=0.1
         )
         sim.set_map_files(
             "null",
@@ -1441,7 +1441,7 @@ class TestRamOptimistation(unittest.TestCase):
             sim.optimise_ram(0.0000001)
         sim = Simulation()
         sim.set_simulation_parameters(
-            seed=1, job_type=2, output_directory="output", min_speciation_rate=0.1
+            seed=1, task=2, output_directory="output", min_speciation_rate=0.1
         )
         sim.set_map_files(
             "null",
@@ -1463,7 +1463,7 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             baseline_simulation = Simulation(logging_level=50)
             baseline_simulation.set_simulation_parameters(
                 seed=seed,
-                job_type=2,
+                task=2,
                 output_directory="output",
                 min_speciation_rate=0.001,
                 deme=1,
@@ -1488,7 +1488,7 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             gillespie_simulation = Simulation(logging_level=50)
             gillespie_simulation.set_simulation_parameters(
                 seed=seed,
-                job_type=3,
+                task=3,
                 output_directory="output",
                 min_speciation_rate=0.001,
                 deme=1,
@@ -1516,7 +1516,7 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
         s = Simulation()
         s.set_simulation_parameters(
             seed=12,
-            job_type=3,
+            task=3,
             output_directory="output",
             min_speciation_rate=0.001,
             deme=1,
@@ -1561,7 +1561,7 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
         s = Simulation()
         s.set_simulation_parameters(
             seed=10,
-            job_type=3,
+            task=3,
             output_directory="output",
             min_speciation_rate=0.000001,
             deme=1000,
@@ -1572,7 +1572,7 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
         s = Simulation()
         s.set_simulation_parameters(
             seed=10,
-            job_type=3,
+            task=3,
             output_directory="output",
             min_speciation_rate=0.000001,
             deme=1000,
@@ -1712,7 +1712,7 @@ class TestSimulationUsingGillespieLarge(unittest.TestCase):
         cls.gillespie_simulation = Simulation(logging_level=50)
         cls.gillespie_simulation.set_simulation_parameters(
             seed=21,
-            job_type=3,
+            task=3,
             output_directory="output",
             min_speciation_rate=0.000001,
             deme=100,
@@ -1731,7 +1731,7 @@ class TestSimulationUsingGillespieLarge(unittest.TestCase):
         cls.gillespie_simulation2 = Simulation()
         cls.gillespie_simulation2.set_simulation_parameters(
             seed=21,
-            job_type=4,
+            task=4,
             output_directory="output",
             min_speciation_rate=0.000001,
             deme=100,

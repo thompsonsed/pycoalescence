@@ -194,7 +194,7 @@ class CoalescenceTree(object):
                 record_fragments = "null"
             else:
                 record_fragments = "F"
-        if record_fragments is "T":
+        if record_fragments == "T":
             record_fragments = "null"
         if record_fragments not in ["F", "null"]:
             if not os.path.exists(record_fragments):
@@ -211,9 +211,9 @@ class CoalescenceTree(object):
 
         :rtype: None
         """
-        if record_spatial is "T":
+        if record_spatial == "T":
             record_spatial = True
-        elif record_spatial is "F":
+        elif record_spatial == "F":
             record_spatial = False
         elif not isinstance(record_spatial, bool):
             raise TypeError("record_spatial must be a boolean.")
@@ -588,7 +588,7 @@ class CoalescenceTree(object):
         self._check_database()
         try:
             self.cursor.execute(
-                "SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
+                "SELECT seed, task, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
                 "max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, "
                 "gen_since_historical, "
                 "time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
@@ -612,7 +612,7 @@ class CoalescenceTree(object):
             raise ValueError("No simulation parameters exist for guild {}".format(guild))
         column_names = [member[0] for member in self.cursor.description]
         values = [x for x in out]
-        if sys.version_info[0] is not 3:  # pragma: no cover
+        if sys.version_info[0] != 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
                     values[i] = each.encode("ascii")
@@ -1090,7 +1090,6 @@ class CoalescenceTree(object):
         """
         self._check_database()
         return self.cursor.execute("SELECT SUM(tip) FROM SPECIES_LIST").fetchone()[0]
-
 
     def check_biodiversity_table_exists(self):
         """
@@ -1629,7 +1628,7 @@ class CoalescenceTree(object):
         if reference is None:
             if fragment is not None:
                 raise SyntaxError("Must supply a reference when supplying a fragment.")
-            if len(self.fragments) is 0:
+            if len(self.fragments) == 0:
                 self.calculate_fragment_richness()
             return self.fragments
         elif fragment is None:
@@ -2079,7 +2078,7 @@ class CoalescenceTree(object):
             "community_reference == ?",
             (reference,),
         ).fetchall()
-        if len(ret) is 0:  # pragma: no cover
+        if len(ret) == 0:  # pragma: no cover
             raise RuntimeError("Biodiversity table does not contain goodness-of-fit values.")
         else:
             return ret[0][0]
@@ -2186,18 +2185,18 @@ class CoalescenceTree(object):
 
     def get_job(self):
         """
-        Gets the job number (the seed) and the job type (the task identifier).
+        Gets the job number (the seed) and the task identifier.
 
-        :return: list containing [seed, job_type (the task identifier)]
+        :return: list containing [seed, task]
         """
         ret = self.get_simulation_parameters()
-        return [ret["seed"], ret["job_type"]]
+        return [ret["seed"], ret["task"]]
 
     def get_simulation_parameters(self, guild=None):
         """
         Reads the simulation parameters from the database and returns them.
 
-        :return: a dictionary mapping names to values for seed, job_type, output_dir, speciation_rate, sigma,
+        :return: a dictionary mapping names to values for seed, task, output_dir, speciation_rate, sigma,
         L_value, deme,
         sample_size, maxtime, dispersal_relative_cost, min_spec, habitat_change_rate, gen_since_historical, time_config,
         coarse_map vars, fine map vars, sample_file, gridx, gridy, historical coarse map, historical fine map,
@@ -2207,24 +2206,38 @@ class CoalescenceTree(object):
         """
         self._check_database()
         if not guild:
-            try:
-                self.cursor.execute(
-                    "SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
-                    "max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical, "
-                    "time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
-                    "coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, "
-                    "fine_map_x_offset, fine_map_y_offset, sample_file, grid_x, grid_y, sample_x, sample_y, "
-                    "sample_x_offset, sample_y_offset, historical_coarse_map, "
-                    " historical_fine_map, sim_complete, dispersal_method, m_probability, cutoff,"
-                    " landscape_type,  protracted, min_speciation_gen, max_speciation_gen, dispersal_map"
-                    " FROM SIMULATION_PARAMETERS"
+            first_error = None
+            found_data = False
+            for each in ["task", "job_type"]:
+                sql_statement = (
+                    "SELECT seed, {}, output_dir, speciation_rate, sigma, tau, deme, sample_size, "
+                    "max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, "
+                    "gen_since_historical, time_config_file, coarse_map_file, coarse_map_x, "
+                    "coarse_map_y, coarse_map_x_offset, coarse_map_y_offset, coarse_map_scale, "
+                    "fine_map_file, fine_map_x, fine_map_y, fine_map_x_offset, fine_map_y_offset, "
+                    "sample_file, grid_x, grid_y, sample_x, sample_y, sample_x_offset, sample_y_offset, "
+                    "historical_coarse_map, historical_fine_map, sim_complete, dispersal_method,"
+                    " m_probability, cutoff, landscape_type,  protracted, min_speciation_gen, "
+                    "max_speciation_gen, dispersal_map FROM SIMULATION_PARAMETERS".format(each)
                 )
-            except sqlite3.Error as e:
+
+                try:
+                    self.cursor.execute(sql_statement)
+                    found_data = True
+                    break
+                except (sqlite3.Error, sqlite3.OperationalError) as e:
+                    first_error = e
+                    self.logger.info(
+                        "Could not fetch simulation parameters using 'task' variable, "
+                        "using deprecated 'job_type' instead.\n"
+                    )
+            if not found_data:
                 self.logger.error("Failure to get SIMULATION_PARAMETERS table from database. Check table exists.")
-                raise e
+                raise first_error
             column_names = [member[0] for member in self.cursor.description]
+            column_names = [x if x != "job_type" else "task" for x in column_names]
             values = [x for x in self.cursor.fetchone()]
-            if sys.version_info[0] is not 3:  # pragma: no cover
+            if sys.version_info[0] != 3:  # pragma: no cover
                 for i, each in enumerate(values):
                     if isinstance(each, unicode):
                         values[i] = each.encode("ascii")
@@ -2286,7 +2299,7 @@ class CoalescenceTree(object):
             raise KeyError("No community parameters found for reference of {}".format(reference))
         values = [x for x in fetch]
         column_names = [member[0] for member in self.cursor.description]
-        if sys.version_info[0] is not 3:  # pragma: no cover
+        if sys.version_info[0] != 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
                     values[i] = each.encode("ascii")
@@ -2434,7 +2447,7 @@ class CoalescenceTree(object):
         if len(values) == 0:  # pragma: no cover
             raise KeyError("No metacommunity parameters found for reference of {}".format(reference))
         column_names = [member[0] for member in self.cursor.description]
-        if sys.version_info[0] is not 3:  # pragma: no cover
+        if sys.version_info[0] != 3:  # pragma: no cover
             for i, each in enumerate(values):
                 if isinstance(each, unicode):
                     values[i] = each.encode("ascii")

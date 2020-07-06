@@ -23,7 +23,6 @@
 using namespace std;
 using namespace necsim;
 
-
 /**
  * @brief Template for CCommunity and CMetacommunity objects for exporting to Python
  * @tparam T the type of the Community
@@ -42,8 +41,7 @@ public:
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* self, PyObject* args)
+template<class T> static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* self, PyObject* args)
 {
     char* database;
     int record_spatial;
@@ -51,8 +49,16 @@ static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* self, PyObject* ar
     char* fragment_file;
     PyObject* list_speciation_rates;
     PyObject* list_times;
-    if(!PyArg_ParseTuple(args, "sissO!O!|kdsk", &database, &record_spatial, &sample_file,
-                         &fragment_file, &PyList_Type, &list_speciation_rates, &PyList_Type, &list_times))
+    if(!PyArg_ParseTuple(args,
+                         "sissO!O!|kdsk",
+                         &database,
+                         &record_spatial,
+                         &sample_file,
+                         &fragment_file,
+                         &PyList_Type,
+                         &list_speciation_rates,
+                         &PyList_Type,
+                         &list_times))
     {
         return nullptr;
     }
@@ -76,7 +82,11 @@ static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* self, PyObject* ar
     }
     try
     {
-        self->specSimParameters->setup(std::move(database_str), use_spatial, sample_file_str, times, fragment_file_str,
+        self->specSimParameters->setup(std::move(database_str),
+                                       use_spatial,
+                                       sample_file_str,
+                                       times,
+                                       fragment_file_str,
                                        speciation_rates);
     }
     catch(exception &e)
@@ -95,8 +105,7 @@ static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* self, PyObject* ar
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* addTime(PyCommunityTemplate<T>* self, PyObject* args)
+template<class T> static PyObject* addTime(PyCommunityTemplate<T>* self, PyObject* args)
 {
     double time;
     if(!PyArg_ParseTuple(args, "d", &time))
@@ -124,8 +133,7 @@ static PyObject* addTime(PyCommunityTemplate<T>* self, PyObject* args)
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* addProtractedParameters(PyCommunityTemplate<T>* self, PyObject* args)
+template<class T> static PyObject* addProtractedParameters(PyCommunityTemplate<T>* self, PyObject* args)
 {
     double proc_min, proc_max;
     if(!PyArg_ParseTuple(args, "dd", &proc_min, &proc_max))
@@ -153,14 +161,17 @@ static PyObject* addProtractedParameters(PyCommunityTemplate<T>* self, PyObject*
  * @param args the arguments to pass
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* pyAddMetacommunityParameters(PyCommunityTemplate<T>* self, PyObject* args)
+template<class T> static PyObject* pyAddMetacommunityParameters(PyCommunityTemplate<T>* self, PyObject* args)
 {
     unsigned long metacommunity_size;
     double speciation_rate;
     char* metacommunity_option;
     unsigned long metacommunity_reference;
-    if(!PyArg_ParseTuple(args, "kdsk", &metacommunity_size, &speciation_rate, &metacommunity_option,
+    if(!PyArg_ParseTuple(args,
+                         "kdsk",
+                         &metacommunity_size,
+                         &speciation_rate,
+                         &metacommunity_option,
                          &metacommunity_reference))
     {
         return nullptr;
@@ -168,8 +179,10 @@ static PyObject* pyAddMetacommunityParameters(PyCommunityTemplate<T>* self, PyOb
     try
     {
         getGlobalLogger(self->logger, self->log_function);
-        self->specSimParameters->addMetacommunityParameters(metacommunity_size, speciation_rate,
-                                                            metacommunity_option, metacommunity_reference);
+        self->specSimParameters->addMetacommunityParameters(metacommunity_size,
+                                                            speciation_rate,
+                                                            metacommunity_option,
+                                                            metacommunity_reference);
     }
     catch(exception &e)
     {
@@ -186,8 +199,7 @@ static PyObject* pyAddMetacommunityParameters(PyCommunityTemplate<T>* self, PyOb
  * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* wipeProtractedParameters(PyCommunityTemplate<T>* self)
+template<class T> static PyObject* wipeProtractedParameters(PyCommunityTemplate<T>* self)
 {
     try
     {
@@ -209,8 +221,7 @@ static PyObject* wipeProtractedParameters(PyCommunityTemplate<T>* self)
  * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* apply(PyCommunityTemplate<T>* self)
+template<class T> static PyObject* apply(PyCommunityTemplate<T>* self)
 {
 
     // Now run the actual simulation
@@ -234,8 +245,7 @@ static PyObject* apply(PyCommunityTemplate<T>* self)
  * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* output(PyCommunityTemplate<T>* self)
+template<class T> static PyObject* output(PyCommunityTemplate<T>* self)
 {
 
     // Now run the actual simulation
@@ -259,8 +269,7 @@ static PyObject* output(PyCommunityTemplate<T>* self)
  * @param self the reference to the Python self object
  * @return Py_RETURN_NONE
  */
-template<class T>
-static PyObject* reset(PyCommunityTemplate<T>* self)
+template<class T> static PyObject* reset(PyCommunityTemplate<T>* self)
 {
 
     // Now run the actual simulation
@@ -282,8 +291,7 @@ static PyObject* reset(PyCommunityTemplate<T>* self)
     Py_RETURN_NONE;
 }
 
-template<class T>
-static PyObject* pySpeciateRemainingLineages(PyCommunityTemplate<T>* self, PyObject* args)
+template<class T> static PyObject* pySpeciateRemainingLineages(PyCommunityTemplate<T>* self, PyObject* args)
 {
     try
     {
@@ -305,9 +313,7 @@ static PyObject* pySpeciateRemainingLineages(PyCommunityTemplate<T>* self, PyObj
     Py_RETURN_NONE;
 }
 
-template<class T>
-static void
-PyCommunity_dealloc(PyCommunityTemplate<T>* self)
+template<class T> static void PyCommunity_dealloc(PyCommunityTemplate<T>* self)
 {
     if(self->specSimParameters != nullptr)
     {
@@ -325,9 +331,7 @@ PyCommunity_dealloc(PyCommunityTemplate<T>* self)
  * @param kwds keyword arguments to pass to constructor
  * @return
  */
-template<class T>
-static int
-PyCommunity_init(PyCommunityTemplate<T>* self, PyObject* args, PyObject* kwds)
+template<class T> static int PyCommunity_init(PyCommunityTemplate<T>* self, PyObject* args, PyObject* kwds)
 {
     self->specSimParameters = make_shared<SpecSimParameters>();
     return PyTemplate_init<T>(self, args, kwds);
@@ -337,29 +341,19 @@ PyCommunity_init(PyCommunityTemplate<T>* self, PyObject* args, PyObject* kwds)
  * @brief Methods associated with the Python CCommunity object
  * @tparam T the type of the Community
  */
-template<class T>
-PyMethodDef* genCommunityMethods()
+template<class T> PyMethodDef* genCommunityMethods()
 {
-    static PyMethodDef CommunityMethods[] =
-            {
-                    {"setup",                        (PyCFunction) setupApplySpeciation<T>,         METH_VARARGS,
-                                                                                                                  "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
-                    {"add_time",                     (PyCFunction) addTime<T>,                      METH_VARARGS,
-                                                                                                                  "Adds a time to apply to the simulation."},
-                    {"wipe_protracted_parameters",   (PyCFunction) wipeProtractedParameters<T>,     METH_NOARGS,
-                                                                                                                  "Wipes the protracted current_metacommunity_parameters."},
-                    {"add_protracted_parameters",    (PyCFunction) addProtractedParameters<T>,      METH_VARARGS,
-                                                                                                                  "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
-                    {"add_metacommunity_parameters", (PyCFunction) pyAddMetacommunityParameters<T>, METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
-                    {"apply",                        (PyCFunction) apply<T>,                        METH_NOARGS,
-                                                                                                                  "Applies the new speciation rate(s) to the coalescence tree."},
-                    {"output",                       (PyCFunction) output<T>,                       METH_NOARGS,  "Outputs the database to file."},
-                    {"reset",                        (PyCFunction) reset<T>,                        METH_NOARGS,  "Resets the internal object."},
-                    {"speciate_remaining_lineages",  (PyCFunction) pySpeciateRemainingLineages<T>,  METH_VARARGS,
-                                                                                                                  "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
+    static PyMethodDef CommunityMethods[] = {{"setup",                        reinterpret_cast<const PyCFunction>(setupApplySpeciation<T>),          METH_VARARGS, "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
+                                             {"add_time",                     reinterpret_cast<const PyCFunction>( addTime<T>),                      METH_VARARGS, "Adds a time to apply to the simulation."},
+                                             {"wipe_protracted_parameters",   reinterpret_cast<const PyCFunction>( wipeProtractedParameters<T>),     METH_NOARGS,  "Wipes the protracted current_metacommunity_parameters."},
+                                             {"add_protracted_parameters",    reinterpret_cast<const PyCFunction>( addProtractedParameters<T>),      METH_VARARGS, "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
+                                             {"add_metacommunity_parameters", reinterpret_cast<const PyCFunction>( pyAddMetacommunityParameters<T>), METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
+                                             {"apply",                        reinterpret_cast<const PyCFunction>( apply<T>),                        METH_NOARGS,  "Applies the new speciation rate(s) to the coalescence tree."},
+                                             {"output",                       reinterpret_cast<const PyCFunction>( output<T>),                       METH_NOARGS,  "Outputs the database to file."},
+                                             {"reset",                        reinterpret_cast<const PyCFunction>( reset<T>),                        METH_NOARGS,  "Resets the internal object."},
+                                             {"speciate_remaining_lineages",  reinterpret_cast<const PyCFunction>( pySpeciateRemainingLineages<T>),  METH_VARARGS, "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
 
-                    {nullptr,                        nullptr, 0,                                                  nullptr}
-            };
+                                             {nullptr,                        nullptr, 0,                                                                          nullptr}};
     return CommunityMethods;
 }
 
@@ -370,12 +364,9 @@ PyMethodDef* genCommunityMethods()
  * @param tp_doc the Python documentation
  * @return
  */
-template<class T>
-static PyTypeObject genCommunityType(char* tp_name, char* tp_doc)
+template<class T> static PyTypeObject genCommunityType(char* tp_name, char* tp_doc)
 {
-    PyTypeObject ret_Community_Type = {
-            PyVarObject_HEAD_INIT(nullptr, 0)
-    };
+    PyTypeObject ret_Community_Type = {PyVarObject_HEAD_INIT(nullptr, 0)};
     ret_Community_Type.tp_name = tp_name;
     ret_Community_Type.tp_doc = tp_doc;
     ret_Community_Type.tp_basicsize = sizeof(PyCommunityTemplate<T>);
@@ -399,8 +390,7 @@ static PyTypeObject genCommunityType(char* tp_name, char* tp_doc)
  * @param tp_doc the Python documentation
  * @return
  */
-template<class T>
-static PyTypeObject genCommunityType(string tp_name, string tp_doc)
+template<class T> static PyTypeObject genCommunityType(string tp_name, string tp_doc)
 {
     return genCommunityType<T>(const_cast<char*>(tp_name.c_str()), const_cast<char*>(tp_doc.c_str()));
 }
@@ -408,9 +398,8 @@ static PyTypeObject genCommunityType(string tp_name, string tp_doc)
 /**
  * @brief The type object containing the Community to pass on to Python.
  */
-static PyTypeObject
-        C_CommunityType = genCommunityType<Community>((char*) "libnecsim.CCommunity",
-                                                      (char*) "C class for generating communities from neutral simulations");
+static PyTypeObject C_CommunityType = genCommunityType<Community>((char*) "libnecsim.CCommunity",
+                                                                  (char*) "C class for generating communities from neutral simulations");
 
 /**
  * @brief The type object containing the Metacommunity to pass on to Python.

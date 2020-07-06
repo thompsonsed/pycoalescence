@@ -436,7 +436,7 @@ class Map(object):
         """ Sets the dimensions and file for the Map object
 
         :param str/pycoalescence.Map file_name: the location of the map object (a csv or tif file). If None, required
-        that file_name is already provided.
+                                     that file_name is already provided.
         :param int x_size: the x dimension
         :param int y_size: the y dimension
         :param int x_offset: the x offset from the north-west corner

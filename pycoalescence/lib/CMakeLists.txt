@@ -10,12 +10,28 @@ endif ()
 option(minimal_ram "minimal_ram" OFF)
 option(USING_INTEL "Use intel compilers for compiling necsim." OFF) # Disabled by default
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(${CMAKE_VERSION} VERSION_LESS "3.8.0")
+    set(CMAKE_CXX_STANDARD 14)
+else()
+    set(CMAKE_CXX_STANDARD 17)
+endif()
+
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(SOURCE_DIR_NECSIM "${PROJECT_SOURCE_DIR}/necsim")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CPP_17_UNSUPPORTED FALSE)
+message(STATUS "CXX Standard: ${CMAKE_CXX_STANDARD}")
+if(${CMAKE_CXX_STANDARD} LESS 17)
+    set(CPP_17_UNSUPPORTED TRUE)
+    if(${CMAKE_CXX_STANDARD} LESS 14)
+        message(FATAL_ERROR "CMAKE_CXX_STANDARD of {CMAKE_CXX_STANDARD} is not c++14 or higher")
+    endif()
+endif()
+
+
+
 message(STATUS "Compiler is ${CMAKE_CXX_COMPILER}")
 if (USING_INTEL)
     message(STATUS "Intel compiler option is ${USING_INTEL}")
@@ -109,7 +125,16 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/GillespieCalculator.h
         ${SOURCE_DIR_NECSIM}/MapLocation.cpp
         ${SOURCE_DIR_NECSIM}/MapLocation.h
+        ${SOURCE_DIR_NECSIM}/eastl/heap.h
+        necsim/cpp17_includes.h
+        ${SOURCE_DIR_NECSIM}/ghc/filesystem.hpp
+        ${SOURCE_DIR_NECSIM}/ghc/fs_fwd.hpp
+        ${SOURCE_DIR_NECSIM}/ghc/fs_impl.hpp
+        ${SOURCE_DIR_NECSIM}/ghc/fs_std.hpp
+        ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
+        ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
         ${SOURCE_DIR_NECSIM}/eastl/heap.h)
+
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
     set(CMAKE_FIND_FRAMEWORK "LAST")
@@ -139,9 +164,6 @@ if (DEFINED ENV{CONDA_PREFIX})
     message(STATUS "Conda install detected")
 
     if(NOT WINDOWS)
-        find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-        include_directories(${Boost_INCLUDE_DIR})
-        target_link_libraries(necsim ${Boost_LIBRARIES})
         find_package(sqlite3)
         include_directories(${SQLITE3_INCLUDE_DIRS})
         target_link_libraries(necsim ${SQLITE3_LIBRARIES})
@@ -151,11 +173,6 @@ else ()
     find_package(sqlite3)
     include_directories(${SQLITE3_INCLUDE_DIRS})
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})
-    if(NOT WINDOWS)
-        find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-        include_directories(${Boost_INCLUDE_DIR})
-        target_link_libraries(necsim ${Boost_LIBRARIES})
-    endif()
 endif ()
 include_directories(${GDAL_INCLUDE_DIR})
 
@@ -181,24 +198,7 @@ if(WINDOWS)
     SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${OUTPUT_BINDIR} CACHE PATH "build directory")
     target_link_libraries(necsim ${PYTHON_LIBRARIES})
     message(STATUS "Detecting libraries for windows")
-#    set(Boost_NO_SYSTEM_PATHS true)
-#    set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
-#    set(Boost_USE_MULTITHREADED ON)
-    add_definitions( -DBOOST_ALL_NO_LIB ) # <----- This is really important for Windows compatibility
-    # force all boost libraries to dynamic link (we already disabled
-    # autolinking, so I don't know why we need this, but we do!)
-#    add_definitions( -DBOOST_ALL_DYN_LINK )
-#    set(Boost_USE_MULTITHREAD ON)
-#    set(Boost_USE_STATIC_LIBS ON)
-#    set(Boost_NO_SYSTEM_PATHS ON)
-#    set(Boost_USE_STATIC_LIBS OFF)
-#    set(Boost_USE_MULTITHREADED ON)
-#    set(Boost_USE_STATIC_RUNTIME OFF)
-#    set(Boost_DEBUG ON)  #<---------- Real life saver
-#    add_definitions(-DBOOST_SYSTEM_NO_DEPRECATED)
-    find_package(Boost 1.5.7 COMPONENTS system filesystem REQUIRED)
-    include_directories(${Boost_INCLUDE_DIR})
-    target_link_libraries(necsim ${Boost_LIBRARIES})
+
     find_package(sqlite3)
     include_directories(${SQLITE3_INCLUDE_DIRS})
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})
@@ -206,12 +206,58 @@ if(WINDOWS)
 else()
     target_link_libraries(necsim ${GDAL_LIBRARY})
 endif()
+
+
+# Require C++ 17 support for boost replacement
+if (CPP_17_UNSUPPORTED)
+    message(STATUS "Using BOOST libraries as C++ 17 not found")
+    if (WINDOWS)
+        #    set(Boost_NO_SYSTEM_PATHS true)
+        #    set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
+        #    set(Boost_USE_MULTITHREADED ON)
+        add_definitions( -DBOOST_ALL_NO_LIB ) # <----- This is really important for Windows compatibility
+        # force all boost libraries to dynamic link (we already disabled
+        # autolinking, so I don't know why we need this, but we do!)
+        #    add_definitions( -DBOOST_ALL_DYN_LINK )
+        #    set(Boost_USE_MULTITHREAD ON)
+        #    set(Boost_USE_STATIC_LIBS ON)
+        #    set(Boost_NO_SYSTEM_PATHS ON)
+        #    set(Boost_USE_STATIC_LIBS OFF)
+        #    set(Boost_USE_MULTITHREADED ON)
+        #    set(Boost_USE_STATIC_RUNTIME OFF)
+        #    set(Boost_DEBUG ON)  #<---------- Real life saver
+        #    add_definitions(-DBOOST_SYSTEM_NO_DEPRECATED)
+        find_package(Boost 1.5.7 COMPONENTS system filesystem)
+        if(Boost_FOUND)
+            add_definitions(-DUSING_BOOST)
+            include_directories(${Boost_INCLUDE_DIR})
+            target_link_libraries(necsim ${Boost_LIBRARIES})
+        endif()
+    else()
+        find_package(Boost 1.5.7 COMPONENTS system filesystem)
+        if(Boost_FOUND)
+            add_definitions(-DUSING_BOOST)
+            include_directories(${Boost_INCLUDE_DIR})
+            target_link_libraries(necsim ${Boost_LIBRARIES})
+        endif()
+    endif()
+endif()
+
+
 message(STATUS "Python include dirs: ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "Python libraries: ${PYTHON_LIBRARIES}")
 message(STATUS "CXXFLAGS: ${CMAKE_CXX_FLAGS}")
 message(STATUS "Shared linker flags: ${CMAKE_SHARED_LINKER_FLAGS}")
-message(STATUS "Boost root: ${Boost_ROOT}")
-message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIR}")
+if (CPP_17_UNSUPPORTED)
+    if(Boost_FOUND)
+        message(STATUS "Boost root: ${Boost_ROOT}")
+        message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIR}")
+    else()
+        message(STATUS "No C++17 or Boost found: using ghc filesystem library")
+        include_directories(${SOURCE_DIR_NECSIM}/ghc)
+    endif()
+
+endif()
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "GDAL include location ${GDAL_INCLUDE_DIR}")
 message(STATUS "GDAL library location ${GDAL_LIBRARY}")

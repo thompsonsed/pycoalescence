@@ -11,6 +11,7 @@
 #include "necsim/Logger.h"
 #include "PyLogger.h"
 #include <utility>
+
 namespace necsim
 {
     extern PyLogger* pyLogger;

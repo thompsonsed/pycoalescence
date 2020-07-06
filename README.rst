@@ -23,8 +23,8 @@ pycoalescence overview
 
 |CondaWin|_ |PyPiOSX|_ |PyPiLinux|_
 
-.. |CondaWin| image:: https://img.shields.io/appveyor/ci/conda-forge/pycoalescence-feedstock/master.svg?label=Windows&logo=appveyor
-.. _CondaWin: https://ci.appveyor.com/project/conda-forge/pycoalescence-feedstock/branch/master
+.. |CondaWin| image:: https://img.shields.io/azure-devops/build/conda-forge/feedstock-builds/3218?label=Windows
+.. _CondaWin: https://dev.azure.com/conda-forge/feedstock-builds/_build?definitionId=3218&_a=summary
 
 .. |PyPiOSX| image:: https://img.shields.io/travis/pycoalescence/pycoalescence-ci/master.svg?label=macOS&logo=travis
 .. _PyPiOSX: https://travis-ci.org/pycoalescence/pycoalescence-ci
@@ -43,6 +43,9 @@ are performed in C++ using `necsim <https://pycoalescence.readthedocs.io/en/rele
 excellent performance, whilst the Python interface provides a simple solution for setting up and analysing simulations.
 
 For full documentation please see `here <https://pycoalescence.readthedocs.io/en/release/>`__.
+
+For R users, there is a sister package with (mostly) equivalent functionality, which can be found `here <https://github.com/thompsonsed/rcoalescence.git>`__.
+
 
 Installation
 ~~~~~~~~~~~~

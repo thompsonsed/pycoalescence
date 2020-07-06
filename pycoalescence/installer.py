@@ -477,7 +477,7 @@ class Installer(build_ext):  # pragma: no cover
                     gdal_dir = gdal_dir.decode("utf-8").replace("\n", "")
         if libdir is None:
             libdir = os.path.abspath(os.path.join(sysconfig.get_config_var("LIBDEST"), "..", "libs"))
-            if sysconfig.get_config_var("LIBDEST") is None:
+            if sysconfig.get_config_var("LIBDEST") == None:
                 raise SystemError("Cannot detect library directory for Python install.")
         cmake_args = [
             "-DPYTHON_LIBRARY:FILEPATH={}".format(libdir),

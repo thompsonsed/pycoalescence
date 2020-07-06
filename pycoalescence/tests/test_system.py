@@ -111,7 +111,7 @@ class TestSimulationNorm(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=2,
-            job_type=5,
+            task=5,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -222,7 +222,7 @@ class TestSimulationInfLand(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=2,
-            job_type=2,
+            task=2,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -319,7 +319,7 @@ class TestSimulationFatInf(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=1,
-            job_type=1,
+            task=1,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -418,7 +418,7 @@ class TestSimulationTif(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=3,
-            job_type=3,
+            task=3,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -530,7 +530,7 @@ class TestSimulationTiledInfinite(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=1,
-            job_type=29,
+            task=29,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -619,7 +619,7 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
         self.coal2 = Simulation()
         self.coal2.set_simulation_parameters(
             seed=1,
-            job_type=33,
+            task=33,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -655,7 +655,7 @@ class TestSimulationTiledInfinite2(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=1,
-            job_type=30,
+            task=30,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -730,7 +730,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
         self.tree = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=1,
-            job_type=34,
+            task=34,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -752,7 +752,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
         self.tree2 = CoalescenceTree()
         self.coal2.set_simulation_parameters(
             seed=1,
-            job_type=35,
+            task=35,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -785,7 +785,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
         c = Simulation(logging_level=logging.CRITICAL)
         c.set_simulation_parameters(
             seed=2,
-            job_type=34,
+            task=34,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -895,7 +895,7 @@ class TestSimulationTifCoarse(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=4,
-            job_type=4,
+            task=4,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -971,7 +971,7 @@ class TestSimulationDemeProportions(unittest.TestCase):
         self.coal = Simulation()
 
         self.coal.set_simulation_parameters(
-            seed=5, job_type=4, output_directory="output", min_speciation_rate=0.1, sigma=4, deme=0.25
+            seed=5, task=4, output_directory="output", min_speciation_rate=0.1, sigma=4, deme=0.25
         )
         self.coal.set_map_files(
             "null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif"
@@ -980,7 +980,7 @@ class TestSimulationDemeProportions(unittest.TestCase):
         self.coal2 = Simulation()
 
         self.coal2.set_simulation_parameters(
-            seed=6, job_type=4, output_directory="output", min_speciation_rate=0.1, sigma=4, deme=0.01
+            seed=6, task=4, output_directory="output", min_speciation_rate=0.1, sigma=4, deme=0.01
         )
         self.coal2.set_map_files(
             "null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif"
@@ -998,7 +998,7 @@ class TestSimulationDemeProportions(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=5,
-            job_type=4,
+            task=4,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -1070,7 +1070,7 @@ class TestSimulationDemeOversampling(unittest.TestCase):
         self.coal = Simulation()
 
         self.coal.set_simulation_parameters(
-            seed=7, job_type=4, output_directory="output", min_speciation_rate=0.1, sigma=4, deme=0.01, sample_size=1.5
+            seed=7, task=4, output_directory="output", min_speciation_rate=0.1, sigma=4, deme=0.01, sample_size=1.5
         )
         self.coal.set_map_files(
             "null", fine_file="sample/SA_sample_fine.tif", coarse_file="sample/SA_sample_coarse.tif"
@@ -1087,7 +1087,7 @@ class TestSimulationDemeOversampling(unittest.TestCase):
         params = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=7,
-            job_type=4,
+            task=4,
             output_dir="output",
             speciation_rate=0.1,
             sigma=4.0,
@@ -1157,18 +1157,18 @@ class TestSimulationNonSpatial(unittest.TestCase):
         """
         cls.c = Simulation(logging_level=logging.ERROR)
         cls.c.set_simulation_parameters(
-            seed=1, job_type=39, output_directory="output", min_speciation_rate=1, deme=100, spatial=False
+            seed=1, task=39, output_directory="output", min_speciation_rate=1, deme=100, spatial=False
         )
         cls.c.run()
         cls.c2 = Simulation(logging_level=logging.ERROR)
         cls.c2.set_simulation_parameters(
-            seed=1, job_type=40, output_directory="output", min_speciation_rate=0.5, deme=100, spatial=False
+            seed=1, task=40, output_directory="output", min_speciation_rate=0.5, deme=100, spatial=False
         )
         cls.c2.run()
         cls.c3 = Simulation(logging_level=logging.ERROR)
         cls.c3.set_simulation_parameters(
             seed=1,
-            job_type=41,
+            task=41,
             output_directory="output",
             min_speciation_rate=0.5,
             deme=100,
@@ -1181,7 +1181,7 @@ class TestSimulationNonSpatial(unittest.TestCase):
         cls.c4 = Simulation(logging_level=logging.ERROR)
         cls.c4.set_simulation_parameters(
             seed=1,
-            job_type=42,
+            task=42,
             output_directory="output",
             min_speciation_rate=0.5,
             deme=100,
@@ -1233,7 +1233,7 @@ class TestSimulationSampling(unittest.TestCase):
         cls.tree = CoalescenceTree()
         cls.coal.set_simulation_parameters(
             seed=6,
-            job_type=8,
+            task=8,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1288,7 +1288,7 @@ class TestCoalSampling2(unittest.TestCase):
         cls.coal = Simulation(logging_level=logging.CRITICAL)
         cls.coal.set_simulation_parameters(
             seed=7,
-            job_type=8,
+            task=8,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1345,7 +1345,7 @@ class TestCoalSampling3(unittest.TestCase):
         cls.coal = Simulation(logging_level=logging.CRITICAL)
         cls.coal.set_simulation_parameters(
             seed=9,
-            job_type=8,
+            task=8,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1390,7 +1390,7 @@ class TestCoalSampling4(unittest.TestCase):
         cls.coal = Simulation(logging_level=logging.CRITICAL)
         cls.coal.set_simulation_parameters(
             seed=10,
-            job_type=8,
+            task=8,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1444,7 +1444,7 @@ class TestSimulationNullLandscape(unittest.TestCase):
         cls.coal = Simulation(logging_level=logging.CRITICAL)
         cls.coal.set_simulation_parameters(
             seed=8,
-            job_type=8,
+            task=8,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1494,7 +1494,7 @@ class TestSimulationComplexRun(unittest.TestCase):
         self.tree = CoalescenceTree(logging_level=logging.CRITICAL)
         self.coal.set_simulation_parameters(
             seed=6,
-            job_type=6,
+            task=6,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1601,7 +1601,7 @@ class TestSimulationComplexRun(unittest.TestCase):
         simulation_parameters = self.tree.get_simulation_parameters()
         actual_sim_parameters = dict(
             seed=6,
-            job_type=6,
+            task=6,
             output_dir="output",
             speciation_rate=0.5,
             sigma=4.0,
@@ -1687,7 +1687,7 @@ class TestSimulationComplexRun2(unittest.TestCase):
         self.tree = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=6,
-            job_type=7,
+            task=7,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -1766,7 +1766,7 @@ class TestSimulationComplexRun3(unittest.TestCase):
         self.tree = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=6,
-            job_type=13,
+            task=13,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1836,7 +1836,7 @@ class TestSimulationComplexRun4(unittest.TestCase):
         self.tree = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=7,
-            job_type=13,
+            task=13,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=4,
@@ -1939,7 +1939,7 @@ class TestSimulationApplySpeciation(unittest.TestCase):
         cls.coal = Simulation()
         cls.coal.set_simulation_parameters(
             seed=1,
-            job_type=31,
+            task=31,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2 * (2 ** 0.5),
@@ -2008,7 +2008,7 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
         self.tree2 = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=1,
-            job_type=13,
+            task=13,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2.0,
@@ -2030,7 +2030,7 @@ class TestSimulationFattailVersionsMatch(unittest.TestCase):
         self.coal.run()
         self.coal2.set_simulation_parameters(
             seed=1,
-            job_type=14,
+            task=14,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2.0,
@@ -2091,7 +2091,7 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
         self.tree2 = CoalescenceTree()
         self.coal.set_simulation_parameters(
             seed=1,
-            job_type=15,
+            task=15,
             output_directory="output",
             min_speciation_rate=0.01,
             sigma=2.0,
@@ -2113,7 +2113,7 @@ class TestSimulationNormalMatchesFatTailedExtreme(unittest.TestCase):
         self.coal.run()
         self.coal2.set_simulation_parameters(
             seed=1,
-            job_type=16,
+            task=16,
             output_directory="output",
             min_speciation_rate=0.01,
             sigma=2,
@@ -2233,7 +2233,7 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
         self.tree4 = CoalescenceTree()
         self.coal1.set_simulation_parameters(
             seed=1,
-            job_type=19,
+            task=19,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -2250,7 +2250,7 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
         )
         self.coal2.set_simulation_parameters(
             seed=1,
-            job_type=20,
+            task=20,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -2267,7 +2267,7 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
         )
         self.coal3.set_simulation_parameters(
             seed=1,
-            job_type=21,
+            task=21,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -2284,7 +2284,7 @@ class TestSimulationProtractedSanityChecks(unittest.TestCase):
         )
         self.coal4.set_simulation_parameters(
             seed=1,
-            job_type=22,
+            task=22,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -2381,7 +2381,7 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
         cls.sim = Simulation()
         cls.sim.set_simulation_parameters(
             seed=1,
-            job_type=23,
+            task=23,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -2568,7 +2568,7 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
         cls.sim = Simulation()
         cls.sim.set_simulation_parameters(
             seed=1,
-            job_type=24,
+            task=24,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -2747,7 +2747,7 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
         cls.sim = Simulation()
         cls.sim.set_simulation_parameters(
             seed=1,
-            job_type=25,
+            task=25,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -2931,7 +2931,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
         self.c = Simulation(logging_level=50)
         self.c.set_simulation_parameters(
             seed=1,
-            job_type=32,
+            task=32,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -2969,7 +2969,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
         c = Simulation(logging_level=logging.CRITICAL)
         c.set_simulation_parameters(
             seed=2,
-            job_type=32,
+            task=32,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -2996,7 +2996,7 @@ class TestSimulationDispersalMaps(unittest.TestCase):
         c = Simulation(logging_level=logging.CRITICAL)
         c.set_simulation_parameters(
             seed=3,
-            job_type=32,
+            task=32,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3029,7 +3029,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
         cls.c = Simulation(logging_level=logging.CRITICAL)
         cls.c.set_simulation_parameters(
             seed=2,
-            job_type=32,
+            task=32,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3067,7 +3067,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
         c = Simulation(logging_level=logging.CRITICAL)
         c.set_simulation_parameters(
             seed=4,
-            job_type=32,
+            task=32,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3101,7 +3101,7 @@ class TestSimulationDispersalMapsNoData(unittest.TestCase):
         cls.c = Simulation(logging_level=logging.CRITICAL)
         cls.c.set_simulation_parameters(
             seed=3,
-            job_type=32,
+            task=32,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3144,7 +3144,7 @@ class TestDetectRamUsage(unittest.TestCase):
         cls.c = Simulation(logging_level=logging.CRITICAL)
         cls.c.set_simulation_parameters(
             seed=1,
-            job_type=36,
+            task=36,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3174,7 +3174,7 @@ class TestDetectRamUsage(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=1,
-            job_type=36,
+            task=36,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3217,7 +3217,7 @@ class TestDetectRamUsage(unittest.TestCase):
         sim = Simulation()
         sim.set_simulation_parameters(
             seed=11,
-            job_type=36,
+            task=36,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3253,7 +3253,7 @@ class TestDetectRamUsage(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=1,
-            job_type=37,
+            task=37,
             output_directory="output",
             min_speciation_rate=0.95,
             sigma=1,
@@ -3288,7 +3288,7 @@ class TestDetectRamUsage(unittest.TestCase):
         c = Simulation()
         c.set_simulation_parameters(
             seed=1,
-            job_type=36,
+            task=36,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=2,
@@ -3319,7 +3319,7 @@ class TestSimulationMetacommunity(unittest.TestCase):
         cls.c = Simulation()
         cls.c.set_simulation_parameters(
             seed=1,
-            job_type=43,
+            task=43,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=1,
@@ -3337,7 +3337,7 @@ class TestSimulationMetacommunity(unittest.TestCase):
         cls.c2 = Simulation()
         cls.c2.set_simulation_parameters(
             seed=1,
-            job_type=44,
+            task=44,
             output_directory="output",
             min_speciation_rate=0.5,
             sigma=1,
@@ -3444,7 +3444,7 @@ class TestMetacommunityMethodsMatch(unittest.TestCase):
         cls.speciation_rates = [0.0000001, 0.5, 0.99999]
         cls.metacomm_sim = Simulation()
         cls.metacomm_sim.set_simulation_parameters(
-            seed=3, job_type=44, output_directory="output", min_speciation_rate=0.0001, sigma=4
+            seed=3, task=44, output_directory="output", min_speciation_rate=0.0001, sigma=4
         )
         cls.metacomm_sim.set_map("null", 100, 100)
         cls.metacomm_sim.run()
@@ -3513,7 +3513,7 @@ class TestProtractedSimsWithMetacommunity(unittest.TestCase):
         cls.sim = Simulation(logging_level=50)
         cls.sim.set_simulation_parameters(
             seed=2,
-            job_type=44,
+            task=44,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=2,
@@ -3573,7 +3573,7 @@ class TestTemporalSamplingProportion(unittest.TestCase):
         """Runs the simulation for the number of individuals sampled"""
         cls.sim = Simulation(logging_level=40)
         cls.sim.set_simulation_parameters(
-            seed=1, job_type=45, output_directory="output", min_speciation_rate=0.01, sigma=1, deme=40, sample_size=0.25
+            seed=1, task=45, output_directory="output", min_speciation_rate=0.01, sigma=1, deme=40, sample_size=0.25
         )
         cls.sim.set_map("null", 10, 10)
         cls.sim.add_sample_time([0, 0.01, 0.02, 0.03])
@@ -3602,7 +3602,7 @@ class TestLongTermSpeciesRichness(unittest.TestCase):
         cls.sim = Simulation()
         cls.sim.set_simulation_parameters(
             seed=2,
-            job_type=45,
+            task=45,
             output_directory="output",
             min_speciation_rate=0.01,
             sigma=1,
@@ -3657,13 +3657,13 @@ class TestSamplingGridNumber(unittest.TestCase):
         """Runs simulations for optimised and full grids."""
         cls.sim1 = Simulation(logging_level=50)
         cls.sim1.set_simulation_parameters(
-            seed=1, job_type=46, output_directory="output", min_speciation_rate=0.9, sigma=2, deme=1, sample_size=0.01
+            seed=1, task=46, output_directory="output", min_speciation_rate=0.9, sigma=2, deme=1, sample_size=0.01
         )
         cls.sim1.set_map_files("null", "sample/high_density.tif")
         cls.sim1.run()
         cls.sim2 = Simulation(logging_level=50)
         cls.sim2.set_simulation_parameters(
-            seed=2, job_type=46, output_directory="output", min_speciation_rate=0.9, sigma=2, deme=1, sample_size=0.01
+            seed=2, task=46, output_directory="output", min_speciation_rate=0.9, sigma=2, deme=1, sample_size=0.01
         )
         cls.sim2.set_map_files("null", "sample/high_density.tif")
         optim_sol = {
@@ -3696,7 +3696,7 @@ class TestReproductionMaps(unittest.TestCase):
         """Runs the simulations using reproduction maps."""
         cls.sim1 = Simulation(logging_level=50)
         cls.sim1.set_simulation_parameters(
-            seed=1, job_type=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
+            seed=1, task=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
         )
         cls.sim1.set_map_files(
             "null", fine_file="sample/SA_sample_fine.tif", reproduction_map="sample/SA_sample_reproduction.tif"
@@ -3704,13 +3704,13 @@ class TestReproductionMaps(unittest.TestCase):
         cls.sim1.run()
         cls.sim2 = Simulation(logging_level=50)
         cls.sim2.set_simulation_parameters(
-            seed=1, job_type=48, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
+            seed=1, task=48, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
         )
         cls.sim2.set_map_files("null", fine_file="sample/SA_sample_fine.tif")
         cls.sim2.run()
         cls.sim3 = Simulation(logging_level=50)
         cls.sim3.set_simulation_parameters(
-            seed=2, job_type=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
+            seed=2, task=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
         )
         cls.sim3.set_map_files(
             "null",
@@ -3721,7 +3721,7 @@ class TestReproductionMaps(unittest.TestCase):
         cls.sim3.run()
         cls.sim4 = Simulation(logging_level=50)
         cls.sim4.set_simulation_parameters(
-            seed=4, job_type=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
+            seed=4, task=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
         )
         cls.sim4.set_map_files("null", fine_file="sample/SA_sample_coarse_pristine.tif")
         cls.sim4.add_reproduction_map(reproduction_map="sample/SA_reproduction_coarse.tif")
@@ -3738,7 +3738,7 @@ class TestReproductionMaps(unittest.TestCase):
         c = Simulation(logging_level=logging.CRITICAL)
         c.set_simulation_parameters(
             seed=3,
-            job_type=47,
+            task=47,
             output_directory="output",
             min_speciation_rate=0.1,
             sigma=4,
@@ -3781,7 +3781,7 @@ class TestReproductionMaps(unittest.TestCase):
         log_stream1 = StringIO()
         sim1 = Simulation(logging_level=50, stream=log_stream1)
         sim1.set_simulation_parameters(
-            seed=5, job_type=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
+            seed=5, task=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
         )
         sim1.set_map_files(
             "null", fine_file="sample/SA_sample_fine2.tif", reproduction_map="sample/SA_sample_reproduction.tif"
@@ -3789,7 +3789,7 @@ class TestReproductionMaps(unittest.TestCase):
         sim1.run()
         sim2 = Simulation(logging_level=60)
         sim2.set_simulation_parameters(
-            seed=6, job_type=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
+            seed=6, task=47, output_directory="output", min_speciation_rate=0.01, sigma=2, deme=1, sample_size=0.01
         )
         sim2.set_map_files(
             "null", fine_file="sample/SA_sample_fine.tif", reproduction_map="sample/SA_sample_reproduction.tif"
@@ -3810,7 +3810,7 @@ class TestAnalyticalMetacommunityLimits(unittest.TestCase):
 
         cls.sim = Simulation(logging_level=50)
         cls.sim.set_simulation_parameters(
-            seed=10, job_type=48, output_directory="output", min_speciation_rate=0.000001, sigma=1
+            seed=10, task=48, output_directory="output", min_speciation_rate=0.000001, sigma=1
         )
         cls.sim.set_map("null", 10, 10)
         cls.sim.run()
@@ -3882,7 +3882,7 @@ class TestAnalyticalMatchesSimulated(unittest.TestCase):
         for i in range(1, 11, 1):
             s = Simulation()
             s.set_simulation_parameters(
-                seed=i, job_type=49, output_directory="output", min_speciation_rate=0.01, deme=10000, spatial=False
+                seed=i, task=49, output_directory="output", min_speciation_rate=0.01, deme=10000, spatial=False
             )
             s.set_speciation_rates([0.01, 0.1, 0.5, 0.9])
             s.run()
@@ -3966,7 +3966,7 @@ class TestLargeScaleAnalytical(unittest.TestCase):
     def testLargeScaleAnalyticalResult(self):
         s = Simulation()
         s.set_simulation_parameters(
-            seed=1, job_type=50, output_directory="output", min_speciation_rate=0.5, spatial=False, deme=100000
+            seed=1, task=50, output_directory="output", min_speciation_rate=0.5, spatial=False, deme=100000
         )
         s.run()
         c = CoalescenceTree(s)

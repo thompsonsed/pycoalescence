@@ -29,7 +29,7 @@ import numpy as np
 global sqlite_import
 
 # noinspection PyCompatibility
-from configparser import ConfigParser
+from configparser import ConfigParser, NoOptionError
 
 try:
     from io import StringIO
@@ -108,7 +108,7 @@ class Simulation(Landscape):
         self.dispersal_relative_cost = (
             1
         )  # the relative cost of moving through non-matrix
-        self.job_type = 0
+        self.task = 0
         self.min_num_species = 1
         self.tau = 0
         self.times = None
@@ -197,7 +197,10 @@ class Simulation(Landscape):
         self.config.read(config_file)
         self.full_config_file = config_file
         self.seed = self.config.getint("main", "seed")
-        self.job_type = self.config.getint("main", "job_type")
+        try:
+            self.task = self.config.getint("main", "task")
+        except NoOptionError:
+            self.task = self.config.getint("main", "job_type")
         self.output_directory = self.config.get("main", "output_directory")
         self.min_speciation_rate = self.config.getfloat("main", "min_spec_rate")
         self.sigma = self.config.getfloat("main", "sigma", fallback=1.0)
@@ -449,7 +452,7 @@ class Simulation(Landscape):
             # New method using ConfigParser
             self.config.add_section("main")
             self.config.set("main", "seed", str(self.seed))
-            self.config.set("main", "job_type", str(self.job_type))
+            self.config.set("main", "task", str(self.task))
             self.config.set("main", "output_directory", self.output_directory)
             self.config.set("main", "min_spec_rate", str(self.min_speciation_rate))
             if self.is_spatial:
@@ -514,7 +517,7 @@ class Simulation(Landscape):
         """
         self.set_simulation_parameters(
             seed=seed,
-            job_type=task,
+            task=task,
             output_directory=output,
             min_speciation_rate=speciation_rate,
             sigma=sigma,
@@ -805,7 +808,7 @@ class Simulation(Landscape):
     def set_simulation_parameters(
         self,
         seed,
-        job_type,
+        task,
         output_directory,
         min_speciation_rate,
         sigma=1.0,
@@ -831,7 +834,7 @@ class Simulation(Landscape):
         Set all the simulation parameters apart from the map objects.
 
         :param int seed: the unique job number for this simulation set
-        :param int job_type: the job type (used for easy file identification after simulations are complete)
+        :param int task: the task reference number (used for easy file identification after simulations are complete)
         :param str output_directory: the output directory to store the SQL database
         :param float min_speciation_rate: the minimum speciation rate to simulate
         :param float sigma: the dispersal sigma value
@@ -860,7 +863,7 @@ class Simulation(Landscape):
         if not self.is_setup_param:
             self.set_seed(seed)
             self.output_directory = output_directory
-            self.job_type = job_type
+            self.task = task
             self.min_speciation_rate = min_speciation_rate
             self.sigma = sigma
             self.tau = tau
@@ -954,7 +957,7 @@ class Simulation(Landscape):
                               are ignored
         :param expected: set to true if we expect the output file to exist
         """
-        if not self.is_setup_param or (self.seed == 0 and self.job_type == 0):
+        if not self.is_setup_param or (self.seed == 0 and self.task == 0):
             raise RuntimeError("Simulation parameters have not been set.")
         if self.output_directory in {"", None, "null"}:
             raise RuntimeError("Output directory not set.")
@@ -976,7 +979,7 @@ class Simulation(Landscape):
         self,
         pause_directory,
         seed,
-        job_type,
+        task,
         max_time,
         out_directory=None,
         protracted=None,
@@ -988,7 +991,7 @@ class Simulation(Landscape):
 
         :param pause_directory: the directory to search for the paused simulation
         :param seed: the seed of the paused simulation
-        :param job_type: the task of the paused simulation
+        :param task: the task of the paused simulation
         :param max_time: the maximum time to run simulations for
         :param out_directory: optionally provide an alternative output location. Defaults to same location as
         pause_directory
@@ -1008,11 +1011,11 @@ class Simulation(Landscape):
         self.output_directory = out_directory
         self.pause_directory = pause_directory
         self.seed = seed
-        self.job_type = job_type
+        self.task = task
         self.max_time = max_time
         self.calculate_sql_database()
         file_path = os.path.join(
-            pause_directory, "Pause", "Dump_main_{}_{}.csv".format(job_type, seed)
+            pause_directory, "Pause", "Dump_main_{}_{}.csv".format(task, seed)
         )
         if not os.path.exists(file_path):
             raise IOError(
@@ -1022,7 +1025,7 @@ class Simulation(Landscape):
             )
         self.setup_necsim()
         self.c_simulation.setup_resume(
-            pause_directory, out_directory, int(seed), int(job_type), int(max_time)
+            pause_directory, out_directory, int(seed), int(task), int(max_time)
         )
         self.is_setup_complete = True
         self._run_and_output()
@@ -1460,7 +1463,7 @@ class Simulation(Landscape):
         """
         self.output_database = os.path.join(
             self.output_directory,
-            "data_{}_{}.db".format(str(self.job_type), str(self.seed)),
+            "data_{}_{}.db".format(str(self.task), str(self.seed)),
         )
 
     def check_sql_database(self, expected=False):

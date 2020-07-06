@@ -29,7 +29,7 @@ def update_parameter_names(database):
             raise IOError("Table SIMULATION_PARAMETERS does not exist in database.")
         # Check if the parameters are already updated
         sql_query = (
-            "SELECT seed, job_type, output_dir, speciation_rate, sigma, tau, deme,"
+            "SELECT seed, task, output_dir, speciation_rate, sigma, tau, deme,"
             " sample_size, max_time, dispersal_relative_cost, min_num_species, habitat_change_rate,"
             " gen_since_historical, time_config_file, coarse_map_file, coarse_map_x, coarse_map_y,"
             " coarse_map_x_offset, coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, "
@@ -50,7 +50,7 @@ def update_parameter_names(database):
         except sqlite3.Error:  # pragma: no cover
             c.execute("DROP TABLE SIM_P_backup;")
             c.execute(sql_query)
-        sql_query = "CREATE TABLE SIMULATION_PARAMETERS(seed INT PRIMARY KEY not null, job_type INT NOT NULL,"
+        sql_query = "CREATE TABLE SIMULATION_PARAMETERS(seed INT PRIMARY KEY not null, task INT NOT NULL,"
         sql_query += (
             "output_dir TEXT NOT NULL, speciation_rate DOUBLE NOT NULL, sigma DOUBLE NOT NULL,tau DOUBLE NOT NULL,"
             " deme INT NOT NULL, "
@@ -82,7 +82,7 @@ def update_parameter_names(database):
         c.execute(sql_query)
         try:
             sql_query = (
-                "INSERT INTO SIMULATION_PARAMETERS(seed, job_type, output_dir, speciation_rate, sigma, tau, deme,"
+                "INSERT INTO SIMULATION_PARAMETERS(seed, task, output_dir, speciation_rate, sigma, tau, deme,"
                 " sample_size, max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical,"
                 " time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
                 "coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, fine_map_x_offset,"
@@ -102,7 +102,7 @@ def update_parameter_names(database):
             # Provide additional support for a different naming convention
             try:
                 sql_query = (
-                    "INSERT INTO SIMULATION_PARAMETERS(seed, job_type, output_dir, speciation_rate, sigma, tau, deme,"
+                    "INSERT INTO SIMULATION_PARAMETERS(seed, task, output_dir, speciation_rate, sigma, tau, deme,"
                     " sample_size, max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical,"
                     " time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
                     "coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, fine_map_x_offset,"
@@ -121,7 +121,7 @@ def update_parameter_names(database):
             except sqlite3.Error:
                 # Provide additional support for a different naming convention
                 sql_query = (
-                    "INSERT INTO SIMULATION_PARAMETERS(seed, job_type, output_dir, speciation_rate, sigma, tau, deme,"
+                    "INSERT INTO SIMULATION_PARAMETERS(seed, task, output_dir, speciation_rate, sigma, tau, deme,"
                     " sample_size, max_time, dispersal_relative_cost, min_num_species, habitat_change_rate, gen_since_historical,"
                     " time_config_file, coarse_map_file, coarse_map_x, coarse_map_y, coarse_map_x_offset, "
                     "coarse_map_y_offset, coarse_map_scale, fine_map_file, fine_map_x, fine_map_y, fine_map_x_offset,"
