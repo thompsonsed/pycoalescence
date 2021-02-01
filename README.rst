@@ -29,7 +29,7 @@ pycoalescence overview
 .. |PyPiOSX| image:: https://img.shields.io/travis/pycoalescence/pycoalescence-ci/master.svg?label=macOS&logo=travis
 .. _PyPiOSX: https://travis-ci.org/pycoalescence/pycoalescence-ci
 
-.. |PyPiLinux| image:: https://img.shields.io/circleci/project/bitbucket/thompsonsed/pycoalescence.svg?label=Linux&logo=circleci
+.. |PyPiLinux| image:: https://img.shields.io/circleci/project/github/thompsonsed/pycoalescence.svg?label=Linux&logo=circleci
 .. _PyPiLinux: https://circleci.com/bb/thompsonsed/pycoalescence
 
 
