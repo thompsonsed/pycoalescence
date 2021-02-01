@@ -7,7 +7,13 @@ import subprocess
 import sys
 import unittest
 
-import gdal
+try:
+    from osgeo import gdal
+except ImportError as ie:
+    try:
+        import gdal
+    except ImportError:
+        raise ie
 import numpy as np
 from osgeo import osr, ogr, gdal
 
