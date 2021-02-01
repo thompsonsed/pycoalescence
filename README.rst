@@ -71,7 +71,7 @@ Requirements
 Essential
 ^^^^^^^^^
 
--  Python version 2 >= 2.7.9 or 3 >= 3.6.1 (although earlier version may work)
+-  Python version 2 >= 2.7.9 or 3 >= 3.6.1 (although earlier versions may work)
 -  C++ compiler (such as GNU g++) with C++14 support.
 -  The SQLite library available `here <https://www.sqlite.org/download.html>`__ (comes included with Python). Requires
    both C++ and Python installations.
