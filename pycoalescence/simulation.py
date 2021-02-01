@@ -771,6 +771,7 @@ class Simulation(Landscape):
             or not self.is_spatial
             or self.coarse_map.file_name not in ["none", None]
             or self.protracted
+            or self.deme < 1
         ):
             return False
         return True
