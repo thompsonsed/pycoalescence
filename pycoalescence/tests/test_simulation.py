@@ -1612,9 +1612,9 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
             ]
             gillespie_all_values[i] = vals
             gillespie_mean_values[i] = sum(vals) / len(vals)
-        for i in baseline_mean_values.keys():
+        for k, v in baseline_mean_values.items():
             self.assertAlmostEqual(
-                baseline_mean_values[i], gillespie_mean_values[i], delta=1
+                v, gillespie_mean_values[k], delta=v/10
             )
 
 @skipLongTest
@@ -1628,11 +1628,11 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
             baseline_simulation = Simulation(logging_level=50)
             baseline_simulation.set_simulation_parameters(
                 seed=seed,
-                job_type=2,
+                task=2,
                 output_directory="output",
-                min_speciation_rate=0.0001,
-                deme=1,
-                sample_size=0.1,
+                min_speciation_rate=0.001,
+                deme=2,
+                sample_size=0.01,
             )
             baseline_simulation.set_map_files(
                 sample_file="null",
@@ -1640,9 +1640,9 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
                 coarse_file="none",
             )
             baseline_simulation.add_dispersal_map(
-                dispersal_map="null"
+                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
             )
-            # baseline_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
+            baseline_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
             baseline_simulation.set_speciation_rates(speciation_rates=speciation_rates)
             baseline_simulation.run()
             for ref in range(1, len(speciation_rates) + 1):
@@ -1654,11 +1654,11 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
             gillespie_simulation = Simulation(logging_level=50)
             gillespie_simulation.set_simulation_parameters(
                 seed=seed,
-                job_type=3,
+                task=3,
                 output_directory="output",
-                min_speciation_rate=0.0001,
-                deme=1,
-                sample_size=0.1,
+                min_speciation_rate=0.001,
+                deme=2,
+                sample_size=0.01,
             )
             gillespie_simulation.set_speciation_rates(speciation_rates=speciation_rates)
             gillespie_simulation.set_map_files(
@@ -1667,9 +1667,9 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
                 coarse_file="none",
             )
             gillespie_simulation.add_dispersal_map(
-                dispersal_map="null"
+                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
             )
-            # gillespie_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
+            gillespie_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
             gillespie_simulation.add_gillespie(gillespie_generation)
             gillespie_simulation.run()
             for ref in range(1, len(speciation_rates) + 1):
@@ -1696,9 +1696,9 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
             ]
             gillespie_all_values[i] = vals
             gillespie_mean_values[i] = sum(vals) / len(vals)
-        for i in baseline_mean_values.keys():
+        for k, v in baseline_mean_values.items():
             self.assertAlmostEqual(
-                baseline_mean_values[i], gillespie_mean_values[i], delta=1
+                v, gillespie_mean_values[k], delta=v/10
             )
 
 
