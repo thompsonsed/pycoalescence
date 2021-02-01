@@ -17,7 +17,7 @@ import shutil
 import subprocess
 import sys
 import time
-from distutils import sysconfig
+
 
 # Import system operations for subprocess executation and log file handling
 
@@ -28,6 +28,7 @@ except (ImportError, SystemError, ValueError):  # pragma: no cover
     from future_except import FileNotFoundError
     from system_operations import execute_log_info, set_logging_method, execute_silent, mod_directory
 from setuptools.command.build_ext import build_ext
+from distutils import sysconfig
 
 
 class Installer(build_ext):  # pragma: no cover
