@@ -136,7 +136,7 @@ def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
         fields = [{"index": x} for x in range(1, len(wkts) + 1)]
     for key in fields[0].keys():
         # Ignore the WKT column
-        if key is not "WKT":
+        if key != "WKT":
             field_defn = ogr.FieldDefn(str(key), ogr.OFTString)
             field_defn.SetWidth(32)
             if layer.CreateField(field_defn) != 0:  # pragma: no cover
@@ -146,7 +146,7 @@ def shapefile_from_wkt(wkts, dest_file, EPSG=4326, fields=None):
         feature = ogr.Feature(layer.GetLayerDefn())
         for key, val in fields[i].items():
             # Ignore the WKT column
-            if key is not "WKT":
+            if key != "WKT":
                 feature.SetField(str(key), val)
         feature.SetGeometry(point)
         layer.CreateFeature(feature)
