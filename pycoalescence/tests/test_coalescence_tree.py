@@ -686,7 +686,7 @@ class TestCoalescenceTreeAnalysis(unittest.TestCase):
             ],
             columns=["community_reference", "metric", "fragment", "value", "simulated", "actual"],
         ).reset_index(drop=True)
-        actual_biodiversity_metrics = c2.get_biodiversity_metrics().reset_index(drop=True).fillna(value=pd.np.nan)
+        actual_biodiversity_metrics = c2.get_biodiversity_metrics().reset_index(drop=True).fillna(value=np.nan)
         assert_frame_equal(expected_biodiversity_metrics, actual_biodiversity_metrics)
 
     def testRaisesErrorNoFragmentsAlpha(self):
