@@ -80,6 +80,7 @@ Essential
 -  The gdal library for both Python and C++ (`available here <https://www.gdal.org/>`__) including development options.
    Both the Python package and C++ binaries are required; installation differs between systems, so view the gdal
    documentation for more help installing gdal properly.
+- The `proj library <https://proj.org/install.html>`__ for converting between coordinate systems.
 
 Recommended
 ^^^^^^^^^^^
