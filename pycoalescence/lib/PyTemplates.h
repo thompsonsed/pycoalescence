@@ -18,7 +18,7 @@
 using namespace necsim;
 
 template<class T>
-class PyTemplate
+class PyTemplate : public PyObject
 {
 public:
     PyObject_HEAD

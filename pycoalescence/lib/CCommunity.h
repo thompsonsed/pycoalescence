@@ -343,17 +343,17 @@ template<class T> static int PyCommunity_init(PyCommunityTemplate<T>* self, PyOb
  */
 template<class T> PyMethodDef* genCommunityMethods()
 {
-    static PyMethodDef CommunityMethods[] = {{"setup",                        reinterpret_cast<const PyCFunction>(setupApplySpeciation<T>),          METH_VARARGS, "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
-                                             {"add_time",                     reinterpret_cast<const PyCFunction>( addTime<T>),                      METH_VARARGS, "Adds a time to apply to the simulation."},
-                                             {"wipe_protracted_parameters",   reinterpret_cast<const PyCFunction>( wipeProtractedParameters<T>),     METH_NOARGS,  "Wipes the protracted current_metacommunity_parameters."},
-                                             {"add_protracted_parameters",    reinterpret_cast<const PyCFunction>( addProtractedParameters<T>),      METH_VARARGS, "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
-                                             {"add_metacommunity_parameters", reinterpret_cast<const PyCFunction>( pyAddMetacommunityParameters<T>), METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
-                                             {"apply",                        reinterpret_cast<const PyCFunction>( apply<T>),                        METH_NOARGS,  "Applies the new speciation rate(s) to the coalescence tree."},
-                                             {"output",                       reinterpret_cast<const PyCFunction>( output<T>),                       METH_NOARGS,  "Outputs the database to file."},
-                                             {"reset",                        reinterpret_cast<const PyCFunction>( reset<T>),                        METH_NOARGS,  "Resets the internal object."},
-                                             {"speciate_remaining_lineages",  reinterpret_cast<const PyCFunction>( pySpeciateRemainingLineages<T>),  METH_VARARGS, "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
+    static PyMethodDef CommunityMethods[] = {{"setup",                        reinterpret_cast<const PyCFunction>(&setupApplySpeciation<T>),         METH_VARARGS, "Sets the speciation current_metacommunity_parameters to be applied to the tree."},
+                                             {"add_time",                     reinterpret_cast<const PyCFunction>(&addTime<T>),                     METH_VARARGS, "Adds a time to apply to the simulation."},
+                                             {"wipe_protracted_parameters",   reinterpret_cast<const PyCFunction>(&wipeProtractedParameters<T>),    METH_NOARGS,  "Wipes the protracted current_metacommunity_parameters."},
+                                             {"add_protracted_parameters",    reinterpret_cast<const PyCFunction>(&addProtractedParameters<T>),     METH_VARARGS, "Adds protracted speciation current_metacommunity_parameters to apply to the simulation."},
+                                             {"add_metacommunity_parameters", reinterpret_cast<const PyCFunction>(&pyAddMetacommunityParameters<T>), METH_VARARGS, "Adds metacommunity current_metacommunity_parameters to be applied"},
+                                             {"apply",                        reinterpret_cast<const PyCFunction>(&apply<T>),                        METH_NOARGS,  "Applies the new speciation rate(s) to the coalescence tree."},
+                                             {"output",                       reinterpret_cast<const PyCFunction>(&output<T>),                      METH_NOARGS,  "Outputs the database to file."},
+                                             {"reset",                        reinterpret_cast<const PyCFunction>(&reset<T>),                       METH_NOARGS,  "Resets the internal object."},
+                                             {"speciate_remaining_lineages",  reinterpret_cast<const PyCFunction>(&pySpeciateRemainingLineages<T>), METH_VARARGS, "Speciates the remaining lineages in a paused simulation to force it to appear complete"},
 
-                                             {nullptr,                        nullptr, 0,                                                                          nullptr}};
+                                             {nullptr,                        nullptr, 0,                                                                         nullptr}};
     return CommunityMethods;
 }
 
