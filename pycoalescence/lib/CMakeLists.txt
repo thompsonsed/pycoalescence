@@ -5,6 +5,7 @@ project(necsim CXX)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
+    add_compile_options(-Werror=cast-function-type -pedantic -Wc++14-compat -Wcast-function-type)
 endif ()
 # Change this option to ON if RAM usage is an issue or supply as via CL
 option(minimal_ram "minimal_ram" OFF)
@@ -30,8 +31,6 @@ if (${CMAKE_CXX_STANDARD} LESS 17)
     endif ()
 endif ()
 
-
-add_compile_options(-Werror=cast-function-type -pedantic -Wc++14-compat -Wcast-function-type)
 
 message(STATUS "Compiler is ${CMAKE_CXX_COMPILER}")
 if (USING_INTEL)
