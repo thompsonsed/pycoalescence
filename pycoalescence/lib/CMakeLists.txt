@@ -134,8 +134,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/ghc/fs_std.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
-        ${SOURCE_DIR_NECSIM}/eastl/heap.h
-        ${SOURCE_DIR_NECSIM}/ProtractedSpatialTree.cpp)
+        ${SOURCE_DIR_NECSIM}/eastl/heap.h)
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
