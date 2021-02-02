@@ -91,12 +91,14 @@ initlibnecsim(void)
     {
         INITERROR;
     }
+#if (PY_MINOR_VERSION == 2) | (PY_MAJOR_VERSION == 3 & PY_MINOR_VERSION <= 6)
     // Threading support
     if(!PyEval_ThreadsInitialized())
     {
         PyEval_InitThreads();
 
     }
+#endif
     necsimError = PyErr_NewException((char*) "libnecsim.necsimError", NULL, NULL);
     Py_INCREF(necsimError);
     PyModule_AddObject(module, "necsimError", necsimError);
