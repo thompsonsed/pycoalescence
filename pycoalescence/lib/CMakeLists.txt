@@ -127,14 +127,15 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/MapLocation.cpp
         ${SOURCE_DIR_NECSIM}/MapLocation.h
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
-        necsim/cpp17_includes.h
+        ${SOURCE_DIR_NECSIM}/cpp17_includes.h
         ${SOURCE_DIR_NECSIM}/ghc/filesystem.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_impl.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
-        ${SOURCE_DIR_NECSIM}/eastl/heap.h)
+        ${SOURCE_DIR_NECSIM}/eastl/heap.h
+        ${SOURCE_DIR_NECSIM}/ProtractedSpatialTree.cpp)
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
