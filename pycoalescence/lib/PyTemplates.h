@@ -181,7 +181,7 @@ template<typename T> PyGetSetDef* PyTemplate_gen_getsetters()
 {
     static PyGetSetDef PyTemplate_getsetters[] = {{const_cast<char*>("logger"),       (getter) PyTemplate_getLogging<T>,    (setter) PyTemplate_setLogging<T>,    const_cast<char*>("the reference to the logger module"), nullptr},
                                                   {const_cast<char*>("log_function"), (getter) PyTemplate_getCallLogger<T>, (setter) PyTemplate_setCallLogger<T>, const_cast<char*>("the logger call function to use"),    nullptr},
-                                                  {nullptr}  /* Sentinel */
+                                                  {nullptr, nullptr, nullptr, nullptr, nullptr}  /* Sentinel */
     };
     return PyTemplate_getsetters;
 }

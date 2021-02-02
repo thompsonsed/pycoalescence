@@ -256,7 +256,7 @@ template<class T> static PyMethodDef* genPySimulationMethods()
                                                 {"setup",                     reinterpret_cast<PyCFunction>( setup<T>),                  METH_VARARGS, "Set up the simulation, importing the maps and assigning the variables"},
                                                 {"apply_speciation_rates",    reinterpret_cast<PyCFunction>( applySpeciationRates<T>),   METH_VARARGS, "Applies the speciation rates to the completed simulation. Can optionally provide a list of additional speciation rates to apply"},
                                                 {"setup_resume",              reinterpret_cast<PyCFunction>( setupResume<T>),            METH_VARARGS, "Sets up for resuming from a paused simulation"},
-                                                {nullptr}  /* Sentinel */
+                                                {nullptr, nullptr, 0, nullptr}  /* Sentinel */
     };
     return PySimulationMethods;
 }
@@ -272,7 +272,6 @@ template<class T> PyTypeObject genSimulationType(char* tp_name, char* tp_doc)
     PyTypeObject ret_Simulation_Type = {PyVarObject_HEAD_INIT(nullptr, 0)};
     ret_Simulation_Type.tp_name = tp_name;
     ret_Simulation_Type.tp_doc = tp_doc;
-
     ret_Simulation_Type.tp_basicsize = sizeof(PyTemplate<T>);
     ret_Simulation_Type.tp_itemsize = 0;
     ret_Simulation_Type.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC;
@@ -280,7 +279,6 @@ template<class T> PyTypeObject genSimulationType(char* tp_name, char* tp_doc)
     ret_Simulation_Type.tp_init = (initproc) genPyTemplateInit;
     ret_Simulation_Type.tp_dealloc = (destructor) genPyTemplateDealloc;
     ret_Simulation_Type.tp_traverse = (traverseproc) genPyTemplateTraverse;
-    //		.tp_members = PyTemplate_members<T>,
     ret_Simulation_Type.tp_methods = genPyTemplateMethods;
     ret_Simulation_Type.tp_getset = genPyTemplateGetSetters;
     return ret_Simulation_Type;

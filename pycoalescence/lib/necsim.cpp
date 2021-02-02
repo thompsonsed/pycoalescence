@@ -46,10 +46,8 @@ inline void readyPyTypeObject(PyTypeObject* obj)
 
 static PyModuleDef genPyModuleDef()
 {
-    PyModuleDef tmpModuleDef = {PyModuleDef_HEAD_INIT,};
-    tmpModuleDef.m_name = "libnecsim";
-    tmpModuleDef.m_doc = "Wrapper for c++ library which performs simulations and analysis.";
-    tmpModuleDef.m_size = -1;
+    PyModuleDef tmpModuleDef = {PyModuleDef_HEAD_INIT,"libnecsim", "Wrapper for c++ library which performs simulations and analysis.", -1,
+                                nullptr, nullptr, nullptr, nullptr, nullptr};
     return tmpModuleDef;
 }
 

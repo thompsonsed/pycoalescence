@@ -69,7 +69,7 @@ PyObject* set_map(PyLMC* self, PyObject* args)
  * @return PyFloatType object containing the mean distance to the nearest neighbour
  */
 
-static PyObject* calculateCLUMPY(PyLMC* self)
+static PyObject* calculateCLUMPY(PyLMC* self, PyObject * args)
 {
     // parse arguments
     try
@@ -96,7 +96,7 @@ static PyObject* calculateCLUMPY(PyLMC* self)
  * @param self the Python self pointer
  * @return PyFloatType object containing the mean distance to the nearest neighbour
  */
-static PyObject* calculateMNN(PyLMC* self)
+static PyObject* calculateMNN(PyLMC* self, PyObject * args)
 {
     // parse arguments
     try
@@ -134,9 +134,9 @@ static void PyLMC_dealloc(PyLMC* self)
     PyTemplate_dealloc<LandscapeMetricsCalculator>(self);
 }
 
-static PyMethodDef PyLMCMethods[] = {{"import_map",       reinterpret_cast<PyCFunction>( set_map),         METH_VARARGS, "Imports the map file to calculate landscape metrics on. Should only be run once."},
-                                     {"calculate_MNN",    reinterpret_cast<PyCFunction>( calculateMNN),    METH_NOARGS,  "Calculates the mean nearest-neighbour for the landscape"},
-                                     {"calculate_CLUMPY", reinterpret_cast<PyCFunction>( calculateCLUMPY), METH_NOARGS,  "Calculates the CLUMPY metric for the landscape"},
+static PyMethodDef PyLMCMethods[] = {{"import_map", reinterpret_cast<PyCFunction>(set_map),         METH_VARARGS, "Imports the map file to calculate landscape metrics on. Should only be run once."},
+                                     {"calculate_MNN",    reinterpret_cast<PyCFunction>(calculateMNN),    METH_NOARGS,  "Calculates the mean nearest-neighbour for the landscape"},
+                                     {"calculate_CLUMPY", reinterpret_cast<PyCFunction>(calculateCLUMPY), METH_NOARGS,  "Calculates the CLUMPY metric for the landscape"},
                                      {nullptr,            nullptr, 0,                                                    nullptr}};
 
 PyTypeObject genLMCType()

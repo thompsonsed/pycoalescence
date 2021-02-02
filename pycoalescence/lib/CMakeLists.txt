@@ -31,6 +31,7 @@ if(${CMAKE_CXX_STANDARD} LESS 17)
 endif()
 
 
+add_compile_options(-Werror=cast-function-type -pedantic -Wc++14-compat -Wcast-function-type)
 
 message(STATUS "Compiler is ${CMAKE_CXX_COMPILER}")
 if (USING_INTEL)
