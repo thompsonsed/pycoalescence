@@ -25,6 +25,8 @@ struct PyTemplate
     PyObject* log_function = nullptr;
     std::unique_ptr<T> base_object = nullptr;
 
+    explicit constexpr PyTemplate(PyObject * obj) {};
+
 };
 
 template<class T> static int PyTemplate_traverse(PyTemplate<T>* self, visitproc visit, void* arg)
