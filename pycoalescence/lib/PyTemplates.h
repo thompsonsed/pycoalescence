@@ -17,7 +17,7 @@
 
 using namespace necsim;
 
-template<class T>
+template<typename T>
 struct PyTemplate
 {
     PyObject_HEAD
@@ -27,7 +27,8 @@ struct PyTemplate
 
     PyTemplate<T>() = default;
 
-    explicit constexpr PyTemplate<T>(PyObject * obj) {};
+    explicit constexpr PyTemplate<T>(PyObject* obj)
+    { };
 
 };
 
