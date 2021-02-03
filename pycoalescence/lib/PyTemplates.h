@@ -25,7 +25,9 @@ struct PyTemplate
     PyObject* log_function = nullptr;
     std::unique_ptr<T> base_object = nullptr;
 
-    explicit constexpr PyTemplate(PyObject * obj) {};
+    PyTemplate<T>() = default;
+
+    explicit constexpr PyTemplate<T>(PyObject * obj) {};
 
 };
 
