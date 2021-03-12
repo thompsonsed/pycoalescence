@@ -11,8 +11,18 @@
 #include "necsim/Map.h"
 #include "LandscapeMetricsCalculator.h"
 
+void LandscapeMetricsCalculator::importMap(const string &filename)
+{
+    Map::import(filename);
+    has_imported_map = true;
+}
+
 double LandscapeMetricsCalculator::calculateMNN()
 {
+    if(!has_imported_map)
+    {
+        throw FatalException("Map has not been imported. Cannot calculate MNN.");
+    }
     vector<double> distances;
     for(unsigned long i = 0; i < getRows(); i++)
     {
@@ -123,6 +133,10 @@ double LandscapeMetricsCalculator::findNearestNeighbourDistance(const long &row,
 
 void LandscapeMetricsCalculator::createCellList()
 {
+    if(!has_imported_map)
+    {
+        throw FatalException("Map has not been imported. Cannot create cell list.");
+    }
     for(unsigned long i = 0; i < getRows(); i++)
     {
         for(unsigned long j = 0; j < getCols(); j++)
@@ -143,6 +157,10 @@ void LandscapeMetricsCalculator::createCellList()
 
 double LandscapeMetricsCalculator::calculateClumpiness()
 {
+    if(!has_imported_map)
+    {
+        throw FatalException("Map has not been imported. Cannot calculate CLUMPY.");
+    }
     createCellList();
     double P = static_cast<double>(all_cells.size()) / static_cast<double>(getCols() * getRows());
     unsigned long totalAdj = calculateNoAdjacencies();

@@ -60,8 +60,7 @@ except ImportError as ie:  # pragma: no cover
     CoalescenceTree = None
     logging.error("Problem importing sqlite or coalescence_tree modules: {}".format(ie))
 
-from pycoalescence.necsim import CSpatialSimulation
-# from pycoalescence.necsim import CNSESimulation, CSpatialSimulation, CPNSESimulation, CPSpatialSimulation
+from pycoalescence.necsim import CNSESimulation, CSpatialSimulation, CPNSESimulation, CPSpatialSimulation
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 from pycoalescence.landscape import Landscape
 from pycoalescence.map import Map
@@ -1281,10 +1280,10 @@ class Simulation(Landscape):
         self.setup_necsim()
         if self.full_config_file is not None:  # pragma: no cover
             self.c_simulation.import_from_config(self.full_config_file)
-            logging.info(f"Full config file: {self.full_config_file}") # TODO remove
+
         else:
             self.config.write(self.config_string)
-            logging.info(f"Config : {self.config_string}")  # TODO remove
+            self.logger.info(f"Config : {self.config_string.getvalue()}")  # TODO remove
             self.c_simulation.import_from_config_string(self.config_string.getvalue())
         self.c_simulation.setup()
         if self.uses_gillespie and self.check_can_use_gillespie():

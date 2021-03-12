@@ -27,10 +27,10 @@ from operator import itemgetter
 import numpy as np
 import pandas as pd
 
-# from pycoalescence.necsim.necsim
-
+from pycoalescence import Simulation
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
-from pycoalescence.system_operations import mod_directory, create_logger, write_to_log
+from pycoalescence.necsim.necsim import CMetacommunity, CCommunity
+from pycoalescence.system_operations import mod_directory, create_logger
 from pycoalescence.spatial_algorithms import calculate_distance_between
 from pycoalescence.sqlite_connection import (
     check_sql_table_exist,
@@ -632,7 +632,7 @@ class CoalescenceTree(object):
 
         :param pycoalescence.simulation.Simulation/str filename: the SQLite database file to import
         """
-        if isinstance(filename, pycoalescence.simulation.Simulation):
+        if isinstance(filename, Simulation):
             filename = filename.output_database
             if filename is None:  # pragma: no cover
                 raise RuntimeError(
@@ -741,9 +741,9 @@ class CoalescenceTree(object):
         """
         if self.c_community is None:
             if self._check_metacommunity():
-                self.c_community = libnecsim.CMetacommunity(self.logger, write_to_log)
+                self.c_community = CMetacommunity(self.logger)
             else:
-                self.c_community = libnecsim.CCommunity(self.logger, write_to_log)
+                self.c_community = CCommunity(self.logger)
 
     def _setup_c_community(self):
         """

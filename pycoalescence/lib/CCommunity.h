@@ -204,7 +204,7 @@ template<class T> static PyObject* wipeProtractedParameters(PyCommunityTemplate<
     try
     {
         setGlobalLogger(self->logger, self->log_function);
-        self->specSimParameters->protracted_parameters.clear();
+        self->specSimParameters->wipeProtractedParameters();
     }
     catch(exception &e)
     {
