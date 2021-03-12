@@ -21,7 +21,7 @@ namespace necsim
 {
     PyLogger* pyLogger = nullptr;
 
-    PyLogger* getGlobalLogger(PyObject* logger, PyObject* log_function)
+    void setGlobalLogger(PyObject* logger, PyObject* log_function)
     {
         if(pyLogger != nullptr)
         {
@@ -30,14 +30,12 @@ namespace necsim
         pyLogger = new PyLogger();
         if(logger == nullptr || log_function == nullptr)
         {
-            string errmsg = "logger or log_function is nullptr when attempting to getGlobalLogger(). "
+            string errmsg = "logger or log_function is nullptr when attempting to setGlobalLogger(). "
                             "Please report this bug.";
             PyErr_SetString(PyExc_SystemError, errmsg.c_str());
-            return nullptr;
         }
         pyLogger->setLogger(logger);
         pyLogger->setLogFunction(log_function);
-        return pyLogger;
     }
 
     void removeGlobalLogger()

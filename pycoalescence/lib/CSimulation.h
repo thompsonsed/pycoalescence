@@ -43,7 +43,7 @@ template<class T> static PyObject* importConfig(PyTemplate<T>* self, PyObject* a
     try
     {
         string config_file = input;
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->wipeSimulationVariables();
         self->base_object->importSimulationVariables(config_file);
     }
@@ -73,14 +73,10 @@ template<class T> static PyObject* importConfigFromString(PyTemplate<T>* self, P
     }
     try
     {
-        stringstream ss;
-        ss << input;
-        istream &istream1 = ss;
-        getGlobalLogger(self->logger, self->log_function);
+
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->wipeSimulationVariables();
-        ConfigParser config;
-        config.parseConfig(istream1);
-        self->base_object->importSimulationVariables(config);
+        self->base_object->importSimulationVariablesFromString(config);
     }
     catch(exception &e)
     {
@@ -102,7 +98,7 @@ template<class T> static PyObject* setup(PyTemplate<T>* self, PyObject* args)
     // Set up the simulation, catch and return any errors.
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->setup();
     }
     catch(exception &e)
@@ -124,7 +120,7 @@ template<class T> static PyObject* addGillespie(PyTemplate<T>* self, PyObject* a
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->addGillespie(generation_threshold);
     }
     catch(exception &e)
@@ -148,7 +144,7 @@ template<class T> static PyObject* run(PyTemplate<T>* self, PyObject* args)
     // Run the program, catch and return any errors.
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(self->base_object->runSimulation())
         {
             Py_RETURN_TRUE;
@@ -186,7 +182,7 @@ template<class T> static PyObject* applySpeciationRates(PyTemplate<T>* self, PyO
         {
             return nullptr;
         }
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(!spec_rates.empty())
         {
             vector<long double> spec_rates_long(spec_rates.begin(), spec_rates.end());
@@ -225,7 +221,7 @@ template<class T> static PyObject* setupResume(PyTemplate<T>* self, PyObject* ar
     out_directory_str = out_directory;
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->wipeSimulationVariables();
         self->base_object->setResumeParameters(pause_directory_str, out_directory_str, seed, task, max_time);
         self->base_object->checkSims(pause_directory_str, seed, task);

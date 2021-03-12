@@ -64,7 +64,7 @@ public:
     {
         if(needs_update)
         {
-            getGlobalLogger(logger, log_function);
+            setGlobalLogger(logger, log_function);
             base_object->setSimulationParameters(dispersalParameters, printing);
             base_object->setDispersalParameters();
             printing = false;
@@ -144,7 +144,7 @@ static PyObject* set_all_map_parameters(PySimulateDispersal* self, PyObject* arg
     try
     {
 
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->dispersalParameters->sample_x_offset = 0;
         self->dispersalParameters->sample_y_offset = 0;
         self->dispersalParameters->grid_x_size = self->dispersalParameters->sample_x_size;
@@ -254,7 +254,7 @@ PyObject* set_maps(PySimulateDispersal* self, PyObject* args)
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->dispersalParameters->sample_x_offset = 0;
         self->dispersalParameters->sample_y_offset = 0;
         self->dispersalParameters->grid_x_size = self->dispersalParameters->sample_x_size;
@@ -324,7 +324,7 @@ static PyObject* set_historical_map_parameters(PySimulateDispersal* self, PyObje
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         importPyListToVectorString(p_path_fine, path_fine, "Fine map paths must be strings.");
         importPyListToVectorULong(p_number_fine, number_fine, "Fine map numbers must be integers.");
         importPyListToVectorDouble(p_rate_fine, rate_fine, "Fine map rates must be floats.");
@@ -376,7 +376,7 @@ static PyObject* set_output_database(PySimulateDispersal* self, PyObject* args)
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(*self->output_database == "none")
         {
             string output_f = output_file;
@@ -424,7 +424,7 @@ static PyObject* set_dispersal_parameters(PySimulateDispersal* self, PyObject* a
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->dispersalParameters->setDispersalParameters(dispersal_method,
                                                           sigma,
                                                           tau,
@@ -465,7 +465,7 @@ static PyObject* runMDT(PySimulateDispersal* self, PyObject* args)
         {
             return nullptr;
         }
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(!importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers."))
         {
             return nullptr;
@@ -511,7 +511,7 @@ static PyObject* runADT(PySimulateDispersal* self, PyObject* args)
         {
             return nullptr;
         }
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(!importPyListToVectorULong(p_num_steps, num_steps, "Number of steps must be integers."))
         {
             return nullptr;
@@ -570,7 +570,7 @@ static PyObject* runSRW(PySimulateDispersal* self, PyObject* args)
         {
             return nullptr;
         }
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(!importPyListsToVectorCell(p_num_x_samples,
                                       p_num_y_samples,
                                       samples,
@@ -621,7 +621,7 @@ static PyObject* runMeanDispersal(PySimulateDispersal* self, PyObject* args)
         {
             return nullptr;
         }
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->setDispersalParameters();
         if(!self->has_imported_maps)
         {

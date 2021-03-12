@@ -47,7 +47,7 @@ PyObject* set_map(PyLMC* self, PyObject* args)
     {
         try
         {
-            getGlobalLogger(self->logger, self->log_function);
+            setGlobalLogger(self->logger, self->log_function);
             string map_path = map_file;
             self->landscapeMetricsCalculator->import(map_path);
             self->has_imported_map = true;
@@ -74,7 +74,7 @@ static PyObject* calculateCLUMPY(PyLMC* self, PyObject * args)
     // parse arguments
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(!self->has_imported_map)
         {
             throw runtime_error("Map has not been imported - cannot calculate CLUMPY metric.");
@@ -101,7 +101,7 @@ static PyObject* calculateMNN(PyLMC* self, PyObject * args)
     // parse arguments
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(!self->has_imported_map)
         {
             throw runtime_error("Map has not been imported - cannot calculate MNN metric.");

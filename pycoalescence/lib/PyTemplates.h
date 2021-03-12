@@ -85,7 +85,7 @@ template<class T> void initialise_logger(PyTemplate<T>* self)
     PyObject* c;
     Py_INCREF(self->log_function);
     c = self->log_function;
-    getGlobalLogger(l, c);
+    setGlobalLogger(l, c);
 }
 
 template<class T> static int PyTemplate_init(PyTemplate<T>* self, PyObject* args, PyObject* kwds)

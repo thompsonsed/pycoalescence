@@ -62,7 +62,7 @@ template<class T> static PyObject* setupApplySpeciation(PyCommunityTemplate<T>* 
     {
         return nullptr;
     }
-    getGlobalLogger(self->logger, self->log_function);
+    setGlobalLogger(self->logger, self->log_function);
 
 
     // Convert all our variables to the relevant form
@@ -114,7 +114,7 @@ template<class T> static PyObject* addTime(PyCommunityTemplate<T>* self, PyObjec
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->specSimParameters->addTime(time);
     }
     catch(exception &e)
@@ -142,7 +142,7 @@ template<class T> static PyObject* addProtractedParameters(PyCommunityTemplate<T
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->specSimParameters->addProtractedParameters(proc_min, proc_max);
     }
     catch(exception &e)
@@ -178,7 +178,7 @@ template<class T> static PyObject* pyAddMetacommunityParameters(PyCommunityTempl
     }
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->specSimParameters->addMetacommunityParameters(metacommunity_size,
                                                             speciation_rate,
                                                             metacommunity_option,
@@ -203,7 +203,7 @@ template<class T> static PyObject* wipeProtractedParameters(PyCommunityTemplate<
 {
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->specSimParameters->protracted_parameters.clear();
     }
     catch(exception &e)
@@ -227,7 +227,7 @@ template<class T> static PyObject* apply(PyCommunityTemplate<T>* self, PyObject*
     // Now run the actual simulation
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->Community::applyNoOutput(self->specSimParameters);
     }
     catch(exception &e)
@@ -251,7 +251,7 @@ template<class T> static PyObject* output(PyCommunityTemplate<T>* self, PyObject
     // Now run the actual simulation
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->output();
     }
     catch(exception &e)
@@ -275,7 +275,7 @@ template<class T> static PyObject* reset(PyCommunityTemplate<T>* self, PyObject*
     // Now run the actual simulation
     try
     {
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         if(self->base_object != nullptr)
         {
             self->base_object.reset();
@@ -301,7 +301,7 @@ template<class T> static PyObject* pySpeciateRemainingLineages(PyCommunityTempla
             return nullptr;
         }
         string database_str(database_char);
-        getGlobalLogger(self->logger, self->log_function);
+        setGlobalLogger(self->logger, self->log_function);
         self->base_object->speciateRemainingLineages(database_str);
     }
     catch(exception &e)
