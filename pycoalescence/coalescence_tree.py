@@ -27,7 +27,7 @@ from operator import itemgetter
 import numpy as np
 import pandas as pd
 
-from pycoalescence import Simulation
+
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 from pycoalescence.necsim.necsim import CMetacommunity, CCommunity
 from pycoalescence.system_operations import mod_directory, create_logger
@@ -632,6 +632,8 @@ class CoalescenceTree(object):
 
         :param pycoalescence.simulation.Simulation/str filename: the SQLite database file to import
         """
+        from pycoalescence.simulation import Simulation
+
         if isinstance(filename, Simulation):
             filename = filename.output_database
             if filename is None:  # pragma: no cover

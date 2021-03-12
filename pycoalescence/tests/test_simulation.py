@@ -1083,7 +1083,7 @@ class TestExpansionOverTime(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Run the simulation for expansion over time."""
-        cls.sim = Simulation(logging_level=10)
+        cls.sim = Simulation(logging_level=60)
         cls.sim.set_simulation_parameters(
             seed=5,
             task=17,

@@ -52,19 +52,15 @@ except ImportError as ie:  # pragma: no cover
         gdal = None
         logging.warning("Problem importing gdal modules: {}".format(ie))
 
-try:
-    import sqlite3
+import sqlite3
 
-    from .coalescence_tree import CoalescenceTree
-except ImportError as ie:  # pragma: no cover
-    CoalescenceTree = None
-    logging.error("Problem importing sqlite or coalescence_tree modules: {}".format(ie))
+from pycoalescence.coalescence_tree import CoalescenceTree
 
 from pycoalescence.necsim import CNSESimulation, CSpatialSimulation, CPNSESimulation, CPSpatialSimulation
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 from pycoalescence.landscape import Landscape
 from pycoalescence.map import Map
-from pycoalescence.system_operations import write_to_log, check_parent
+from pycoalescence.system_operations import check_parent
 
 
 class Simulation(Landscape):
