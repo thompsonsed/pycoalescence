@@ -5,22 +5,15 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport shared_ptr
 
 
-cdef extern from "necsim/SpatialTree.cpp" namespace "necsim":
-    pass
-
 cdef extern from "necsim/SpatialTree.h" namespace "necsim":
     cdef cppclass SpatialTree:
         pass
 
-cdef extern from "necsim/Tree.cpp" namespace "necsim":
-    pass
 
 cdef extern from "necsim/Tree.h" namespace "necsim":
     cdef cppclass Tree:
         pass
 
-cdef extern from "necsim/ProtractedTree.cpp" namespace "necsim":
-    pass
 
 cdef extern from "necsim/ProtractedTree.h" namespace "necsim":
     cdef cppclass ProtractedTree:
@@ -31,8 +24,6 @@ cdef extern from "necsim/ProtractedSpatialTree.h" namespace "necsim":
     cdef cppclass ProtractedSpatialTree:
         pass
 
-cdef extern from "necsim/SpecSimParameters.cpp" namespace "necsim":
-    pass
 
 cdef extern from "necsim/SpecSimParameters.h" namespace "necsim":
     cdef struct SpecSimParameters:
@@ -76,8 +67,6 @@ cdef extern from "necsim/GenericTree.h" namespace "necsim":
         void output() except +
 
 
-cdef extern from "necsim/Community.cpp" namespace "necsim":
-    pass
 
 # Declare the class with cdef
 cdef extern from "necsim/Community.h" namespace "necsim":
@@ -89,8 +78,6 @@ cdef extern from "necsim/Community.h" namespace "necsim":
         void speciateRemainingLineages(const string & filename) except +
 
 
-cdef extern from "necsim/Metacommunity.cpp" namespace "necsim":
-    pass
 
 # Declare the class with cdef
 cdef extern from "necsim/Metacommunity.h" namespace "necsim":
@@ -101,8 +88,6 @@ cdef extern from "necsim/Metacommunity.h" namespace "necsim":
         void output() except +
         void speciateRemainingLineages(const string & filename) except +
 
-cdef extern from "LandscapeMetricsCalculator.cpp":
-    pass
 
 cdef extern from "LandscapeMetricsCalculator.h":
     cdef cppclass LandscapeMetricsCalculator:
@@ -112,7 +97,7 @@ cdef extern from "LandscapeMetricsCalculator.h":
         double calculateMNN() except +
         double calculateClumpiness() except +
 
-cdef extern from "necsim/SimParameters" namespace "necsim":
+cdef extern from "necsim/SimParameters.h" namespace "necsim":
     cdef cppclass SimParameters:
 
         void setHistoricalMapParameters(vector[string] path_fine, vector[unsigned long] number_fine,
