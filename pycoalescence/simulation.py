@@ -1275,14 +1275,16 @@ class Simulation(Landscape):
         try:
             from pycoalescence.__init__ import __version__
 
-            self.logger.info("Simulation set-up under pycoalescence version {}".format(__version__))
+            self.logger.info("Simulation set-up under pycoalescence version {}\n".format(__version__))
         except ImportError:  # pragma: no cover
             self.logger.info("pycoalescence version not found.")
         self.setup_necsim()
         if self.full_config_file is not None:  # pragma: no cover
             self.c_simulation.import_from_config(self.full_config_file)
+            logging.info(f"Full config file: {self.full_config_file}") # TODO remove
         else:
             self.config.write(self.config_string)
+            logging.info(f"Config : {self.config_string}")  # TODO remove
             self.c_simulation.import_from_config_string(self.config_string.getvalue())
         self.c_simulation.setup()
         if self.uses_gillespie and self.check_can_use_gillespie():

@@ -2,6 +2,7 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
 from typing import List
+from logging import Logger
 
 from pycoalescence.system_operations import write_to_log
 
@@ -18,7 +19,7 @@ cdef class CSpatialSimulation:
     cdef SpatialTree c_simulation  # Hold a C++ instance which we're wrapping
     cdef object logger
 
-    def __cinit__(self, logger):
+    def __cinit__(self, object logger):
         self.logger = logger
         self.c_simulation = SpatialTree()
 

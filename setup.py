@@ -51,7 +51,7 @@ _, gdal_inc_path, gdal_dir = get_lib_and_gdal()
 extensions = [
     Extension(
         "pycoalescence.necsim.necsim",
-        ["pycoalescence/necsim/necsim.pyx", "pycoalescence/necsim/c_logging.pyx"]
+        ["pycoalescence/necsim/necsim.pyx"]
         + [str(x) for x in get_all_sources(pathlib.Path("pycoalescence", "lib", "necsim"))]
         +[str(pathlib.Path("pycoalescence", "lib", x)) for x in logging_files],
         include_dirs=[gdal_inc_path] if gdal_inc_path else None,
