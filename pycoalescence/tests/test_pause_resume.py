@@ -403,9 +403,7 @@ class TestSimulationPause2(unittest.TestCase):
             max_speciation_gen=100,
         )
         with self.assertRaises(necsimError):
-            coaltmp.resume_coalescence(
-                task=26, seed=10, pause_directory="output", max_time=10, out_directory="output"
-            )
+            coaltmp.resume_coalescence(task=26, seed=10, pause_directory="output", max_time=10, out_directory="output")
 
     def testPauseSimMatchesSingleRunSim2(self):
         """

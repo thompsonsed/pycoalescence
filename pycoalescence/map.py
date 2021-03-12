@@ -433,7 +433,7 @@ class Map(object):
         src_ds = None
 
     def set_dimensions(self, file_name=None, x_size=None, y_size=None, x_offset=None, y_offset=None):
-        """ Sets the dimensions and file for the Map object
+        """Sets the dimensions and file for the Map object
 
         :param str/pycoalescence.Map file_name: the location of the map object (a csv or tif file). If None, required
                                      that file_name is already provided.

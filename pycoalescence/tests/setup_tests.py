@@ -54,10 +54,10 @@ def setUpAll():
 
 def tearDownAll():
     """
-	Overrides the in-built behaviour for tearing down the module.
+    Overrides the in-built behaviour for tearing down the module.
 
-	Removes the output folder to clean up after testing.
-	"""
+    Removes the output folder to clean up after testing.
+    """
     rmtree("output", True)
     start = time.time()
     end = time.time()
@@ -86,10 +86,10 @@ def skipLongTest(f):
 
 def skipGdalWarp(f):
     """
-	Decorator to skip a test containing gdal warp.
+    Decorator to skip a test containing gdal warp.
 
-	Required for systems where gdal.Warp does not function properly
-	"""
+    Required for systems where gdal.Warp does not function properly
+    """
     name = f.__name__
     if bypass_gdal_warp:
 

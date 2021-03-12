@@ -449,9 +449,7 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         config_output = os.path.join("output", "conf_test_create.txt")
         config_output2 = os.path.join("output", "notexist", "conf_test_create2.txt")
         sim = Simulation(logging_level=logging.CRITICAL)
-        sim.set_simulation_parameters(
-            1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, spatial=False
-        )
+        sim.set_simulation_parameters(1, 23, "output", 0.1, 4, 4, 1, 1.0, max_time=200, spatial=False)
         self.assertFalse(os.path.exists(os.path.dirname(config_output2)))
         sim.write_config(config_output2)
         self.assertTrue(os.path.exists(os.path.dirname(config_output2)))
@@ -608,12 +606,8 @@ class TestSimulationConfigReadWrite(unittest.TestCase):
         self.assertEqual(1, coal.min_num_species)
         self.assertEqual("fat-tail", coal.dispersal_method)
         self.assertEqual("null", coal.sample_map.file_name)
-        self.assertEqual(
-            "pycoalescence/tests/sample/SA_sample_fine.tif", coal.fine_map.file_name
-        )
-        self.assertEqual(
-            "pycoalescence/tests/sample/SA_sample_coarse.tif", coal.coarse_map.file_name
-        )
+        self.assertEqual("pycoalescence/tests/sample/SA_sample_fine.tif", coal.fine_map.file_name)
+        self.assertEqual("pycoalescence/tests/sample/SA_sample_coarse.tif", coal.coarse_map.file_name)
         self.assertEqual(
             "pycoalescence/tests/sample/SA_sample_fine_pristine1.tif",
             coal.historical_fine_list[0],
@@ -714,9 +708,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
             expected_log = content_file.read().replace("\r", "\n").split("\n")[:-6]
             expected_log[0] = expected_log[0].format(pycoalescence_version)
         s = Simulation(logging_level=logging.INFO, stream=log_stream)
-        s.set_simulation_parameters(
-            seed=2, task=12, output_directory="output", min_speciation_rate=0.1
-        )
+        s.set_simulation_parameters(seed=2, task=12, output_directory="output", min_speciation_rate=0.1)
         s.set_map("null", 10, 10)
         s.run()
         log = log_stream.getvalue().replace("\r", "\n").split("\n")[:-6]
@@ -728,9 +720,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.WARNING, stream=log_stream)
-        s.set_simulation_parameters(
-            seed=3, task=12, output_directory="output", min_speciation_rate=0.1
-        )
+        s.set_simulation_parameters(seed=3, task=12, output_directory="output", min_speciation_rate=0.1)
         s.set_map("null", 10, 10)
         s.finalise_setup()
         s.run_coalescence()
@@ -742,9 +732,7 @@ class TestLoggingOutputsCorrectly(unittest.TestCase):
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-        s.set_simulation_parameters(
-            seed=4, task=12, output_directory="output", min_speciation_rate=0.1
-        )
+        s.set_simulation_parameters(seed=4, task=12, output_directory="output", min_speciation_rate=0.1)
         s.set_map("null", 10, 10)
         s.finalise_setup()
         s.run_coalescence()
@@ -763,9 +751,7 @@ class TestInitialCountSuccess(unittest.TestCase):
         """
         log_stream = StringIO()
         s = Simulation(logging_level=logging.CRITICAL, stream=log_stream)
-        s.set_simulation_parameters(
-            seed=5, task=12, output_directory="output", min_speciation_rate=0.1
-        )
+        s.set_simulation_parameters(seed=5, task=12, output_directory="output", min_speciation_rate=0.1)
         s.set_map_files(sample_file="null", fine_file="sample/large_fine.tif")
         s.sample_map.x_size = 10
         s.sample_map.y_size = 10
@@ -847,9 +833,7 @@ class TestSimulationDimensionsAndOffsets(unittest.TestCase):
         sim.fine_map = Map(file=os.path.join("sample", "SA_sample_fine.tif"))
         sim.fine_map.set_dimensions()
         with self.assertRaises(ValueError):
-            sim.check_dimensions_match_fine(
-                map_to_check=Map(file=os.path.join("sample", "SA_sample_coarse.tif"))
-            )
+            sim.check_dimensions_match_fine(map_to_check=Map(file=os.path.join("sample", "SA_sample_coarse.tif")))
 
 
 class TestSimulationExtremeSpeciation(unittest.TestCase):
@@ -950,18 +934,14 @@ class TestSimulationMapDensityReading(unittest.TestCase):
             dispersal_relative_cost=1,
             min_num_species=1,
         )
-        cls.c.set_map_files(
-            sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif"
-        )
+        cls.c.set_map_files(sample_file="sample/large_mask.tif", fine_file="sample/large_fine.tif")
 
     def testActualDensity(self):
         """
         Tests the actual density
         """
         self.assertEqual(
-            self.c.grid_density_actual(
-                0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size
-            ),
+            self.c.grid_density_actual(0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size),
             531,
         )
 
@@ -970,9 +950,7 @@ class TestSimulationMapDensityReading(unittest.TestCase):
         Tests the estimate density for the sample grid
         """
         self.assertEqual(
-            self.c.grid_density_estimate(
-                0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size
-            ),
+            self.c.grid_density_estimate(0, 0, self.c.sample_map.x_size, self.c.sample_map.y_size),
             375,
         )
 
@@ -1083,21 +1061,15 @@ class TestHistoricalMapsAlterResult(unittest.TestCase):
             time=10,
             rate=0.2,
         )
-        cls.hist_sim2.add_historical_map(
-            fine_file="sample/SA_sample_fine.tif", coarse_file="none", time=20, rate=0.2
-        )
+        cls.hist_sim2.add_historical_map(fine_file="sample/SA_sample_fine.tif", coarse_file="none", time=20, rate=0.2)
         cls.hist_sim2.run()
 
     def testSpeciesRichnessDiffer(self):
         """
         Tests that the species richness differs between the two simulations
         """
-        self.assertNotEqual(
-            self.base_sim.get_species_richness(), self.hist_sim.get_species_richness()
-        )
-        self.assertNotEqual(
-            self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness()
-        )
+        self.assertNotEqual(self.base_sim.get_species_richness(), self.hist_sim.get_species_richness())
+        self.assertNotEqual(self.hist_sim.get_species_richness(), self.hist_sim2.get_species_richness())
         self.assertEqual(2673, self.base_sim.get_species_richness())
         self.assertEqual(2515, self.hist_sim2.get_species_richness())
         self.assertEqual(2450, self.hist_sim.get_species_richness())
@@ -1122,9 +1094,7 @@ class TestExpansionOverTime(unittest.TestCase):
             landscape_type="infinite",
         )
         cls.sim.set_map_files("null", "sample/null.tif", "sample/null_large.tif")
-        cls.sim.add_historical_map(
-            "sample/null.tif", "sample/null_large.tif", time=500, rate=0.5
-        )
+        cls.sim.add_historical_map("sample/null.tif", "sample/null_large.tif", time=500, rate=0.5)
         cls.sim.add_sample_time([0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])
         cls.sim.run()
 
@@ -1351,9 +1321,7 @@ class TestRamEstimation(unittest.TestCase):
     def testPersistentRamEstimation(self):
         """Tests the calculations for persistent RAM usage."""
         sim = Simulation()
-        sim.set_simulation_parameters(
-            1, 1000, output_directory="output", min_speciation_rate=0.1
-        )
+        sim.set_simulation_parameters(1, 1000, output_directory="output", min_speciation_rate=0.1)
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1367,22 +1335,14 @@ class TestRamEstimation(unittest.TestCase):
         )
         self.assertEqual(9689724, sim.persistent_ram_usage())
         sim = Simulation()
-        sim.set_simulation_parameters(
-            1, 1000, output_directory="output", min_speciation_rate=0.1
-        )
+        sim.set_simulation_parameters(1, 1000, output_directory="output", min_speciation_rate=0.1)
         sim.set_map_files(
             sample_file=os.path.join("sample", "SA_sample_coarse.tif"),
             fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
         )
-        sim.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine.tif")
-        )
-        sim.add_death_map(
-            death_map=os.path.join("sample", "SA_sample_coarse_pristine.tif")
-        )
-        sim.add_reproduction_map(
-            reproduction_map=os.path.join("sample", "SA_sample_coarse_pristine.tif")
-        )
+        sim.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine.tif"))
+        sim.add_death_map(death_map=os.path.join("sample", "SA_sample_coarse_pristine.tif"))
+        sim.add_reproduction_map(reproduction_map=os.path.join("sample", "SA_sample_coarse_pristine.tif"))
         self.assertEqual(30135, sim.persistent_ram_usage())
 
 
@@ -1392,9 +1352,7 @@ class TestRamOptimistation(unittest.TestCase):
     def testBasicOptimisation(self):
         """Test that a basic optimisation process works."""
         sim = Simulation()
-        sim.set_simulation_parameters(
-            seed=1, task=2, output_directory="output", min_speciation_rate=0.1
-        )
+        sim.set_simulation_parameters(seed=1, task=2, output_directory="output", min_speciation_rate=0.1)
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1423,9 +1381,7 @@ class TestRamOptimistation(unittest.TestCase):
     def testOptimisationRaisesError(self):
         """Tests that errors are raised correctly."""
         sim = Simulation()
-        sim.set_simulation_parameters(
-            seed=1, task=2, output_directory="output", min_speciation_rate=0.1
-        )
+        sim.set_simulation_parameters(seed=1, task=2, output_directory="output", min_speciation_rate=0.1)
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
@@ -1440,14 +1396,13 @@ class TestRamOptimistation(unittest.TestCase):
         with self.assertRaises(MemoryError):
             sim.optimise_ram(0.0000001)
         sim = Simulation()
-        sim.set_simulation_parameters(
-            seed=1, task=2, output_directory="output", min_speciation_rate=0.1
-        )
+        sim.set_simulation_parameters(seed=1, task=2, output_directory="output", min_speciation_rate=0.1)
         sim.set_map_files(
             "null",
             fine_file=os.path.join("sample", "SA_sample_fine.tif"),
             coarse_file=os.path.join("sample", "SA_sample_coarse.tif"),
         )
+
 
 @skipLongTest
 class TestSimulationUsingGillespieEquality(unittest.TestCase):
@@ -1474,15 +1429,11 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
                 fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
                 coarse_file="none",
             )
-            baseline_simulation.add_dispersal_map(
-                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-            )
+            baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
             baseline_simulation.set_speciation_rates(speciation_rates=speciation_rates)
             baseline_simulation.run()
             for ref in range(1, len(speciation_rates) + 1):
-                cls.baseline_richness_values.append(
-                    (ref, baseline_simulation.get_species_richness(ref))
-                )
+                cls.baseline_richness_values.append((ref, baseline_simulation.get_species_richness(ref)))
         cls.gillespie_richness_values = []
         for seed, gillespie_generation in zip(range(10, 20), range(10, 2020, 200)):
             gillespie_simulation = Simulation(logging_level=50)
@@ -1500,28 +1451,18 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
                 fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
                 coarse_file="none",
             )
-            gillespie_simulation.add_dispersal_map(
-                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-            )
+            gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
             gillespie_simulation.add_gillespie(gillespie_generation)
             gillespie_simulation.run()
             for ref in range(1, len(speciation_rates) + 1):
-                cls.gillespie_richness_values.append(
-                    (ref, gillespie_simulation.get_species_richness(ref))
-                )
+                cls.gillespie_richness_values.append((ref, gillespie_simulation.get_species_richness(ref)))
 
     @staticmethod
     def setupGillespie(**kwargs):
         """Sets up a simple Gillespie simulation."""
         s = Simulation()
         s.set_simulation_parameters(
-            seed=12,
-            task=3,
-            output_directory="output",
-            min_speciation_rate=0.001,
-            deme=1,
-            sample_size=0.01,
-            **kwargs
+            seed=12, task=3, output_directory="output", min_speciation_rate=0.001, deme=1, sample_size=0.01, **kwargs
         )
         return s
 
@@ -1598,28 +1539,22 @@ class TestSimulationUsingGillespieEquality(unittest.TestCase):
         baseline_mean_values = {}
         baseline_all_values = {}
         for i in set(x for x, _ in self.baseline_richness_values):
-            vals = [
-                richness for ref, richness in self.baseline_richness_values if ref == i
-            ]
+            vals = [richness for ref, richness in self.baseline_richness_values if ref == i]
             baseline_all_values[i] = vals
             baseline_mean_values[i] = sum(vals) / len(vals)
 
         gillespie_mean_values = {}
         gillespie_all_values = {}
         for i in set(x for x, _ in self.gillespie_richness_values):
-            vals = [
-                richness for ref, richness in self.gillespie_richness_values if ref == i
-            ]
+            vals = [richness for ref, richness in self.gillespie_richness_values if ref == i]
             gillespie_all_values[i] = vals
             gillespie_mean_values[i] = sum(vals) / len(vals)
         for k, v in baseline_mean_values.items():
-            self.assertAlmostEqual(
-                v, gillespie_mean_values[k], delta=v/10
-            )
+            self.assertAlmostEqual(v, gillespie_mean_values[k], delta=v / 10)
+
 
 @skipLongTest
 class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.baseline_richness_values = []
@@ -1639,16 +1574,12 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
                 fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
                 coarse_file="none",
             )
-            baseline_simulation.add_dispersal_map(
-                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-            )
+            baseline_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
             baseline_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
             baseline_simulation.set_speciation_rates(speciation_rates=speciation_rates)
             baseline_simulation.run()
             for ref in range(1, len(speciation_rates) + 1):
-                cls.baseline_richness_values.append(
-                    (ref, baseline_simulation.get_species_richness(ref))
-                )
+                cls.baseline_richness_values.append((ref, baseline_simulation.get_species_richness(ref)))
         cls.gillespie_richness_values = []
         for seed, gillespie_generation in zip(range(40, 50), range(10, 2020, 200)):
             gillespie_simulation = Simulation(logging_level=50)
@@ -1666,41 +1597,30 @@ class TestSimulationUsingGillespieDeathMaps(unittest.TestCase):
                 fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
                 coarse_file="none",
             )
-            gillespie_simulation.add_dispersal_map(
-                dispersal_map=os.path.join("sample", "dispersal_fine2.tif")
-            )
+            gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine2.tif"))
             gillespie_simulation.add_death_map(os.path.join("sample", "SA_death.tif"))
             gillespie_simulation.add_gillespie(gillespie_generation)
             gillespie_simulation.run()
             for ref in range(1, len(speciation_rates) + 1):
-                cls.gillespie_richness_values.append(
-                    (ref, gillespie_simulation.get_species_richness(ref))
-                )
+                cls.gillespie_richness_values.append((ref, gillespie_simulation.get_species_richness(ref)))
 
     def testSpeciesRichnessValuesSimilar(self):
         """Checks that the species richness values are similar between implementations of Gillespie."""
         baseline_mean_values = {}
         baseline_all_values = {}
         for i in set(x for x, _ in self.baseline_richness_values):
-            vals = [
-                richness for ref, richness in self.baseline_richness_values if ref == i
-            ]
+            vals = [richness for ref, richness in self.baseline_richness_values if ref == i]
             baseline_all_values[i] = vals
             baseline_mean_values[i] = sum(vals) / len(vals)
 
         gillespie_mean_values = {}
         gillespie_all_values = {}
         for i in set(x for x, _ in self.gillespie_richness_values):
-            vals = [
-                richness for ref, richness in self.gillespie_richness_values if ref == i
-            ]
+            vals = [richness for ref, richness in self.gillespie_richness_values if ref == i]
             gillespie_all_values[i] = vals
             gillespie_mean_values[i] = sum(vals) / len(vals)
         for k, v in baseline_mean_values.items():
-            self.assertAlmostEqual(
-                v, gillespie_mean_values[k], delta=v/10
-            )
-
+            self.assertAlmostEqual(v, gillespie_mean_values[k], delta=v / 10)
 
 
 @skipLongTest
@@ -1723,9 +1643,7 @@ class TestSimulationUsingGillespieLarge(unittest.TestCase):
             fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
             coarse_file="none",
         )
-        cls.gillespie_simulation.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
-        )
+        cls.gillespie_simulation.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine3.tif"))
         cls.gillespie_simulation.add_gillespie(10)
         cls.gillespie_simulation.run()
         cls.gillespie_simulation2 = Simulation()
@@ -1742,9 +1660,7 @@ class TestSimulationUsingGillespieLarge(unittest.TestCase):
             fine_file=os.path.join("sample", "SA_sample_coarse.tif"),
             coarse_file="none",
         )
-        cls.gillespie_simulation2.add_dispersal_map(
-            dispersal_map=os.path.join("sample", "dispersal_fine3.tif")
-        )
+        cls.gillespie_simulation2.add_dispersal_map(dispersal_map=os.path.join("sample", "dispersal_fine3.tif"))
 
         cls.gillespie_simulation2.add_gillespie(0)
         cls.gillespie_simulation2.run()

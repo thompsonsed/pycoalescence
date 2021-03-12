@@ -549,7 +549,7 @@ def get_python_library(python_version):  # pragma: no cover
             masd = sysconfig.get_config_var("multiarchsubdir")
             if masd:
                 if masd.startswith(os.sep):
-                    masd = masd[len(os.sep):]
+                    masd = masd[len(os.sep) :]
                 libdir = os.path.join(libdir, masd)
 
         if libdir is None:
@@ -558,8 +558,8 @@ def get_python_library(python_version):  # pragma: no cover
         candidates = (
             os.path.join(libdir, "".join((pre, "python", ver, abi, ext)))
             for (pre, ext, ver, abi) in itertools.product(
-            candidate_lib_prefixes, candidate_extensions, candidate_versions, candidate_abiflags
-        )
+                candidate_lib_prefixes, candidate_extensions, candidate_versions, candidate_abiflags
+            )
         )
         for candidate in candidates:
             if os.path.exists(candidate):
