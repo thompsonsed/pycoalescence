@@ -23,7 +23,9 @@ except ImportError as ie:  # Python 2.x support
 from pycoalescence.simulation import Simulation
 from pycoalescence.coalescence_tree import CoalescenceTree
 from pycoalescence import __version__ as pycoalescence_version
+from pycoalescence.map import Map
 from setup_tests import setUpAll, tearDownAll, skipLongTest
+
 
 
 def setUpModule():

@@ -1279,7 +1279,6 @@ class Simulation(Landscape):
 
         else:
             self.config.write(self.config_string)
-            self.logger.info(f"Config : {self.config_string.getvalue()}")  # TODO remove
             self.c_simulation.import_from_config_string(self.config_string.getvalue())
         self.c_simulation.setup()
         if self.uses_gillespie and self.check_can_use_gillespie():
