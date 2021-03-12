@@ -31,6 +31,30 @@ from setuptools.command.build_ext import build_ext
 from distutils import sysconfig
 
 
+def get_lib_and_gdal():
+    gdal_inc_path = None
+    gdal_dir = None
+    if platform.system() == "Windows":
+        libdir = get_python_library("{}.{}".format(sys.version_info.major, sys.version_info.minor))
+    else:
+        conda_prefix = os.environ.get("PREFIX", None)  # for conda only under unix
+        libdir = sysconfig.get_config_var("LIBDIR")
+        if conda_prefix is not None:
+            gdal_inc_path = os.path.join(conda_prefix, "include")
+            gdal_dir = os.path.join(conda_prefix, "lib")
+        else:
+            try:
+                gdal_inc_path = subprocess.check_output(["gdal-config", "--cflags"], env=os.environ)
+                gdal_dir = subprocess.check_output(["gdal-config", "--prefix"], env=os.environ)
+            except subprocess.CalledProcessError:
+                pass
+            if gdal_inc_path is not None:
+                gdal_inc_path = gdal_inc_path.decode("utf-8").split(" ")[0][2:].replace("\n", "")
+            if gdal_dir is not None:
+                gdal_dir = gdal_dir.decode("utf-8").replace("\n", "")
+    return libdir, gdal_inc_path, gdal_dir
+
+
 class Installer(build_ext):  # pragma: no cover
     """Wraps configuration and compilation of C++ code."""
 
@@ -409,7 +433,7 @@ class Installer(build_ext):  # pragma: no cover
         except subprocess.CalledProcessError as cpe:
             raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
         if platform.system() == "Windows":
-            shutil.copy(os.path.join(tmp_dir, "necsim.pyd"), os.path.join(self.get_build_dir(), "libnecsim.pyd"))
+            shutil.copy(os.path.join(tmp_dir, "necsim.pxd"), os.path.join(self.get_build_dir(), "libnecsim.pyd"))
 
     def run(self):
         """Runs installation and generates the shared object files - entry point for setuptools"""
@@ -456,26 +480,7 @@ class Installer(build_ext):  # pragma: no cover
             cflags = str(re.sub(r"-arch \b[^ ]*", "", cflags)).replace("\n", "")  # remove any architecture flags
         else:
             cflags = ""
-        gdal_inc_path = None
-        gdal_dir = None
-        if platform.system() == "Windows":
-            libdir = get_python_library("{}.{}".format(sys.version_info.major, sys.version_info.minor))
-        else:
-            conda_prefix = os.environ.get("PREFIX", None)  # for conda only under unix
-            libdir = sysconfig.get_config_var("LIBDIR")
-            if conda_prefix is not None:
-                gdal_inc_path = os.path.join(conda_prefix, "include")
-                gdal_dir = os.path.join(conda_prefix, "lib")
-            else:
-                try:
-                    gdal_inc_path = subprocess.check_output(["gdal-config", "--cflags"], env=os.environ)
-                    gdal_dir = subprocess.check_output(["gdal-config", "--prefix"], env=os.environ)
-                except subprocess.CalledProcessError:
-                    pass
-                if gdal_inc_path is not None:
-                    gdal_inc_path = gdal_inc_path.decode("utf-8").split(" ")[0][2:].replace("\n", "")
-                if gdal_dir is not None:
-                    gdal_dir = gdal_dir.decode("utf-8").replace("\n", "")
+        libdir, gdal_inc_path, gdal_dir = get_lib_and_gdal()
         if libdir is None:
             libdir = os.path.abspath(os.path.join(sysconfig.get_config_var("LIBDEST"), "..", "libs"))
             if sysconfig.get_config_var("LIBDEST") == None:
