@@ -27,17 +27,17 @@ from operator import itemgetter
 import numpy as np
 import pandas as pd
 
-try:
-    from .necsim import libnecsim
-except ImportError as ie:  # pragma: no cover
-    logging.info(str(ie))
-    from necsim import libnecsim, necsimError
+# from pycoalescence.necsim.necsim
 
-from .future_except import FileNotFoundError, FileExistsError
-from .system_operations import mod_directory, create_logger, write_to_log
-from .spatial_algorithms import calculate_distance_between
-from .sqlite_connection import check_sql_table_exist, fetch_table_from_sql, get_table_names, SQLiteConnection
-import pycoalescence
+from pycoalescence.future_except import FileNotFoundError, FileExistsError
+from pycoalescence.system_operations import mod_directory, create_logger, write_to_log
+from pycoalescence.spatial_algorithms import calculate_distance_between
+from pycoalescence.sqlite_connection import (
+    check_sql_table_exist,
+    fetch_table_from_sql,
+    get_table_names,
+    SQLiteConnection,
+)
 
 # Reads the parameter descriptions from the json file.
 try:
@@ -121,7 +121,7 @@ class CoalescenceTree(object):
         self.metacommunity_speciation_rate = None
         self.metacommunity_option = None
         self.metacommunity_reference = None
-        self.logger = logging.Logger("pycoalescence.coalescence")
+        self.logger = logging.Logger("necsim")
         self.logging_level = logging_level
         self._create_logger(file=log_output)
         if database is not None:
@@ -320,7 +320,7 @@ class CoalescenceTree(object):
                 self.metacommunity_size = 0
                 self.metacommunity_speciation_rate = 0.0
                 self.metacommunity_option = metacommunity_option
-            if not isinstance(self.c_community, libnecsim.CMetacommunity):
+            if not isinstance(self.c_community, CMetacommunity):
                 self._reset_parameters()
             self.c_community.add_metacommunity_parameters(
                 self.metacommunity_size,

@@ -26,7 +26,7 @@ class LandscapeMetrics(Map):
         :param logging_level: the logging level to report at
         """
         Map.__init__(self, file)
-        self.logger = logging.Logger("pycoalescence.landscapemetric")
+        self.logger = logging.Logger("necsim")
         self._create_logger(logging_level=logging_level)
         self.c_LM_calc = libnecsim.CLandscapeMetricsCalculator(self.logger, write_to_log)
 

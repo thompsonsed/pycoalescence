@@ -55,7 +55,7 @@ class DispersalSimulation(Landscape):
         :param int logging_level: the level of logging to output during dispersal simulations
         """
         Landscape.__init__(self)
-        self.logger = logging.Logger("pycoalescence.dispersal_simulation")
+        self.logger = logging.Logger("necsim")
         self._create_logger(logging_level=logging_level)
         self._db_conn = None
         self.c_dispersal_simulation = None

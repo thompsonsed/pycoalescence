@@ -60,7 +60,8 @@ except ImportError as ie:  # pragma: no cover
     CoalescenceTree = None
     logging.error("Problem importing sqlite or coalescence_tree modules: {}".format(ie))
 
-from pycoalescence.necsim import libnecsim
+from pycoalescence.necsim import CSpatialSimulation
+# from pycoalescence.necsim import CNSESimulation, CSpatialSimulation, CPNSESimulation, CPSpatialSimulation
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 from pycoalescence.landscape import Landscape
 from pycoalescence.map import Map
@@ -89,7 +90,7 @@ class Simulation(Landscape):
         self.count_total = None
         # Create the logging object and pass on the required arguments for its creation
         passedKwards = {k: v for k, v in kwargs.items() if "stream" not in k}
-        self.logger = logging.Logger("pycoalescence.simulation", **passedKwards)
+        self.logger = logging.Logger("necsim", **passedKwards)
         self._create_logger(file=log_output, logging_level=logging_level, **kwargs)
         self.output_directory = ""
         self.pause_directory = ""
@@ -1297,13 +1298,13 @@ class Simulation(Landscape):
         """
         if self.protracted:
             if self.is_spatial:
-                self.c_simulation = libnecsim.CPSpatialSimulation(self.logger, write_to_log)
+                self.c_simulation = CPSpatialSimulation(self.logger)
             else:
-                self.c_simulation = libnecsim.CPNSESimulation(self.logger, write_to_log)
+                self.c_simulation = CPNSESimulation(self.logger)
         elif self.is_spatial:
-            self.c_simulation = libnecsim.CSpatialSimulation(self.logger, write_to_log)
+            self.c_simulation = CSpatialSimulation(self.logger)
         else:
-            self.c_simulation = libnecsim.CNSESimulation(self.logger, write_to_log)
+            self.c_simulation = CNSESimulation(self.logger)
 
     def set_speciation_rates(self, speciation_rates):
         """Add speciation rates for analysis at the end of the simulation. This is optional

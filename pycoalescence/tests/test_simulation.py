@@ -20,7 +20,8 @@ try:
 except ImportError as ie:  # Python 2.x support
     from cStringIO import StringIO
 
-from pycoalescence import Simulation, CoalescenceTree, Map
+from pycoalescence.simulation import Simulation
+from pycoalescence.coalescence_tree import CoalescenceTree
 from pycoalescence import __version__ as pycoalescence_version
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 

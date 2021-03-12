@@ -35,7 +35,7 @@ class Landscape:
         self.times_list = []
         self.rates_list = []
         self.logging_level = 10
-        self.logger = logging.Logger("pycoalescence.landscape")
+        self.logger = logging.Logger("necsim")
         self.landscape_type = False
 
     def _create_logger(self, file=None, logging_level=None, **kwargs):

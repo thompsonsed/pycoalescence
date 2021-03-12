@@ -10,7 +10,7 @@ import subprocess
 import types
 
 import numpy as np
-from pycoalescence.spatial_algorithms import convert_coordinates
+
 
 try:
     from matplotlib import pyplot as plt
@@ -22,8 +22,8 @@ except AttributeError:
     # No support for complex numbers compilation
     NumberTypes = (int, float)
 
-from .system_operations import check_file_exists, create_logger, check_parent, isclose
-
+from pycoalescence.spatial_algorithms import convert_coordinates
+from pycoalescence.system_operations import check_file_exists, create_logger, check_parent, isclose
 from pycoalescence.future_except import FileNotFoundError
 
 # Check to make sure that the GDAL_PATH is in the environmental variables
@@ -189,7 +189,7 @@ class Map(object):
         self.dimensions_set = False
         self.is_sample = is_sample
         self.logging_level = logging_level
-        self.logger = logging.Logger("pycoalescence.map")
+        self.logger = logging.Logger("necsim")
         self._create_logger()
         self._gdal_error_handler = GdalErrorHandler(self.logger)
         _gdalPushErrorHandler(self._gdal_error_handler)
