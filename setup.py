@@ -31,7 +31,7 @@ except ImportError:
 with open("README.rst") as f:
     long_description = f.read()
 
-excluded_files = ["main.cpp", "SpatialTree.cpp", "Logging.cpp"]
+excluded_files = ["main.cpp", "Logging.cpp"]
 logging_files = ["PyLogger.cpp", "PyLogging.cpp"]
 included_subfolders = ["eastl", "ghc"]
 

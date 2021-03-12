@@ -92,7 +92,7 @@ class DispersalSimulation(Landscape):
     def _create_c_dispersal_simulation(self):
         """Creates the CDispersalSimulation object, if it has not already been created."""
         if self.c_dispersal_simulation is None:
-            self.c_dispersal_simulation = libnecsim.CDispersalSimulation(self.logger, write_to_log)
+            self.c_dispersal_simulation = CDispersalSimulation(self.logger, write_to_log)
 
     def _open_database_connection(self, database=None):
         """
