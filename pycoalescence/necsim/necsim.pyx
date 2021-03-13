@@ -508,6 +508,7 @@ cdef class CDispersalSimulator:
                                  bool restrict_self):
         cdef string dispersal_method_str = dispersal_method
         cdef string dispersal_file_str = dispersal_file
+        cdef string closed_str = b"closed"
         self.set_logger()
         deref(self.c_sim_parameters).setDispersalParameters(dispersal_method,
                                                             sigma,
@@ -516,7 +517,7 @@ cdef class CDispersalSimulator:
                                                             cutoff,
                                                             dispersal_relative_cost,
                                                             restrict_self,
-                                                            "closed",
+                                                            closed_str,
                                                             dispersal_file_str)
         self.needs_update = True
 

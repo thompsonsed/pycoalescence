@@ -100,21 +100,40 @@ cdef extern from "LandscapeMetricsCalculator.h":
 cdef extern from "necsim/SimParameters.h" namespace "necsim":
     cdef cppclass SimParameters:
         SimParameters() except +
-        void setHistoricalMapParameters(vector[string] path_fine, vector[unsigned long] number_fine,
-                                        vector[double] rate_fine, vector[double] time_fine,
-                                        vector[string] path_coarse,
-                                        vector[unsigned long] number_coarse, vector[double] rate_coarse,
-                                        vector[double] time_coarse) except +
 
-        void setMapParameters(const string & fine_map_file_in, const string & coarse_map_file_in,
-                              const string & sample_mask_file_in, const unsigned long & sample_x_size_in,
-                              const unsigned long & sample_y_size_in, const unsigned long & fine_map_x_size_in,
-                              const unsigned long & fine_map_y_size_in, const unsigned long & fine_map_x_offset_in,
-                              const unsigned long & fine_map_y_offset_in, const unsigned long & coarse_map_x_size_in,
-                              const unsigned long & coarse_map_y_size_in, const unsigned long & coarse_map_x_offset_in,
-                              const unsigned long & coarse_map_y_offset_in, const unsigned long & coarse_map_scale_in,
-                              const double & deme_in, const double & deme_sample_in,
-                              const string & landscape_type_in) except +
+        void setMapParameters(const string &fine_map_file_in,
+                              const string &coarse_map_file_in,
+                              const unsigned long &sample_x_size_in,
+                              const unsigned long &sample_y_size_in,
+                              const unsigned long &fine_map_x_size_in,
+                              const unsigned long &fine_map_y_size_in,
+                              const unsigned long &fine_map_x_offset_in,
+                              const unsigned long &fine_map_y_offset_in,
+                              const unsigned long &coarse_map_x_size_in,
+                              const unsigned long &coarse_map_y_size_in,
+                              const unsigned long &coarse_map_x_offset_in,
+                              const unsigned long &coarse_map_y_offset_in,
+                              const unsigned long &coarse_map_scale_in,
+                              const double &deme_in,
+                              const string &landscape_type_in) except +
+
+        void setHistoricalMapParameters(vector[string] path_fine, vector[unsigned long] number_fine,
+                                vector[double] rate_fine, vector[double] time_fine,
+                                vector[string] path_coarse,
+                                vector[unsigned long] number_coarse, vector[double] rate_coarse,
+                                vector[double] time_coarse) except +
+
+
+        void setDispersalParameters(const string &dispersal_method_in,
+                                    const double &sigma_in,
+                                    const double &tau_in,
+                                    const double &m_prob_in,
+                                    const double &cutoff_in,
+                                    const double &dispersal_relative_cost_in,
+                                    bool restrict_self_in,
+                                    const string &landscape_type_in,
+                                    const string &dispersal_file_in) except +
+
 
 
 cdef extern from "necsim/SimulateDispersal.h" namespace "necsim":
