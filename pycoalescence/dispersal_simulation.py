@@ -18,11 +18,7 @@ import sys
 from numpy import std
 from numpy import zeros
 
-# Python 2
-try:
-    from .necsim import libnecsim
-except ImportError as ime:  # pragma: no cover
-    from pycoalescence.necsim import libnecsim
+
 
 try:
     try:
@@ -34,8 +30,9 @@ except ImportError as ie:  # pragma: no cover
     sqlite3 = None
     logging.warning("Problem importing sqlite module " + str(ie))
 
-from pycoalescence.system_operations import check_parent, write_to_log
+from pycoalescence.system_operations import check_parent
 from pycoalescence.landscape import Landscape
+from pycoalescence.necsim.necsim import CDispersalSimulator
 
 
 class DispersalSimulation(Landscape):
@@ -92,7 +89,7 @@ class DispersalSimulation(Landscape):
     def _create_c_dispersal_simulation(self):
         """Creates the CDispersalSimulation object, if it has not already been created."""
         if self.c_dispersal_simulation is None:
-            self.c_dispersal_simulation = CDispersalSimulation(self.logger, write_to_log)
+            self.c_dispersal_simulation = CDispersalSimulator(self.logger)
 
     def _open_database_connection(self, database=None):
         """
