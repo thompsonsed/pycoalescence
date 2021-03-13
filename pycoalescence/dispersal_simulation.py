@@ -57,7 +57,7 @@ class DispersalSimulation(Landscape):
         self._db_conn = None
         self.c_dispersal_simulation = None
         self._create_c_dispersal_simulation()
-        self.deme = 1
+        self.deme = 1.0
         self.number_repeats = None
         self.number_steps = None
         self.seed = None
@@ -163,7 +163,7 @@ class DispersalSimulation(Landscape):
         coarse_file=None,
         historical_fine_file=None,
         historical_coarse_file=None,
-        deme=1,
+        deme=1.0,
     ):
         """
         Sets the map files.
