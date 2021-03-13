@@ -3,11 +3,6 @@ import math
 import os
 import unittest
 
-# try:
-# 	import necsim
-# 	necsimError = necsim.libnecsim.necsimError
-# except ImportError:
-from pycoalescence.necsim.libnecsim import necsimError as nse
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Map
@@ -38,7 +33,7 @@ class TestDispersalSimulation(unittest.TestCase):
         """
         Sets up the class by running the dispersal simulations for later reference.
         """
-        cls.m = DispersalSimulation(logging_level=logging.CRITICAL)
+        cls.m = DispersalSimulation(logging_level=logging.INFO)
         cls.m.set_map_files(os.path.join("sample", "SA_sample_fine.tif"))
         cls.m.set_simulation_parameters(
             number_repeats=100,
@@ -101,12 +96,12 @@ class TestDispersalSimulation(unittest.TestCase):
             m.set_simulation_parameters(number_repeats=10000, output_database="output/normaldispersal.db", seed=1)
             m.set_map_files("null")
 
-    def testRaisesnecsimError(self):
+    def testRaisesError(self):
         """
         Tests that a dispersal.Error is raised when incorrect dispersal method is provided.
         """
         m = DispersalSimulation(logging_level=logging.CRITICAL)
-        with self.assertRaises(nse):
+        with self.assertRaises(RuntimeError):
             m.set_simulation_parameters(
                 number_repeats=10000, output_database="output/emptydb.db", seed=1, dispersal_method="notamethod"
             )

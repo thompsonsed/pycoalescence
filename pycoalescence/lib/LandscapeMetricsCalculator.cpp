@@ -13,8 +13,12 @@
 
 void LandscapeMetricsCalculator::importMap(const string &filename)
 {
-    Map::import(filename);
-    has_imported_map = true;
+    if(!has_imported_map)
+    {
+        Map::import(filename);
+        has_imported_map = true;
+    }
+
 }
 
 double LandscapeMetricsCalculator::calculateMNN()

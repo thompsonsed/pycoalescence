@@ -9,7 +9,6 @@ import unittest
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Simulation, CoalescenceTree
-from pycoalescence.necsim import necsimError
 from pycoalescence.sqlite_connection import check_sql_table_exist
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 
@@ -402,7 +401,7 @@ class TestSimulationPause2(unittest.TestCase):
             min_speciation_gen=0.0,
             max_speciation_gen=100,
         )
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             coaltmp.resume_coalescence(task=26, seed=10, pause_directory="output", max_time=10, out_directory="output")
 
     def testPauseSimMatchesSingleRunSim2(self):
