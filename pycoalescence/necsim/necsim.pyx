@@ -250,13 +250,13 @@ cdef class CCommunity:
               database,
               bool use_spatial,
               sample_file,
-              vector[double] times,
-              fragment_file,
-              vector[double] speciation_rates):
+              record_fragments,
+              vector[double] speciation_rates,
+              vector[double] times):
         self.set_logger()
         cdef string database_str = database
         cdef string sample_file_str = sample_file
-        cdef string fragment_file_str = fragment_file
+        cdef string fragment_file_str = record_fragments
         deref(self.c_spec_parameters).setup(database_str, use_spatial, sample_file_str, times, fragment_file_str,
                                             speciation_rates)
 
@@ -315,13 +315,13 @@ cdef class CMetacommunity:
               database,
               bool use_spatial,
               sample_file,
-              vector[double] times,
-              fragment_file,
-              vector[double] speciation_rates):
+              record_fragments,
+              vector[double] speciation_rates,
+              vector[double] times):
         self.set_logger()
         cdef string database_str = database
         cdef string sample_file_str = sample_file
-        cdef string fragment_file_str = fragment_file
+        cdef string fragment_file_str = record_fragments
         deref(self.c_spec_parameters).setup(database_str, use_spatial, sample_file_str, times, fragment_file_str,
                                             speciation_rates)
 
