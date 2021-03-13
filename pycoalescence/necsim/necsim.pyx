@@ -277,7 +277,6 @@ cdef class CCommunity:
         cdef string file_str = file
         self.c_community.speciateRemainingLineages(file_str)
 
-
 cdef class CMetacommunity:
     cdef Metacommunity c_community  # Hold a C++ instance which we're wrapping
     cdef shared_ptr[SpecSimParameters] c_spec_parameters
@@ -343,7 +342,6 @@ cdef class CMetacommunity:
         cdef string file_str = file
         self.c_community.speciateRemainingLineages(file_str)
 
-
 cdef class CLandscapeMetricsCalculator:
     cdef LandscapeMetricsCalculator c_landscapes  # Hold a C++ instance which we're wrapping
     cdef object logger
@@ -367,3 +365,206 @@ cdef class CLandscapeMetricsCalculator:
     def calculate_CLUMPY(self):
         self.set_logger()
         return self.c_landscapes.calculateClumpiness()
+
+cdef class CDispersalSimulator:
+    cdef SimulateDispersal c_simulator
+    cdef shared_ptr[SimParameters] c_sim_parameters
+    cdef object logger
+    cdef object output_database
+    cdef bool has_imported_maps
+    cdef bool needs_update
+    cdef bool printing
+
+    def __cinit__(self, logger):
+        self.logger = logger
+        self.c_simulator = SimulateDispersal()
+        self.c_sim_parameters = make_shared[SimParameters]()
+        self.output_database = "none"
+        self.has_imported_maps = False
+        self.needs_update = True
+        self.printing = True
+
+    def set_logger(self):
+        setGlobalLogger(self.logger, write_to_log)
+
+    def set_output_database(self, output_database):
+        self.set_logger()
+        if self.output_database == "none":
+            self.output_database = output_database
+        else:
+            raise RuntimeError("Output database has already been set.")
+        cdef string output_f = output_database
+        self.c_simulator.setOutputDatabase(output_f)
+
+    def import_maps(self,
+                    double deme,
+                    fine_map_file,
+                    unsigned long fine_map_x_size,
+                    unsigned long fine_map_y_size,
+                    unsigned long fine_map_x_offset,
+                    unsigned long fine_map_y_offset,
+                    unsigned long sample_map_x_size,
+                    unsigned long sample_map_y_size,
+                    coarse_map_file,
+                    unsigned long coarse_map_x_size,
+                    unsigned long coarse_map_y_size,
+                    unsigned long coarse_map_x_offset,
+                    unsigned long coarse_map_y_offset,
+                    unsigned long coarse_map_scale,
+                    landscape_type,
+                    ):
+        self.set_logger()
+        cdef string fine_map_file_str = fine_map_file
+        cdef string coarse_map_file_str = coarse_map_file
+        if self.has_imported_maps:
+            raise RuntimeError("Maps have already been imported")
+        deref(self.c_sim_parameters).setMapParameters(fine_map_file_str, coarse_map_file_str,
+                                                      sample_map_x_size,
+                                                      sample_map_y_size,
+                                                      fine_map_x_size,
+                                                      fine_map_y_size,
+                                                      fine_map_x_offset,
+                                                      fine_map_y_offset,
+                                                      coarse_map_x_size,
+                                                      coarse_map_y_size, coarse_map_x_offset,
+                                                      coarse_map_y_offset, coarse_map_scale,
+                                                      deme, landscape_type)
+        self.has_imported_maps = True
+
+    def import_all_maps(self, double deme,
+                        fine_map_file,
+                        unsigned long int fine_map_x_size,
+                        unsigned long fine_map_y_size,
+                        unsigned long fine_map_x_offset,
+                        unsigned long fine_map_y_offset,
+                        unsigned long sample_map_x_size,
+                        unsigned long sample_map_y_size,
+                        coarse_map_file,
+                        unsigned long coarse_map_x_size,
+                        unsigned long coarse_map_y_size,
+                        unsigned long coarse_map_x_offset,
+                        unsigned long coarse_map_y_offset,
+                        unsigned long coarse_map_scale,
+                        landscape_type,
+                        vector[string] path_fine,
+                        vector[unsigned long] number_fine,
+                        vector[double] rate_fine,
+                        vector[double] time_fine,
+                        vector[string] path_coarse,
+                        vector[unsigned long] number_coarse,
+                        vector[double] rate_coarse,
+                        vector[double] time_coarse):
+        self.set_logger()
+        self.import_maps(deme,
+                         fine_map_file,
+                         fine_map_x_size,
+                         fine_map_y_size,
+                         fine_map_x_offset,
+                         fine_map_y_offset,
+                         sample_map_x_size,
+                         sample_map_y_size,
+                         coarse_map_file,
+                         coarse_map_x_size,
+                         coarse_map_y_size,
+                         coarse_map_x_offset,
+                         coarse_map_y_offset,
+                         coarse_map_scale,
+                         landscape_type)
+        self.has_imported_maps = False
+        deref(self.c_sim_parameters).setHistoricalMapParameters(path_fine,
+                                                                number_fine,
+                                                                rate_fine,
+                                                                time_fine,
+                                                                path_coarse,
+                                                                number_coarse,
+                                                                rate_coarse,
+                                                                time_coarse)
+        self.setup()
+        self.c_simulator.importMaps()
+        self.has_imported_maps = True
+
+    def check_completed(self):
+        if self.output_database == "none":
+            raise RuntimeError("Output database has not been set.")
+        if not self.has_imported_maps:
+            raise RuntimeError("Maps have not been imported - cannot start simulations.")
+
+    def setup(self):
+        if self.needs_update:
+            self.set_logger()
+            self.c_simulator.setSimulationParameters(self.c_sim_parameters, self.printing)
+            self.c_simulator.setDispersalParameters()
+            self.printing = False
+            self.needs_update = False
+
+    def set_dispersal_parameters(self,
+                                 dispersal_method,
+                                 dispersal_file,
+                                 double sigma,
+                                 double tau,
+                                 double m_prob,
+                                 double cutoff,
+                                 double dispersal_relative_cost,
+                                 bool restrict_self):
+        cdef string dispersal_method_str = dispersal_method
+        cdef string dispersal_file_str = dispersal_file
+        self.set_logger()
+        deref(self.c_sim_parameters).setDispersalParameters(dispersal_method,
+                                                            sigma,
+                                                            tau,
+                                                            m_prob,
+                                                            cutoff,
+                                                            dispersal_relative_cost,
+                                                            restrict_self,
+                                                            "closed",
+                                                            dispersal_file_str)
+        self.needs_update = True
+
+    def base_setup(self, unsigned long number_repeats,
+                   vector[unsigned long] number_steps, unsigned long seed, unsigned long number_workers):
+        self.set_logger()
+        self.setup()
+        self.c_simulator.setSeed(seed)
+        self.c_simulator.setNumberRepeats(number_repeats)
+        self.c_simulator.setNumberSteps(number_steps)
+        self.c_simulator.setNumberWorkers(number_workers)
+        if not self.has_imported_maps:
+            self.c_simulator.importMaps()
+        self.check_completed()
+
+    def write_database(self, table_name):
+        cdef string table_name_str = table_name
+        self.c_simulator.writeDatabase(table_name_str)
+
+    def run_mean_distance_traveller(self, unsigned long number_repeats,
+                                    vector[unsigned long] number_steps, unsigned long seed,
+                                    unsigned long number_workers):
+        self.base_setup(number_repeats, number_steps, seed, number_workers)
+        self.c_simulator.runMeanDistanceTravelled()
+        self.write_database("DISTANCES_TRAVELLED")
+
+    def run_all_distance_travelled(self, unsigned long number_repeats, vector[unsigned long] number_steps,
+                                   unsigned long seed, unsigned long number_workers):
+        self.base_setup(number_repeats, number_steps, seed, number_workers)
+        self.c_simulator.runAllDistanceTravelled()
+        self.write_database("DISTANCES_TRAVELLED")
+
+    def run_sample_distance_travelled(self, vector[long] samples_x,
+                                      vector[long] samples_y, unsigned long number_repeats,
+                                      vector[unsigned long] number_steps, unsigned long seed,
+                                      unsigned long number_workers):
+        self.base_setup(number_repeats, number_steps, seed, number_workers)
+        self.c_simulator.runSampleDistanceTravelled(samples_x, samples_y)
+        self.write_database("DISTANCES_TRAVELLED")
+
+    def run_mean_dispersal_distance(self, unsigned long number_repeats, unsigned long seed, bool is_sequential):
+        self.set_logger()
+        self.setup()
+        self.c_simulator.setSeed(seed)
+        self.c_simulator.setNumberRepeats(number_repeats)
+        self.c_simulator.setSequential(is_sequential)
+        if not self.has_imported_maps:
+            self.c_simulator.importMaps()
+        self.check_completed()
+        self.c_simulator.runMeanDispersalDistance()
+        self.write_database("DISPERSAL_DISTANCES")

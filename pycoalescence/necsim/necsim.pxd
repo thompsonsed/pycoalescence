@@ -93,21 +93,45 @@ cdef extern from "LandscapeMetricsCalculator.h":
     cdef cppclass LandscapeMetricsCalculator:
         LandscapeMetricsCalculator() except +
 
-        void importMap(const string &filename) except +
+        void importMap(const string & filename) except +
         double calculateMNN() except +
         double calculateClumpiness() except +
 
 cdef extern from "necsim/SimParameters.h" namespace "necsim":
     cdef cppclass SimParameters:
-
+        SimParameters() except +
         void setHistoricalMapParameters(vector[string] path_fine, vector[unsigned long] number_fine,
                                         vector[double] rate_fine, vector[double] time_fine,
                                         vector[string] path_coarse,
                                         vector[unsigned long] number_coarse, vector[double] rate_coarse,
-                                        vector[double] time_coarse)
+                                        vector[double] time_coarse) except +
+
+        void setMapParameters(const string & fine_map_file_in, const string & coarse_map_file_in,
+                              const string & sample_mask_file_in, const unsigned long & sample_x_size_in,
+                              const unsigned long & sample_y_size_in, const unsigned long & fine_map_x_size_in,
+                              const unsigned long & fine_map_y_size_in, const unsigned long & fine_map_x_offset_in,
+                              const unsigned long & fine_map_y_offset_in, const unsigned long & coarse_map_x_size_in,
+                              const unsigned long & coarse_map_y_size_in, const unsigned long & coarse_map_x_offset_in,
+                              const unsigned long & coarse_map_y_offset_in, const unsigned long & coarse_map_scale_in,
+                              const double & deme_in, const double & deme_sample_in,
+                              const string & landscape_type_in) except +
+
 
 cdef extern from "necsim/SimulateDispersal.h" namespace "necsim":
     cdef cppclass SimulateDispersal:
         SimulateDispersal() except +
 
         void setSimulationParameters(shared_ptr[SimParameters] sim_parameters, bool p) except +
+        void setDispersalParameters() except +
+        void setOutputDatabase(string out_database) except +
+        void importMaps() except +
+        void setSeed(unsigned long seed) except +
+        void setNumberRepeats(unsigned long n) except +
+        void setNumberSteps(const vector[unsigned long] & s) except  +
+        void setNumberWorkers(unsigned long n) except +
+        void setSequential(bool bSequential) except +
+        void runMeanDistanceTravelled() except +
+        void runAllDistanceTravelled() except +
+        void runSampleDistanceTravelled(const vector[long] sample_x, const vector[long] sample_y) except +
+        void runMeanDispersalDistance() except +
+        void writeDatabase(string table_name) except +
