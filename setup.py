@@ -70,7 +70,7 @@ setup(
     url="http://pycoalescence.readthedocs.io/",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    ext_modules=cythonize(extensions, language_level="3"),
+    ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
     packages=find_packages(exclude=["*tests*", "docs"]),
     package_data={
@@ -95,7 +95,6 @@ setup(
         "Natural Language :: English",
     ],
     zip_safe=False,
-    nthreads=4,
     keywords="neutral simulation ecology spatially explicit",
     install_requires=["GDAL>=1.11.2", "numpy", "cython", "pandas", "configparser;python_version < '3.0'"],
     extras_require={"scipy": ["scipy>=0.12.0"], "plotting": ["matplotlib"]},
