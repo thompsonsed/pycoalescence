@@ -396,7 +396,7 @@ cdef class CDispersalSimulator:
         cdef string output_f = output_database
         self.c_simulator.setOutputDatabase(output_f)
 
-    def import_maps(self,
+    def import_maps_base(self,
                     double deme,
                     fine_map_file,
                     unsigned long fine_map_x_size,
@@ -429,6 +429,38 @@ cdef class CDispersalSimulator:
                                                       coarse_map_y_size, coarse_map_x_offset,
                                                       coarse_map_y_offset, coarse_map_scale,
                                                       deme, landscape_type)
+    def import_maps(self, double deme,
+                    fine_map_file,
+                    unsigned long fine_map_x_size,
+                    unsigned long fine_map_y_size,
+                    unsigned long fine_map_x_offset,
+                    unsigned long fine_map_y_offset,
+                    unsigned long sample_map_x_size,
+                    unsigned long sample_map_y_size,
+                    coarse_map_file,
+                    unsigned long coarse_map_x_size,
+                    unsigned long coarse_map_y_size,
+                    unsigned long coarse_map_x_offset,
+                    unsigned long coarse_map_y_offset,
+                    unsigned long coarse_map_scale,
+                    landscape_type):
+        self.import_maps_base(deme,
+                         fine_map_file,
+                         fine_map_x_size,
+                         fine_map_y_size,
+                         fine_map_x_offset,
+                         fine_map_y_offset,
+                         sample_map_x_size,
+                         sample_map_y_size,
+                         coarse_map_file,
+                         coarse_map_x_size,
+                         coarse_map_y_size,
+                         coarse_map_x_offset,
+                         coarse_map_y_offset,
+                         coarse_map_scale,
+                         landscape_type)
+        self.setup()
+        self.c_simulator.importMaps()
         self.has_imported_maps = True
 
     def import_all_maps(self, double deme,
@@ -455,7 +487,7 @@ cdef class CDispersalSimulator:
                         vector[double] rate_coarse,
                         vector[double] time_coarse):
         self.set_logger()
-        self.import_maps(deme,
+        self.import_maps_base(deme,
                          fine_map_file,
                          fine_map_x_size,
                          fine_map_y_size,
@@ -470,7 +502,6 @@ cdef class CDispersalSimulator:
                          coarse_map_y_offset,
                          coarse_map_scale,
                          landscape_type)
-        self.has_imported_maps = False
         deref(self.c_sim_parameters).setHistoricalMapParameters(path_fine,
                                                                 number_fine,
                                                                 rate_fine,
