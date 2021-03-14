@@ -566,7 +566,7 @@ cdef class CDispersalSimulator:
         cdef string table_name_str = table_name
         self.c_simulator.writeDatabase(table_name_str)
 
-    def run_mean_distance_traveller(self, unsigned long number_repeats,
+    def run_mean_distance_travelled(self, unsigned long number_repeats,
                                     vector[unsigned long] number_steps, unsigned long seed,
                                     unsigned long number_workers):
         self.base_setup(number_repeats, number_steps, seed, number_workers)
