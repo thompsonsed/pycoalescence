@@ -389,12 +389,10 @@ cdef class CDispersalSimulator:
 
     def set_output_database(self, output_database):
         self.set_logger()
+        cdef string output_f = output_database
         if self.output_database == "none":
             self.output_database = output_database
-        else:
-            raise RuntimeError("Output database has already been set.")
-        cdef string output_f = output_database
-        self.c_simulator.setOutputDatabase(output_f)
+            self.c_simulator.setOutputDatabase(output_f)
 
     def import_maps_base(self,
                     double deme,
