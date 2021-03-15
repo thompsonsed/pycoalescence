@@ -33,7 +33,7 @@ class TestDispersalSimulation(unittest.TestCase):
         """
         Sets up the class by running the dispersal simulations for later reference.
         """
-        cls.m = DispersalSimulation(logging_level=logging.CRITICAL) 
+        cls.m = DispersalSimulation(logging_level=logging.CRITICAL)
         cls.m.set_map_files(os.path.join("sample", "SA_sample_fine.tif"))
         cls.m.set_simulation_parameters(
             number_repeats=100,

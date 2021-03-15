@@ -163,6 +163,7 @@ cdef class CPNSESimulation:
         self.c_simulation.addSpeciationRates(speciation_rates)
         self.c_simulation.applyMultipleRates()
 
+
 cdef class CPSpatialSimulation:
     cdef GenericTree[ProtractedSpatialTree] c_simulation  # Hold a C++ instance which we're wrapping
     cdef object logger

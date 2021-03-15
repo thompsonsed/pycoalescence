@@ -64,8 +64,6 @@ endif ()
 include_directories(${SOURCE_DIR_NECSIM})
 
 set(SOURCE_FILES
-        necsim.cpp
-        necsim.h
         ${SOURCE_DIR_NECSIM}/RNGController.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
@@ -96,16 +94,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/LogFile.cpp
         ${SOURCE_DIR_NECSIM}/cpl_custom_handler.cpp
         ${SOURCE_DIR_NECSIM}/Cell.cpp
-        PyLogger.cpp
         ${SOURCE_DIR_NECSIM}/double_comparison.cpp
-        PyImports.cpp
-        PyLogging.cpp
         LandscapeMetricsCalculator.cpp
-        CCommunity.h
-        CSimulation.h
-        CLandscapeMetricsCalculator.h
-        CSimulateDispersal.h
-        PyTemplates.h
         ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
         ${SOURCE_DIR_NECSIM}/custom_exceptions.h
         ${SOURCE_DIR_NECSIM}/SQLiteHandler.cpp
@@ -134,7 +124,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
-        ${SOURCE_DIR_NECSIM}/GenericTree.h)
+        ${SOURCE_DIR_NECSIM}/GenericTree.h necsim/ProtractedSpatialTree.cpp)
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
