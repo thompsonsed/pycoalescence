@@ -70,7 +70,7 @@ setup(
     url="http://pycoalescence.readthedocs.io/",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    ext_modules=cythonize(extensions, language_level="3", nthreads=4, gdb_debug=True),
+    ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
     packages=find_packages(exclude=["*tests*", "docs"]),
     package_data={
