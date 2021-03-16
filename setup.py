@@ -96,7 +96,7 @@ setup(
     ],
     zip_safe=False,
     keywords="neutral simulation ecology spatially explicit",
-    install_requires=["GDAL>=1.11.2", "numpy", "cython", "pandas", "configparser;python_version < '3.0'"],
+    install_requires=["osgeo", "numpy", "cython", "pandas", "configparser;python_version < '3.0'"],
     extras_require={"scipy": ["scipy>=0.12.0"], "plotting": ["matplotlib"]},
     include_dirs=["pycoalescence/lib/"],
 )
