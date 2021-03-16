@@ -165,12 +165,12 @@ cdef class CPNSESimulation:
 
 
 cdef class CPSpatialSimulation:
-    cdef GenericTree[ProtractedSpatialTree] c_simulation  # Hold a C++ instance which we're wrapping
+    cdef ProtractedSpatialTree c_simulation  # Hold a C++ instance which we're wrapping
     cdef object logger
 
     def __cinit__(self, object logger):
         self.logger = logger
-        self.c_simulation = GenericTree[ProtractedSpatialTree]()
+        self.c_simulation = ProtractedSpatialTree()
 
     def set_logger(self):
         setGlobalLogger(self.logger, write_to_log)
