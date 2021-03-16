@@ -21,7 +21,8 @@ import os
 import random
 import sqlite3
 import sys
-from collections import defaultdict, Iterable
+from collections.abc import Iterable
+from collections import defaultdict
 from operator import itemgetter
 
 import numpy as np
