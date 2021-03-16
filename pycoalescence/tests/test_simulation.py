@@ -27,7 +27,6 @@ from pycoalescence.map import Map
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 
-
 def setUpModule():
     """
     Creates the output directory and moves logging files

@@ -19,7 +19,6 @@ from numpy import std
 from numpy import zeros
 
 
-
 try:
     try:
         import sqlite3

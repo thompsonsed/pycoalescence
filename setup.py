@@ -53,7 +53,7 @@ extensions = [
         "pycoalescence.necsim.necsim",
         ["pycoalescence/necsim/necsim.pyx"]
         + [str(x) for x in get_all_sources(pathlib.Path("pycoalescence", "lib", "necsim"))]
-        +[str(pathlib.Path("pycoalescence", "lib", x)) for x in root_files],
+        + [str(pathlib.Path("pycoalescence", "lib", x)) for x in root_files],
         include_dirs=[gdal_inc_path] if gdal_inc_path else None,
         libraries=["gdal"],
         library_dirs=[gdal_dir] if gdal_dir else None,
