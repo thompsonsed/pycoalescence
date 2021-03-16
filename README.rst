@@ -15,7 +15,7 @@ pycoalescence overview
 .. |CondaV| image:: https://img.shields.io/conda/vn/conda-forge/pycoalescence.svg?label=conda
 .. _CondaV: https://anaconda.org/conda-forge/pycoalescence
 
-.. |CondaPlatform| image:: https://img.shields.io/conda/pn/conda-forge/pycoalescence   :alt: Conda
+.. |CondaPlatform| image:: https://img.shields.io/conda/pn/conda-forge/pycoalescence?label=conda
 .. _CondaPlatform: https://anaconda.org/conda-forge/pycoalescence
 
 .. |PyPiV| image:: https://img.shields.io/pypi/v/pycoalescence.svg
