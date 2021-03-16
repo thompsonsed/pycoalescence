@@ -235,9 +235,9 @@ class TestSimulationPause2(unittest.TestCase):
         """
         Sets up the Coalescence object test case.
         """
-        self.coal = Simulation(logging_level=logging.INFO) # TODO set these back
-        self.coal2 = Simulation(logging_level=logging.INFO)
-        self.tree2 = CoalescenceTree(logging_level=logging.INFO)
+        self.coal = Simulation(logging_level=logging.CRITICAL) # TODO set these back
+        self.coal2 = Simulation(logging_level=logging.CRITICAL)
+        self.tree2 = CoalescenceTree(logging_level=logging.CRITICAL)
         self.coal.set_simulation_parameters(
             seed=10,
             task=26,
@@ -255,7 +255,7 @@ class TestSimulationPause2(unittest.TestCase):
             min_speciation_gen=0.0,
             max_speciation_gen=100,
         )
-        self.coal3 = Simulation(logging_level=logging.INFO)
+        self.coal3 = Simulation(logging_level=logging.CRITICAL)
         self.coal3.set_simulation_parameters(
             seed=10,
             task=26,
