@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.6)
 find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
 project(necsim CXX)
-add_cython_target(../lib/necsim CXX PY3)
+add_cython_target(necsim CXX PY3)
 
 
 
