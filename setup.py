@@ -76,8 +76,17 @@ setup(
     # ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
     packages=["pycoalescence"],
+    package_dir={"pycoalescence": "pycoalescence", "": "pycoalescence/necsim"},
     package_data={
-        "pycoalescence": ["reference/*.json", "reference/*.json", "*.pyx", "*.pxd", "*.h", "*.c", "*.cpp", "*.hpp"],
+        "pycoalescence": ["reference/*.json", "reference/*.json"],
+        "": [
+            "*.pyx",
+            "*.pxd",
+            "*.h",
+            "*.c",
+            "*.cpp",
+            "*.hpp",
+        ],
     },
     classifiers=[
         "Development Status :: 4 - Beta",

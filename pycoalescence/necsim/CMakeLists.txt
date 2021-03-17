@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.11.0)
 project(py_necsim CXX)
 find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
-add_cython_target(py_necsim CXX PY3 py_necsim.pxd)
+add_cython_target(py_necsim CXX PY3 py_necsim.pyx)
 
 
 
@@ -259,4 +259,4 @@ message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "GDAL include location ${GDAL_INCLUDE_DIR}")
 message(STATUS "GDAL library location ${GDAL_LIBRARY}")
 python_extension_module(py_necsim)
-install(TARGETS py_necsim LIBRARY DESTINATION pycoalescence)
+install(TARGETS py_necsim LIBRARY DESTINATION pycoalescence/necsim)
