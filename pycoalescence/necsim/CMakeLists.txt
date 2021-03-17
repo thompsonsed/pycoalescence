@@ -101,7 +101,9 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/cpl_custom_handler.cpp
         ${SOURCE_DIR_NECSIM}/Cell.cpp
         ${SOURCE_DIR_NECSIM}/double_comparison.cpp
-        LandscapeMetricsCalculator.cpp
+        lib/LandscapeMetricsCalculator.cpp
+        lib/PyLogging.cpp
+        lib/PyLogger.cpp
         ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
         ${SOURCE_DIR_NECSIM}/custom_exceptions.h
         ${SOURCE_DIR_NECSIM}/SQLiteHandler.cpp
@@ -130,7 +132,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
-        ${SOURCE_DIR_NECSIM}/GenericTree.h necsim/GenericCommunity.h)
+        ${SOURCE_DIR_NECSIM}/GenericTree.h
+        ${SOURCE_DIR_NECSIM}/GenericCommunity.h)
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
