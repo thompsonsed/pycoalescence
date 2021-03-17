@@ -83,9 +83,9 @@ cdef extern from "necsim/GenericTree.h" namespace "necsim":
 
 
 # Declare the class with cdef
-cdef extern from "necsim/Community.h" namespace "necsim":
-    cdef cppclass Community:
-        Community() except +
+cdef extern from "necsim/GenericCommunity.h" namespace "necsim":
+    cdef cppclass GenericCommunity[T]:
+        GenericCommunity() except +
 
         void applyNoOutput(shared_ptr[SpecSimParameters] sp) except +
         void output() except +
@@ -96,11 +96,12 @@ cdef extern from "necsim/Community.h" namespace "necsim":
 # Declare the class with cdef
 cdef extern from "necsim/Metacommunity.h" namespace "necsim":
     cdef cppclass Metacommunity:
-        Metacommunity() except +
+        pass
 
-        void applyNoOutput(shared_ptr[SpecSimParameters] sp) except +
-        void output() except +
-        void speciateRemainingLineages(const string & filename) except +
+# Declare the class with cdef
+cdef extern from "necsim/Community.h" namespace "necsim":
+    cdef cppclass Community:
+        pass
 
 
 cdef extern from "LandscapeMetricsCalculator.h":

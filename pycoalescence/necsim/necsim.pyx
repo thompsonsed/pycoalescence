@@ -9,7 +9,7 @@ from libcpp.memory cimport shared_ptr, make_shared
 from pycoalescence.system_operations import write_to_log
 
 from pycoalescence.necsim.necsim cimport SpatialTree, Tree, GenericTree, ProtractedSpatialTree, ProtractedTree, \
-    SpecSimParameters, Community, Metacommunity
+    SpecSimParameters, Community, Metacommunity, GenericCommunity
 from pycoalescence.necsim.necsim cimport setGlobalLogger
 
 # Create a Cython extension type which holds a C++ instance
@@ -215,13 +215,13 @@ cdef class CPSpatialSimulation:
         self.c_simulation.applyMultipleRates()
 
 cdef class CCommunity:
-    cdef Community c_community  # Hold a C++ instance which we're wrapping
+    cdef GenericCommunity[Community] c_community  # Hold a C++ instance which we're wrapping
     cdef shared_ptr[SpecSimParameters] c_spec_parameters
     cdef object logger
 
     def __cinit__(self, object logger):
         self.logger = logger
-        self.c_community = Community()
+        self.c_community = GenericCommunity[Community]()
         self.c_spec_parameters = make_shared[SpecSimParameters]()
 
     def set_logger(self):
@@ -280,13 +280,13 @@ cdef class CCommunity:
         self.c_community.speciateRemainingLineages(file_str)
 
 cdef class CMetacommunity:
-    cdef Metacommunity c_community  # Hold a C++ instance which we're wrapping
+    cdef GenericCommunity[Metacommunity] c_community  # Hold a C++ instance which we're wrapping
     cdef shared_ptr[SpecSimParameters] c_spec_parameters
     cdef object logger
 
     def __cinit__(self, object logger):
         self.logger = logger
-        self.c_community = Metacommunity()
+        self.c_community = GenericCommunity[Metacommunity]()
         self.c_spec_parameters = make_shared[SpecSimParameters]()
 
     def set_logger(self):
