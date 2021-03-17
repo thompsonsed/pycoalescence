@@ -33,35 +33,35 @@ except ImportError:
 with open("README.rst") as f:
     long_description = f.read()
 
-excluded_files = ["main.cpp", "Logging.cpp"]
-root_files = ["PyLogger.cpp", "PyLogging.cpp", "LandscapeMetricsCalculator.cpp"]
-included_subfolders = ["eastl", "ghc"]
-defines = [("WIN_INSTALL", None)] if platform.system() == "Windows" else []
+# excluded_files = ["main.cpp", "Logging.cpp"]
+# root_files = ["PyLogger.cpp", "PyLogging.cpp", "LandscapeMetricsCalculator.cpp"]
+# included_subfolders = ["eastl", "ghc"]
+# defines = [("WIN_INSTALL", None)] if platform.system() == "Windows" else []
+#
+# def get_all_sources(folder: pathlib.Path) -> List[pathlib.Path]:
+#     output = []
+#     for f_i in folder.iterdir():
+#         if f_i.is_file():
+#             if f_i.suffix == ".cpp" and f_i.name not in excluded_files:
+#                 output.append(f_i)
+#         if f_i.is_dir() and f.name in included_subfolders:
+#             output.extend(get_all_sources(f_i))
+#     return output
 
-def get_all_sources(folder: pathlib.Path) -> List[pathlib.Path]:
-    output = []
-    for f_i in folder.iterdir():
-        if f_i.is_file():
-            if f_i.suffix == ".cpp" and f_i.name not in excluded_files:
-                output.append(f_i)
-        if f_i.is_dir() and f.name in included_subfolders:
-            output.extend(get_all_sources(f_i))
-    return output
 
-
-_, gdal_inc_path, gdal_dir = get_lib_and_gdal()
-extensions = [
-    Extension(
-        "pycoalescence.necsim.necsim",
-        ["pycoalescence/necsim/necsim.pyx"]
-        + [str(x) for x in get_all_sources(pathlib.Path("pycoalescence", "lib", "necsim"))]
-        + [str(pathlib.Path("pycoalescence", "lib", x)) for x in root_files],
-        include_dirs=[gdal_inc_path] if gdal_inc_path else None,
-        define_macros=defines,
-        libraries=["gdal"],
-        library_dirs=[gdal_dir] if gdal_dir else None,
-    )
-]
+# _, gdal_inc_path, gdal_dir = get_lib_and_gdal()
+# extensions = [
+#     Extension(
+#         "pycoalescence.necsim.necsim",
+#         ["pycoalescence/necsim/necsim.pyx"]
+#         + [str(x) for x in get_all_sources(pathlib.Path("pycoalescence", "lib", "necsim"))]
+#         + [str(pathlib.Path("pycoalescence", "lib", x)) for x in root_files],
+#         include_dirs=[gdal_inc_path] if gdal_inc_path else None,
+#         define_macros=defines,
+#         libraries=["gdal"],
+#         library_dirs=[gdal_dir] if gdal_dir else None,
+#     )
+# ]
 
 
 setup(
@@ -73,7 +73,7 @@ setup(
     url="http://pycoalescence.readthedocs.io/",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    ext_modules=cythonize(extensions, language_level="3", nthreads=4),
+    # ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
     packages=find_packages(exclude=["*tests*", "docs"]),
     package_data={
