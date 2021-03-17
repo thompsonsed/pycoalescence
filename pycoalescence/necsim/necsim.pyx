@@ -2,6 +2,7 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
 from typing import List
+
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport shared_ptr, make_shared
 
@@ -165,7 +166,7 @@ cdef class CPNSESimulation:
 
 
 cdef class CPSpatialSimulation:
-    cdef ProtractedSpatialTree c_simulation  # Hold a C++ instance which we're wrapping
+    cdef GenericTree[ProtractedSpatialTree] c_simulation  # Hold a C++ instance which we're wrapping
     cdef object logger
 
     def __cinit__(self, object logger):
