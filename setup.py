@@ -17,11 +17,8 @@ from skbuild import setup
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.CRITICAL)
-necsim_path = os.path.join("pycoalescence", "necsim", "libnecsim.so")
 from Cython.Build import cythonize
 
-if os.path.exists(necsim_path):
-    os.remove(necsim_path)
 try:
     from pycoalescence import __version__ as p_version
     from pycoalescence.installer import Installer, get_lib_and_gdal
@@ -76,17 +73,17 @@ setup(
     # ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
     packages=["pycoalescence"],
-    package_dir={"pycoalescence": "pycoalescence", "": "pycoalescence/necsim"},
+    package_dir={"pycoalescence": "pycoalescence"},
     package_data={
         "pycoalescence": ["reference/*.json", "reference/*.json"],
-        "": [
-            "*.pyx",
-            "*.pxd",
-            "*.h",
-            "*.c",
-            "*.cpp",
-            "*.hpp",
-        ],
+        # "": [
+        #     "*.pyx",
+        #     "*.pxd",
+        #     "*.h",
+        #     "*.c",
+        #     "*.cpp",
+        #     "*.hpp",
+        # ],
     },
     classifiers=[
         "Development Status :: 4 - Beta",
