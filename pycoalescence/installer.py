@@ -433,7 +433,7 @@ class Installer(build_ext):  # pragma: no cover
         except subprocess.CalledProcessError as cpe:
             raise SystemError("Fatal error running cmake in directory: {}".format(cpe))
         if platform.system() == "Windows":
-            shutil.copy(os.path.join(tmp_dir, "necsim.pxd"), os.path.join(self.get_build_dir(), "libnecsim.pyd"))
+            shutil.copy(os.path.join(tmp_dir, "py_necsim.pxd"), os.path.join(self.get_build_dir(), "libnecsim.pyd"))
 
     def run(self):
         """Runs installation and generates the shared object files - entry point for setuptools"""

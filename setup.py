@@ -53,7 +53,7 @@ with open("README.rst") as f:
 # extensions = [
 #     Extension(
 #         "pycoalescence.necsim.necsim",
-#         ["pycoalescence/necsim/necsim.pyx"]
+#         ["pycoalescence/necsim/py_necsim.pyx"]
 #         + [str(x) for x in get_all_sources(pathlib.Path("pycoalescence", "lib", "necsim"))]
 #         + [str(pathlib.Path("pycoalescence", "lib", x)) for x in root_files],
 #         include_dirs=[gdal_inc_path] if gdal_inc_path else None,

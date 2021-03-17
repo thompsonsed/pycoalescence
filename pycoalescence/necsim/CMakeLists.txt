@@ -4,7 +4,7 @@ find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
 project(necsim CXX)
 add_cython_target(necsim CXX PY3)
-
+add_library(necsim MODULE ${necsim})
 
 
 
@@ -141,7 +141,7 @@ if (APPLE)
 elseif (WINDOWS)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
 endif ()
-add_library(necsim SHARED ${SOURCE_FILES})
+#add_library(necsim SHARED ${SOURCE_FILES}) // TODO remove
 if (GDAL_INCLUDE_DIR AND GDAL_DIR)
     message(STATUS "Provided GDAL_DIR ${GDAL_DIR}")
     message(STATUS "Provided GDAL include location ${GDAL_INCLUDE_DIR}")
@@ -176,9 +176,9 @@ else ()
 endif ()
 include_directories(${GDAL_INCLUDE_DIR})
 
-find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS})
-link_directories(${PYTHON_LIBRARIES})
+#find_package(PythonLibs REQUIRED)
+#include_directories(${PYTHON_INCLUDE_DIRS})
+#link_directories(${PYTHON_LIBRARIES})
 
 if (NOT WINDOWS)
     if (PYTHON_CPPFLAGS)
@@ -189,9 +189,6 @@ if (NOT WINDOWS)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${PYTHON_LDFLAGS}")
     endif ()
 endif ()
-
-add_definitions(-Dwith_gdal)
-
 
 if (WINDOWS)
     SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_BINDIR} CACHE PATH "build directory")
