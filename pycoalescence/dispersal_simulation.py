@@ -31,7 +31,7 @@ except ImportError as ie:  # pragma: no cover
 
 from pycoalescence.system_operations import check_parent
 from pycoalescence.landscape import Landscape
-from pycoalescence.necsim.py_necsim import CDispersalSimulator
+from pycoalescence.necsim.necsim import CDispersalSimulator
 
 
 class DispersalSimulation(Landscape):

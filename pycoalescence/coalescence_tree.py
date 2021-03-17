@@ -30,7 +30,7 @@ import pandas as pd
 
 
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
-from pycoalescence.necsim.py_necsim import CMetacommunity, CCommunity
+from pycoalescence.necsim.necsim import CMetacommunity, CCommunity
 from pycoalescence.system_operations import mod_directory, create_logger
 from pycoalescence.spatial_algorithms import calculate_distance_between
 from pycoalescence.sqlite_connection import (

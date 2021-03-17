@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.11.0)
 # Main necsim Python program
-project(py_necsim CXX)
+project(necsim CXX)
 find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
-add_cython_target(py_necsim CXX PY3 py_necsim.pyx)
+add_cython_target(necsim CXX PY3 necsim.pyx)
 
 
 
@@ -70,7 +70,7 @@ endif ()
 
 
 set(SOURCE_FILES
-        ${py_necsim}
+        ${necsim}
         ${SOURCE_DIR_NECSIM}/RNGController.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
@@ -135,7 +135,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
         ${SOURCE_DIR_NECSIM}/GenericTree.h
         ${SOURCE_DIR_NECSIM}/GenericCommunity.h)
-add_library(py_necsim MODULE ${SOURCE_FILES})
+add_library(necsim MODULE ${SOURCE_FILES})
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
@@ -167,16 +167,16 @@ if (DEFINED ENV{CONDA_PREFIX})
     if (NOT WINDOWS)
         find_package(sqlite3)
         include_directories(${SQLITE3_INCLUDE_DIRS})
-        target_link_libraries(py_necsim ${SQLITE3_LIBRARIES})
+        target_link_libraries(necsim ${SQLITE3_LIBRARIES})
     endif ()
 else ()
     message(STATUS "Standard Python install detected")
     find_package(sqlite3)
     include_directories(${SQLITE3_INCLUDE_DIRS})
-    target_link_libraries(py_necsim ${SQLITE3_LIBRARIES})
+    target_link_libraries(necsim ${SQLITE3_LIBRARIES})
 endif ()
 include_directories(${GDAL_INCLUDE_DIR})
-target_include_directories(py_necsim PUBLIC ${PROJECT_SOURCE_DIR})
+target_include_directories(necsim PUBLIC ${PROJECT_SOURCE_DIR})
 #find_package(PythonLibs REQUIRED)
 #include_directories(${PYTHON_INCLUDE_DIRS})
 #link_directories(${PYTHON_LIBRARIES})
@@ -193,15 +193,15 @@ endif ()
 
 if (WINDOWS)
     SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_BINDIR} CACHE PATH "build directory")
-    target_link_libraries(py_necsim ${PYTHON_LIBRARIES})
+    target_link_libraries(necsim ${PYTHON_LIBRARIES})
     message(STATUS "Detecting libraries for windows")
 
     find_package(sqlite3)
     include_directories(${SQLITE3_INCLUDE_DIRS})
-    target_link_libraries(py_necsim ${SQLITE3_LIBRARIES})
-    target_link_libraries(py_necsim ${GDAL_LIBRARY})
+    target_link_libraries(necsim ${SQLITE3_LIBRARIES})
+    target_link_libraries(necsim ${GDAL_LIBRARY})
 else ()
-    target_link_libraries(py_necsim ${GDAL_LIBRARY})
+    target_link_libraries(necsim ${GDAL_LIBRARY})
 endif ()
 
 
@@ -228,14 +228,14 @@ if (CPP_17_UNSUPPORTED)
         if (Boost_FOUND)
             add_definitions(-DUSING_BOOST)
             include_directories(${Boost_INCLUDE_DIR})
-            target_link_libraries(py_necsim ${Boost_LIBRARIES})
+            target_link_libraries(necsim ${Boost_LIBRARIES})
         endif ()
     else ()
         find_package(Boost 1.5.7 COMPONENTS system filesystem)
         if (Boost_FOUND)
             add_definitions(-DUSING_BOOST)
             include_directories(${Boost_INCLUDE_DIR})
-            target_link_libraries(py_necsim ${Boost_LIBRARIES})
+            target_link_libraries(necsim ${Boost_LIBRARIES})
         endif ()
     endif ()
 endif ()
@@ -258,5 +258,5 @@ endif ()
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "GDAL include location ${GDAL_INCLUDE_DIR}")
 message(STATUS "GDAL library location ${GDAL_LIBRARY}")
-python_extension_module(py_necsim)
-install(TARGETS py_necsim LIBRARY DESTINATION pycoalescence/necsim)
+python_extension_module(necsim)
+install(TARGETS necsim LIBRARY DESTINATION pycoalescence/necsim)

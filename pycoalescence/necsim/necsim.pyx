@@ -8,7 +8,7 @@ from libcpp.memory cimport shared_ptr, make_shared
 
 from pycoalescence.system_operations import write_to_log
 
-from pycoalescence.necsim.py_necsim cimport SpatialTree, Tree, GenericTree, ProtractedSpatialTree, ProtractedTree, \
+from pycoalescence.necsim.necsim cimport SpatialTree, Tree, GenericTree, ProtractedSpatialTree, ProtractedTree, \
     SpecSimParameters, Community, Metacommunity, GenericCommunity, setGlobalLogger
 
 # Create a Cython extension type which holds a C++ instance

@@ -3,7 +3,7 @@ Calculates landscape-level metrics, including mean distance to nearest-neighbour
 """
 import logging
 
-from pycoalescence.necsim.py_necsim import CLandscapeMetricsCalculator
+from pycoalescence.necsim.necsim import CLandscapeMetricsCalculator
 
 try:
     from .map import Map
