@@ -12,7 +12,8 @@ import pathlib
 import platform
 from typing import List
 
-from setuptools import setup, Extension, find_packages
+from setuptools import Extension, find_packages
+from skbuild import setup
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.CRITICAL)

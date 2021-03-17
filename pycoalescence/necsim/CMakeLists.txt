@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.6)
-# Main necsimmodule Python program
-
+# Main necsim Python program
+find_package(PythonExtensions REQUIRED)
+find_package(Cython REQUIRED)
 project(necsim CXX)
+add_cython_target(../lib/necsim CXX PY3)
+
+
+
+
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
@@ -251,3 +257,5 @@ endif ()
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "GDAL include location ${GDAL_INCLUDE_DIR}")
 message(STATUS "GDAL library location ${GDAL_LIBRARY}")
+python_extension_module(necsim)
+install(TARGETS necsim LIBRARY DESTINATION necsim)

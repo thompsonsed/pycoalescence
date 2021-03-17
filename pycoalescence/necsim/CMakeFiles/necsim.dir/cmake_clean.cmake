@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/necsim.dir/LandscapeMetricsCalculator.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/ActivityMap.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/AnalyticalSpeciesAbundancesHandler.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/Cell.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/Community.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/ConfigParser.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/DataMask.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/DataPoint.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/DispersalCoordinator.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/GillespieCalculator.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/Landscape.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/LogFile.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/Logger.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/MapLocation.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/Metacommunity.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/ProtractedSpatialTree.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/ProtractedTree.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SQLiteHandler.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SimulateDispersal.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SimulatedSpeciesAbundancesHandler.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SpatialTree.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SpeciationCommands.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SpeciesAbundancesHandler.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/SpeciesList.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/Tree.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/TreeNode.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/cpl_custom_handler.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/double_comparison.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/file_system.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/neutral_analytical.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/parameters.cpp.o"
+  "CMakeFiles/necsim.dir/necsim/setup.cpp.o"
+  "libnecsim.pdb"
+  "libnecsim.so"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/necsim.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
