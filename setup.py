@@ -9,6 +9,7 @@ Run ```python setup.py develop``` to install the package in development mode.
 import logging
 import os
 import pathlib
+import platform
 from typing import List
 
 from setuptools import setup, Extension, find_packages
@@ -34,7 +35,7 @@ with open("README.rst") as f:
 excluded_files = ["main.cpp", "Logging.cpp"]
 root_files = ["PyLogger.cpp", "PyLogging.cpp", "LandscapeMetricsCalculator.cpp"]
 included_subfolders = ["eastl", "ghc"]
-
+defines = [("WIN_INSTALL", None)] if platform.system() == "Windows" else []
 
 def get_all_sources(folder: pathlib.Path) -> List[pathlib.Path]:
     output = []
@@ -55,6 +56,7 @@ extensions = [
         + [str(x) for x in get_all_sources(pathlib.Path("pycoalescence", "lib", "necsim"))]
         + [str(pathlib.Path("pycoalescence", "lib", x)) for x in root_files],
         include_dirs=[gdal_inc_path] if gdal_inc_path else None,
+        define_macros=defines,
         libraries=["gdal"],
         library_dirs=[gdal_dir] if gdal_dir else None,
     )
