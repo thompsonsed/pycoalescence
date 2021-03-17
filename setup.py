@@ -75,7 +75,7 @@ setup(
     long_description_content_type="text/x-rst",
     # ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
-    packages=find_packages(exclude=["*tests*", "docs"]),
+    packages=["pycoalescence"],
     package_data={
         "pycoalescence": ["reference/*.json", "reference/*.json"],
         "": ["*.pyx", "*.pxd", "*.h", "*.c", "*.cpp", "*.hpp"],
@@ -99,7 +99,14 @@ setup(
     ],
     zip_safe=False,
     keywords="neutral simulation ecology spatially explicit",
-    install_requires=["GDAL>=1.11.2", "numpy", "cython", "pandas", "configparser;python_version < '3.0'"],
+    install_requires=[
+        "GDAL>=1.11.2",
+        "numpy",
+        "cython",
+        "pandas",
+        "configparser;python_version < '3.0'",
+        "scikit-build",
+    ],
     extras_require={"scipy": ["scipy>=0.12.0"], "plotting": ["matplotlib"]},
-    include_dirs=["pycoalescence/lib/"],
+    include_dirs=["pycoalescence/necsim/"],
 )
