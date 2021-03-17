@@ -77,8 +77,7 @@ setup(
     license="MIT",
     packages=["pycoalescence"],
     package_data={
-        "pycoalescence": ["reference/*.json", "reference/*.json"],
-        "": ["*.pyx", "*.pxd", "*.h", "*.c", "*.cpp", "*.hpp"],
+        "pycoalescence": ["reference/*.json", "reference/*.json", "*.pyx", "*.pxd", "*.h", "*.c", "*.cpp", "*.hpp"],
     },
     classifiers=[
         "Development Status :: 4 - Beta",
