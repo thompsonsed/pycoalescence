@@ -17,8 +17,9 @@ from skbuild import setup
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.CRITICAL)
-from Cython.Build import cythonize
-
+for file in pathlib.Path(pathlib.Path(__file__).parent, "pycoalescence", "necsim").iterdir():
+    if "necsim.cpy" in file.name:
+        file.unlink()
 try:
     from pycoalescence import __version__ as p_version
     from pycoalescence.installer import Installer, get_lib_and_gdal
@@ -72,7 +73,7 @@ setup(
     long_description_content_type="text/x-rst",
     # ext_modules=cythonize(extensions, language_level="3", nthreads=4),
     license="MIT",
-    packages=["pycoalescence"],
+    packages=find_packages(),
     package_dir={"pycoalescence": "pycoalescence"},
     package_data={
         "pycoalescence": ["reference/*.json", "reference/*.json"],
