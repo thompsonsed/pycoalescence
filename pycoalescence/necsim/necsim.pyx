@@ -171,7 +171,7 @@ cdef class CPSpatialSimulation:
 
     def __cinit__(self, object logger):
         self.logger = logger
-        self.c_simulation = ProtractedSpatialTree()
+        self.c_simulation = GenericTree[ProtractedSpatialTree]()
 
     def set_logger(self):
         setGlobalLogger(self.logger, write_to_log)
