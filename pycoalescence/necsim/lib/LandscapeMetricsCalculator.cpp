@@ -7,8 +7,8 @@
  *
  * @copyright <a href="https://opensource.org/licenses/MIT"> MIT Licence.</a>
  */
-#include "necsim/Matrix.h"
-#include "necsim/Map.h"
+#include "../necsim/Matrix.h"
+#include "../necsim/Map.h"
 #include "LandscapeMetricsCalculator.h"
 
 void LandscapeMetricsCalculator::importMap(const string &filename)

@@ -16,7 +16,7 @@
 #include <Python.h>
 #include <string>
 #include <sstream>
-#include "necsim/Logger.h"
+#include "../necsim/Logger.h"
 
 namespace necsim
 {

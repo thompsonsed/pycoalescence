@@ -10,8 +10,8 @@
 #include<algorithm>
 #include <vector>
 #include <numeric>
-#include "necsim/Map.h"
-#include "necsim/Cell.h"
+#include "../necsim/Map.h"
+#include "../necsim/Cell.h"
 
 #ifndef MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
 #define MEAN_DISTANCE_MEANDISTANCECALCULATOR_H

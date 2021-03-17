@@ -1,7 +1,12 @@
-cmake_minimum_required(VERSION 3.6)
-# Main necsimmodule Python program
-
+cmake_minimum_required(VERSION 3.11.0)
+# Main necsim Python program
 project(necsim CXX)
+find_package(PythonExtensions REQUIRED)
+find_package(Cython REQUIRED)
+add_cython_target(necsim CXX PY3 necsim.pyx)
+
+
+
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
@@ -17,10 +22,10 @@ else ()
     set(CMAKE_CXX_STANDARD 17)
 endif ()
 
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(SOURCE_DIR_NECSIM "${PROJECT_SOURCE_DIR}/necsim")
+message(STATUS "Project source dir: ${PROJECT_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(SOURCE_DIR_NECSIM "necsim")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CPP_17_UNSUPPORTED FALSE)
 message(STATUS "CXX Standard: ${CMAKE_CXX_STANDARD}")
@@ -61,9 +66,10 @@ if (DEFINED ENV{CONDA_PREFIX})
         set(CMAKE_PREFIX_PATH "$ENV{PREFIX}")
     endif ()
 endif ()
-include_directories(${SOURCE_DIR_NECSIM})
+
 
 set(SOURCE_FILES
+        ${necsim}
         ${SOURCE_DIR_NECSIM}/RNGController.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
@@ -95,7 +101,9 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/cpl_custom_handler.cpp
         ${SOURCE_DIR_NECSIM}/Cell.cpp
         ${SOURCE_DIR_NECSIM}/double_comparison.cpp
-        LandscapeMetricsCalculator.cpp
+        lib/LandscapeMetricsCalculator.cpp
+        lib/PyLogging.cpp
+        lib/PyLogger.cpp
         ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
         ${SOURCE_DIR_NECSIM}/custom_exceptions.h
         ${SOURCE_DIR_NECSIM}/SQLiteHandler.cpp
@@ -124,7 +132,9 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
-        ${SOURCE_DIR_NECSIM}/GenericTree.h necsim/GenericCommunity.h)
+        ${SOURCE_DIR_NECSIM}/GenericTree.h
+        ${SOURCE_DIR_NECSIM}/GenericCommunity.h)
+add_library(necsim MODULE ${SOURCE_FILES})
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
@@ -132,7 +142,6 @@ if (APPLE)
 elseif (WINDOWS)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
 endif ()
-add_library(necsim SHARED ${SOURCE_FILES})
 if (GDAL_INCLUDE_DIR AND GDAL_DIR)
     message(STATUS "Provided GDAL_DIR ${GDAL_DIR}")
     message(STATUS "Provided GDAL include location ${GDAL_INCLUDE_DIR}")
@@ -148,10 +157,6 @@ if (NOT GDAL_FOUND)
     message(FATAL_ERROR "No gdal library found...exiting.")
 endif ()
 if (DEFINED ENV{CONDA_PREFIX})
-    #    if (APPLE)
-    # use, i.e. don't skip the full RPATH for the build tree
-    #        SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-    #    endif ()
     message(STATUS "Conda install detected")
 
     if (NOT WINDOWS)
@@ -166,10 +171,7 @@ else ()
     target_link_libraries(necsim ${SQLITE3_LIBRARIES})
 endif ()
 include_directories(${GDAL_INCLUDE_DIR})
-
-find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS})
-link_directories(${PYTHON_LIBRARIES})
+target_include_directories(necsim PUBLIC ${PROJECT_SOURCE_DIR})
 
 if (NOT WINDOWS)
     if (PYTHON_CPPFLAGS)
@@ -180,9 +182,6 @@ if (NOT WINDOWS)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${PYTHON_LDFLAGS}")
     endif ()
 endif ()
-
-add_definitions(-Dwith_gdal)
-
 
 if (WINDOWS)
     SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_BINDIR} CACHE PATH "build directory")
@@ -202,21 +201,7 @@ endif ()
 if (CPP_17_UNSUPPORTED)
     message(STATUS "Using BOOST libraries as C++ 17 not found")
     if (WINDOWS)
-        #    set(Boost_NO_SYSTEM_PATHS true)
-        #    set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
-        #    set(Boost_USE_MULTITHREADED ON)
         add_definitions(-DBOOST_ALL_NO_LIB) # <----- This is really important for Windows compatibility
-        # force all boost libraries to dynamic link (we already disabled
-        # autolinking, so I don't know why we need this, but we do!)
-        #    add_definitions( -DBOOST_ALL_DYN_LINK )
-        #    set(Boost_USE_MULTITHREAD ON)
-        #    set(Boost_USE_STATIC_LIBS ON)
-        #    set(Boost_NO_SYSTEM_PATHS ON)
-        #    set(Boost_USE_STATIC_LIBS OFF)
-        #    set(Boost_USE_MULTITHREADED ON)
-        #    set(Boost_USE_STATIC_RUNTIME OFF)
-        #    set(Boost_DEBUG ON)  #<---------- Real life saver
-        #    add_definitions(-DBOOST_SYSTEM_NO_DEPRECATED)
         find_package(Boost 1.5.7 COMPONENTS system filesystem)
         if (Boost_FOUND)
             add_definitions(-DUSING_BOOST)
@@ -251,3 +236,5 @@ endif ()
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "GDAL include location ${GDAL_INCLUDE_DIR}")
 message(STATUS "GDAL library location ${GDAL_LIBRARY}")
+python_extension_module(necsim)
+install(TARGETS necsim LIBRARY DESTINATION pycoalescence/necsim)

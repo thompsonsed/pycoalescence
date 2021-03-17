@@ -12,7 +12,7 @@
 
 #include "Python.h"
 #include <string>
-#include "necsim/LogFile.h"
+#include "../necsim/LogFile.h"
 #include "PyLogger.h"
 
 namespace necsim

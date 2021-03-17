@@ -7,8 +7,8 @@
  * @copyright <a href="https://opensource.org/licenses/MIT">MIT Licence.</a>
  */
 
-#include "necsim/custom_exceptions.h"
-#include "necsim/Logger.h"
+#include "../necsim/custom_exceptions.h"
+#include "../necsim/Logger.h"
 #include "PyLogger.h"
 #include <utility>
 
