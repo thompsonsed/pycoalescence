@@ -105,7 +105,7 @@ cdef extern from "necsim/Community.h" namespace "necsim":
         pass
 
 
-cdef extern from "LandscapeMetricsCalculator.h":
+cdef extern from "lib/LandscapeMetricsCalculator.h":
     cdef cppclass LandscapeMetricsCalculator:
         LandscapeMetricsCalculator() except +
 
