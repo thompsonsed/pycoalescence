@@ -9,7 +9,6 @@ import unittest
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Simulation, CoalescenceTree
-from pycoalescence.necsim import necsimError
 from pycoalescence.sqlite_connection import check_sql_table_exist
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 
@@ -236,9 +235,9 @@ class TestSimulationPause2(unittest.TestCase):
         """
         Sets up the Coalescence object test case.
         """
-        self.coal = Simulation(logging_level=40)
-        self.coal2 = Simulation(logging_level=40)
-        self.tree2 = CoalescenceTree(logging_level=logging.ERROR)
+        self.coal = Simulation(logging_level=logging.CRITICAL)  # TODO set these back
+        self.coal2 = Simulation(logging_level=logging.CRITICAL)
+        self.tree2 = CoalescenceTree(logging_level=logging.CRITICAL)
         self.coal.set_simulation_parameters(
             seed=10,
             task=26,
@@ -256,7 +255,7 @@ class TestSimulationPause2(unittest.TestCase):
             min_speciation_gen=0.0,
             max_speciation_gen=100,
         )
-        self.coal3 = Simulation(logging_level=logging.ERROR)
+        self.coal3 = Simulation(logging_level=logging.CRITICAL)
         self.coal3.set_simulation_parameters(
             seed=10,
             task=26,
@@ -402,10 +401,8 @@ class TestSimulationPause2(unittest.TestCase):
             min_speciation_gen=0.0,
             max_speciation_gen=100,
         )
-        with self.assertRaises(necsimError):
-            coaltmp.resume_coalescence(
-                task=26, seed=10, pause_directory="output", max_time=10, out_directory="output"
-            )
+        with self.assertRaises(RuntimeError):
+            coaltmp.resume_coalescence(task=26, seed=10, pause_directory="output", max_time=10, out_directory="output")
 
     def testPauseSimMatchesSingleRunSim2(self):
         """

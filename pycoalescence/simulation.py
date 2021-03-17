@@ -52,19 +52,15 @@ except ImportError as ie:  # pragma: no cover
         gdal = None
         logging.warning("Problem importing gdal modules: {}".format(ie))
 
-try:
-    import sqlite3
+import sqlite3
 
-    from .coalescence_tree import CoalescenceTree
-except ImportError as ie:  # pragma: no cover
-    CoalescenceTree = None
-    logging.error("Problem importing sqlite or coalescence_tree modules: {}".format(ie))
+from pycoalescence.coalescence_tree import CoalescenceTree
 
-from pycoalescence.necsim import libnecsim
+from pycoalescence.necsim import CNSESimulation, CSpatialSimulation, CPNSESimulation, CPSpatialSimulation
 from pycoalescence.future_except import FileNotFoundError, FileExistsError
 from pycoalescence.landscape import Landscape
 from pycoalescence.map import Map
-from pycoalescence.system_operations import write_to_log, check_parent
+from pycoalescence.system_operations import check_parent
 
 
 class Simulation(Landscape):
@@ -89,7 +85,7 @@ class Simulation(Landscape):
         self.count_total = None
         # Create the logging object and pass on the required arguments for its creation
         passedKwards = {k: v for k, v in kwargs.items() if "stream" not in k}
-        self.logger = logging.Logger("pycoalescence.simulation", **passedKwards)
+        self.logger = logging.Logger("necsim", **passedKwards)
         self._create_logger(file=log_output, logging_level=logging_level, **kwargs)
         self.output_directory = ""
         self.pause_directory = ""
@@ -105,9 +101,7 @@ class Simulation(Landscape):
         self.deme = 1
         self.sample_size = 1
         self.max_time = 100
-        self.dispersal_relative_cost = (
-            1
-        )  # the relative cost of moving through non-matrix
+        self.dispersal_relative_cost = 1  # the relative cost of moving through non-matrix
         self.task = 0
         self.min_num_species = 1
         self.tau = 0
@@ -174,15 +168,9 @@ class Simulation(Landscape):
 
         :param output_file: path to config file to output to
         """
-        if (
-            self.full_config_file
-            and output_file != self.full_config_file
-            and output_file
-        ):
+        if self.full_config_file and output_file != self.full_config_file and output_file:
             self.logger.warning(
-                "Config file has already been set to {}, changing to {}.".format(
-                    self.full_config_file, output_file
-                )
+                "Config file has already been set to {}, changing to {}.".format(self.full_config_file, output_file)
             )
         if output_file is not None:
             self.full_config_file = output_file
@@ -205,20 +193,14 @@ class Simulation(Landscape):
         self.min_speciation_rate = self.config.getfloat("main", "min_spec_rate")
         self.sigma = self.config.getfloat("main", "sigma", fallback=1.0)
         self.tau = self.config.getfloat("main", "tau", fallback=1.0)
-        self.dispersal_relative_cost = self.config.getint(
-            "main", "dispersal_relative_cost", fallback=1.0
-        )
+        self.dispersal_relative_cost = self.config.getint("main", "dispersal_relative_cost", fallback=1.0)
         self.deme = self.config.getint("main", "deme", fallback=1.0)
         self.sample_size = self.config.getfloat("main", "sample_size", fallback=1.0)
         self.max_time = self.config.getint("main", "max_time", fallback=1.0)
         self.min_num_species = self.config.getint("main", "min_species")
         if self.config.has_section("protracted"):
-            self.min_speciation_gen = self.config.getfloat(
-                "protracted", "min_speciation_gen"
-            )
-            self.max_speciation_gen = self.config.getfloat(
-                "protracted", "max_speciation_gen"
-            )
+            self.min_speciation_gen = self.config.getfloat("protracted", "min_speciation_gen")
+            self.max_speciation_gen = self.config.getfloat("protracted", "max_speciation_gen")
             self.protracted = True
         if self.config.has_section("spec_rates"):
             opts = self.config.options("spec_rates")
@@ -237,9 +219,7 @@ class Simulation(Landscape):
                 0,
                 0,
             )
-            self.uses_spatial_sampling = self.config.getboolean(
-                "sample_grid", "uses_spatial_sampling", fallback=False
-            )
+            self.uses_spatial_sampling = self.config.getboolean("sample_grid", "uses_spatial_sampling", fallback=False)
             self.fine_map.set_dimensions(
                 self.config.get("fine_map", "path"),
                 self.config.getint("fine_map", "x", fallback=0),
@@ -254,9 +234,7 @@ class Simulation(Landscape):
                 self.config.getint("coarse_map", "x_off", fallback=0),
                 self.config.getint("coarse_map", "y_off", fallback=0),
             )
-            self.coarse_scale = self.config.getfloat(
-                "coarse_map", "scale", fallback=1.0
-            )
+            self.coarse_scale = self.config.getfloat("coarse_map", "scale", fallback=1.0)
             i = 0
             while True:
                 tmp_fine = "historical_fine{}".format(i)
@@ -280,19 +258,11 @@ class Simulation(Landscape):
                 self.reproduction_map.file_name = self.config.get("reproduction", "map")
             if self.config.has_section("dispersal"):
                 self.dispersal_method = self.config.get("dispersal", "method")
-                self.m_prob = self.config.getfloat(
-                    "dispersal", "m_probability", fallback=0.0
-                )
+                self.m_prob = self.config.getfloat("dispersal", "m_probability", fallback=0.0)
                 self.cutoff = self.config.getfloat("dispersal", "cutoff", fallback=0.0)
-                self.restrict_self = self.config.getboolean(
-                    "dispersal", "restrict_self", fallback=False
-                )
-                self.landscape_type = self.config.get(
-                    "dispersal", "landscape_type", fallback="closed"
-                )
-                self.dispersal_map = self.config.get(
-                    "dispersal", "dispersal_file", fallback=None
-                )
+                self.restrict_self = self.config.getboolean("dispersal", "restrict_self", fallback=False)
+                self.landscape_type = self.config.get("dispersal", "landscape_type", fallback="closed")
+                self.dispersal_map = self.config.get("dispersal", "dispersal_file", fallback=None)
 
     def write_config(self, config_file):
         """
@@ -362,12 +332,8 @@ class Simulation(Landscape):
                     x, y = map(str, self.coarse_map.get_x_y())
                     self.config.set("coarse_map", "x", str(x))
                     self.config.set("coarse_map", "y", str(y))
-                    self.config.set(
-                        "coarse_map", "x_off", str(self.coarse_map.x_offset)
-                    )
-                    self.config.set(
-                        "coarse_map", "y_off", str(self.coarse_map.y_offset)
-                    )
+                    self.config.set("coarse_map", "x_off", str(self.coarse_map.x_offset))
+                    self.config.set("coarse_map", "y_off", str(self.coarse_map.y_offset))
                     self.config.set("coarse_map", "scale", str(self.coarse_scale))
                 else:
                     self.config.set("coarse_map", "path", "none")
@@ -377,10 +343,7 @@ class Simulation(Landscape):
                     self.config.set("coarse_map", "y_off", "0")
                     self.config.set("coarse_map", "scale", "1")
                 self.sort_historical_maps()
-                if (
-                    len(self.historical_coarse_list) != 0
-                    and len(self.historical_fine_list) != 0
-                ):
+                if len(self.historical_coarse_list) != 0 and len(self.historical_fine_list) != 0:
                     for i, t in enumerate(self.times_list):
                         tmp_fine = "historical_fine{}".format(i)
                         self.config.add_section(tmp_fine)
@@ -390,9 +353,7 @@ class Simulation(Landscape):
                         self.config.set(tmp_fine, "rate", str(self.rates_list[i]))
                         tmp_coarse = "historical_coarse{}".format(i)
                         self.config.add_section(tmp_coarse)
-                        self.config.set(
-                            tmp_coarse, "path", self.historical_coarse_list[i]
-                        )
+                        self.config.set(tmp_coarse, "path", self.historical_coarse_list[i])
                         self.config.set(tmp_coarse, "number", str(i))
                         self.config.set(tmp_coarse, "time", str(t))
                         self.config.set(tmp_coarse, "rate", str(self.rates_list[i]))
@@ -400,29 +361,21 @@ class Simulation(Landscape):
                     self.config.add_section("grid_map")
                     self.config.set("grid_map", "x", str(self.grid.x_size))
                     self.config.set("grid_map", "y", str(self.grid.y_size))
-                    self.config.set(
-                        "sample_grid", "x_off", str(self.sample_map.x_offset)
-                    )
-                    self.config.set(
-                        "sample_grid", "y_off", str(self.sample_map.y_offset)
-                    )
+                    self.config.set("sample_grid", "x_off", str(self.sample_map.x_offset))
+                    self.config.set("sample_grid", "y_off", str(self.sample_map.y_offset))
                 if self.death_map.file_name not in [None, "none", "null"]:
                     self.config.add_section("death")
                     self.config.set("death", "map", self.death_map.file_name)
                 if self.reproduction_map.file_name not in [None, "none", "null"]:
                     self.config.add_section("reproduction")
-                    self.config.set(
-                        "reproduction", "map", self.reproduction_map.file_name
-                    )
+                    self.config.set("reproduction", "map", self.reproduction_map.file_name)
                 if self.dispersal_method is not None:
                     self.config.add_section("dispersal")
                     self.config.set("dispersal", "method", self.dispersal_method)
                     self.config.set("dispersal", "m_probability", str(self.m_prob))
                     self.config.set("dispersal", "cutoff", str(self.cutoff))
                     if self.restrict_self:
-                        self.config.set(
-                            "dispersal", "restrict_self", str(int(self.restrict_self))
-                        )
+                        self.config.set("dispersal", "restrict_self", str(int(self.restrict_self)))
                 if self.landscape_type != "closed":
                     if not self.config.has_section("dispersal"):
                         self.config.add_section("dispersal")
@@ -430,15 +383,11 @@ class Simulation(Landscape):
                 if self.dispersal_map.file_name not in ["none", None]:
                     if not self.config.has_section("dispersal"):
                         self.config.add_section("dispersal")
-                    self.config.set(
-                        "dispersal", "dispersal_file", self.dispersal_map.file_name
-                    )
+                    self.config.set("dispersal", "dispersal_file", self.dispersal_map.file_name)
                 if self.full_config_file is not None:
                     self.write_config(self.full_config_file)
         else:
-            raise RuntimeError(
-                "Cannot generate map config file without setting up map variables"
-            )
+            raise RuntimeError("Cannot generate map config file without setting up map variables")
 
     def create_config(self, output_file=None):
         """
@@ -458,18 +407,14 @@ class Simulation(Landscape):
             if self.is_spatial:
                 self.config.set("main", "sigma", str(self.sigma))
                 self.config.set("main", "tau", str(self.tau))
-                self.config.set(
-                    "main", "dispersal_relative_cost", str(self.dispersal_relative_cost)
-                )
+                self.config.set("main", "dispersal_relative_cost", str(self.dispersal_relative_cost))
             self.config.set("main", "deme", str(self.deme))
             self.config.set("main", "sample_size", str(self.sample_size))
             self.config.set("main", "max_time", str(self.max_time))
             self.config.set("main", "min_species", str(self.min_num_species))
             if self.protracted:
                 self.config.add_section("protracted")
-                self.config.set(
-                    "protracted", "has_protracted", str(int(self.protracted))
-                )
+                self.config.set("protracted", "has_protracted", str(int(self.protracted)))
                 self.config.set(
                     "protracted",
                     "min_speciation_gen",
@@ -488,9 +433,7 @@ class Simulation(Landscape):
             if self.full_config_file is not None:
                 self.write_config(self.full_config_file)
         else:
-            raise RuntimeError(
-                "Setup has not been completed, cannot create config file"
-            )
+            raise RuntimeError("Setup has not been completed, cannot create config file")
         self.create_temporal_sampling_config()
 
     def run_simple(self, seed, task, output, speciation_rate, sigma, size):
@@ -536,8 +479,7 @@ class Simulation(Landscape):
             richness = self.get_species_richness()
             if richness == 0:
                 raise AssertionError(
-                    "Richness is 0, error in program. This should never be the case for a complete "
-                    "sim."
+                    "Richness is 0, error in program. This should never be the case for a complete " "sim."
                 )
             return richness
         except IOError:
@@ -657,18 +599,15 @@ class Simulation(Landscape):
         if self.dispersal_map.file_name not in {"none", "null", None}:
             if self.coarse_map.file_name not in {None, "none"}:
                 raise ValueError(
-                    "Cannot use a coarse map if using a dispersal map. "
-                    "This feature is currently unsupported."
+                    "Cannot use a coarse map if using a dispersal map. " "This feature is currently unsupported."
                 )
             self.dispersal_map.set_dimensions()
             if (
                 self.dispersal_map.x_size != self.fine_map.x_size * self.fine_map.y_size
-                or self.dispersal_map.y_size
-                != self.fine_map.x_size * self.fine_map.y_size
+                or self.dispersal_map.y_size != self.fine_map.x_size * self.fine_map.y_size
             ):
                 raise ValueError(
-                    "Dimensions of dispersal map do not match dimensions of fine map. This is currently"
-                    " unsupported."
+                    "Dimensions of dispersal map do not match dimensions of fine map. This is currently" " unsupported."
                 )
 
     def check_reproduction_map(self):
@@ -676,8 +615,7 @@ class Simulation(Landscape):
         if self.reproduction_map.file_name not in {None, "none", "null"}:
             if self.coarse_map.file_name not in {None, "none", "null"}:
                 raise ValueError(
-                    "Cannot use a coarse map if using a reproduction map. "
-                    "This feature is currently unsupported."
+                    "Cannot use a coarse map if using a reproduction map. " "This feature is currently unsupported."
                 )
         self.check_dimensions_match_fine(self.reproduction_map, "reproduction")
 
@@ -686,8 +624,7 @@ class Simulation(Landscape):
         if self.death_map.file_name not in {None, "none", "null"}:
             if self.coarse_map.file_name not in {None, "none", "null"}:
                 raise ValueError(
-                    "Cannot use a coarse map if using a death map. "
-                    "This feature is currently unsupported."
+                    "Cannot use a coarse map if using a death map. " "This feature is currently unsupported."
                 )
         self.check_dimensions_match_fine(self.death_map, "death")
 
@@ -763,9 +700,7 @@ class Simulation(Landscape):
         :rtype: bool
         """
         if not (self.is_setup_map and self.is_setup_param):
-            raise RuntimeError(
-                "Cannot check if Gillespie is possible before simulation is setup."
-            )
+            raise RuntimeError("Cannot check if Gillespie is possible before simulation is setup.")
         if (
             self.dispersal_map.file_name in ["none", None]
             or not self.is_spatial
@@ -789,13 +724,8 @@ class Simulation(Landscape):
             map_to_check.set_dimensions()
             if not map_to_check.has_equal_dimensions(self.fine_map):
                 # if the sizes match, then proceed with a warning
-                if (
-                    map_to_check.x_size == self.fine_map.x_size
-                    and map_to_check.y_size == self.fine_map.y_size
-                ):
-                    self.logger.warning(
-                        "Coordinates of {} map did not match fine map.".format(name)
-                    )
+                if map_to_check.x_size == self.fine_map.x_size and map_to_check.y_size == self.fine_map.y_size:
+                    self.logger.warning("Coordinates of {} map did not match fine map.".format(name))
                     map_to_check.x_offset = self.fine_map.x_offset
                     map_to_check.y_offset = self.fine_map.y_offset
                     map_to_check.x_res = self.fine_map.x_res
@@ -881,9 +811,7 @@ class Simulation(Landscape):
             self.restrict_self = restrict_self
             self.is_spatial = spatial
             if uses_spatial_sampling and not spatial:
-                raise ValueError(
-                    "Must use a spatial simulation to define spatial sampling regime."
-                )
+                raise ValueError("Must use a spatial simulation to define spatial sampling regime.")
             self.uses_spatial_sampling = uses_spatial_sampling
             if not spatial:
                 self.is_setup_map = True
@@ -899,11 +827,7 @@ class Simulation(Landscape):
             }:
                 self.landscape_type = landscape_type
             else:
-                raise ValueError(
-                    "Supplied landscape type is not recognised: {}".format(
-                        landscape_type
-                    )
-                )
+                raise ValueError("Supplied landscape type is not recognised: {}".format(landscape_type))
             if protracted:
                 self.protracted = True
                 if max_speciation_gen is None:
@@ -916,8 +840,7 @@ class Simulation(Landscape):
                     self.max_speciation_gen = max_speciation_gen
                 if min_speciation_gen is None:
                     self.logger.warning(
-                        "Using protracted speciation, but no minimum speciation generation supplied."
-                        " Default to 0.0"
+                        "Using protracted speciation, but no minimum speciation generation supplied." " Default to 0.0"
                     )
                     self.min_speciation_gen = 0.0
                 else:
@@ -943,9 +866,7 @@ class Simulation(Landscape):
             raise ValueError("Seed cannot be larger than 2,147,483,647")
         if seed < 1:
             new_seed = abs(seed) + limit_val
-            self.logger.critical(
-                "Seed of {} is < 1, so will be changed to {}\n".format(seed, new_seed)
-            )
+            self.logger.critical("Seed of {} is < 1, so will be changed to {}\n".format(seed, new_seed))
             self.seed = new_seed
         else:
             self.seed = seed
@@ -1015,19 +936,13 @@ class Simulation(Landscape):
         self.task = task
         self.max_time = max_time
         self.calculate_sql_database()
-        file_path = os.path.join(
-            pause_directory, "Pause", "Dump_main_{}_{}.csv".format(task, seed)
-        )
+        file_path = os.path.join(pause_directory, "Pause", "Dump_main_{}_{}.csv".format(task, seed))
         if not os.path.exists(file_path):
             raise IOError(
-                "Paused file "
-                + file_path
-                + " not found. Ensure pause directory is correct and is accessible."
+                "Paused file " + file_path + " not found. Ensure pause directory is correct and is accessible."
             )
         self.setup_necsim()
-        self.c_simulation.setup_resume(
-            pause_directory, out_directory, int(seed), int(task), int(max_time)
-        )
+        self.c_simulation.setup_resume(pause_directory, out_directory, int(seed), int(task), int(max_time))
         self.is_setup_complete = True
         self._run_and_output()
 
@@ -1074,9 +989,7 @@ class Simulation(Landscape):
             else:
                 ds = gdal.Open(self.sample_map.file_name)
                 ds_array = ds.GetRasterBand(1).ReadAsArray()
-            self.count_total = (
-                np.sum(ds_array) * self.sample_size * self.get_average_density()
-            )
+            self.count_total = np.sum(ds_array) * self.sample_size * self.get_average_density()
             if len(self.times_list) > 0:
                 self.count_total *= len(self.times_list)
             return self.count_total
@@ -1091,9 +1004,7 @@ class Simulation(Landscape):
         """
         if self.fine_map_array is None:
             if self.fine_map.file_name == "null":
-                self.fine_map_array = np.ones(
-                    (self.fine_map.x_size, self.fine_map.y_size)
-                )
+                self.fine_map_array = np.ones((self.fine_map.x_size, self.fine_map.y_size))
             else:
                 self.fine_map_array = self.fine_map.get_subset(
                     self.fine_map.x_offset,
@@ -1110,17 +1021,13 @@ class Simulation(Landscape):
         """
         if self.sample_map_array is None:
             if self.sample_map.file_name == "null":
-                self.sample_map_array = np.ones(
-                    (self.sample_map.x_size, self.sample_map.y_size)
-                )
+                self.sample_map_array = np.ones((self.sample_map.x_size, self.sample_map.y_size))
             else:
                 self.sample_map.open()
                 if self.uses_spatial_sampling:
                     self.sample_map_array = self.sample_map.data
                 else:
-                    self.sample_map_array = np.ma.masked_where(
-                        self.sample_map.data >= 0.5, self.sample_map.data
-                    ).mask
+                    self.sample_map_array = np.ma.masked_where(self.sample_map.data >= 0.5, self.sample_map.data).mask
                 self.sample_map.data = None
 
     def grid_density_estimate(self, x_off, y_off, x_dim, y_dim):
@@ -1147,14 +1054,8 @@ class Simulation(Landscape):
         ):
             self.import_sample_map_array()
             # Less accurate, but faster way.
-            arr_subset = self.sample_map_array[
-                y_off : y_off + y_dim, x_off : x_off + x_dim
-            ]
-            return int(
-                np.sum(
-                    np.floor(arr_subset * self.get_average_density() * self.sample_size)
-                )
-            )
+            arr_subset = self.sample_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim]
+            return int(np.sum(np.floor(arr_subset * self.get_average_density() * self.sample_size)))
         return int(np.sum(np.floor(self.fine_map_array * self.deme * self.sample_size)))
 
     def grid_density_actual(self, x_off, y_off, x_dim, y_dim):
@@ -1183,12 +1084,8 @@ class Simulation(Landscape):
                 np.sum(
                     np.floor(
                         np.multiply(
-                            self.fine_map_array[
-                                y_off : y_off + y_dim, x_off : x_off + x_dim
-                            ],
-                            self.sample_map_array[
-                                y_off : y_off + y_dim, x_off : x_off + x_dim
-                            ],
+                            self.fine_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim],
+                            self.sample_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim],
                         )
                         * self.deme
                         * self.sample_size
@@ -1199,11 +1096,7 @@ class Simulation(Landscape):
             return int(
                 np.sum(
                     np.floor(
-                        self.fine_map_array[
-                            y_off : y_off + y_dim, x_off : x_off + x_dim
-                        ]
-                        * self.deme
-                        * self.sample_size
+                        self.fine_map_array[y_off : y_off + y_dim, x_off : x_off + x_dim] * self.deme * self.sample_size
                     )
                 )
             )
@@ -1248,53 +1141,35 @@ class Simulation(Landscape):
         :raises MemoryError: if the desired simulation cannot be compressed into available RAM
         """
         if self.sample_size <= 0 or self.deme <= 0:
-            raise ValueError(
-                "Sample size is 0, or deme is 0. set_simulation_parameters() before optimising RAM."
-            )
+            raise ValueError("Sample size is 0, or deme is 0. set_simulation_parameters() before optimising RAM.")
         self.grid = copy.deepcopy(self.sample_map)
         # Over-estimate static usage slightly
         static_usage = 1.1 * self.persistent_ram_usage() / 1024 ** 3
         if static_usage > ram_limit:
-            raise MemoryError(
-                "Cannot achieve RAM limit: minimum requirements are {}GB.".format(
-                    round(static_usage, 2)
-                )
-            )
+            raise MemoryError("Cannot achieve RAM limit: minimum requirements are {}GB.".format(round(static_usage, 2)))
         remaining_space = (ram_limit - static_usage) * 1024 ** 3
-        self.logger.info(
-            "Remaining space is {}GB.\n".format(round(remaining_space / 1024 ** 3, 2))
-        )
+        self.logger.info("Remaining space is {}GB.\n".format(round(remaining_space / 1024 ** 3, 2)))
         # Rough calculation of number of cells we have remaining (aim for 75% to be sure)
         average_density = self.get_average_density()
         # This is the size of the grid object in memory
         tmp_space = 0.95 * (remaining_space / ((16 * average_density) + 32))
         size = int(np.rint(tmp_space ** 0.5))
         if size < self.sample_map.x_size or size < self.sample_map.y_size:
-            if (
-                size > self.sample_map.x_size or size > self.sample_map.y_size
-            ):  # pragma: no cover
+            if size > self.sample_map.x_size or size > self.sample_map.y_size:  # pragma: no cover
                 size = min(self.sample_map.x_size, self.sample_map.y_size)
             if size < 2:
-                raise MemoryError(
-                    "Could not find square grid to achieve RAM limit. Please set this manually."
-                )
+                raise MemoryError("Could not find square grid to achieve RAM limit. Please set this manually.")
             max_attained = 0
             max_x = 0
             max_y = 0
             # Now loop over every square of the required size on the grid, until we find one with the maximum density
-            if (
-                self.sample_map.x_size * self.sample_map.y_size
-            ) > 1000000:  # pragma: no cover
+            if (self.sample_map.x_size * self.sample_map.y_size) > 1000000:  # pragma: no cover
                 printing = True
             else:
                 printing = False
             end_x = self.sample_map.x_size - size - 1
             if size < 10:  # pragma: no cover
-                self.logger.warning(
-                    "Extremely small grid size: {}. Disabling maximum density checking.".format(
-                        size
-                    )
-                )
+                self.logger.warning("Extremely small grid size: {}. Disabling maximum density checking.".format(size))
                 max_x = int(self.sample_map.x_size / 2)
                 max_y = int(self.sample_map.y_size / 2)
                 max_attained = 1
@@ -1305,11 +1180,7 @@ class Simulation(Landscape):
                     int(round(max(10.0, size / 10))),
                 ):
                     if printing:  # pragma: no cover
-                        self.logger.info(
-                            "\rChecking {} / {} : {}%".format(
-                                x, end_x, round(100 * x / end_x)
-                            )
-                        )
+                        self.logger.info("\rChecking {} / {} : {}%".format(x, end_x, round(100 * x / end_x)))
                     for y in range(
                         0,
                         max(self.sample_map.y_size - size - 1, 1),
@@ -1328,32 +1199,17 @@ class Simulation(Landscape):
                 while self._fine_map_check(max_x, max_y, size):
                     if printing:  # pragma: no cover
                         printing = False
-                        self.logger.info(
-                            "Shrinking due to high densities in sample zone.\n"
-                        )
+                        self.logger.info("Shrinking due to high densities in sample zone.\n")
                     # Brute-force dividing by 2 each time
                     size = max(1, int(size / 2))
                     if size == 1:
                         break
-                if (
-                    max_x + size > self.sample_map.x_size
-                    or max_y + size > self.sample_map.y_size
-                ):  # pragma: no cover
+                if max_x + size > self.sample_map.x_size or max_y + size > self.sample_map.y_size:  # pragma: no cover
                     self.logger.debug("Max x,y: {}, {}".format(max_x, max_y))
                     self.logger.debug("Size: {}".format(size))
-                    self.logger.debug(
-                        "Fine map size: {}, {}".format(
-                            self.fine_map.x_size, self.fine_map.y_size
-                        )
-                    )
-                    self.logger.debug(
-                        "Sample map size: {}, {}".format(
-                            self.sample_map.x_size, self.sample_map.y_size
-                        )
-                    )
-                    raise RuntimeError(
-                        "Incorrect dimension setting - please report this bug"
-                    )
+                    self.logger.debug("Fine map size: {}, {}".format(self.fine_map.x_size, self.fine_map.y_size))
+                    self.logger.debug("Sample map size: {}, {}".format(self.sample_map.x_size, self.sample_map.y_size))
+                    raise RuntimeError("Incorrect dimension setting - please report this bug")
                 self.grid.x_size = size
                 self.grid.y_size = size
                 self.sample_map.x_offset = max_x
@@ -1364,9 +1220,7 @@ class Simulation(Landscape):
             else:  # pragma: no cover
                 raise MemoryError(
                     "Could not optimise maps for desired memory usage. "
-                    "Attempted grid size of {} and achived max of {}".format(
-                        size, max_attained
-                    )
+                    "Attempted grid size of {} and achived max of {}".format(size, max_attained)
                 )
         self._wipe_objects()
 
@@ -1416,14 +1270,13 @@ class Simulation(Landscape):
         try:
             from pycoalescence.__init__ import __version__
 
-            self.logger.info(
-                "Simulation set-up under pycoalescence version {}".format(__version__)
-            )
+            self.logger.info("Simulation set-up under pycoalescence version {}\n".format(__version__))
         except ImportError:  # pragma: no cover
             self.logger.info("pycoalescence version not found.")
         self.setup_necsim()
         if self.full_config_file is not None:  # pragma: no cover
             self.c_simulation.import_from_config(self.full_config_file)
+
         else:
             self.config.write(self.config_string)
             self.c_simulation.import_from_config_string(self.config_string.getvalue())
@@ -1441,15 +1294,13 @@ class Simulation(Landscape):
         """
         if self.protracted:
             if self.is_spatial:
-                self.c_simulation = libnecsim.CPSpatialSimulation(
-                    self.logger, write_to_log
-                )
+                self.c_simulation = CPSpatialSimulation(self.logger)
             else:
-                self.c_simulation = libnecsim.CPNSESimulation(self.logger, write_to_log)
+                self.c_simulation = CPNSESimulation(self.logger)
         elif self.is_spatial:
-            self.c_simulation = libnecsim.CSpatialSimulation(self.logger, write_to_log)
+            self.c_simulation = CSpatialSimulation(self.logger)
         else:
-            self.c_simulation = libnecsim.CNSESimulation(self.logger, write_to_log)
+            self.c_simulation = CNSESimulation(self.logger)
 
     def set_speciation_rates(self, speciation_rates):
         """Add speciation rates for analysis at the end of the simulation. This is optional
@@ -1490,9 +1341,7 @@ class Simulation(Landscape):
                     raise FileExistsError("Output sql database already exists.")
         else:
             if not os.path.exists(self.output_database):
-                raise FileNotFoundError(
-                    "Output sql database {} not found.".format(self.output_database)
-                )
+                raise FileNotFoundError("Output sql database {} not found.".format(self.output_database))
 
     def check_maps(self):
         """
@@ -1509,9 +1358,7 @@ class Simulation(Landscape):
                 and self.sample_map.x_offset + self.grid.x_size > self.sample_map.x_size
                 or self.sample_map.y_offset + self.grid.y_size > self.sample_map.y_size
             ):
-                raise ValueError(
-                    "Grid is not within the sample map - please check offsets of sample map."
-                )
+                raise ValueError("Grid is not within the sample map - please check offsets of sample map.")
             self.check_dispersal_map()
             self.check_reproduction_map()
             self.check_death_map()

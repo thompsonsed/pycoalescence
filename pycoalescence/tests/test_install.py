@@ -37,12 +37,12 @@ if sys.version_info[0] != 3:
 
 def main(verbosity=1):
     """
-	Set the logging method, run the program compilation (if required) and test the install.
+    Set the logging method, run the program compilation (if required) and test the install.
 
-	:param verbosity: the level of information to display from the unittest module
+    :param verbosity: the level of information to display from the unittest module
 
-	.. note:: The working directory is changed to the package install location for the duration of this execution.
-	"""
+    .. note:: The working directory is changed to the package install location for the duration of this execution.
+    """
     set_logging_method(logging_level=logging.CRITICAL, output=None)
     test_loader = unittest.TestLoader().discover(".")
     unittest.TextTestRunner(verbosity=verbosity).run(test_loader)

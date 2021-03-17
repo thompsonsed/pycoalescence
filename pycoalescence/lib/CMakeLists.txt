@@ -5,6 +5,7 @@ project(necsim CXX)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
+    add_compile_options(-Werror=cast-function-type -pedantic -Wc++14-compat -Wcast-function-type)
 endif ()
 # Change this option to ON if RAM usage is an issue or supply as via CL
 option(minimal_ram "minimal_ram" OFF)
@@ -30,8 +31,6 @@ if (${CMAKE_CXX_STANDARD} LESS 17)
     endif ()
 endif ()
 
-
-add_compile_options(-Werror=cast-function-type -pedantic -Wc++14-compat -Wcast-function-type)
 
 message(STATUS "Compiler is ${CMAKE_CXX_COMPILER}")
 if (USING_INTEL)
@@ -65,8 +64,6 @@ endif ()
 include_directories(${SOURCE_DIR_NECSIM})
 
 set(SOURCE_FILES
-        necsim.cpp
-        necsim.h
         ${SOURCE_DIR_NECSIM}/RNGController.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
@@ -97,16 +94,8 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/LogFile.cpp
         ${SOURCE_DIR_NECSIM}/cpl_custom_handler.cpp
         ${SOURCE_DIR_NECSIM}/Cell.cpp
-        PyLogger.cpp
         ${SOURCE_DIR_NECSIM}/double_comparison.cpp
-        PyImports.cpp
-        PyLogging.cpp
         LandscapeMetricsCalculator.cpp
-        CCommunity.h
-        CSimulation.h
-        CLandscapeMetricsCalculator.h
-        CSimulateDispersal.h
-        PyTemplates.h
         ${SOURCE_DIR_NECSIM}/SimulateDispersal.cpp
         ${SOURCE_DIR_NECSIM}/custom_exceptions.h
         ${SOURCE_DIR_NECSIM}/SQLiteHandler.cpp
@@ -135,7 +124,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_fwd.hpp
         ${SOURCE_DIR_NECSIM}/ghc/fs_std_impl.hpp
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
-        ${SOURCE_DIR_NECSIM}/ProtractedSpatialTree.cpp)
+        ${SOURCE_DIR_NECSIM}/GenericTree.h necsim/GenericCommunity.h)
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")

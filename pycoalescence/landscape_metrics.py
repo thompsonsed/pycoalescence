@@ -3,12 +3,12 @@ Calculates landscape-level metrics, including mean distance to nearest-neighbour
 """
 import logging
 
+from .necsim.necsim import CLandscapeMetricsCalculator
+
 try:
-    from .necsim import libnecsim
     from .map import Map
     from .system_operations import write_to_log
 except ImportError:  # pragma: no cover
-    from necsim import libnecsim
     from map import Map
     from system_operations import write_to_log
 
@@ -26,9 +26,9 @@ class LandscapeMetrics(Map):
         :param logging_level: the logging level to report at
         """
         Map.__init__(self, file)
-        self.logger = logging.Logger("pycoalescence.landscapemetric")
+        self.logger = logging.Logger("necsim")
         self._create_logger(logging_level=logging_level)
-        self.c_LM_calc = libnecsim.CLandscapeMetricsCalculator(self.logger, write_to_log)
+        self.c_LM_calc = CLandscapeMetricsCalculator(self.logger)
 
     def __del__(self):
         """Safely destroy the C++ objects."""

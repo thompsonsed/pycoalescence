@@ -25,13 +25,22 @@ using namespace necsim;
 class LandscapeMetricsCalculator : public Map<double>
 {
     vector<Cell> all_cells;
+    bool has_imported_map;
 public:
 
-    LandscapeMetricsCalculator() : all_cells()
+    LandscapeMetricsCalculator() : all_cells(), has_imported_map(false)
     { };
 
     virtual ~LandscapeMetricsCalculator()
     { };
+
+    /**
+     * @brief Imports the matrix from a csv file.
+     *
+     * @throws runtime_error: if type detection for the filename fails.
+     * @param filename the file to import.
+     */
+    void importMap(const string &filename);
 
     /**
      * @brief Calculates the mean distance between nearest neighbours on a Map.

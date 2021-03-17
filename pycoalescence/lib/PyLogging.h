@@ -23,9 +23,8 @@ namespace necsim
      * Each call to getGlobalLogger should be matched by a call to removeGlobalLogger
      * @param logger the Python logger object to use
      * @param log_function the Python logging function to use
-     * @return the global logger object as a pointer.
      */
-    PyLogger* getGlobalLogger(PyObject* logger, PyObject* log_function);
+    void setGlobalLogger(PyObject* logger, PyObject* log_function);
 
     /**
      * @brief Safely deletes the global logger object.

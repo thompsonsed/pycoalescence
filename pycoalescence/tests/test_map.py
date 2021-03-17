@@ -72,17 +72,13 @@ class TestMapImports(unittest.TestCase):
 
     def testRaisesImportError(self):
         """Mocks a fake subprocess call to ``gdal-config --datadir`` and checks that the correct errors are raised"""
-        subprocess.check_output = create_autospec(
-            subprocess.check_output, return_value=b"/not/a/gdal/dir\n"
-        )
+        subprocess.check_output = create_autospec(subprocess.check_output, return_value=b"/not/a/gdal/dir\n")
         import pycoalescence.map
 
         with self.assertRaises(ImportError):
             reload(pycoalescence.map)
         subprocess.check_output = self.orig_call
-        subprocess.check_output = create_autospec(
-            subprocess.check_output, return_value=None
-        )
+        subprocess.check_output = create_autospec(subprocess.check_output, return_value=None)
         with self.assertRaises(ImportError):
             reload(pycoalescence.map)
 
@@ -130,9 +126,7 @@ class TestMap(unittest.TestCase):
         self.assertEqual(0, x_offset)
         self.assertEqual(0, y_offset)
         # Now test the coarse map
-        x, y, x_offset, y_offset, xres, yres, ulx, uly = (
-            self.coarse_map.get_dimensions()
-        )
+        x, y, x_offset, y_offset, xres, yres, ulx, uly = self.coarse_map.get_dimensions()
         self.assertEqual(x, 35)
         self.assertEqual(y, 41)
         self.assertAlmostEqual(ulx, -78.466666666, 8)
@@ -213,12 +207,8 @@ class TestMap(unittest.TestCase):
 
     def testOffset(self):
         """Tests that the offsets are correctly calculated between the fine and coarse maps."""
-        self.assertListEqual(
-            self.coarse_map.calculate_offset(self.fine_map), [-11, -14]
-        )
-        self.assertListEqual(
-            self.coarse_map.calculate_offset(self.fine_map.file_name), [-11, -14]
-        )
+        self.assertListEqual(self.coarse_map.calculate_offset(self.fine_map), [-11, -14])
+        self.assertListEqual(self.coarse_map.calculate_offset(self.fine_map.file_name), [-11, -14])
         self.assertListEqual(self.coarse_map.calculate_offset(self.coarse_map), [0, 0])
         self.assertListEqual(self.fine_map.calculate_offset(self.coarse_map), [11, 14])
 
@@ -322,9 +312,7 @@ class TestMap(unittest.TestCase):
         )
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
-        for i, each in enumerate(
-            [4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]
-        ):
+        for i, each in enumerate([4, 32, 0, 0, 0.00833333, -0.001, -78.36352986307837, 0.8504357884796987]):
             self.assertAlmostEqual(each, dims[i], places=5)
         self.assertIn(m.get_projection(), self.expected_WGS_84)
         m.open()
@@ -486,9 +474,7 @@ class TestMap(unittest.TestCase):
         output_raster = "output/raster_out8.tif"
         geo_transform = (-78.375, 0.00833333, 0, 0.858333, 0, -0.00833333)
         output_ds = ogr.Open("sample/shape_sample.shp")
-        m.rasterise(
-            shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform
-        )
+        m.rasterise(shape_file=output_ds, raster_file=output_raster, geo_transform=geo_transform)
         self.assertTrue(os.path.exists(output_raster))
         dims = m.get_dimensions()
         for i, each in enumerate([12, 10, 0, 0, 0.00833333, -0.00833333]):
@@ -561,9 +547,7 @@ class TestMap(unittest.TestCase):
             )
         m = Map()
         with self.assertRaises(ValueError):
-            m.rasterise(
-                shape_file="sample/shape_sample.shp", raster_file="no_exist.tif"
-            )
+            m.rasterise(shape_file="sample/shape_sample.shp", raster_file="no_exist.tif")
         m = Map()
         with self.assertRaises(ValueError):
             m.rasterise(
@@ -694,9 +678,7 @@ class TestMap(unittest.TestCase):
         with self.assertRaises(IOError):
             m.translate(dest_file=dest_file1, projWin=new_proj_win)
         m = Map()
-        m.translate(
-            source_file=source_file, dest_file=dest_file2, width=new_x, height=new_y
-        )
+        m.translate(source_file=source_file, dest_file=dest_file2, width=new_x, height=new_y)
         self.assertTrue(os.path.exists(dest_file1))
         m1 = Map(dest_file1)
         actual_extent = m1.get_extent()
@@ -707,9 +689,7 @@ class TestMap(unittest.TestCase):
         self.assertEqual([new_x, new_y], m2.get_x_y())
 
 
-@unittest.skipUnless(
-    hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found."
-)
+@unittest.skipUnless(hasattr(gdal, "Warp"), "Skipping reprojection test as gdal.Warp not found.")
 @skipGdalWarp
 class TestMapReprojection(unittest.TestCase):
     """
@@ -732,13 +712,9 @@ class TestMapReprojection(unittest.TestCase):
         cls.destination_projection = osr.SpatialReference()
         res = cls.destination_projection.ImportFromEPSG(3857)
         if res != 0:
-            raise RuntimeError(
-                "Could not import from EPSG in osr.SpatialReference: {}.".format(res)
-            )
+            raise RuntimeError("Could not import from EPSG in osr.SpatialReference: {}.".format(res))
         cls.proj_wkt = cls.destination_projection.ExportToWkt()
-        cls.m.reproject_raster(
-            dest_file=cls.map_2, dest_projection=cls.destination_projection
-        )
+        cls.m.reproject_raster(dest_file=cls.map_2, dest_projection=cls.destination_projection)
         cls.m.reproject_raster(
             dest_file=cls.map_3,
             dest_projection=cls.destination_projection,
@@ -853,9 +829,7 @@ class TestMapReprojection(unittest.TestCase):
             self.m_5.open(band_no=i)
             self.assertGreater(np.sum(self.m_5.data), 0)
             self.m0.open(band_no=i)
-            self.assertAlmostEqual(
-                np.sum(self.m0.data) * 100, np.sum(self.m_5.data), places=5
-            )
+            self.assertAlmostEqual(np.sum(self.m0.data) * 100, np.sum(self.m_5.data), places=5)
 
 
 class MapAssignment(unittest.TestCase):

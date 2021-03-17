@@ -3,7 +3,7 @@ pycoalescence overview
 
 *A package for coalescence-based spatially explicit neutral ecology simulations*
 
-|Documentation|_ |Binder|_ |CondaV|_ |PyPiV|_ |License|_
+|Documentation|_ |Binder|_ |CondaV|_ |CondaPlatform|_ |PyPiV|_ |PyPiLinux|_ |License|_
 
 
 .. |Documentation| image:: https://img.shields.io/readthedocs/pycoalescence/latest.svg?label=documentation
@@ -15,23 +15,17 @@ pycoalescence overview
 .. |CondaV| image:: https://img.shields.io/conda/vn/conda-forge/pycoalescence.svg?label=conda
 .. _CondaV: https://anaconda.org/conda-forge/pycoalescence
 
+.. |CondaPlatform| image:: https://img.shields.io/conda/pn/conda-forge/pycoalescence?label=conda
+.. _CondaPlatform: https://anaconda.org/conda-forge/pycoalescence
+
 .. |PyPiV| image:: https://img.shields.io/pypi/v/pycoalescence.svg
 .. _PyPiV: https://badge.fury.io/py/pycoalescence
 
 .. |License| image:: https://img.shields.io/pypi/l/pycoalescence
 .. _License: https://opensource.org/licenses/MIT
 
-|CondaWin|_ |PyPiOSX|_ |PyPiLinux|_
-
-.. |CondaWin| image:: https://img.shields.io/azure-devops/build/conda-forge/feedstock-builds/3218?label=Windows
-.. _CondaWin: https://dev.azure.com/conda-forge/feedstock-builds/_build?definitionId=3218&_a=summary
-
-.. |PyPiOSX| image:: https://img.shields.io/travis/pycoalescence/pycoalescence-ci/master.svg?label=macOS&logo=travis
-.. _PyPiOSX: https://travis-ci.org/pycoalescence/pycoalescence-ci
-
 .. |PyPiLinux| image:: https://img.shields.io/circleci/project/github/thompsonsed/pycoalescence.svg?label=Linux&logo=circleci
-.. _PyPiLinux: https://circleci.com/bb/thompsonsed/pycoalescence
-
+.. _PyPiLinux: https://circleci.com/github/thompsonsed/pycoalescence
 
 
 Introduction

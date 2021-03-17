@@ -22,7 +22,6 @@ except ImportError:
 from setup_tests import setUpAll, tearDownAll, skipLongTest
 
 from pycoalescence import Simulation, CoalescenceTree
-from pycoalescence.necsim import necsimError
 
 
 def setUpModule():
@@ -801,7 +800,7 @@ class TestSimulationProbabilityActionMap(unittest.TestCase):
         c.set_map_files(
             "null", fine_file="sample/SA_sample_fine.tif", death_map="sample/SA_sample_reproduction_invalid.tif"
         )
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             c.finalise_setup()
 
 
@@ -1325,7 +1324,7 @@ class TestCoalSampling2(unittest.TestCase):
         """
         for f in [1, 2, 3]:
             fragment_file = "sample/FragmentsTestFail{}.csv".format(f)
-            with self.assertRaises(necsimError):
+            with self.assertRaises(RuntimeError):
                 t = CoalescenceTree("output/temp.db", logging_level=50)
                 t.wipe_data()
                 t.set_speciation_parameters(
@@ -2419,11 +2418,11 @@ class TestSimulationProtractedSpeciationApplication(unittest.TestCase):
         """
         self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
         self.c.c_community.add_protracted_parameters(70.0, 2000.0)
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             self.c.apply()
         self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
         self.c.c_community.add_protracted_parameters(50.0, 2100.0)
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             self.c.apply()
 
     def testProtractedPostApplicationSanityChecks(self):
@@ -2598,11 +2597,11 @@ class TestSimulationProtractedSpeciationApplication2(unittest.TestCase):
         """
         self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
         self.c.c_community.add_protracted_parameters(70.0, 2000.0)
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             self.c.apply()
         self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
         self.c.c_community.add_protracted_parameters(50.0, 2100.0)
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             self.c.apply()
 
     def testProtractedPostApplicationSanityChecks(self):
@@ -2781,11 +2780,11 @@ class TestSimulationProtractedSpeciationApplication3(unittest.TestCase):
         """
         self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
         self.c.c_community.add_protracted_parameters(70.0, 2000.0)
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             self.c.apply()
         self.c.set_speciation_parameters(speciation_rates=[0.1, 0.2], record_spatial=False, record_fragments=False)
         self.c.c_community.add_protracted_parameters(50.0, 2100.0)
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             self.c.apply()
 
     def testProtractedPostApplicationSanityChecks(self):
@@ -3083,7 +3082,7 @@ class TestSimulationDispersalMapsSumming(unittest.TestCase):
             fine_file="sample/SA_sample_coarse_zeros.tif",
             dispersal_map="sample/dispersal_fine_cumulative.tif",
         )
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             c.run()
 
 
@@ -3752,7 +3751,7 @@ class TestReproductionMaps(unittest.TestCase):
             landscape_type="closed",
         )
 
-        with self.assertRaises(necsimError):
+        with self.assertRaises(RuntimeError):
             c.set_map_files(
                 "null",
                 fine_file="sample/SA_sample_fine.tif",
