@@ -4,7 +4,6 @@ project(py_necsim CXX)
 find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
 add_cython_target(py_necsim CXX PY3 py_necsim.pxd)
-add_library(py_necsim MODULE ${py_necsim})
 
 
 
@@ -27,6 +26,7 @@ endif ()
 set(CMAKE_CXX_EXTENSIONS OFF)
 message(STATUS "Project source dir: ${PROJECT_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(SOURCE_DIR_NECSIM "${PROJECT_SOURCE_DIR}/necsim")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CPP_17_UNSUPPORTED FALSE)
 message(STATUS "CXX Standard: ${CMAKE_CXX_STANDARD}")
@@ -67,9 +67,10 @@ if (DEFINED ENV{CONDA_PREFIX})
         set(CMAKE_PREFIX_PATH "$ENV{PREFIX}")
     endif ()
 endif ()
-target_include_directories(py_necsim PUBLIC ${PROJECT_SOURCE_DIR})
+
 
 set(SOURCE_FILES
+        ${py_necsim}
         ${SOURCE_DIR_NECSIM}/RNGController.h
         ${SOURCE_DIR_NECSIM}/Matrix.h
         ${SOURCE_DIR_NECSIM}/Map.h
@@ -134,6 +135,7 @@ set(SOURCE_FILES
         ${SOURCE_DIR_NECSIM}/eastl/heap.h
         ${SOURCE_DIR_NECSIM}/GenericTree.h
         ${SOURCE_DIR_NECSIM}/GenericCommunity.h)
+add_library(py_necsim MODULE ${SOURCE_FILES})
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
@@ -141,7 +143,6 @@ if (APPLE)
 elseif (WINDOWS)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
 endif ()
-#add_library(necsim SHARED ${SOURCE_FILES}) // TODO remove
 if (GDAL_INCLUDE_DIR AND GDAL_DIR)
     message(STATUS "Provided GDAL_DIR ${GDAL_DIR}")
     message(STATUS "Provided GDAL include location ${GDAL_INCLUDE_DIR}")
@@ -175,7 +176,7 @@ else ()
     target_link_libraries(py_necsim ${SQLITE3_LIBRARIES})
 endif ()
 include_directories(${GDAL_INCLUDE_DIR})
-
+target_include_directories(py_necsim PUBLIC ${PROJECT_SOURCE_DIR})
 #find_package(PythonLibs REQUIRED)
 #include_directories(${PYTHON_INCLUDE_DIRS})
 #link_directories(${PYTHON_LIBRARIES})
