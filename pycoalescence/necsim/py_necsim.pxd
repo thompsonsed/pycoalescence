@@ -57,7 +57,7 @@ cdef extern from "necsim/SpecSimParameters.h" namespace "necsim":
         void wipe() except +
 
 
-cdef extern from "PyLogging.h" namespace "necsim":
+cdef extern from "lib/PyLogging.h" namespace "necsim":
     void setGlobalLogger(object logger, object log_function) except +
 
 
