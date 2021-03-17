@@ -66,6 +66,7 @@ cdef extern from "PyLogging.h" namespace "necsim":
 cdef extern from "necsim/GenericTree.h" namespace "necsim":
     cdef cppclass GenericTree[T]:
         GenericTree() except +
+
         void wipeSimulationVariables() except +
         void importSimulationVariables(string config_file) except +
         void importSimulationVariablesFromString(string config_string) except +
