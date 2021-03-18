@@ -55,17 +55,17 @@ void LandscapeMetricsCalculator::checkMinDistance(Cell &home_cell, const long &x
         auto distance = distanceBetweenCells(home_cell, this_cell);
         if(distance >= 1.0)
         {
-            min_distance = min(min_distance, distance);
+            min_distance = std::min(min_distance, distance);
         }
     }
 }
 
 double LandscapeMetricsCalculator::findNearestNeighbourDistance(const long &row, const long &col)
 {
-    long upper = min(static_cast<long>(getRows() - 1), row + 1);
-    long lower = max(static_cast<long>(0), row - 1);
-    long left = max(static_cast<long>(0), col - 1);
-    long right = min(static_cast<long>(getCols() - 1), col + 1);
+    long upper = std::min(static_cast<long>(getRows() - 1), row + 1);
+    long lower = std::max(static_cast<long>(0), row - 1);
+    long left = std::max(static_cast<long>(0), col - 1);
+    long right = std::min(static_cast<long>(getCols() - 1), col + 1);
     long x = left;
     long y = lower;
     double min_distance = getRows() * getCols();
@@ -76,7 +76,7 @@ double LandscapeMetricsCalculator::findNearestNeighbourDistance(const long &row,
     {
         x = left;
         y = lower;
-        double min_distance_possible = min(right - left, upper - lower);
+        double min_distance_possible = std::min(right - left, upper - lower);
         // Four dimensions to check in
         while(x < right)
         {
@@ -121,9 +121,9 @@ double LandscapeMetricsCalculator::findNearestNeighbourDistance(const long &row,
                 lower < 0 || lower >= getRows() ||
                 upper < 0 || upper >= getRows())
         {
-            stringstream ss;
-            ss << "Bounds out of range. Please report this bug." << endl;
-            ss << "t, b, l, r: " << upper << ", " << lower << ", " << left << ", " << right << endl;
+            std::stringstream ss;
+            ss << "Bounds out of range. Please report this bug." << std::endl;
+            ss << "t, b, l, r: " << upper << ", " << lower << ", " << left << ", " << right << std::endl;
             throw FatalException(ss.str());
         }
 #endif
@@ -154,8 +154,8 @@ void LandscapeMetricsCalculator::createCellList()
             }
         }
     }
-    stringstream ss;
-    ss << "Detected " << all_cells.size() << " cells" << endl;
+    std::stringstream ss;
+    ss << "Detected " << all_cells.size() << " cells" << std::endl;
     writeInfo(ss.str());
 }
 

@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.11.0)
 # Main necsim Python program
-project(necsim CXX)
-find_package(PythonExtensions REQUIRED)
-find_package(Cython REQUIRED)
-add_cython_target(necsim CXX PY3 necsim.pyx)
+project(necsim)
+
 
 
 
@@ -67,7 +65,9 @@ if (DEFINED ENV{CONDA_PREFIX})
     endif ()
 endif ()
 
-
+find_package(PythonExtensions REQUIRED)
+find_package(Cython REQUIRED)
+add_cython_target(necsim CXX PY3 necsim.pyx)
 set(SOURCE_FILES
         ${necsim}
         ${SOURCE_DIR_NECSIM}/RNGController.h

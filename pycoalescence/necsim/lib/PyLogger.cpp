@@ -77,19 +77,19 @@ namespace necsim
 
         if(PyErr_CheckSignals() != 0)
         {
-            throw runtime_error("Keyboard interrupt detected.");
+            throw std::runtime_error("Keyboard interrupt detected.");
         }
         PyObject* arglist, * res;
 #ifdef DEBUG
         writeLog(level, message);
         if(!log_function_set)
         {
-            throw runtime_error(
+            throw std::runtime_error(
                     "Logger object has not been set. Check set_logging_function() has been called in python");
         }
         if(py_logger == nullptr)
         {
-            throw invalid_argument("Logger object has been deferenced, please report this bug.");
+            throw std::invalid_argument("Logger object has been deferenced, please report this bug.");
         }
 #endif // DEBUG
         const char* msg = const_cast<char*>(message.c_str());
@@ -99,13 +99,13 @@ namespace necsim
         if(!logger_set)
         {
             Py_XDECREF(arglist);
-            throw runtime_error(
+            throw std::runtime_error(
                     "Logging function has not been set. Check set_logging_function() has been called in python");
         }
         if(py_log_function == nullptr)
         {
             Py_XDECREF(arglist);
-            throw invalid_argument("Logging function has been dereferenced, please report this bug.");
+            throw std::invalid_argument("Logging function has been dereferenced, please report this bug.");
         }
 #endif // DEBUG
         res = PyObject_CallObject(py_log_function, arglist);
@@ -113,7 +113,7 @@ namespace necsim
         Py_XDECREF(res);
     }
 
-    void PyLogger::write(const int &level, stringstream &message)
+    void PyLogger::write(const int &level, std::stringstream &message)
     {
         write(level, message.str());
     }
@@ -142,8 +142,8 @@ namespace necsim
 #ifdef DEBUG
         if(pyLogger == nullptr)
         {
-            cerr << "Pylogger is nullptr. Report this bug." << endl;
-            throw runtime_error("Pylogger is nullptr");
+            std::cerr << "Pylogger is nullptr. Report this bug." << std::endl;
+            throw std::runtime_error("Pylogger is nullptr");
         }
 #endif // DEBUG
         pyLogger->writeError(std::move(message));
@@ -161,7 +161,7 @@ namespace necsim
         pyLogger->writeLog(level, message);
     }
 
-    void writeLog(const int &level, stringstream &message)
+    void writeLog(const int &level, std::stringstream &message)
     {
         writeLog(level, message.str());
     }

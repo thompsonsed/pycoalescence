@@ -16,7 +16,6 @@
 #ifndef MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
 #define MEAN_DISTANCE_MEANDISTANCECALCULATOR_H
 
-using namespace std;
 using namespace necsim;
 
 /**
