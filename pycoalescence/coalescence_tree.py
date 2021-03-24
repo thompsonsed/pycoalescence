@@ -1888,7 +1888,9 @@ class CoalescenceTree(object):
                 f"Database at {self.file} does not contain a table of species ages. "
                 f"Apply speciation rates with `record_ages`=True"
             )
-        return pd.read_sql_query("SELECT species_id, age_generations FROM SPECIES_AGES", self.database)
+        return pd.read_sql_query(
+            "SELECT community_reference, species_id, age_generations FROM SPECIES_AGES", self.database
+        )
 
     def calculate_octaves_error(self):
         """

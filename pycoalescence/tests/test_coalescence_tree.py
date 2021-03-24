@@ -1062,7 +1062,7 @@ class TestSimulationAnalysis(unittest.TestCase):
         if os.path.exists(dst):
             os.remove(dst)
         shutil.copy(src, dst)
-        cls.tree = CoalescenceTree()
+        cls.tree = CoalescenceTree(logging_level=50)
         cls.tree.set_database(dst)
         cls.tree.wipe_data()
         cls.tree.set_speciation_parameters(
@@ -1736,7 +1736,7 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
         cls.dst_file = dst
 
     def testSmallSimulation(self):
-        tree = CoalescenceTree(logging_level=20)
+        tree = CoalescenceTree(logging_level=50)
         tree.set_database(self.dst_file)
         tree.wipe_data()
         tree.set_speciation_parameters(
@@ -1746,7 +1746,7 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
         )
         tree.apply()
         self.assertTrue(check_sql_table_exist(tree.database, "SPECIES_AGES"))
-        expected_output_1 = [
+        expected_output_1 = (
             (1151, 0),
             (1152, 0),
             (1153, 0),
@@ -1760,30 +1760,32 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
             (1161, 2.5100156310136157),
             (1162, 2.9295838514836876),
             (1163, 5.630741679368071),
-        ]
-        expected_output_2 =[
-            (1151, 0),
-            (1152, 0),
-            (1153, 0),
-            (1154, 0.09503120649271271),
-            (1155, 0.16232920933669595),
-            (1156, 0.22912460430035056),
-            (1157, 0.5748508097223444),
-            (1158, 0.8966961120557456),
-            (1159, 1.9424721488846495),
-            (1160, 2.4873461399603882),
-            (1161, 2.5100156310136157),
-            (1162, 2.9295838514836876),
-            (1163, 5.630741679368071),
-        ]
-        expected_df_1 =pd.DataFrame(expected_output_1, columns=("species_id", "age_generations"))
-        expected_df_2 = pd.DataFrame(expected_output_1, columns=("species_id", "age_generations"))
-        for expected_output, community_ref, expected_df in [(expected_output_1, 1, expected_df_1),
-                                                            (expected_output_2, 2, expected_df_2
-        )]:
-            actual_output = tree.get_species_ages(community_ref)[-len(expected_output):]
+        )
+        expected_output_2 = (
+            (1158, 0.0),
+            (1159, 0.0),
+            (1160, 0.0),
+            (1161, 0.0),
+            (1162, 0.09503120649271271),
+            (1163, 0.16232920933669595),
+            (1164, 0.22912460430035056),
+            (1165, 0.5748508097223444),
+            (1166, 0.8966961120557456),
+            (1167, 1.9424721488846495),
+            (1168, 2.4873461399603882),
+            (1169, 2.5100156310136157),
+            (1170, 2.9295838514836876),
+        )
+        expected_df_2 = pd.DataFrame(expected_output_2, columns=("species_id", "age_generations")).assign(
+            community_reference=2
+        )[["community_reference", "species_id", "age_generations"]]
+        for expected_output, community_ref in [
+            (expected_output_1, 1),
+            (expected_output_2, 2),
+        ]:
+            actual_output = tree.get_species_ages(community_ref)[-len(expected_output) :]
             for ex, act in zip(expected_output, actual_output):
                 self.assertEqual(ex[0], act[0])
                 self.assertAlmostEqual(ex[1], act[1], delta=0.0000001)
-            actual_df = tree.get_species_ages_pd().tail(len(expected_output)).reset_index(drop=True)
-            assert_frame_equal(expected_df, actual_df)
+        actual_df = tree.get_species_ages_pd().tail(len(expected_output)).reset_index(drop=True)
+        assert_frame_equal(expected_df_2, actual_df)
