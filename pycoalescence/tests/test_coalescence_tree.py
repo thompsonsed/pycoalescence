@@ -1720,3 +1720,34 @@ class TestProtractedSpeciationEquality(unittest.TestCase):
         self.ct.apply()
         self.assertEqual(1, self.ct.get_species_richness(1))
         self.assertEqual(3, self.ct.get_species_richness(2))
+
+class TestSpeciesAgesCalculations(unittest.TestCase):
+    """Tests that operations associated with the species ages operate as expected"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Copies the sample databases and applies a basic set of community parameters."""
+        src = os.path.join("sample", "sample2.db")
+        dst = os.path.join("output", "sample2.db")
+        if os.path.exists(dst):
+            os.remove(dst)
+        shutil.copy(src, dst)
+        cls.dst_file = dst
+
+    def testSmallSimulation(self):
+        tree = CoalescenceTree()
+        tree.set_database(self.dst_file)
+        tree.wipe_data()
+        tree.set_speciation_parameters(
+            speciation_rates=[0.5, 0.7],
+            record_spatial=False,
+            record_ages=True,
+        )
+        tree.apply()
+        self.assertTrue(check_sql_table_exist(tree.database, "SPECIES_AGES"))
+        expected_output = []
+        actual_output = tree.get_species_ages(1)
+        self.assertEqual(expected_output, actual_output)
+
+
+
