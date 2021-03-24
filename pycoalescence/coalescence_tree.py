@@ -1867,6 +1867,11 @@ class CoalescenceTree(object):
         self._check_database()
         if reference is None:  # pragma: no cover
             reference = 1
+        if not check_sql_table_exist(self.database, "SPECIES_AGES"):
+            raise IOError(
+                f"Database at {self.file} does not contain a table of species ages. "
+                f"Apply speciation rates with `record_ages`=True"
+            )
         return [
             list(x)
             for x in self.cursor.execute(

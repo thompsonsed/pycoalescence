@@ -1738,7 +1738,15 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
     def testSmallSimulation(self):
         tree = CoalescenceTree(logging_level=50)
         tree.set_database(self.dst_file)
+        with self.assertRaises(IOError):
+            _ = tree.get_species_ages()
+        with self.assertRaises(IOError):
+            _ = tree.get_species_ages_pd()
         tree.wipe_data()
+        with self.assertRaises(IOError):
+            _ = tree.get_species_ages()
+        with self.assertRaises(IOError):
+            _ = tree.get_species_ages_pd()
         tree.set_speciation_parameters(
             speciation_rates=[0.5, 0.7],
             record_spatial=False,
