@@ -2575,6 +2575,7 @@ class CoalescenceTree(object):
         self.cursor.execute("DROP TABLE IF EXISTS COMMUNITY_PARAMETERS")
         self.cursor.execute("DROP TABLE IF EXISTS METACOMMUNITY_PARAMETERS")
         self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LOCATIONS")
+        self.cursor.execute("DROP TABLE IF EXISTS SPECIES_AGES")
         self.clear_calculations()
         self.database.commit()
         if self.c_community is not None:  # pragma: no cover
