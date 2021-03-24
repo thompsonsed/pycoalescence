@@ -163,7 +163,6 @@ cdef class CPNSESimulation:
         self.c_simulation.addSpeciationRates(speciation_rates)
         self.c_simulation.applyMultipleRates()
 
-
 cdef class CPSpatialSimulation:
     cdef GenericTree[ProtractedSpatialTree] c_simulation  # Hold a C++ instance which we're wrapping
     cdef object logger
@@ -250,6 +249,7 @@ cdef class CCommunity:
     def setup(self,
               database,
               bool use_spatial,
+              bool record_ages,
               sample_file,
               record_fragments,
               vector[double] speciation_rates,
@@ -258,7 +258,8 @@ cdef class CCommunity:
         cdef string database_str = database
         cdef string sample_file_str = sample_file
         cdef string fragment_file_str = record_fragments
-        deref(self.c_spec_parameters).setup(database_str, use_spatial, sample_file_str, times, fragment_file_str,
+        deref(self.c_spec_parameters).setup(database_str, use_spatial, record_ages, sample_file_str, times,
+                                            fragment_file_str,
                                             speciation_rates)
 
     def add_time(self, time):
@@ -315,6 +316,7 @@ cdef class CMetacommunity:
     def setup(self,
               database,
               bool use_spatial,
+              bool record_ages,
               sample_file,
               record_fragments,
               vector[double] speciation_rates,
@@ -323,7 +325,8 @@ cdef class CMetacommunity:
         cdef string database_str = database
         cdef string sample_file_str = sample_file
         cdef string fragment_file_str = record_fragments
-        deref(self.c_spec_parameters).setup(database_str, use_spatial, sample_file_str, times, fragment_file_str,
+        deref(self.c_spec_parameters).setup(database_str, use_spatial, record_ages, sample_file_str, times,
+                                            fragment_file_str,
                                             speciation_rates)
 
     def add_time(self, time):
@@ -396,22 +399,22 @@ cdef class CDispersalSimulator:
             self.c_simulator.setOutputDatabase(output_f)
 
     def import_maps_base(self,
-                    double deme,
-                    fine_map_file,
-                    unsigned long fine_map_x_size,
-                    unsigned long fine_map_y_size,
-                    unsigned long fine_map_x_offset,
-                    unsigned long fine_map_y_offset,
-                    unsigned long sample_map_x_size,
-                    unsigned long sample_map_y_size,
-                    coarse_map_file,
-                    unsigned long coarse_map_x_size,
-                    unsigned long coarse_map_y_size,
-                    unsigned long coarse_map_x_offset,
-                    unsigned long coarse_map_y_offset,
-                    unsigned long coarse_map_scale,
-                    landscape_type,
-                    ):
+                         double deme,
+                         fine_map_file,
+                         unsigned long fine_map_x_size,
+                         unsigned long fine_map_y_size,
+                         unsigned long fine_map_x_offset,
+                         unsigned long fine_map_y_offset,
+                         unsigned long sample_map_x_size,
+                         unsigned long sample_map_y_size,
+                         coarse_map_file,
+                         unsigned long coarse_map_x_size,
+                         unsigned long coarse_map_y_size,
+                         unsigned long coarse_map_x_offset,
+                         unsigned long coarse_map_y_offset,
+                         unsigned long coarse_map_scale,
+                         landscape_type,
+                         ):
         self.set_logger()
         cdef string fine_map_file_str = fine_map_file
         cdef string coarse_map_file_str = coarse_map_file
@@ -444,20 +447,20 @@ cdef class CDispersalSimulator:
                     unsigned long coarse_map_scale,
                     landscape_type):
         self.import_maps_base(deme,
-                         fine_map_file,
-                         fine_map_x_size,
-                         fine_map_y_size,
-                         fine_map_x_offset,
-                         fine_map_y_offset,
-                         sample_map_x_size,
-                         sample_map_y_size,
-                         coarse_map_file,
-                         coarse_map_x_size,
-                         coarse_map_y_size,
-                         coarse_map_x_offset,
-                         coarse_map_y_offset,
-                         coarse_map_scale,
-                         landscape_type)
+                              fine_map_file,
+                              fine_map_x_size,
+                              fine_map_y_size,
+                              fine_map_x_offset,
+                              fine_map_y_offset,
+                              sample_map_x_size,
+                              sample_map_y_size,
+                              coarse_map_file,
+                              coarse_map_x_size,
+                              coarse_map_y_size,
+                              coarse_map_x_offset,
+                              coarse_map_y_offset,
+                              coarse_map_scale,
+                              landscape_type)
         self.setup()
         self.c_simulator.importMaps()
         self.has_imported_maps = True
@@ -487,20 +490,20 @@ cdef class CDispersalSimulator:
                         vector[double] time_coarse):
         self.set_logger()
         self.import_maps_base(deme,
-                         fine_map_file,
-                         fine_map_x_size,
-                         fine_map_y_size,
-                         fine_map_x_offset,
-                         fine_map_y_offset,
-                         sample_map_x_size,
-                         sample_map_y_size,
-                         coarse_map_file,
-                         coarse_map_x_size,
-                         coarse_map_y_size,
-                         coarse_map_x_offset,
-                         coarse_map_y_offset,
-                         coarse_map_scale,
-                         landscape_type)
+                              fine_map_file,
+                              fine_map_x_size,
+                              fine_map_y_size,
+                              fine_map_x_offset,
+                              fine_map_y_offset,
+                              sample_map_x_size,
+                              sample_map_y_size,
+                              coarse_map_file,
+                              coarse_map_x_size,
+                              coarse_map_y_size,
+                              coarse_map_x_offset,
+                              coarse_map_y_offset,
+                              coarse_map_scale,
+                              landscape_type)
         deref(self.c_sim_parameters).setHistoricalMapParameters(path_fine,
                                                                 number_fine,
                                                                 rate_fine,

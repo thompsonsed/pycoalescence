@@ -29,6 +29,7 @@ cdef extern from "necsim/SpecSimParameters.h" namespace "necsim":
         void addTime(double time) except +
         void setup(string database_str,
                    bool use_spatial,
+                   bool record_ages,
                    string sample_file_str,
                    vector[double] times,
                    string fragment_file_str,
