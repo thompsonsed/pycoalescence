@@ -102,7 +102,7 @@ namespace necsim
          * @param level the logging level to write out at
          * @param message the message to write out
          */
-        void write(const int &level, stringstream &message);
+        void write(const int &level, std::stringstream &message);
         //#endif // DEBUG
     };
 }

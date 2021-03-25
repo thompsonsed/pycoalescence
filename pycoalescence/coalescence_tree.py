@@ -97,6 +97,7 @@ class CoalescenceTree(object):
         self.equalised = False
         self.is_setup_speciation = False
         self.record_spatial = False
+        self.record_ages = False
         self.times = None
         self.sample_file = "null"
         self.record_fragments = False
@@ -219,6 +220,22 @@ class CoalescenceTree(object):
         elif not isinstance(record_spatial, bool):
             raise TypeError("record_spatial must be a boolean.")
         self.record_spatial = record_spatial
+
+    def _set_record_ages(self, record_ages):
+        """
+        Checks that the record species ages flag has been correctly set and sets the relevant parameter.
+
+        :param bool/str record_ages: the object to check correctly identifies a record ages option
+
+        :rtype: None
+        """
+        if record_ages == "T":
+            record_ages = True
+        elif record_ages == "F":
+            record_ages = False
+        elif not isinstance(record_ages, bool):
+            raise TypeError("record_ages must be a boolean.")
+        self.record_ages = record_ages
 
     def _set_speciation_rates(self, speciation_rates):
         """
@@ -684,6 +701,7 @@ class CoalescenceTree(object):
         self,
         speciation_rates,
         record_spatial=False,
+        record_ages=False,
         record_fragments=False,
         sample_file=None,
         times=None,
@@ -701,6 +719,7 @@ class CoalescenceTree(object):
 
         :param float/list speciation_rates: a single float, or list of speciation rates to apply
         :param bool, str record_spatial: a boolean of whether to record spatial data (default=False)
+        :param bool, str record_ages: a boolean of whether to record species age data (default=False)
         :param bool, str record_fragments: either a csv file containing fragment data, or T/F for whether fragments
                                            should be calculated from squares of continuous habitat (default=False)
         :param str sample_file: a sample tif or csv specifying the sampling mask
@@ -719,6 +738,7 @@ class CoalescenceTree(object):
         self._set_record_fragments(record_fragments)
         self._set_speciation_rates(speciation_rates)
         self._set_record_spatial(record_spatial)
+        self._set_record_ages(record_ages)
         self._set_sample_file(sample_file)
         self._set_times(times)
         self._set_metacommunity_parameters(
@@ -758,6 +778,7 @@ class CoalescenceTree(object):
         self.c_community.setup(
             self.file,
             self.record_spatial,
+            self.record_ages,
             self.sample_file,
             self.record_fragments,
             self.applied_speciation_rates_list,
@@ -1835,6 +1856,47 @@ class CoalescenceTree(object):
             "SELECT species_id, community_reference, no_individuals FROM SPECIES_ABUNDANCES", self.database
         )
 
+    def get_species_ages(self, reference=None):
+        """
+        Gets the species ages.
+
+        :param int reference: the commmunity reference to obtain metrics for
+
+        :return: list of species ages [species ID, species ages in generations]
+        """
+        self._check_database()
+        if reference is None:  # pragma: no cover
+            reference = 1
+        if not check_sql_table_exist(self.database, "SPECIES_AGES"):
+            raise IOError(
+                f"Database at {self.file} does not contain a table of species ages. "
+                f"Apply speciation rates with `record_ages`=True"
+            )
+        return [
+            list(x)
+            for x in self.cursor.execute(
+                "SELECT species_id, age_generations FROM SPECIES_AGES WHERE community_reference==?",
+                (reference,),
+            ).fetchall()
+        ]
+
+    def get_species_ages_pd(self):
+        """
+        Gets the species ages as a pandas data frame.
+
+        :return: data frame containing all species ages for the given reference
+        :rtype: pandas.DataFrame
+        """
+        self._check_database()
+        if not check_sql_table_exist(self.database, "SPECIES_AGES"):
+            raise IOError(
+                f"Database at {self.file} does not contain a table of species ages. "
+                f"Apply speciation rates with `record_ages`=True"
+            )
+        return pd.read_sql_query(
+            "SELECT community_reference, species_id, age_generations FROM SPECIES_AGES", self.database
+        )
+
     def calculate_octaves_error(self):
         """
         Calculates the error in octaves classes between the simulated data and the comparison data.
@@ -2520,6 +2582,7 @@ class CoalescenceTree(object):
         self.cursor.execute("DROP TABLE IF EXISTS COMMUNITY_PARAMETERS")
         self.cursor.execute("DROP TABLE IF EXISTS METACOMMUNITY_PARAMETERS")
         self.cursor.execute("DROP TABLE IF EXISTS SPECIES_LOCATIONS")
+        self.cursor.execute("DROP TABLE IF EXISTS SPECIES_AGES")
         self.clear_calculations()
         self.database.commit()
         if self.c_community is not None:  # pragma: no cover
