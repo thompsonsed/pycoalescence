@@ -1728,8 +1728,8 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Copies the sample databases and applies a basic set of community parameters."""
-        src = os.path.join("sample", "sample2.db")
-        dst = os.path.join("output", "sample2.db")
+        src = os.path.join("sample", "sample6.db")
+        dst = os.path.join("output", "sample6.db")
         if os.path.exists(dst):
             os.remove(dst)
         shutil.copy(src, dst)
@@ -1748,52 +1748,19 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
         with self.assertRaises(IOError):
             _ = tree.get_species_ages_pd()
         tree.set_speciation_parameters(
-            speciation_rates=[0.5, 0.7],
+            speciation_rates=[0.000001, 0.0001],
             record_spatial=False,
             record_ages=True,
         )
         tree.apply()
         self.assertTrue(check_sql_table_exist(tree.database, "SPECIES_AGES"))
-        expected_output_1 = (
-            (1151, 0),
-            (1152, 0),
-            (1153, 0),
-            (1154, 0.09503120649271271),
-            (1155, 0.16232920933669595),
-            (1156, 0.22912460430035056),
-            (1157, 0.5748508097223444),
-            (1158, 0.8966961120557456),
-            (1159, 1.9424721488846495),
-            (1160, 2.4873461399603882),
-            (1161, 2.5100156310136157),
-            (1162, 2.9295838514836876),
-            (1163, 5.630741679368071),
-        )
-        expected_output_2 = (
-            (1158, 0.0),
-            (1159, 0.0),
-            (1160, 0.0),
-            (1161, 0.0),
-            (1162, 0.09503120649271271),
-            (1163, 0.16232920933669595),
-            (1164, 0.22912460430035056),
-            (1165, 0.5748508097223444),
-            (1166, 0.8966961120557456),
-            (1167, 1.9424721488846495),
-            (1168, 2.4873461399603882),
-            (1169, 2.5100156310136157),
-            (1170, 2.9295838514836876),
-        )
-        expected_df_2 = pd.DataFrame(expected_output_2, columns=("species_id", "age_generations")).assign(
-            community_reference=2
-        )[["community_reference", "species_id", "age_generations"]]
-        for expected_output, community_ref in [
-            (expected_output_1, 1),
-            (expected_output_2, 2),
-        ]:
-            actual_output = tree.get_species_ages(community_ref)[-len(expected_output) :]
+        expected_df = pd.read_csv(os.path.join("sample", "expected_species_ages.csv"))
+        actual_df = tree.get_species_ages_pd().reset_index(drop=True)
+        assert_frame_equal(expected_df, actual_df)
+        for community_ref, group in expected_df.groupby(["community_reference"]):
+            actual_output = sorted(tree.get_species_ages(community_ref), key=lambda x: x[0])
+            expected_output = group.drop(columns=["community_reference"]).sort_values(by=["species_id"]).values.tolist()
             for ex, act in zip(expected_output, actual_output):
                 self.assertEqual(ex[0], act[0])
                 self.assertAlmostEqual(ex[1], act[1], delta=0.0000001)
-        actual_df = tree.get_species_ages_pd().tail(len(expected_output)).reset_index(drop=True)
-        assert_frame_equal(expected_df_2, actual_df)
+
