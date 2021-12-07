@@ -316,7 +316,12 @@ class TestSimulationPause2(unittest.TestCase):
         self.coal2.run()
         self.tree2.set_database(self.coal2)
         self.tree2.set_speciation_parameters(
-            speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F", sample_file="null", protracted_speciation_min=0.0, protracted_speciation_max=100.0
+            speciation_rates=[0.6, 0.7],
+            record_spatial="T",
+            record_fragments="F",
+            sample_file="null",
+            protracted_speciation_min=0.0,
+            protracted_speciation_max=100.0,
         )
         self.tree2.apply()
         self.tree1 = CoalescenceTree()
