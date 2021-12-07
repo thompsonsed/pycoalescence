@@ -1763,4 +1763,3 @@ class TestSpeciesAgesCalculations(unittest.TestCase):
             for ex, act in zip(expected_output, actual_output):
                 self.assertEqual(ex[0], act[0])
                 self.assertAlmostEqual(ex[1], act[1], delta=0.0000001)
-
