@@ -4,12 +4,13 @@ project(necsim)
 
 
 
-
+message(STATUS "Cmake Build Type: ${CMAKE_BUILD_TYPE}")
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Detected debug mode")
     add_definitions(-DDEBUG)
     add_compile_options(-Werror=cast-function-type -pedantic -Wc++14-compat -Wcast-function-type)
 endif ()
+
 # Change this option to ON if RAM usage is an issue or supply as via CL
 option(minimal_ram "minimal_ram" OFF)
 option(USING_INTEL "Use intel compilers for compiling necsim." OFF) # Disabled by default

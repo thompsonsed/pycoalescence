@@ -235,7 +235,7 @@ class TestSimulationPause2(unittest.TestCase):
         """
         Sets up the Coalescence object test case.
         """
-        self.coal = Simulation(logging_level=logging.CRITICAL)  # TODO set these back
+        self.coal = Simulation(logging_level=logging.CRITICAL)
         self.coal2 = Simulation(logging_level=logging.CRITICAL)
         self.tree2 = CoalescenceTree(logging_level=logging.CRITICAL)
         self.coal.set_simulation_parameters(
@@ -273,7 +273,6 @@ class TestSimulationPause2(unittest.TestCase):
             min_speciation_gen=0.0,
             max_speciation_gen=100,
         )
-        # self.coal.set_simulation_parameters(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
         self.coal.set_map_files(
             sample_file="sample/SA_samplemaskINT.tif",
             fine_file="sample/SA_sample_fine.tif",
@@ -284,7 +283,6 @@ class TestSimulationPause2(unittest.TestCase):
             fine_file="sample/SA_sample_fine.tif",
             coarse_file="sample/SA_sample_coarse.tif",
         )
-        # self.coal.detect_map_dimensions()
         self.coal.run()
         try:
             self.coal3.finalise_setup()
@@ -292,6 +290,7 @@ class TestSimulationPause2(unittest.TestCase):
             pass
         self.coal3.run_coalescence()
         self.coal3.apply_speciation_rates()
+
         self.coal2.set_simulation_parameters(
             seed=10,
             task=27,
@@ -309,17 +308,15 @@ class TestSimulationPause2(unittest.TestCase):
             min_speciation_gen=0.0,
             max_speciation_gen=100,
         )
-        # self.coal.set_simulation_parameters(6, 6, "output", 0.5, 4, 4, 1, 0.1, 1, 1, 200, 0, 200, "null")
         self.coal2.set_map_files(
             sample_file="sample/SA_samplemaskINT.tif",
             fine_file="sample/SA_sample_fine.tif",
             coarse_file="sample/SA_sample_coarse.tif",
         )
-        self.coal2.set_speciation_rates([0.5])
         self.coal2.run()
         self.tree2.set_database(self.coal2)
         self.tree2.set_speciation_parameters(
-            speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F", sample_file="null"
+            speciation_rates=[0.6, 0.7], record_spatial="T", record_fragments="F", sample_file="null", protracted_speciation_min=0.0, protracted_speciation_max=100.0
         )
         self.tree2.apply()
         self.tree1 = CoalescenceTree()
